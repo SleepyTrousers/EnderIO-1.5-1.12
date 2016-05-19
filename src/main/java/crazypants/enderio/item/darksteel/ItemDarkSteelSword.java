@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -354,10 +354,10 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (str != null) {
       list.add(str);
     }
-    list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
     if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
+      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

@@ -14,16 +14,17 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.*;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -129,7 +130,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
 
     if (targetDim == Integer.MIN_VALUE) {
-      targetDim = worldObj.provider.getDimensionId();
+      targetDim = worldObj.provider.getDimension();
     }
 
     if (worldObj.isRemote) {
@@ -366,7 +367,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private int calculateTeleportPower() {
-    if (worldObj.provider.getDimensionId() == targetDim) {
+    if (worldObj.provider.getDimension() == targetDim) {
       int distance = new BlockCoord(this).getDist(target);
       double base = Math.log((0.005 * distance) + 1);
       this.maxPower = (int) (base * Config.telepadPowerCoefficient);
@@ -589,7 +590,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean isEntityInRange(Entity entity) {
-    return getRange().isVecInside(new Vec3(entity.posX, entity.posY, entity.posZ));
+    return getRange().isVecInside(new Vec3d(entity.posX, entity.posY, entity.posZ));
   }
 
   private AxisAlignedBB getRange() {
@@ -643,7 +644,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   private boolean clientTeleport(Entity entity) {
-    if (entity.worldObj.provider.getDimensionId() == targetDim) {
+    if (entity.worldObj.provider.getDimension() == targetDim) {
       return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
     }
     return true;
@@ -653,14 +654,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     dequeueTeleport(entity, true);
     int from = entity.dimension;
     if (from != targetDim) {
-      MinecraftServer server = MinecraftServer.getServer();
+      MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
       WorldServer fromDim = server.worldServerForDimension(from);
       WorldServer toDim = server.worldServerForDimension(targetDim);
       Teleporter teleporter = new TeleporterEIO(toDim);
       server.worldServerForDimension(entity.dimension).playSoundEffect(entity.posX, entity.posY, entity.posZ, TravelSource.TELEPAD.sound, 1.0F, 1.0F);
       if (entity instanceof EntityPlayer) {
         EntityPlayerMP player = (EntityPlayerMP) entity;
-        server.getConfigurationManager().transferPlayerToDimension(player, targetDim, teleporter);
+        server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);        
         if (from == 1 && entity.isEntityAlive()) { // get around vanilla End
                                                    // hacks
           toDim.spawnEntityInWorld(entity);

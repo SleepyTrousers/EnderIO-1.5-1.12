@@ -1,6 +1,6 @@
 package crazypants.enderio.capacitor;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public interface Scaler {
 

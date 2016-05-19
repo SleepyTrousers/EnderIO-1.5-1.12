@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -63,17 +63,17 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 0;
   }
 
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     int x = pos.getX();
     int y = pos.getY();
     int z = pos.getZ();
@@ -91,7 +91,8 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
             startZ + zOffset, 0.0D, 0.0D, 0.0D, 0);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
-          fx.motionY *= 0.5f;
+          //TODO: 1.9
+//          fx.motionY *= 0.5f;
         }
 
       }

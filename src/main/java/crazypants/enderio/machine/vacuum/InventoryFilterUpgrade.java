@@ -3,9 +3,9 @@ package crazypants.enderio.machine.vacuum;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class InventoryFilterUpgrade implements IInventory {
 
@@ -110,8 +110,8 @@ public class InventoryFilterUpgrade implements IInventory {
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  public ITextComponent getDisplayName() {
+    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override

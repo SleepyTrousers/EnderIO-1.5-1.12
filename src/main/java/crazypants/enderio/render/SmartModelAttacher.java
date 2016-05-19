@@ -8,13 +8,13 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IRegistry;
-import net.minecraft.util.RegistrySimple;
+import net.minecraft.util.registry.IRegistry;
+import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -113,38 +113,38 @@ public class SmartModelAttacher {
       if (holder.property != null && block.getDefaultState().getPropertyNames().contains(holder.property)) {
         IBlockState defaultState = block.getDefaultState().withProperty(holder.property, holder.defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
-        IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
+        IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
         if (defaultBakedModel == null) {
           throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-              + debugOutput(event.modelRegistry, defaultMrl));
+              + debugOutput(event.getModelRegistry(), defaultMrl));
         }
         RelayingBakedModel model = new RelayingBakedModel(defaultBakedModel);
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
-        event.modelRegistry.putObject(itemMrl, model);
+        event.getModelRegistry().putObject(itemMrl, model);
 
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
           if (entry.getKey().getValue(holder.property) == holder.autoValue) {
-            event.modelRegistry.putObject(entry.getValue(), model);
-          } else if (event.modelRegistry.getObject(entry.getValue()) == null) {
-            event.modelRegistry.putObject(entry.getValue(), defaultBakedModel);
+            event.getModelRegistry().putObject(entry.getValue(), model);
+          } else if (event.getModelRegistry().getObject(entry.getValue()) == null) {
+            event.getModelRegistry().putObject(entry.getValue(), defaultBakedModel);
           }
         }
       } else {
         IBlockState defaultState = block.getDefaultState();
         ModelResourceLocation defaultMrl = locations.get(defaultState);
-        IBakedModel defaultBakedModel = event.modelRegistry.getObject(defaultMrl);
+        IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
 
         if (!holder.itemOnly) {
           for (ModelResourceLocation mrl : locations.values()) {
-            IBakedModel model = event.modelRegistry.getObject(mrl);
-            event.modelRegistry.putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
+            IBakedModel model = event.getModelRegistry().getObject(mrl);
+            event.getModelRegistry().putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
           }
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
-        if (event.modelRegistry.getObject(itemMrl) == null) {
-          event.modelRegistry.putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
+        if (event.getModelRegistry().getObject(itemMrl) == null) {
+          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
         }
       }
     }

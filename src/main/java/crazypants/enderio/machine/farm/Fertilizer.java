@@ -11,7 +11,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -34,7 +36,8 @@ public enum Fertilizer {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
-      return stack.getItem().onItemUse(stack, player, world, bc.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      EnumActionResult res = stack.getItem().onItemUse(stack, player, world, bc.getBlockPos(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      return res != null && res != EnumActionResult.FAIL; 
     }
   },
 
@@ -53,7 +56,8 @@ public enum Fertilizer {
       BlockCoord below = bc.getLocation(EnumFacing.DOWN);
       Block belowBlock = below.getBlock(world);
       if(belowBlock == Blocks.dirt || belowBlock == Blocks.grass) {
-        return stack.getItem().onItemUse(stack, player, world, below.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+        EnumActionResult res = stack.getItem().onItemUse(stack, player, world, below.getBlockPos(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+        return res != null && res != EnumActionResult.FAIL; 
       }
       return false;
     }

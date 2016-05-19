@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,12 +20,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -108,8 +109,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, CapBankType.KIND });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, CapBankType.KIND });
   }
 
   @Override
@@ -151,8 +152,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
 
   @Override
@@ -188,7 +189,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Items")) { // TODO
       NBTTagList itemList = (NBTTagList) itemstack.getTagCompound().getTag("Items");
       String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
-      list.add(EnumChatFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
+      list.add(TextFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
     }
   }
 
@@ -199,15 +200,15 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing faceHit, float hitX, float hitY,
-      float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing faceHit,
+      float hitX, float hitY, float hitZ) {
 
     TileCapBank tcb = getTileEntity(world, pos);
     if (tcb == null) {
       return false;
     }
 
-    if (entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() == null && faceHit.getFrontOffsetY() == 0) {
+    if (entityPlayer.isSneaking() && entityPlayer.getHeldItemMainhand() == null && faceHit.getFrontOffsetY() == 0) {
       InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
       if (newDisplayType == InfoDisplayType.NONE) {
         tcb.setDefaultIoMode(faceHit);
@@ -234,17 +235,18 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         tcb.toggleIoModeForFace(faceHit);
       }
 
-      if (world.isRemote) {
-        world.markBlockForUpdate(pos);
+      IBlockState bs = world.getBlockState(pos);
+      if (world.isRemote) {        
+        world.notifyBlockUpdate(pos, bs, bs, 3);        
       } else {
         world.notifyNeighborsOfStateChange(pos, EnderIO.blockCapBank);
-        world.markBlockForUpdate(pos);
+        world.notifyBlockUpdate(pos, bs, bs, 3);
       }
 
       return true;
     }
 
-    return super.onBlockActivated(world, pos, state, entityPlayer, faceHit, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, faceHit, hitX, hitY, hitZ);
   }
 
   @Override
@@ -279,20 +281,20 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public boolean isSideSolid(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
     return true;
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side) {
-    Block i1 = par1IBlockAccess.getBlockState(pos).getBlock();
-    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, pos, side);
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side) {
+    Block i1 = par1IBlockAccess.getBlockState(pos.offset(side)).getBlock();
+    return i1 == this ? false : super.shouldSideBeRendered(bs, par1IBlockAccess, pos, side);
   }
 
   @SideOnly(Side.CLIENT)
@@ -351,7 +353,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     if (world.isRemote) {
       return;
     }
-    world.markBlockForUpdate(pos);
+    
+    IBlockState bs = world.getBlockState(pos);
+    world.notifyBlockUpdate(pos, bs, bs, 3);    
   }
 
   protected boolean setDisplayToVerticalFillBar(TileCapBank cb, TileCapBank capBank) {
@@ -382,14 +386,14 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileCapBank te = getTileEntity(world, pos);
       if (te != null) {
         te.moveInventoryToNetwork();
       }
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
@@ -413,14 +417,14 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
     TileCapBank tr = getTileEntity(world, pos);
     if (tr == null) {
-      return super.getSelectedBoundingBox(world, pos);
+      return super.getSelectedBoundingBox(bs, world, pos);
     }
     ICapBankNetwork network = tr.getNetwork();
     if (!tr.getType().isMultiblock() || network == null) {
-      return super.getSelectedBoundingBox(world, pos);
+      return super.getSelectedBoundingBox(bs, world, pos);
     }
 
     Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
@@ -440,12 +444,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean hasComparatorInputOverride() {
+  public boolean hasComparatorInputOverride(IBlockState bs) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(World world, BlockPos pos) {
+  public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
     TileCapBank te = getTileEntity(world, pos);
     if (te != null) {
       return te.getComparatorOutput();
@@ -468,7 +472,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         }
 
         if (SpecialTooltipHandler.showAdvancedTooltips()) {
-          String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+          String format = Util.TAB + Util.ALIGNRIGHT + TextFormatting.WHITE;
           String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
           tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
           tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
@@ -478,17 +482,17 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
         long stored = nw.getEnergyStoredL();
         long max = nw.getMaxEnergyStoredL();
-        tooltip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
-            EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
+        tooltip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
+            TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
 
         int change = Math.round(nw.getAverageChangePerTick());
-        String color = EnumChatFormatting.WHITE.toString();
+        String color = TextFormatting.WHITE.toString();
         if (change > 0) {
-          color = EnumChatFormatting.GREEN.toString() + "+";
+          color = TextFormatting.GREEN.toString() + "+";
         } else if (change < 0) {
-          color = EnumChatFormatting.RED.toString();
+          color = TextFormatting.RED.toString();
         }
-        tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + EnumChatFormatting.RESET.toString()));
+        tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + TextFormatting.RESET.toString()));
       }
     }
   }

@@ -2,7 +2,7 @@ package crazypants.enderio.machine.monitor;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
@@ -36,7 +36,7 @@ public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor
       RenderUtil.bindBlockTexture();
       GlStateManager.enableLighting();
       GlStateManager.disableLighting();
-      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      VertexBuffer tes = Tessellator.getInstance().getBuffer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
 
       VertexRotationFacing xform = new VertexRotationFacing(te.getFacing());
@@ -119,13 +119,13 @@ public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor
       return dir;
     }
 
-    void addVecWithUV(WorldRenderer tes, Vector3d vec, double u, double v, float cm, EnumFacing normal) {
+    void addVecWithUV(VertexBuffer tes, Vector3d vec, double u, double v, float cm, EnumFacing normal) {
       tes.pos(vec.x, vec.y, vec.z).tex(u, v).color(cm, cm, cm, 1)
           .normal(normal.getDirectionVec().getX(), normal.getDirectionVec().getY(), normal.getDirectionVec().getZ()).endVertex();
     }
 
-    void renderSingleFace(WorldRenderer tes, EnumFacing face, float minU, float maxU, float minV, float maxV, VertexTransform xForm, float[] brightnessPerSide,
-        boolean inside) {
+    void renderSingleFace(VertexBuffer tes, EnumFacing face, float minU, float maxU, float minV, float maxV, VertexTransform xForm, float[] brightnessPerSide,
+                          boolean inside) {
       EnumFacing normal = rotate(xForm, inside ? face.getOpposite() : face);
 
       float cm = brightnessPerSide != null ? brightnessPerSide[normal.ordinal()] : 1;

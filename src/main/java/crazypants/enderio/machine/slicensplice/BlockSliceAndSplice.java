@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
@@ -62,7 +62,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     TileSliceAndSplice te = getTileEntity(world, pos);
     if (te != null && isActive(world, pos)) {
       int x = pos.getX();
@@ -89,9 +89,10 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
             .spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.5, pz, vx, 0, vz, 0);
         if (fx != null) {
           fx.setRBGColorF(0.3f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f));
-          fx.motionX *= 0.25f;
-          fx.motionY *= 0.25f;
-          fx.motionZ *= 0.25f;
+          //TODO: 1.9
+//          fx.motionX *= 0.25f;
+//          fx.motionY *= 0.25f;
+//          fx.motionZ *= 0.25f;
         }
 
       }

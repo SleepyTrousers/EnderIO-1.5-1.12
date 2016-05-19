@@ -107,10 +107,10 @@ public class WirelessChargerController {
   }
 
   private Map<BlockCoord, IWirelessCharger> getChargersForWorld(World world) {
-    Map<BlockCoord, IWirelessCharger> res = perWorldChargers.get(world.provider.getDimensionId());
+    Map<BlockCoord, IWirelessCharger> res = perWorldChargers.get(world.provider.getDimension());
     if(res == null) {
       res = new HashMap<BlockCoord, IWirelessCharger>();
-      perWorldChargers.put(world.provider.getDimensionId(), res);
+      perWorldChargers.put(world.provider.getDimension(), res);
     }
     return res;
   }
@@ -120,6 +120,6 @@ public class WirelessChargerController {
   }
 
   public Map<BlockCoord, IWirelessCharger> getChargerMap(World world) {
-    return perWorldChargers.get(world.provider.getDimensionId());
+    return perWorldChargers.get(world.provider.getDimension());
   }
 }

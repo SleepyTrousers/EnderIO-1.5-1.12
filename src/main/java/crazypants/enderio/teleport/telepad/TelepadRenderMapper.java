@@ -10,9 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,8 +41,8 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
+                                          QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
 
     if (tileEntity instanceof TileTelePad) {
@@ -65,7 +65,7 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
         return null;
       }
 
-    } else if (blockLayer == EnumWorldBlockLayer.CUTOUT) {
+    } else if (blockLayer == BlockRenderLayer.CUTOUT) {
       return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
     }
 

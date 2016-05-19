@@ -1,8 +1,10 @@
 package crazypants.enderio.paint;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.tool.ToolUtil;
@@ -17,7 +19,7 @@ public class YetaUtil {
     if (player == null) {
       return;
     }
-    ItemStack held = player.getCurrentEquippedItem();
+    ItemStack held = player.getHeldItemMainhand();
     boolean checkResult;
     if (held != null && held.getItem() instanceof IHideFacades) {
       checkResult = ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
@@ -38,7 +40,9 @@ public class YetaUtil {
 
   public static void refresh(TileEntity te) {
     if (toggled && te instanceof IPaintable.IPaintableTileEntity && ((IPaintable.IPaintableTileEntity) te).getPaintSource() != null) {
-      te.getWorld().markBlockForUpdate(te.getPos());
+      BlockPos pos = te.getPos();
+      IBlockState bs = te.getWorld().getBlockState(pos);
+      te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);
     }
   }
 

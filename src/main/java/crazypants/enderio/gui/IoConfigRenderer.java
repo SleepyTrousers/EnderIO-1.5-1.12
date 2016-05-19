@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.renderer.*;
+import net.minecraft.util.BlockRenderLayer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -33,21 +35,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -189,19 +186,19 @@ public class IoConfigRenderer {
   private void updateSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
-    List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
+    List<RayTraceResult> hits = new ArrayList<RayTraceResult>();
 
     for (BlockCoord bc : configurables) {
       Block block = world.getBlockState(bc.getBlockPos()).getBlock();
       if (block != null) {
-        MovingObjectPosition hit = block.collisionRayTrace(world, bc.getBlockPos(), new Vec3(start.x, start.y, start.z), new Vec3(end.x, end.y, end.z));
+        RayTraceResult hit = block.collisionRayTrace(world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
         if (hit != null) {
           hits.add(hit);
         }
       }
     }
     selection = null;
-    MovingObjectPosition hit = getClosestHit(new Vec3(start.x, start.y, start.z), hits);
+    RayTraceResult hit = getClosestHit(new Vec3d(start.x, start.y, start.z), hits);
     if (hit != null) {
       TileEntity te = world.getTileEntity(hit.getBlockPos());
       if (te instanceof IIoConfigurable) {
@@ -212,11 +209,11 @@ public class IoConfigRenderer {
     }
   }
 
-  public static MovingObjectPosition getClosestHit(Vec3 origin, Collection<MovingObjectPosition> candidates) {
+  public static RayTraceResult getClosestHit(Vec3d origin, Collection<RayTraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
-    MovingObjectPosition closest = null;
+    RayTraceResult closest = null;
 
-    for (MovingObjectPosition hit : candidates) {
+    for (RayTraceResult hit : candidates) {
       if (hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
         if (lengthSquared < minLengthSquared) {
@@ -256,7 +253,7 @@ public class IoConfigRenderer {
     GlStateManager.disableLighting();
     
     RenderUtil.bindBlockTexture();    
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
 
     GlStateManager.color(1, 1, 1);
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
@@ -353,14 +350,14 @@ public class IoConfigRenderer {
 
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     
-    for(EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
+    for(BlockRenderLayer layer : BlockRenderLayer.values()) {
       ForgeHooksClient.setRenderLayer(layer);      
       setGlStateForPass(layer, false);
       doWorldRenderPass(trans, configurables, layer);      
     }
     
     if (renderNeighbours) {
-      for (EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {        
+      for (BlockRenderLayer layer : BlockRenderLayer.values()) {
         ForgeHooksClient.setRenderLayer(layer);
         setGlStateForPass(layer, true);
         doWorldRenderPass(trans, neighbours, layer);        
@@ -405,9 +402,9 @@ public class IoConfigRenderer {
     }    
   }
 
-  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, EnumWorldBlockLayer layer) {
+  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, BlockRenderLayer layer) {
 
-    WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
 
     Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
@@ -424,7 +421,7 @@ public class IoConfigRenderer {
     Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);    
   }
 
-  public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, WorldRenderer worldRendererIn) {
+  public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
 
     try {
       BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
@@ -443,8 +440,8 @@ public class IoConfigRenderer {
     }
   }
 
-  private void setGlStateForPass(EnumWorldBlockLayer layer, boolean isNeighbour) {
-    int pass = layer == EnumWorldBlockLayer.TRANSLUCENT ? 1 : 0;
+  private void setGlStateForPass(BlockRenderLayer layer, boolean isNeighbour) {
+    int pass = layer == BlockRenderLayer.TRANSLUCENT ? 1 : 0;
     setGlStateForPass(pass, isNeighbour);
   }
   

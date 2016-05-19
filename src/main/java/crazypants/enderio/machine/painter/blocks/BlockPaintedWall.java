@@ -7,32 +7,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockWall;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelRotation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader.UVLock;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -49,6 +23,31 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockWall;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
@@ -68,12 +67,13 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     super(Blocks.cobblestone);
     setCreativeTab(null);
     this.name = name;
+    setRegistryName(name);
     setUnlocalizedName(name);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("wall_post", new ResourceLocation("minecraft", "block/cobblestone_wall_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_n", new ResourceLocation("minecraft", "block/cobblestone_wall_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -87,7 +87,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   @Override
   public String getLocalizedName() {
-    return StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");
+    return I18n.translateToLocal(this.getUnlocalizedName() + ".name");
   }
 
   // @Override
@@ -101,13 +101,13 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   // }
 
   @Override
-  public boolean canPlaceTorchOnTop(IBlockAccess world, BlockPos pos) {
+  public boolean canPlaceTorchOnTop(IBlockState bs, IBlockAccess world, BlockPos pos) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (side.getAxis() != EnumFacing.Axis.Y) {
       // Special case for walls painted with transparent/translucent textures
       IBlockState blockState2 = worldIn.getBlockState(pos);
@@ -116,7 +116,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
         return false;
       }
     }
-    return super.shouldSideBeRendered(worldIn, pos, side);
+    return super.shouldSideBeRendered(bs, worldIn, pos, side);
   }
 
   @Override
@@ -128,22 +128,22 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -156,8 +156,8 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }
@@ -307,7 +307,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
@@ -321,7 +321,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {

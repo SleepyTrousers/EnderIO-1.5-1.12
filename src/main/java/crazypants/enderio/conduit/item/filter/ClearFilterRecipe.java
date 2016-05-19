@@ -5,7 +5,7 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -63,7 +63,7 @@ public class ClearFilterRecipe implements IRecipe{
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
+      event.toolTip.add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
   }
   

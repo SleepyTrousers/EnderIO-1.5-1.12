@@ -18,14 +18,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,13 +37,13 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   public static ItemCoordSelector create() {
     ItemCoordSelector ret = new ItemCoordSelector();
-    GameRegistry.registerItem(ret, ModObject.itemCoordSelector.getUnlocalisedName());
+    GameRegistry.registerItem(ret);
     return ret;
   }
 
   private ItemCoordSelector() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemCoordSelector.getUnlocalisedName());
+    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setRegistryName(ModObject.itemCoordSelector.name());
 //    setTextureName("EnderIO:" + ModObject.itemCoordSelector.unlocalisedName);
     setMaxStackSize(1);
   }
@@ -63,26 +66,28 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
     if(stack != null && stack.getTagCompound() != null && !stack.getTagCompound().getBoolean("default")) {
-      list.add(getCoords(stack).chatString(EnumChatFormatting.GRAY));
+      list.add(getCoords(stack).chatString(TextFormatting.GRAY));
     }
     super.addInformation(stack, player, list, p_77624_4_);
   }
 
   @Override
-  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (rayTraceCoords(stack, world, player)) {
-      player.swingItem();
+      player.swingArm(hand);
     }
-    return super.onItemRightClick(stack, world, player);
+    return super.onItemRightClick(stack, world, player, hand);
   }
   
   
-
   
+
   @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+      EnumHand hand) {
+    
       if (!rayTraceCoords(stack, world, player)) {
-      return false;
+      return EnumActionResult.FAIL;
     }
 
     TileEntity te = world.getTileEntity(pos);
@@ -105,7 +110,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tp.setCoords(bc);
           }
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
+            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
           }
         }
 
@@ -116,13 +121,13 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tp.setTargetDim(dim);
           }
           if(!world.isRemote) {
-            player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.setDimension", EnumChatFormatting.GREEN.toString(),
+            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setDimension", TextFormatting.GREEN.toString(),
                 Integer.toString(dim))));
           }
         }
 
         if(bc.equals(cur) && dim == curDim) {
-          return false;
+          return EnumActionResult.FAIL;
         }
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getOwner());
@@ -133,17 +138,17 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);
     }
     
-    return true;
+    return EnumActionResult.SUCCESS;
   }
 
   // returns false if the raytrace provided no new information
   private boolean rayTraceCoords(ItemStack stack, World world, EntityPlayer player) {
     Vector3d headVec = Util.getEyePositionEio(player);
-    Vec3 start = headVec.getVec3();
-    Vec3 lookVec = player.getLook(1.0F);
+    Vec3d start = headVec.getVec3();
+    Vec3d lookVec = player.getLook(1.0F);
     double reach = 500;
     headVec.add(lookVec.xCoord * reach, lookVec.yCoord * reach, lookVec.zCoord * reach);
-    MovingObjectPosition mop = world.rayTraceBlocks(start, headVec.getVec3());
+    RayTraceResult mop = world.rayTraceBlocks(start, headVec.getVec3());
     if (mop == null) {
       return false;
     }
@@ -160,7 +165,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       bc = bc.getLocation(dir);
     }
     
-    int dim = world.provider.getDimensionId();
+    int dim = world.provider.getDimension();
     int curDim = getDimension(stack);
     
     boolean changed = false;
@@ -182,18 +187,21 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   private void sendItemUsePacket(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
     NetHandlerPlayClient netClientHandler = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
-    netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(x, y, z), side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
+//    netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(new BlockPos(x, y, z), side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
+    //TODO: 1.9, I doubt this will still work
+    CPacketPlayerBlockPlacement packet = new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND);
+    netClientHandler.addToSendQueue(packet);
   }
 
   private void onCoordsChanged(EntityPlayer player, BlockCoord bc) {
     if(!player.worldObj.isRemote) {
-      player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
+      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
     }
   }
   
   private void onDimensionChanged(EntityPlayer player, int dim) {
     if(!player.worldObj.isRemote) {
-      player.addChatMessage(new ChatComponentText(EnderIO.lang.localize("itemCoordSelector.chat.newDimension", EnumChatFormatting.GREEN.toString(), Integer.toString(dim))));
+      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.newDimension", TextFormatting.GREEN.toString(), Integer.toString(dim))));
     }
   }
 
@@ -203,7 +211,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   }
   
   public void setDimension(ItemStack stack, World world) {
-    stack.getTagCompound().setInteger("dimension", world.provider.getDimensionId());
+    stack.getTagCompound().setInteger("dimension", world.provider.getDimension());
   }
 
   public BlockCoord getCoords(ItemStack stack) {

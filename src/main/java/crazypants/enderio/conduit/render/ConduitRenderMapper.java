@@ -6,9 +6,9 @@ import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.paint.YetaUtil;
@@ -22,7 +22,7 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   public static final ConduitRenderMapper instance = new ConduitRenderMapper();
 
   @Override
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
 
     TileEntity tileEntity = state.getTileEntity();

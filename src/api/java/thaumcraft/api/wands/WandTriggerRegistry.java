@@ -8,7 +8,7 @@ import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -104,8 +104,8 @@ public class WandTriggerRegistry {
 	 * @param meta
 	 * @return
 	 */
-	public static boolean performTrigger(World world, ItemStack wand, EntityPlayer player, 
-			BlockPos pos, EnumFacing side, IBlockState state) {
+	public static boolean performTrigger(World world, ItemStack wand, EntityPlayer player,
+										 BlockPos pos, EnumFacing side, IBlockState state) {
 		for (String modid:triggers.keySet()) {
 			LinkedHashMap<IBlockState,List<Trigger>> temp = triggers.get(modid);
 			List<Trigger> l = temp.get(state);

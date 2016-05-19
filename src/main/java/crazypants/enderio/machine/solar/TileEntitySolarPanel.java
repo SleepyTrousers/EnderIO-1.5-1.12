@@ -3,7 +3,7 @@ package crazypants.enderio.machine.solar;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 

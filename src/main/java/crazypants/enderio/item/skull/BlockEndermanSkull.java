@@ -3,16 +3,16 @@ package crazypants.enderio.item.skull;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,8 +62,8 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
 
   @Override
@@ -96,8 +96,8 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { VARIANT });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { VARIANT });
   }
 
   @Override

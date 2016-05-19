@@ -10,9 +10,9 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,8 +37,8 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, AbstractMachineEntity tileEntity,
-      AbstractMachineBlock<?> block) {
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, AbstractMachineEntity tileEntity,
+                                     AbstractMachineBlock<?> block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
@@ -41,7 +41,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 0;
   }
 
@@ -69,12 +69,12 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // If active, randomly throw some smoke around
     if (isActive(world, pos)) {
 

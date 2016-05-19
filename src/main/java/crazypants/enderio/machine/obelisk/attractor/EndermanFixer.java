@@ -8,7 +8,7 @@ public class EndermanFixer {
 
   @SubscribeEvent
   public void onEndermanTeleport(EnderTeleportEvent event) {
-    if (event.entityLiving instanceof EntityEnderman && event.entityLiving.getEntityData().getBoolean("EIO:tracked")) {
+    if (event.getEntityLiving() instanceof EntityEnderman && event.getEntityLiving().getEntityData().getBoolean("EIO:tracked")) {
       event.setCanceled(true);
     }
   }

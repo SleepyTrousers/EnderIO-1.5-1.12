@@ -12,6 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class PickableFarmer extends CustomSeedFarmer {
@@ -39,8 +40,8 @@ public class PickableFarmer extends CustomSeedFarmer {
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();
-    World world = farm.getWorld();
-    player.theItemInWorldManager.activateBlockOrUseItem(player, player.worldObj, null, bc.getBlockPos(), EnumFacing.DOWN, 0, 0, 0);    
+    World world = farm.getWorld();        
+    player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, bc.getBlockPos(), EnumFacing.DOWN, 0, 0, 0);
     
     List<EntityItem> drops = new ArrayList<EntityItem>();
     

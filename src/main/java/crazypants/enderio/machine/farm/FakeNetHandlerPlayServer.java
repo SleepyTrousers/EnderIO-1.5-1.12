@@ -5,36 +5,36 @@ import net.minecraft.network.EnumPacketDirection;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C00PacketKeepAlive;
-import net.minecraft.network.play.client.C01PacketChatMessage;
-import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.network.play.client.C0BPacketEntityAction;
-import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.network.play.client.C0DPacketCloseWindow;
-import net.minecraft.network.play.client.C0EPacketClickWindow;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.client.C10PacketCreativeInventoryAction;
-import net.minecraft.network.play.client.C11PacketEnchantItem;
-import net.minecraft.network.play.client.C12PacketUpdateSign;
-import net.minecraft.network.play.client.C13PacketPlayerAbilities;
-import net.minecraft.network.play.client.C14PacketTabComplete;
-import net.minecraft.network.play.client.C15PacketClientSettings;
-import net.minecraft.network.play.client.C16PacketClientStatus;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
-import net.minecraft.network.play.client.C18PacketSpectate;
-import net.minecraft.network.play.client.C19PacketResourcePackStatus;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketChatMessage;
+import net.minecraft.network.play.client.CPacketClickWindow;
+import net.minecraft.network.play.client.CPacketClientSettings;
+import net.minecraft.network.play.client.CPacketClientStatus;
+import net.minecraft.network.play.client.CPacketCloseWindow;
+import net.minecraft.network.play.client.CPacketConfirmTransaction;
+import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
+import net.minecraft.network.play.client.CPacketCustomPayload;
+import net.minecraft.network.play.client.CPacketEnchantItem;
+import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.network.play.client.CPacketHeldItemChange;
+import net.minecraft.network.play.client.CPacketInput;
+import net.minecraft.network.play.client.CPacketKeepAlive;
+import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerAbilities;
+import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketResourcePackStatus;
+import net.minecraft.network.play.client.CPacketSpectate;
+import net.minecraft.network.play.client.CPacketTabComplete;
+import net.minecraft.network.play.client.CPacketUpdateSign;
+import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
 
   public FakeNetHandlerPlayServer(EntityPlayerMP p_i1530_3_) {
-    super(MinecraftServer.getServer(), new net.minecraft.network.NetworkManager(EnumPacketDirection.CLIENTBOUND), p_i1530_3_);
+    super(FMLCommonHandler.instance().getMinecraftServerInstance(), new net.minecraft.network.NetworkManager(EnumPacketDirection.CLIENTBOUND), p_i1530_3_);
   }
  
   @Override
@@ -47,11 +47,11 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void processInput(C0CPacketInput p_147358_1_) {
+  public void processInput(CPacketInput p_147358_1_) {
   }
 
   @Override
-  public void processPlayer(C03PacketPlayer p_147347_1_) {
+  public void processPlayer(CPacketPlayer p_147347_1_) {
   }
 
   @Override
@@ -59,15 +59,15 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void processPlayerDigging(C07PacketPlayerDigging p_147345_1_) {
+  public void processPlayerDigging(CPacketPlayerDigging p_147345_1_) {
   }
 
   @Override
-  public void processPlayerBlockPlacement(C08PacketPlayerBlockPlacement p_147346_1_) {
+  public void processPlayerBlockPlacement(CPacketPlayerBlockPlacement p_147346_1_) {
   }
 
   @Override
-  public void onDisconnect(IChatComponent p_147231_1_) {
+  public void onDisconnect(ITextComponent p_147231_1_) {
   }
 
   @Override
@@ -75,80 +75,80 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void processHeldItemChange(C09PacketHeldItemChange p_147355_1_) {
+  public void processHeldItemChange(CPacketHeldItemChange p_147355_1_) {
   }
 
   @Override
-  public void processChatMessage(C01PacketChatMessage p_147354_1_) {
+  public void processChatMessage(CPacketChatMessage p_147354_1_) {
   }
 
   @Override
-  public void handleAnimation(C0APacketAnimation packetIn) {
+  public void handleAnimation(CPacketAnimation packetIn) {
   
   }
 
   @Override
-  public void processEntityAction(C0BPacketEntityAction p_147357_1_) {
+  public void processEntityAction(CPacketEntityAction p_147357_1_) {
   }
 
   @Override
-  public void processUseEntity(C02PacketUseEntity p_147340_1_) {
+  public void processUseEntity(CPacketUseEntity p_147340_1_) {
   }
 
   @Override
-  public void processClientStatus(C16PacketClientStatus p_147342_1_) {
+  public void processClientStatus(CPacketClientStatus p_147342_1_) {
   }
 
   @Override
-  public void processCloseWindow(C0DPacketCloseWindow p_147356_1_) {
+  public void processCloseWindow(CPacketCloseWindow p_147356_1_) {
   }
 
   @Override
-  public void processClickWindow(C0EPacketClickWindow p_147351_1_) {
+  public void processClickWindow(CPacketClickWindow p_147351_1_) {
   }
 
   @Override
-  public void processEnchantItem(C11PacketEnchantItem p_147338_1_) {
+  public void processEnchantItem(CPacketEnchantItem p_147338_1_) {
   }
 
   @Override
-  public void processCreativeInventoryAction(C10PacketCreativeInventoryAction p_147344_1_) {
+  public void processCreativeInventoryAction(CPacketCreativeInventoryAction p_147344_1_) {
   }
 
   @Override
-  public void processConfirmTransaction(C0FPacketConfirmTransaction p_147339_1_) {
+  public void processConfirmTransaction(CPacketConfirmTransaction p_147339_1_) {
   }
 
   @Override
-  public void processUpdateSign(C12PacketUpdateSign p_147343_1_) {
+  public void processUpdateSign(CPacketUpdateSign p_147343_1_) {
   }
 
   @Override
-  public void processKeepAlive(C00PacketKeepAlive p_147353_1_) {
+  public void processKeepAlive(CPacketKeepAlive p_147353_1_) {
   }
 
   @Override
-  public void processPlayerAbilities(C13PacketPlayerAbilities p_147348_1_) {
+  public void processPlayerAbilities(CPacketPlayerAbilities p_147348_1_) {
   }
 
   @Override
-  public void processTabComplete(C14PacketTabComplete p_147341_1_) {
+  public void processTabComplete(CPacketTabComplete p_147341_1_) {
   }
 
   @Override
-  public void processClientSettings(C15PacketClientSettings p_147352_1_) {
+  public void processClientSettings(CPacketClientSettings p_147352_1_) {
   }
 
   @Override
-  public void processVanilla250Packet(C17PacketCustomPayload p_147349_1_) {
+  public void processVanilla250Packet(CPacketCustomPayload p_147349_1_) {
   }
 
   @Override
-  public void handleSpectate(C18PacketSpectate packetIn) {
+  public void handleSpectate(CPacketSpectate packetIn) {
   }
 
   @Override
-  public void handleResourcePackStatus(C19PacketResourcePackStatus packetIn) {
+  public void handleResourcePackStatus(CPacketResourcePackStatus packetIn) {
   }
   
   

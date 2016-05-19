@@ -4,32 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Camera;
@@ -37,6 +11,8 @@ import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
+
+import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -50,8 +26,31 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
-
-import static crazypants.util.Things.TRAVEL_BLACKLIST;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TravelController {
 
@@ -119,15 +118,15 @@ public class TravelController {
     Vector3d sample = new Vector3d(look);
     sample.scale(Config.travelStaffMaxBlinkDistance);
     sample.add(eye);
-    Vec3 eye3 = new Vec3(eye.x, eye.y, eye.z);
-    Vec3 end = new Vec3(sample.x, sample.y, sample.z);
+    Vec3d eye3 = new Vec3d(eye.x, eye.y, eye.z);
+    Vec3d end = new Vec3d(sample.x, sample.y, sample.z);
 
     double playerHeight = player.getYOffset();
     //if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
     double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
 
-    MovingObjectPosition p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
     if(p == null) {
 
       //go as far as possible
@@ -145,10 +144,10 @@ public class TravelController {
       return false;
     } else {
 
-      List<MovingObjectPosition> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
-      for (MovingObjectPosition pos : res) {
+      List<RayTraceResult> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      for (RayTraceResult pos : res) {
         if(pos != null) {
-          Block hitBlock = player.worldObj.getBlockState(pos.getBlockPos()).getBlock();
+          IBlockState hitBlock = player.worldObj.getBlockState(pos.getBlockPos());
           if(isBlackListedBlock(player, pos, hitBlock)) {
             BlockPos bp = pos.getBlockPos();
             maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) - 1.5 - lookComp);
@@ -156,7 +155,7 @@ public class TravelController {
         }
       }
 
-      eye3 = new Vec3(eye.x, eye.y, eye.z);
+      eye3 = new Vec3d(eye.x, eye.y, eye.z);
 
       Vector3d targetBc = new Vector3d(p.getBlockPos());
       double sampleDistance = 1.5;
@@ -195,8 +194,8 @@ public class TravelController {
     return false;
   }
 
-  private boolean isBlackListedBlock(EntityPlayer player, MovingObjectPosition pos, Block hitBlock) {
-    return TRAVEL_BLACKLIST.contains(hitBlock)
+  private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {    
+    return TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
         && (hitBlock.getBlockHardness(player.worldObj, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
@@ -350,7 +349,7 @@ public class TravelController {
             target.y, target.z);
       }
     } else {
-      player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+      player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
     }
   }
 
@@ -362,10 +361,10 @@ public class TravelController {
   }
 
   public boolean isTravelItemActive(EntityPlayer ep) {
-    if(ep == null || ep.getCurrentEquippedItem() == null) {
+    if(ep == null || ep.getHeldItemMainhand() == null) {
       return false;
     }
-    ItemStack equipped = ep.getCurrentEquippedItem();
+    ItemStack equipped = ep.getHeldItemMainhand();
     if(equipped.getItem() instanceof IItemOfTravel) {
       return ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
     }
@@ -383,7 +382,7 @@ public class TravelController {
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
         if(!ta.canBlockBeAccessed(player)) {
-          player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+          player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
           return false;
         }
       }
@@ -397,13 +396,13 @@ public class TravelController {
 
     if(!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
       if(source != TravelSource.STAFF_BLINK) {
-        player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
+        player.addChatComponentMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
       }
       return false;
     }
     if(!isValidTarget(player, coord, source)) {
       if(source != TravelSource.STAFF_BLINK) {
-        player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
+        player.addChatComponentMessage(new TextComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
       }
       return false;
     }
@@ -422,11 +421,11 @@ public class TravelController {
       return 0;
     }
     int requiredPower;
-    ItemStack staff = player.getCurrentEquippedItem();
+    ItemStack staff = player.getHeldItemMainhand();
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(staff);
     if(requiredPower > canUsePower) {
-      player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+      player.addChatComponentMessage(new TextComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
       return -1;
     }
     return requiredPower;
@@ -469,8 +468,8 @@ public class TravelController {
       return false;
     }
     if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
-      Vec3 start = Util.getEyePosition(player);
-      Vec3 target = new Vec3(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
+      Vec3d start = Util.getEyePosition(player);
+      Vec3d target = new Vec3d(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
       if(!canBlinkTo(bc, w, start, target)) {
         return false;
       }
@@ -478,15 +477,15 @@ public class TravelController {
 
     IBlockState bs = w.getBlockState(bc.getBlockPos());
     Block block = bs.getBlock();
-    if(block == null || block.isAir(w, bc.getBlockPos())) {
+    if(block == null || block.isAir(bs, w, bc.getBlockPos())) {
       return true;
     }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBox(w, bc.getBlockPos(), bs);
+    final AxisAlignedBB aabb = block.getCollisionBoundingBox(bs, w, bc.getBlockPos());
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
 
-  private boolean canBlinkTo(BlockCoord bc, World w, Vec3 start, Vec3 target) {
-    MovingObjectPosition p = w.rayTraceBlocks(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+  private boolean canBlinkTo(BlockCoord bc, World w, Vec3d start, Vec3d target) {
+    RayTraceResult p = w.rayTraceBlocks(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
     if(p != null) {
       if(!Config.travelStaffBlinkThroughClearBlocksEnabled) {
         return false;
@@ -503,7 +502,7 @@ public class TravelController {
         rayDir.sub(sv);
         rayDir.normalize();
         rayDir.add(sv);
-        return canBlinkTo(bc, w, new Vec3(rayDir.x, rayDir.y, rayDir.z), target);
+        return canBlinkTo(bc, w, new Vec3d(rayDir.x, rayDir.y, rayDir.z), target);
 
       } else {
         return false;
@@ -513,15 +512,15 @@ public class TravelController {
   }
 
   private boolean isClear(World w, IBlockState bs, Block block, BlockPos bp) {
-    if(block == null || block.isAir(w, bp)) {
+    if(block == null || block.isAir(bs, w, bp)) {
       return true;
     }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBox(w, bp, bs);
+    final AxisAlignedBB aabb = block.getCollisionBoundingBox(bs, w, bp);
     if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
       return true;
     }
 
-    return block.getLightOpacity(w, bp) < 2;
+    return block.getLightOpacity(bs, w, bp) < 2;
   }
 
   @SideOnly(Side.CLIENT)
@@ -540,14 +539,14 @@ public class TravelController {
 
         if(Config.travelAnchorSkipWarning) {
           if(travelBlock.getRequiresPassword(player)) {
-            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
+            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
           }
 
           if(travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
-            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
+            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
           }
           if(!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
+            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
           }
         }
         if(travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {

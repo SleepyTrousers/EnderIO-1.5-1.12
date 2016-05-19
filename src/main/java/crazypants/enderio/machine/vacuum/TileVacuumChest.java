@@ -17,10 +17,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.ITextComponent;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
@@ -351,8 +351,8 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  public ITextComponent getDisplayName() {
+    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override

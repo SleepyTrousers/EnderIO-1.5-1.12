@@ -9,7 +9,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 @Storable

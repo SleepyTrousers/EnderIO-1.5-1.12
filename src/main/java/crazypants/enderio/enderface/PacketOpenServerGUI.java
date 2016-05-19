@@ -4,9 +4,9 @@ import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -17,12 +17,12 @@ public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpen
   int y;
   int z;
   EnumFacing side;
-  Vec3 hitVec;
+  Vec3d hitVec;
 
   public PacketOpenServerGUI() {
   }
 
-  public PacketOpenServerGUI(int x, int y, int z, EnumFacing side, Vec3 hitVec) {
+  public PacketOpenServerGUI(int x, int y, int z, EnumFacing side, Vec3d hitVec) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -47,7 +47,7 @@ public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpen
     y = buffer.readInt();
     z = buffer.readInt();
     side = EnumFacing.VALUES[buffer.readInt()];
-    hitVec = new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+    hitVec = new Vec3d(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
   }
 
   @Override
@@ -56,7 +56,7 @@ public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpen
     Container c = player.openContainer;
   
     PacketHandler.INSTANCE.sendTo(new PacketLockClientContainer(player.openContainer.windowId), player);
-    Vec3 hitVec = message.hitVec;
+    Vec3d hitVec = message.hitVec;
     player.theItemInWorldManager.activateBlockOrUseItem(player, player.worldObj, null, new BlockPos(message.x, message.y, message.z), message.side, (float) hitVec.xCoord,
         (float) hitVec.yCoord, (float) hitVec.zCoord);
     player.theItemInWorldManager.thisPlayerMP = player;

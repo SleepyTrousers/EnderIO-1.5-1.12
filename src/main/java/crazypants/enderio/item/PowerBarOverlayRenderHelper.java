@@ -2,7 +2,7 @@ package crazypants.enderio.item;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 
@@ -100,7 +100,7 @@ public class PowerBarOverlayRenderHelper {
     GlStateManager.disableBlend();
     GlStateManager.shadeModel(GL11.GL_SMOOTH);
     Tessellator tessellator = Tessellator.getInstance();
-    WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+    VertexBuffer worldrenderer = tessellator.getBuffer();
     worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
     this.drawPlain(worldrenderer, xPosition + 2, yPosition + 13 - offset, 13, 2, 0, 0, 0, 255);
     this.drawGrad(worldrenderer, xPosition + 2, yPosition + 13 - offset, (BAR_W + width) / 2, 1, 0x02, 0x03, 0x60, 255, 0x2D, 0xCE, 0xFA, 255);
@@ -116,22 +116,22 @@ public class PowerBarOverlayRenderHelper {
     GlStateManager.enableDepth();
   }
 
-  private void drawGrad(WorldRenderer renderer, int x, int y, double width, int height, int redL, int greenL, int blueL, int alphaL, int redR, int greenR,
-      int blueR, int alphaR) {
+  private void drawGrad(VertexBuffer renderer, int x, int y, double width, int height, int redL, int greenL, int blueL, int alphaL, int redR, int greenR,
+                        int blueR, int alphaR) {
     renderer.pos(x + 0, y + 0, 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
     renderer.pos(x + 0, y + height, 0.0D).color(redL, greenL, blueL, alphaL).endVertex();
     renderer.pos(x + width, y + height, 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
     renderer.pos(x + width, y + 0, 0.0D).color(redR, greenR, blueR, alphaR).endVertex();
   }
 
-  private void drawPlain(WorldRenderer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
+  private void drawPlain(VertexBuffer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
     renderer.pos(x + 0, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
     renderer.pos(x + 0, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
     renderer.pos(x + width, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
     renderer.pos(x + width, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
   }
 
-  private void drawRight(WorldRenderer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
+  private void drawRight(VertexBuffer renderer, int x, int y, double width, int height, int red, int green, int blue, int alpha) {
     renderer.pos(x - width, y + 0, 0.0D).color(red, green, blue, alpha).endVertex();
     renderer.pos(x - width, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
     renderer.pos(x, y + height, 0.0D).color(red, green, blue, alpha).endVertex();
@@ -145,7 +145,7 @@ public class PowerBarOverlayRenderHelper {
     GlStateManager.disableAlpha();
     GlStateManager.disableBlend();
     Tessellator tessellator = Tessellator.getInstance();
-    WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+    VertexBuffer worldrenderer = tessellator.getBuffer();
     worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
     overpaintVanillaRenderBug(worldrenderer, xPosition, yPosition);
     tessellator.draw();
@@ -155,7 +155,7 @@ public class PowerBarOverlayRenderHelper {
     GlStateManager.enableDepth();
   }
 
-  private void overpaintVanillaRenderBug(WorldRenderer worldrenderer, int xPosition, int yPosition) {
+  private void overpaintVanillaRenderBug(VertexBuffer worldrenderer, int xPosition, int yPosition) {
     this.drawPlain(worldrenderer, xPosition + 2 + 12, yPosition + 13, 1, 1, 0, 0, 0, 255);
   }
 

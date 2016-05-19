@@ -8,13 +8,13 @@ import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3i;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
@@ -55,7 +55,8 @@ public class HalfBakedQuad {
           face = EnumFacing.getFacingFromVector(v.nx(), v.ny(), v.nz());
           builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
           builder.setQuadOrientation(face);
-          builder.setQuadColored();
+          //TODO: 1.9, is it ok to just remove this?
+          //builder.setQuadColored();
         }
         v.color = color;
         putVertexData(builder, v, face.getDirectionVec(), tex);
@@ -127,7 +128,7 @@ public class HalfBakedQuad {
     }
   }
 
-  public void render(WorldRenderer tes) {
+  public void render(VertexBuffer tes) {
     for (Vertex v : corners) {
       tes.pos(v.x(), v.y(), v.z()).tex(tex.getInterpolatedU(v.u() * 16), tex.getInterpolatedV(v.v() * 16)).color(color.x, color.y, color.z, color.w)
           .normal(v.nx(), v.ny(), v.nz()).endVertex();
@@ -175,7 +176,7 @@ public class HalfBakedQuad {
       }
     }
 
-    public void render(WorldRenderer tes) {
+    public void render(VertexBuffer tes) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.render(tes);
       }
@@ -188,7 +189,7 @@ public class HalfBakedQuad {
       GlStateManager.enableLighting();
       GlStateManager.disableLighting();
       GlStateManager.depthMask(false);
-      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      VertexBuffer tes = Tessellator.getInstance().getBuffer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       render(tes);
       Tessellator.getInstance().draw();

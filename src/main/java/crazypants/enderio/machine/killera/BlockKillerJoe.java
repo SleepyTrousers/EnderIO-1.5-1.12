@@ -3,11 +3,14 @@ package crazypants.enderio.machine.killera;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -50,7 +53,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   protected BlockKillerJoe() {
     super(ModObject.blockKillerJoe, TileKillerJoe.class);
-    setStepSound(Block.soundTypeGlass);    
+    setStepSound(SoundType.GLASS);    
   }
 
   @Override
@@ -60,8 +63,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   
   @SubscribeEvent
   public void getKillDisplayName(PlayerEvent.NameFormat nameEvt)  {
-    if(nameEvt.username != null && nameEvt.username.startsWith(USERNAME)) {
-      nameEvt.displayname = getLocalizedName();
+    if(nameEvt.getUsername() != null && nameEvt.getUsername().startsWith(USERNAME)) {
+      nameEvt.setDisplayname(getLocalizedName());
     }
   }
   
@@ -81,7 +84,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
   
@@ -119,7 +122,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
   
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 

@@ -3,8 +3,8 @@ package thaumcraft.api.research;
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
 
 public class ScanningManager {
 	
@@ -35,7 +35,7 @@ public class ScanningManager {
 			}			
 		}
 		if (!found) {
-			player.addChatMessage(new ChatComponentText("\u00a75\u00a7o"+StatCollector.translateToLocal("tc.unknownobject")));
+			player.addChatMessage(new TextComponentString("\u00a75\u00a7o"+ I18n.translateToLocal("tc.unknownobject")));
 		}
 	}
 	

@@ -10,7 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -72,7 +72,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   private boolean attemptHarvest(HarvestResult res, World world, int x, int y, int z, IBlockState bs) {
     int meta = bs.getBlock().getMetaFromState(bs);
     if(meta > 1 && meta < 6) {
-      world.setBlockState(new BlockPos(x, y, z), bs.getBlock().getStateFromMeta(meta + 6), 3);      
+      world.setBlockState(new BlockPos(x, y, z), bs.getBlock().getStateFromMeta(meta + 6), 3);
       world.scheduleBlockUpdate(new BlockPos(x, y, z), woods[0], woods[0].tickRate(world), 0);      
       ItemStack drop = stickyResin.copy();
       drop.stackSize = world.rand.nextInt(3) + 1;

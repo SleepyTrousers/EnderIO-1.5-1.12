@@ -6,9 +6,9 @@ import java.util.List;
 
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +21,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
   protected boolean skip_top = false, skip_bottom = false, skip_side = false, skip_top_side = false, skip_bottom_side = false;
 
   @SideOnly(Side.CLIENT)
-  protected abstract List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  protected abstract List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector);
 
   protected abstract boolean isSameKind(IBlockState state, IBlockState other);
@@ -96,7 +96,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     List<IBlockState> states = renderBody(state, world, pos, blockLayer, quadCollector);
 

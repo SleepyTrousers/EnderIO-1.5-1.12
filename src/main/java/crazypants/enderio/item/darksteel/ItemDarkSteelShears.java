@@ -15,9 +15,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -281,7 +281,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     }
     if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnderIO.lang.localize("item.darkSteel_shears.tooltip.multiHarvest"));
-      list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
+      list.add(TextFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

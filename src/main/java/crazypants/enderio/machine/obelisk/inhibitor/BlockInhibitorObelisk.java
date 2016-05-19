@@ -13,7 +13,7 @@ import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -68,7 +68,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
       BlockCoord bc = e.getKey();
       int dist = bc.getDist(new BlockCoord(event.targetX, event.targetY, event.targetZ));
       if (dist < e.getValue()) {
-        TileEntity te = bc.getTileEntity(event.entity.worldObj);
+        TileEntity te = bc.getTileEntity(event.getEntity().worldObj);
         if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive()) {
           event.setCanceled(true);
         }

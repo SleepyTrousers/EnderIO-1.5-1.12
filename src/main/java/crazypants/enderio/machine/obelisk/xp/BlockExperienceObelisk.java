@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,7 +65,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // Has no particles
   }
   

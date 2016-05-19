@@ -7,8 +7,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
 
 @Storable
 public class DummyCraftingGrid implements IInventory {
@@ -142,8 +142,8 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return new ChatComponentText(getName());
+  public ITextComponent getDisplayName() {
+    return new TextComponentString(getName());
   }
 
   @Override

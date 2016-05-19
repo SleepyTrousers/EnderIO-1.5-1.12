@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 import org.apache.commons.lang3.tuple.Pair;

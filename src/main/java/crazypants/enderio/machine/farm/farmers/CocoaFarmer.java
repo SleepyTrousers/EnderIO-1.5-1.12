@@ -9,7 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -58,7 +58,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
       int x = bc.x + dir.getFrontOffsetX();
       int y = bc.y + dir.getFrontOffsetY();
       int z = bc.z + dir.getFrontOffsetZ();
-       BlockPos p = bc.getBlockPos().offset(dir);      
+       BlockPos p = bc.getBlockPos().offset(dir);
       if (validBlock(worldObj.getBlockState(p)))
         return dir;
     }

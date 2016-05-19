@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,13 +63,13 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
+                                          QuadCollector quadCollector) {
     Block block = state.getBlock();
-    if (blockLayer == EnumWorldBlockLayer.TRANSLUCENT) {
+    if (blockLayer == BlockRenderLayer.TRANSLUCENT) {
       return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
-    } else if (blockLayer == EnumWorldBlockLayer.SOLID) {
-      quadCollector.addQuads(null, EnumWorldBlockLayer.SOLID, renderHead(state));
+    } else if (blockLayer == BlockRenderLayer.SOLID) {
+      quadCollector.addQuads(null, BlockRenderLayer.SOLID, renderHead(state));
       return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     }
     return null;

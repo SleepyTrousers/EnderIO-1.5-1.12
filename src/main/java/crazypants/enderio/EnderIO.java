@@ -6,35 +6,14 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
 import crazypants.enderio.api.IMC;
@@ -126,7 +105,6 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
-import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
@@ -146,7 +124,6 @@ import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
-import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
@@ -155,9 +132,25 @@ import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
+import net.minecraft.block.Block;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 // ATTN: The dependencies string MUST be kept in sync with the "toReplace" in gradle.properties!
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila;after:Thaumcraft;after:appliedenergistics2", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -441,58 +434,59 @@ public class EnderIO {
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
+    //TODO: 1.9
     //Register Custom Dungeon Loot here
-    if(Config.lootDarkSteel) {
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
-    }
-
-    if(Config.lootItemConduitProbe) {
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
-    }
-
-    if(Config.lootQuartz) {
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
-    }
-
-    if(Config.lootNetherWart) {
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 10));
-    }
-
-    if(Config.lootEnderPearl) {
-      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
-    }
-
-    if(Config.lootElectricSteel) {
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
-    }
-
-    if(Config.lootRedstoneAlloy) {
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
-    }
-
-    if(Config.lootDarkSteel) {
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
-    }
-
-    if(Config.lootPhasedIron) {
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PULSATING_IRON.ordinal()), 1, 2, 10));
-    }
-
-    if(Config.lootPhasedGold) {
-      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.VIBRANT_ALLOY.ordinal()), 1, 2, 5));
-    }
-
-    if(Config.lootTravelStaff) {
-      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-    }
+//    if(Config.lootDarkSteel) {
+//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
+//    }
+//
+//    if(Config.lootItemConduitProbe) {
+//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
+//    }
+//
+//    if(Config.lootQuartz) {
+//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
+//    }
+//
+//    if(Config.lootNetherWart) {
+//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 10));
+//    }
+//
+//    if(Config.lootEnderPearl) {
+//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
+//    }
+//
+//    if(Config.lootElectricSteel) {
+//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
+//    }
+//
+//    if(Config.lootRedstoneAlloy) {
+//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
+//    }
+//
+//    if(Config.lootDarkSteel) {
+//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
+//    }
+//
+//    if(Config.lootPhasedIron) {
+//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PULSATING_IRON.ordinal()), 1, 2, 10));
+//    }
+//
+//    if(Config.lootPhasedGold) {
+//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.VIBRANT_ALLOY.ordinal()), 1, 2, 5));
+//    }
+//
+//    if(Config.lootTravelStaff) {
+//      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
+//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+//    }
 
     DarkSteelItems.addLoot();
 
@@ -540,7 +534,7 @@ public class EnderIO {
 
     if(Config.dumpMobNames) {
       File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
-      List<String> names = EntityUtil.getAllRegisteredMobNames(false);
+      List<String> names = EntityUtil.getAllRegisteredMobNames();
 
       try {
         BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));

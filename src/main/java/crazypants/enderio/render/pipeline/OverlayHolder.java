@@ -10,10 +10,10 @@ import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -32,15 +32,15 @@ public class OverlayHolder {
       for (EnumIOMode iOMode : EnumIOMode.values()) {
         IBlockState state = BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode));
         ModelResourceLocation mrl = locations.get(state);
-        IBakedModel model = event.modelRegistry.getObject(mrl);
+        IBakedModel model = event.getModelRegistry().getObject(mrl);
         if (model == null) {
           throw new RuntimeException("Model for state " + state + " failed to load from " + mrl + ".");
         }
 
         QuadCollector quads = new QuadCollector();
 
-        EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
-        EnumWorldBlockLayer layer = BlockMachineIO.block.getBlockLayer();
+        BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+        BlockRenderLayer layer = BlockMachineIO.block.getBlockLayer();
         ForgeHooksClient.setRenderLayer(layer);
         List<BakedQuad> generalQuads = model.getGeneralQuads();
         if (generalQuads != null && !generalQuads.isEmpty()) {

@@ -3,7 +3,7 @@ package crazypants.enderio;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class CommonProxy {
   }
 
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
-    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true, true));
+    ent.addPotionEffect(new PotionEffect(MobEffects.confusion, duration, 1, true, true));
   }
 
   protected void onServerTick() {

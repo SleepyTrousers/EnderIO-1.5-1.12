@@ -4,6 +4,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,7 +38,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   }
   
   public static boolean isUpgradeEquipped(EntityPlayer player) {
-    ItemStack helmet = player.getEquipmentInSlot(4);    
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);    
     return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;  
   }
 

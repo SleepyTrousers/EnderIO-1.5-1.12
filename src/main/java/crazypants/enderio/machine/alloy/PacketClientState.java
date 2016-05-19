@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.alloy;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -46,7 +47,9 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     if (te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(message.mode);
-      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(getPos());
+            
+      IBlockState bs = ctx.getServerHandler().playerEntity.worldObj.getBlockState(message.getPos());
+      ctx.getServerHandler().playerEntity.worldObj.notifyBlockUpdate(message.getPos(), bs, bs, 3);
     }
     return null;
   }

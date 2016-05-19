@@ -9,7 +9,7 @@ import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +49,6 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
-    ; // no active particles
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
   }
 }

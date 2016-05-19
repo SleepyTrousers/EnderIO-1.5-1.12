@@ -4,13 +4,11 @@ import java.lang.reflect.Method;
 
 import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.api.tool.ITool;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 
 public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
 
-  private BCWrench wrench = new BCWrench();
+//  private BCWrench wrench = new BCWrench();
 
   public BuildCraftToolProvider() throws Exception {
     //Do a check for so we throw an exception in the constructor if we dont have the
@@ -20,12 +18,13 @@ public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
 
   @Override
   public ITool getTool(ItemStack stack) {
-    if(MpsUtil.instance.isPowerFistEquiped(stack) && !MpsUtil.instance.isOmniToolActive(stack)) {
-      return null;
-    }
-    if(stack.getItem() instanceof IToolWrench) {
-      return wrench;
-    }
+    //TODO: 1.9
+//    if(MpsUtil.instance.isPowerFistEquiped(stack) && !MpsUtil.instance.isOmniToolActive(stack)) {
+//      return null;
+//    }
+//    if(stack.getItem() instanceof IToolWrench) {
+//      return wrench;
+//    }
     return null;
   }
 
@@ -44,21 +43,22 @@ public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
     return null;
   }
 
-  public static class BCWrench implements ITool {
-
-    @Override
-    public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {
-      return ((IToolWrench) stack.getItem()).canWrench(player, pos);      
-    }
-
-    @Override
-    public void used(ItemStack stack, EntityPlayer player, BlockPos pos) {
-      ((IToolWrench) stack.getItem()).wrenchUsed(player, pos);      
-    }
-    
-    @Override
-    public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
-      return true;
-    }
-  }
+  //TODO: 1.9
+//  public static class BCWrench implements ITool {
+//
+//    @Override
+//    public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {
+//      return ((IToolWrench) stack.getItem()).canWrench(player, pos);      
+//    }
+//
+//    @Override
+//    public void used(ItemStack stack, EntityPlayer player, BlockPos pos) {
+//      ((IToolWrench) stack.getItem()).wrenchUsed(player, pos);      
+//    }
+//    
+//    @Override
+//    public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+//      return true;
+//    }
+//  }
 }

@@ -13,7 +13,7 @@ import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import dan200.computercraft.api.permissions.ITurtlePermissionProvider;
 import dan200.computercraft.api.redstone.IBundledRedstoneProvider;
 import dan200.computercraft.api.turtle.ITurtleUpgrade;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -194,7 +194,7 @@ public final class ComputerCraftAPI
      * @return If there is a block capable of emitting bundled redstone at the location, it's signal (0-65535) will be returned.
      * If there is no block capable of emitting bundled redstone at the location, -1 will be returned.
      */
-    public static int getBundledRedstoneOutput( World world, BlockPos pos, EnumFacing side )
+    public static int getBundledRedstoneOutput(World world, BlockPos pos, EnumFacing side )
     {
         findCC();
         if( computerCraft_getDefaultBundledRedstoneOutput != null )

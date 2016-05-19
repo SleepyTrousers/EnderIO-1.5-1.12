@@ -17,6 +17,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,10 +28,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
 
   public static boolean isEquipped(EntityPlayer ep) {
-    if(ep == null || ep.getCurrentEquippedItem() == null) {
+    if(ep == null || ep.getHeldItemMainhand() == null) {
       return false;
     }
-    return ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
+    return ep.getHeldItemMainhand().getItem() == EnderIO.itemTravelStaff;
   }
 
   private long lastBlickTick = 0;
@@ -43,13 +46,14 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemTravelStaff.name());
+    setRegistryName(ModObject.itemTravelStaff.name());
     setMaxDamage(16);
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemTravelStaff.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
@@ -57,27 +61,29 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     setEnergy(itemStack, 0);
   }
 
+  
+  
   @Override
-  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {  
     if(player.isSneaking()) {
       long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
       if(ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
       if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if(TravelController.instance.doBlink(equipped, player)) {
-          player.swingItem();
+        if(TravelController.instance.doBlink(equipped, player)) {          
+          player.swingArm(EnumHand.MAIN_HAND);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
-      return equipped;
+      return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
 
     if(world.isRemote) {
       TravelController.instance.activateTravelAccessable(equipped, world, player, TravelSource.STAFF);
     }
-    player.swingItem();
-    return equipped;
+    player.swingArm(EnumHand.MAIN_HAND);
+    return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
   }
 
   @Override

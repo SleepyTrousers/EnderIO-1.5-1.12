@@ -14,9 +14,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -48,12 +49,13 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
     if (world.isRemote) {
       return;
     }
-    world.markBlockForUpdate(pos);    
+    world.notifyBlockUpdate(pos, state, state, 3);
+        
   }
 
   @Override
-  public int getRenderType() { 
-    return 2;
+  public EnumBlockRenderType getRenderType(IBlockState bs) { 
+    return EnumBlockRenderType.MODEL;
   }
 
   protected EnumFacing getFacingForHeading(int heading) {
@@ -109,12 +111,12 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 

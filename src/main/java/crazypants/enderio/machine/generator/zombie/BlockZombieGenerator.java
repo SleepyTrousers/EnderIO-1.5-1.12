@@ -11,9 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -61,18 +61,18 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 0;
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     if(rand.nextInt(3) == 0) {
       TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
@@ -121,7 +121,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 

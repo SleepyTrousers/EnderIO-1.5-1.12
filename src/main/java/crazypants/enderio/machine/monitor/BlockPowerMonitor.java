@@ -15,7 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -90,7 +90,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
@@ -123,7 +123,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
   }
 
   @Override
@@ -159,14 +159,14 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    if (!super.shouldSideBeRendered(worldIn, pos, side)) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    if (!super.shouldSideBeRendered(bs, worldIn, pos, side)) {
       return false;
     }
     if (advancedInstance != this) {
       return true;
     }
-    BlockPos myPos = pos.offset(side.getOpposite());
+    BlockPos myPos = pos;
     TilePowerMonitor tileEntity = getTileEntity(worldIn, myPos);
     if (tileEntity == null) {
       return true;

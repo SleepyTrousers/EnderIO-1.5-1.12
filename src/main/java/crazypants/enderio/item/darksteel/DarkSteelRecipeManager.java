@@ -10,7 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -197,10 +197,10 @@ public class DarkSteelRecipeManager {
       }
     }
     if(!applyableUpgrades.isEmpty()) {
-      list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
+      list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
-        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
+        list.add(TextFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
+        list.add(TextFormatting.DARK_AQUA + "" + TextFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
             + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
       }
     }

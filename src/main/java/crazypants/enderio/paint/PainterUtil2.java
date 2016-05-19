@@ -11,7 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,21 +47,20 @@ public class PainterUtil2 {
     boolean textureOnly = false;
     if (paintSource != null) {
       Block block = getBlockFromItem(paintSource);
-      if (block == null) {
-        return false;
-      } else if (!shouldHaveModel(block)) {
+      IBlockState bs = block.getDefaultState();
+      if (!shouldHaveModel(block)) {
         if (shouldHaveTexture(block)) {
           textureOnly = true;
         } else {
           return false;
         }
       } else if (block instanceof IPaintable) {
-        IBlockState paintSource2 = ((IPaintable) block).getPaintSource(block, paintSource);
-        if (paintSource2 != null) {
+        bs = ((IPaintable) block).getPaintSource(block, paintSource);
+        if (bs != null) {
           return false;
         }
       }
-      solidPaint = block.isOpaqueCube();
+      solidPaint = block.isOpaqueCube(bs);
     }
 
     if (target == null) {
@@ -175,14 +175,15 @@ public class PainterUtil2 {
     if(block == null) {
       return false;
     }
-    return block.getRenderType() == 3;
+    return block.getRenderType(block.getDefaultState()) == EnumBlockRenderType.MODEL;
   }
 
   public static boolean shouldHaveTexture(Block block) {
     if (block == null) {
       return false;
     }
-    return block.getRenderType() != -1;
+    EnumBlockRenderType rt = block.getRenderType(block.getDefaultState());
+    return  rt != null && rt != EnumBlockRenderType.INVISIBLE;
   }
 
   public static Block getBlockFromItem(Item itemIn) {
@@ -211,11 +212,11 @@ public class PainterUtil2 {
     return null;
   }
 
-  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, EnumWorldBlockLayer blockLayer) {
+  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, BlockRenderLayer blockLayer) {
     if (paintSource != null) {
       return paintSource.getBlock().canRenderInLayer(blockLayer);
     } else {
-      return blockLayer == EnumWorldBlockLayer.SOLID;
+      return blockLayer == BlockRenderLayer.SOLID;
     }
   }
 

@@ -8,9 +8,9 @@ import crazypants.enderio.Log;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.management.ItemInWorldManager;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.stats.StatBase;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioFarmer]");
 
   public FakeFarmPlayer(WorldServer world) {
-    super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new ItemInWorldManager(world));
+    super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new PlayerInteractionManager(world));
     // ItemInWorldManager will access this field directly and can crash
     playerNetServerHandler = new FakeNetHandlerPlayServer(this);
   }
@@ -68,11 +68,6 @@ public class FakeFarmPlayer extends EntityPlayerMP {
 
   @Override
   public void onUpdate() {
-    return;
-  }
-
-  @Override
-  public void travelToDimension(int dim) {
     return;
   }
 

@@ -15,17 +15,18 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -219,8 +220,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       revalidateDisplayTypes = false;
     }
     if (displayTypesDirty) {
-      displayTypesDirty = false;
-      worldObj.markBlockForUpdate(getPos());
+      displayTypesDirty = false;      
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     }
 
     // update any comparators, since they don't check themselves
@@ -301,7 +303,8 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       receptorsDirty = true;
     }
     if (worldObj != null) {
-      worldObj.markBlockForUpdate(getPos());
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
     }
   }
@@ -402,8 +405,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     List<EnumFacing> reset = new ArrayList<EnumFacing>();
     for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       BlockCoord bc = getLocation().getLocation(entry.getKey());
-      Block block = worldObj.getBlockState(bc.getBlockPos()).getBlock();
-      if (block != null && (block.isOpaqueCube() || block == EnderIO.blockCapBank)) {
+      IBlockState bs = worldObj.getBlockState(bc.getBlockPos());
+      Block block = bs.getBlock();
+      if (block != null && (block.isOpaqueCube(bs) || block == EnderIO.blockCapBank)) {
         reset.add(entry.getKey());
       }
     }
@@ -856,8 +860,8 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  public ITextComponent getDisplayName() {
+    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override

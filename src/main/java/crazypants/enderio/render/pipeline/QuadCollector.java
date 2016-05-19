@@ -13,9 +13,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -25,13 +25,13 @@ public class QuadCollector {
 
   @SuppressWarnings("unchecked")
   private final List<BakedQuad>[] table = new List[mkKey(EnumFacing.values()[EnumFacing.values().length - 1],
-      EnumWorldBlockLayer.values()[EnumWorldBlockLayer.values().length - 1]) + 1];
+      BlockRenderLayer.values()[BlockRenderLayer.values().length - 1]) + 1];
 
-  private static Integer mkKey(EnumFacing side, EnumWorldBlockLayer pass) {
-    return (side == null ? 0 : side.ordinal() + 1) * EnumWorldBlockLayer.values().length + (pass == null ? 0 : pass.ordinal());
+  private static Integer mkKey(EnumFacing side, BlockRenderLayer pass) {
+    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == null ? 0 : pass.ordinal());
   }
 
-  public void addQuads(EnumFacing side, EnumWorldBlockLayer pass, List<BakedQuad> quads) {
+  public void addQuads(EnumFacing side, BlockRenderLayer pass, List<BakedQuad> quads) {
     if (quads != null && !quads.isEmpty()) {
       Integer key = mkKey(side, pass);
       if (table[key] == null) {
@@ -42,7 +42,7 @@ public class QuadCollector {
     }
   }
 
-  public List<BakedQuad> getQuads(EnumFacing side, EnumWorldBlockLayer pass) {
+  public List<BakedQuad> getQuads(EnumFacing side, BlockRenderLayer pass) {
     Integer key = mkKey(side, pass);
     if (table[key] == null) {
       return Collections.<BakedQuad> emptyList();
@@ -55,7 +55,7 @@ public class QuadCollector {
    * Adds the baked model(s) of the given block states to the quad lists for the given block layer. The models are expected to behave. The block layer will be
    * NOT set when the models are asked for their quads.
    */
-  public void addFriendlyBlockStates(EnumWorldBlockLayer pass, List<IBlockState> states) {
+  public void addFriendlyBlockStates(BlockRenderLayer pass, List<IBlockState> states) {
     if (states == null || states.isEmpty()) {
       return;
     }
@@ -81,7 +81,7 @@ public class QuadCollector {
    * <p>
    * Any errors from the model will be returned.
    */
-  public List<String> addUnfriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, IBlockState state, long rand) {
+  public List<String> addUnfriendlybakedModel(BlockRenderLayer pass, IBakedModel model, IBlockState state, long rand) {
     if (model == null) {
       return null;
     }
@@ -113,9 +113,9 @@ public class QuadCollector {
    * Adds a baked model that is expected to behave to the quad lists for the given block layer. The block layer will be set when the model is asked for its
    * quads.
    */
-  public void addFriendlybakedModel(EnumWorldBlockLayer pass, IBakedModel model, @Nullable IBlockState state, long rand) {
+  public void addFriendlybakedModel(BlockRenderLayer pass, IBakedModel model, @Nullable IBlockState state, long rand) {
     if (model != null) {
-      EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+      BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       ForgeHooksClient.setRenderLayer(pass);
       List<BakedQuad> generalQuads = model.getGeneralQuads();
       if (generalQuads != null && !generalQuads.isEmpty()) {
@@ -131,8 +131,8 @@ public class QuadCollector {
     }
   }
 
-  public Collection<EnumWorldBlockLayer> getBlockLayers() {
-    return Arrays.asList(EnumWorldBlockLayer.values());
+  public Collection<BlockRenderLayer> getBlockLayers() {
+    return Arrays.asList(BlockRenderLayer.values());
   }
 
   public boolean isEmpty() {

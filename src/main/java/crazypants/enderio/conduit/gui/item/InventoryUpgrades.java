@@ -6,10 +6,10 @@ import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class InventoryUpgrades implements IInventory {
 
@@ -145,8 +145,8 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  public ITextComponent getDisplayName() {
+    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override

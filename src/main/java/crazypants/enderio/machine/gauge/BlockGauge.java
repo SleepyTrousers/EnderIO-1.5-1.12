@@ -10,8 +10,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -59,18 +60,18 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getRenderType() {
-    return -1;
+  public EnumBlockRenderType getRenderType(IBlockState bs) {
+    return EnumBlockRenderType.INVISIBLE;
   }
 
   private static final double px = 1d / 16d;
@@ -121,9 +122,9 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
     setBlockBoundsBasedOnState(world, pos);
-    return super.getSelectedBoundingBox(world, pos);
+    return super.getSelectedBoundingBox(bs, world, pos);
   }
 
   protected static Map<EnumFacing, IEnergyHandler> getDisplays(IBlockAccess world, BlockPos pos) {
@@ -142,7 +143,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
     return null;
   }
 

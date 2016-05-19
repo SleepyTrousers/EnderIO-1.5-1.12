@@ -22,7 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public class EnderRailController {
@@ -279,8 +279,9 @@ public class EnderRailController {
 
   private void resetForRandomRandomSpawn(Entity entity) {
     CartLinkUtil.instance.breakLinks(transciever.getWorld(), entity);
-    entity.riddenByEntity = null;
-    entity.ridingEntity = null;
+    //TODO: 1.9
+//    entity.riddenByEntity = null;
+//    entity.ridingEntity = null;
     entity.motionX = 0;
     entity.motionY = 0;
     entity.motionZ = 0;
@@ -327,7 +328,7 @@ public class EnderRailController {
               player.posX = cart.posX;
               player.posY = cart.posY;
               player.posZ = cart.posZ;
-              player.mountEntity(cart);
+//              player.mountEntity(cart);
               return true;
             }
           }

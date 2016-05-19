@@ -4,8 +4,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -125,9 +125,9 @@ public class ObeliskRenderManager {
 
   @SubscribeEvent
   public void onModelBakeEvent(ModelBakeEvent event) {
-    IBakedModel defaultBakedModel = event.modelRegistry.getObject(MODEL_LOCATION);
+    IBakedModel defaultBakedModel = event.getModelRegistry().getObject(MODEL_LOCATION);
     ObeliskBakedModel model = new ObeliskBakedModel(defaultBakedModel);
-    event.modelRegistry.putObject(MODEL_LOCATION, model);
+    event.getModelRegistry().putObject(MODEL_LOCATION, model);
   }
 
   @SubscribeEvent

@@ -1,5 +1,6 @@
 package crazypants.enderio.item;
 
+import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
@@ -14,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,14 +37,14 @@ public class YetaWrenchOverlayRenderer {
   @SubscribeEvent
   public void renderOverlay(RenderGameOverlayEvent event) {
     ItemStack equippedWrench = getEquippedWrench();
-    if(equippedWrench != null && event.type == ElementType.ALL) {
+    if(equippedWrench != null && event.getType() == ElementType.ALL) {
       doRenderOverlay(event, equippedWrench);
     }
   }
 
   private ItemStack getEquippedWrench() {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if (equipped != null && equipped.getItem() instanceof IConduitControl) {
       return ((IConduitControl) equipped.getItem()).showOverlay(equipped, player) ? equipped : null;
     }
@@ -60,7 +60,7 @@ public class YetaWrenchOverlayRenderer {
       lastTick = ClientHandler.getTicksElapsed();
     }
     
-    ScaledResolution res = event.resolution;
+    ScaledResolution res = event.getResolution();
     
     int modeCount = ConduitDisplayMode.registrySize();
     Iterable<ConduitDisplayMode> renderable = ConduitDisplayMode.getRenderableModes();
@@ -121,7 +121,7 @@ public class YetaWrenchOverlayRenderer {
       
       VertexFormat vf = DefaultVertexFormats.POSITION_COLOR;   
       Tessellator tess = Tessellator.getInstance();
-      WorldRenderer wr = tess.getWorldRenderer();
+      VertexBuffer wr = tess.getBuffer();
       wr.begin(GL11.GL_QUADS, vf);      
       wr.pos(x, y, -5).color(0, 0, 0, 0.2f).endVertex();;
       wr.pos(x, y + height, -5).color(0, 0, 0, 0.2f).endVertex();;

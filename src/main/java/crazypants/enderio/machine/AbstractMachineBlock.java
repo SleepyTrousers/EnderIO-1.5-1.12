@@ -6,28 +6,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -46,9 +24,31 @@ import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider, ISmartRenderAwareBlock {
+    IWailaInfoProvider, ISmartRenderAwareBlock, IBlockColor {
   
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
 
@@ -62,11 +62,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
-    super(mo.getUnlocalisedName(), teClass, itemBlockClass, mat);
+  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Material mat) {
+    super(mo.getUnlocalisedName(), teClass, mat);
     modObject = mo;
     setHardness(2.0F);
-    setStepSound(soundTypeMetal);
+    setStepSound(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
     random = new Random();    
     initDefaultState();
@@ -76,16 +76,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Material mat) {
-    this(mo, teClass, null, mat);
-  }
-
-  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
-    this(mo, teClass, itemBlockClass, new Material(MapColor.ironColor));
-  }
-
   protected AbstractMachineBlock(IModObject mo, Class<T> teClass) {
-    this(mo, teClass, null, new Material(MapColor.ironColor));
+    this(mo, teClass, new Material(MapColor.ironColor));
   }
 
   @Override
@@ -100,8 +92,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
   
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -144,8 +136,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
 
   @Override
@@ -182,8 +174,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     te.readFromItemStack(stack);
     if(world.isRemote) {
       return;
-    }
-    world.markBlockForUpdate(pos);
+    }        
+    world.notifyBlockUpdate(pos, state, state, 3);    
   }
 
   protected EnumFacing getFacingForHeading(int heading) {
@@ -203,7 +195,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
     super.onBlockAdded(world, pos,state);
-    world.markBlockForUpdate(pos);
+    world.notifyBlockUpdate(pos, state, state, 3);
   }
   
   @Override
@@ -212,12 +204,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     if(ent instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;
       te.onNeighborBlockChange(neighborBlock);
-    }
+//      randomDisplayTick(worldIn, pos, state, rand);
+    }    
   }
 
+  
+  
+  
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {  
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // If active, randomly throw some smoke around
     int x = pos.getX();
     int y = pos.getY();
@@ -333,23 +329,23 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
-    return this instanceof IPaintable ? true : super.canRenderInLayer(layer);
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+    return this instanceof IPaintable ? true : super.canRenderInLayer(state, layer);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
+  public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int renderPass) {
     if (this instanceof IPaintable) {
       IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-      if (paintSource != null) {
+      if (paintSource != null && paintSource.getBlock() instanceof IBlockColor) {
         try {
-          return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
+          return ((IBlockColor)paintSource.getBlock()).colorMultiplier(state, worldIn, pos, renderPass);
         } catch (Throwable e) {
         }
       }
     }
-    return super.colorMultiplier(worldIn, pos, renderPass);
+    return -1;
   }
 
   // ///////////////////////////////////////////////////////////////////////

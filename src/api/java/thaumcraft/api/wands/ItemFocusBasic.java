@@ -11,11 +11,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -100,7 +100,7 @@ public class ItemFocusBasic extends Item {
 	public void addInformation(ItemStack stack,EntityPlayer player, List list, boolean par4) {
 		AspectList al = this.getVisCost(stack);
 		if (al!=null && al.size()>0) {
-			list.add(StatCollector.translateToLocal(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
+			list.add(I18n.translateToLocal(isVisCostPerTick(stack)?"item.Focus.cost2":"item.Focus.cost1"));
 			for (Aspect aspect:al.getAspectsSortedByName()) {
 				DecimalFormat myFormatter = new DecimalFormat("#####.##");
 				String amount = myFormatter.format(al.getAmount(aspect));
@@ -122,8 +122,8 @@ public class ItemFocusBasic extends Item {
 			}
 		}
 		for (Short id:map.keySet()) {	
-			list.add(EnumChatFormatting.DARK_PURPLE +FocusUpgradeType.types[id].getLocalizedName()+
-					(map.get(id)>1?" "+StatCollector.translateToLocal("enchantment.level." + map.get(id)):""));
+			list.add(TextFormatting.DARK_PURPLE +FocusUpgradeType.types[id].getLocalizedName()+
+					(map.get(id)>1?" "+ I18n.translateToLocal("enchantment.level." + map.get(id)):""));
 		}
 	}
 	
@@ -264,7 +264,7 @@ public class ItemFocusBasic extends Item {
 	 * @param useCount the amount of ticks the item has been used for
 	 * @return did the focus actually activate. Used to determine if vis should be consumed or not. 
 	 */
-	public boolean onFocusActivation(ItemStack wandstack, World world, EntityLivingBase entity, MovingObjectPosition movingobjectposition, int useCount) {
+	public boolean onFocusActivation(ItemStack wandstack, World world, EntityLivingBase entity, RayTraceResult movingobjectposition, int useCount) {
 		return true;
 	}
 	

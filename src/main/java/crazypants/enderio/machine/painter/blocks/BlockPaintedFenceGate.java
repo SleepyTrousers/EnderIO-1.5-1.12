@@ -13,8 +13,8 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelRotation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,11 +22,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -136,7 +136,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
+  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
@@ -246,7 +246,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
@@ -283,7 +283,7 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {

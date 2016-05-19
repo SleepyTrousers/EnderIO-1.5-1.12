@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -49,7 +50,7 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
     if (player != null) {
       int particleCount = 1;
       if (message.swing) {
-        player.swingItem();
+        player.swingArm(EnumHand.MAIN_HAND);
         particleCount = 5;
       }
 
@@ -62,7 +63,8 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
             + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.8f, 0.2f);
-          fx.motionY *= 0.5f;
+          //TODO: 1.9
+//          fx.motionY *= 0.5f;
         }
       }
 

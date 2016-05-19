@@ -23,7 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -178,11 +178,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
+      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
+      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
       if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
-        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
+        list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
+        list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

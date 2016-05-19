@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.properties.PropertyHelper;
@@ -41,5 +42,5 @@ public class PropertyIO extends PropertyHelper<IOMode> {
   public String getName(IOMode value) {
     return value.toString();
   }
-
+ 
 }

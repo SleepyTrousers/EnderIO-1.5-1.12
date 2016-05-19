@@ -7,8 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -45,7 +45,7 @@ public class BucketHandler {
     }
   }
 
-  private ItemStack getFilledBucket(World world, MovingObjectPosition pos) {
+  private ItemStack getFilledBucket(World world, RayTraceResult pos) {
     final BlockPos blockPos = pos.getBlockPos();
     final Block block = world.getBlockState(blockPos).getBlock();
     if (block instanceof BlockFluidClassic && buckets.containsKey(block) && ((BlockFluidClassic) block).isSourceBlock(world, blockPos)) {

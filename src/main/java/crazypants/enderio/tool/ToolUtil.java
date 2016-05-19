@@ -11,9 +11,10 @@ import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -39,11 +40,12 @@ public class ToolUtil {
   
   public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EntityPlayer entityPlayer) {
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos)) {
-      if(block.removedByPlayer(world, pos, entityPlayer, true)) {
-        block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos));
+    if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getHeldItemMainhand(), entityPlayer, pos)) {
+      IBlockState bs = world.getBlockState(pos);;
+      if(block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
+        block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), entityPlayer.getHeldItemMainhand());
       }
-      tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos);
+      tool.used(entityPlayer.getHeldItemMainhand(), entityPlayer, pos);
       return true;
     }
     return false;
@@ -96,7 +98,7 @@ public class ToolUtil {
     if(player == null) {
       return null;
     }
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if(equipped == null) {
       return null;
     }

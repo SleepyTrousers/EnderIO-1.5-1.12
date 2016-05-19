@@ -161,7 +161,7 @@ public class DynaTextureProvider {
     @SuppressWarnings({ "static-method", "unused" })
     @SubscribeEvent
     public void unload(WorldEvent.Unload event) {
-      if (event.world instanceof WorldClient) {
+      if (event.getWorld() instanceof WorldClient) {
         for (DynaTextureProvider instance : instances) {
           instance.free();
         }

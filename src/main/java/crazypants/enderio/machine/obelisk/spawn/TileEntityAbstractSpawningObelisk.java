@@ -10,7 +10,7 @@ import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @Storable
@@ -91,7 +91,7 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTi
     if (mob == null || getBounds() == null) {
       return false;
     }    
-    return getBounds().isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
+    return getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 
   protected boolean isMobInFilter(EntityLivingBase entity) {

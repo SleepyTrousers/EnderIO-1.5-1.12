@@ -10,8 +10,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -102,14 +103,14 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     if(player != null) {
       if(conserveMotion) {
         Vector3d velocityVex = Util.getLookVecEio(player);
-        S12PacketEntityVelocity p = new S12PacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
+        SPacketEntityVelocity p = new SPacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
         ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(p);
       }
 
-      if(powerUse > 0 && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof IItemOfTravel) {
-        ItemStack item = player.getCurrentEquippedItem().copy();
+      if(powerUse > 0 && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof IItemOfTravel) {
+        ItemStack item = player.getHeldItemMainhand().copy();
         ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
-        toTp.setCurrentItemOrArmor(0, item);
+        toTp.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, item);
       }
     }
     

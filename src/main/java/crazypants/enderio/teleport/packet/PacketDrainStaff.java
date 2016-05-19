@@ -3,6 +3,7 @@ package crazypants.enderio.teleport.packet;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -32,10 +33,10 @@ public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainSt
   @Override
   public IMessage onMessage(PacketDrainStaff message, MessageContext ctx) {
     EntityPlayer ep = ctx.getServerHandler().playerEntity;
-    if(message.powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() instanceof IItemOfTravel) {
-      ItemStack item = ep.getCurrentEquippedItem().copy();
+    if(message.powerUse > 0 && ep.getHeldItemMainhand() != null && ep.getHeldItemMainhand().getItem() instanceof IItemOfTravel) {
+      ItemStack item = ep.getHeldItemMainhand().copy();
       ((IItemOfTravel) item.getItem()).extractInternal(item, message.powerUse);
-      ep.setCurrentItemOrArmor(0, item);
+      ep.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, item);      
     }
     return null;
   }

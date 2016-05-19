@@ -12,8 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -74,14 +74,14 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState blockState, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (!world.isRemote) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileTransceiver) {
         ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(blockState, world, pos, player, willHarvest);
   }
 
   @Override
@@ -108,13 +108,13 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
   }
 
   @Override
@@ -131,15 +131,15 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
           continue;
         }
 
-        tooltip.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
+        tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
 
         if (!isEmpty(recieve)) {
           tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
-              + EnumChatFormatting.WHITE, recieve));
+              + TextFormatting.WHITE, recieve));
         }
         if (!isEmpty(send)) {
           tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
-              + EnumChatFormatting.WHITE, send));
+              + TextFormatting.WHITE, send));
         }
       }
     }

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,8 +50,8 @@ public class ItemModelRegistry {
   @SubscribeEvent()
   public void bakeModels(ModelBakeEvent event) {
     for (Entry<ModelResourceLocation, Registry> entry : registries.entrySet()) {
-      IBakedModel model = event.modelRegistry.getObject(entry.getKey());
-      event.modelRegistry.putObject(entry.getKey(), entry.getValue().wrap(model));
+      IBakedModel model = event.getModelRegistry().getObject(entry.getKey());
+      event.getModelRegistry().putObject(entry.getKey(), entry.getValue().wrap(model));
 
     }
   }

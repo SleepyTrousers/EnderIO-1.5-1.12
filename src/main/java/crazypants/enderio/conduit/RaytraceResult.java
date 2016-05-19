@@ -6,17 +6,17 @@ import java.util.Comparator;
 import java.util.List;
 
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 
 public class RaytraceResult {
 
-  public static RaytraceResult getClosestHit(Vec3 origin, Collection<RaytraceResult> candidates) {
+  public static RaytraceResult getClosestHit(Vec3d origin, Collection<RaytraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
     RaytraceResult closest = null;
 
     for (RaytraceResult candidate : candidates) {
-      MovingObjectPosition hit = candidate.movingObjectPosition;
+      RayTraceResult hit = candidate.movingObjectPosition;
       if(hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
         if(lengthSquared < minLengthSquared) {
@@ -28,7 +28,7 @@ public class RaytraceResult {
     return closest;
   }
 
-  public static void sort(final Vec3 origin, List<RaytraceResult> toSort) {
+  public static void sort(final Vec3d origin, List<RaytraceResult> toSort) {
     if(origin == null || toSort == null) {
       return;
     }
@@ -41,14 +41,14 @@ public class RaytraceResult {
   }
 
   public final CollidableComponent component;
-  public final MovingObjectPosition movingObjectPosition;
+  public final RayTraceResult movingObjectPosition;
 
-  public RaytraceResult(CollidableComponent component, MovingObjectPosition movingObjectPosition) {
+  public RaytraceResult(CollidableComponent component, RayTraceResult movingObjectPosition) {
     this.component = component;
     this.movingObjectPosition = movingObjectPosition;
   }
 
-  public double getDistanceTo(Vec3 origin) {
+  public double getDistanceTo(Vec3d origin) {
     if(movingObjectPosition == null || origin == null) {
       return Double.MAX_VALUE;
     }

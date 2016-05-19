@@ -59,7 +59,7 @@ public class TextureRegistry {
     @SubscribeEvent
     public void onIconLoad(TextureStitchEvent.Pre event) {
       for (Entry<String, TextureAtlasSprite> entry : sprites.entrySet()) {
-        entry.setValue(event.map.registerSprite(new ResourceLocation(entry.getKey())));
+        entry.setValue(event.getMap().registerSprite(new ResourceLocation(entry.getKey())));
       }
     }
     

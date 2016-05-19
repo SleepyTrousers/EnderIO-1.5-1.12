@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
@@ -42,12 +42,12 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState state) {
     return 0;
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState state) {
     return false;
   }
 
@@ -76,13 +76,13 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // Spit some "steam" out the spout
     TileVat te = getTileEntity(world, pos);
     if (te != null && te.isActive()) {
@@ -102,7 +102,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
         EffectRenderer er = Minecraft.getMinecraft().effectRenderer;
         EntityFX fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
         fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
-        fx.setVelocity(velX, -0.06, velZ);
+        //TODO: 1.9
+//        fx.setVelocity(velX, -0.06, velZ);
       }
     }
   }

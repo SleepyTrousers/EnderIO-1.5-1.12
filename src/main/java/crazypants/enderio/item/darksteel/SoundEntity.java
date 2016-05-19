@@ -5,10 +5,10 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -36,7 +36,7 @@ public class SoundEntity extends EntityFX {
   }
 
   @Override
-  public void renderParticle(WorldRenderer worldRendererIn, Entity player, float partialTicks, float rotX, float rotZ, float rotYZ, float rotXY, float rotXZ) {
+  public void renderParticle(VertexBuffer worldRendererIn, Entity player, float partialTicks, float rotX, float rotZ, float rotYZ, float rotXY, float rotXZ) {
 
     final IconEIO icon = IconEIO.SOUND;
     double minU = (double) icon.getX() / IconEIO.map.getSize();

@@ -3,9 +3,9 @@ package thaumcraft.api.golems.parts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.golems.EnumGolemTrait;
 import thaumcraft.api.golems.IGolemAPI;
 
@@ -54,11 +54,11 @@ public class GolemArm {
 	}
 	
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal("golem.arm."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.arm."+this.key.toLowerCase());
 	}
 	
 	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("golem.arm.text."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.arm.text."+this.key.toLowerCase());
 	}
 
 	public static GolemArm[] getArms() {
@@ -73,7 +73,7 @@ public class GolemArm {
 	public interface IArmFunction extends IGenericFunction {
 		public void onMeleeAttack(IGolemAPI golem, Entity ent);
 		public void onRangedAttack(IGolemAPI golem, EntityLivingBase target, float range);
-		public EntityAIArrowAttack getRangedAttackAI(IRangedAttackMob golem);
+		public EntityAIAttackRanged getRangedAttackAI(IRangedAttackMob golem);
 	}
 	
 }

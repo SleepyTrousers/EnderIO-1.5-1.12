@@ -10,9 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,7 +36,7 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
@@ -48,8 +48,8 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
   }
 
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer, TileWirelessCharger tileEntity,
-      BlockWirelessCharger block) {
+  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, TileWirelessCharger tileEntity,
+                                     BlockWirelessCharger block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     boolean active = tileEntity.isActive();

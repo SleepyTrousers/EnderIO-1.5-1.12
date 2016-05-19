@@ -6,17 +6,17 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -59,8 +59,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
   
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER, EnumTankType.KIND });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER, EnumTankType.KIND });
   }
 
   @Override
@@ -90,7 +90,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     return true;
   }
 
@@ -113,7 +113,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
@@ -123,13 +123,13 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
     TileEntity tank = world.getTileEntity(pos);
     if(tank instanceof TileTank) {
       FluidStack stack = ((TileTank) tank).tank.getFluid();
       return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
     }
-    return super.getLightValue(world, pos);
+    return super.getLightValue(bs, world, pos);
   }
 
   @Override
@@ -150,12 +150,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public boolean hasComparatorInputOverride() {
+  public boolean hasComparatorInputOverride(IBlockState bs) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(World w, BlockPos pos) {
+  public int getComparatorInputOverride(IBlockState bs, World w, BlockPos pos) {
     TileEntity te = w.getTileEntity(pos);
     if (te instanceof TileTank) {
       return ((TileTank) te).getComparatorOutput();
@@ -180,7 +180,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == 1) {
-      list.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
+      list.add(TextFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
     }
   }
 
@@ -198,7 +198,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
       int amount = stored == null ? 0 : stored.amount;
 
-      tooltip.add(String.format("%s%s : %s (%d %s)", EnumChatFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
+      tooltip.add(String.format("%s%s : %s (%d %s)", TextFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
     }
   }
   

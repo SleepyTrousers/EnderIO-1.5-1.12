@@ -14,8 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -282,11 +282,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(str);
     }
     if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
+      list.add(TextFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
-      list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs")
+      list.add(TextFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs")
           + " ");
-      list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
+      list.add(TextFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " " + PowerDisplayUtil.abrevation() + ")");
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

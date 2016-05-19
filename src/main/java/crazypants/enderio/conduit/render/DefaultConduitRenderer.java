@@ -24,7 +24,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -409,7 +409,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   protected void addVecWithUV(Vector3d vec, double u, double v) {
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
     tes.pos(vec.x, vec.y, vec.z).tex(u, v).endVertex();
   }
 

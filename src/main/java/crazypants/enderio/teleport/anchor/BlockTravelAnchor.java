@@ -6,16 +6,16 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -109,8 +109,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -178,8 +178,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         IBlockState bs = PainterUtil2.getSourceBlock(stack);
-        ta.setPaintSource(bs);
-        world.markBlockForUpdate(pos);
+        ta.setPaintSource(bs);        
+        te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);
       }
     }
   }
@@ -200,8 +200,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   public static void sendPrivateChatMessage(EntityPlayer player, UserIdent owner) {
     if (!player.isSneaking()) {
-      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED + owner.getPlayerName()
-          + EnumChatFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
+      ChatUtil.sendNoSpam(player, EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + TextFormatting.RED + owner.getPlayerName()
+          + TextFormatting.WHITE + " " + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
     }
   }
 
@@ -247,7 +247,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
@@ -288,7 +288,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 

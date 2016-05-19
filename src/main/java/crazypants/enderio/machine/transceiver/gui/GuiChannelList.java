@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
@@ -56,7 +56,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, WorldRenderer renderer) {
+  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, VertexBuffer renderer) {
     if (index < 0 || index >= channels.size()) {
       return;
     }

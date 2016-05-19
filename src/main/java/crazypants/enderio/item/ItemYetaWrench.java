@@ -5,25 +5,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
@@ -37,10 +18,31 @@ import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
 
@@ -51,7 +53,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     ItemYetaWrench result = new ItemYetaWrench();
     result = ToolUtil.addInterfaces(result);
 
-    GameRegistry.registerItem(result, ModObject.itemYetaWrench.getUnlocalisedName());
+    GameRegistry.register(result);
 
     return result;
   }
@@ -59,19 +61,21 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   protected ItemYetaWrench() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemYetaWrench.getUnlocalisedName());
+    setRegistryName(ModObject.itemYetaWrench.getUnlocalisedName());
     setMaxStackSize(1);
   }
 
   @Override  
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
     final IBlockState blockState = world.getBlockState(pos);
     IBlockState bs = blockState;
     Block block = bs.getBlock();
     boolean ret = false;
     if (block != null) {
-      PlayerInteractEvent e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pos, side, world, new Vec3(hitX, hitY, hitZ));
-      if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.useBlock == Result.DENY || e.useItem == Result.DENY) {
-        return false;
+      RightClickBlock e = new RightClickBlock(player, hand, player.getHeldItem(hand), pos,side, new Vec3d(hitX, hitY, hitZ));
+//      EntityInteractSpecific e = new EntityInteractSpecific(player, hand, pos, side, world, new Vec3d(hitX, hitY, hitZ));
+      if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.getUseBlock() == Result.DENY || e.getUseItem() == Result.DENY) {
+        return EnumActionResult.FAIL;
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
         if (block == Blocks.chest) {
@@ -103,18 +107,20 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       }
     }
     if (ret) {
-      player.swingItem();
+      player.swingArm(hand);
     }
-    return ret && !world.isRemote;
+    return (ret && !world.isRemote) ? EnumActionResult.PASS : EnumActionResult.FAIL;
   }
 
+  
+  
   @Override
-  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if (!Config.useSneakRightClickYetaWrench) {
-      return equipped;
+      return new ActionResult<ItemStack>(EnumActionResult.FAIL, equipped);
     }
     if (!player.isSneaking()) {
-      return equipped;
+      new ActionResult<ItemStack>(EnumActionResult.FAIL, equipped);
     }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
     if (curMode == null) {
@@ -122,7 +128,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
     ConduitDisplayMode newMode = curMode.next();
     ConduitDisplayMode.setDisplayMode(equipped, newMode);
-    return equipped;
+    return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
   }
 
   @Override
@@ -138,12 +144,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean isFull3D() {
+  public boolean isFull3D() {   
     return true;
   }
 
   @Override
-  public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player) {
+  public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
     return true;
   }
 

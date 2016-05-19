@@ -20,6 +20,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
@@ -27,8 +28,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -75,17 +77,17 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   protected BlockEnderRail() {
     setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
-    setStepSound(Block.soundTypeMetal);
+    setRegistryName(ModObject.blockEnderRail.getUnlocalisedName());
+    setStepSound(SoundType.METAL);
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);
     }
 //    setBlockTextureName("enderio:blockEnderRail");
-    setHardness(0.7F);
-    setStepSound(soundTypeMetal);
+    setHardness(0.7F);    
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockEnderRail.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
 //  @Override
@@ -109,7 +111,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side,
+      float hitX, float hitY, float hitZ) {
     if(ToolUtil.isToolEquipped(player)) {
       if(!world.isRemote) {
         //TODO: 1.8
@@ -128,16 +131,16 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
   return false;
   }
-  
+    
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {  
+  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {  
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(pos.down());
       if(te instanceof TileTransceiver) {
         ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(state, world, pos, player, willHarvest);
   }
 
 //  @Override
@@ -258,7 +261,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private int getPowerRequiredForSingleCart(TileTransceiver sender, TileTransceiver reciever) {
     int powerRequired = 0;
-    if(sender.getWorld().provider.getDimensionId() != reciever.getWorld().provider.getDimensionId()) {
+    if(sender.getWorld().provider.getDimension() != reciever.getWorld().provider.getDimension()) {
       powerRequired = Config.enderRailPowerRequireCrossDimensions;
     } else {
       powerRequired += sender.getLocation().getDist(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
@@ -286,10 +289,11 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
         if(entities != null) {
           toTeleport.add(entities);
           toDespawn.add(cartInTrain);
-          if(Config.enderRailTeleportPlayers && cartInTrain.riddenByEntity instanceof EntityPlayerMP) {
-            playerToTP = (EntityPlayerMP) cartInTrain.riddenByEntity;
-            playerToMount = getCart(entities);
-          }
+          //TODO: 1.9 Mounted entities
+//          if(Config.enderRailTeleportPlayers && cartInTrain.riddenByEntity instanceof EntityPlayerMP) {
+//            playerToTP = (EntityPlayerMP) cartInTrain.riddenByEntity;
+//            playerToMount = getCart(entities);
+//          }
         }
       }
     }

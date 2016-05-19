@@ -3,9 +3,10 @@ package crazypants.enderio.teleport.packet;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -52,7 +53,9 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof ITravelAccessable) {
       ((ITravelAccessable) te).setAccessMode(message.mode);
-      player.worldObj.markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+      BlockPos pos = new BlockPos(message.x, message.y, message.z);      
+      IBlockState bs = te.getWorld().getBlockState(pos);
+      te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);      
       player.worldObj.markChunkDirty(new BlockPos(message.x, message.y, message.z), te);      
     }
     return null;

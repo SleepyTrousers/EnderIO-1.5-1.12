@@ -6,7 +6,7 @@ import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 import com.enderio.core.common.TileEntityBase;
 
@@ -24,11 +24,11 @@ public abstract class TileEntityEio extends TileEntityBase {
       doingOtherNbt = false;
     }
     Writer.write(StoreFor.CLIENT, root, this);
-    return new S35PacketUpdateTileEntity(getPos(), 1, root);
+    return new SPacketUpdateTileEntity(getPos(), 1, root);
   }
 
   @Override
-  public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+  public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
     NBTTagCompound root = pkt.getNbtCompound();
     Reader.read(StoreFor.CLIENT, root, this);
     try {

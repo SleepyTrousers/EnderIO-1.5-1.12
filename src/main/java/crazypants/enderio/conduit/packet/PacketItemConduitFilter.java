@@ -6,7 +6,7 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

@@ -19,12 +19,12 @@ public class ToolTickHandler {
   @SubscribeEvent
   public void onMouseEvent(MouseEvent event) {
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    if(event.dwheel != 0 && player != null && player.isSneaking()) {
-      ItemStack stack = player.getCurrentEquippedItem();
+    if(event.getDwheel() != 0 && player != null && player.isSneaking()) {
+      ItemStack stack = player.getHeldItemMainhand();
       if (stack != null) {
         Item item = stack.getItem();
         if (item instanceof IConduitControl) {
-          changeDisplayMode(stack, player, event.dwheel);
+          changeDisplayMode(stack, player, event.getDwheel());
           event.setCanceled(true);
         } else if (item instanceof ItemConduitProbe) {
           changeConduitProbeMode(stack);

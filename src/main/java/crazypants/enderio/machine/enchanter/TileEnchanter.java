@@ -8,9 +8,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
@@ -248,8 +248,8 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return new ChatComponentText(getName());
+  public ITextComponent getDisplayName() {
+    return new TextComponentString(getName());
   }
 
   

@@ -5,15 +5,16 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +36,7 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 
 public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, ISmartRenderAwareBlock,
-    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IBlockColor{
 
   public static BlockWirelessCharger create() {
 
@@ -62,8 +63,8 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -118,7 +119,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState state) {
     return false;
   }
 
@@ -187,21 +188,23 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
+  public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int renderPass) {
+    if (this instanceof IPaintable) {
+      IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
+      if (paintSource != null && paintSource.getBlock() instanceof IBlockColor) {
+        try {
+          return ((IBlockColor)paintSource.getBlock()).colorMultiplier(state, worldIn, pos, renderPass);
+        } catch (Throwable e) {
+        }
       }
     }
-    return super.colorMultiplier(worldIn, pos, renderPass);
+    return -1;
   }
 
   // ///////////////////////////////////////////////////////////////////////

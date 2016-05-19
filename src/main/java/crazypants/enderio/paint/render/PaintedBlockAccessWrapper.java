@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
@@ -28,7 +28,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   public boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default) {
     IBlockState paintSource = getPaintSource(pos);
     if (paintSource != null) {
-      return paintSource.getBlock().isSideSolid(this, pos, side);
+      return paintSource.getBlock().isSideSolid(paintSource, this, pos, side);
     }
     return super.isSideSolid(pos, side, _default);
   }

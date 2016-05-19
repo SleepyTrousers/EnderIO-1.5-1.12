@@ -16,10 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -259,9 +259,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private boolean canJoeSee(EntityLivingBase ent) {
-    Vec3 entPos = new Vec3(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
+    Vec3d entPos = new Vec3d(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
     for (EnumFacing facing1 : frontFaceAndSides) {
-      if (this.worldObj.rayTraceBlocks(new Vec3(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
+      if (this.worldObj.rayTraceBlocks(new Vec3d(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
           getPos().getZ() + faceMidPoints[facing1.ordinal()][2]), entPos) == null)
         return true;
     }

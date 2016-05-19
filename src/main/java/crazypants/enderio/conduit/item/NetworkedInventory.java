@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class NetworkedInventory {
@@ -393,7 +393,7 @@ public class NetworkedInventory {
     } else {
       // don't use Lang.localize as that passes the localized string to
       // String.format which might crash when it contains formatting specifiers
-      return StatCollector.translateToLocal(inventoryName);
+      return I18n.translateToLocal(inventoryName);
     }
   }
 

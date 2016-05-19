@@ -11,9 +11,10 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -424,7 +425,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   public void drawHoveringText(List list, int mouseX, int mouseY, FontRenderer font) {
     if(ghostSlotTooltipStacksize >= 1000) {
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
+      list.add(TextFormatting.WHITE + EnderIO.lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
     }
     super.drawHoveringText(list, mouseX, mouseY, font);
   }
@@ -544,8 +545,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  private void playClickSound() {
-    mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+  private void playClickSound() {    
+    mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ui_button_click, 1.0F));    
   }
 
   @Override

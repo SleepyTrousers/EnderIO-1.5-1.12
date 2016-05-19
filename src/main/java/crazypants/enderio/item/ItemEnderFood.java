@@ -5,12 +5,12 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -74,7 +74,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
     private boolean isSmallText(String string) {
       List<String> lines = Lists.newArrayList();
       SpecialTooltipHandler.addDetailedTooltipFromResources(lines, getUnlocalizedNameForTooltip(stack));
-      return lines.contains(EnumChatFormatting.getTextWithoutFormattingCodes(string));
+      return lines.contains(TextFormatting.getTextWithoutFormattingCodes(string));
     }
 
     @Override

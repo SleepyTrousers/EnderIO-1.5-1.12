@@ -2,7 +2,7 @@ package thaumcraft.api.golems.seals;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -46,7 +46,7 @@ public interface ISeal {
 	 */
 	public ResourceLocation getSealIcon();
 
-	public void onRemoval(World world, BlockPos pos, EnumFacing side);	
+	public void onRemoval(World world, BlockPos pos, EnumFacing side);
 	
 	public Object returnContainer(World world, EntityPlayer player, BlockPos pos, EnumFacing side, ISealEntity seal);
 	

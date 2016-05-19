@@ -10,9 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -44,6 +46,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   protected ItemSoulVessel() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemSoulVessel.getUnlocalisedName());
+    setRegistryName(ModObject.itemSoulVessel.getUnlocalisedName());
     setMaxStackSize(64);
     blackList = new ArrayList<String>();
     for (String ent : Config.soulVesselBlackList) {
@@ -52,7 +55,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemSoulVessel.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
@@ -75,20 +78,24 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   public boolean hasEffect(ItemStack item) {
     return CapturedMob.containsSoul(item);
   }
+  
+  
 
   @Override
-  public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
+
     if (world.isRemote || player == null) {
-      return false;
+      return EnumActionResult.FAIL;
     }
 
     CapturedMob capturedMob = CapturedMob.create(itemstack);
     if (capturedMob == null) {
-      return false;
+      return EnumActionResult.FAIL;
     }
 
     if (!capturedMob.spawn(world, pos, side, true)) {
-      return false;
+      return EnumActionResult.FAIL;
     }
 
     if (!player.capabilities.isCreativeMode) {
@@ -104,12 +111,12 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
         itemstack.setTagCompound(null);
       }
     }
-
-    return true;
+    
+    return EnumActionResult.PASS;
   }
 
   @Override
-  public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity) {
+  public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
     if (entity.worldObj.isRemote || player == null) {
       return false;
     }
@@ -125,7 +132,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
     ItemStack capturedMobVessel = capturedMob.toStack(this, 1, 1);
 
-    player.swingItem();
+    player.swingArm(hand);
     if (!isCreative) {
       entity.setDead();
       if (entity.isDead) {
@@ -133,7 +140,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
         if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
           entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
         }
-        player.setCurrentItemOrArmor(0, item);
+        player.setHeldItem(hand, item);
         ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         return true;
       }
@@ -193,7 +200,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       if (fluidName != null) {
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
-          String name = StatCollector.translateToLocal(fluid.getUnlocalizedName());
+          String name = I18n.translateToLocal(fluid.getUnlocalizedName());
           if (name == null) {
             name = fluidName;
           }

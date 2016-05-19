@@ -7,7 +7,7 @@ import java.text.MessageFormat;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,7 +48,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
 
   private static String formatUpgrade(MessageFormat fmt, ICapacitorData upgrade) {
     float efficiency = getFactor(upgrade) / getFactor(DefaultCapacitorData.BASIC_CAPACITOR);
-    Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, EnumChatFormatting.WHITE, EnumChatFormatting.GRAY };
+    Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, TextFormatting.WHITE, TextFormatting.GRAY };
     return fmt.format(args, new StringBuffer(), null).toString();
   }
 

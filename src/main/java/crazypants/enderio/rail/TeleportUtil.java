@@ -6,28 +6,32 @@ import java.util.List;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class TeleportUtil {
 
   public static List<Entity> createEntitiesForReciever(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
-    int toDimension = reciever.getWorld().provider.getDimensionId();
+    int toDimension = reciever.getWorld().provider.getDimension();
     BlockPos pos = reciever.getPos();
     int toX = pos.getX();
     int toY = pos.getY() + 1;
     int toZ = pos.getZ();
 
-    MinecraftServer minecraftserver = MinecraftServer.getServer();
+    MinecraftServer minecraftserver = FMLCommonHandler.instance().getMinecraftServerInstance();
     WorldServer worldserver1 = minecraftserver.worldServerForDimension(toDimension);
     EntityMinecart newCart = (EntityMinecart) EntityList.createEntityByName(EntityList.getEntityString(cart), worldserver1);
     if(newCart == null) {
@@ -44,16 +48,17 @@ public class TeleportUtil {
     List<Entity> result = new ArrayList<Entity>();
     result.add(newCart);
 
-    Entity passenger = cart.riddenByEntity;
-    if(passenger != null && !(passenger instanceof EntityPlayer)) {
-      Entity newPas = EntityList.createEntityByName(EntityList.getEntityString(passenger), worldserver1);
-      newPas.copyDataFromOld(passenger);
-      newPas.dimension = toDimension;
-      newPas.setLocationAndAngles(toX + 0.5, toY, toZ + 0.5, cart.rotationYaw, cart.rotationPitch);
-      newCart.riddenByEntity = newPas;
-      newPas.ridingEntity = newCart;
-      result.add(newPas);
-    }
+    //TODO: 1.9
+//    Entity passenger = cart.riddenByEntity;
+//    if(passenger != null && !(passenger instanceof EntityPlayer)) {
+//      Entity newPas = EntityList.createEntityByName(EntityList.getEntityString(passenger), worldserver1);
+//      newPas.copyDataFromOld(passenger);
+//      newPas.dimension = toDimension;
+//      newPas.setLocationAndAngles(toX + 0.5, toY, toZ + 0.5, cart.rotationYaw, cart.rotationPitch);
+//      newCart.riddenByEntity = newPas;
+//      newPas.ridingEntity = newCart;
+//      result.add(newPas);
+//    }
     return result;
   }
 
@@ -66,14 +71,15 @@ public class TeleportUtil {
       }
     }
 
-    MinecraftServer minecraftserver = MinecraftServer.getServer();
-    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
+    MinecraftServer minecraftserver = FMLCommonHandler.instance().getMinecraftServerInstance();
+    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimension());
 
-    Entity passenger = cart.riddenByEntity;
-    if(passenger != null && !(passenger instanceof EntityPlayer)) {
-      worldserver.removeEntity(passenger);
-      passenger.isDead = true;
-    }
+    //TODO: 1.9
+//    Entity passenger = cart.riddenByEntity;
+//    if(passenger != null && !(passenger instanceof EntityPlayer)) {
+//      worldserver.removeEntity(passenger);
+//      passenger.isDead = true;
+//    }
     worldserver.removeEntity(cart);
     cart.isDead = true;
 
@@ -81,17 +87,17 @@ public class TeleportUtil {
 
   public static void spawn(World world, Entity entity) {
     if(entity != null) {
-      MinecraftServer minecraftserver = MinecraftServer.getServer();
-      WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
+      MinecraftServer minecraftserver = FMLCommonHandler.instance().getMinecraftServerInstance();
+      WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimension());
       worldserver.spawnEntityInWorld(entity);
     }
   }
 
   public static void spawnTeleportEffects(World world, Entity entity) {
-    PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity), new TargetPoint(world.provider.getDimensionId(), entity.posX, entity.posY,
+    PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity), new TargetPoint(world.provider.getDimension(), entity.posX, entity.posY,
         entity.posZ, 64));
     if(Config.machineSoundsEnabled) {
-      world.playSoundEffect(entity.posX, entity.posY, entity.posZ, "mob.endermen.portal", 0.5F, 0.25F);
+      world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.entity_endermen_teleport, SoundCategory.BLOCKS, 0.5F, 0.25F, false);
     }
   }  
 

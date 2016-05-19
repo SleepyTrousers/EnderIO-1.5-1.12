@@ -3,7 +3,7 @@ package crazypants.enderio.machine.light;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 

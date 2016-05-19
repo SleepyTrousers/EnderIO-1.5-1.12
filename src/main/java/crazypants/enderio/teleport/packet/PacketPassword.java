@@ -5,8 +5,9 @@ import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -73,7 +74,9 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
             ((ITravelAccessable) te).getPassword()[msg.slot] = msg.stack;
             ((ITravelAccessable) te).clearAuthorisedUsers();
           }
-          te.getWorld().markBlockForUpdate(new BlockPos(msg.x, msg.y, msg.z));
+          BlockPos pos = new BlockPos(msg.x, msg.y, msg.z);
+          IBlockState bs = te.getWorld().getBlockState(pos);
+          te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);          
         }
       }
       return null;

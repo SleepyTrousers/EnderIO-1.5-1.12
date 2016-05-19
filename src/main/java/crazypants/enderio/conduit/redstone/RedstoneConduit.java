@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -373,7 +373,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
   
   @Override
-  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {    
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
     return false;
   }
 

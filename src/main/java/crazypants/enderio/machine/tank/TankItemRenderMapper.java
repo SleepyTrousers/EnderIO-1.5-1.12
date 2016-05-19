@@ -7,8 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,13 +35,13 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
+                                          QuadCollector quadCollector) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
-    if (blockLayer == EnumWorldBlockLayer.SOLID) {
+    if (blockLayer == BlockRenderLayer.SOLID) {
       states.add(state.getState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
-    } else if (blockLayer == EnumWorldBlockLayer.TRANSLUCENT) {
+    } else if (blockLayer == BlockRenderLayer.TRANSLUCENT) {
       states.add(state.getState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
     }
 

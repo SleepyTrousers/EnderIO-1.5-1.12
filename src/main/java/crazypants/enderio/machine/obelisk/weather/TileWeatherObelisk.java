@@ -1,17 +1,31 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-
 import java.awt.Color;
 
-import net.minecraft.block.Block;
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
+
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,20 +34,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.api.common.util.ITankAccess;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.SmartTank;
-
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
@@ -173,8 +173,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       double xf = pos1.getX() + 0.5 + correction;
       double yf = pos1.getY() + 0.8;
       double zf = pos1.getZ() + 0.5 + correction;
-      Block b = getBlockType();
-      double yi = pos1.getY() + b.getBlockBoundsMaxY() - 0.1;
+      
+      IBlockState bs = worldObj.getBlockState(pos);
+//      Block b = getBlockType();
+//      double yi = pos1.getY() + b.getBlockBoundsMaxY() - 0.1;
+      double yi = bs.getBoundingBox(worldObj, pos).maxY - 01.;
       double offset = 0.3;
       Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + offset
           + correction, xf, yf, zf, c));
@@ -185,7 +188,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + (1 - offset)
           + correction, xf, yf, zf, c));
     } else if (!playedFuse) {
-      worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), "game.tnt.primed", 1, 1, true);
+      worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.entity_tnt_primed, SoundCategory.BLOCKS, 1, 1, true);
       playedFuse = true;
     }
   }
@@ -266,7 +269,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       activeTask = null;
       fluidUsed = 0;
       if (!worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), worldObj.provider.getDimensionId());
+        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), worldObj.provider.getDimension());
       } else {
         playedFuse = false;
       }

@@ -4,6 +4,8 @@ import java.awt.Point;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EntityEquipmentSlot.Type;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
@@ -52,31 +54,36 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i * 20, 59));
     }
 
-    // armor slots
-    for (int i = 0; i < 4; ++i) {
-      final int k = i;
-      addSlotToContainer(new Slot(playerInv, playerInv.getSizeInventory() - 1 - i, -15 + armorOffset, 12 + i * 18) {
+    
+    int armorPiece=0;
+    for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
+      if(slt.getSlotType() == Type.ARMOR) {
+        armorPiece++;
+        addSlotToContainer(new Slot(playerInv, slt.getIndex(), -15 + armorOffset, 12 + armorPiece * 18) {
 
-        @Override
-        public int getSlotStackLimit() {
-          return 1;
-        }
-
-        @Override
-        public boolean isItemValid(ItemStack par1ItemStack) {
-          if (par1ItemStack == null) {
-            return false;
+          @Override
+          public int getSlotStackLimit() {
+            return 1;
           }
-          return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, playerInv.player);
-        }
 
-        @Override
-        @SideOnly(Side.CLIENT)
-        public String getSlotTexture() {
-          return ItemArmor.EMPTY_SLOT_NAMES[k];
-        }
-      });
+          @Override
+          public boolean isItemValid(ItemStack par1ItemStack) {
+            if (par1ItemStack == null) {
+              return false;
+            }
+            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
+          }
+
+          @Override
+          @SideOnly(Side.CLIENT)
+          public String getSlotTexture() {
+            return ItemArmor.EMPTY_SLOT_NAMES[slt.ordinal() - 2];
+          }
+        });
+      }
     }
+    
+   
 
     if (hasBaublesSlots()) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
@@ -182,7 +189,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       return false;
     }
     ItemArmor armor = (ItemArmor) origStack.getItem();
-    int index = 3 - armor.armorType;
+    int index = 3 - armor.armorType.ordinal() - 2;
     ItemStack[] ai = entityPlayer.inventory.armorInventory;
     if (ai[index] == null) {
       ai[index] = origStack.copy();

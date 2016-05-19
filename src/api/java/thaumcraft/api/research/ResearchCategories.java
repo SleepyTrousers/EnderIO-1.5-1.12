@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLLog;
 
 import org.apache.logging.log4j.Level;
@@ -28,7 +28,7 @@ public class ResearchCategories {
 	 * Must be stored as localization information in the LanguageRegistry.
 	 */
 	public static String getCategoryName(String key) {
-		return StatCollector.translateToLocal("tc.research_category."+key);
+		return I18n.translateToLocal("tc.research_category."+key);
 	}
 	
 	/**

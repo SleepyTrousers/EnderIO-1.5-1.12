@@ -9,9 +9,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
@@ -25,37 +27,28 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
     super(name, teClass, mat);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
-  
-  protected BlockEio(String name, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass) {
-    super(name, teClass, itemBlockClass);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-  }
-
-  protected BlockEio(String name, Class<T> teClass, Class<? extends ItemBlock> itemBlockClass, Material mat) {
-    super(name, teClass, itemBlockClass, mat);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-  }
-  
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ) {  
-    if(shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, entityPlayer)) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side,
+      float hitX, float hitY, float hitZ) {
+    if (shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, entityPlayer)) {
       return true;
     }
     TileEntity te = world.getTileEntity(pos);
 
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-    if(tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, pos)) {
-      if(te instanceof AbstractMachineEntity) {
+    if (tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getHeldItemMainhand(), entityPlayer, pos)) {
+      if (te instanceof AbstractMachineEntity) {
         ((AbstractMachineEntity) te).toggleIoModeForFace(side);
-        world.markBlockForUpdate(pos);
+        IBlockState bs = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, bs, bs, 3);
         return true;
       }
     }
-    
-    return super.onBlockActivated(world, pos, state, entityPlayer, side, hitX, hitY, hitZ);
+
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
   }
-  
+
   protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return true;
   }

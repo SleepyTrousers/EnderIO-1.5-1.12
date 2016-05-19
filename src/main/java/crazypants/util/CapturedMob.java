@@ -7,6 +7,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.EntityUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -16,27 +22,20 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.EntityUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class CapturedMob {
 
@@ -177,7 +176,7 @@ public class CapturedMob {
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
     String entityId = EntityList.getEntityString(entity);
-    if (entityId == null || entityId.trim().isEmpty() || (!Config.soulVesselCapturesBosses && entity instanceof IBossDisplayData)) {
+    if (entityId == null || entityId.trim().isEmpty() || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())) {
       return true;
     }
     return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
@@ -203,7 +202,7 @@ public class CapturedMob {
     }
     entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
 
-    if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCollidingBoundingBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
+    if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCubes(entity, entity.getEntityBoundingBox()).isEmpty()) {
       return false;
     }
 
@@ -219,18 +218,19 @@ public class CapturedMob {
       ((EntityLiving) entity).playLivingSound();
     }
 
-    Entity riddenByEntity = entity.riddenByEntity;
-    while (riddenByEntity != null) {
-      riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
-      if (world.spawnEntityInWorld(riddenByEntity)) {
-        if (riddenByEntity instanceof EntityLiving) {
-          ((EntityLiving) riddenByEntity).playLivingSound();
-        }
-        riddenByEntity = riddenByEntity.riddenByEntity;
-      } else {
-        riddenByEntity = null;
-      }
-    }
+    //TODO: 1.9, need to figure out how this works now
+//    Entity riddenByEntity = entity.riddenByEntity;
+//    while (riddenByEntity != null) {
+//      riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
+//      if (world.spawnEntityInWorld(riddenByEntity)) {
+//        if (riddenByEntity instanceof EntityLiving) {
+//          ((EntityLiving) riddenByEntity).playLivingSound();
+//        }
+//        riddenByEntity = riddenByEntity.riddenByEntity;
+//      } else {
+//        riddenByEntity = null;
+//      }
+//    }
 
     return true;
   }
@@ -251,24 +251,26 @@ public class CapturedMob {
     if (isVariant && entity instanceof EntitySkeleton) {
       EntitySkeleton skel = (EntitySkeleton) entity;
       skel.setSkeletonType(1);
-      skel.setCurrentItemOrArmor(0, new ItemStack(Items.stone_sword));
-      skel.setCurrentItemOrArmor(1, null);
-      skel.setCurrentItemOrArmor(2, null);
-      skel.setCurrentItemOrArmor(3, null);
-      skel.setCurrentItemOrArmor(4, null);
-      skel.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D);
+      skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.stone_sword));
+      skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+      skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
+      skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
+      skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
+      skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
+            
+      skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
       skel.setCombatTask();
 
       Calendar calendar = world.getCurrentDate();
 
       if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
-        skel.setCurrentItemOrArmor(4, new ItemStack(Math.random() < 0.1 ? Blocks.lit_pumpkin : Blocks.pumpkin));
-        skel.setEquipmentDropChance(4, 0.0F);
+        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.lit_pumpkin : Blocks.pumpkin));        
+        skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
       } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
-        skel.setCurrentItemOrArmor(0, new ItemStack(Math.random() < 0.25 ? Items.leather_boots : Items.stick));
+        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.leather_boots : Items.stick));
       } else if (Math.random() < 0.1) {
-        skel.setCurrentItemOrArmor(0, new ItemStack(DarkSteelItems.itemDarkSteelSword));
-        skel.setEquipmentDropChance(0, 0.00001F);
+        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));        
+        skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
       }
 
     }
@@ -278,7 +280,7 @@ public class CapturedMob {
   public @Nonnull String getDisplayName() {
     String baseName = null;
     if (isVariant && "Skeleton".equals(entityId)) {
-      baseName = StatCollector.translateToLocal("entity.witherSkeleton.name");
+      baseName = I18n.translateToLocal("entity.witherSkeleton.name");
     } else if (entityId != null) {
       baseName = EntityUtil.getDisplayNameForEntity(entityId);
     } else if (entityNbt != null) {

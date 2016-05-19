@@ -9,7 +9,8 @@ import java.util.WeakHashMap;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import com.enderio.core.common.util.BlockCoord;
@@ -71,17 +72,17 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
             double dz = mobbb.maxZ - mobbb.minZ;
             AxisAlignedBB bb = new AxisAlignedBB(x - dx / 2, y, z - dz / 2, x + dx / 2, y + dy, z + dz / 2);
 
-            boolean spaceClear = worldObj.checkNoEntityCollision(bb, mob) && worldObj.getCollidingBoundingBoxes(mob, bb).isEmpty()
+            boolean spaceClear = worldObj.checkNoEntityCollision(bb, mob) && worldObj.getCubes(mob, bb).isEmpty()
                 && (worldObj.isAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(worldObj.provider.getDimensionId(), mob.posX, mob.posY, mob.posZ, 64));
-              mob.playSound("mob.endermen.portal", 1.0F, 1.0F);
+                  new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
+              mob.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
               mob.setPositionAndUpdate(x - dx / 2, y, z - dz / 2);
-              mob.playSound("mob.endermen.portal", 1.0F, 1.0F);
+              mob.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(worldObj.provider.getDimensionId(), mob.posX, mob.posY, mob.posZ, 64));
+                  new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               iterator.remove();
             }
           }

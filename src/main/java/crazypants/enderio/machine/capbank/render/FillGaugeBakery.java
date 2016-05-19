@@ -6,12 +6,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
@@ -64,7 +64,8 @@ public class FillGaugeBakery {
     this.pos = pos;
     this.face = face;
     this.tex = tex;
-    if (world.getBlockState(pos.offset(face)).getBlock().isSideSolid(world, pos.offset(face), face.getOpposite())) {
+    IBlockState bs = world.getBlockState(pos.offset(face));
+    if (bs.getBlock().isSideSolid(bs, world, pos.offset(face), face.getOpposite())) {
       return;
     }
     IBlockState state = world.getBlockState(pos);
@@ -170,7 +171,7 @@ public class FillGaugeBakery {
       other = other.up();
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
-          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(world, other.offset(face), face.getOpposite())) {
+          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(state, world, other.offset(face), face.getOpposite())) {
         break;
       }
       TileEntity tileEntity = world.getTileEntity(other);
@@ -186,7 +187,7 @@ public class FillGaugeBakery {
       other = other.down();
       IBlockState state = world.getBlockState(other);
       if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
-          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(world, other.offset(face), face.getOpposite())) {
+          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(state, world, other.offset(face), face.getOpposite())) {
         break;
       }
       TileEntity tileEntity = world.getTileEntity(other);
@@ -208,7 +209,7 @@ public class FillGaugeBakery {
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
       RenderUtil.bindBlockTexture();
-      WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+      VertexBuffer tes = Tessellator.getInstance().getBuffer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       buffer.render(tes);
       if (litBuffer != null) {

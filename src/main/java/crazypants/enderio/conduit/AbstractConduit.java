@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -543,7 +543,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {    
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
     Block block = null;
     if(neighbourPos != null) {
       block = world.getBlockState(neighbourPos).getBlock();

@@ -2,7 +2,7 @@ package thaumcraft.api.golems.parts;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.golems.EnumGolemTrait;
 
 public class GolemMaterial {		
@@ -56,11 +56,11 @@ public class GolemMaterial {
 	}
 	
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal("golem.material."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.material."+this.key.toLowerCase());
 	}
 	
 	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("golem.material.text."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.material.text."+this.key.toLowerCase());
 	}
 
 	public static GolemMaterial[] getMaterials() {

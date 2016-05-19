@@ -1,7 +1,7 @@
 package thaumcraft.api.wands;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -43,11 +43,11 @@ public class FocusUpgradeType {
 	}	
 	
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal(name);
+		return I18n.translateToLocal(name);
 	}
 	
 	public String getLocalizedText() {
-		return StatCollector.translateToLocal(text);
+		return I18n.translateToLocal(text);
 	}
 	
 	@Override

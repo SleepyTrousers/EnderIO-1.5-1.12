@@ -2,7 +2,7 @@ package thaumcraft.api.research;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
@@ -202,12 +202,12 @@ public class ResearchItem
 
     public String getName()
     {
-    	return StatCollector.translateToLocal("tc.research_name."+key);
+    	return I18n.translateToLocal("tc.research_name."+key);
     }
     
     public String getText()
     {
-    	return StatCollector.translateToLocal("tc.research_text."+key);
+    	return I18n.translateToLocal("tc.research_text."+key);
     }
 
     public boolean isSpecial()

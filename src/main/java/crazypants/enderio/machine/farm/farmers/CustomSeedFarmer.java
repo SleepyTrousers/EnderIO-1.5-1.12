@@ -12,8 +12,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
@@ -173,8 +174,8 @@ public class CustomSeedFarmer implements IFarmerJoe {
     if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && farm.hasHoe()) {
       farm.damageHoe(1, dirtLoc);
       worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
-      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepSound(),
-          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getFrequency() * 0.8F);
+      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.getStepSound().getStepSound(), SoundCategory.BLOCKS,
+          (Blocks.farmland.getStepSound().getVolume() + 1.0F) / 2.0F, Blocks.farmland.getStepSound().getPitch() * 0.8F, false);
       farm.actionPerformed(false);
       return true;
     }
@@ -198,7 +199,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) getPlantedBlock();
     if(target.canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
-        (ground.canSustainPlant(worldObj, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)) {
+        (ground.canSustainPlant(bs, worldObj, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)) {
       return true;
     }
     return false;

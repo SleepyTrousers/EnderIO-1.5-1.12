@@ -10,6 +10,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -78,7 +79,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   private EntityLivingBase getFakePlayer() {
     if (fakePlayer == null) {
-      fakePlayer = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
+      fakePlayer = FakePlayerFactory.getMinecraft(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
     }
     return fakePlayer;
   }

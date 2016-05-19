@@ -2,6 +2,7 @@ package crazypants.enderio.machine.vat;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -19,8 +20,8 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
 
   private float progress = 0;
 
-  private int inputFluidId = -1; // TODO: Replace numeric ID
-  private int outputFluidId = -1; // TODO: Replace numeric ID
+  private String inputFluidId = null; 
+  private String outputFluidId = null; 
 
   public PacketVatProgress() {
 
@@ -37,7 +38,7 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
 
     for (MachineRecipeInput input : task.getInputs()) {
       if (input.fluid != null && input.fluid.getFluid() != null) {
-        inputFluidId = input.fluid.getFluid().getID();
+        inputFluidId = input.fluid.getFluid().getName();
         break;
       }
     }
@@ -48,7 +49,7 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
     }
     for (ResultStack res : rec.getCompletedResult(1.0f, task.getInputs())) {
       if (res.fluid != null && res.fluid.getFluid() != null) {
-        outputFluidId = res.fluid.getFluid().getID();
+        outputFluidId = res.fluid.getFluid().getName();
       }
     }
 
@@ -58,16 +59,16 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeFloat(progress);
-    buf.writeInt(inputFluidId);
-    buf.writeInt(outputFluidId);
+    ByteBufUtils.writeUTF8String(buf, inputFluidId);
+    ByteBufUtils.writeUTF8String(buf, outputFluidId);    
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     progress = buf.readFloat();
-    inputFluidId = buf.readInt();
-    outputFluidId = buf.readInt();
+    inputFluidId = ByteBufUtils.readUTF8String(buf);
+    outputFluidId = ByteBufUtils.readUTF8String(buf);
   }
 
   @Override
@@ -80,10 +81,10 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
         tile.setClientTask(null);
       } else {
         tile.setClientTask(new PoweredTaskProgress(message.progress));
-        if (message.inputFluidId > 0) {
+        if (message.inputFluidId != null) {
           tile.currentTaskInputFluid = FluidRegistry.getFluid(message.inputFluidId);
         }
-        if (message.outputFluidId > 0) {
+        if (message.outputFluidId != null) {
           tile.currentTaskOutputFluid = FluidRegistry.getFluid(message.outputFluidId);
         }
       }

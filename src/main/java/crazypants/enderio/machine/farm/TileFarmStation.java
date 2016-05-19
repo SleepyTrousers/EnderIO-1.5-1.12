@@ -1,24 +1,14 @@
 package crazypants.enderio.machine.farm;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-
 import com.enderio.core.common.util.BlockCoord;
+
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
+import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -34,14 +24,26 @@ import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
-import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 @Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -180,8 +182,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       }
       damageHoe(1, dirtLoc);
       worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
-      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepSound(),
-          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getFrequency() * 0.8F);
+      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, SoundEvents.block_grass_step, SoundCategory.BLOCKS,
+          (Blocks.farmland.getStepSound().getVolume() + 1.0F) / 2.0F, Blocks.farmland.getStepSound().getPitch() * 0.8F, false);
       actionPerformed(false);
       return true;
     } else if(dirtBlock == Blocks.farmland) {
@@ -260,12 +262,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return;
     }
 
+    IBlockState bs = getBlockState(bc.getBlockPos());
+    
     boolean canDamage = canDamage(tool);
     if(type == ToolType.AXE) {
-      tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.getBlockPos(), farmerJoe);
+      
+      tool.getItem().onBlockDestroyed(tool, worldObj, bs, bc.getBlockPos(), farmerJoe);
     } else if(type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
-      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.getBlockPos(), EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.getBlockPos(),EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       if(origDamage == tool.getItemDamage() && canDamage) {
         tool.damageItem(1, farmerJoe);
       }
@@ -294,8 +299,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   private int getLooting(ItemStack stack) {
     return Math.max(
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack),
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.looting, stack),
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.fortune, stack));
   }
 
   public EntityPlayerMP getFakePlayer() {
@@ -320,7 +325,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   public boolean isOpen(BlockCoord bc) {
     Block block = getBlock(bc);
-    return block.isAir(worldObj, bc.getBlockPos()) || block.isReplaceable(worldObj, bc.getBlockPos());
+    IBlockState bs = getBlockState(bc.getBlockPos());
+    return block.isAir(bs, worldObj, bc.getBlockPos()) || block.isReplaceable(worldObj, bc.getBlockPos());
   }
 
   public void setNotification(String unloc) {
@@ -429,7 +435,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     Block block = bs.getBlock();
     
     if(farmerJoe == null) {
-      farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.getDimensionId()));
+      farmerJoe = new FakeFarmPlayer(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
     }
 
     if(isOpen(bc)) {
@@ -452,7 +458,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, bs);
       if(harvest != null && harvest.getDrops() != null) {
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimensionId(), bc.x, bc.y, bc.z, 64));
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.x, bc.y, bc.z, 64));
         for (EntityItem ei : harvest.getDrops()) {
           if(ei != null) {
             insertHarvestDrop(ei, bc);
@@ -477,7 +483,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
         farmerJoe.inventory.currentItem = 0;
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
           inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.getDimensionId(), bc.x, bc.y, bc.z, 64));
+          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.getDimension(), bc.x, bc.y, bc.z, 64));
           if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
           }

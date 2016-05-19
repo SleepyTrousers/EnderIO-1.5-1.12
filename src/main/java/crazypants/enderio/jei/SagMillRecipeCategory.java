@@ -19,11 +19,10 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -165,7 +164,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
     float chance = output.getChance();
     if(chance > 0 && chance < 1) {
       int chanceInt = (int) (chance * 100);
-      tooltip.add(EnumChatFormatting.GRAY + MessageFormat.format(StatCollector.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
+      tooltip.add(TextFormatting.GRAY + MessageFormat.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
     }    
   }
   

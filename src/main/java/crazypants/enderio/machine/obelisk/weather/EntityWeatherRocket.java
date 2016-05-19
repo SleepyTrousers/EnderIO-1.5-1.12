@@ -1,16 +1,23 @@
 package crazypants.enderio.machine.obelisk.weather;
 
+import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFirework;
 import net.minecraft.entity.item.EntityFireworkRocket;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 
 public class EntityWeatherRocket extends EntityFireworkRocket {
 
-  private static final int DATA_ID = 24;
+//  private static final int DATA_ID = 24;
+  private static final DataParameter<Integer> DATA_ID = EntityDataManager.<Integer>createKey(EntityWeatherRocket.class, DataSerializers.VARINT);
   
   private static final int MAX_AGE = 70;
 
@@ -20,15 +27,14 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   }
 
   public EntityWeatherRocket(World world, WeatherTask task) {
-    this(world);
-    this.getDataWatcher().updateObject(DATA_ID, task.ordinal());
+    this(world);    
+    dataWatcher.register(DATA_ID, task.ordinal());
   }
 
   @Override
   protected void entityInit() {
     super.entityInit();
-    this.getDataWatcher().addObject(DATA_ID, 0);
-    this.getDataWatcher().setObjectWatched(DATA_ID);
+    dataWatcher.register(DATA_ID, 0);        
   }
   
   @Override
@@ -47,7 +53,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   @Override
   public void setDead() {
     super.setDead();
-    WeatherTask task = WeatherTask.values()[getDataWatcher().getWatchableObjectInt(DATA_ID)];
+    WeatherTask task = WeatherTask.values()[dataWatcher.get(DATA_ID)];
     task.complete(worldObj);
   }
   
@@ -56,11 +62,11 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   }
   
   private void doEffect() {
-    String s1 = "fireworks.largeBlast";
-    if (ticksExisted > 40) {
-      s1 += "_far";
+    SoundEvent se = SoundEvents.entity_firework_large_blast;    
+    if (ticksExisted > 40) {    
+      se = SoundEvents.entity_firework_large_blast_far;
     }
-    this.worldObj.playSound(this.posX, this.posY, this.posZ, s1, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
+    worldObj.playSound(this.posX, this.posY, this.posZ, se, SoundCategory.BLOCKS, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
 
     double d1 = this.posX;
     double d2 = this.posY;
@@ -82,7 +88,8 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
 
           entityfireworksparkfx.setTrail(true);
           entityfireworksparkfx.setTwinkle(false);
-          entityfireworksparkfx.setColour(WeatherTask.values()[getDataWatcher().getWatchableObjectInt(DATA_ID)].color.getRGB());
+          
+          entityfireworksparkfx.setColorFade(WeatherTask.values()[dataWatcher.get(DATA_ID)].color.getRGB());
 
           Minecraft.getMinecraft().effectRenderer.addEffect(entityfireworksparkfx);
           if (j != -size && j != size && k != -size && k != size) {

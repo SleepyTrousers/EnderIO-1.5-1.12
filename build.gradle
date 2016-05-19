@@ -37,7 +37,7 @@ if (project.hasProperty('mod_appendix')) {
 }
 
 minecraft {
-    mappings = "stable_22"
+    mappings = "snapshot_20160312"
     version = "${minecraft_version}-${forge_version}"
     runDir = 'run'
 
@@ -55,7 +55,7 @@ repositories {
     maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }        
-    maven { url = "http://dvs1.progwml6.com/files/maven" }
+    maven { url = "http://dvs1.progwml6.com/files/maven" }         
     mavenLocal()
 }
 
@@ -67,7 +67,7 @@ dependencies {
     }
 
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
-    deobfCompile "mezz.jei:jei_1.8.9:${jei_version}"   
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"   
     
     compile fileTree(dir: 'lib', include: '*.jar') 
 }

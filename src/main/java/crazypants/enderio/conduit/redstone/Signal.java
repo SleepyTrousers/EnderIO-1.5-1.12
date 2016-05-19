@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.redstone;
 
 import com.enderio.core.common.util.DyeColor;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 
 public class Signal {

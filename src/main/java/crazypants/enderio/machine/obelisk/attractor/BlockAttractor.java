@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import crazypants.enderio.GuiHandler;

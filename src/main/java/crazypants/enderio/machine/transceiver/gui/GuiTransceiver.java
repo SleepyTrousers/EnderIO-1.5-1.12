@@ -8,7 +8,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -200,7 +200,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     int sy = (height - ySize) / 2;
     int tabX = sx + xSize - 3;
 
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
     for (int i = 0; i < tabs.size(); i++) {

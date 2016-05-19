@@ -7,21 +7,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.cache.Cache;
@@ -35,6 +20,20 @@ import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrapper {
 
@@ -186,20 +185,20 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
   protected void bakeBlockLayer(QuadCollector quads) {
     if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware) {
-      for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
+      for (BlockRenderLayer layer : quads.getBlockLayers()) {
         quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
       }
     } else {
-      EnumWorldBlockLayer layer = block.getBlockLayer();
+      BlockRenderLayer layer = block.getBlockLayer();
       quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
     }
   }
 
   protected boolean bakePaintLayer(QuadCollector quads, IBlockState rawPaintSource, IBlockState paintSource) {
     if (paintSource != null) {
-      EnumWorldBlockLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+      BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
       boolean rendered = true;
-      for (EnumWorldBlockLayer layer : quads.getBlockLayers()) {
+      for (BlockRenderLayer layer : quads.getBlockLayers()) {
         if (paintSource.getBlock().canRenderInLayer(layer)) {
           ForgeHooksClient.setRenderLayer(layer);
           rendered = rendered && PaintWrangler.wrangleBakedModel(world, pos, rawPaintSource, paintSource, quads);
@@ -235,7 +234,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+    public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
         QuadCollector quadCollector) {
       return null;
     }

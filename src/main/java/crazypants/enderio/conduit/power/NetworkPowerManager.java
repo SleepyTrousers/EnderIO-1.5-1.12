@@ -15,7 +15,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class NetworkPowerManager {

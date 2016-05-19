@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.CullFace;
+import net.minecraft.client.renderer.GlStateManager.FogMode;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -626,20 +628,22 @@ public class GlState {
 
     @Override
     public void apply() {
+      //TODO: 1.9 some of these things removed
       if (fog) {
         if (useDoubleAction) {
           GlStateManager.disableFog();
-          GlStateManager.setFog(GL11.GL_LINEAR);
+          GlStateManager.setFog(FogMode.LINEAR);
           GlStateManager.setFogDensity(.5f);
           GlStateManager.setFogStart(.5f);
           GlStateManager.setFogEnd(.5f);
-          GlStateManager.setFog(GL11.GL_EXP);
+          GlStateManager.setFog(FogMode.EXP);
           GlStateManager.setFogDensity(.6f);
           GlStateManager.setFogStart(.6f);
           GlStateManager.setFogEnd(.6f);
         }
         GlStateManager.enableFog();
-        GlStateManager.setFog(mode);
+        //TODO: 1.9
+//        GlStateManager.setFog(mode);
         GlStateManager.setFogDensity(density);
         GlStateManager.setFogStart(start);
         GlStateManager.setFogEnd(end);
@@ -701,11 +705,12 @@ public class GlState {
       if (cullFace) {
         if (useDoubleAction) {
           GlStateManager.disableCull();
-          GlStateManager.cullFace(GL11.GL_FRONT);
-          GlStateManager.cullFace(GL11.GL_BACK);
+          GlStateManager.cullFace(CullFace.FRONT);
+          GlStateManager.cullFace(CullFace.BACK);
         }
         GlStateManager.enableCull();
-        GlStateManager.cullFace(mode);
+        //TODO: 1.9
+        //GlStateManager.cullFace(mode);
         if (forceAction) {
           GL11.glEnable(GL11.GL_CULL_FACE);
           GL11.glCullFace(mode);

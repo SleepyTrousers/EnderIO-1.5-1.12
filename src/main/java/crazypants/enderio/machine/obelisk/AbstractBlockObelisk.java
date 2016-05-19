@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,17 +30,17 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
   
   @Override
-  public boolean isFullBlock() {
+  public boolean isFullBlock(IBlockState bs) {
     return false;
   }  
   
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 0;
   }
   
@@ -49,7 +49,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {  
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     if(isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 0.85F;
@@ -62,7 +62,8 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
         EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
         if(fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
-          fx.motionY *= 0.5f;
+          //TODO: 1.9
+//          fx.motionY *= 0.5f;
         }
 
       }

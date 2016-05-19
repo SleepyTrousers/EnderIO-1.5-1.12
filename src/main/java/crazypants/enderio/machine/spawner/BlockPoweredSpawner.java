@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.BlockMobSpawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -19,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -109,16 +110,16 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
-    if(evt.state.getBlock() instanceof BlockMobSpawner) {
+    if(evt.getState().getBlock() instanceof BlockMobSpawner) {
       if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote && !evt.isCanceled()) {
-        TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.pos);
+        TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.getPos());
         if(tile instanceof TileEntityMobSpawner) {
 
           if(Math.random() > Config.brokenSpawnerDropChance) {
             return;
           }
           
-          ItemStack equipped = evt.getPlayer().getCurrentEquippedItem();
+          ItemStack equipped = evt.getPlayer().getHeldItemMainhand();
           if(equipped != null) {
             for (ResourceLocation uid : toolBlackList) {
               Item blackListItem = GameRegistry.findItem(uid.getResourceDomain(), uid.getResourcePath());
@@ -134,7 +135,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             String entityName = getEntityName(logic);
             if(entityName != null && !isBlackListed(entityName)) {
               ItemStack drop = CapturedMob.create(entityName, tile.getWorld().provider instanceof WorldProviderHell).toStack(EnderIO.itemBrokenSpawner, 0, 1);
-              dropCache.put(new BlockCoord(evt.pos), drop);
+              dropCache.put(new BlockCoord(evt.getPos()), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
                 setSpawnDelay(logic);
@@ -145,35 +146,35 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           }
         }
       } else {
-        dropCache.put(new BlockCoord(evt.pos), null);
+        dropCache.put(new BlockCoord(evt.getPos()), null);
       }
     }
   }
 
   @SubscribeEvent
   public void onHarvestDropsEvent(BlockEvent.HarvestDropsEvent evt) {
-    if (!evt.isCanceled() && evt.state.getBlock() instanceof BlockMobSpawner) {
-      BlockCoord bc = new BlockCoord(evt.pos);
+    if (!evt.isCanceled() && evt.getState().getBlock() instanceof BlockMobSpawner) {
+      BlockCoord bc = new BlockCoord(evt.getPos());
       if (dropCache.containsKey(bc)) {
         ItemStack stack = dropCache.get(bc);
         if (stack != null) {
-          evt.drops.add(stack);
+          evt.getDrops().add(stack);
         }
       } else {
         // A spawner was broken---but not by a player. The TE has been
         // invalidated already, but we might be able to recover it.
         try {
-          for (Object object : evt.world.loadedTileEntityList) {
+          for (Object object : evt.getWorld().loadedTileEntityList) {
             if (object instanceof TileEntityMobSpawner) {
               TileEntityMobSpawner spawner = (TileEntityMobSpawner) object;
               BlockPos p = spawner.getPos();
-              if (spawner.getWorld() == evt.world && p.equals(evt.pos)) {
+              if (spawner.getWorld() == evt.getWorld() && p.equals(evt.getPos())) {
                 // Bingo!
                 MobSpawnerBaseLogic logic = spawner.getSpawnerBaseLogic();
                 if (logic != null) {
                   String entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    evt.drops.add(CapturedMob.create(entityName, false).toStack(EnderIO.itemBrokenSpawner, 0, 1));
+                    evt.getDrops().add(CapturedMob.create(entityName, false).toStack(EnderIO.itemBrokenSpawner, 0, 1));
                   }
                 }
               }
@@ -216,31 +217,31 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.left == null || evt.left.stackSize != 1 || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)) {
+    if (evt.getLeft() == null || evt.getLeft().stackSize != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)) {
       return;
     }
-    if (evt.right == null || evt.right.stackSize != 1 || evt.right.getItem() != EnderIO.itemBrokenSpawner) {
+    if (evt.getRight() == null || evt.getRight().stackSize != 1 || evt.getRight().getItem() != EnderIO.itemBrokenSpawner) {
       return;
     }
 
-    CapturedMob spawnerType = CapturedMob.create(evt.right);
+    CapturedMob spawnerType = CapturedMob.create(evt.getRight());
     if (spawnerType == null || isBlackListed(spawnerType.getEntityName())) {
       return;
     }
 
-    evt.cost = Config.powerSpawnerAddSpawnerCost;
-    evt.output = evt.left.copy();
-    if(evt.output.getTagCompound() == null) {
-      evt.output.setTagCompound(new NBTTagCompound());
+    evt.setCost(Config.powerSpawnerAddSpawnerCost);
+    evt.setOutput(evt.getLeft().copy());
+    if(evt.getOutput().getTagCompound() == null) {
+      evt.getOutput().setTagCompound(new NBTTagCompound());
     }
-    evt.output.getTagCompound().setBoolean("eio.abstractMachine", true);
-    spawnerType.toNbt(evt.output.getTagCompound());
+    evt.getOutput().getTagCompound().setBoolean("eio.abstractMachine", true);
+    spawnerType.toNbt(evt.getOutput().getTagCompound());
   }
 
   @SubscribeEvent
   public void onLivingUpdate(LivingUpdateEvent livingUpdate) {
 
-    Entity ent = livingUpdate.entityLiving;
+    Entity ent = livingUpdate.getEntityLiving();
     if(!ent.getEntityData().hasKey(KEY_SPAWNED_BY_POWERED_SPAWNER)) {
       return;
     }
@@ -250,10 +251,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
 
     long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
-    long livedFor = livingUpdate.entity.worldObj.getTotalWorldTime() - spawnTime;
+    long livedFor = livingUpdate.getEntity().worldObj.getTotalWorldTime() - spawnTime;
     if(livedFor > Config.poweredSpawnerDespawnTimeSeconds*20) {      
       try {
-        fieldpersistenceRequired.setBoolean(livingUpdate.entityLiving, false);
+        fieldpersistenceRequired.setBoolean(livingUpdate.getEntityLiving(), false);
         
         ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
       } catch (Exception e) {
@@ -291,7 +292,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 

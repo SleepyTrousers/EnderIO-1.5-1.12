@@ -6,19 +6,17 @@ import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
-import net.minecraftforge.client.model.TRSRTransformation;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 public class RotatingSmartItemModel implements IPerspectiveAwareModel {
 

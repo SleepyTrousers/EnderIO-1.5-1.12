@@ -104,7 +104,7 @@ public class LiquidConduit extends AbstractTankConduit {
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
       BlockCoord loc = getLocation();
-      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimensionId(), loc.x, loc.y, loc.z, 64));
+      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.getDimension(), loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }

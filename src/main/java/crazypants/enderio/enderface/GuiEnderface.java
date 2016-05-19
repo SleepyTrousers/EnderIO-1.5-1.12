@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.util.BlockRenderLayer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -30,18 +31,17 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -209,7 +209,7 @@ public class GuiEnderface extends GuiScreen {
   private void doSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
-    MovingObjectPosition hit = player.worldObj.rayTraceBlocks(new Vec3(start.x, start.y, start.z), new Vec3(end.x, end.y, end.z), false);
+    RayTraceResult hit = player.worldObj.rayTraceBlocks(new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z), false);
 
     if (hit != null) {
       BlockPos p = hit.getBlockPos();
@@ -218,11 +218,11 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  public static MovingObjectPosition getClosestHit(Vec3 origin, Collection<MovingObjectPosition> candidates) {
+  public static RayTraceResult getClosestHit(Vec3d origin, Collection<RayTraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
-    MovingObjectPosition closest = null;
+    RayTraceResult closest = null;
 
-    for (MovingObjectPosition hit : candidates) {
+    for (RayTraceResult hit : candidates) {
       if (hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
         if (lengthSquared < minLengthSquared) {
@@ -269,12 +269,12 @@ public class GuiEnderface extends GuiScreen {
         RenderUtil.bindBlockTexture();
 
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
-        for(EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
+        for(BlockRenderLayer layer : BlockRenderLayer.values()) {
           
           ForgeHooksClient.setRenderLayer(layer);
           setGlStateForPass(layer);
 
-          WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+          VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
           wr.begin(7, DefaultVertexFormats.BLOCK);
           Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
           for (ViewableBlocks ug : blocks) {           
@@ -322,8 +322,8 @@ public class GuiEnderface extends GuiScreen {
     drawEffectOverlay(partialTick);
   }
 
-  private void setGlStateForPass(EnumWorldBlockLayer layer) {
-    setGlStateForPass(layer == EnumWorldBlockLayer.TRANSLUCENT ? 1 : 0);    
+  private void setGlStateForPass(BlockRenderLayer layer) {
+    setGlStateForPass(layer == BlockRenderLayer.TRANSLUCENT ? 1 : 0);
   }
 
   private void setGlStateForPass(int pass) {
@@ -437,7 +437,7 @@ public class GuiEnderface extends GuiScreen {
     float f4 = icon.getMaxV();
 
     Tessellator tessellator = Tessellator.getInstance();
-    WorldRenderer tes = tessellator.getWorldRenderer();
+    VertexBuffer tes = tessellator.getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     tes.pos(0.0D, par3, -90.0D).tex(f1, f4).endVertex();
     tes.pos(par2, par3, -90.0D).tex(f3, f4).endVertex();
@@ -455,7 +455,7 @@ public class GuiEnderface extends GuiScreen {
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glColor4f(r, g, b, a);
     Tessellator tessellator = Tessellator.getInstance();
-    WorldRenderer tes = tessellator.getWorldRenderer();
+    VertexBuffer tes = tessellator.getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
     tes.pos(0.0D, height, 0.0D).endVertex();
@@ -549,8 +549,8 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  void openInterface(int x, int y, int z, EnumFacing side, Vec3 hitVec) {
-    Vec3 relativeHit = new Vec3(hitVec.xCoord - x, hitVec.yCoord - y, hitVec.zCoord - z);
+  void openInterface(int x, int y, int z, EnumFacing side, Vec3d hitVec) {
+    Vec3d relativeHit = new Vec3d(hitVec.xCoord - x, hitVec.yCoord - y, hitVec.zCoord - z);
     PacketOpenServerGUI p = new PacketOpenServerGUI(x, y, z, side, relativeHit);
     PacketHandler.INSTANCE.sendToServer(p);
   }

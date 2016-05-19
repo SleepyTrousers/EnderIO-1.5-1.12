@@ -7,7 +7,7 @@ import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
 import crazypants.enderio.machine.obelisk.spawn.SpawningObeliskController;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObelisk> {

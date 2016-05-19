@@ -1,13 +1,28 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import info.loenwind.autosave.annotations.Storable;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.mojang.authlib.GameProfile;
+
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.util.CapturedMob;
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -23,33 +38,16 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.pathfinder.WalkNodeProcessor;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.mojang.authlib.GameProfile;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.util.CapturedMob;
-
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 @Storable
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
@@ -214,7 +212,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if (mob == null) {
       return false;
     }
-    return bounds.isVecInside(new Vec3(mob.posX, mob.posY, mob.posZ));
+    return bounds.isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 
   private boolean isMobInFilter(EntityLiving entity) {
@@ -240,7 +238,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   private boolean attractyUsingAITask(EntityLiving ent) {
     tracking.add(ent);
-    List<EntityAITaskEntry> entries = ent.tasks.taskEntries;
+    Set<EntityAITaskEntry> entries = ent.tasks.taskEntries;
     // boolean hasTask = false;
     EntityAIBase remove = null;
     // boolean isTracked;
@@ -359,7 +357,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     int targZ = MathHelper.floor_double(targetEntity.posZ);
 
     PathFinder pf = new PathFinder(new WalkNodeProcessor());
-    return pf.createEntityPathTo(worldObj, entity, new BlockPos(targX, targY, targZ), range);
+    return pf.func_186336_a(worldObj, (EntityLiving)entity, new BlockPos(targX, targY, targZ), range);
+//    return pf.createEntityPathTo(worldObj, entity, new BlockPos(targX, targY, targZ), range);
   }
 
   private class Target extends FakePlayerEIO {

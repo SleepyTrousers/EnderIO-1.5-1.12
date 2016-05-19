@@ -6,7 +6,7 @@ import java.util.Map;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -49,19 +49,19 @@ public class SpawningObeliskController {
       return;
     }
     
-    if(Config.spawnGuardStopAllSlimesDebug && evt.entity instanceof EntitySlime) {
+    if(Config.spawnGuardStopAllSlimesDebug && evt.getEntity() instanceof EntitySlime) {
       evt.setResult(Result.DENY);
       return;
     }
-    if(Config.spawnGuardStopAllSquidSpawning && evt.entity.getClass() == EntitySquid.class) {
+    if(Config.spawnGuardStopAllSquidSpawning && evt.getEntity().getClass() == EntitySquid.class) {
       evt.setResult(Result.DENY);
       return;
     }
     
     
-    Map<BlockPos, ISpawnCallback> guards = getGuardsForWorld(evt.world);
+    Map<BlockPos, ISpawnCallback> guards = getGuardsForWorld(evt.getWorld());
     for (ISpawnCallback guard : guards.values()) {
-      ISpawnCallback.Result result = guard.isSpawnPrevented(evt.entityLiving);
+      ISpawnCallback.Result result = guard.isSpawnPrevented(evt.getEntityLiving());
       if (result == ISpawnCallback.Result.DENY) {
         evt.setResult(Result.DENY);
         return;
@@ -72,10 +72,10 @@ public class SpawningObeliskController {
   }
   
   private Map<BlockPos, ISpawnCallback> getGuardsForWorld(World world) {
-    Map<BlockPos, ISpawnCallback> res = perWorldGuards.get(world.provider.getDimensionId());
+    Map<BlockPos, ISpawnCallback> res = perWorldGuards.get(world.provider.getDimension());
     if(res == null) {
       res = new HashMap<BlockPos, ISpawnCallback>();
-      perWorldGuards.put(world.provider.getDimensionId(), res);
+      perWorldGuards.put(world.provider.getDimension(), res);
     }
     return res;
   }

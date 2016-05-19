@@ -10,16 +10,17 @@ import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.util.ClientUtil;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -38,8 +39,8 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   public static final PropertyEnum<Alloy> VARIANT = PropertyEnum.<Alloy>create("variant", Alloy.class);
   
   private BlockIngotStorage() {
-    super(ModObject.blockIngotStorage.getUnlocalisedName(), null, BlockItemIngotStorage.class, Material.iron);
-    setStepSound(soundTypeMetal);
+    super(ModObject.blockIngotStorage.getUnlocalisedName(),null,  Material.iron);
+    setStepSound(SoundType.METAL);
   }
   
   @Override
@@ -71,23 +72,22 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] {VARIANT});
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] {VARIANT});
   }
   
   @Override
-  public float getBlockHardness(World world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);    
+  public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {       
     return Alloy.values()[bs.getBlock().getMetaFromState(bs)].getHardness();
   }
     
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {  
-    return getBlockHardness(world, pos) * 2.0f; // vanilla default is / 5.0f, this means hardness*2 = resistance
+    return getBlockHardness(world.getBlockState(pos), world, pos) * 2.0f; // vanilla default is / 5.0f, this means hardness*2 = resistance
   }
     
   @Override
-  public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {  
+  public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
     return true;
   }
   

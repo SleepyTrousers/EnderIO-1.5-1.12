@@ -7,10 +7,11 @@ import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.Handle
 
 import java.util.ArrayList;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -164,8 +165,9 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
       scanNetwork();
     }
 
-    if (forceClientUpdate.peek()) {
-      worldObj.markBlockForUpdate(pos);
+    if (forceClientUpdate.peek()) {      
+      IBlockState bs = getWorld().getBlockState(pos);
+      getWorld().notifyBlockUpdate(pos, bs, bs, 3);            
       markDirty();
     }
 
@@ -303,7 +305,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
         PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(this, extractionDisabled));
       } else if(this.extractionDisabled != extractionDisabled) {
         this.extractionDisabled = extractionDisabled;
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.getDimensionId());
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.getDimension());
       }
     }
   }

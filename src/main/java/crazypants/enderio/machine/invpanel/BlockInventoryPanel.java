@@ -5,12 +5,12 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -62,8 +62,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode6.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode6.RENDER });
   }
 
   @SideOnly(Side.CLIENT)
@@ -73,17 +73,17 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isBlockNormalCube() {
+  public boolean isBlockNormalCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 
@@ -93,13 +93,13 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
   
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
    return getBoundingBox(worldIn, pos);
   }
   
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos) {  
-    return getBoundingBox(worldIn, pos);
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {  
+    return getBoundingBox(bs, worldIn, pos);
   }
   
   @Override
@@ -143,7 +143,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
   }
 
   @Override

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EntityDropParticleFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,9 +17,9 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
   
   public EntityFluidLoadingFX(World world, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
     super(world, x1, y1, z1, Material.water);
-    this.motionX = (x2 - x1) / MAX_LIFE;
-    this.motionY = (y2 - y1) / MAX_LIFE;
-    this.motionZ = (z2 - z1) / MAX_LIFE;
+    this.xSpeed = (x2 - x1) / MAX_LIFE;
+    this.ySpeed = (y2 - y1) / MAX_LIFE;
+    this.zSpeed = (z2 - z1) / MAX_LIFE;
     
     particleRed = color.getRed() / 256f;
     particleGreen = color.getGreen() / 256f;
@@ -27,7 +27,7 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
     
     particleGravity = 0;
 
-    noClip = true;
+//    noClip = true;
   }
   
   @Override
@@ -36,16 +36,16 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
     this.prevPosY = this.posY;
     this.prevPosZ = this.posZ;
     
-    this.moveEntity(motionX, motionY, motionZ);
+    this.moveEntity(xSpeed, ySpeed, zSpeed);
     
     if(particleAge++ >= MAX_LIFE) {
-      setDead();
+      setExpired();
     }
   }
 
   @Override
-  public void renderParticle(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
-      float rotationXY, float rotationXZ) {
+  public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
+                             float rotationXY, float rotationXZ) {
     if(particleAge >= 2) {
       super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }

@@ -4,16 +4,16 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,8 +65,8 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -92,7 +92,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
@@ -100,13 +100,14 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
    * This makes us "air" for purposes of lighting. Otherwise our model would be much too dark, as it is always surrounded be 8 TelePad blocks.
    */
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
+    
     return false;
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
-    AxisAlignedBB bb = super.getSelectedBoundingBox(world,pos);
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
+    AxisAlignedBB bb = super.getSelectedBoundingBox(bs, world,pos);
     TileTelePad te = (TileTelePad) world.getTileEntity(pos);
     if(!te.inNetwork()) {
       return bb;

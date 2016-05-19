@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -12,12 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,8 +69,8 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, SolarType.KIND });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, SolarType.KIND });
   }
 
   @Override
@@ -111,8 +111,8 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.SOLID;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.SOLID;
   }
 
   @Override
@@ -148,10 +148,10 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
       if(!solar.canSeeSun()) {
-        tooltip.add(EnumChatFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
+        tooltip.add(TextFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
       } else {
-        tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
-            EnumChatFormatting.WHITE, efficiency * 100));
+        tooltip.add(String.format("%s : %s%.0f%%", TextFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + TextFormatting.RESET,
+            TextFormatting.WHITE, efficiency * 100));
       }
     }
   }
@@ -162,17 +162,17 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
     return face == EnumFacing.UP;
   }
 

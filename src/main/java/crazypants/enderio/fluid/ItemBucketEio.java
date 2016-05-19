@@ -1,7 +1,7 @@
 package crazypants.enderio.fluid;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;

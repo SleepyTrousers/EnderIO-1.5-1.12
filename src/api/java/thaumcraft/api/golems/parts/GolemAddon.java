@@ -1,7 +1,7 @@
 package thaumcraft.api.golems.parts;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.golems.EnumGolemTrait;
 
 public class GolemAddon {		
@@ -49,11 +49,11 @@ public class GolemAddon {
 	}
 	
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal("golem.addon."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.addon."+this.key.toLowerCase());
 	}
 	
 	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("golem.addon.text."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.addon.text."+this.key.toLowerCase());
 	}
 
 	public static GolemAddon[] getAddons() {

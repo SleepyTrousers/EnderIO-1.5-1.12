@@ -11,6 +11,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Optional;
@@ -82,12 +85,13 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMagnet.getUnlocalisedName());
+    setRegistryName(ModObject.itemMagnet.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemMagnet.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
@@ -134,11 +138,11 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   @Override
-  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if (player.isSneaking()) {
       setActive(equipped, !isActive(equipped));
     }
-    return equipped;
+    return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
   }
 
   @Override

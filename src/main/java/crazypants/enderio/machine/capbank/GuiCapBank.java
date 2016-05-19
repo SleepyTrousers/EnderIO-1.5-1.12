@@ -30,7 +30,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -88,18 +88,18 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       protected void updateText() {
         text.clear();
         text.add(PowerDisplayUtil.formatPower(network.getEnergyStoredL()) + " " + PowerDisplayUtil.ofStr());
-        text.add(EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL()) + " " + EnumChatFormatting.GRAY
+        text.add(TextFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY
             + PowerDisplayUtil.abrevation());
 
         float change = network.getAverageChangePerTick();
-        String color = EnumChatFormatting.WHITE.toString();
+        String color = TextFormatting.WHITE.toString();
         if (change > 0) {
-          color = EnumChatFormatting.GREEN.toString() + "+";
+          color = TextFormatting.GREEN.toString() + "+";
         } else if (change < 0) {
-          color = EnumChatFormatting.RED.toString();
+          color = TextFormatting.RED.toString();
         }
         text.add(String.format("%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(), color,
-            PowerDisplayUtil.formatPower(Math.round(change)), " " + EnumChatFormatting.GRAY.toString()));
+            PowerDisplayUtil.formatPower(Math.round(change)), " " + TextFormatting.GRAY.toString()));
       }
 
     });

@@ -3,14 +3,16 @@ package crazypants.enderio.material.fusedQuartz;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -27,8 +29,12 @@ import crazypants.enderio.render.ISmartRenderAwareBlock;
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock, INamedSubBlocks {
 
   public BlockFusedQuartzBase(String name, Class<T> teClass) {
-    super(name, teClass, BlockItemFusedQuartzBase.class, Material.glass);
-    setStepSound(Block.soundTypeGlass);
+    super(name, teClass, Material.glass);
+    setStepSound(SoundType.GLASS);
+  }
+  
+  protected ItemBlock createItemBlock() {
+    return new BlockItemFusedQuartzBase(this);
   }
 
   @Override
@@ -42,7 +48,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {   
+  public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
     if (world.getBlockState(pos).getValue(FusedQuartzType.KIND).isBlastResistant()) {
       return 2000;
     } else {
@@ -51,22 +57,22 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState state) {
     return false;
   }
 
   @Override
-  public int getLightOpacity(IBlockAccess world, BlockPos pos) {
+  public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
     IBlockState bs = world.getBlockState(pos);
     if(bs.getBlock() != this) {
-      return super.getLightOpacity(world, pos);
+      return super.getLightOpacity(state, world, pos);
     }
     return bs.getValue(FusedQuartzType.KIND).getLightOpacity();
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
-    return world.getBlockState(pos).getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(world, pos);
+  public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+    return state.getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(state, world, pos);
   }
 
   @Override
@@ -90,7 +96,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {  
+  public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {  
     if(side == EnumFacing.UP) { //stop drips
       return false;
     }
@@ -98,7 +104,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public boolean canPlaceTorchOnTop(IBlockAccess world, BlockPos pos) {
+  public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
     return true;
   }
 
@@ -108,7 +114,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState state) {
     return false;
   }
 

@@ -5,16 +5,16 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -74,8 +74,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { FusedQuartzType.KIND });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { FusedQuartzType.KIND });
   }
 
   @Override
@@ -99,12 +99,12 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
 
   @Override
   @SideOnly(Side.CLIENT)
-  public float getAmbientOcclusionLightValue() {
+  public float getAmbientOcclusionLightValue(IBlockState bs) {
     return 1;
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
     return false;
   }
 
@@ -116,8 +116,9 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
-    if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+    if (!world.isRemote) {      
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
     }
   }
 
@@ -131,8 +132,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }
@@ -183,7 +184,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 

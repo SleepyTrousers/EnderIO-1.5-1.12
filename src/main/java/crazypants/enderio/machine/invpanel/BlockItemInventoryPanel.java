@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -27,8 +27,9 @@ public class BlockItemInventoryPanel extends ItemBlock {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.setFacing(side);
       teInvPanel.readFromItemStack(stack);
-      if(!world.isRemote) {
-        world.markBlockForUpdate(pos);
+      if(!world.isRemote) {        
+        IBlockState bs = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, bs, bs, 3);
       }
     }
     return true;

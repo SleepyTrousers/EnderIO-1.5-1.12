@@ -20,10 +20,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -283,8 +283,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
-      // client/server connection
-      worldObj.markBlockForUpdate(pos);
+      // client/server connection      
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+      
       // And this will make sure our current tile entity state is saved
       markDirty();
     }
@@ -312,7 +314,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
 
     if (forceClientUpdate.read()) {
-      worldObj.markBlockForUpdate(pos);
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     } else {
       YetaUtil.refresh(this);
     }
@@ -634,8 +637,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public IChatComponent getDisplayName() {
-    return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
+  public ITextComponent getDisplayName() {
+    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override

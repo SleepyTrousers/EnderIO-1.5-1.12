@@ -9,7 +9,7 @@ import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -54,7 +54,7 @@ public class TreeHarvestUtil {
     }
     IBlockState bs = world.getBlockState(bc);
     Block blk = bs.getBlock();
-    boolean isLeaves = blk.getMaterial() == Material.leaves;
+    boolean isLeaves = blk.getMaterial(bs) == Material.leaves;
     if (target.isTarget(bs) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -69,9 +69,10 @@ public class TreeHarvestUtil {
       // leaves
       
       for(EnumFacing dir : EnumFacing.HORIZONTALS) {
-        BlockPos loc = bc.offset(dir);  
-        Block targetBlock = world.getBlockState(loc).getBlock();
-        if (targetBlock.getMaterial() == Material.leaves) {
+        BlockPos loc = bc.offset(dir);
+        IBlockState locBS = world.getBlockState(loc);
+        Block targetBlock = locBS.getBlock();
+        if (targetBlock.getMaterial(locBS) == Material.leaves) {
           harvestAdjacentWood(world, loc, res, target);
         }
       }

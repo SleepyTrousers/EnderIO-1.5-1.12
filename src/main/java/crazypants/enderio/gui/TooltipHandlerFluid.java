@@ -12,7 +12,7 @@ import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,13 +35,13 @@ public class TooltipHandlerFluid implements ITooltipCallback {
       IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
       if (fuel != null) {
         list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
-        list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
-        list.add(EnumChatFormatting.ITALIC + " " + MessageFormat.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), fuel.getTotalBurningTime()));
+        list.add(TextFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
+        list.add(TextFormatting.ITALIC + " " + MessageFormat.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), fuel.getTotalBurningTime()));
       } else {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {
           list.add(EnderIO.lang.localize("coolant.tooltip.heading"));
-          list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
+          list.add(TextFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
               + EnderIO.lang.localize("coolant.tooltip.degreesPerBucket"));
         }
       }

@@ -5,16 +5,16 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -84,8 +84,8 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
@@ -167,20 +167,20 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
       TileEntity te = world.getTileEntity(pos);
       if (stack != null && stack.getTagCompound() != null && te instanceof TileVacuumChest) {
         ((TileVacuumChest) te).readContentsFromNBT(stack.getTagCompound());
-        ((TileVacuumChest) te).setPaintSource(PainterUtil2.getSourceBlock(stack));
-        world.markBlockForUpdate(pos);
+        ((TileVacuumChest) te).setPaintSource(PainterUtil2.getSourceBlock(stack));        
+        world.notifyBlockUpdate(pos, state, state, 3);
       }
     }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.CUTOUT;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState blockState) {
     return false;
   }
 
@@ -244,7 +244,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 

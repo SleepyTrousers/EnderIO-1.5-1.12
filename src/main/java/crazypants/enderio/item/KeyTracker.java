@@ -26,8 +26,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -178,7 +180,7 @@ public class KeyTracker {
       return;
     }
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    ItemStack equipped = player.getCurrentEquippedItem();
+    ItemStack equipped = player.getHeldItemMainhand();
     if(equipped == null) {
       return;
     }
@@ -195,7 +197,7 @@ public class KeyTracker {
       int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
       equipped.setItemDamage(newMeta);
       PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());   
-      player.swingItem();
+      player.swingArm(EnumHand.MAIN_HAND);
       
     }    
   }
@@ -238,7 +240,7 @@ public class KeyTracker {
   }
 
   public boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
-    ItemStack helmet = player.getEquipmentInSlot(4);
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
     if(upgrade == null) {
       return false;

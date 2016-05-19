@@ -2,11 +2,11 @@ package crazypants.enderio.material.fusedQuartz;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,8 +42,8 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, FusedQuartzType.KIND });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, FusedQuartzType.KIND });
   }
 
   @Override
@@ -74,17 +74,17 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.SOLID;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.SOLID;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    IBlockState otherState = world.getBlockState(pos);
+  public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    IBlockState otherState = world.getBlockState(pos.offset(side));
     Block otherBlock = otherState.getBlock();
     if (otherBlock == this) {
-      BlockPos here = pos.offset(side.getOpposite());
+      BlockPos here = pos;
       IBlockState ourState = world.getBlockState(here);
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND));
     }

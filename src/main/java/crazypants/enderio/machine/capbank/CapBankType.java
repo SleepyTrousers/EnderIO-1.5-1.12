@@ -7,7 +7,7 @@ import java.util.Locale;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import crazypants.enderio.config.Config;
 
 public enum CapBankType implements IStringSerializable {

@@ -16,8 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -281,7 +281,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     }
     if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnderIO.lang.localize("item.darkSteel_axe.tooltip.multiHarvest"));
-      list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
+      list.add(TextFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

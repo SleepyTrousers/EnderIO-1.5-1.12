@@ -4,7 +4,6 @@ import baubles.api.BaublesApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -27,8 +26,8 @@ public class BaublesUtil {
         } else {
           return MPCLIENT;
         }
-      } else if (side == Side.SERVER) {
-        if (MinecraftServer.getServer().isDedicatedServer()) {
+      } else if (side == Side.SERVER) {        
+        if (FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer()) {
           return MPSERVER;
         } else if (Minecraft.getMinecraft().isIntegratedServerRunning()) {
           return SPSERVER;

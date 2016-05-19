@@ -1,7 +1,7 @@
 package thaumcraft.api.golems.parts;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import thaumcraft.api.golems.EnumGolemTrait;
 
 public class GolemHead {		
@@ -49,11 +49,11 @@ public class GolemHead {
 	}
 	
 	public String getLocalizedName() {
-		return StatCollector.translateToLocal("golem.head."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.head."+this.key.toLowerCase());
 	}
 	
 	public String getLocalizedDescription() {
-		return StatCollector.translateToLocal("golem.head.text."+this.key.toLowerCase());
+		return I18n.translateToLocal("golem.head.text."+this.key.toLowerCase());
 	}
 
 	public static GolemHead[] getHeads() {

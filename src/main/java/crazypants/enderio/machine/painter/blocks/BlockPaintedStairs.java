@@ -12,8 +12,8 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelRotation;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,11 +21,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -103,11 +103,11 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
@@ -126,8 +126,8 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }
@@ -250,32 +250,32 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 20 : super.getFlammability(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.wood ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
     return false;
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    if (worldIn.getBlockState(pos).getBlock() instanceof BlockPaintedStairs
-        && getPaintSource(null, worldIn, pos) == getPaintSource(null, worldIn, pos.offset(side.getOpposite()))) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    if (worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockPaintedStairs
+        && getPaintSource(null, worldIn, pos) == getPaintSource(null, worldIn, pos)) {
       return false;
     }
-    return super.shouldSideBeRendered(worldIn, pos, side);
+    return super.shouldSideBeRendered(bs, worldIn, pos, side);
   }
 
   @Override
@@ -288,7 +288,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {

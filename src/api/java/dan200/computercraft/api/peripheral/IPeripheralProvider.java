@@ -6,7 +6,7 @@
 
 package dan200.computercraft.api.peripheral;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -21,5 +21,5 @@ public interface IPeripheralProvider
      * @see dan200.computercraft.api.ComputerCraftAPI#registerPeripheralProvider(IPeripheralProvider)
      * @return a peripheral, or null if there is not a peripheral here you'd like to handle.
      */
-	public IPeripheral getPeripheral( World world, BlockPos pos, EnumFacing side );
+	public IPeripheral getPeripheral(World world, BlockPos pos, EnumFacing side );
 }

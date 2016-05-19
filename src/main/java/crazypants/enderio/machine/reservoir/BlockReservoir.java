@@ -6,16 +6,16 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,8 +72,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return new BlockState(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER });
+  protected BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER });
   }
 
   @Override
@@ -113,12 +113,12 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumWorldBlockLayer getBlockLayer() {
-    return EnumWorldBlockLayer.SOLID;
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.SOLID;
   }
   
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
@@ -206,7 +206,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
@@ -218,8 +218,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    return !(world.getBlockState(pos).getBlock() instanceof BlockReservoir);
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return !(world.getBlockState(pos.offset(side)).getBlock() instanceof BlockReservoir);
   }
 
 

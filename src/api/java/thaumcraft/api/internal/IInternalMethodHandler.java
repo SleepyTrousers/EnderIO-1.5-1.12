@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -24,7 +24,7 @@ public interface IInternalMethodHandler {
 	public int getPlayerWarp(EntityPlayer player, EnumWarpType type);
 	public void markRunicDirty(Entity entity);
 	public boolean completeResearch(EntityPlayer player, String researchkey);
-	public boolean drainAura(World world, BlockPos pos, Aspect aspect,int amount);
+	public boolean drainAura(World world, BlockPos pos, Aspect aspect, int amount);
 	public int drainAuraAvailable(World world, BlockPos pos, Aspect aspect, int amount);
 	public void addAura(World world, BlockPos pos, Aspect aspect, int amount);
 	public void pollute(World world, BlockPos pos, int amount, boolean showEffect);

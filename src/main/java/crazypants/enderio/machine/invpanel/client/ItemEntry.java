@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import crazypants.enderio.machine.invpanel.ItemEntryBase;
 
 public class ItemEntry extends ItemEntryBase {
@@ -38,7 +38,7 @@ public class ItemEntry extends ItemEntryBase {
 
   public String getLowercaseUnlocName(Locale locale) {
     if (lowerCaseLocName == null) {
-      lowerCaseLocName = StatCollector.translateToLocal(getUnlocName()).toLowerCase(locale);
+      lowerCaseLocName = I18n.translateToLocal(getUnlocName()).toLowerCase(locale);
     }
     return lowerCaseLocName;
   }
@@ -68,7 +68,7 @@ public class ItemEntry extends ItemEntryBase {
   private void findModId() {
     Item item = getItem();
     if (item != null) {
-      ResourceLocation resourceName = item.delegate.getResourceName();
+      ResourceLocation resourceName = item.delegate.name();
       if (resourceName != null) {
         modId = resourceName.getResourceDomain();
       }

@@ -12,9 +12,9 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,11 +22,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -152,11 +152,11 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
@@ -181,8 +181,8 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
     if (!isDouble()) {
       PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     } else {
@@ -227,8 +227,8 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  protected BlockState createBlockState() {
-    return this.isDouble() ? new BlockState(this, new IProperty[] {}) : new BlockState(this, new IProperty[] { HALF });
+  protected BlockStateContainer createBlockState() {
+    return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {}) : new BlockStateContainer(this, new IProperty[] { HALF });
   }
 
   @Override
@@ -319,13 +319,13 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean canRenderInLayer(EnumWorldBlockLayer layer) {
+  public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 20 : super.getFlammability(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.wood ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
@@ -334,17 +334,17 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
     return false;
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos there, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos here, EnumFacing side) {
+    BlockPos there = here.offset(side);
     IBlockState blockState2 = worldIn.getBlockState(there);
     Block block2 = blockState2.getBlock();
     if (block2 instanceof BlockPaintedSlab) {
-      BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;
-      BlockPos here = there.offset(side.getOpposite());
+      BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;      
       IBlockState ourBlockState = worldIn.getBlockState(here);
       if (isDouble()) {
         if (!otherBlock.isDouble()) {
@@ -364,7 +364,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
         return paintSource != getPaintSource(blockState2, worldIn, there);
       }
     }
-    return super.shouldSideBeRendered(worldIn, there, side);
+    return super.shouldSideBeRendered(bs, worldIn, there, side);
   }
 
   @Override
@@ -377,7 +377,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, EnumWorldBlockLayer blockLayer,
+  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     for (BlockSlab.EnumBlockHalf half : BlockSlab.EnumBlockHalf.values()) {
       if (isDouble() || half == state.getValue(HALF)) {

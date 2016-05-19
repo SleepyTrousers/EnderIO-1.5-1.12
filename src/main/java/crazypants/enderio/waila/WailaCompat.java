@@ -42,8 +42,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -100,9 +100,10 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     @Override
-    protected int getRenderDistanceChunks() {
-      return 0;
+    protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {      
+      return true;
     }
+    
   }
 
   public static final WailaCompat INSTANCE = new WailaCompat();
@@ -133,12 +134,12 @@ public class WailaCompat implements IWailaDataProvider {
         IFacade bundle = (IFacade) accessor.getBlock();
         IBlockState facade = bundle.getFacade(accessor.getWorld(), pos, accessor.getSide());
         if(facade != null && facade.getBlock() != accessor.getBlock()) {
-          ItemStack ret = facade.getBlock().getPickBlock(accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
+          ItemStack ret = facade.getBlock().getPickBlock(facade, accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
           return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
-      return accessor.getBlock().getPickBlock(accessor.getMOP(), accessor.getWorld(), accessor.getPosition(), accessor.getPlayer());
+      return accessor.getBlock().getPickBlock(accessor.getBlockState(), accessor.getMOP(), accessor.getWorld(), accessor.getPosition(), accessor.getPlayer());
 
     }
     return null;
@@ -171,10 +172,10 @@ public class WailaCompat implements IWailaDataProvider {
       IIoConfigurable machine = (IIoConfigurable) te;
       EnumFacing side = accessor.getSide();
       IoMode mode = machine.getIoMode(side);
-      currenttip.add(EnumChatFormatting.YELLOW
-          + EnderIO.lang.localize("gui.machine.side", EnumChatFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase(Locale.US))));
+      currenttip.add(TextFormatting.YELLOW
+          + EnderIO.lang.localize("gui.machine.side", TextFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase(Locale.US))));
       if(!(te instanceof TileInventoryPanel)) {
-        currenttip.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
+        currenttip.add(TextFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
       }
     }
 
@@ -239,8 +240,8 @@ public class WailaCompat implements IWailaDataProvider {
         int stored = accessor.getNBTData().getInteger("storedEnergyRF");
         int max = accessor.getNBTData().getInteger("maxStoredRF");
 
-        currenttip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
-                EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
+        currenttip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
+                TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
       }
     }
 
@@ -257,8 +258,8 @@ public class WailaCompat implements IWailaDataProvider {
       if(nbtRoot.hasKey("storedEnergyRF")) {
         int stored = nbtRoot.getInteger("storedEnergyRF");
         int max = nbtRoot.getInteger("maxStoredRF");
-        currenttip.add(String.format("%s%s%s / %s%s%s %s", EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(stored), EnumChatFormatting.RESET,
-            EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(max), EnumChatFormatting.RESET, PowerDisplayUtil.abrevation()));
+        currenttip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
+            TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
       }
 
     } else if(itemStack.getItem() == EnderIO.itemLiquidConduit) {
@@ -272,12 +273,12 @@ public class WailaCompat implements IWailaDataProvider {
         if(fluidAmount > 0) {
           // NOTE: using PowerDisplayUtil.formatPower here to handle the non breaking space issue
           currenttip.add(String.format("%s%s%s%s %s%s%s %s", lockedStr,
-              EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET,
-              EnumChatFormatting.WHITE, PowerDisplayUtil.formatPower(fluidAmount), EnumChatFormatting.RESET,
+              TextFormatting.WHITE, fluidName, TextFormatting.RESET,
+              TextFormatting.WHITE, PowerDisplayUtil.formatPower(fluidAmount), TextFormatting.RESET,
               Fluids.MB()));
         } else if(fluidTypeLocked) {
           currenttip.add(String.format("%s%s%s%s", lockedStr,
-              EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET));
+              TextFormatting.WHITE, fluidName, TextFormatting.RESET));
         }
       }
 
@@ -298,7 +299,7 @@ public class WailaCompat implements IWailaDataProvider {
   }
 
   @Override
-  public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {   
+  public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
     if(te instanceof IWailaNBTProvider) {
       ((IWailaNBTProvider) te).getData(tag);
     }

@@ -15,7 +15,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -122,7 +122,7 @@ public class PlantableFarmer implements IFarmerJoe {
     IBlockState groundBS = worldObj.getBlockState(groundPos);
     Block ground = groundBS.getBlock();
     if(target != null && target.getBlock().canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
-        ground.canSustainPlant(worldObj, groundPos, EnumFacing.UP, plantable)) {
+        ground.canSustainPlant(groundBS, worldObj, groundPos, EnumFacing.UP, plantable)) {
       return true;
     }
     return false;

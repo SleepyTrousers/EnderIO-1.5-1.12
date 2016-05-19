@@ -3,12 +3,12 @@ package crazypants.enderio.machine.light;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -49,8 +49,8 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public BlockState createBlockState() {
-      return new BlockState(this, TYPE, ACTIVE, FACING); 
+  public BlockStateContainer createBlockState() {
+      return new BlockStateContainer(this, TYPE, ACTIVE, FACING);
   }
 
   @Override
@@ -92,22 +92,22 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   
   
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {    
     Block block = bs.getBlock();
     if (block != null && block != this) {
-      return block.getLightValue(world, pos);
+      return block.getLightValue(bs, world, pos);
     } 
     return bs.getValue(ACTIVE) ? 15 : 0;
   }
   
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
+    
     return true;
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
     return null;
   }
 
@@ -162,12 +162,12 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
   
   @Override
-  public boolean isFullCube() {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 

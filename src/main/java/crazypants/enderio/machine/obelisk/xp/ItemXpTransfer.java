@@ -2,11 +2,16 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -37,18 +42,19 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   protected ItemXpTransfer() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemXpTransfer.getUnlocalisedName());
+    setRegistryName(ModObject.itemXpTransfer.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
 
   @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {    
     return onActivated(player, world, pos, side);
   }
 
-  public static boolean onActivated(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
+  public static EnumActionResult onActivated(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
     if (world.isRemote) {
-      return false;
+      return EnumActionResult.FAIL;
     }
     boolean res;
     boolean swing = false;
@@ -63,7 +69,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       sendXPUpdate(player, world, pos, swing);
     }
 
-    return res;
+    return EnumActionResult.PASS;
   }
 
   public static void sendXPUpdate(EntityPlayer player, World world, BlockPos pos, boolean swing) {
@@ -72,8 +78,8 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     double yP = player.posY + 1.5;
     double zP = player.posZ + look.z;
     PacketHandler.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP) player);
-    world.playSoundEffect(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, "random.orb", 0.1F,
-        0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
+    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.entity_experience_orb_pickup, SoundCategory.PLAYERS, 0.1F,
+        0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F), false);
   }
 
   public static boolean tranferFromBlockToPlayer(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
@@ -129,7 +135,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemXpTransfer.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
@@ -137,8 +143,10 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     return getUnlocalizedName();
   }
 
+  
+  
   @Override
-  public boolean doesSneakBypassUse(World world, BlockPos pos, EntityPlayer player) {
+  public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {   
     return false;
   }
 

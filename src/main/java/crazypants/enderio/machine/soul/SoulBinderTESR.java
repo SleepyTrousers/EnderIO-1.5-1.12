@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
@@ -53,7 +53,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
 
   public static void renderBlockModel(World world, BlockPos pos, IBlockState state, boolean translateToOrigin) {
 
-    WorldRenderer wr = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
     if (translateToOrigin) {
       wr.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
@@ -62,7 +62,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
     BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
     BlockModelShapes modelShapes = blockrendererdispatcher.getBlockModelShapes();
     IBakedModel ibakedmodel = modelShapes.getModelForState(state);
-    for (EnumWorldBlockLayer layer : EnumWorldBlockLayer.values()) {
+    for (BlockRenderLayer layer : BlockRenderLayer.values()) {
       ForgeHooksClient.setRenderLayer(layer);
       blockrendererdispatcher.getBlockModelRenderer().renderModel(world, ibakedmodel, state, pos, Tessellator.getInstance().getWorldRenderer());
     }

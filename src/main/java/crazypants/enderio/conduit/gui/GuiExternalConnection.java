@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -24,7 +25,6 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -169,7 +169,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     int tabX = sx + xSize - 3;
 
-    WorldRenderer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     for (int i = 0; i < tabs.size(); i++) {
       if(i != activeTab) {
