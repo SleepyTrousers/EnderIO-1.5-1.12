@@ -2,8 +2,6 @@ package crazypants.enderio.render;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,7 +12,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
@@ -32,45 +29,40 @@ public class HalfBakedQuad {
   private final List<Vertex> corners;
   private final TextureAtlasSprite tex;
   private final Vector4f color;
+  private final EnumFacing face;
 
   private final static Vector4f NO_COLOR = new Vector4f(1, 1, 1, 1);
 
   public HalfBakedQuad(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
     this.corners = bb.getCornersWithUvForFace(face, umin, umax, vmin, vmax);
-    this.tex = tex;
+    this.tex = tex != null ? tex : IconUtil.instance.errorTexture;
     this.color = color != null ? color : NO_COLOR;
+    this.face = face;
   }
 
-  // TODO: pull this up into RenderUtil
+  private static boolean hasMojangFixedUVXWTextureCoords = false;
 
-  private static void addBakedQuads(List<BakedQuad> quads, Collection<Vertex> vertices, TextureAtlasSprite tex, Vector4f color) {
-    UnpackedBakedQuad.Builder builder = null;
+  public void bake(List<BakedQuad> quads) {
+    float w01 = 1;
+    float w23 = 1;
 
-    Iterator<Vertex> it = vertices.iterator();
-    while (it.hasNext()) {
-      EnumFacing face = null;
-      for (int i = 0; i < 4; i++) {
-        Vertex v = it.next();
-        if (i == 0) {
-          face = EnumFacing.getFacingFromVector(v.nx(), v.ny(), v.nz());
-          builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
-          builder.setQuadOrientation(face);
-          //TODO: 1.9, is it ok to just remove this?
-          //builder.setQuadColored();
-        }
-        v.color = color;
-        putVertexData(builder, v, face.getDirectionVec(), tex);
-      }
-      quads.add(builder.build());
+    if (hasMojangFixedUVXWTextureCoords && face != EnumFacing.DOWN && face != EnumFacing.UP) {
+      // assuming the first vertex is upper-left or lower-right
+      w01 = (float) corners.get(0).xyz.distance(corners.get(1).xyz);
+      w23 = (float) corners.get(2).xyz.distance(corners.get(3).xyz);
     }
 
+    UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
+    builder.setQuadOrientation(face);
+    builder.setQuadColored();
+    putVertexData(builder, corners.get(0), w01);
+    putVertexData(builder, corners.get(1), w01);
+    putVertexData(builder, corners.get(2), w23);
+    putVertexData(builder, corners.get(3), w23);
+    quads.add(builder.build());
   }
 
-  private static void putVertexData(Builder builder, Vertex v, Vec3i normal, TextureAtlasSprite sprite) {
-    if (sprite == null) {
-      sprite = IconUtil.instance.errorTexture;
-    }
-
+  private void putVertexData(Builder builder, Vertex v, float w) {
     VertexFormat format = builder.getVertexFormat();
     for (int e = 0; e < format.getElementCount(); e++) {
       switch (format.getElement(e).getUsage()) {
@@ -78,45 +70,18 @@ public class HalfBakedQuad {
         builder.put(e, (float) v.x(), (float) v.y(), (float) v.z(), 1);
         break;
       case COLOR:
-        float d;
-        if (v.normal != null) {
-          d = LightUtil.diffuseLight(v.normal.x, v.normal.y, v.normal.z);
-        } else {
-          d = LightUtil.diffuseLight(normal.getX(), normal.getY(), normal.getZ());
-        }
-
-        if (v.color != null) {
-          builder.put(e, d * v.color.x, d * v.color.y, d * v.color.z, v.color.w);
-        } else {
-          builder.put(e, d, d, d, 1);
-        }
+        float d = LightUtil.diffuseLight(v.nx(), v.ny(), v.nz());
+        builder.put(e, d * color.x, d * color.y, d * color.z, color.w);
         break;
       case UV:
-        builder.put(e, sprite.getInterpolatedU(v.u() * 16), sprite.getInterpolatedV(v.v() * 16), 0, 1);
-
+        builder.put(e, tex.getInterpolatedU(v.u() * 16) * w, tex.getInterpolatedV(v.v() * 16) * w, 0, w);
         break;
       case NORMAL:
-        if (v.normal != null) {
-          builder.put(e, v.nx(), v.ny(), v.nz(), 0);
-        } else {
-          builder.put(e, normal.getX(), normal.getY(), normal.getZ(), 0);
-        }
+        builder.put(e, v.nx(), v.ny(), v.nz(), 0);
         break;
       default:
         builder.put(e);
       }
-    }
-  }
-
-  // END TODO
-
-  boolean use = true;
-
-  public void bake(List<BakedQuad> quads) {
-    if (use) {
-      addBakedQuads(quads, corners, tex, color);
-    } else {
-      RenderUtil.addBakedQuads(quads, corners, tex, color);
     }
   }
 
