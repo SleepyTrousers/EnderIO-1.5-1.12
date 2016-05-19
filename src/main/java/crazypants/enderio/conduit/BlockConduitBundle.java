@@ -6,41 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
@@ -82,6 +47,40 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
     @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks") })
@@ -162,7 +161,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
       TileConduitBundle bundle = getTileEntity(world, pos);
       if (bundle != null) {
-        // not the best caching in the world, but good enough. A bit on the memory-intensive side...
+        // not the best caching in the world, but good enough. A bit on the
+        // memory-intensive side...
         blockStateWrapper.addCacheKey(bundle);
         blockStateWrapper.addCacheKey(bundle.getSerial());
       }
@@ -210,25 +210,29 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @SideOnly(Side.CLIENT)
   @Override
   public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
+
+    IBlockState state = world.getBlockState(pos);
+    if (state == null || state.getBlock() != this || lastRemovedComponetIcon == null) {
+      return false;
+    }
+    state = state.getBlock().getActualState(state, world, pos);
+    int i = 4;
     TextureAtlasSprite tex = lastRemovedComponetIcon;
-    byte b0 = 4;
-    for (int j1 = 0; j1 < b0; ++j1) {
-      for (int k1 = 0; k1 < b0; ++k1) {
-        for (int l1 = 0; l1 < b0; ++l1) {
-          double d0 = x + (j1 + 0.5D) / b0;
-          double d1 = y + (k1 + 0.5D) / b0;
-          double d2 = z + (l1 + 0.5D) / b0;
-          EntityDiggingFX fx = (EntityDiggingFX) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0,
-              d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, 0);
-          fx.func_174845_l();
+    for (int j = 0; j < i; ++j) {
+      for (int k = 0; k < i; ++k) {
+        for (int l = 0; l < i; ++l) {
+          double d0 = pos.getX() + (j + 0.5D) / i;
+          double d1 = pos.getY() + (k + 0.5D) / i;
+          double d2 = pos.getZ() + (l + 0.5D) / i;
+          EntityDiggingFX fx = (EntityDiggingFX) new EntityDiggingFX.Factory().getEntityFX(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
+              d1 - pos.getY() - 0.5D, d2 - pos.getZ() - 0.5D, 0);
+          fx.setBlockPos(pos);
           fx.setParticleIcon(tex);
           effectRenderer.addEffect(fx);
         }
       }
     }
+
     return true;
   }
 
@@ -425,14 +429,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
   }
 
-  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {    
+  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
     int result = worldIn.getCombinedLight(pos.up(), 0);
-    for(EnumFacing dir : EnumFacing.HORIZONTALS) {
+    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
       int val = worldIn.getCombinedLight(pos.offset(dir), 0);
-      if(val > result) {
+      if (val > result) {
         result = val;
       }
-    }    
+    }
     return result;
   }
 
