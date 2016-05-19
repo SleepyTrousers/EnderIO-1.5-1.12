@@ -12,21 +12,26 @@ import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.config.Config;
 
 /**
- * This enum is a way to hold lists of configurable items and blocks.
+ * This class is a way to hold lists of configurable items and blocks.
  * <p>
  * It can be fed with item names, items, item stacks, block names, blocks and ore dictionary names.
  * <p>
  * Those can then be used to check if an item, item stack or block is in a list, or to fetch a list in item, item stack or block form.
  * <p>
- * Non-existing things are silently ignored. Adding thinks in the pre-init phase (i.e. before all modded things exist in the game) is safe.
+ * Non-existing things are silently ignored. Adding things in the pre-init phase (i.e. before all modded things exist in the game) is safe.
  *
  */
-public enum Things {
-  TRAVEL_BLACKLIST(Config.travelStaffBlinkBlackList);
+public class Things {
+  public static final Things TRAVEL_BLACKLIST = new Things(Config.travelStaffBlinkBlackList);
+
+  private static final List<Things> values = new ArrayList<Things>();
 
   private Things(String... names) {
     for (String string : names) {
       add(string);
+    }
+    if (inPreInit) {
+      values.add(this);
     }
   }
 
@@ -34,9 +39,10 @@ public enum Things {
 
   public static void enterInit() {
     inPreInit = false;
-    for (Things element : values()) {
+    for (Things element : values) {
       element.bake();
     }
+    values.clear();
   }
 
   private final List<IThing> things = new ArrayList<IThing>();
@@ -63,6 +69,10 @@ public enum Things {
     add(new StringThing(name));
   }
 
+  public void add(ResourceLocation resourceLocation) {
+    add(new ResourceThing(resourceLocation));
+  }
+
   public void addOredict(String name) {
     add(new OreThing(name));
   }
@@ -83,14 +93,12 @@ public enum Things {
   private void bake() {
     for (int i = 0; i < things.size(); i++) {
       IThing thing = things.get(i);
-      if (thing instanceof StringThing) {
-        IThing theThing = ((StringThing) thing).bake();
-        if (theThing != null) {
-          things.set(i, theThing);
-        } else {
-          things.remove(i);
-          i--;
-        }
+      IThing bakedThing = thing.bake();
+      if (bakedThing != null) {
+        things.set(i, bakedThing);
+      } else {
+        things.remove(i);
+        i--;
       }
     }
   }
@@ -120,6 +128,10 @@ public enum Things {
       }
     }
     return false;
+  }
+
+  public boolean isEmpty() {
+    return things.isEmpty();
   }
 
   private List<Item> itemList = null;
@@ -463,6 +475,64 @@ public enum Things {
           return null;
         }
       }
+    }
+
+    @Override
+    public boolean is(Item item) {
+      return false;
+    }
+
+    @Override
+    public boolean is(ItemStack itemStack) {
+      return false;
+    }
+
+    @Override
+    public boolean is(Block block) {
+      return false;
+    }
+
+    @Override
+    public List<Item> getItems() {
+      return Collections.<Item> emptyList();
+    }
+
+    @Override
+    public List<ItemStack> getItemStacks() {
+      return Collections.<ItemStack> emptyList();
+    }
+
+    @Override
+    public List<Block> getBlocks() {
+      return Collections.<Block> emptyList();
+    }
+
+  }
+
+  private static class ResourceThing implements IThing {
+
+    private final ResourceLocation resourceLocation;
+
+    private ResourceThing(ResourceLocation resourceLocation) {
+      this.resourceLocation = resourceLocation;
+    }
+
+    @Override
+    public IThing bake() {
+      if (resourceLocation == null) {
+        return null;
+      }
+      // this ugly thing seems to be what Forge wants you to use
+      Block block = net.minecraft.block.Block.blockRegistry.getObject(resourceLocation);
+      if (block != null) {
+        return new BlockThing(block).bake();
+      }
+      // this ugly thing seems to be what Forge wants you to use
+      Item item = net.minecraft.item.Item.itemRegistry.getObject(resourceLocation);
+      if (item != null) {
+        return new ItemThing(item).bake();
+      }
+      return null;
     }
 
     @Override

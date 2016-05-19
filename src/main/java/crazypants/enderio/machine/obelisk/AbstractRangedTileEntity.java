@@ -2,6 +2,7 @@ package crazypants.enderio.machine.obelisk;
 
 import com.enderio.core.client.render.BoundingBox;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -38,7 +39,7 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     }
     showingRange = showRange;
     if(showingRange) {
-      System.out.println("AbstractRangedTileEntity.setShowRange: Spawned range entity into the world with a range of " + getRange());
+      Log.debug("AbstractRangedTileEntity.setShowRange: Spawned range entity into the world with a range of " + getRange());
       worldObj.spawnEntityInWorld(new RangeEntity(this));
     }
   }
