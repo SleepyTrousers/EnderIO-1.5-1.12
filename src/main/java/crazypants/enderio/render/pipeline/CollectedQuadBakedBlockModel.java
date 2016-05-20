@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -62,10 +63,9 @@ public class CollectedQuadBakedBlockModel implements IBakedModel {
     this.particleTexture = particleTexture;
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
-    return net.minecraft.client.renderer.block.model.ItemCameraTransforms.DEFAULT;
+    return ItemCameraTransforms.DEFAULT;
   }
 
   @Override

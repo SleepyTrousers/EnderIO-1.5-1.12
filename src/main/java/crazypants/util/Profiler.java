@@ -17,7 +17,7 @@ public class Profiler {
   private boolean on = false;
 
   public long start() {
-    on = /* info.loenwind.enderioaddons.config.Config.profilingEnabled.getBoolean() && */EnderIO.proxy.getTickCount() > 20 * 30;
+    //on = /* info.loenwind.enderioaddons.config.Config.profilingEnabled.getBoolean() && */EnderIO.proxy.getTickCount() > 20 * 30;
     return on ? System.nanoTime() : Long.MAX_VALUE;
   }
 

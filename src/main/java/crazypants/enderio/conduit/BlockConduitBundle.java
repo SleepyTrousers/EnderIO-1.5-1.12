@@ -17,6 +17,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -47,6 +48,7 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -144,7 +146,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {    
-    return bounds;
+    return bounds;    
   }
 
   @Override
@@ -398,7 +400,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @Override
-  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {    
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
       return super.getLightValue(bs, world, pos);
@@ -419,45 +421,44 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result > 15 ? 15 : result;
   }
 
-  //TODO: 1.9
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {    
-//    IConduitBundle te = getTileEntity(worldIn, pos);
-//    if (te != null && te.hasFacade()) {
-//      if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
-//        return 255;
-//      } else {
-//        return getMixedBrightnessForFacade(worldIn, pos, te.getPaintSource().getBlock());
-//      }
-//    }
-//    return super.getMixedBrightnessForBlock(worldIn, pos);
-//  }
-//
-//  @SideOnly(Side.CLIENT)
-//  public int getMixedBrightnessForFacade(IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
-//    int i = worldIn.getCombinedLight(pos, getLightValue(worldIn, pos));
-//    if (i == 0 && facadeBlock instanceof BlockSlab) {
-//      pos = pos.down();
-//      Block block = worldIn.getBlockState(pos).getBlock();
-//      return worldIn.getCombinedLight(pos, block.getLightValue(worldIn, pos));
-//    } else if (facadeBlock.getUseNeighborBrightness()) {
-//      return getNeightbourBrightness(worldIn, pos);
-//    } else {
-//      return i;
-//    }
-//  }
-//
-//  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
-//    int result = worldIn.getCombinedLight(pos.up(), 0);
-//    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-//      int val = worldIn.getCombinedLight(pos.offset(dir), 0);
-//      if (val > result) {
-//        result = val;
-//      }
-//    }
-//    return result;
-//  }  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int getPackedLightmapCoords(IBlockState bs, IBlockAccess worldIn, BlockPos pos) {      
+    IConduitBundle te = getTileEntity(worldIn, pos);
+    if (te != null && te.hasFacade()) {
+      if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
+        return 255;
+      } else {
+        return getMixedBrightnessForFacade(bs, worldIn, pos, te.getPaintSource().getBlock());
+      }
+    }
+    return super.getPackedLightmapCoords(bs, worldIn, pos);    
+  }
+
+  @SideOnly(Side.CLIENT)
+  public int getMixedBrightnessForFacade(IBlockState bs, IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
+    int i = worldIn.getCombinedLight(pos, getLightValue(bs, worldIn, pos));
+    if (i == 0 && facadeBlock instanceof BlockSlab) {
+      pos = pos.down();
+      Block block = worldIn.getBlockState(pos).getBlock();
+      return worldIn.getCombinedLight(pos, block.getLightValue(bs, worldIn, pos));
+    } else if (facadeBlock.getUseNeighborBrightness(bs)) {
+      return getNeightbourBrightness(worldIn, pos);
+    } else {
+      return i;
+    }
+  }
+
+  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
+    int result = worldIn.getCombinedLight(pos.up(), 0);
+    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+      int val = worldIn.getCombinedLight(pos.offset(dir), 0);
+      if (val > result) {
+        result = val;
+      }
+    }
+    return result;
+  }  
 
   @Override
   public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {
