@@ -83,7 +83,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    if(facade != null && facade.getBlock().isOpaqueCube(facade) && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if(facade != null && facade.isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
