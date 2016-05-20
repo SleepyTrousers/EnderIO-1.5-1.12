@@ -3,9 +3,12 @@ package crazypants.enderio.enderface;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerWrapper extends net.minecraft.inventory.Container {
 
@@ -43,25 +46,26 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     return wrapped.enchantItem(arg0, arg1);
   }
 
+  
+  
   @Override
-  public net.minecraft.item.ItemStack slotClick(int arg0, int arg1, int arg2, net.minecraft.entity.player.EntityPlayer arg3) {
-    return wrapped.slotClick(arg0, arg1, arg2, arg3);
-  }
-
- 
-  @Override
-  public void onCraftGuiOpened(ICrafting listener) {
-    wrapped.onCraftGuiOpened(listener);
+  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {    
+    return wrapped.slotClick(slotId, dragType, clickTypeIn, player);
   }
 
   @Override
-  public void detectAndSendChanges() {
+  public void detectAndSendChanges() {    
     wrapped.detectAndSendChanges();
   }
 
   @Override
-  public void removeCraftingFromCrafters(net.minecraft.inventory.ICrafting arg0) {
-    wrapped.removeCraftingFromCrafters(arg0);
+  public void addListener(ICrafting listener) {
+    wrapped.addListener(listener);
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void removeListener(ICrafting listener) {
+    wrapped.removeListener(listener);    
   }
 
   @Override
