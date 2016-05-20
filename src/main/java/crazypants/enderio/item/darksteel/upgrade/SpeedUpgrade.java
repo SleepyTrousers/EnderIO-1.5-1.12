@@ -56,8 +56,8 @@ public class SpeedUpgrade extends AbstractUpgrade {
   }
 
   private static ItemStack createUpgradeItem() {
-    ItemStack pot = new ItemStack(Items.potionitem, 1, 0);
-    int res = PotionHelper.applyIngredient(0, Items.nether_wart.getPotionEffect(new ItemStack(Items.nether_wart)));
+    ItemStack pot = new ItemStack(Items.POTIONITEM, 1, 0);
+    int res = PotionHelper.applyIngredient(0, Items.NETHER_WART.getPotionEffect(new ItemStack(Items.NETHER_WART)));
     res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);    
     pot.setItemDamage(res);
     return pot;

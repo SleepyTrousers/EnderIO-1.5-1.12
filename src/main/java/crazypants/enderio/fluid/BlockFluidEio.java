@@ -65,17 +65,16 @@ public class BlockFluidEio extends BlockFluidClassic {
   }
 
   @Override
-  public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
-
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
     if(entity.worldObj.isRemote) {
-      super.onEntityCollidedWithBlock(world, pos, entity);
+      super.onEntityCollidedWithBlock(world, pos, state, entity);
       return;
     }
 
     if(this == Fluids.blockFireWater) {
       entity.setFire(50);
     } else if(this == Fluids.blockRocketFuel && entity instanceof EntityLivingBase) {
-      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.jump, 150, 3, true, true));
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 150, 3, true, true));
     } else if(this == Fluids.blockNutrientDistillation && entity instanceof EntityPlayerMP) {
       long time = entity.worldObj.getTotalWorldTime();
       EntityPlayerMP player = (EntityPlayerMP) entity;
@@ -84,10 +83,10 @@ public class BlockFluidEio extends BlockFluidClassic {
         player.getEntityData().setLong("eioLastFoodBoost", time);
       }
     } else if (this == Fluids.blockHootch && entity instanceof EntityLivingBase) {
-      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.confusion, 150, 0, true, true));
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 150, 0, true, true));
     }
 
-    super.onEntityCollidedWithBlock(world,pos, entity);
+    super.onEntityCollidedWithBlock(world,pos, state, entity);
   }
 
   @Override

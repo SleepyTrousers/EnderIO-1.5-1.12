@@ -138,7 +138,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
           burnTime = getBurnTime(inventory[0]);
           if (burnTime > 0) {
             totalBurnTime = burnTime;
-            isLavaFired = inventory[0].getItem() == Items.lava_bucket;
+            isLavaFired = inventory[0].getItem() == Items.LAVA_BUCKET;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
             if (containedItem != null) {
               if (inventory[0].stackSize == 1) {

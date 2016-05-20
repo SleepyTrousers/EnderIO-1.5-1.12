@@ -146,8 +146,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
     List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs, 0);
     float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, worldObj, bc, bs,
-        EnchantmentHelper.getEnchantmentLevel(Enchantments.fortune, held), 1,
-        EnchantmentHelper.getEnchantmentLevel(Enchantments.silkTouch, held) != 0, player);
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, held) != 0, player);
 
     worldObj.setBlockToAir(bc);
     boolean usedPower = false;
@@ -170,7 +170,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.getState())) {
       evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
     }
-    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getBlock().getMaterial(evt.getState()) == Material.leaves) {
+    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getBlock().getMaterial(evt.getState()) == Material.LEAVES) {
       evt.setNewSpeed(6);
     }
   }

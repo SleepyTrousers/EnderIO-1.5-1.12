@@ -234,11 +234,11 @@ public class KeyTracker {
     if(nightVisionKey.isPressed()) {
       boolean isActive = !DarkSteelController.instance.isNightVisionActive();
       if(isActive) {
-        SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.on"));
+        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.on"));
         player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 0.1f,
             player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
       } else {
-        SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.off"));
+        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.off"));
         player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 0.1f, 1.0f, false);
       }
       DarkSteelController.instance.setNightVisionActive(isActive);

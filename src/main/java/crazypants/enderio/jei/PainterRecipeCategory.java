@@ -7,6 +7,19 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.GuiPainter;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import mezz.jei.Internal;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -30,20 +43,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.GuiPainter;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
 
 public class PainterRecipeCategory extends BlankRecipeCategory {
 
@@ -277,8 +276,8 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
   private static @Nonnull List<ItemStack> getLimitedItems() {
     List<ItemStack> list = new ArrayList<ItemStack>();
-    for (Block block : new Block[] { Blocks.stone, Blocks.cobblestone, Blocks.grass, Blocks.dirt, Blocks.planks, Blocks.glass, Blocks.stone_stairs,
-        Blocks.red_flower, Blocks.slime_block, Blocks.tnt }) {
+    for (Block block : new Block[] { Blocks.STONE, Blocks.COBBLESTONE, Blocks.GRASS, Blocks.DIRT, Blocks.PLANKS, Blocks.GLASS, Blocks.STONE_STAIRS,
+        Blocks.RED_FLOWER, Blocks.SLIME_BLOCK, Blocks.TNT}) {
       Item item = Item.getItemFromBlock(block);
       for (CreativeTabs tab : item.getCreativeTabs()) {
         item.getSubItems(item, tab, list);

@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.creativetab.CreativeTabs;
@@ -59,16 +60,17 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     super();
     setCreativeTab(null);
     setUnlocalizedName(ModObject.blockPaintedCarpet.getUnlocalisedName());
+    setRegistryName(ModObject.blockPaintedCarpet.getUnlocalisedName());
     setHardness(0.1F);
-    setStepSound(soundTypeCloth);
+    setSoundType(SoundType.CLOTH);
     setLightOpacity(0);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, ModObject.blockPaintedCarpet.getUnlocalisedName());
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), ModObject.blockPaintedCarpet.getUnlocalisedName());
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this, ModObject.blockPaintedCarpet.getUnlocalisedName()));
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.getUnlocalisedName() + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.carpet));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
@@ -82,22 +84,22 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -110,8 +112,8 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState state,RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }
@@ -184,9 +186,9 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    return super.shouldSideBeRendered(worldIn, pos, side)
-        && !(side.getAxis() != EnumFacing.Axis.Y && worldIn.getBlockState(pos).getBlock() instanceof BlockCarpet);
+  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+    return super.shouldSideBeRendered(state, worldIn, pos, side)
+        && !(side.getAxis() != EnumFacing.Axis.Y && worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockCarpet);
   }
 
   @Override

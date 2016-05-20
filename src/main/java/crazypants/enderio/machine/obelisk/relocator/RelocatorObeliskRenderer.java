@@ -9,8 +9,8 @@ import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 @SideOnly(Side.CLIENT)
 public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocatorObelisk> {
 
-  private ItemStack offStack = new ItemStack(Blocks.prismarine);
-  private ItemStack onStack = new ItemStack(Blocks.prismarine);
+  private ItemStack offStack = new ItemStack(Blocks.PRISMARINE);
+  private ItemStack onStack = new ItemStack(Blocks.PRISMARINE);
 
   public RelocatorObeliskRenderer() {
     super(null);

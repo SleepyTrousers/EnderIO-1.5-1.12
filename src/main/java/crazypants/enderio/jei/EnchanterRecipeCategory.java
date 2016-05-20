@@ -6,6 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.enchanter.EnchanterRecipe;
+import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
+import crazypants.enderio.machine.enchanter.GuiEnchanter;
+import crazypants.enderio.machine.enchanter.TileEnchanter;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -22,12 +27,6 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.enchanter.EnchanterRecipe;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
@@ -79,7 +78,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
       List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
       List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
       getItemStacks(rec, itemInputs, itemOutputs);
-      itemInputs.add(new ItemStack(Items.writable_book));
+      itemInputs.add(new ItemStack(Items.WRITABLE_BOOK));
       return itemInputs;
     }
 
@@ -167,7 +166,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     guiItemStacks.init(1, true, 75 - xOff, 34 - yOff);
     guiItemStacks.init(2, false, 133 - xOff, 34 - yOff);
 
-    guiItemStacks.setFromRecipe(0, new ItemStack(Items.writable_book));
+    guiItemStacks.setFromRecipe(0, new ItemStack(Items.WRITABLE_BOOK));
     
     EnchanterRecipe rec = currentRecipe.rec;
     List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
@@ -182,8 +181,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     for (int level = 1; level <= rec.getEnchantment().getMaxLevel(); level++) {
       itemInputs.add(new ItemStack(item.getItem(), level  * rec.getItemsPerLevel() ,item.getMetadata()));      
       EnchantmentData enchantment = new EnchantmentData(rec.getEnchantment(), level);
-      ItemStack output = new ItemStack(Items.enchanted_book);
-      Items.enchanted_book.addEnchantment(output, enchantment);
+      ItemStack output = new ItemStack(Items.ENCHANTED_BOOK);
+      Items.ENCHANTED_BOOK.addEnchantment(output, enchantment);
       itemOutputs.add(output);
     }
   }

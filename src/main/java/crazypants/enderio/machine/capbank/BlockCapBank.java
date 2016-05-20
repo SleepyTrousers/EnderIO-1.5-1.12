@@ -16,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -94,10 +95,15 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
 
   protected BlockCapBank() {
-    super(ModObject.blockCapBank.getUnlocalisedName(), TileCapBank.class, BlockItemCapBank.class);
+    super(ModObject.blockCapBank.getUnlocalisedName(), TileCapBank.class);
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
+  }
+
+  @Override
+  protected ItemBlock createItemBlock() {
+    return new BlockItemCapBank(getName());
   }
 
   @Override
@@ -208,7 +214,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       return false;
     }
 
-    if (entityPlayer.isSneaking() && entityPlayer.getHeldItemMainhand() == null && faceHit.getFrontOffsetY() == 0) {
+    if (entityPlayer.isSneaking() && entityPlayer.getHeldItem(hand) == null && faceHit.getFrontOffsetY() == 0) {
       InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
       if (newDisplayType == InfoDisplayType.NONE) {
         tcb.setDefaultIoMode(faceHit);
@@ -219,7 +225,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       return true;
     }
 
-    if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer)) {
+    if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer, hand)) {
       IoMode ioMode = tcb.getIoMode(faceHit);
       if (faceHit.getFrontOffsetY() == 0) {
         if (ioMode == IoMode.DISABLED) {

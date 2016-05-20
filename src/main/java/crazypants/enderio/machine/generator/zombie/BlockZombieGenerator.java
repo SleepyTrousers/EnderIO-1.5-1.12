@@ -49,7 +49,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
+    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.ANVIL);
   }
   
   @Override
@@ -100,7 +100,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
         if(Config.machineSoundsEnabled) {
           float volume = (Config.machineSoundVolume * 0.045f);
-          SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "generator.zombie.bubble"));
+          SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "generator.zombie.bubble"));
           world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, soundEvent, SoundCategory.BLOCKS, volume, world.rand.nextFloat() * 0.75f, false);
         }
       }

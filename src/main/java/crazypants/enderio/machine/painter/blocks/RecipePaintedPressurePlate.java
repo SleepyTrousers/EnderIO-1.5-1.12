@@ -27,7 +27,7 @@ public class RecipePaintedPressurePlate implements IRecipe {
       ItemStack itemstack = inv.getStackInSlot(i);
       if (itemstack != null) {
         Block block = Block.getBlockFromItem(itemstack.getItem());
-        if (block == Blocks.wool) {
+        if (block == Blocks.WOOL) {
           if (foundWool) {
             return false;
           }

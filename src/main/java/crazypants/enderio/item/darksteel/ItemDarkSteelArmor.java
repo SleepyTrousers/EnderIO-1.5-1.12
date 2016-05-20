@@ -49,7 +49,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     IRevealer, IVisDiscountGear, IOverlayRenderAware {
 
   //TODO: 1.8
-  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15, SoundEvents.item_armor_equip_iron);
+  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON);
 
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };

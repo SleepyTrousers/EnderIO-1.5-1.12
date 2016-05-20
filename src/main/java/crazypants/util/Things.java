@@ -456,19 +456,19 @@ public class Things {
       }
       if (meta < 0) {
         // this ugly thing seems to be what Forge wants you to use
-        Block block = net.minecraft.block.Block.blockRegistry.getObject(new ResourceLocation(mod, ident));
+        Block block = net.minecraft.block.Block.REGISTRY.getObject(new ResourceLocation(mod, ident));
         if (block != null) {
           return new BlockThing(block).bake();
         }
         // this ugly thing seems to be what Forge wants you to use
-        Item item = net.minecraft.item.Item.itemRegistry.getObject(new ResourceLocation(mod, ident));
+        Item item = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation(mod, ident));
         if (item != null) {
           return new ItemThing(item).bake();
         }
         return new OreThing(name).bake();
       } else {
         // this ugly thing seems to be what Forge wants you to use
-        Item item = net.minecraft.item.Item.itemRegistry.getObject(new ResourceLocation(mod, ident));
+        Item item = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation(mod, ident));
         if (item != null) {
           return new ItemStackThing(new ItemStack(item, 1, meta)).bake();
         } else {
@@ -523,12 +523,12 @@ public class Things {
         return null;
       }
       // this ugly thing seems to be what Forge wants you to use
-      Block block = net.minecraft.block.Block.blockRegistry.getObject(resourceLocation);
+      Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
       if (block != null) {
         return new BlockThing(block).bake();
       }
       // this ugly thing seems to be what Forge wants you to use
-      Item item = net.minecraft.item.Item.itemRegistry.getObject(resourceLocation);
+      Item item = net.minecraft.item.Item.REGISTRY.getObject(resourceLocation);
       if (item != null) {
         return new ItemThing(item).bake();
       }

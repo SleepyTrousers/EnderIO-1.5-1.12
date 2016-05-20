@@ -32,7 +32,7 @@ public enum Fertilizer {
     }
   },
 
-  BONEMEAL(new ItemStack(Items.dye, 1, 15)) {
+  BONEMEAL(new ItemStack(Items.DYE, 1, 15)) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
@@ -55,7 +55,7 @@ public enum Fertilizer {
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
       BlockCoord below = bc.getLocation(EnumFacing.DOWN);
       Block belowBlock = below.getBlock(world);
-      if(belowBlock == Blocks.dirt || belowBlock == Blocks.grass) {
+      if(belowBlock == Blocks.DIRT || belowBlock == Blocks.GRASS) {
         EnumActionResult res = stack.getItem().onItemUse(stack, player, world, below.getBlockPos(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
         return res != null && res != EnumActionResult.FAIL; 
       }

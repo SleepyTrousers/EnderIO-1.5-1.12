@@ -21,11 +21,11 @@ public class BubbleFX extends EntityBubbleFX {
     prevPosX = posX;
     prevPosY = posY;
     prevPosZ = posZ;
-    ySpeed += 0.002D;
-    moveEntity(xSpeed, ySpeed, zSpeed);
-    xSpeed *= 0.8500000238418579D;
-    ySpeed *= 0.8500000238418579D;
-    zSpeed *= 0.8500000238418579D;
+    motionY += 0.002D;
+    moveEntity(motionX, motionY, motionZ);
+    motionX *= 0.8500000238418579D;
+    motionY *= 0.8500000238418579D;
+    motionZ *= 0.8500000238418579D;
 
     if(particleMaxAge-- <= 0 || posY > yLimit) {
       setExpired();

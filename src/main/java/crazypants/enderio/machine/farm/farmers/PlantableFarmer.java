@@ -60,7 +60,7 @@ public class PlantableFarmer implements IFarmerJoe {
     }
     Block ground = farm.getBlock(bc.getLocation(EnumFacing.DOWN));
     if(type == EnumPlantType.Nether) {
-      if(ground != Blocks.soul_sand) {
+      if(ground != Blocks.SOUL_SAND) {
         return false;
       }
       return plantFromInventory(farm, bc, plantable);
@@ -109,7 +109,7 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, IPlantable plantable) {
-    worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+    worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
     IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));    
     worldObj.setBlockState(bc.getBlockPos(), target, 1 | 2);
     farm.actionPerformed(false);
@@ -176,10 +176,10 @@ public class PlantableFarmer implements IFarmerJoe {
     if(removed) {
       if(!plant(farm, worldObj, bc, (IPlantable) removedPlantable.getItem())) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, removedPlantable.copy()));
-        worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+        worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
       }
     } else {
-      worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+      worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
     }
 
     return new HarvestResult(result, bc.getBlockPos());

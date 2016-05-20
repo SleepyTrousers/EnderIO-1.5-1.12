@@ -53,8 +53,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   private BlockReservoir() {
-    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, Material.rock);
-    setStepSound(SoundType.GLASS);
+    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, Material.ROCK);
+    setSoundType(SoundType.GLASS);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO));
   }
 

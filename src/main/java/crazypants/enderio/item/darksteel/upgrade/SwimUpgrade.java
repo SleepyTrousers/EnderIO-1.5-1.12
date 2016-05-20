@@ -31,7 +31,7 @@ public class SwimUpgrade extends AbstractUpgrade {
   }
 
   public SwimUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.waterlily), Config.darkSteelSwimCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), Config.darkSteelSwimCost);
   }  
   
   @Override

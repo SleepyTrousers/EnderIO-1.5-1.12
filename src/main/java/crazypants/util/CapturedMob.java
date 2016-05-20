@@ -179,6 +179,9 @@ public class CapturedMob {
     if (entityId == null || entityId.trim().isEmpty() || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())) {
       return true;
     }
+    if(!Config.soulVesselCapturesBosses && !entity.isNonBoss()) {
+      return true;
+    }
     return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
   }
 
@@ -202,7 +205,7 @@ public class CapturedMob {
     }
     entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
 
-    if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCubes(entity, entity.getEntityBoundingBox()).isEmpty()) {
+    if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
       return false;
     }
 
@@ -251,7 +254,7 @@ public class CapturedMob {
     if (isVariant && entity instanceof EntitySkeleton) {
       EntitySkeleton skel = (EntitySkeleton) entity;
       skel.setSkeletonType(1);
-      skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.stone_sword));
+      skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
       skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
       skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
       skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
@@ -264,10 +267,10 @@ public class CapturedMob {
       Calendar calendar = world.getCurrentDate();
 
       if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
-        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.lit_pumpkin : Blocks.pumpkin));        
+        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));        
         skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
       } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
-        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.leather_boots : Items.stick));
+        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
       } else if (Math.random() < 0.1) {
         skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));        
         skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);

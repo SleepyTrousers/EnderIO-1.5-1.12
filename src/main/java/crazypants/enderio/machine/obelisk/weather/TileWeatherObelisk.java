@@ -124,7 +124,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    return i == 0 && itemstack != null && itemstack.getItem() == Items.fireworks;
+    return i == 0 && itemstack != null && itemstack.getItem() == Items.FIREWORKS;
   }
 
   @Override
@@ -188,7 +188,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + (1 - offset)
           + correction, xf, yf, zf, c));
     } else if (!playedFuse) {
-      worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.entity_tnt_primed, SoundCategory.BLOCKS, 1, 1, true);
+      worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1, true);
       playedFuse = true;
     }
   }

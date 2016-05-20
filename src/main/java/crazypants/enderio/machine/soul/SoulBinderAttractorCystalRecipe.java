@@ -18,7 +18,7 @@ public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(Items.emerald);
+    return new ItemStack(Items.EMERALD);
   }
 
   @Override

@@ -175,18 +175,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public boolean tillBlock(BlockCoord plantingLocation) {
     BlockCoord dirtLoc = plantingLocation.getLocation(EnumFacing.DOWN);
     Block dirtBlock = getBlock(dirtLoc);
-    if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass)) {
+    if((dirtBlock == Blocks.DIRT || dirtBlock == Blocks.GRASS)) {
       if(!hasHoe()) {
         setNotification(NOTIFICATION_NO_HOE);
         return false;
       }
       damageHoe(1, dirtLoc);
-      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
-      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, SoundEvents.block_grass_step, SoundCategory.BLOCKS,
-          (Blocks.farmland.getStepSound().getVolume() + 1.0F) / 2.0F, Blocks.farmland.getStepSound().getPitch() * 0.8F, false);
+      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.FARMLAND.getDefaultState());
+      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS,
+          (Blocks.FARMLAND.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.FARMLAND.getSoundType().getPitch() * 0.8F, false);
       actionPerformed(false);
       return true;
-    } else if(dirtBlock == Blocks.farmland) {
+    } else if(dirtBlock == Blocks.FARMLAND) {
       return true;
     }
     return false;
@@ -299,8 +299,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   private int getLooting(ItemStack stack) {
     return Math.max(
-        EnchantmentHelper.getEnchantmentLevel(Enchantments.looting, stack),
-        EnchantmentHelper.getEnchantmentLevel(Enchantments.fortune, stack));
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack),
+        EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
 
   public EntityPlayerMP getFakePlayer() {

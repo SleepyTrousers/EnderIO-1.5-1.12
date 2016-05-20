@@ -40,7 +40,7 @@ public class SolarPanelNetwork {
 
   void onUpdate(TileEntitySolarPanel panel, boolean force) {
     if (valid && (force || !contains(panel))) {
-      panels.add(panel.getPos().getImmutable());
+      panels.add(panel.getPos().toImmutable());
       nextCollectTick = Long.MAX_VALUE;
       cleanupMemberlist();
     }
@@ -50,7 +50,7 @@ public class SolarPanelNetwork {
     if (world == null) {
       world = panel.getWorld();
     }
-    return panels.contains(panel.getPos().getImmutable());
+    return panels.contains(panel.getPos().toImmutable());
   }
 
   void cleanupMemberlist() {
@@ -81,7 +81,7 @@ public class SolarPanelNetwork {
           if (!panels.contains(candidate) && canConnect(candidate)) {
             TileEntity tileEntity = world.getTileEntity(candidate);
             if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorldObj()) {
-              panels.add(candidate.getImmutable());
+              panels.add(candidate.toImmutable());
               final SolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
               if (otherNetwork != this) {
                 ((TileEntitySolarPanel) tileEntity).setNetwork(this);

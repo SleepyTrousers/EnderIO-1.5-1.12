@@ -16,10 +16,10 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
   public static final int MAX_LIFE = 10;
   
   public EntityFluidLoadingFX(World world, double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
-    super(world, x1, y1, z1, Material.water);
-    this.xSpeed = (x2 - x1) / MAX_LIFE;
-    this.ySpeed = (y2 - y1) / MAX_LIFE;
-    this.zSpeed = (z2 - z1) / MAX_LIFE;
+    super(world, x1, y1, z1, Material.WATER);
+    this.motionX = (x2 - x1) / MAX_LIFE;
+    this.motionY = (y2 - y1) / MAX_LIFE;
+    this.motionZ = (z2 - z1) / MAX_LIFE;
     
     particleRed = color.getRed() / 256f;
     particleGreen = color.getGreen() / 256f;
@@ -36,7 +36,7 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
     this.prevPosY = this.posY;
     this.prevPosZ = this.posZ;
     
-    this.moveEntity(xSpeed, ySpeed, zSpeed);
+    this.moveEntity(motionX, motionY, motionZ);
     
     if(particleAge++ >= MAX_LIFE) {
       setExpired();

@@ -30,7 +30,7 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   public FakeFarmPlayer(WorldServer world) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new PlayerInteractionManager(world));
     // ItemInWorldManager will access this field directly and can crash
-    playerNetServerHandler = new FakeNetHandlerPlayServer(this);
+    connection = new FakeNetHandlerPlayServer(this);
   }
 
   @Override

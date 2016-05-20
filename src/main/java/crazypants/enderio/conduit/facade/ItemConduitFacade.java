@@ -66,7 +66,7 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
         IBlockState bs = PainterUtil2.getSourceBlock(itemStack);
         bundle.setPaintSource(bs);
         bundle.setFacadeType(EnumFacadeType.values()[itemStack.getItemDamage()]);
-        ConduitUtil.playPlaceSound(bs.getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
+        ConduitUtil.playPlaceSound(bs.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }

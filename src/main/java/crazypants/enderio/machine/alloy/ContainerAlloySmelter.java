@@ -89,11 +89,11 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
       }
       numResults = 0;
 
-      if (output.getItem() == Items.iron_ingot) {
-        thePlayer.addStat(AchievementList.acquireIron, 1);
+      if (output.getItem() == Items.IRON_INGOT) {
+        thePlayer.addStat(AchievementList.ACQUIRE_IRON, 1);
       }
-      if (output.getItem() == Items.cooked_fish) {
-        thePlayer.addStat(AchievementList.cookFish, 1);
+      if (output.getItem() == Items.COOKED_FISH) {
+        thePlayer.addStat(AchievementList.COOK_FISH, 1);
       }
     }
   }

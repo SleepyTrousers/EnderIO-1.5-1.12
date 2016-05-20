@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -56,10 +57,11 @@ public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpen
     Container c = player.openContainer;
   
     PacketHandler.INSTANCE.sendTo(new PacketLockClientContainer(player.openContainer.windowId), player);
-    Vec3d hitVec = message.hitVec;
-    player.theItemInWorldManager.activateBlockOrUseItem(player, player.worldObj, null, new BlockPos(message.x, message.y, message.z), message.side, (float) hitVec.xCoord,
+    Vec3d hitVec = message.hitVec;    
+    player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, new BlockPos(message.x, message.y, message.z), message.side, (float) hitVec.xCoord,
         (float) hitVec.yCoord, (float) hitVec.zCoord);
-    player.theItemInWorldManager.thisPlayerMP = player;
+    
+    player.interactionManager.thisPlayerMP = player;
     if (c != player.openContainer) {
       EnderIOController.INSTANCE.addContainer(player, player.openContainer);
     } else {

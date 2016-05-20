@@ -55,7 +55,7 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
 
   @Override
   public List<String> getSupportedSouls() {
-    List<String> res = EntityUtil.getAllRegisteredMobNames(false);
+    List<String> res = EntityUtil.getAllRegisteredMobNames();
     return res;
   }
 

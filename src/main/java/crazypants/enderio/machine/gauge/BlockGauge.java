@@ -40,7 +40,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   private BlockGauge() {
-    super(ModObject.blockGauge.getUnlocalisedName(), TileGauge.class, Material.glass);
+    super(ModObject.blockGauge.getUnlocalisedName(), TileGauge.class, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }

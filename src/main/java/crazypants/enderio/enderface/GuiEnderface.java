@@ -274,15 +274,15 @@ public class GuiEnderface extends GuiScreen {
           ForgeHooksClient.setRenderLayer(layer);
           setGlStateForPass(layer);
 
-          VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
+          VertexBuffer wr = Tessellator.getInstance().getBuffer();
           wr.begin(7, DefaultVertexFormats.BLOCK);
-          Tessellator.getInstance().getWorldRenderer().setTranslation(trans.x, trans.y, trans.z);
+          Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
           for (ViewableBlocks ug : blocks) {           
             BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
-            blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(), world, Tessellator.getInstance().getWorldRenderer());
+            blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
           }
           Tessellator.getInstance().draw();
-          Tessellator.getInstance().getWorldRenderer().setTranslation(0, 0, 0);
+          Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
         }
 
         RenderHelper.enableStandardItemLighting();
@@ -430,14 +430,14 @@ public class GuiEnderface extends GuiScreen {
     }
     GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
     RenderUtil.bindBlockTexture();
-    TextureAtlasSprite icon = RenderUtil.getTexture(Blocks.portal.getDefaultState());// Blocks.portal.getBlockTextureFromSide(1);
+    TextureAtlasSprite icon = RenderUtil.getTexture(Blocks.PORTAL.getDefaultState());
     float f1 = icon.getMinU();
     float f2 = icon.getMinV();
     float f3 = icon.getMaxU();
     float f4 = icon.getMaxV();
 
     Tessellator tessellator = Tessellator.getInstance();
-    VertexBuffer tes = tessellator.getWorldRenderer();
+    VertexBuffer tes = tessellator.getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     tes.pos(0.0D, par3, -90.0D).tex(f1, f4).endVertex();
     tes.pos(par2, par3, -90.0D).tex(f3, f4).endVertex();
@@ -455,7 +455,7 @@ public class GuiEnderface extends GuiScreen {
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     GL11.glColor4f(r, g, b, a);
     Tessellator tessellator = Tessellator.getInstance();
-    VertexBuffer tes = tessellator.getWorldRenderer();
+    VertexBuffer tes = tessellator.getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
     tes.pos(0.0D, height, 0.0D).endVertex();

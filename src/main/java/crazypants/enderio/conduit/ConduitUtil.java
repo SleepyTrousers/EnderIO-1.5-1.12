@@ -133,7 +133,7 @@ public class ConduitUtil {
           // placing then breaking
           // a block above this one to force the check
 
-          worldObj.setBlockState(pos.offset(EnumFacing.UP, i), Blocks.stone.getDefaultState(), 3);
+          worldObj.setBlockState(pos.offset(EnumFacing.UP, i), Blocks.STONE.getDefaultState(), 3);
           worldObj.setBlockToAir(pos.offset(EnumFacing.UP, i));
 
           return true;

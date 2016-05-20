@@ -826,7 +826,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       return;
     }
     Vector3d dropLocation;
-    EntityPlayer player = worldObj.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32);
+    EntityPlayer player = worldObj.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32, false);
     if (player != null) {
       dropLocation = EntityUtil.getEntityPosition(player);
     } else {

@@ -1,5 +1,9 @@
 package crazypants.enderio.fluid;
 
+import org.apache.commons.lang3.StringUtils;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.init.Blocks;
@@ -14,18 +18,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.apache.commons.lang3.StringUtils;
-
-import crazypants.enderio.EnderIOTab;
-import crazypants.util.ClientUtil;
-
 public class ItemBucketEio extends ItemBucket {
 
   public static ItemBucketEio create(BlockFluidClassic block, Fluid fluid) {
-    ItemBucketEio b = new ItemBucketEio(block != null ? block : Blocks.air, fluid.getName());
+    ItemBucketEio b = new ItemBucketEio(block != null ? block : Blocks.AIR, fluid.getName());
     b.init();
 
-    FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(b), new ItemStack(Items.bucket));
+    FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(b), new ItemStack(Items.BUCKET));
     if (block != null) {
       BucketHandler.instance.registerFluid(block, b);
     }
@@ -38,13 +37,14 @@ public class ItemBucketEio extends ItemBucket {
   protected ItemBucketEio(Block block, String fluidName) {
     super(block);  
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setContainerItem(Items.bucket);
+    setContainerItem(Items.BUCKET);
     itemName = "bucket" + StringUtils.capitalize(fluidName);
     setUnlocalizedName(itemName);
+    setRegistryName(itemName);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this,itemName);
+    GameRegistry.register(this);
   }
   
   public String getItemName() {

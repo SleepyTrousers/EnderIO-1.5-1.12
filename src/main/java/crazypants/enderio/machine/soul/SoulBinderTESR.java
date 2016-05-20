@@ -53,7 +53,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
 
   public static void renderBlockModel(World world, BlockPos pos, IBlockState state, boolean translateToOrigin) {
 
-    VertexBuffer wr = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
     if (translateToOrigin) {
       wr.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
@@ -64,7 +64,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
     IBakedModel ibakedmodel = modelShapes.getModelForState(state);
     for (BlockRenderLayer layer : BlockRenderLayer.values()) {
       ForgeHooksClient.setRenderLayer(layer);
-      blockrendererdispatcher.getBlockModelRenderer().renderModel(world, ibakedmodel, state, pos, Tessellator.getInstance().getWorldRenderer());
+      blockrendererdispatcher.getBlockModelRenderer().renderModel(world, ibakedmodel, state, pos, Tessellator.getInstance().getBuffer(), false);
     }
     if (translateToOrigin) {
       wr.setTranslation(0, 0, 0);

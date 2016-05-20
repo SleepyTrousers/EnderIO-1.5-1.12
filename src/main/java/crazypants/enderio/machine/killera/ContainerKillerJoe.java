@@ -16,8 +16,8 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> {
 
-  static private final Item[] slotItems = { Items.wooden_sword, Items.stone_sword, Items.iron_sword, Items.golden_sword,
-      Items.diamond_sword, DarkSteelItems.itemDarkSteelSword };
+  static private final Item[] slotItems = { Items.WOODEN_SWORD, Items.STONE_SWORD, Items.IRON_SWORD, Items.GOLDEN_SWORD,
+      Items.DIAMOND_SWORD, DarkSteelItems.itemDarkSteelSword };
   static private final Random rand = new Random();
 
   public ContainerKillerJoe(InventoryPlayer playerInv, TileKillerJoe te) {

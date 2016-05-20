@@ -140,7 +140,7 @@ public class DarkSteelRecipeManager {
           level = enchantment.getMaxLevel();
         }
         int costPerLevel = 0;
-        switch (enchantment.getWeight()) {
+        switch (enchantment.getRarity()) {
         case VERY_RARE:
           costPerLevel = 8;
           break;

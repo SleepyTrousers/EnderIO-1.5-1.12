@@ -190,7 +190,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 //    netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(new BlockPos(x, y, z), side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
     //TODO: 1.9, I doubt this will still work
     CPacketPlayerBlockPlacement packet = new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND);
-    netClientHandler.addToSendQueue(packet);
+    netClientHandler.sendPacket(packet);
   }
 
   private void onCoordsChanged(EntityPlayer player, BlockCoord bc) {

@@ -17,10 +17,10 @@ public class BlockDarkIronBars extends BlockPane {
   }
 
   public BlockDarkIronBars() {
-    super(Material.iron, true);
+    super(Material.IRON, true);
     setResistance(2000.0F); //TNT Proof
     setHardness(5.0F);
-    setStepSound(SoundType.METAL);
+    setSoundType(SoundType.METAL);
     setUnlocalizedName(ModObject.blockDarkIronBars.getUnlocalisedName());
     setRegistryName(ModObject.blockDarkIronBars.getUnlocalisedName());
     setCreativeTab(EnderIOTab.tabEnderIO);

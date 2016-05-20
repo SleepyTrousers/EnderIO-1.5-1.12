@@ -26,13 +26,14 @@ public class BlockMachineBase extends Block {
   }
 
   public static void create() {
-    GameRegistry.registerBlock(block = new BlockMachineBase(), null, name());
+    GameRegistry.register(block = new BlockMachineBase());
   }
 
   public BlockMachineBase() {
-    super(Material.circuits);
+    super(Material.CIRCUITS);
     this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderPart.SUB, EnumRenderPart.DEFAULTS));
     setUnlocalizedName(name());
+    setRegistryName(name());
     setCreativeTab(null);
     disableStats();
   }

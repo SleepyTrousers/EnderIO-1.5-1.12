@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 public class NetherWartFarmer extends CustomSeedFarmer {
 
   public NetherWartFarmer() {
-    super(Blocks.nether_wart, 3, new ItemStack(Items.nether_wart));
+    super(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART));
   }
 
   @Override

@@ -7,6 +7,23 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.paint.render.UVLock;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
+import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.render.pipeline.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
@@ -22,48 +39,31 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.pipeline.QuadCollector;
 
 public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedStairs create() {
-    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.oak_stairs, ModObject.blockPaintedStair.getUnlocalisedName());
+    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.OAK_STAIRS, ModObject.blockPaintedStair.getUnlocalisedName());
     woodStairs.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
-        Blocks.oak_stairs, Blocks.acacia_stairs, Blocks.spruce_stairs, Blocks.birch_stairs, Blocks.jungle_stairs, Blocks.dark_oak_stairs));
+        Blocks.OAK_STAIRS, Blocks.ACACIA_STAIRS, Blocks.SPRUCE_STAIRS, Blocks.BIRCH_STAIRS, Blocks.JUNGLE_STAIRS, Blocks.DARK_OAK_STAIRS));
 
-    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.stone_stairs, ModObject.blockPaintedStoneStair.getUnlocalisedName());
+    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.STONE_STAIRS, ModObject.blockPaintedStoneStair.getUnlocalisedName());
     stoneStairs.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
-        Blocks.stone_stairs, Blocks.brick_stairs, Blocks.stone_brick_stairs, Blocks.nether_brick_stairs, Blocks.sandstone_stairs, Blocks.quartz_stairs,
-        Blocks.red_sandstone_stairs));
+        Blocks.STONE_STAIRS, Blocks.BRICK_STAIRS, Blocks.STONE_BRICK_STAIRS, Blocks.NETHER_BRICK_STAIRS, Blocks.SANDSTONE_STAIRS, Blocks.QUARTZ_STAIRS,
+        Blocks.RED_SANDSTONE_STAIRS));
 
     return woodStairs;
   }
@@ -78,11 +78,12 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     this.setCreativeTab(null);
     this.name = name;
     setUnlocalizedName(name);
+    setRegistryName(name);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("stairs", new ResourceLocation("minecraft", "block/oak_stairs"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("outer_stairs", new ResourceLocation("minecraft", "block/oak_outer_stairs"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -98,7 +99,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);      
     }
   }
 
@@ -111,9 +112,9 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {    
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -177,8 +178,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   public IItemRenderMapper getItemRenderMapper() {
     return this;
   }
-
-  @SuppressWarnings("deprecation")
+  
   @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
 
@@ -239,8 +239,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-    @SuppressWarnings("deprecation")
+    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);    
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "stairs", paintSource, new UVLock(null));
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "stairs", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION4);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -256,12 +255,12 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.wood ? 20 : super.getFlammability(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override

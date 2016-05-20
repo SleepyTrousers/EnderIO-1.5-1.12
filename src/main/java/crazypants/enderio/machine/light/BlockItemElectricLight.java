@@ -22,11 +22,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 
-  public BlockItemElectricLight(Block block) {
+  public BlockItemElectricLight(Block block, String name) {
     super(block);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHasSubtypes(true);
     setMaxDamage(0);
+    setRegistryName(name);
   }
 
   @Override

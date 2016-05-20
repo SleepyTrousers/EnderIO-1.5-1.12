@@ -7,11 +7,29 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.paint.render.UVLock;
+import crazypants.enderio.render.EnumRenderPart;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
+import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
+import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.render.pipeline.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelRotation;
@@ -23,33 +41,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader.UVLock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.pipeline.QuadCollector;
 
 @SuppressWarnings("deprecation")
 public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
@@ -57,11 +58,11 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
 
   public static BlockPaintedFenceGate create() {
     BlockPaintedFenceGate result = new BlockPaintedFenceGate(BlockPlanks.EnumType.OAK, ModObject.blockPaintedFenceGate.getUnlocalisedName());
-    result.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    result.setHardness(2.0F).setResistance(5.0F);
     result.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFenceGate>(result,
-        Blocks.oak_fence_gate, Blocks.acacia_fence_gate, Blocks.spruce_fence_gate, Blocks.birch_fence_gate, Blocks.jungle_fence_gate,
-        Blocks.dark_oak_fence_gate));
+        Blocks.OAK_FENCE_GATE, Blocks.ACACIA_FENCE_GATE, Blocks.SPRUCE_FENCE_GATE, Blocks.BIRCH_FENCE_GATE, Blocks.JUNGLE_FENCE_GATE,
+        Blocks.DARK_OAK_FENCE_GATE));
 
     return result;
   }
@@ -73,11 +74,13 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     setCreativeTab(null);
     this.name = name;
     setUnlocalizedName(name);
+    setRegistryName(name);
+    setSoundType(SoundType.WOOD);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("fence_gate_closed", new ResourceLocation("minecraft", "block/oak_fence_gate_closed"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_gate_open", new ResourceLocation("minecraft", "block/oak_fence_gate_open"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -108,22 +111,22 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(state, world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -136,8 +139,8 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   }
 
   @Override
-  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }

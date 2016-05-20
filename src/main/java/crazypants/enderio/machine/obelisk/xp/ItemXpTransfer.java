@@ -78,7 +78,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     double yP = player.posY + 1.5;
     double zP = player.posZ + look.z;
     PacketHandler.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP) player);
-    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.entity_experience_orb_pickup, SoundCategory.PLAYERS, 0.1F,
+    world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F,
         0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F), false);
   }
 

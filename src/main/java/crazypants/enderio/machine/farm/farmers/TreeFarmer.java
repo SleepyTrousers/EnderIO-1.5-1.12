@@ -161,7 +161,7 @@ public class TreeFarmer implements IFarmerJoe {
         IBlockState bs = farm.getBlockState(coord);
         if(bs.getValue(BlockNewLeaf.VARIANT) == BlockPlanks.EnumType.OAK || bs.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK) {
           if(farm.getWorld().rand.nextInt(200) == 0) {
-            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.APPLE)));
           }
         }
       }

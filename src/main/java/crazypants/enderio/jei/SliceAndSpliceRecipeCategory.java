@@ -5,6 +5,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
+import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -19,13 +25,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
-import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
 
@@ -146,17 +145,17 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
   
   private @Nonnull List<ItemStack> getAxes() {
     List<ItemStack> res = new ArrayList<ItemStack>();
-    res.add(new ItemStack(Items.wooden_axe));
-    res.add(new ItemStack(Items.iron_axe));
-    res.add(new ItemStack(Items.golden_axe));
-    res.add(new ItemStack(Items.diamond_axe));
+    res.add(new ItemStack(Items.WOODEN_AXE));
+    res.add(new ItemStack(Items.IRON_AXE));
+    res.add(new ItemStack(Items.GOLDEN_AXE));
+    res.add(new ItemStack(Items.DIAMOND_AXE));
     res.add(new ItemStack(DarkSteelItems.itemDarkSteelAxe));
     return res;
   }
   
   private @Nonnull List<ItemStack> getShears() {
     List<ItemStack> res = new ArrayList<ItemStack>();
-    res.add(new ItemStack(Items.shears));    
+    res.add(new ItemStack(Items.SHEARS));    
     res.add(new ItemStack(DarkSteelItems.itemDarkSteelShears));
     return res;
   }

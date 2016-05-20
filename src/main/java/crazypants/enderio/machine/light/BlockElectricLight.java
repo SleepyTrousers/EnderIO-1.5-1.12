@@ -6,6 +6,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,10 +43,16 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   public BlockElectricLight() {
-    super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class, BlockItemElectricLight.class);
+    super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
     setLightOpacity(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
+  }
+
+
+  @Override
+  protected ItemBlock createItemBlock() {
+    return new BlockItemElectricLight(this, getName());
   }
 
   @Override

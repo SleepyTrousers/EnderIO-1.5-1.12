@@ -14,9 +14,10 @@ import crazypants.enderio.paint.PainterUtil2;
 
 public class BlockItemPaintedBlock extends ItemBlock {
 
-  public BlockItemPaintedBlock(Block block) {
+  public BlockItemPaintedBlock(Block block, String name) {
     super(block);
     setHasSubtypes(true);
+    setRegistryName(name);
   }
 
   @Override

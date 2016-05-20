@@ -29,8 +29,8 @@ import crazypants.enderio.render.ISmartRenderAwareBlock;
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock, INamedSubBlocks {
 
   public BlockFusedQuartzBase(String name, Class<T> teClass) {
-    super(name, teClass, Material.glass);
-    setStepSound(SoundType.GLASS);
+    super(name, teClass, Material.GLASS);
+    setSoundType(SoundType.GLASS);
   }
   
   protected ItemBlock createItemBlock() {

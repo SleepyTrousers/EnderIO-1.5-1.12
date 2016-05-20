@@ -41,15 +41,15 @@ public final class FarmersRegistry {
 //    addGrowableOres();
 //    addImmersiveEngineering();
 //
-    FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
-    FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
-    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
-    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.red_mushroom, Blocks.red_mushroom_block));
-    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.brown_mushroom, Blocks.brown_mushroom_block));
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.SAPLING, Blocks.LOG));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.SAPLING, Blocks.LOG2));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK));
     //special case of plantables to get spacing correct
-    FarmersCommune.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
-    FarmersCommune.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)));
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)));
     //'BlockNetherWart' is not an IGrowable
     FarmersCommune.joinCommune(new NetherWartFarmer());
     //Cocoa is odd
@@ -203,7 +203,7 @@ public final class FarmersRegistry {
     String mod = "ExtraUtilities";
     String name = "plant/ender_lilly";
 
-    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.end_stone, GameRegistry.findBlock(mod, "decorativeBlock1"));
+    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.END_STONE, GameRegistry.findBlock(mod, "decorativeBlock1"));
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
     }
@@ -226,10 +226,10 @@ public final class FarmersRegistry {
     }
     Pattern[] growableOres = { Pattern.compile("(.+)Reed"), Pattern.compile("oreGrowable(.+)") };
 
-    Iterator<Block> blockIter = Block.blockRegistry.iterator();
+    Iterator<Block> blockIter = Block.REGISTRY.iterator();
     while (blockIter.hasNext()) {
       Block block = blockIter.next();
-      String name = Block.blockRegistry.getNameForObject(block).toString();
+      String name = Block.REGISTRY.getNameForObject(block).toString();
       if (name != null && name.startsWith(mod)) {
         for (Pattern blockPattern : growableOres) {
           if (blockPattern.matcher(name).find()) {

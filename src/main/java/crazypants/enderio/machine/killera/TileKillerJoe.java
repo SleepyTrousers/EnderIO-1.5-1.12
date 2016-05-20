@@ -37,11 +37,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
@@ -54,6 +55,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -214,7 +216,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
             continue; // Ignore players in creative, can't damage them;
           }
           boolean togglePvp = false;
-          if (ent instanceof EntityPlayer && !MinecraftServer.getServer().isPVPEnabled()) {
+          if (ent instanceof EntityPlayer && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled()) {
             if (Config.killerPvPoffDisablesSwing) {
               continue;
             } else if (Config.killerPvPoffIsIgnored) {
@@ -229,20 +231,20 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
             zCache.cache.add((EntityZombie) ent);
           }
           FakePlayer fakee = getAttackera();
-          fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
+          fakee.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, getStackInSlot(0));          
           try {
             if (togglePvp) {
-              MinecraftServer.getServer().setAllowPvp(true);
+              FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(true);
             }
             fakee.attackTargetEntityWithCurrentItem(ent);
           } finally {
             if (togglePvp) {
-              MinecraftServer.getServer().setAllowPvp(false);
+              FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(false);
             }
           }
           useNutrient();
           swingWeapon();
-          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
+          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || fakee.getHeldItemMainhand() == null) {
             setInventorySlotContents(0, null);
           }
           return false;
@@ -522,17 +524,17 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     @Override
     public void onUpdate() {
 
-      setCurrentItemOrArmor(0, getStackInSlot(0));
+      setHeldItem(EnumHand.MAIN_HAND, getStackInSlot(0));      
 
       ItemStack prev = prevWeapon;
-      ItemStack cur = getCurrentEquippedItem();
+      ItemStack cur = getHeldItemMainhand();
       if (!ItemStack.areItemStacksEqual(cur, prev)) {
         if (prev != null) {
-          getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers());
+          getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
         }
 
         if (cur != null) {
-          getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers());
+          getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
         }
         prevWeapon = cur == null ? null : cur.copy();
       }

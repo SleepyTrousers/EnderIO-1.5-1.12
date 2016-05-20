@@ -150,13 +150,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
             if(bs.getBlock() == EnderIO.blockLightNode) {              
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
               worldObj.setBlockState(ln, bs, 2);
-              worldObj.markBlockForUpdate(ln);
+              worldObj.notifyBlockUpdate(ln, bs, bs, 3);
               worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln);
             }                                              
           }
         }
       }
-      worldObj.markBlockForUpdate(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);      
       init = false;
       lastActive = isActivated;

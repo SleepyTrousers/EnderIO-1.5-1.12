@@ -18,9 +18,9 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
-  static private final Item[] slotItems1 = { Items.wooden_axe, Items.stone_axe, Items.iron_axe, Items.golden_axe,
-      Items.diamond_axe, DarkSteelItems.itemDarkSteelAxe };
-  static private final Item[] slotItems2 = { Items.shears, Items.shears, Items.shears, Items.shears,
+  static private final Item[] slotItems1 = { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE,
+      Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe };
+  static private final Item[] slotItems2 = { Items.SHEARS, Items.SHEARS, Items.SHEARS, Items.SHEARS,
       DarkSteelItems.itemDarkSteelShears };
   static private final Random rand = new Random();
 

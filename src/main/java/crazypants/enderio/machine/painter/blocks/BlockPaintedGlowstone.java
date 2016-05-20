@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -63,12 +64,12 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
 
     @Override
     @SideOnly(Side.CLIENT)
-    public float getAmbientOcclusionLightValue() {
+    public float getAmbientOcclusionLightValue(IBlockState bs) {
       return 1;
     }
 
     @Override
-    public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
       return false;
     }
 
@@ -77,20 +78,21 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   private final String name;
 
   protected BlockPaintedGlowstone(String name) {
-    super(Material.glass);
+    super(Material.GLASS);
     this.name = name;
     setHardness(0.3F);
-    setStepSound(soundTypeGlass);
+    setSoundType(SoundType.GLASS);
     setLightLevel(1.0F);
     setCreativeTab(null);
     setUnlocalizedName(name);
+    setRegistryName(name);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this, name));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedGlowstone>(this,
-        Blocks.glowstone));
+        Blocks.GLOWSTONE));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
@@ -104,13 +106,13 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);      
     }
   }
 
   @Override
-  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }

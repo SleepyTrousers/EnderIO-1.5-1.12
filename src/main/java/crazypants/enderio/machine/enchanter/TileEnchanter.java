@@ -127,7 +127,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return false;
     }
     if (slot == 0) {
-      return Items.writable_book == stack.getItem();
+      return Items.WRITABLE_BOOK == stack.getItem();
     }
     if (slot == 1) {
       return EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(stack) != null;

@@ -78,7 +78,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
         return EnumActionResult.FAIL;
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
-        if (block == Blocks.chest) {
+        if (block == Blocks.CHEST) {
           // This works around a forge bug where you can rotate double chests to invalid directions
           TileEntityChest te = (TileEntityChest) world.getTileEntity(pos);
           if (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null) {

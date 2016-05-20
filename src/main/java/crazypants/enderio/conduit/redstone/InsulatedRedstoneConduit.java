@@ -61,10 +61,10 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     });
   }  
 
-  private static final List<Block> CONECTABLE_BLOCKS = Arrays.asList(Blocks.redstone_lamp, Blocks.lit_redstone_lamp, Blocks.redstone_torch,
-      Blocks.redstone_wire, Blocks.redstone_block, Blocks.dispenser, Blocks.lever, Blocks.wooden_button, Blocks.stone_button, Blocks.wooden_pressure_plate,
-      Blocks.stone_pressure_plate, Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail, Blocks.trapped_chest, Blocks.piston,
-      Blocks.sticky_piston, Blocks.noteblock);
+  private static final List<Block> CONECTABLE_BLOCKS = Arrays.asList(Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP, Blocks.REDSTONE_TORCH,
+      Blocks.REDSTONE_WIRE, Blocks.REDSTONE_BLOCK, Blocks.DISPENSER, Blocks.LEVER, Blocks.WOODEN_BUTTON, Blocks.STONE_BUTTON, Blocks.WOODEN_PRESSURE_PLATE,
+      Blocks.STONE_PRESSURE_PLATE, Blocks.DROPPER, Blocks.DAYLIGHT_DETECTOR, Blocks.DAYLIGHT_DETECTOR_INVERTED, Blocks.COMMAND_BLOCK, Blocks.GOLDEN_RAIL, Blocks.TRAPPED_CHEST, Blocks.PISTON,
+      Blocks.STICKY_PISTON, Blocks.NOTEBLOCK);
 
   private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
 

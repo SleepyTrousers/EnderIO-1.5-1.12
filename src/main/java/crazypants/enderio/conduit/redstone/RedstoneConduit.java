@@ -235,7 +235,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     int res = world.getRedstonePower(loc.getBlockPos(), dir);
     IBlockState bs = world.getBlockState(loc.getBlockPos());
     Block block = bs.getBlock();
-    if(res < 15 && block == Blocks.redstone_wire) {
+    if(res < 15 && block == Blocks.REDSTONE_WIRE) {
       int wireIn = bs.getValue(BlockRedstoneWire.POWER);
       res = Math.max(res, wireIn);
       

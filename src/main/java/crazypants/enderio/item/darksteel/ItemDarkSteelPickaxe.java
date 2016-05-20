@@ -174,7 +174,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean canHarvestBlock(IBlockState block, ItemStack item) {    
     if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
-      return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
+      return block == Blocks.SNOW_LAYER ? true : block == Blocks.SNOW || super.canHarvestBlock(block, item);
     } else {
       return super.canHarvestBlock(block, item);
     }
@@ -187,7 +187,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public float getStrVsBlock(ItemStack stack, IBlockState state) {
-    if (state.getMaterial() == Material.glass) {
+    if (state.getMaterial() == Material.GLASS) {
       return efficiencyOnProperMaterial;
     }
     if (useObsidianEffeciency(stack, state)) {
@@ -215,7 +215,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     boolean useObsidianSpeed = false;
     int energy = getEnergyStored(item);
     if (energy > Config.darkSteelPickPowerUseObsidian) {
-      useObsidianSpeed = blockState.getBlock() == Blocks.obsidian;
+      useObsidianSpeed = blockState.getBlock() == Blocks.OBSIDIAN;
       if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
           useObsidianSpeed = (blockState != null && blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);

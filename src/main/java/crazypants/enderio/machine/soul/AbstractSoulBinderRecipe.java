@@ -24,7 +24,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   private final List<String> supportedEntities;
   
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, Class<?> entityClass) {
-    this(energyRequired, xpLevelsRequired, uid, EntityList.classToStringMapping.get(entityClass));
+    this(energyRequired, xpLevelsRequired, uid, EntityList.CLASS_TO_NAME.get(entityClass));
   }
   
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, String uid, String... entityNames) {

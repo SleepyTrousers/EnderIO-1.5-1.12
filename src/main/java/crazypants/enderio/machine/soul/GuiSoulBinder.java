@@ -16,6 +16,7 @@ import crazypants.enderio.xp.XpUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
@@ -46,7 +47,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().thePlayer);
       if(xp > 0 || Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) {
         PacketHandler.INSTANCE.sendToServer(new PacketDrainPlayerXP(getTileEntity(), getTileEntity().getCurrentlyRequiredLevel(), true));
-        SoundUtil.playClientSoundFX("random.orb", getTileEntity());        
+        SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());        
       }
     }
   }

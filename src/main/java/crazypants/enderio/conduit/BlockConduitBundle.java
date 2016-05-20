@@ -279,7 +279,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       TileEntity te = bc.getTileEntity(world);
       if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
         IBlockState facade = ((TileConduitBundle) te).getPaintSource();
-        ConduitUtil.playHitSound(facade.getBlock().getStepSound(), world, bc.x, bc.y, bc.z);
+        ConduitUtil.playHitSound(facade.getBlock().getSoundType(), world, bc.x, bc.y, bc.z);
       } else {
         ConduitUtil.playHitSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
       }
@@ -297,7 +297,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       TileEntity te = bc.getTileEntity(world);
       if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
         IBlockState facade = ((TileConduitBundle) te).getPaintSource();
-        ConduitUtil.playStepSound(facade.getBlock().getStepSound(), world, bc.x, bc.y, bc.z);
+        ConduitUtil.playStepSound(facade.getBlock().getSoundType(), world, bc.x, bc.y, bc.z);
       } else {
         ConduitUtil.playStepSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
       }
@@ -532,7 +532,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       PainterUtil2.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
-      ConduitUtil.playBreakSound(te.getPaintSource().getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
+      ConduitUtil.playBreakSound(te.getPaintSource().getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
       te.setPaintSource(null);
       te.setFacadeType(EnumFacadeType.BASIC);
     }
@@ -797,7 +797,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     bundle.setPaintSource(facadeID);
     bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType));
     if (!world.isRemote) {
-      ConduitUtil.playPlaceSound(facadeID.getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
+      ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
     }
     if (!player.capabilities.isCreativeMode) {
       stack.stackSize--;

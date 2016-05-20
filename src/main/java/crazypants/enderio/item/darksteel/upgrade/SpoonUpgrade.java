@@ -31,7 +31,7 @@ public class SpoonUpgrade extends AbstractUpgrade {
   }
 
   public SpoonUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", new ItemStack(Items.diamond_shovel), Config.darkSteelSpoonCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", new ItemStack(Items.DIAMOND_SHOVEL), Config.darkSteelSpoonCost);
   }  
   
   @Override

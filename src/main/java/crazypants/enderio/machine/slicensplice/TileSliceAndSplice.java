@@ -1,16 +1,11 @@
 package crazypants.enderio.machine.slicensplice;
 
-import info.loenwind.autosave.annotations.Storable;
-
 import java.util.List;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -19,10 +14,13 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
-
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {

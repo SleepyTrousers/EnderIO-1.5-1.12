@@ -30,7 +30,7 @@ public class SoundDetectorUpgrade extends AbstractUpgrade {
   }
 
   public SoundDetectorUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.sound", new ItemStack(Blocks.noteblock), Config.darkSteelSoundLocatorCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.sound", new ItemStack(Blocks.NOTEBLOCK), Config.darkSteelSoundLocatorCost);
   }
 
   @Override

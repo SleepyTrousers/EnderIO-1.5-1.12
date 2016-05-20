@@ -24,7 +24,7 @@ public class SoundEntity extends EntityFX {
   public SoundEntity(World worldIn, SoundSource ss) {
     super(worldIn, ss.pos.x, ss.pos.y, ss.pos.z, 0.0D, 0.0D, 0.0D);
     this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-    this.xSpeed = this.ySpeed= this.zSpeed = 0.0D;
+    this.motionX = this.motionY = this.motionZ = 0.0D;
     this.particleGravity = 0.0F;
     this.particleMaxAge = Config.darkSteelSoundLocatorLifespan;
     this.ss = ss;

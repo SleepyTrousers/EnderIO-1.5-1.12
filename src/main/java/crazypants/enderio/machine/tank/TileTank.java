@@ -244,10 +244,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       if (fluid != null) {
         return true;
       }
-      if (item.getItem() == Items.water_bucket) {
+      if (item.getItem() == Items.WATER_BUCKET) {
         return true;
       }
-      if (item.getItem() == Items.lava_bucket) {
+      if (item.getItem() == Items.LAVA_BUCKET) {
         return true;
       }
       if (item.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) item.getItem()).getFluid(item) != null) {
@@ -260,7 +260,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
               .getItem()).getCapacity(item))) {
         return true;
       }
-      return FluidContainerRegistry.isEmptyContainer(item) || item.getItem() == Items.bucket;
+      return FluidContainerRegistry.isEmptyContainer(item) || item.getItem() == Items.BUCKET;
     } else if (i == 2 && canVoidItems()) {
       return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidContainerRegistry.isContainer(item));
     }

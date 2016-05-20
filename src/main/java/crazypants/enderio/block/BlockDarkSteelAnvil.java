@@ -37,15 +37,20 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     super();
 
     setHardness(5.0F);
-    setStepSound(SoundType.ANVIL);
+    setSoundType(SoundType.ANVIL);
     setResistance(2000.0F);
 
     setUnlocalizedName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
+    setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, ItemAnvilBlock.class, ModObject.blockDarkSteelAnvil.getUnlocalisedName());
+    GameRegistry.register(this);
+    ItemAnvilBlock item = new ItemAnvilBlock(this);
+    item.setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());    
+    GameRegistry.register(item);
+    
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ANVIL, new IGuiHandler() {
 
       @Override
@@ -59,6 +64,9 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
       }
     });
   }
+  
+  
+  
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {

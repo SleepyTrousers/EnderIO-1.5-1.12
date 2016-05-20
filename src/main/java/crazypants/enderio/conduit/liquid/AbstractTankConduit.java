@@ -88,7 +88,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       }
       return true;
 
-    } else if(player.getHeldItemMainhand().getItem() == Items.bucket) {
+    } else if(player.getHeldItemMainhand().getItem() == Items.BUCKET) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
         long curTick = getBundle().getEntity().getWorld().getTotalWorldTime();

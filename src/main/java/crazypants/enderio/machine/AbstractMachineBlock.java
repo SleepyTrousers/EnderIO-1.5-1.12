@@ -66,7 +66,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     super(mo.getUnlocalisedName(), teClass, mat);
     modObject = mo;
     setHardness(2.0F);
-    setStepSound(SoundType.METAL);
+    setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
     random = new Random();    
     initDefaultState();
@@ -77,7 +77,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   protected AbstractMachineBlock(IModObject mo, Class<T> teClass) {
-    this(mo, teClass, new Material(MapColor.ironColor));
+    this(mo, teClass, new Material(MapColor.IRON));
   }
 
   @Override

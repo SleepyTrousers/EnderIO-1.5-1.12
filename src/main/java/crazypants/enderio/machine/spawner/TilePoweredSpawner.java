@@ -110,7 +110,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     if (isSpawnMode) {
       if (Config.poweredSpawnerMaxPlayerDistance > 0) {
         BlockPos p = getPos();
-        if (worldObj.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, Config.poweredSpawnerMaxPlayerDistance) == null) {
+        if (worldObj.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, Config.poweredSpawnerMaxPlayerDistance, false) == null) {
           return null;
         }
       }
@@ -180,8 +180,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
     boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.getEntityBoundingBox())
-        && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
-        && (!worldObj.isAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
+        && worldObj.getCollisionBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
+        && (!worldObj.containsAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
     if (spaceClear && Config.poweredSpawnerUseVanillaSpawChecks) {
       // Full checks for lighting, dimension etc
       spaceClear = entityliving.getCanSpawnHere();
@@ -227,7 +227,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       if (canSpawnEntity(entityliving)) {
         entityliving.onInitialSpawn(worldObj.getDifficultyForLocation(new BlockPos(x, y, z)), null);
         worldObj.spawnEntityInWorld(entityliving);
-        worldObj.playAuxSFX(2004, getPos(), 0);
+        worldObj.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
         return true;
       }

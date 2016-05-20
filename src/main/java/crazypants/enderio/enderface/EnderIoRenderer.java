@@ -40,7 +40,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     if(te != null) {
       EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
       lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
-      brightness = RenderUtil.getTesselatorBrightness(entityPlayer.worldObj, te.getPos());
+      //TODO: 1.9
+      //brightness = RenderUtil.getTesselatorBrightness(entityPlayer.worldObj, te.getPos());
     } else {
       lookMat = new Matrix4d();
       lookMat.setIdentity();

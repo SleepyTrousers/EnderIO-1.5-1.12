@@ -17,7 +17,7 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Item[] slotItems = { Items.water_bucket, Items.lava_bucket, Buckets.itemBucketNutrientDistillation,
+  static private final Item[] slotItems = { Items.WATER_BUCKET, Items.LAVA_BUCKET, Buckets.itemBucketNutrientDistillation,
       Buckets.itemBucketHootch, Buckets.itemBucketRocketFuel, Buckets.itemBucketFireWater };
   static private final Random rand = new Random();
 
@@ -64,8 +64,8 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
   public void createGhostSlots(List<GhostSlot> slots) {
     slots.add(new GhostBackgroundItemSlot(slotItems[rand.nextInt(slotItems.length)], inFull));
-    slots.add(new GhostBackgroundItemSlot(Items.bucket, inEmpty));
-    slots.add(new GhostBackgroundItemSlot(Items.bucket, outEmpty));
+    slots.add(new GhostBackgroundItemSlot(Items.BUCKET, inEmpty));
+    slots.add(new GhostBackgroundItemSlot(Items.BUCKET, outEmpty));
     slots.add(new GhostBackgroundItemSlot(slotItems[rand.nextInt(slotItems.length)], outFull));
   }
 

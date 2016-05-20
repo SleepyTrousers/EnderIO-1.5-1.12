@@ -426,7 +426,7 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
-      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
+      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
       player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
           false);
       Random rand = player.worldObj.rand;
@@ -445,14 +445,14 @@ public class DarkSteelController {
 
   private void updateNightvision(EntityPlayer player) {
     if (isNightVisionUpgradeEquipped(player) && nightVisionActive) {
-      player.addPotionEffect(new PotionEffect(MobEffects.nightVision, 210, 0, true, true));
+      player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 210, 0, true, true));
     }
     if (!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
       nightVisionActive = false;
       removeNightvision = true;
     }
     if (removeNightvision) {
-      player.removePotionEffect(MobEffects.nightVision);
+      player.removePotionEffect(MobEffects.NIGHT_VISION);
       removeNightvision = false;
     }
   }

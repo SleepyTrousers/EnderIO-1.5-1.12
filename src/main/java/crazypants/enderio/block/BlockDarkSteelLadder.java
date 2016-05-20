@@ -28,22 +28,23 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   protected BlockDarkSteelLadder() {
     super();
     setUnlocalizedName(ModObject.blockDarkSteelLadder.getUnlocalisedName());
-    setStepSound(SoundType.METAL);
+    setRegistryName(ModObject.blockDarkSteelLadder.getUnlocalisedName());
+    setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, ModObject.blockDarkSteelLadder.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
   public Material getMaterial(IBlockState state) {
-    return Material.iron;
+    return Material.IRON;
   }
 
   @Override
-  public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity) {
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {    
     if (entity.onGround || entity.isCollidedVertically) {
       return;
     }

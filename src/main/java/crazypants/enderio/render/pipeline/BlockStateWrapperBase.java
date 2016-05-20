@@ -274,10 +274,10 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return state.getLightOpacity(world, pos);
   }
 
-  @SuppressWarnings("deprecation")
+  @SuppressWarnings("deprecation")  
   @Override
-  public int getlightValue() {
-    return state.getlightValue();
+  public int getLightValue() {
+    return state.getLightValue();
   }
 
   @Override

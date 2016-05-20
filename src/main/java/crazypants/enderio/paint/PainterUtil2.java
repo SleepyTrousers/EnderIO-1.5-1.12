@@ -105,7 +105,7 @@ public class PainterUtil2 {
       return;
     }
     Block block = paintSource.getBlock();
-    ResourceLocation res = Block.blockRegistry.getNameForObject(block);
+    ResourceLocation res = Block.REGISTRY.getNameForObject(block);
     if (res != null) {
       String name = res.toString();
       if (!name.trim().isEmpty()) {
@@ -120,8 +120,8 @@ public class PainterUtil2 {
       String blockId = SOURCE_BLOCK.getString(nbtRoot);
       if (!Strings.isNullOrEmpty(blockId)) {
         ResourceLocation res = new ResourceLocation(blockId);
-        if (Block.blockRegistry.containsKey(res)) {
-          Block block = Block.blockRegistry.getObject(res);
+        if (Block.REGISTRY.containsKey(res)) {
+          Block block = Block.REGISTRY.getObject(res);
           int meta = SOURCE_META.getInt(nbtRoot);
           return block.getStateFromMeta(meta);
         }
@@ -144,7 +144,7 @@ public class PainterUtil2 {
       return;
     }
     Block block = paintSource.getBlock();
-    ResourceLocation res = Block.blockRegistry.getNameForObject(block);
+    ResourceLocation res = Block.REGISTRY.getNameForObject(block);
     if (res != null) {
       String name = res.toString();
       if (!name.trim().isEmpty()) {
@@ -213,8 +213,8 @@ public class PainterUtil2 {
   }
 
   public static boolean canRenderInLayer(@Nullable IBlockState paintSource, BlockRenderLayer blockLayer) {
-    if (paintSource != null) {
-      return paintSource.getBlock().canRenderInLayer(blockLayer);
+    if (paintSource != null) {      
+      return paintSource.getBlock().canRenderInLayer(paintSource, blockLayer);
     } else {
       return blockLayer == BlockRenderLayer.SOLID;
     }

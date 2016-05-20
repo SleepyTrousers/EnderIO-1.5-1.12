@@ -61,7 +61,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public static final AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 
   private BlockEndermanSkull() {
-    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.circuits);
+    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.CIRCUITS);
   }
 
   @Override

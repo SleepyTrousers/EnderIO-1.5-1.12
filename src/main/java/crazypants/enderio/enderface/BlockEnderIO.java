@@ -61,7 +61,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
       if (player instanceof EntityPlayer) {
         eio.setPlacedBy((EntityPlayer) player);
       }
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);      
     }
   }
 
@@ -82,17 +82,17 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   }
 
   @Override
-  public boolean isOpaqueCube() {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
     return 13;
   }
 
   @Override
-  public int getLightOpacity() {
+  public int getLightOpacity(IBlockState bs) {
     return 100;
   }
   

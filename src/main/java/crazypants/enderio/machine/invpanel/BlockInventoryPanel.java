@@ -8,6 +8,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +49,12 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public BlockInventoryPanel() {
-    super(ModObject.blockInventoryPanel, TileInventoryPanel.class, BlockItemInventoryPanel.class);
+    super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
+  }
+
+  @Override
+  protected ItemBlock createItemBlock() {
+    return new BlockItemInventoryPanel(this, getName());
   }
 
   @Override

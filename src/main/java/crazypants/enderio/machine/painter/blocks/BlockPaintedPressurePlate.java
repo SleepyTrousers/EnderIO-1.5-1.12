@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.painter.blocks;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -10,35 +7,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBasePressurePlate;
-import net.minecraft.block.BlockPressurePlateWeighted;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ModelRotation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
@@ -63,10 +31,44 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.CapturedMob;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBasePressurePlate;
+import net.minecraft.block.BlockPressurePlateWeighted;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelRotation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock,
-    ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider,
-    IRenderMapper.IItemRenderMapper.IItemModelMapper {
+public class BlockPaintedPressurePlate extends BlockBasePressurePlate
+    implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
+    INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   @Storable
   public static class TilePaintedPressurePlate extends TileEntityPaintedBlock {
@@ -122,16 +124,16 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   public static BlockPaintedPressurePlate create() {
     BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(ModObject.blockPaintedPressurePlate.getUnlocalisedName());
-    result.setHardness(0.5F).setStepSound(soundTypeWood);
+    result.setHardness(0.5F);
     result.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new PressurePlatePainterTemplate(result, EnumPressurePlateType.WOOD.getMetaFromType(), Blocks.wooden_pressure_plate));
+        new PressurePlatePainterTemplate(result, EnumPressurePlateType.WOOD.getMetaFromType(), Blocks.WOODEN_PRESSURE_PLATE));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new PressurePlatePainterTemplate(result, EnumPressurePlateType.STONE.getMetaFromType(), Blocks.stone_pressure_plate));
+        new PressurePlatePainterTemplate(result, EnumPressurePlateType.STONE.getMetaFromType(), Blocks.STONE_PRESSURE_PLATE));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new PressurePlatePainterTemplate(result, EnumPressurePlateType.IRON.getMetaFromType(), Blocks.heavy_weighted_pressure_plate));
+        new PressurePlatePainterTemplate(result, EnumPressurePlateType.IRON.getMetaFromType(), Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new PressurePlatePainterTemplate(result, EnumPressurePlateType.GOLD.getMetaFromType(), Blocks.light_weighted_pressure_plate));
+        new PressurePlatePainterTemplate(result, EnumPressurePlateType.GOLD.getMetaFromType(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE));
 
     return result;
   }
@@ -139,18 +141,20 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   private final String name;
 
   public BlockPaintedPressurePlate(String name) {
-    super(Material.iron);
+    super(Material.IRON);
     this.setDefaultState(this.blockState.getBaseState().withProperty(BlockPressurePlateWeighted.POWER, 0));
     setCreativeTab(EnderIOTab.tabEnderIO);
     this.name = name;
     setUnlocalizedName(name);
+    setRegistryName(name);
+    setSoundType(SoundType.WOOD);
   }
 
   private final IBlockState[] defaultPaints = new IBlockState[EnumPressurePlateType.values().length];
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedPressurePlate(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedPressurePlate(this, name));
     GameRegistry.registerTileEntity(TilePaintedPressurePlate.class, name + "TileEntity");
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -159,10 +163,10 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     PaintRegistry.registerModel("pressure_plate_inventory", new ResourceLocation("minecraft", "block/stone_pressure_plate_inventory"),
         PaintRegistry.PaintMode.ALL_TEXTURES);
 
-    defaultPaints[EnumPressurePlateType.WOOD.ordinal()] = Blocks.wooden_pressure_plate.getDefaultState();
-    defaultPaints[EnumPressurePlateType.STONE.ordinal()] = Blocks.stone_pressure_plate.getDefaultState();
-    defaultPaints[EnumPressurePlateType.IRON.ordinal()] = Blocks.heavy_weighted_pressure_plate.getDefaultState();
-    defaultPaints[EnumPressurePlateType.GOLD.ordinal()] = Blocks.light_weighted_pressure_plate.getDefaultState();
+    defaultPaints[EnumPressurePlateType.WOOD.ordinal()] = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();
+    defaultPaints[EnumPressurePlateType.STONE.ordinal()] = Blocks.STONE_PRESSURE_PLATE.getDefaultState();
+    defaultPaints[EnumPressurePlateType.IRON.ordinal()] = Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE.getDefaultState();
+    defaultPaints[EnumPressurePlateType.GOLD.ordinal()] = Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.getDefaultState();
     defaultPaints[EnumPressurePlateType.DARKSTEEL.ordinal()] = getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 1);
     defaultPaints[EnumPressurePlateType.SOULARIUM.ordinal()] = getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 2);
     defaultPaints[EnumPressurePlateType.TUNED.ordinal()] = getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 3);
@@ -193,8 +197,8 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     TileEntity te = worldIn.getTileEntity(pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       EnumPressurePlateType type = ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType();
-      return type.getCountingMode().count(
-          worldIn.getEntitiesWithinAABB(type.getSearchClass(), this.getSensitiveAABB(pos), type.getPredicate(getMobType(worldIn, pos))));
+      return type.getCountingMode()
+          .count(worldIn.getEntitiesWithinAABB(type.getSearchClass(), PRESSURE_AABB.offset(pos), type.getPredicate(getMobType(worldIn, pos))));
     } else {
       return getRedstoneStrength(worldIn.getBlockState(pos));
     }
@@ -270,7 +274,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     setRotation(worldIn, pos, EnumFacing.fromAngle(placer.rotationYaw));
     setMobType(worldIn, pos, CapturedMob.create(stack));
     if (!worldIn.isRemote) {
-      worldIn.markBlockForUpdate(pos);
+      worldIn.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
@@ -281,17 +285,17 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(state, world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack item) {
+    super.harvestBlock(worldIn, player, pos, state, te, item);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -301,14 +305,14 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   protected ItemStack getDrop(IBlockAccess world, BlockPos pos) {
     CapturedMob mobType = getMobType(world, pos);
-    ItemStack drop = mobType != null ? mobType.toStack(Item.getItemFromBlock(this), getMetaForStack(world, pos), 1) : new ItemStack(
-        Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
+    ItemStack drop = mobType != null ? mobType.toStack(Item.getItemFromBlock(this), getMetaForStack(world, pos), 1)
+        : new ItemStack(Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
     PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
     return drop;
   }
 
   @Override
-  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+  public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
     return getDrop(world, pos);
   }
 
@@ -494,9 +498,9 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
       if (!isSilent(worldIn, pos)) {
         if (!isOn && wasOn) {
-          worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.5F);
+          worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F, false);
         } else if (isOn && !wasOn) {
-          worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+          worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F, false);
         }
       }
     }
@@ -508,8 +512,8 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   public static class BlockItemPaintedPressurePlate extends BlockItemPaintedBlock {
 
-    public BlockItemPaintedPressurePlate(BlockPaintedPressurePlate block) {
-      super(block);
+    public BlockItemPaintedPressurePlate(BlockPaintedPressurePlate block, String name) {
+      super(block, name);      
     }
 
     @Override
@@ -572,6 +576,20 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
+  }
+
+  @Override
+  protected void playClickOnSound(World worldIn, BlockPos color) {
+    if (blockMaterial == Material.WOOD) {
+      worldIn.playSound((EntityPlayer) null, color, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
+    } else {
+      worldIn.playSound((EntityPlayer) null, color, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    }
+
+  }
+
+  @Override
+  protected void playClickOffSound(World worldIn, BlockPos pos) {
   }
 
 }

@@ -13,7 +13,6 @@ import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.network.play.client.CPacketConfirmTransaction;
 import net.minecraft.network.play.client.CPacketCreativeInventoryAction;
-import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraft.network.play.client.CPacketEnchantItem;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
@@ -71,7 +70,7 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   }
 
   @Override
-  public void sendPacket(Packet p_147359_1_) {
+  public void sendPacket(Packet<?> p_147359_1_) {
   }
 
   @Override
@@ -138,11 +137,7 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   @Override
   public void processClientSettings(CPacketClientSettings p_147352_1_) {
   }
-
-  @Override
-  public void processVanilla250Packet(CPacketCustomPayload p_147349_1_) {
-  }
-
+  
   @Override
   public void handleSpectate(CPacketSpectate packetIn) {
   }

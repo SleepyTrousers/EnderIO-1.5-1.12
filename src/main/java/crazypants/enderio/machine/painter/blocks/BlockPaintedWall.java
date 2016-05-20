@@ -56,7 +56,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     BlockPaintedWall result = new BlockPaintedWall(ModObject.blockPaintedWall.getUnlocalisedName());
     result.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedWall>(result,
-        Blocks.cobblestone_wall));
+        Blocks.COBBLESTONE_WALL));
 
     return result;
   }
@@ -64,7 +64,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   private final String name;
 
   public BlockPaintedWall(String name) {
-    super(Blocks.cobblestone);
+    super(Blocks.COBBLESTONE);
     setCreativeTab(null);
     this.name = name;
     setRegistryName(name);
@@ -73,7 +73,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   private void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this));
+    GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("wall_post", new ResourceLocation("minecraft", "block/cobblestone_wall_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_n", new ResourceLocation("minecraft", "block/cobblestone_wall_n"), PaintRegistry.PaintMode.ALL_TEXTURES);

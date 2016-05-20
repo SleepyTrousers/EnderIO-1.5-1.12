@@ -93,7 +93,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
         te.setInventorySlotContents(0, (ItemStack) null);
         if (!te.getWorld().isRemote) {
-          te.getWorld().playAuxSFX(1021, te.getPos(), 0);
+          te.getWorld().playEvent(1021, te.getPos(), 0);
         }
       }
 
@@ -106,7 +106,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(Items.writable_book, 27, 35));
+    slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, 27, 35));
   }
 
   public boolean playerHasEnoughLevels(EntityPlayer player) {
@@ -120,8 +120,8 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
     ItemStack output = null;
     EnchantmentData enchantment = getInv().getCurrentEnchantmentData();
     if(enchantment != null) {
-      output = new ItemStack(Items.enchanted_book);
-      Items.enchanted_book.addEnchantment(output, enchantment);
+      output = new ItemStack(Items.ENCHANTED_BOOK);
+      Items.ENCHANTED_BOOK.addEnchantment(output, enchantment);
     }
     getInv().setOutput(output);
   }

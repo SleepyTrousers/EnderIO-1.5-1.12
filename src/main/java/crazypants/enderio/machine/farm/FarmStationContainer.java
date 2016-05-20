@@ -6,6 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,13 +19,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -33,29 +32,29 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   static public final List<ItemStack> slotItemsProduce = new ArrayList<ItemStack>();
   static public final List<ItemStack> slotItemsFertilizer = new ArrayList<ItemStack>();
   static {
-    for (Item item : new Item[] { Items.wooden_hoe, Items.stone_hoe, Items.iron_hoe, Items.golden_hoe, Items.diamond_hoe }) {
+    for (Item item : new Item[] { Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE }) {
       slotItemsStacks1.add(new ItemStack(item));
     }
     slotItemsStacks1.addAll(Config.farmHoes);
-    for (Item item : new Item[] { Items.wooden_axe, Items.stone_axe, Items.iron_axe, Items.golden_axe, Items.diamond_axe, DarkSteelItems.itemDarkSteelAxe }) {
+    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
     }
-    for (Item item : new Item[] { Items.shears, DarkSteelItems.itemDarkSteelShears, GameRegistry.findItem("IC2", "itemTreetap") }) {
+    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears, GameRegistry.findItem("IC2", "itemTreetap") }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
-    slotItemsSeeds.add(new ItemStack(Items.wheat_seeds));
-    slotItemsSeeds.add(new ItemStack(Blocks.carrots));
-    slotItemsSeeds.add(new ItemStack(Blocks.potatoes));
-    slotItemsSeeds.add(new ItemStack(Blocks.red_mushroom));
-    slotItemsSeeds.add(new ItemStack(Blocks.brown_mushroom));
-    slotItemsSeeds.add(new ItemStack(Blocks.nether_wart));
-    slotItemsSeeds.add(new ItemStack(Blocks.sapling));
-    slotItemsSeeds.add(new ItemStack(Items.reeds));
-    slotItemsProduce.add(new ItemStack(Blocks.log, 1, 0));
-    slotItemsProduce.add(new ItemStack(Blocks.wheat));
-    slotItemsProduce.add(new ItemStack(Blocks.leaves, 1, 0));
-    slotItemsProduce.add(new ItemStack(Items.apple));
-    slotItemsFertilizer.add(new ItemStack(Items.dye, 1, 15));
+    slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));
+    slotItemsSeeds.add(new ItemStack(Blocks.CARROTS));
+    slotItemsSeeds.add(new ItemStack(Blocks.POTATOES));
+    slotItemsSeeds.add(new ItemStack(Blocks.RED_MUSHROOM));
+    slotItemsSeeds.add(new ItemStack(Blocks.BROWN_MUSHROOM));
+    slotItemsSeeds.add(new ItemStack(Blocks.NETHER_WART));
+    slotItemsSeeds.add(new ItemStack(Blocks.SAPLING));
+    slotItemsSeeds.add(new ItemStack(Items.REEDS));
+    slotItemsProduce.add(new ItemStack(Blocks.LOG, 1, 0));
+    slotItemsProduce.add(new ItemStack(Blocks.WHEAT));
+    slotItemsProduce.add(new ItemStack(Blocks.LEAVES, 1, 0));
+    slotItemsProduce.add(new ItemStack(Items.APPLE));
+    slotItemsFertilizer.add(new ItemStack(Items.DYE, 1, 15));
   }
 
   static private final Random rand = new Random();

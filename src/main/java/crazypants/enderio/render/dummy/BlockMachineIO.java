@@ -28,12 +28,13 @@ public class BlockMachineIO extends Block {
   }
 
   public static void create() {
-    GameRegistry.registerBlock(block = new BlockMachineIO(), null, name());
+    GameRegistry.register(block = new BlockMachineIO());
   }
 
   public BlockMachineIO() {
-    super(Material.circuits);
+    super(Material.CIRCUITS);
     setUnlocalizedName(name());
+    setRegistryName(name());
     this.setDefaultState(this.blockState.getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
     setCreativeTab(null);
     disableStats();

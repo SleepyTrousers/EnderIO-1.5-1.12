@@ -10,6 +10,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -51,7 +52,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
   private BlockSolarPanel() {
-    super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class, BlockItemSolarPanel.class);
+    super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
       setCreativeTab(null);
     }
@@ -60,6 +61,11 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(SolarType.KIND, SolarType.SIMPLE));
+  }
+
+  @Override
+  protected ItemBlock createItemBlock() { 
+    return new BlockItemSolarPanel(this);
   }
 
   @Override
@@ -131,9 +137,9 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   }
 
   @Override  
-  public void addCollisionBoxesToList(World par1World, BlockPos pos, IBlockState state, AxisAlignedBB par5AxisAlignedBB, List<AxisAlignedBB> par6List, Entity par7Entity) {
-    setBlockBoundsBasedOnState(par1World, pos);
-    super.addCollisionBoxesToList(par1World, pos, state, par5AxisAlignedBB,par6List, par7Entity);
+  public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {    
+    setBlockBoundsBasedOnState(worldIn, pos);
+    super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
   }
 
   @Override
@@ -186,7 +192,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
     if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
       TileEntity te = getTileEntity(world, pos);
       if (te instanceof TileEntitySolarPanel) {

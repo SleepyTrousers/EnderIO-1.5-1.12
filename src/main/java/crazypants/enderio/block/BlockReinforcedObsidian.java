@@ -38,10 +38,10 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   private BlockReinforcedObsidian() {
-    super(ModObject.blockReinforcedObsidian.getUnlocalisedName(), null, Material.rock);
+    super(ModObject.blockReinforcedObsidian.getUnlocalisedName(), null, Material.ROCK);
     setHardness(50.0F);
     setResistance(2000.0F);
-    setStepSound(SoundType.STONE);
+    setSoundType(SoundType.STONE);
 
     if (!Config.reinforcedObsidianEnabled) {
       setCreativeTab(null);
@@ -51,7 +51,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   @Override
   @SideOnly(Side.CLIENT)
   public MapColor getMapColor(IBlockState state) {
-    return MapColor.obsidianColor;
+    return MapColor.OBSIDIAN;
   }
 
   private static final int[] COLS = { 0x3c3056, 0x241e31, 0x1e182b, 0x0e0e15, 0x07070b };

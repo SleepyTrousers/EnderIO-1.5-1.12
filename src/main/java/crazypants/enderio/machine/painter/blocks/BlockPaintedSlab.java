@@ -7,32 +7,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -49,35 +23,63 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStoneSlab;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedSlab create() {
-    BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.wood, ModObject.blockPaintedSlab.getUnlocalisedName());
-    woodHalfSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.WOOD, ModObject.blockPaintedSlab.getUnlocalisedName(), SoundType.WOOD);
+    woodHalfSlab.setHardness(2.0F).setResistance(5.0F);
     woodHalfSlab.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab,
-        Blocks.wooden_slab));
+        Blocks.WOODEN_SLAB));
 
-    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.wood, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab);
-    woodDoubleSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.WOOD, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab, SoundType.WOOD);
+    woodDoubleSlab.setHardness(2.0F).setResistance(5.0F);
     woodDoubleSlab.init();
 
-    GameRegistry.registerItem(new BlockItemPaintedSlab(woodHalfSlab, woodDoubleSlab), ModObject.blockPaintedSlab.getUnlocalisedName());
+    GameRegistry.register(new BlockItemPaintedSlab(woodHalfSlab, woodDoubleSlab, ModObject.blockPaintedSlab.getUnlocalisedName()));
 
-    BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.rock, ModObject.blockPaintedStoneSlab.getUnlocalisedName());
-    rockHalfSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.ROCK, ModObject.blockPaintedStoneSlab.getUnlocalisedName(), SoundType.WOOD);
+    rockHalfSlab.setHardness(2.0F).setResistance(5.0F);
     rockHalfSlab.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab,
-        Blocks.stone_slab, Blocks.stone_slab2));
+        Blocks.STONE_SLAB, Blocks.STONE_SLAB));
 
-    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.rock, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(),
-        rockHalfSlab);
-    rockDoubleSlab.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.ROCK, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(),
+        rockHalfSlab, SoundType.WOOD);
+    rockDoubleSlab.setHardness(2.0F).setResistance(5.0F);
     rockDoubleSlab.init();
 
-    GameRegistry.registerItem(new BlockItemPaintedSlab(rockHalfSlab, rockDoubleSlab), ModObject.blockPaintedStoneSlab.getUnlocalisedName());
+    GameRegistry.register(new BlockItemPaintedSlab(rockHalfSlab, rockDoubleSlab, ModObject.blockPaintedStoneSlab.getUnlocalisedName()));
 
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.TileEntityTwicePaintedBlock.class, ModObject.blockPaintedSlab.getUnlocalisedName() + "TileEntity");
 
@@ -85,19 +87,23 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   public static class BlockPaintedHalfSlab extends BlockPaintedSlab {
-    public BlockPaintedHalfSlab(Material material, String name) {
+    public BlockPaintedHalfSlab(Material material, String name, SoundType sound) {
       super(material, name, null);
+      setSoundType(sound);
     }
 
     @Override
     public boolean isDouble() {
       return false;
     }
+
+    
   }
 
   public static class BlockPaintedDoubleSlab extends BlockPaintedSlab {
-    public BlockPaintedDoubleSlab(Material material, String name, Block halfVariant) {
+    public BlockPaintedDoubleSlab(Material material, String name, Block halfVariant, SoundType sound) {
       super(material, name, halfVariant);
+      setSoundType(sound);
     }
 
     @Override
@@ -107,7 +113,6 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   }
 
-  private final String name;
   private final Block halfVariant;
 
   public BlockPaintedSlab(Material material, String name, Block halfVariant) {
@@ -120,19 +125,25 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
     this.setDefaultState(iblockstate);
     this.setCreativeTab(null);
-    this.name = name;
     setUnlocalizedName(name);
+    setRegistryName(name);
     this.halfVariant = halfVariant != null ? halfVariant : this;
     useNeighborBrightness = true;
   }
 
   protected void init() {
-    GameRegistry.registerBlock(this, null, name);
+    GameRegistry.register(this);
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("slab_lo", new ResourceLocation("minecraft", "block/half_slab_stone"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("slab_hi", new ResourceLocation("minecraft", "block/upper_slab_stone"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
+  @Override
+  public Comparable<?> getTypeForItem(ItemStack stack) {
+    // TODO: 1.9 Not sure this is the correct impl
+    return BlockStoneSlab.EnumType.byMetadata(stack.getMetadata() & 7);
+  }
+  
   @Override
   public TileEntity createNewTileEntity(World world, int metadata) {
     return new TileEntityPaintedBlock.TileEntityTwicePaintedBlock();
@@ -147,7 +158,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);      
     }
   }
 
@@ -160,9 +171,9 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -202,19 +213,14 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Item getItem(World worldIn, BlockPos pos) {
-    return Item.getItemFromBlock(halfVariant);
+  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {    
+    return new ItemStack(Item.getItemFromBlock(halfVariant));
   }
 
   @Override
   public IProperty<?> getVariantProperty() {
     return null;
-  }
-
-  @Override
-  public Object getVariant(ItemStack stack) {
-    return null;
-  }
+  } 
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
@@ -325,12 +331,12 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.wood ? 20 : super.getFlammability(world, pos, face);
+    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
+    return world.getBlockState(pos).getMaterial() == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override

@@ -39,7 +39,7 @@ public enum EnderIOController {
 
   @SubscribeEvent
   public void onContainerTick(PlayerOpenContainerEvent event) {
-    Container c = event.entityPlayer.openContainer;
+    Container c = event.getEntityPlayer().openContainer;
     if (c != null && !(c instanceof ContainerPlayer) && (c.windowId == clientWindowId || openedContainers.containsValue(c.windowId))) {
       event.setResult(Result.ALLOW);
     }

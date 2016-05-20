@@ -12,8 +12,9 @@ import net.minecraft.world.World;
 
 public class BlockItemInventoryPanel extends ItemBlock {
 
-  public BlockItemInventoryPanel(Block b) {
+  public BlockItemInventoryPanel(Block b, String name) {
     super(b);
+    setRegistryName(name);
   }
 
   @Override

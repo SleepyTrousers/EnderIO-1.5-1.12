@@ -56,7 +56,7 @@ public enum TravelSource {
   }
 
   private TravelSource(ResourceLocation sound) {
-    this.sound = SoundEvent.soundEventRegistry.getObject(sound);
+    this.sound = SoundEvent.REGISTRY.getObject(sound);
   }
 
   private TravelSource(SoundEvent sound) {

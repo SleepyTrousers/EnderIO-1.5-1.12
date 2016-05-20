@@ -78,7 +78,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   protected BlockEnderRail() {
     setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
     setRegistryName(ModObject.blockEnderRail.getUnlocalisedName());
-    setStepSound(SoundType.METAL);
+    setSoundType(SoundType.METAL);
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);
     }

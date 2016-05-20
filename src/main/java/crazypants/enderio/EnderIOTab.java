@@ -13,7 +13,7 @@ public class EnderIOTab extends CreativeTabs {
 
   static {
     tabNoTab = new EnderIOTab();
-    tabEnderIO = new EnderIOTab(CreativeTabs.creativeTabArray.length - 1);
+    tabEnderIO = new EnderIOTab(CreativeTabs.CREATIVE_TAB_ARRAY.length - 1);
   }
 
   public EnderIOTab() {

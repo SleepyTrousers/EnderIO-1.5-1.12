@@ -72,15 +72,15 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
             double dz = mobbb.maxZ - mobbb.minZ;
             AxisAlignedBB bb = new AxisAlignedBB(x - dx / 2, y, z - dz / 2, x + dx / 2, y + dy, z + dz / 2);
 
-            boolean spaceClear = worldObj.checkNoEntityCollision(bb, mob) && worldObj.getCubes(mob, bb).isEmpty()
-                && (worldObj.isAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
+            boolean spaceClear = worldObj.checkNoEntityCollision(bb, mob) && worldObj.getCollisionBoxes(mob, bb).isEmpty()
+                && (worldObj.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
                   new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
-              mob.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
+              mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               mob.setPositionAndUpdate(x - dx / 2, y, z - dz / 2);
-              mob.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
+              mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
                   new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               iterator.remove();

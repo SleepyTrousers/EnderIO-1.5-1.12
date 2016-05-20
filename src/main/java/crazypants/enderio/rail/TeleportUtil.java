@@ -6,11 +6,9 @@ import java.util.List;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -97,7 +95,7 @@ public class TeleportUtil {
     PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity), new TargetPoint(world.provider.getDimension(), entity.posX, entity.posY,
         entity.posZ, 64));
     if(Config.machineSoundsEnabled) {
-      world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.entity_endermen_teleport, SoundCategory.BLOCKS, 0.5F, 0.25F, false);
+      world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.5F, 0.25F, false);
     }
   }  
 

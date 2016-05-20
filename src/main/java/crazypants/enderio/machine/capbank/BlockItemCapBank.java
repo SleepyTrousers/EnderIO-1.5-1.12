@@ -1,17 +1,15 @@
 package crazypants.enderio.machine.capbank;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.power.PowerHandlerUtil;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -23,15 +21,11 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     return res;
   }
 
-  public BlockItemCapBank() {
+  public BlockItemCapBank(String name) {
     super(EnderIO.blockCapBank);
     setHasSubtypes(true);
-  }
-
-  public BlockItemCapBank(Block block) {
-    super(block);
-    setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setRegistryName(name);
   }
 
   @Override

@@ -105,7 +105,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       if(conserveMotion) {
         Vector3d velocityVex = Util.getLookVecEio(player);
         SPacketEntityVelocity p = new SPacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
-        ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(p);
+        ((EntityPlayerMP) player).connection.sendPacket(p);
       }
 
       if(powerUse > 0 && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof IItemOfTravel) {

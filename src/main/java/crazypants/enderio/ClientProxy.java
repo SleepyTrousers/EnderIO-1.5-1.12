@@ -283,7 +283,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
-    ent.addPotionEffect(new PotionEffect(MobEffects.confusion, duration, 1, true, true));
+    ent.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, duration, 1, true, true));
     Minecraft.getMinecraft().thePlayer.timeInPortal = 1;
   }
 

@@ -28,6 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -57,33 +58,35 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFence create() {
-    BlockPaintedFence woodFence = new BlockPaintedFence(Material.wood, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.getUnlocalisedName());
-    woodFence.setHardness(2.0F).setResistance(5.0F).setStepSound(soundTypeWood);
+    BlockPaintedFence woodFence = new BlockPaintedFence(Material.WOOD, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.getUnlocalisedName(), SoundType.WOOD);
+    woodFence.setHardness(2.0F).setResistance(5.0F);
     woodFence.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
-        Blocks.oak_fence, Blocks.acacia_fence, Blocks.spruce_fence, Blocks.birch_fence, Blocks.jungle_fence, Blocks.dark_oak_fence));
+        Blocks.OAK_FENCE, Blocks.ACACIA_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE, Blocks.JUNGLE_FENCE, Blocks.DARK_OAK_FENCE));
 
-    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.rock, MapColor.netherrackColor, ModObject.blockPaintedStoneFence.getUnlocalisedName());
-    stoneFence.setHardness(2.0F).setResistance(10.0F).setStepSound(soundTypePiston);
+    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.ROCK, MapColor.NETHERRACK, ModObject.blockPaintedStoneFence.getUnlocalisedName(), SoundType.STONE);
+    stoneFence.setHardness(2.0F).setResistance(10.0F);
     stoneFence.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
-        Blocks.nether_brick_fence));
+        Blocks.NETHER_BRICK_FENCE));
 
     return woodFence;
   }
 
   private final String name;
 
-  protected BlockPaintedFence(Material material, MapColor mapColor, String name) {
+  protected BlockPaintedFence(Material material, MapColor mapColor, String name, SoundType sound) {
     super(material, mapColor);
     setCreativeTab(null);
     this.name = name;
     setUnlocalizedName(name);
+    setRegistryName(name);
+    setSoundType(sound);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, null, name);
-    GameRegistry.registerItem(new BlockItemPaintedBlock(this), name);
+    GameRegistry.register(this);
+    GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_n", new ResourceLocation("minecraft", "block/oak_fence_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -106,7 +109,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     }
     if (block instanceof IPaintable.IBlockPaintableBlock) {
       final IBlockState paintSource = ((IPaintable.IBlockPaintableBlock) block).getPaintSource(blockState2, worldIn, pos);
-      return paintSource != null && paintSource.getBlock() instanceof BlockFence && paintSource.getBlock().getMaterial() == blockMaterial;
+      return paintSource != null && paintSource.getBlock() instanceof BlockFence && paintSource.getMaterial() == blockMaterial;
     }
     return false;
   }
@@ -120,22 +123,22 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.markBlockForUpdate(pos);
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
   @Override
-  public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
-    return super.removedByPlayer(world, pos, player, willHarvest);
+    return super.removedByPlayer(bs, world, pos, player, willHarvest);
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-    super.harvestBlock(worldIn, player, pos, state, te);
-    super.removedByPlayer(worldIn, pos, player, true);
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+    super.harvestBlock(worldIn, player, pos, state, te, stack);
+    super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
@@ -148,8 +151,8 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public ItemStack getPickBlock(RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(target, world, pos, player);
+  public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
     PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
     return pickBlock;
   }
@@ -282,17 +285,19 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 20 : super.getFlammability(world, pos, face);
+    IBlockState bs = world.getBlockState(pos);
+    return bs.getMaterial() == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial() == Material.wood ? 5 : super.getFireSpreadSpeed(world, pos, face);
+    IBlockState bs = world.getBlockState(pos);
+    return bs.getMaterial() == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (side.getAxis() != EnumFacing.Axis.Y) {
       IBlockState blockState2 = worldIn.getBlockState(pos);
       if (blockState2.getBlock() instanceof BlockPaintedFence
@@ -300,7 +305,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
         return false;
       }
     }
-    return super.shouldSideBeRendered(worldIn, pos, side);
+    return super.shouldSideBeRendered(state, worldIn, pos, side);
   }
 
   @Override

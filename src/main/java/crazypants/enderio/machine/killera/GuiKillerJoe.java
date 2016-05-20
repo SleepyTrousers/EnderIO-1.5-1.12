@@ -70,11 +70,11 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 1));
-      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.experience_orb.pickup"));
+      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.experience_orb.pickup"));
       SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
     } else if(b.id == XP10_ID) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 10));
-      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.experience_orb.pickup"));
+      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.experience_orb.pickup"));
       SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
     }
   }

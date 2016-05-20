@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class CocoaFarmer extends CustomSeedFarmer {
   public CocoaFarmer() {
-    super(Blocks.cocoa, new ItemStack(Items.dye, 1, 3));
+    super(Blocks.COCOA, new ItemStack(Items.DYE, 1, 3));
     this.requiresFarmland = false;
     if (!Config.farmHarvestJungleWhenCocoa) {
       this.disableTreeFarm = true;
@@ -69,6 +69,6 @@ public class CocoaFarmer extends CustomSeedFarmer {
   private boolean validBlock(IBlockState bs) {
     //TODO: 1.8
     //return bs.getBlock() == Blocks.log && BlockLog.func_150165_c(metadata) == 3;
-    return bs.getBlock() == Blocks.log;
+    return bs.getBlock() == Blocks.LOG;
   }
 }

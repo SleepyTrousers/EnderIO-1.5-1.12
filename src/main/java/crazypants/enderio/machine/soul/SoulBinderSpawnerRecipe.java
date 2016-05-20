@@ -39,9 +39,8 @@ public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
   }
 
   @Override
-  public List<String> getSupportedSouls() {
-    List<String> res = EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);    
-    return res;
+  public List<String> getSupportedSouls() {    
+    return EntityUtil.getAllRegisteredMobNames();
   }
 
   

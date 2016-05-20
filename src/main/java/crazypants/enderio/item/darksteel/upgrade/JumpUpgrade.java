@@ -44,7 +44,7 @@ public class JumpUpgrade extends AbstractUpgrade {
   }
 
   public JumpUpgrade(String unlocName, int level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(Blocks.piston), levelCost);
+    super(UPGRADE_NAME, unlocName, new ItemStack(Blocks.PISTON), levelCost);
     this.level = (short) level;
   }
 

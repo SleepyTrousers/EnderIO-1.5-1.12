@@ -357,8 +357,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     int targZ = MathHelper.floor_double(targetEntity.posZ);
 
     PathFinder pf = new PathFinder(new WalkNodeProcessor());
-    return pf.func_186336_a(worldObj, (EntityLiving)entity, new BlockPos(targX, targY, targZ), range);
-//    return pf.createEntityPathTo(worldObj, entity, new BlockPos(targX, targY, targZ), range);
+    return pf.findPath(worldObj, (EntityLiving)entity, new BlockPos(targX, targY, targZ), range);
   }
 
   private class Target extends FakePlayerEIO {

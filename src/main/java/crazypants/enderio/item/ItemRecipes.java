@@ -46,7 +46,7 @@ public class ItemRecipes {
     addShaped(DarkSteelItems.itemDarkSteelBoots.createItemStack(), "s s", "s s", 's', darkSteel);
 
     ItemStack wing = new ItemStack(DarkSteelItems.itemGliderWing, 1, 0);
-    addShaped(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
+    addShaped(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.LEATHER);
     addShaped(new ItemStack(DarkSteelItems.itemGliderWing, 1, 1), " s ", "wsw", "   ", 's', darkSteel, 'w', wing);
 
     addShaped(DarkSteelItems.itemDarkSteelShears.createItemStack(), " s", "s ", 's', darkSteel);
@@ -62,16 +62,16 @@ public class ItemRecipes {
     ItemStack pp3s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.GOLD.getMetaFromType(true));
     ItemStack pp4s = new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.IRON.getMetaFromType(true));
 
-    GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', Blocks.wooden_pressure_plate, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', Blocks.stone_pressure_plate, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', Blocks.light_weighted_pressure_plate, 'w', Blocks.wool);
-    GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', Blocks.heavy_weighted_pressure_plate, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(pp1s, "p", "w", 'p', Blocks.WOODEN_PRESSURE_PLATE, 'w', Blocks.WOOL);
+    GameRegistry.addShapedRecipe(pp2s, "p", "w", 'p', Blocks.STONE_PRESSURE_PLATE, 'w', Blocks.WOOL);
+    GameRegistry.addShapedRecipe(pp3s, "p", "w", 'p', Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 'w', Blocks.WOOL);
+    GameRegistry.addShapedRecipe(pp4s, "p", "w", 'p', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, 'w', Blocks.WOOL);
 
     GameRegistry.addRecipe(new RecipePaintedPressurePlate()); // plate + wool = silent plate (keeps nbt)
     for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
       // these are just for JEI, the RecipePaintedPressurePlate has higher priority
       GameRegistry.addShapedRecipe(new ItemStack(EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(true)), "p", "w", 'p', new ItemStack(
-          EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(false)), 'w', Blocks.wool);
+          EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(false)), 'w', Blocks.WOOL);
     }
 
     //Soul Vessel

@@ -55,7 +55,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   protected BlockKillerJoe() {
     super(ModObject.blockKillerJoe, TileKillerJoe.class);
-    setStepSound(SoundType.GLASS);    
+    setSoundType(SoundType.GLASS);    
   }
 
   @Override

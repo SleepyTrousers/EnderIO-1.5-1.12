@@ -60,7 +60,7 @@ public class ConduitRecipes {
     addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', energeticGold);
     addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', phasedGold);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "###", '#', redstoneAlloy);
-    addShaped(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', binder, 'c', redstoneConduit, 'l', Blocks.lever);
+    addShaped(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', binder, 'c', redstoneConduit, 'l', Blocks.LEVER);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', redstoneAlloy);
 
 //    if (GasUtil.isGasConduitEnabled()) {
@@ -72,19 +72,19 @@ public class ConduitRecipes {
 
     //Filter Recipes
     ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);
-    addShaped(basicFilter, " p ", "php", " p ", 'p', Items.paper, 'h', Blocks.hopper);
+    addShaped(basicFilter, " p ", "php", " p ", 'p', Items.PAPER, 'h', Blocks.HOPPER);
 
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
-    addShaped(advFilter, "rpr", "pzp", "rpr", 'p', Items.paper, 'z', zombieController, 'r', "dustRedstone");
+    addShaped(advFilter, "rpr", "pzp", "rpr", 'p', Items.PAPER, 'z', zombieController, 'r', "dustRedstone");
 
     ItemStack modFilter = new ItemStack(EnderIO.itemModItemFilter, 1, 0);
-    addShaped(modFilter, " p ", "pwp", " p ", 'p', Items.paper, 'w', EnderIO.itemYetaWench);
+    addShaped(modFilter, " p ", "pwp", " p ", 'p', Items.PAPER, 'w', EnderIO.itemYetaWench);
 
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
-    addShaped(exFilt, " r ", "rfr", " c ", 'c', new ItemStack(Items.comparator, 1, 0), 'r', "dustRedstone", 'f', advFilter);
+    addShaped(exFilt, " r ", "rfr", " c ", 'c', new ItemStack(Items.COMPARATOR, 1, 0), 'r', "dustRedstone", 'f', advFilter);
 
     ItemStack powerFilt = new ItemStack(EnderIO.itemPowerItemFilter);
-    addShaped(powerFilt, " p ", "pcp", " p ", 'p', Items.paper, 'c', EnderIO.itemConduitProbe);
+    addShaped(powerFilt, " p ", "pcp", " p ", 'p', Items.PAPER, 'c', EnderIO.itemConduitProbe);
 
     ClearFilterRecipe clearRec = new ClearFilterRecipe();
     MinecraftForge.EVENT_BUS.register(clearRec);
@@ -94,7 +94,7 @@ public class ConduitRecipes {
     GameRegistry.addRecipe(copyRec);
 
     ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
-    addShaped(speedUpgrade, "iii", "epe", "ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', "ingotIron");
+    addShaped(speedUpgrade, "iii", "epe", "ere", 'p', Blocks.PISTON, 'e', electricalSteel, 'r', Blocks.REDSTONE_TORCH, 'i', "ingotIron");
 
     ItemStack speedDowngrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 1);
     addShaped(speedDowngrade, "iii", "ese", "ete", 's', "slimeball", 'e', electricalSteel, 't', "stickWood", 'i', "ingotIron");

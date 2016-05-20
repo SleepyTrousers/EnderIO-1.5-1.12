@@ -52,7 +52,7 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void setParentPos(BlockPos pos) {
-    parent = pos.getImmutable();
+    parent = pos.toImmutable();
   }
 
 }

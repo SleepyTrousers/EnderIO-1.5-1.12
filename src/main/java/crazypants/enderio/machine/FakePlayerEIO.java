@@ -20,7 +20,7 @@ public class FakePlayerEIO extends FakePlayer {
     posY = pos.y + 0.5;
     posZ = pos.z + 0.5;
     // ItemInWorldManager will access this field directly and can crash
-    playerNetServerHandler = new FakeNetHandlerPlayServer(this);
+    connection = new FakeNetHandlerPlayServer(this);
   }
 
   // These do things with packets...which crash since the net handler is null. Potion effects are not needed anyways.

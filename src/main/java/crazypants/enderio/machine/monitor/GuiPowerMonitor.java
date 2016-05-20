@@ -43,7 +43,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
   private static enum Tab {
     GRAPH(0, new ItemStack(BlockPowerMonitor.advancedInstance)),
     STAT(1, new ItemStack(EnderIO.blockPowerMonitor)),
-    CONTROL(2, new ItemStack(Items.redstone));
+    CONTROL(2, new ItemStack(Items.REDSTONE));
 
     int tabNo;
     ItemStack itemStack;

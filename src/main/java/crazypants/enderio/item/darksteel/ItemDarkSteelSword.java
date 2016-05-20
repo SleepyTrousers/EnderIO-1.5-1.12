@@ -160,13 +160,13 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
         int existing = 0;
         for (EntityItem stack : evt.getDrops()) {
-          if (stack.getEntityItem() != null && stack.getEntityItem().getItem() == Items.ender_pearl) {
+          if (stack.getEntityItem() != null && stack.getEntityItem().getItem() == Items.ENDER_PEARL) {
             existing += stack.getEntityItem().stackSize;
           }
         }
         int toDrop = numPearls - existing;
         if (toDrop > 0) {
-          evt.getDrops().add(Util.createDrop(player.worldObj, new ItemStack(Items.ender_pearl, toDrop, 0), evt.getEntityLiving().posX, evt.getEntityLiving().posY,
+          evt.getDrops().add(Util.createDrop(player.worldObj, new ItemStack(Items.ENDER_PEARL, toDrop, 0), evt.getEntityLiving().posX, evt.getEntityLiving().posY,
               evt.getEntityLiving().posZ, false));
         }
 
@@ -260,14 +260,14 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (entityLiving instanceof EntitySkeleton) {
       int type = ((EntitySkeleton) entityLiving).getSkeletonType();
       if (type == 1) {
-        return new ItemStack(Items.skull, 1, 1);
+        return new ItemStack(Items.SKULL, 1, 1);
       } else {
-        return new ItemStack(Items.skull, 1, 0);
+        return new ItemStack(Items.SKULL, 1, 0);
       }
     } else if (entityLiving instanceof EntityZombie) {
-      return new ItemStack(Items.skull, 1, 2);
+      return new ItemStack(Items.SKULL, 1, 2);
     } else if (entityLiving instanceof EntityCreeper) {
-      return new ItemStack(Items.skull, 1, 4);
+      return new ItemStack(Items.SKULL, 1, 4);
     } else if (entityLiving instanceof EntityEnderman) {
       return new ItemStack(EnderIO.blockEndermanSkull);
     }

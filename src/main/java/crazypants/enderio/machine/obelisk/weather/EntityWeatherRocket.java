@@ -28,13 +28,13 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
 
   public EntityWeatherRocket(World world, WeatherTask task) {
     this(world);    
-    dataWatcher.register(DATA_ID, task.ordinal());
+    dataManager.register(DATA_ID, task.ordinal());
   }
 
   @Override
   protected void entityInit() {
     super.entityInit();
-    dataWatcher.register(DATA_ID, 0);        
+    dataManager.register(DATA_ID, 0);        
   }
   
   @Override
@@ -53,7 +53,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   @Override
   public void setDead() {
     super.setDead();
-    WeatherTask task = WeatherTask.values()[dataWatcher.get(DATA_ID)];
+    WeatherTask task = WeatherTask.values()[dataManager.get(DATA_ID)];
     task.complete(worldObj);
   }
   
@@ -62,9 +62,9 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   }
   
   private void doEffect() {
-    SoundEvent se = SoundEvents.entity_firework_large_blast;    
+    SoundEvent se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST;    
     if (ticksExisted > 40) {    
-      se = SoundEvents.entity_firework_large_blast_far;
+      se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST_FAR;
     }
     worldObj.playSound(this.posX, this.posY, this.posZ, se, SoundCategory.BLOCKS, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
 
@@ -89,7 +89,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
           entityfireworksparkfx.setTrail(true);
           entityfireworksparkfx.setTwinkle(false);
           
-          entityfireworksparkfx.setColorFade(WeatherTask.values()[dataWatcher.get(DATA_ID)].color.getRGB());
+          entityfireworksparkfx.setColorFade(WeatherTask.values()[dataManager.get(DATA_ID)].color.getRGB());
 
           Minecraft.getMinecraft().effectRenderer.addEffect(entityfireworksparkfx);
           if (j != -size && j != size && k != -size && k != size) {

@@ -43,7 +43,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     this.grownBlockMeta = grownBlockMeta;
     this.seeds = seeds;
     FarmStationContainer.slotItemsSeeds.add(seeds);
-    addTilledBlock(Blocks.farmland);   
+    addTilledBlock(Blocks.FARMLAND);   
   }
   
   public void addTilledBlock(Block block) {
@@ -158,10 +158,10 @@ public class CustomSeedFarmer implements IFarmerJoe {
     if(removed) {
       if(!plant(farm, worldObj, bc)) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, getSeeds().copy()));
-        worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+        worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
       }
     } else {
-      worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+      worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
     }
 
     return new HarvestResult(result, bc.getBlockPos());
@@ -171,11 +171,11 @@ public class CustomSeedFarmer implements IFarmerJoe {
     World worldObj = farm.getWorld();
     BlockCoord dirtLoc = plantingLocation.getLocation(EnumFacing.DOWN);
     Block dirtBlock = farm.getBlock(dirtLoc);
-    if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && farm.hasHoe()) {
+    if((dirtBlock == Blocks.DIRT || dirtBlock == Blocks.GRASS) && farm.hasHoe()) {
       farm.damageHoe(1, dirtLoc);
-      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.farmland.getDefaultState());
-      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.getStepSound().getStepSound(), SoundCategory.BLOCKS,
-          (Blocks.farmland.getStepSound().getVolume() + 1.0F) / 2.0F, Blocks.farmland.getStepSound().getPitch() * 0.8F, false);
+      worldObj.setBlockState(dirtLoc.getBlockPos(), Blocks.FARMLAND.getDefaultState());
+      worldObj.playSound(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.FARMLAND.getSoundType().getStepSound(), SoundCategory.BLOCKS,
+          (Blocks.FARMLAND.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.FARMLAND.getSoundType().getPitch() * 0.8F, false);
       farm.actionPerformed(false);
       return true;
     }
@@ -206,7 +206,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc) {
-    worldObj.setBlockState(bc.getBlockPos(), Blocks.air.getDefaultState(), 1 | 2);
+    worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
     if(canPlant(worldObj, bc)) {
       worldObj.setBlockState(bc.getBlockPos(), getPlantedBlock().getStateFromMeta(getPlantedBlockMeta()), 1 | 2);
       farm.actionPerformed(false);

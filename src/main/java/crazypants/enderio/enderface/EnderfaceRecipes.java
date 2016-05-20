@@ -12,7 +12,7 @@ public class EnderfaceRecipes {
 
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
     String electricalSteel = Alloy.ELECTRICAL_STEEL.getOreIngot();
-    RecipeUtil.addShaped(new ItemStack(EnderIO.blockEnderIo), "sqs", "qeq", "sqs", 's', electricalSteel, 'q', fusedQuartz, 'e', new ItemStack(Items.ender_eye));
+    RecipeUtil.addShaped(new ItemStack(EnderIO.blockEnderIo), "sqs", "qeq", "sqs", 's', electricalSteel, 'q', fusedQuartz, 'e', new ItemStack(Items.ENDER_EYE));
   }
 
 }
