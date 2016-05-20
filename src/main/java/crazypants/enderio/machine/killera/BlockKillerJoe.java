@@ -2,23 +2,6 @@ package crazypants.enderio.machine.killera;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -30,6 +13,22 @@ import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Name proudly created by Xaw4
@@ -40,6 +39,9 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killerJoe_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killerJoe_head2");
   
+  private static final Double px = 1d / 16d;
+  public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
+
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
     PacketGivePlayerXP.register();
@@ -54,6 +56,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   protected BlockKillerJoe() {
     super(ModObject.blockKillerJoe, TileKillerJoe.class);
     setStepSound(SoundType.GLASS);    
+  }
+
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    return AABB;
   }
 
   @Override
@@ -124,13 +131,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
-  }
-
-  private static final Double px = 1d / 16d;
-
-  @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-    setBlockBounds(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
   }
 
 }

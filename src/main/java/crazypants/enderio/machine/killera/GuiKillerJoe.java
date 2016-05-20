@@ -20,6 +20,8 @@ import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
@@ -68,10 +70,12 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 1));
-      SoundUtil.playClientSoundFX("random.orb", getTileEntity());
+      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.experience_orb.pickup"));
+      SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
     } else if(b.id == XP10_ID) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 10));
-      SoundUtil.playClientSoundFX("random.orb", getTileEntity());
+      SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation("entity.experience_orb.pickup"));
+      SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
     }
   }
 

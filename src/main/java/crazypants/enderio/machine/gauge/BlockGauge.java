@@ -4,22 +4,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import cofh.api.energy.IEnergyHandler;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import cofh.api.energy.IEnergyHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -29,6 +16,18 @@ import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
@@ -77,23 +76,14 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   private static final double px = 1d / 16d;
 
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos) {
-    minY = 2 * px;
-    maxY = 14 * px;
-
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
     Map<EnumFacing, IEnergyHandler> sides = getDisplays(world, pos);
     if (sides.isEmpty()) {
-      minX = 0 * px;
-      maxX = 1;
-      minZ = 0;
-      maxZ = 1;
-      return;
+      return FULL_BLOCK_AABB;
     }
 
-    minX = 16 * px;
-    maxX = 0;
-    minZ = 16 * px;
-    maxZ = 0;
+    double minX = 16 * px, maxX = 0, minY = 2 * px, maxY = 14 * px, minZ = 16 * px, maxZ = 0;
+
     if (sides.containsKey(EnumFacing.NORTH) || sides.containsKey(EnumFacing.SOUTH)) {
       minX = Math.min(minX, 6 * px);
       maxX = Math.max(maxX, 10 * px);
@@ -119,12 +109,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
       }
     }
 
-  }
-
-  @Override
-  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
-    setBlockBoundsBasedOnState(world, pos);
-    return super.getSelectedBoundingBox(bs, world, pos);
+    return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
   protected static Map<EnumFacing, IEnergyHandler> getDisplays(IBlockAccess world, BlockPos pos) {

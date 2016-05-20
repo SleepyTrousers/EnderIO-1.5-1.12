@@ -5,19 +5,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -29,11 +16,31 @@ import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombieGen_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombieGen_head2");
+
+  private static final Double px = 1d / 16d;
+  public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockZombieGenerator create() {
     BlockZombieGenerator gen = new BlockZombieGenerator();
@@ -45,6 +52,11 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
   }
   
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    return AABB;
+  }
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return new ContainerZombieGenerator(player.inventory, (TileZombieGenerator) world.getTileEntity(new BlockPos(x, y, z)));
@@ -88,7 +100,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
         if(Config.machineSoundsEnabled) {
           float volume = (Config.machineSoundVolume * 0.045f);
-          world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, EnderIO.DOMAIN + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
+          SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(EnderIO.DOMAIN, "generator.zombie.bubble"));
+          world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, soundEvent, SoundCategory.BLOCKS, volume, world.rand.nextFloat() * 0.75f, false);
         }
       }
     }
@@ -123,13 +136,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
-  }
-
-  private static final Double px = 1d / 16d;
-
-  @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-    setBlockBounds(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
   }
 
 }

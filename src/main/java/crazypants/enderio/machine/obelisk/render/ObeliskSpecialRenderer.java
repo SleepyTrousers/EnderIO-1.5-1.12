@@ -2,10 +2,19 @@ package crazypants.enderio.machine.obelisk.render;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslated;
+
+import crazypants.enderio.EnderIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -22,15 +31,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.EnderIO;
-
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslated;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
@@ -70,7 +70,7 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
       GlStateManager.disableLighting();
 
       Tessellator tessellator = Tessellator.getInstance();
-      WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+      VertexBuffer worldrenderer = tessellator.getBuffer();
       worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
       for (BakedQuad bakedQuad : ObeliskBakery.bake(ObeliskRenderManager.INSTANCE.getActiveTextures())) {
         net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(worldrenderer, bakedQuad, -1);
