@@ -17,6 +17,7 @@ import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -163,11 +164,11 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   }
 
   @Override
-  public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
-    ItemStack st = par4EntityPlayer.inventory.getItemStack();
+  public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+    ItemStack st = player.inventory.getItemStack();
     setSpeedUpgradeSlotLimit(st);
     try {
-      return super.slotClick(par1, par2, par3, par4EntityPlayer);
+      return super.slotClick(slotId, dragType, clickTypeIn, player);
     } catch (Exception e) {
       //Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
       //This does does double clicking to fill a stack from working with this GUI open.

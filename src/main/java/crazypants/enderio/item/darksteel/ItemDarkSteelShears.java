@@ -81,6 +81,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(NAME);
+    setRegistryName(NAME);
   }
 
   @Override
@@ -229,7 +230,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, NAME);
+    GameRegistry.register(this);
   }
 
   @Override

@@ -192,19 +192,6 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(null, worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
-  }
-
-  @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
     return 20;
   }

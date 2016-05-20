@@ -18,13 +18,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class MagnetController {
@@ -107,7 +107,7 @@ public class MagnetController {
     for (String name : Config.magnetBlacklist) {
       String[] parts = name.split(":");
       if (parts.length == 2) {
-        Item item = GameRegistry.findItem(parts[0], parts[1]);
+        Item item = Item.REGISTRY.getObject(new ResourceLocation(parts[0], parts[1]));        
         if (item != null) {
           blacklist.add(item);
         }

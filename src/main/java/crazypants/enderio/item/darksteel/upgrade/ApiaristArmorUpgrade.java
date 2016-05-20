@@ -5,7 +5,7 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
@@ -20,7 +20,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   public static final ApiaristArmorUpgrade BOOTS = new ApiaristArmorUpgrade(3);
 
   public static ItemStack getApiaristArmor(int slot) {
-    Item i = GameRegistry.findItem("Forestry", forestryItemNames[slot]);
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", forestryItemNames[slot]));         
     if(i != null) {
       return new ItemStack(i);
     }

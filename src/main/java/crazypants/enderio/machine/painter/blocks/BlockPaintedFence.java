@@ -53,7 +53,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings("deprecation")
 public class BlockPaintedFence extends BlockFence implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
@@ -203,7 +202,6 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     return this;
   }
 
-  @SuppressWarnings("deprecation")
   @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
     int x = (state.getValue(BlockFence.EAST) ? 8 : 0) + (state.getValue(BlockFence.NORTH) ? 4 : 0) + (state.getValue(BlockFence.SOUTH) ? 2 : 0)
@@ -256,7 +254,6 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-    @SuppressWarnings("deprecation")
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "fence_inventory", paintSource, new UVLock(null));
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "fence_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION2);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -268,19 +265,6 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(null, worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
   }
 
   @Override

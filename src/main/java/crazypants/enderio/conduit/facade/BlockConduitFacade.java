@@ -52,7 +52,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new ItemConduitFacade(this);
+    return new ItemConduitFacade(this, name);
   }
 
   protected void initDefaultState() {

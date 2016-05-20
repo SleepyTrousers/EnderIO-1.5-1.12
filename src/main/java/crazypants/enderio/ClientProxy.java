@@ -56,6 +56,7 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -264,7 +265,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void init() {
     super.init();
-    SmartModelAttacher.registerColoredBlocksAndItems();
+    SmartModelAttacher.registerColoredBlocksAndItems();        
   }
 
   private void registerRenderers(IHaveRenderers bob) {

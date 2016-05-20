@@ -162,19 +162,6 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IBlockState paintSource = getPaintSource(null, worldIn, pos);
-    if (paintSource != null) {
-      try {
-        return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-      } catch (Throwable e) {
-      }
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
-  }
-
-  @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }

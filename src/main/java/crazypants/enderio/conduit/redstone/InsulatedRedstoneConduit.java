@@ -348,8 +348,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     if(block == null || block == EnderIO.blockConduitBundle) {
       return false;
     }
-    
-    if(CONECTABLE_BLOCKS.contains(block)) {
+        
+    if(block.canConnectRedstone(bs, world, loc.getBlockPos(), direction.getOpposite()) || CONECTABLE_BLOCKS.contains(block)) {
       return true;
     }
     

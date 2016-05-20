@@ -7,7 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
 
@@ -16,7 +16,7 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
   public static final NaturalistEyeUpgrade INSTANCE = new NaturalistEyeUpgrade();
 
   public static ItemStack getNaturalistEye() {
-    Item i = GameRegistry.findItem("Forestry", "naturalistHelmet");
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", "naturalistHelmet"));     
     if(i != null) {
       return new ItemStack(i);
     }

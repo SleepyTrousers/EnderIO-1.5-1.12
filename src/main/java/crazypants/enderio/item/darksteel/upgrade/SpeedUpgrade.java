@@ -4,10 +4,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionHelper;
+import net.minecraft.potion.PotionUtils;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -57,9 +58,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   private static ItemStack createUpgradeItem() {
     ItemStack pot = new ItemStack(Items.POTIONITEM, 1, 0);
-    int res = PotionHelper.applyIngredient(0, Items.NETHER_WART.getPotionEffect(new ItemStack(Items.NETHER_WART)));
-    res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);    
-    pot.setItemDamage(res);
+    PotionUtils.addPotionToItemStack(pot, PotionTypes.LONG_SWIFTNESS);        
     return pot;
   }
 

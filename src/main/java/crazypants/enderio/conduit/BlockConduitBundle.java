@@ -56,6 +56,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -124,17 +125,18 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
-    this.stepSound = new SoundType("silence", 0, 0) {
-      @Override
-      public String getBreakSound() {
-        return "EnderIO:" + soundName + ".dig";
-      }
-
-      @Override
-      public String getStepSound() {
-        return "EnderIO:" + soundName + ".step";
-      }
-    };
+    //TODO: 1.9
+//    this.stepSound = new SoundType("silence", 0, 0) {
+//      @Override
+//      public String getBreakSound() {
+//        return "EnderIO:" + soundName + ".dig";
+//      }
+//
+//      @Override
+//      public String getStepSound() {
+//        return "EnderIO:" + soundName + ".step";
+//      }
+//    };
 
     setDefaultState(blockState.getBaseState());
   }
@@ -263,8 +265,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
     EntityDiggingFX digFX = (EntityDiggingFX) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1,
         d2, 0, 0, 0, 0);
-    digFX.func_174845_l().multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
-    digFX.setParticleIcon(tex);
+    digFX.init().multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+    digFX.setParticleTexture(tex);
     effectRenderer.addEffect(digFX);
   }
 
@@ -323,10 +325,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return ret;
   }
 
+
+//  @Override
+//  public int getDamageValue(World world, BlockPos pos) {
+//    IBlockState f = getPaintSource(null, world, pos);
+//    return f == null ? 0 : f.getBlock().getMetaFromState(f);
+//  }
+
+  //TODO: 1.9 I think the above just uses the bellow, but we cant get the paint source here
+  
   @Override
-  public int getDamageValue(World world, BlockPos pos) {
-    IBlockState f = getPaintSource(null, world, pos);
-    return f == null ? 0 : f.getBlock().getMetaFromState(f);
+  public int damageDropped(IBlockState state) {
+    //getPaintSource
+    return state == null ? 0 : state.getBlock().getMetaFromState(state);    
   }
 
   @Override
@@ -438,26 +449,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     return result;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    IConduitBundle te = getTileEntity(worldIn, pos);
-    if (te == null) {
-      return super.colorMultiplier(worldIn, pos);
-    }
-    IBlockState ps = te.getPaintSource();
-    if (pos == null) {
-      return super.colorMultiplier(worldIn, pos);
-    }
-    try {
-      return ps.getBlock().colorMultiplier(worldIn, pos, renderPass);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return super.colorMultiplier(worldIn, pos, renderPass);
-  }
+  }  
 
   @Override
   public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {
@@ -1109,5 +1101,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       super.getSubBlocks(itemIn, tab, list);
     }
   }
+
+ 
 
 }

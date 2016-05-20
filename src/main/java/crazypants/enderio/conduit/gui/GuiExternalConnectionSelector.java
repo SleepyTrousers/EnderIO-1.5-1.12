@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
@@ -99,10 +100,11 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     World world = cb.getBundleWorldObj();
     BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
     if (!world.isAirBlock(blockPos)) {
-      Block b = world.getBlockState(blockPos).getBlock();
+      IBlockState bs = world.getBlockState(blockPos);
+      Block b = bs.getBlock();
       if (b != null && b != EnderIO.blockConduitBundle) {
-        try {
-          stacks.put(direction, new ItemStack(b, 1, b.getDamageValue(world, blockPos)));
+        try {          
+          stacks.put(direction, new ItemStack(b, 1, b.damageDropped(bs)));
         } catch (Throwable t) {
         }
       }

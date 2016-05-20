@@ -34,7 +34,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
   
   protected ItemBlock createItemBlock() {
-    return new BlockItemFusedQuartzBase(this);
+    return new BlockItemFusedQuartzBase(this, getName());
   }
 
   @Override
@@ -126,8 +126,8 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
 
   public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock {
 
-    public BlockItemFusedQuartzBase(Block block) {
-      super(block);
+    public BlockItemFusedQuartzBase(Block block, String name) {
+      super(block, name);
     }
 
     @Override

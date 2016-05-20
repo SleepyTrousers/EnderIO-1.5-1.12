@@ -13,6 +13,7 @@ import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.paint.render.UVLock;
 import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
@@ -208,7 +209,6 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     return this;
   }
 
-  @SuppressWarnings("deprecation")
   @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
 
@@ -297,7 +297,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-    @SuppressWarnings("deprecation")
+    
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", paintSource, new UVLock(null));
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "wall_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION2);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
