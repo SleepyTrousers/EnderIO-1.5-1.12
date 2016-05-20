@@ -75,7 +75,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       RightClickBlock e = new RightClickBlock(player, hand, player.getHeldItem(hand), pos,side, new Vec3d(hitX, hitY, hitZ));
 //      EntityInteractSpecific e = new EntityInteractSpecific(player, hand, pos, side, world, new Vec3d(hitX, hitY, hitZ));
       if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.getUseBlock() == Result.DENY || e.getUseItem() == Result.DENY) {
-        return EnumActionResult.FAIL;
+        return EnumActionResult.PASS;
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
         if (block == Blocks.CHEST) {
@@ -109,7 +109,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     if (ret) {
       player.swingArm(hand);
     }
-    return (ret && !world.isRemote) ? EnumActionResult.PASS : EnumActionResult.FAIL;
+    return (ret && !world.isRemote) ? EnumActionResult.FAIL : EnumActionResult.PASS;
   }
 
   

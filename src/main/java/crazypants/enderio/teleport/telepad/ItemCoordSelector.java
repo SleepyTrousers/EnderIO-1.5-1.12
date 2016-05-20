@@ -37,14 +37,13 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   public static ItemCoordSelector create() {
     ItemCoordSelector ret = new ItemCoordSelector();
-    GameRegistry.registerItem(ret);
+    GameRegistry.register(ret);
     return ret;
   }
 
   private ItemCoordSelector() {
     setCreativeTab(EnderIOTab.tabEnderIO);    
     setRegistryName(ModObject.itemCoordSelector.name());
-//    setTextureName("EnderIO:" + ModObject.itemCoordSelector.unlocalisedName);
     setMaxStackSize(1);
   }
 
@@ -87,7 +86,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       EnumHand hand) {
     
       if (!rayTraceCoords(stack, world, player)) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
 
     TileEntity te = world.getTileEntity(pos);
@@ -127,7 +126,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
         }
 
         if(bc.equals(cur) && dim == curDim) {
-          return EnumActionResult.FAIL;
+          return EnumActionResult.PASS;
         }
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getOwner());
@@ -138,7 +137,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);
     }
     
-    return EnumActionResult.SUCCESS;
+    return EnumActionResult.FAIL;
   }
 
   // returns false if the raytrace provided no new information

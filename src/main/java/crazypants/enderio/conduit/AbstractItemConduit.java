@@ -120,17 +120,17 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) { 
     
     // Conduit replacement
-    if (player.isSneaking()) {
-      return EnumActionResult.FAIL;
+    if (player.isSneaking()) {      
+      return EnumActionResult.PASS;
     }
     TileEntity te = world.getTileEntity(pos);
     if (te == null || !(te instanceof IConduitBundle)) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
     IConduitBundle bundle = (IConduitBundle) te;
     IConduit existingConduit = bundle.getConduit(getBaseConduitType());
     if (existingConduit == null) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
     ItemStack existingConduitAsItemStack = existingConduit.createItem();
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
@@ -138,7 +138,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
         IConduit newConduit = createConduit(stack, player);
         if (newConduit == null) {
           System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-          return EnumActionResult.FAIL;
+          return EnumActionResult.PASS;
         }
         bundle.removeConduit(existingConduit);
         bundle.addConduit(newConduit);
@@ -151,12 +151,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
           }
           player.inventoryContainer.detectAndSendChanges();
         }
-        return EnumActionResult.PASS;
+        return EnumActionResult.FAIL;
       } else {
         player.swingArm(hand);
       }
     }
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
   
 

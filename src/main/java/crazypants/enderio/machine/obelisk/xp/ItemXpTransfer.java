@@ -54,7 +54,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   public static EnumActionResult onActivated(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
     if (world.isRemote) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
     boolean res;
     boolean swing = false;
@@ -69,7 +69,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       sendXPUpdate(player, world, pos, swing);
     }
 
-    return EnumActionResult.PASS;
+    return EnumActionResult.FAIL;
   }
 
   public static void sendXPUpdate(EntityPlayer player, World world, BlockPos pos, boolean swing) {
