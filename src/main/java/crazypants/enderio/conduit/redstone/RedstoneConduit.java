@@ -20,7 +20,6 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -28,13 +27,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -161,17 +159,18 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
             }
           }
         }
-        if (Loader.isModLoaded("ComputerCraft") && canConnectToExternal(dir, false)) {
-          BlockCoord loc = getLocation().getLocation(dir);
-          int bundledInput = getComputerCraftBundledPowerLevel(dir);
-          if(bundledInput >= 0){
-            for(int i = 0; i < 16; i++) {
-              int color = bundledInput >>> i & 1;
-                Signal signal = new Signal(loc.x, loc.y, loc.z, dir, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
-                res.add(signal);
-            }
-          }
-        }
+        //TODO: 1.9 Computer Craft
+//        if (Loader.isModLoaded("ComputerCraft") && canConnectToExternal(dir, false)) {
+//          BlockCoord loc = getLocation().getLocation(dir);
+//          int bundledInput = getComputerCraftBundledPowerLevel(dir);
+//          if(bundledInput >= 0){
+//            for(int i = 0; i < 16; i++) {
+//              int color = bundledInput >>> i & 1;
+//                Signal signal = new Signal(loc.x, loc.y, loc.z, dir, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
+//                res.add(signal);
+//            }
+//          }
+//        }
       }
     }
 
@@ -257,11 +256,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     return null;
   }
 
-  @Method(modid = "ComputerCraft")
-  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
-    BlockCoord loc = getLocation().getLocation(dir);
-    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getBundleWorldObj(), loc.getBlockPos(), dir.getOpposite());
-  }
+  //TODO: 1.9 Computer Craft
+//  @Method(modid = "ComputerCraft")
+//  protected int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+//    BlockCoord loc = getLocation().getLocation(dir);
+//    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getBundleWorldObj(), loc.getBlockPos(), dir.getOpposite());
+//  }
 
   @Override
   public int isProvidingStrongPower(EnumFacing toDirection) {

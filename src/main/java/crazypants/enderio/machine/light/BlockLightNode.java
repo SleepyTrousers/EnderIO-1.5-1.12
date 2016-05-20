@@ -35,11 +35,17 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public BlockLightNode() {
     super(ModObject.blockLightNode.getUnlocalisedName(), TileLightNode.class, Material.AIR);
     setCreativeTab(null);
-    setBlockBounds(0, 0, 0, 0, 0, 0);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
   }
   
+  
+  
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    return new AxisAlignedBB(0,0,0,0,0,0);
+  }
+
   @Override
   public BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, ACTIVE);

@@ -24,10 +24,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IInfusionStabiliser, IHaveRenderers {
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers { //TODO: 1.9 Thaumcraft IInfusionStabiliser
 
   public enum SkullType implements IStringSerializable {
 
@@ -46,7 +45,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
     @Override
     public String getName() {
-      return name;
+      return name.toLowerCase();
     }
   }
 
@@ -71,7 +70,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new ItemEndermanSkull(this);
+    return new ItemEndermanSkull(this, name);
   }
 
   @Override
@@ -148,9 +147,10 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return super.getSelectedBoundingBox(bs, worldIn, pos);
   }
 
-  @Override
-  @Optional.Method(modid = "Thaumcraft")
-  public boolean canStabaliseInfusion(World world, BlockPos pos) {
-    return true;
-  }
+  //TODO: 1.9 Thaumcraft
+//  @Override
+//  @Optional.Method(modid = "Thaumcraft")
+//  public boolean canStabaliseInfusion(World world, BlockPos pos) {
+//    return true;
+//  }
 }

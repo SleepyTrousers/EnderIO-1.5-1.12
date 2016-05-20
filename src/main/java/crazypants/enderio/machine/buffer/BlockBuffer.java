@@ -45,7 +45,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemBuffer(this);
+    return new BlockItemBuffer(this, name);
   }
 
   @Override

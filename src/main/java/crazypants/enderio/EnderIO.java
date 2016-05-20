@@ -128,7 +128,6 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
-import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
@@ -564,6 +563,8 @@ public class EnderIO {
 
   private void addModIntegration() {
 
+  //TODO: 1.9 Mod Compat
+    
 //    if(Loader.isModLoaded("TConstruct")) {
 //      try {
 //        Class<?> ttClass = Class.forName("tconstruct.tools.TinkerTools");
@@ -581,7 +582,7 @@ public class EnderIO {
 //      }
 //    }
     
-    ThaumcraftCompat.load();
+//    ThaumcraftCompat.load();
   }
 
   @EventHandler

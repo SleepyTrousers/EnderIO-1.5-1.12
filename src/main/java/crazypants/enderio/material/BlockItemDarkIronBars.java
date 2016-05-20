@@ -12,8 +12,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemDarkIronBars extends ItemBlock {
 
-  public BlockItemDarkIronBars(Block block) {
+  public BlockItemDarkIronBars(Block block, String name) {
     super(block);    
+    setRegistryName(name);
   }
   
   @Override

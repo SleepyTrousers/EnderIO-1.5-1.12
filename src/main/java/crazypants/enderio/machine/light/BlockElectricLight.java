@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.light;
 
+import com.enderio.core.common.vecmath.Vector3f;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
@@ -8,21 +15,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.common.vecmath.Vector3f;
-
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.IHaveRenderers;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.util.ClientUtil;
 
 public class BlockElectricLight extends BlockEio<TileElectricLight> implements IRedstoneConnectable, IHaveRenderers {
 
@@ -44,11 +43,54 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   public BlockElectricLight() {
     super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
-    setLightOpacity(0);
-    setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+    setLightOpacity(0);    
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
 
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    
+    EnumFacing onFace = EnumFacing.DOWN;
+    TileEntity te = source.getTileEntity(pos);
+    if (te instanceof TileElectricLight) {
+      onFace = ((TileElectricLight) te).getFace();
+    }
+
+    Vector3f min = new Vector3f();
+    Vector3f max = new Vector3f();
+    switch (onFace) {
+    case UP:
+      min.set(BLOCK_EDGE_MIN, 1F - BLOCK_HEIGHT, BLOCK_EDGE_MIN);
+      max.set(BLOCK_EDGE_MAX, 1F, BLOCK_EDGE_MAX);
+      break;
+    case DOWN:
+      min.set(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN);
+      max.set(BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+      break;
+    case EAST:
+      min.set(1 - BLOCK_HEIGHT, BLOCK_EDGE_MIN, BLOCK_EDGE_MIN);
+      max.set(1, BLOCK_EDGE_MAX, BLOCK_EDGE_MAX);
+      break;
+    case WEST:
+      min.set(0, BLOCK_EDGE_MIN, BLOCK_EDGE_MIN);
+      max.set(BLOCK_HEIGHT, BLOCK_EDGE_MAX, BLOCK_EDGE_MAX);
+      break;
+    case NORTH:
+      min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 0);
+      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, BLOCK_HEIGHT);
+      break;
+    case SOUTH:
+      min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 1 - BLOCK_HEIGHT);
+      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, 1);
+      break;
+    default:
+      min.set(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN);
+      max.set(BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+      break;
+    }
+
+    return new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);    
+      //return new AxisAlignedBB(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+  }
 
   @Override
   protected ItemBlock createItemBlock() {
@@ -116,56 +158,6 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   @Override
   public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
     return null;
-  }
-
-  @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos) {
-        
-    EnumFacing onFace = EnumFacing.DOWN;
-    TileEntity te = blockAccess.getTileEntity(pos);
-    if (te instanceof TileElectricLight) {
-      onFace = ((TileElectricLight) te).getFace();
-    }
-
-    Vector3f min = new Vector3f();
-    Vector3f max = new Vector3f();
-    switch (onFace) {
-    case UP:
-      min.set(BLOCK_EDGE_MIN, 1F - BLOCK_HEIGHT, BLOCK_EDGE_MIN);
-      max.set(BLOCK_EDGE_MAX, 1F, BLOCK_EDGE_MAX);
-      break;
-    case DOWN:
-      min.set(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN);
-      max.set(BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
-      break;
-    case EAST:
-      min.set(1 - BLOCK_HEIGHT, BLOCK_EDGE_MIN, BLOCK_EDGE_MIN);
-      max.set(1, BLOCK_EDGE_MAX, BLOCK_EDGE_MAX);
-      break;
-    case WEST:
-      min.set(0, BLOCK_EDGE_MIN, BLOCK_EDGE_MIN);
-      max.set(BLOCK_HEIGHT, BLOCK_EDGE_MAX, BLOCK_EDGE_MAX);
-      break;
-    case NORTH:
-      min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 0);
-      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, BLOCK_HEIGHT);
-      break;
-    case SOUTH:
-      min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 1 - BLOCK_HEIGHT);
-      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, 1);
-      break;
-    default:
-      min.set(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN);
-      max.set(BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
-      break;
-    }
-
-    setBlockBounds(min.x, min.y, min.z, max.x, max.y, max.z);
-  }
-
-  @Override
-  public void setBlockBoundsForItemRender() {
-//    setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
   @Override

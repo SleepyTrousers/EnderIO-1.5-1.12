@@ -15,11 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEndermanSkull extends ItemBlock {
 
-  public ItemEndermanSkull(Block block) {
+  public ItemEndermanSkull(Block block, String name) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setRegistryName(name);
   }
 
   @Override

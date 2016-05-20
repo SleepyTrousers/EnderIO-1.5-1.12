@@ -21,8 +21,8 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     return res;
   }
 
-  public BlockItemCapBank(String name) {
-    super(EnderIO.blockCapBank);
+  public BlockItemCapBank(BlockCapBank blockCapBank, String name) {
+    super(blockCapBank);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setRegistryName(name);

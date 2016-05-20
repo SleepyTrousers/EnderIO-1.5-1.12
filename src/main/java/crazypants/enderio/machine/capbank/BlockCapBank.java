@@ -103,7 +103,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemCapBank(getName());
+    return new BlockItemCapBank(this, getName());
   }
 
   @Override

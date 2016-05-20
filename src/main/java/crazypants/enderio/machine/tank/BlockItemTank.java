@@ -30,10 +30,11 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
-  public BlockItemTank(Block block) {
+  public BlockItemTank(Block block, String name) {
     super(block);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setRegistryName(name);
   }
 
   @Override

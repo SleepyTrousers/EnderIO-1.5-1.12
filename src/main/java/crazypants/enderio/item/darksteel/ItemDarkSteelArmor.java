@@ -14,7 +14,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,22 +30,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.items.IGoggles;
-import thaumcraft.api.items.IRevealer;
-import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
     @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft")
 })
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
-    IRevealer, IVisDiscountGear, IOverlayRenderAware {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, 
+    IOverlayRenderAware { //, IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
 
   //TODO: 1.8
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON);
@@ -279,35 +273,35 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
-  //Thaumcraft
+  //TODO: 1.9 Thaumcraft
 
-  @Override
-  @Method(modid = "Thaumcraft")
-  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
-    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
-      return false;
-    }
-    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
-
-  }
-
-  @Override
-  @Method(modid = "Thaumcraft")
-  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
-    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
-      return false;
-    }
-    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
-  }
-
-  @Override
-  @Method(modid = "Thaumcraft")
-  public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
-      return 0;
-    }
-    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
-  }
+//  @Override
+//  @Method(modid = "Thaumcraft")
+//  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
+//    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+//      return false;
+//    }
+//    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+//
+//  }
+//
+//  @Override
+//  @Method(modid = "Thaumcraft")
+//  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
+//    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+//      return false;
+//    }
+//    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+//  }
+//
+//  @Override
+//  @Method(modid = "Thaumcraft")
+//  public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+//    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+//      return 0;
+//    }
+//    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+//  }
 
   public boolean isGogglesUgradeActive() {
     return gogglesUgradeActive;

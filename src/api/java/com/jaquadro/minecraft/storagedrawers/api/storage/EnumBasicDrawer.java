@@ -2,7 +2,7 @@ package com.jaquadro.minecraft.storagedrawers.api.storage;
 
 import net.minecraft.util.IStringSerializable;
 
-public enum EnumBasicDrawer implements IStringSerializable
+public enum EnumBasicDrawer implements IDrawerGeometry, IStringSerializable
 {
     FULL1(0, 1, false, "full1", "fulldrawers1"),
     FULL2(1, 2, false, "full2", "fulldrawers2"),
@@ -30,10 +30,12 @@ public enum EnumBasicDrawer implements IStringSerializable
         return meta;
     }
 
+    @Override
     public int getDrawerCount () {
         return drawerCount;
     }
 
+    @Override
     public boolean isHalfDepth () {
         return halfDepth;
     }

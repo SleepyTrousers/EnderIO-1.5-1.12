@@ -62,7 +62,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemTank(this);
+    return new BlockItemTank(this, name);
   }
 
   @Override

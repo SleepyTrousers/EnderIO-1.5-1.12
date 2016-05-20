@@ -27,10 +27,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
-  public BlockItemBuffer(Block block) {
+  public BlockItemBuffer(Block block, String name) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);
+    setRegistryName(name);
   }
 
   @Override

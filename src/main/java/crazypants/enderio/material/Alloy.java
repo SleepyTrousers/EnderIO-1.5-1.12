@@ -96,6 +96,6 @@ public enum Alloy implements IStringSerializable {
 
   @Override
   public String getName() {
-    return baseName;
+    return baseName.toLowerCase();
   }
 }

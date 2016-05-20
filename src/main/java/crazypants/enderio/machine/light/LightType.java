@@ -25,7 +25,7 @@ public enum LightType implements IStringSerializable {
   
   @Override
   public String getName() {
-    return name();
+    return name().toLowerCase();
   }
 
   public int getMetadata() {

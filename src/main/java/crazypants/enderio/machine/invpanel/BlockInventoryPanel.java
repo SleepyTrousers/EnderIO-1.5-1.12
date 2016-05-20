@@ -92,11 +92,6 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public boolean isFullCube(IBlockState bs) {
     return false;
   }
-
-  @Override
-  public void setBlockBoundsForItemRender() {
-    setBlockBounds(0.0f, 0.0f, 0.5f - BLOCK_SIZE / 2, 1.0f, 1.0f, 0.5f + BLOCK_SIZE / 2);
-  }
   
   @Override
   public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
@@ -106,12 +101,11 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {  
     return getBoundingBox(bs, worldIn, pos);
-  }
-  
+  }  
+
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {  
-    AxisAlignedBB bb = getBoundingBox(new BlockPos(0, 0, 0), getFacing(worldIn, pos));
-    setBlockBounds(bb);
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    return getBoundingBox(source, pos);
   }
 
   public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos) {

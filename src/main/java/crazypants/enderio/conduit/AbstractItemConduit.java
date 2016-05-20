@@ -41,10 +41,11 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     setUnlocalizedName(modObj.getUnlocalisedName());
     setMaxStackSize(64);
     setHasSubtypes(true);
+    setRegistryName(modObj.getUnlocalisedName());
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, modObj.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

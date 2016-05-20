@@ -3,27 +3,6 @@ package crazypants.enderio.machine.solar;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -37,6 +16,25 @@ import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
 
@@ -55,8 +53,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
     super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
       setCreativeTab(null);
-    }
-    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
+    }    
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
@@ -65,7 +62,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   protected ItemBlock createItemBlock() { 
-    return new BlockItemSolarPanel(this);
+    return new BlockItemSolarPanel(this, getName());
   }
 
   @Override
@@ -127,20 +124,15 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   }
 
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos) {
-    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {    
+    return new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
-  @Override
-  public void setBlockBoundsForItemRender() {
-    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
-  }
-
-  @Override  
-  public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {    
-    setBlockBoundsBasedOnState(worldIn, pos);
-    super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
-  }
+//  @Override  
+//  public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn) {    
+//    setBlockBoundsBasedOnState(worldIn, pos);
+//    super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn);
+//  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {

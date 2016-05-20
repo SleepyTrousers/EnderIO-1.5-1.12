@@ -5,16 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.ImmutableList;
 
@@ -33,7 +23,15 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.thaumcraft.ThaumcraftCompat;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class DarkSteelRecipeManager {
 
@@ -61,9 +59,10 @@ public class DarkSteelRecipeManager {
     upgrades.add(SolarUpgrade.SOLAR_ONE);
     upgrades.add(SolarUpgrade.SOLAR_TWO);
     upgrades.add(SolarUpgrade.SOLAR_THREE);
-    if(Loader.isModLoaded("Thaumcraft")) {
-      ThaumcraftCompat.loadUpgrades(upgrades);
-    }
+    //TODO: 1.9 Thaumcraft
+//    if(Loader.isModLoaded("Thaumcraft")) {
+//      ThaumcraftCompat.loadUpgrades(upgrades);
+//    }
     if(Loader.isModLoaded("Forestry")) {
       upgrades.add(NaturalistEyeUpgrade.INSTANCE);
       upgrades.add(ApiaristArmorUpgrade.HELMET);

@@ -9,24 +9,18 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
-  public BlockItemSolarPanel() {
-    super(EnderIO.blockSolarPanel);
+  public BlockItemSolarPanel(BlockSolarPanel blockSolarPanel, String name) {
+    super(blockSolarPanel);
     setHasSubtypes(true);
     setMaxDamage(0);    
     setCreativeTab(EnderIOTab.tabEnderIO);
-  }
-
-  public BlockItemSolarPanel(Block block) {
-    super(block);
-    setHasSubtypes(true);
-    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setRegistryName(name);
   }
 
   @Override

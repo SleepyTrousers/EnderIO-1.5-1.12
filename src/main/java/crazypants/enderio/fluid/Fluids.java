@@ -35,7 +35,7 @@ public class Fluids {
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
   public static final String FIRE_WATER_NAME = "fire_water";
   public static final String XP_JUICE_NAME = "xpjuice";
-  
+
   public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
   public static final String CLOUD_SEED_NAME = "cloud_seed";
   public static final String CLOUD_SEED_CONCENTRATED_NAME = "cloud_seed_concentrated";
@@ -51,11 +51,11 @@ public class Fluids {
 
   public static Fluid fluidFireWater;
   public static BlockFluidEio blockFireWater;
-  
+
   public static Fluid fluidLiquidSunshine;
   public static Fluid fluidCloudSeed;
   public static Fluid fluidCloudSeedConcentrated;
-  
+
   public static BlockFluidEio blockLiquidSunshine;
   public static BlockFluidEio blockCloudSeed;
   public static BlockFluidEio blockCloudSeedConcentrated;
@@ -130,12 +130,13 @@ public class Fluids {
     FluidRegistry.registerFluid(f);
     fluidCloudSeed = FluidRegistry.getFluid(f.getName());
     blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.WATER);
-    
-    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME, getStill(CLOUD_SEED_CONCENTRATED_NAME), getFlowing(CLOUD_SEED_CONCENTRATED_NAME)).setDensity(1000).setViscosity(1200);
+
+    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME, getStill(CLOUD_SEED_CONCENTRATED_NAME), getFlowing(CLOUD_SEED_CONCENTRATED_NAME)).setDensity(1000)
+        .setViscosity(1200);
     FluidRegistry.registerFluid(f);
     fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
     blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.WATER);
-    
+
     if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
       fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getRaw(Fluids.XP_JUICE_NAME + "still"), Fluids.getRaw(Fluids.XP_JUICE_NAME + "flowing"))
@@ -170,14 +171,19 @@ public class Fluids {
   @SideOnly(Side.CLIENT)
   public void registerFluidBlockRendering(Fluid fluid, String name) {
 
+    FluidStateMapper mapper = new FluidStateMapper(fluid);
     Block block = fluid.getBlock();
     Item item = Item.getItemFromBlock(block);
-    FluidStateMapper mapper = new FluidStateMapper(fluid);
+
     // item-model
-    ModelLoader.registerItemVariants(item);
-    ModelLoader.setCustomMeshDefinition(item, mapper);
+    if (item != null) {
+      ModelLoader.registerItemVariants(item);
+      ModelLoader.setCustomMeshDefinition(item, mapper);
+    }
     // block-model
-    ModelLoader.setCustomStateMapper(block, mapper);
+    if (block != null) {
+      ModelLoader.setCustomStateMapper(block, mapper);
+    }
   }
 
   @SideOnly(Side.CLIENT)

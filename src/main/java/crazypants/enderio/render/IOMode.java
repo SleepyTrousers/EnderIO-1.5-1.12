@@ -48,7 +48,7 @@ public class IOMode implements Comparable<IOMode> {
   public static final PropertyIO IO = PropertyIO.getInstance();
 
   public static IOMode get(EnumFacing direction, EnumIOMode iomode) {
-    String key = direction.toString() + "_" + iomode.toString();
+    String key = direction.toString().toLowerCase() + "_" + iomode.toString().toLowerCase();
     if (!values.containsKey(key)) {
       IOMode result = new IOMode(direction, iomode);
       values.put(key, result);
@@ -97,7 +97,7 @@ public class IOMode implements Comparable<IOMode> {
 
   @Override
   public String toString() {
-    return direction + "_" + iomode;
+    return direction.toString().toLowerCase() + "_" + iomode.toString().toLowerCase();
   }
 
 }

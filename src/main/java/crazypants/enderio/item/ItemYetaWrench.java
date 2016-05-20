@@ -21,7 +21,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +50,8 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
     }
     ItemYetaWrench result = new ItemYetaWrench();
-    result = ToolUtil.addInterfaces(result);
+    //TODO: 1.9 Mod integration
+    //result = ToolUtil.addInterfaces(result);
 
     GameRegistry.register(result);
 

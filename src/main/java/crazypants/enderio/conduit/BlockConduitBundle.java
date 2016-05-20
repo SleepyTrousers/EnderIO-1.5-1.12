@@ -17,7 +17,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -41,7 +40,6 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -49,14 +47,12 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -65,14 +61,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -118,6 +114,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   private TextureAtlasSprite lastRemovedComponetIcon;
 
   private final Random rand = new Random();
+  
+  private AxisAlignedBB bounds;
 
   protected BlockConduitBundle() {
     super(ModObject.blockConduitBundle.getUnlocalisedName(), TileConduitBundle.class);
@@ -139,6 +137,15 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 //    };
 
     setDefaultState(blockState.getBaseState());
+  }
+
+  private void setBlockBounds(float f, float g, float h, float i, float j, float k) {
+    bounds = new AxisAlignedBB(f, g, h, i, j, k);    
+  }
+
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {    
+    return bounds;
   }
 
   @Override
@@ -245,22 +252,23 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @SideOnly(Side.CLIENT)
   private void addBlockHitEffects(World world, EffectRenderer effectRenderer, int x, int y, int z, EnumFacing sideEnum, TextureAtlasSprite tex) {
     float f = 0.1F;
-    double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F) + f + getBlockBoundsMinX();
-    double d1 = y + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F) + f + getBlockBoundsMinY();
-    double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F) + f + getBlockBoundsMinZ();
+    
+    double d0 = x + rand.nextDouble() * (bounds.maxX - bounds.minX - f * 2.0F) + f + bounds.minX;
+    double d1 = y + rand.nextDouble() * (bounds.maxY - bounds.minY - f * 2.0F) + f + bounds.minY;
+    double d2 = z + rand.nextDouble() * (bounds.maxZ  - bounds.minZ- f * 2.0F) + f + bounds.minZ;
     int side = sideEnum.ordinal();
     if (side == 0) {
-      d1 = y + getBlockBoundsMinY() - f;
+      d1 = y + bounds.minY - f;
     } else if (side == 1) {
-      d1 = y + getBlockBoundsMaxY() + f;
+      d1 = y + bounds.maxY + f;
     } else if (side == 2) {
-      d2 = z + getBlockBoundsMinZ() - f;
+      d2 = z + bounds.minZ - f;
     } else if (side == 3) {
-      d2 = z + getBlockBoundsMaxZ() + f;
+      d2 = z + bounds.maxZ + f;
     } else if (side == 4) {
-      d0 = x + getBlockBoundsMinX() - f;
+      d0 = x + bounds.minX - f;
     } else if (side == 5) {
-      d0 = x + getBlockBoundsMaxX() + f;
+      d0 = x + bounds.maxX + f;
     }
 
     EntityDiggingFX digFX = (EntityDiggingFX) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1,
@@ -291,19 +299,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
-    SoundEvent path = event.getSound();
-    World world = event.getEntity().worldObj;
-    //TODO: 1.9 this equals is now stuffed
-    if ("EnderIO:silence.step".equals(path) && world.isRemote) {
-      BlockCoord bc = new BlockCoord(event.getEntity().posX, event.getEntity().posY - 2, event.getEntity().posZ);
-      TileEntity te = bc.getTileEntity(world);
-      if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
-        IBlockState facade = ((TileConduitBundle) te).getPaintSource();
-        ConduitUtil.playStepSound(facade.getBlock().getSoundType(), world, bc.x, bc.y, bc.z);
-      } else {
-        ConduitUtil.playStepSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
-      }
-    }
+//    SoundEvent path = event.getSound();    
+//    World world = event.getEntity().worldObj;
+//    //TODO: 1.9 this equals is now stuffed
+//    if ("EnderIO:silence.step".equals(path) && world.isRemote) {
+//      BlockCoord bc = new BlockCoord(event.getEntity().posX, event.getEntity().posY - 2, event.getEntity().posZ);
+//      TileEntity te = bc.getTileEntity(world);
+//      if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
+//        IBlockState facade = ((TileConduitBundle) te).getPaintSource();
+//        ConduitUtil.playStepSound(facade.getBlock().getSoundType(), world, bc.x, bc.y, bc.z);
+//      } else {
+//        ConduitUtil.playStepSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
+//      }
+//    }
   }
 
   @Override
@@ -412,44 +420,45 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result > 15 ? 15 : result;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {    
-    IConduitBundle te = getTileEntity(worldIn, pos);
-    if (te != null && te.hasFacade()) {
-      if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
-        return 255;
-      } else {
-        return getMixedBrightnessForFacade(worldIn, pos, te.getPaintSource().getBlock());
-      }
-    }
-    return super.getMixedBrightnessForBlock(worldIn, pos);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public int getMixedBrightnessForFacade(IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
-    int i = worldIn.getCombinedLight(pos, getLightValue(worldIn, pos));
-    if (i == 0 && facadeBlock instanceof BlockSlab) {
-      pos = pos.down();
-      Block block = worldIn.getBlockState(pos).getBlock();
-      return worldIn.getCombinedLight(pos, block.getLightValue(worldIn, pos));
-    } else if (facadeBlock.getUseNeighborBrightness()) {
-      return getNeightbourBrightness(worldIn, pos);
-    } else {
-      return i;
-    }
-  }
-
-  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
-    int result = worldIn.getCombinedLight(pos.up(), 0);
-    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-      int val = worldIn.getCombinedLight(pos.offset(dir), 0);
-      if (val > result) {
-        result = val;
-      }
-    }
-    return result;
-  }  
+  //TODO: 1.9
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {    
+//    IConduitBundle te = getTileEntity(worldIn, pos);
+//    if (te != null && te.hasFacade()) {
+//      if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
+//        return 255;
+//      } else {
+//        return getMixedBrightnessForFacade(worldIn, pos, te.getPaintSource().getBlock());
+//      }
+//    }
+//    return super.getMixedBrightnessForBlock(worldIn, pos);
+//  }
+//
+//  @SideOnly(Side.CLIENT)
+//  public int getMixedBrightnessForFacade(IBlockAccess worldIn, BlockPos pos, Block facadeBlock) {
+//    int i = worldIn.getCombinedLight(pos, getLightValue(worldIn, pos));
+//    if (i == 0 && facadeBlock instanceof BlockSlab) {
+//      pos = pos.down();
+//      Block block = worldIn.getBlockState(pos).getBlock();
+//      return worldIn.getCombinedLight(pos, block.getLightValue(worldIn, pos));
+//    } else if (facadeBlock.getUseNeighborBrightness()) {
+//      return getNeightbourBrightness(worldIn, pos);
+//    } else {
+//      return i;
+//    }
+//  }
+//
+//  private int getNeightbourBrightness(IBlockAccess worldIn, BlockPos pos) {
+//    int result = worldIn.getCombinedLight(pos.up(), 0);
+//    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+//      int val = worldIn.getCombinedLight(pos.offset(dir), 0);
+//      if (val > result) {
+//        result = val;
+//      }
+//    }
+//    return result;
+//  }  
 
   @Override
   public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {

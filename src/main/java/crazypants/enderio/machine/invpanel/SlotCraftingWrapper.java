@@ -24,7 +24,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
     net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
     this.onCrafting(stack);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
-    ItemStack[] containeritems = CraftingManager.getInstance().func_180303_b(this.craftMatrix, playerIn.worldObj);
+    ItemStack[] containeritems = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, playerIn.worldObj);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
     for (int i = 0; i < containeritems.length; ++i) {
@@ -43,7 +43,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
           if (numInserted < containeritemstack.stackSize) {
             containeritemstack.stackSize -= numInserted;
             if (!playerIn.inventory.addItemStackToInventory(containeritemstack)) {
-              playerIn.dropPlayerItemWithRandomChoice(containeritemstack, false);
+              playerIn.dropItem(containeritemstack, false);
             }
 
           }

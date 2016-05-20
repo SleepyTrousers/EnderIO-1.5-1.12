@@ -124,22 +124,18 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     return slotFilter;
   }
 
-  @SuppressWarnings("unchecked")
   public List<Slot> getCraftingGridSlots() {
     return inventorySlots.subList(firstSlotCraftingGrid, endSlotCraftingGrid);
   }
 
-  @SuppressWarnings("unchecked")
   public List<Slot> getReturnAreaSlots() {
     return inventorySlots.subList(firstSlotReturn, endSlotReturn);
   }
 
-  @SuppressWarnings("unchecked")
   public List<Slot> getPlayerInventorySlots() {
     return inventorySlots.subList(startPlayerSlot, endPlayerSlot);
   }
 
-  @SuppressWarnings("unchecked")
   public List<Slot> getPlayerHotbarSlots() {
     return inventorySlots.subList(startHotBarSlot, endHotBarSlot);
   }
@@ -154,19 +150,19 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void removeCraftingFromCrafters(ICrafting crafting) {
-    super.removeCraftingFromCrafters(crafting);
+  public void removeListener(ICrafting crafting) {
+    super.removeListener(crafting);
     removeChangeLog();
   }
   
   
 
   @Override
-  public void onCraftGuiOpened(ICrafting crafting) {
+  public void addListener(ICrafting crafting) {    
     if(changedItems != null) {
       sendChangeLog();
     }
-    super.onCraftGuiOpened(crafting);
+    super.addListener(crafting);
     if(changedItems != null) {
       InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
       if(db != null) {
@@ -279,7 +275,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     super.detectAndSendChanges();
   }
 
-  @SuppressWarnings("unchecked")
   private void sendReturnAreaSlots() {
     for (int slotIdx = firstSlotReturn; slotIdx < endSlotReturn; slotIdx++) {
       ItemStack stack = inventorySlots.get(slotIdx).getStack();
@@ -287,8 +282,8 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         stack = stack.copy();
       }
       inventoryItemStacks.set(slotIdx, stack);
-      for (Object crafter : this.crafters) {
-        ((ICrafting) crafter).sendSlotContents(this, slotIdx, stack);
+      for (ICrafting crafter : this.listeners) {
+        crafter.sendSlotContents(this, slotIdx, stack);
       }
     }
   }
@@ -306,13 +301,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   @Override
   public void sendChangeLog() {
-    if(!changedItems.isEmpty() && !crafters.isEmpty()) {
+    if(!changedItems.isEmpty() && !listeners.isEmpty()) {
       InventoryDatabaseServer db = getInventoryPanel().getDatabaseServer();
       if(db != null) {
         try {
           byte[] compressed = db.compressChangedItems(changedItems);
           PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
-          for (Object crafting : crafters) {
+          for (Object crafting : listeners) {
             if(crafting instanceof EntityPlayerMP) {
               PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
             }
