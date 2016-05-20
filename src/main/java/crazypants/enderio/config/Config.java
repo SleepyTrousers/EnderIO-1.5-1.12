@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -445,9 +446,8 @@ public final class Config {
 
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
-
-  public static int enchantmentSoulBoundId = 172;
-  public static int enchantmentSoulBoundWeight = 1;
+  
+  public static Rarity enchantmentSoulBoundWeight = Rarity.UNCOMMON;
   public static boolean enchantmentSoulBoundEnabled = true;
 
   public static boolean telepadLockDimension = true;
@@ -1216,14 +1216,20 @@ public final class Config {
 
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
         "If false the soul bound enchantment will not be available");
-    enchantmentSoulBoundId = config.get(sectionEnchantments.name, "enchantmentSoulBoundId", enchantmentSoulBoundId,
-        "The id of the enchantment.").getInt(enchantmentSoulBoundId);
-    enchantmentSoulBoundWeight = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundWeight,
-        "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
+    
+    
+    String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundWeight.toString(),
+        "The rarity of the enchantment. COMMON, UNCOMMON, RARE, VERY_RARE ").getString();
+    try {
+      enchantmentSoulBoundWeight = Rarity.valueOf(rareStr);
+    } catch (Exception e) {
+      Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
+      e.printStackTrace();
+    }    
 
     telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
-    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
+    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,        
         "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
     telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();

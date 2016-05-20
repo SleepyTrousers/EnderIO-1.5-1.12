@@ -16,7 +16,7 @@ public class Enchantments {
 
   private void registerEnchantments() {
     if(Config.enchantmentSoulBoundEnabled) {     
-      EnchantmentSoulBound.create(Config.enchantmentSoulBoundId);
+      EnchantmentSoulBound.create();
     }
   }
   

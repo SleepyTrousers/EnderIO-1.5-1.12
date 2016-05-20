@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -109,8 +110,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
-    if(ConduitUtil.isProbeEquipped(player)) {
+    DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
+    if(ConduitUtil.isProbeEquipped(player, EnumHand.MAIN_HAND)) {
       if(!player.worldObj.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this);
       }
@@ -118,7 +119,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
       setExtractionSignalColor(res.component.dir, col);
       return true;
-    } else if(ToolUtil.isToolEquipped(player)) {
+    } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
       if(!getBundle().getEntity().getWorld().isRemote) {
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;

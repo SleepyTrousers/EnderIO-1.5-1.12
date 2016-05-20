@@ -2,24 +2,6 @@ package crazypants.enderio.enchantment;
 
 import java.util.ListIterator;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnumEnchantmentType;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.player.PlayerDropsEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
 import crazypants.enderio.EnderIO;
@@ -27,22 +9,40 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
 import crazypants.util.GalacticraftUtil;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
-  public static EnchantmentSoulBound create(int id) {
-    EnchantmentSoulBound res = new EnchantmentSoulBound(id);
-    Enchantment.addToBookList(res);
+  private static final String NAME = "soulBound";
+
+  public static EnchantmentSoulBound create() {
+    EnchantmentSoulBound res = new EnchantmentSoulBound();    
     MinecraftForge.EVENT_BUS.register(res);
+    GameRegistry.register(res);
     return res;
   }
 
-  private final int id;
-
-  private EnchantmentSoulBound(int id) {
-    super(id, new ResourceLocation(EnderIO.DOMAIN, "soulBound"), Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL);
-    this.id = id;
-    setName("soulBound");
+  private EnchantmentSoulBound() {
+    super(Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());    
+    setName(NAME);
+    setRegistryName(NAME);
   }
 
   @Override
@@ -70,21 +70,21 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
    */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void onPlayerDeath(PlayerDropsEvent evt) {
-    if (evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer || evt.isCanceled()) {
+    if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if(evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
+    if(evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
-    Log.debug("Running onPlayerDeathEarly logic for " + evt.entityPlayer.getName());
+    Log.debug("Running onPlayerDeathEarly logic for " + evt.getEntityPlayer().getName());
 
-    ListIterator<EntityItem> iter = evt.drops.listIterator();
+    ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
       ItemStack item = ei.getEntityItem();
       if(isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item)) {
+        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           iter.remove();
         }
       }
@@ -94,12 +94,12 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     // wait for that because gravestone mods also listen to this event. So we have
     // to fetch Baubles items ourselves here.
     // For the same reason we cannot put the items into Baubles slots.
-    IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer);
+    IInventory baubles = BaublesUtil.instance().getBaubles(evt.getEntityPlayer());
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack item = baubles.getStackInSlot(i);
         if(isSoulBound(item)) {
-          if (addToPlayerInventory(evt.entityPlayer, item)) {
+          if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
             baubles.setInventorySlotContents(i, null);
           }
         }
@@ -108,13 +108,13 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
     // Galacticraft. Again we are too early for those items. We just dump the
     // stuff into the normal inventory to not have to keep a separate list.
-    if (evt.entityPlayer instanceof EntityPlayerMP) {
-      IInventory galacticraft = GalacticraftUtil.getGCInventoryForPlayer((EntityPlayerMP) evt.entityPlayer);
+    if (evt.getEntityPlayer() instanceof EntityPlayerMP) {
+      IInventory galacticraft = GalacticraftUtil.getGCInventoryForPlayer((EntityPlayerMP) evt.getEntityPlayer());
       if (galacticraft != null) {
         for (int i = 0; i < galacticraft.getSizeInventory(); i++) {
           ItemStack item = galacticraft.getStackInSlot(i);
           if (isSoulBound(item)) {
-            if (addToPlayerInventory(evt.entityPlayer, item)) {
+            if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
               galacticraft.setInventorySlotContents(i, null);
             }
           }
@@ -130,21 +130,21 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onPlayerDeathLate(PlayerDropsEvent evt) {
-    if (evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer || evt.isCanceled()) {
+    if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
-    Log.debug("Running onPlayerDeathLate logic for " + evt.entityPlayer.getName());
+    Log.debug("Running onPlayerDeathLate logic for " + evt.getEntityPlayer().getName());
 
-    ListIterator<EntityItem> iter = evt.drops.listIterator();
+    ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
       ItemStack item = ei.getEntityItem();
       if (isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item)) {
+        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
           iter.remove();
         }
       }
@@ -161,38 +161,38 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
    */
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void onPlayerClone(PlayerEvent.Clone evt) {
-    if (!evt.wasDeath || evt.isCanceled()) {
+    if (!evt.isWasDeath() || evt.isCanceled()) {
       return;
     }
-    if(evt.original == null || evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
+    if(evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if(evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
+    if(evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
-    if (evt.original == evt.entityPlayer
-        || evt.original.inventory == evt.entityPlayer.inventory
-        || (evt.original.inventory.armorInventory == evt.entityPlayer.inventory.armorInventory && evt.original.inventory.mainInventory == evt.entityPlayer.inventory.mainInventory)) {
-      Log.warn("Player " + evt.entityPlayer.getName() + " just died and respawned in their old body. Did someone fire a PlayerEvent.Clone(death=true) "
+    if (evt.getOriginal() == evt.getEntityPlayer()
+        || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
+        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
+      Log.warn("Player " + evt.getEntityPlayer().getName() + " just died and respawned in their old body. Did someone fire a PlayerEvent.Clone(death=true) "
           + "for a teleportation? Supressing Soulbound enchantment for zombie player.");
       return;
     }
 
-    Log.debug("Running onPlayerCloneEarly logic for " + evt.entityPlayer.getName());
+    Log.debug("Running onPlayerCloneEarly logic for " + evt.getEntityPlayer().getName());
 
-    for (int i = 0; i < evt.original.inventory.armorInventory.length; i++) {
-      ItemStack item = evt.original.inventory.armorInventory[i];
+    for (int i = 0; i < evt.getOriginal().inventory.armorInventory.length; i++) {
+      ItemStack item = evt.getOriginal().inventory.armorInventory[i];
       if(isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item)) {
-          evt.original.inventory.armorInventory[i] = null;
+        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
+          evt.getOriginal().inventory.armorInventory[i] = null;
         }
       }
     }
-    for (int i = 0; i < evt.original.inventory.mainInventory.length; i++) {
-      ItemStack item = evt.original.inventory.mainInventory[i];
+    for (int i = 0; i < evt.getOriginal().inventory.mainInventory.length; i++) {
+      ItemStack item = evt.getOriginal().inventory.mainInventory[i];
       if(isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item)) {
-          evt.original.inventory.mainInventory[i] = null;
+        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
+          evt.getOriginal().inventory.mainInventory[i] = null;
         }
       }
     }
@@ -204,36 +204,36 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onPlayerCloneLast(PlayerEvent.Clone evt) {
-    if (!evt.wasDeath || evt.isCanceled()) {
+    if (!evt.isWasDeath() || evt.isCanceled()) {
       return;
     }
-    if (evt.original == null || evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
+    if (evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if (evt.entityPlayer.worldObj.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
       return;
     }
-    if (evt.original == evt.entityPlayer
-        || evt.original.inventory == evt.entityPlayer.inventory
-        || (evt.original.inventory.armorInventory == evt.entityPlayer.inventory.armorInventory && evt.original.inventory.mainInventory == evt.entityPlayer.inventory.mainInventory)) {
+    if (evt.getOriginal() == evt.getEntityPlayer()
+        || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
+        || (evt.getOriginal().inventory.armorInventory == evt.getEntityPlayer().inventory.armorInventory && evt.getOriginal().inventory.mainInventory == evt.getEntityPlayer().inventory.mainInventory)) {
       return;
     }
 
-    Log.debug("Running onPlayerCloneLate logic for " + evt.entityPlayer.getName());
+    Log.debug("Running onPlayerCloneLate logic for " + evt.getEntityPlayer().getName());
 
-    for (int i = 0; i < evt.original.inventory.armorInventory.length; i++) {
-      ItemStack item = evt.original.inventory.armorInventory[i];
+    for (int i = 0; i < evt.getOriginal().inventory.armorInventory.length; i++) {
+      ItemStack item = evt.getOriginal().inventory.armorInventory[i];
       if (isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item) || tryToSpawnItemInWorld(evt.original, item)) {
-          evt.original.inventory.armorInventory[i] = null;
+        if (addToPlayerInventory(evt.getEntityPlayer(), item) || tryToSpawnItemInWorld(evt.getOriginal(), item)) {
+          evt.getOriginal().inventory.armorInventory[i] = null;
         }
       }
     }
-    for (int i = 0; i < evt.original.inventory.mainInventory.length; i++) {
-      ItemStack item = evt.original.inventory.mainInventory[i];
+    for (int i = 0; i < evt.getOriginal().inventory.mainInventory.length; i++) {
+      ItemStack item = evt.getOriginal().inventory.mainInventory[i];
       if (isSoulBound(item)) {
-        if (addToPlayerInventory(evt.entityPlayer, item) || tryToSpawnItemInWorld(evt.original, item)) {
-          evt.original.inventory.mainInventory[i] = null;
+        if (addToPlayerInventory(evt.getEntityPlayer(), item) || tryToSpawnItemInWorld(evt.getOriginal(), item)) {
+          evt.getOriginal().inventory.mainInventory[i] = null;
         }
       }
     }
@@ -254,7 +254,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private boolean isSoulBound(ItemStack item) {
-    return EnchantmentHelper.getEnchantmentLevel(id, item) > 0;
+    return EnchantmentHelper.getEnchantmentLevel(this, item) > 0;
   }
 
   private boolean addToPlayerInventory(EntityPlayer entityPlayer, ItemStack item) {
@@ -263,7 +263,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     }
     if(item.getItem() instanceof ItemArmor) {
       ItemArmor arm = (ItemArmor) item.getItem();
-      int index = 3 - arm.armorType;
+      int index = arm.armorType.getIndex();
       if(entityPlayer.inventory.armorItemInSlot(index) == null) {
         entityPlayer.inventory.armorInventory[index] = item;
         Log.debug("Running addToPlayerInventory/armor logic for " + entityPlayer.getName() + ": " + item);
