@@ -426,9 +426,10 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
-      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
-      player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
-          false);
+      //TODO: 1.9 Need to register sounds
+//      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
+//      player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
+//          false);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
