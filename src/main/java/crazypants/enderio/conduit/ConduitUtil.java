@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -382,7 +383,7 @@ public class ConduitUtil {
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
     } else {
       playClientBreakSound(snd);
     }
@@ -394,7 +395,7 @@ public class ConduitUtil {
 
   public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), SoundCategory.BLOCKS,(snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
     } else {
       playClientHitSound(snd);
     }
@@ -406,7 +407,7 @@ public class ConduitUtil {
 
   public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
     } else {
       playClientStepSound(snd);
     }
@@ -418,7 +419,7 @@ public class ConduitUtil {
 
   public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
     } else {
       playClientPlaceSound(snd);
     }

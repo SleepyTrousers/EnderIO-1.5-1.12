@@ -6,7 +6,7 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -86,7 +86,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     applyFilter(message.dir, conduit, message.inputFilter, true);
     applyFilter(message.dir, conduit, message.outputFilter, false);
 
-    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
     return null;
   }
 

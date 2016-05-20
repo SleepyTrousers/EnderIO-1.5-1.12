@@ -4,7 +4,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -50,7 +50,8 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IIns
   @Override
   public IMessage onMessage(PacketRedstoneConduitSignalColor message, MessageContext ctx) {
     message.getTileCasted(ctx).setSignalColor(message.dir, message.col);
-    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
     return null;
   }
 

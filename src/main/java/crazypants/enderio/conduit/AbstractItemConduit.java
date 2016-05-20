@@ -11,16 +11,18 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.IModObject;
 import crazypants.util.ClientUtil;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -50,17 +52,18 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   public void registerRenderers() {    
     for(int i=0;i<subtypes.length;i++) {
       ClientUtil.regRenderer(this, i, new ResourceLocation(subtypes[i].modelLocation));
-    }    
+    }       
   }
   
   @Override
-  public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
  
 //    if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, pos, side)) {
 //      return true;
 //    }
     
-    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, pos, side);
+        
+    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle.getDefaultState(), player, world, pos, side);
 //    BlockCoord placeAt = new BlockCoord(pos.offset(side));
     if(placeAt != null) {
       if(!world.isRemote) {
@@ -69,14 +72,14 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
             bundle.addConduit(createConduit(stack, player));
-            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, placeAt.x, placeAt.y, placeAt.z);
+            ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt.x, placeAt.y, placeAt.z);
           }
         }
       }
       if(!player.capabilities.isCreativeMode) {
         stack.stackSize--;
       }
-      return true;
+      return EnumActionResult.PASS;
 
     } else {
 
@@ -88,44 +91,45 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
         if(bundle == null) {
           System.out.println("AbstractItemConduit.onItemUse: Bundle null");
-          return false;
+          return EnumActionResult.FAIL;
         }
         if(!bundle.hasType(getBaseConduitType())) {
           if(!world.isRemote) {
             IConduit con = createConduit(stack, player);
             if(con == null) {
               System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-              return false;
+              return EnumActionResult.FAIL;
             }
             bundle.addConduit(con);
-            ConduitUtil.playBreakSound(Block.soundTypeMetal, world, place.getX(), place.getY(), place.getZ());
+            ConduitUtil.playBreakSound(SoundType.METAL, world, place.getX(), place.getY(), place.getZ());
             if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
             }
           }
-          return true;
+          return EnumActionResult.PASS;
         }
       }
     }
 
-    return false;
+    return EnumActionResult.FAIL;
   }
 
 
   @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {   
+  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) { 
+    
     // Conduit replacement
     if (player.isSneaking()) {
-      return false;
+      return EnumActionResult.FAIL;
     }
     TileEntity te = world.getTileEntity(pos);
     if (te == null || !(te instanceof IConduitBundle)) {
-      return false;
+      return EnumActionResult.FAIL;
     }
     IConduitBundle bundle = (IConduitBundle) te;
     IConduit existingConduit = bundle.getConduit(getBaseConduitType());
     if (existingConduit == null) {
-      return false;
+      return EnumActionResult.FAIL;
     }
     ItemStack existingConduitAsItemStack = existingConduit.createItem();
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
@@ -133,7 +137,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
         IConduit newConduit = createConduit(stack, player);
         if (newConduit == null) {
           System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-          return false;
+          return EnumActionResult.FAIL;
         }
         bundle.removeConduit(existingConduit);
         bundle.addConduit(newConduit);
@@ -146,12 +150,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
           }
           player.inventoryContainer.detectAndSendChanges();
         }
-        return true;
+        return EnumActionResult.PASS;
       } else {
-        player.swingItem();
+        player.swingArm(hand);
       }
     }
-    return false;
+    return EnumActionResult.FAIL;
   }
   
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -84,7 +85,8 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public void notifyNetworkOfUpdate() {
     for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      te.getWorld().markBlockForUpdate(te.getPos());
+      IBlockState bs = te.getWorld().getBlockState(te.getPos());
+      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);      
     }
   }
 

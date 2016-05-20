@@ -83,7 +83,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    if(facade != null && facade.getBlock().isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if(facade != null && facade.getBlock().isOpaqueCube(facade) && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
@@ -204,7 +204,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return facade != null ? facade.getBlock().getLightOpacity() : 0;
+      return facade != null ? facade.getBlock().getLightOpacity(facade) : 0;
     }
     return lightOpacity;
   }
@@ -243,7 +243,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   private void doConduitsDirty() {
     if(!worldObj.isRemote) {
-      worldObj.markBlockForUpdate(getPos());
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);      
       markDirty();
     } else {
       geometryChanged(); // Q&D
@@ -255,7 +256,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     //force re-calc of lighting for both client and server
     ConduitUtil.forceSkylightRecalculation(worldObj, getPos());
     worldObj.checkLight(getPos());    
-    worldObj.markBlockForUpdate(getPos());
+    IBlockState bs = worldObj.getBlockState(pos);
+    worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     worldObj.notifyNeighborsOfStateChange(getPos(), EnderIO.blockConduitBundle);
     facadeChanged = false;
   }
@@ -288,7 +290,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         markForUpdate = true;
       }
     } else { //can do the else as only need to update once
-      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
+      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getHeldItemMainhand());
       if(curMode != lastMode) {
         markForUpdate = true;
         lastMode = curMode;
@@ -297,7 +299,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
     if(markForUpdate) {
       geometryChanged(); // Q&D
-      worldObj.markBlockForUpdate(getPos());
+      IBlockState bs = worldObj.getBlockState(pos);
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);      
     }
   }
 

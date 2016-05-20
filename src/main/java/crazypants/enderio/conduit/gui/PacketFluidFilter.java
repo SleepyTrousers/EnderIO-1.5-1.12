@@ -6,6 +6,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -67,7 +68,9 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
     }    
     EnderLiquidConduit eCon = (EnderLiquidConduit)conduit;
     eCon.setFilter(message.dir, message.filter, message.isInput);
-    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+        
+    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
     return null;
   }
 

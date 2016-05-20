@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -137,11 +138,11 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().getWorld();
     if(!world.isRemote) {
 
-      DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
+      DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
       if(col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
         return true;
-      } else if(ToolUtil.isToolEquipped(player)) {
+      } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
 
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;

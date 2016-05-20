@@ -409,7 +409,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   protected void addVecWithUV(Vector3d vec, double u, double v) {
-    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getBuffer();
     tes.pos(vec.x, vec.y, vec.z).tex(u, v).endVertex();
   }
 

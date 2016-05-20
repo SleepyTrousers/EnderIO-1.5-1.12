@@ -4,7 +4,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -59,7 +59,8 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
     } else {
       conduit.setConnectionMode(message.dir, message.mode);
     }
-    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
     return null;
   }
 

@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.facade;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -40,10 +42,17 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   }
 
   private BlockConduitFacade() {
-    super(ModObject.blockConduitFacade.getUnlocalisedName(), TileEntityPaintedBlock.class, ItemConduitFacade.class, new Material(MapColor.stoneColor));
-    setStepSound(Block.soundTypeStone);
+    super(ModObject.blockConduitFacade.getUnlocalisedName(), TileEntityPaintedBlock.class, new Material(MapColor.stoneColor));
+    setStepSound(SoundType.STONE);
     setCreativeTab(EnderIOTab.tabEnderIO);
     initDefaultState();
+  }
+  
+  
+
+  @Override
+  protected ItemBlock createItemBlock() {
+    return new ItemConduitFacade(this);
   }
 
   protected void initDefaultState() {

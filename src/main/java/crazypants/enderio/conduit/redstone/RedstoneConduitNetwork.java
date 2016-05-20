@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -200,7 +201,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       if (worldObj.isBlockLoaded(bc2.getBlockPos())) {
         //worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
         worldObj.notifyNeighborsOfStateChange(bc2.getBlockPos(), EnderIO.blockConduitBundle);
-        if (signal != null && bc2.getBlock(worldObj).isNormalCube()) {
+        IBlockState bs = bc2.getBlockState(worldObj);
+        if (signal != null && bs.getBlock().isBlockNormalCube(bs)) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockCoord bc3 = bc2.getLocation(dir2);
             if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3.getBlockPos())) {

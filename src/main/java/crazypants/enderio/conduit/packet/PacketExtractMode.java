@@ -5,7 +5,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -56,7 +56,8 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
   public IMessage onMessage(PacketExtractMode message, MessageContext ctx) {
     message.getTileCasted(ctx).setExtractionRedstoneMode(message.mode, message.dir);
     message.getTileCasted(ctx).setExtractionSignalColor(message.dir, message.color);
-    message.getWorld(ctx).markBlockForUpdate(new BlockPos(message.x, message.y, message.z));
+    IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
+    message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);    
     return null;
   }
 

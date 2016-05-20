@@ -60,7 +60,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    if (bundle.hasFacade() && bundle.getPaintSource().getBlock().isOpaqueCube() && !ConduitUtil.isFacadeHidden(bundle, player)) {
+    if (bundle.hasFacade() && bundle.getPaintSource().getBlock().isOpaqueCube(bundle.getPaintSource()) && !ConduitUtil.isFacadeHidden(bundle, player)) {
       return;
     }
     float brightness = -1;
@@ -85,7 +85,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             GlStateManager.translate(x, y, z);
 
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer tes = tessellator.getWorldRenderer();
+            VertexBuffer tes = tessellator.getBuffer();
             tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             
           }

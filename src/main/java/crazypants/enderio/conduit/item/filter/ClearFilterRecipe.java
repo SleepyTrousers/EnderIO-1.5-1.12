@@ -62,8 +62,8 @@ public class ClearFilterRecipe implements IRecipe{
   
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-      event.toolTip.add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
+    if (this.output != null && ItemStack.areItemStacksEqual(output, event.getItemStack())) {
+      event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
   }
   

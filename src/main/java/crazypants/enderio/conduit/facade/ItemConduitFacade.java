@@ -8,7 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,10 +51,10 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
   }
   
   @Override 
- public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+ public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
     if(world.isRemote) {
-      return true;
+      return EnumActionResult.PASS;
     }
 
     BlockPos placeAt = pos.offset(side);
@@ -64,22 +66,22 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
         IBlockState bs = PainterUtil2.getSourceBlock(itemStack);
         bundle.setPaintSource(bs);
         bundle.setFacadeType(EnumFacadeType.values()[itemStack.getItemDamage()]);
-        ConduitUtil.playPlaceSound(bs.getBlock().stepSound, world, pos.getX(), pos.getY(), pos.getZ());
+        ConduitUtil.playPlaceSound(bs.getBlock().getStepSound(), world, pos.getX(), pos.getY(), pos.getZ());
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
-        return true;
+        return EnumActionResult.PASS;
       } else {
         Block blockAt = world.getBlockState(placeAt).getBlock();
         if (blockAt == EnderIO.blockConduitBundle) {
           ((BlockConduitBundle) blockAt)
               .handleFacadeClick(world, placeAt, player, side.getOpposite(),
-              (IConduitBundle) world.getTileEntity(placeAt), itemStack);
+              (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand);
         }
       }
     }
 
-    return false;
+    return EnumActionResult.FAIL;
   }
 
   @Override

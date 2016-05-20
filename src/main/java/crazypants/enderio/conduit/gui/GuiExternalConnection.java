@@ -169,7 +169,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     int tabX = sx + xSize - 3;
 
-    VertexBuffer tes = Tessellator.getInstance().getWorldRenderer();
+    VertexBuffer tes = Tessellator.getInstance().getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
     for (int i = 0; i < tabs.size(); i++) {
       if(i != activeTab) {

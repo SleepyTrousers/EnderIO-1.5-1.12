@@ -190,7 +190,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
       @Override
       public void execute() {
-        Tessellator.getInstance().getWorldRenderer().pos(x, y, z).tex(u, v).endVertex();
+        Tessellator.getInstance().getBuffer().pos(x, y, z).tex(u, v).endVertex();
       }
     }
   }

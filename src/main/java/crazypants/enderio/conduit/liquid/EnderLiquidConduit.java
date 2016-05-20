@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -67,11 +68,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(player.getCurrentEquippedItem() == null) {
+    if(player.getHeldItemMainhand() == null) {
       return false;
     }
 
-    if(ToolUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
 

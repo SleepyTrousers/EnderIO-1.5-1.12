@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -202,12 +203,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(ConduitUtil.isProbeEquipped(player)) {
+    if(ConduitUtil.isProbeEquipped(player, EnumHand.MAIN_HAND)) {
       if(!player.worldObj.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
-    } else if(ToolUtil.isToolEquipped(player)) {
+    } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
       if(!getBundle().getEntity().getWorld().isRemote) {
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;
@@ -234,7 +235,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
           if(!player.worldObj.isRemote) {
-            PacketConduitProbe.sendInfoMessage(player, this, player.getCurrentEquippedItem());
+            PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItemMainhand());
           }
           return true;
         }
