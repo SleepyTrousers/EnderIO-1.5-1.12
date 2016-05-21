@@ -3,17 +3,13 @@
      "defaults":{
         "textures":{
             "particle":"enderio:blocks/machineBottom"
-        }
+        },
+        "model": "enderio:null"
     },
     "variants": {
+        "inventory": [{}],
         "color":{
-	        "white": {
-	            "model": "enderio:null",
-	            "transform":{
-                    "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.015625, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] },
-                    "firstperson":{ "rotation":[ {"x":0},  {"y":0},  {"z":0}   ], "translation":[ 0, 0.328125, 0 ], "scale":[ 1, 1, 1 ] }
-                }
-            }
+	        "white": { }
         }
     }
 }

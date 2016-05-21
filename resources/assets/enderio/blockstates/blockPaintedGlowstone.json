@@ -3,11 +3,11 @@
      "defaults":{
         "textures":{
             "particle":"blocks/glowstone"
-        }
+        },
+        "model":"enderio:null"
     },
     "variants": {
-        "normal":[{
-            "model":"enderio:null"
-        }]
+        "inventory": [{}],
+        "normal": [{}]
     }
 }

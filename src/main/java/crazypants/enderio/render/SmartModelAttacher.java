@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -102,6 +103,8 @@ public class SmartModelAttacher {
         } else {
           ModelLoader.setCustomModelResourceLocation(item, 0, location);
         }
+      } else {
+        Log.debug("Block " + block + " has no item, is is intended?");
       }
     }
   }
@@ -176,6 +179,8 @@ public class SmartModelAttacher {
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         if (event.getModelRegistry().getObject(itemMrl) == null) {
           event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
+        } else {
+          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(event.getModelRegistry().getObject(itemMrl)));
         }
       }
     }

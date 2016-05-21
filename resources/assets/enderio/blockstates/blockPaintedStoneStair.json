@@ -7,6 +7,7 @@
         "model": "enderio:null"
     },
     "variants": {
+        "inventory": [{}],
         "facing":{
             "east": { },
             "west": { },

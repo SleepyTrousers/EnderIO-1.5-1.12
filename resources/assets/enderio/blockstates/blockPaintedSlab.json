@@ -3,16 +3,14 @@
      "defaults":{
         "textures":{
             "particle":"blocks/planks_oak"
-        }
+        },
+        "model":"enderio:null"
     },
     "variants": {
+        "inventory": [{}],
         "half":{
-	        "top": {
-	            "model": "enderio:null"
-            },
-            "bottom": {
-                "model": "enderio:null"
-            }
+	        "top": { },
+            "bottom": { }
         }
     }
 }

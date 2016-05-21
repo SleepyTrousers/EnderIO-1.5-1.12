@@ -6,12 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.ItemStack;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.EnderIO;
@@ -19,6 +13,11 @@ import crazypants.enderio.machine.capbank.render.FillGaugeBakery;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
 
 public class RenderMapperGauge implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
 
