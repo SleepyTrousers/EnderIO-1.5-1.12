@@ -8,8 +8,7 @@
     "variants":{
         "render":{
 	        "defaults":{
-                "model":"enderio:null",  
-                "transform": "forge:default-block"	            
+                "model":"enderio:null"	            
 	        },
             "auto":{ },
             "front":{          "submodel":{ "front":{ "model":"enderio:null" } }, "y":0 },

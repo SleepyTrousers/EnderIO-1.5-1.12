@@ -7,10 +7,7 @@
     },
     "variants": {
         "normal":[{
-	            "model": "enderio:null",
-	            "transform":{
-                    "thirdperson":{ "rotation":[ {"x":10}, {"y":-45}, {"z":170} ], "translation":[ 0, 0.09375, -0.171875 ], "scale":[ 0.375, 0.375, 0.375 ] }
-                }
+	            "model": "enderio:null"
             }
 	    ]
     }
