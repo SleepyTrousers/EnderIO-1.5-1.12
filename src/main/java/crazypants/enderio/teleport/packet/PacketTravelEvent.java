@@ -6,6 +6,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.sound.SoundHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
-import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -88,9 +88,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     y = evt.targetY;
     z = evt.targetZ;
 
-    toTp.worldObj.playSound(null, toTp.posX, toTp.posY, toTp.posZ, source.sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
-
-    toTp.playSound(source.sound, 1.0F, 1.0F);
+    SoundHelper.playSound(toTp.worldObj, toTp, source.sound, 1.0F, 1.0F);
 
     if(player != null) {
       player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
@@ -98,7 +96,8 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       toTp.setPosition(x, y, z);
     }
 
-    toTp.worldObj.playSound(null, x, y, z, source.sound, SoundCategory.PLAYERS, 1.0F, 1.0F);
+    SoundHelper.playSound(toTp.worldObj, toTp, source.sound, 1.0F, 1.0F);
+
     toTp.fallDistance = 0;
 
     if(player != null) {

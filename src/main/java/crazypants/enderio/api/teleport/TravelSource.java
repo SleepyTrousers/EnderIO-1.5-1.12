@@ -1,19 +1,18 @@
 package crazypants.enderio.api.teleport;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
+import crazypants.enderio.sound.IModSound;
+import crazypants.enderio.sound.SoundRegistry;
 
 public enum TravelSource {
 
-  BLOCK() {
+  BLOCK(SoundRegistry.TRAVEL_SOURCE_BLOCK) {
     @Override
     public int getMaxDistanceTravelled() {
       return Config.travelAnchorMaxDistance;
     }
   },
-  STAFF() {
+  STAFF(SoundRegistry.TRAVEL_SOURCE_ITEM) {
     @Override
     public int getMaxDistanceTravelled() {
       return Config.travelStaffMaxDistance;
@@ -24,7 +23,7 @@ public enum TravelSource {
       return Config.travelStaffPowerPerBlockRF;
     }
   },
-  STAFF_BLINK() {
+  STAFF_BLINK(SoundRegistry.TRAVEL_SOURCE_ITEM) {
     @Override
     public int getMaxDistanceTravelled() {
       return Config.travelStaffMaxBlinkDistance;
@@ -35,7 +34,7 @@ public enum TravelSource {
       return Config.travelStaffPowerPerBlockRF;
     }
   },
-  TELEPAD(EnderIO.DOMAIN + ":telepad.teleport");
+  TELEPAD(SoundRegistry.TELEPAD);
 
   public static int getMaxDistance() {
     return STAFF.getMaxDistanceTravelledSq();
@@ -45,21 +44,9 @@ public enum TravelSource {
     return STAFF.getMaxDistanceTravelledSq();
   }
 
-  public final SoundEvent sound;
+  public final IModSound sound;
 
-  private TravelSource() {
-    this("mob.endermen.portal");
-  }
-
-  private TravelSource(String sound) {
-    this(new ResourceLocation(EnderIO.DOMAIN, sound));
-  }
-
-  private TravelSource(ResourceLocation sound) {
-    this.sound = SoundEvent.REGISTRY.getObject(sound);
-  }
-
-  private TravelSource(SoundEvent sound) {
+  private TravelSource(IModSound sound) {
     this.sound = sound;
   }
 

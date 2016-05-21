@@ -13,7 +13,6 @@ import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
@@ -25,6 +24,8 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.sound.SoundHelper;
+import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.EntityFX;
@@ -40,9 +41,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -426,10 +424,7 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
-      //TODO: 1.9 Need to register sounds
-//      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.jump"));
-//      player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f,
-//          false);
+      SoundHelper.playSound(player.worldObj, player, SoundRegistry.JUMP, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),

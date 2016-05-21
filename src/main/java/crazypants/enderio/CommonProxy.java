@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -42,6 +43,7 @@ public class CommonProxy {
   
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
+    SoundRegistry.init();
   }
 
   public long getTickCount() {

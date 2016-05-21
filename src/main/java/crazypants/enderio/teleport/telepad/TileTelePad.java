@@ -27,6 +27,7 @@ import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.rail.TeleporterEIO;
+import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
@@ -656,8 +657,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       WorldServer fromDim = server.worldServerForDimension(from);
       WorldServer toDim = server.worldServerForDimension(targetDim);
       Teleporter teleporter = new TeleporterEIO(toDim);
-      server.worldServerForDimension(entity.dimension).playSound(null, entity.posX, entity.posY, entity.posZ, TravelSource.TELEPAD.sound,
-          net.minecraft.util.SoundCategory.BLOCKS, 1.0F, 1.0F);
+      SoundHelper.playSound(server.worldServerForDimension(entity.dimension), entity, TravelSource.TELEPAD.sound, 1.0F, 1.0F);
       if (entity instanceof EntityPlayer) {
         EntityPlayerMP player = (EntityPlayerMP) entity;
         server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);        

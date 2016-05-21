@@ -16,6 +16,8 @@ import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.sound.SoundHelper;
+import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -24,9 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -99,9 +98,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
         }
 
         if(Config.machineSoundsEnabled) {
-          float volume = (Config.machineSoundVolume * 0.045f);
-          SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "generator.zombie.bubble"));
-          world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, soundEvent, SoundCategory.BLOCKS, volume, world.rand.nextFloat() * 0.75f, false);
+          SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, Config.machineSoundVolume * 0.045f,
+              world.rand.nextFloat() * 0.75f);
         }
       }
     }

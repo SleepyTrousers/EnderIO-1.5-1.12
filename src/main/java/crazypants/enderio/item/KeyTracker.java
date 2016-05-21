@@ -20,6 +20,8 @@ import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.sound.SoundHelper;
+import crazypants.enderio.sound.SoundRegistry;
 import crazypants.util.BaublesUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -29,9 +31,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -234,12 +233,9 @@ public class KeyTracker {
     if(nightVisionKey.isPressed()) {
       boolean isActive = !DarkSteelController.instance.isNightVisionActive();
       if(isActive) {
-        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.on"));
-        player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 0.1f,
-            player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
+        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
       } else {
-        SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(EnderIO.DOMAIN, "ds.nightvision.off"));
-        player.worldObj.playSound(player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 0.1f, 1.0f, false);
+        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
       }
       DarkSteelController.instance.setNightVisionActive(isActive);
     }
