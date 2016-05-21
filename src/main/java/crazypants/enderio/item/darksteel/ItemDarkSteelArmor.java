@@ -52,7 +52,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };
 
-  public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
+  public static final String[] NAMES = new String[] { "boots", "leggings", "chestplate", "helmet"};
 
   boolean gogglesUgradeActive = true;
 
@@ -61,16 +61,17 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 
+  //TODO: 1.9 I think this is borked
   public static ItemDarkSteelArmor forArmorType(int armorType) {
     switch (armorType) {
     case 0:
-      return DarkSteelItems.itemDarkSteelHelmet;
-    case 1:
-      return DarkSteelItems.itemDarkSteelChestplate;
-    case 2:
-      return DarkSteelItems.itemDarkSteelLeggings;
-    case 3:
       return DarkSteelItems.itemDarkSteelBoots;
+    case 1:
+      return DarkSteelItems.itemDarkSteelLeggings;
+    case 2:
+      return DarkSteelItems.itemDarkSteelChestplate;
+    case 3:
+      return DarkSteelItems.itemDarkSteelHelmet;
     }
     return null;
   }
@@ -116,7 +117,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     super(MATERIAL, 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIO);
 
-    String str = "darkSteel_" + NAMES[armorType.ordinal() - 2];
+    String str = "darkSteel_" + NAMES[armorType.getIndex()];
     setUnlocalizedName(str);
     setRegistryName(str);
 
@@ -133,11 +134,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     regName = regName.substring(5, regName.length());
     return regName;
   }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  
   @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+  @SideOnly(Side.CLIENT)  
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -160,14 +160,14 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public int getIngotsRequiredForFullRepair() {
     switch (armorType) {
     case HEAD:
-      return 5;//EnderIO.itemDarkSteelHelmet;
+      return 5;
     case CHEST:
-      return 8;//EnderIO.itemDarkSteelChestplate;
+      return 8;
     case LEGS:
-      return 7;//EnderIO.itemDarkSteelLeggings;
+      return 7;
     case FEET:
     default:
-      return 4;//EnderIO.itemDarkSteelBoots;             
+      return 4;             
     }
     
   }
@@ -228,9 +228,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-    ItemDarkSteelArmor arm = forArmorType(3 - slot);
     int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;    
-    return arm.getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
+    return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
   }
 
   @Override
