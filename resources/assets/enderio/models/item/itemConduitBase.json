@@ -2,22 +2,5 @@
     "parent": "block/cube_all",
     "textures": {
         "all": "enderio:blocks/blockReinforcedObsidian"
-    },
-    "display": {
-        "thirdperson": {
-            "rotation": [ 10, -45, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.2, 0.2, 0.2 ]
-        },
-        "firstperson": {
-            "rotation": [ 0, -90, 0 ],
-            "translation": [ 0, 0, 0 ],
-            "scale": [ 0.7, 0.7, 0.7 ]
-        },
-        "gui":{
-            "rotation":[ 0, 90, 0 ],
-            "translation":[ 0, 0, 0 ],
-            "scale":[ 0.7, 0.7, 0.7 ]
-        }
     }
 }

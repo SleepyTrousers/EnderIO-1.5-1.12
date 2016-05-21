@@ -12,10 +12,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemIngotStorage extends ItemBlock {
 
-  public BlockItemIngotStorage(Block block) {
+  public BlockItemIngotStorage(Block block, String name) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);
+    setRegistryName(name);
   }
 
   @Override

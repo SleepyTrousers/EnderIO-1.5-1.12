@@ -118,9 +118,16 @@ public class TreeHarvestUtil {
     }
 
     private EnumType getVariant(IBlockState bs2) {
-      EnumType v = bs.getValue(BlockNewLog.VARIANT);
+      EnumType v = null;
+      try {
+        v = bs.getValue(BlockNewLog.VARIANT);
+      } catch(Exception e) {        
+      }
       if (v == null) {
-        v = bs.getValue(BlockOldLog.VARIANT);
+        try {
+          v = bs.getValue(BlockOldLog.VARIANT);
+        } catch(Exception e) {        
+        }
       }
       return v;
     }
