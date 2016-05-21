@@ -80,7 +80,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
       if(!player.capabilities.isCreativeMode) {
         stack.stackSize--;
       }
-      return EnumActionResult.PASS;
+      return EnumActionResult.SUCCESS;
 
     } else {
 
@@ -92,14 +92,14 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
         if(bundle == null) {
           System.out.println("AbstractItemConduit.onItemUse: Bundle null");
-          return EnumActionResult.FAIL;
+          return EnumActionResult.PASS;
         }
         if(!bundle.hasType(getBaseConduitType())) {
           if(!world.isRemote) {
             IConduit con = createConduit(stack, player);
             if(con == null) {
               System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-              return EnumActionResult.FAIL;
+              return EnumActionResult.PASS;
             }
             bundle.addConduit(con);
             ConduitUtil.playBreakSound(SoundType.METAL, world, place.getX(), place.getY(), place.getZ());
@@ -107,12 +107,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
               stack.stackSize--;
             }
           }
-          return EnumActionResult.PASS;
+          return EnumActionResult.SUCCESS;
         }
       }
     }
 
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
 
 
