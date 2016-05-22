@@ -2,6 +2,10 @@ package crazypants.enderio;
 
 import javax.annotation.Nonnull;
 
+import com.thoughtworks.xstream.converters.ConversionException;
+
+import crazypants.enderio.config.recipes.Recipes;
+import crazypants.enderio.config.recipes.xml.InvalidRecipeConfigException;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -44,6 +48,21 @@ public class CommonProxy {
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
+
+    try {
+      Recipes recipes = Recipes.fromFile();
+      if (recipes.isValid()) {
+        recipes.register();
+      } else {
+        Log.warn("Recipes config file is empty or invalid!");
+      }
+    } catch (ConversionException e) {
+      if (e.getCause() instanceof InvalidRecipeConfigException) {
+        Log.warn("Recipes config file is invalid: " + e.getCause().getMessage());
+      } else {
+        throw e;
+      }
+    }
   }
 
   public long getTickCount() {

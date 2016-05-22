@@ -2,14 +2,16 @@ package crazypants.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import crazypants.enderio.config.Config;
 
 /**
  * This class is a way to hold lists of configurable items and blocks.
@@ -22,11 +24,13 @@ import crazypants.enderio.config.Config;
  *
  */
 public class Things {
+  private static final Map<String, IThing> aliases = new HashMap<String, IThing>();
+
   public static final Things TRAVEL_BLACKLIST = new Things(Config.travelStaffBlinkBlackList);
 
   private static final List<Things> values = new ArrayList<Things>();
 
-  private Things(String... names) {
+  public Things(String... names) {
     for (String string : names) {
       add(string);
     }
@@ -67,6 +71,10 @@ public class Things {
 
   public void add(String name) {
     add(new StringThing(name));
+  }
+
+  public static void addAlias(String name, String value) {
+    aliases.put(name, new StringThing(value));
   }
 
   public void add(ResourceLocation resourceLocation) {
@@ -184,6 +192,17 @@ public class Things {
     return blockList;
   }
 
+  public List<Object> getRecipeObjects() {
+    List<Object> result = new ArrayList<Object>();
+    for (IThing thing : things) {
+      Object recipeObject = thing.getRecipeObject();
+      if (recipeObject != null) {
+        result.add(recipeObject);
+      }
+    }
+    return result;
+  }
+
   private static interface IThing {
 
     IThing bake();
@@ -199,6 +218,8 @@ public class Things {
     List<ItemStack> getItemStacks();
 
     List<Block> getBlocks();
+
+    Object getRecipeObject();
   }
 
   private static class ItemThing implements IThing {
@@ -243,6 +264,11 @@ public class Things {
     public List<Block> getBlocks() {
       Block block = Block.getBlockFromItem(item);
       return block != null ? Collections.singletonList(block) : Collections.<Block> emptyList();
+    }
+
+    @Override
+    public Object getRecipeObject() {
+      return item;
     }
 
   }
@@ -293,6 +319,11 @@ public class Things {
       return block != null ? Collections.singletonList(block) : Collections.<Block> emptyList();
     }
 
+    @Override
+    public Object getRecipeObject() {
+      return itemStack;
+    }
+
   }
 
   private static class BlockThing implements IThing {
@@ -337,6 +368,11 @@ public class Things {
     @Override
     public List<Block> getBlocks() {
       return Collections.singletonList(block);
+    }
+
+    @Override
+    public Object getRecipeObject() {
+      return block;
     }
 
   }
@@ -419,6 +455,11 @@ public class Things {
       return result;
     }
 
+    @Override
+    public Object getRecipeObject() {
+      return name;
+    }
+
   }
 
   private static class StringThing implements IThing {
@@ -434,10 +475,24 @@ public class Things {
       if (name == null || name.trim().isEmpty()) {
         return null;
       }
+      if (aliases.containsKey(name)) {
+        return aliases.get(name).bake();
+      }
       String mod = "minecraft", ident = name;
+      boolean allowItem = true, allowBlock = true, allowOreDict = true;
+      if (ident.startsWith("item:")) {
+        allowBlock = allowOreDict = false;
+        ident = ident.substring("item:".length());
+      } else if (ident.startsWith("block:")) {
+        allowItem = allowOreDict = false;
+        ident = ident.substring("block:".length());
+      } else if (ident.startsWith("oredict:")) {
+        allowBlock = allowItem = false;
+        ident = ident.substring("oredict:".length());
+      }
       int meta = -1;
-      if (name.contains(":")) {
-        String[] split = name.split(":", 2);
+      if (ident.contains(":")) {
+        String[] split = ident.split(":", 3);
         if (split != null && split.length >= 2) {
           mod = split[0];
           ident = split[1];
@@ -454,27 +509,42 @@ public class Things {
           }
         }
       }
+      ResourceLocation resourceLocation = new ResourceLocation(mod, ident);
       if (meta < 0) {
         // this ugly thing seems to be what Forge wants you to use
-        Block block = net.minecraft.block.Block.REGISTRY.getObject(new ResourceLocation(mod, ident));
-        if (block != null) {
-          return new BlockThing(block).bake();
+        if (allowBlock && net.minecraft.block.Block.REGISTRY.containsKey(resourceLocation)) {
+          Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
+          if (block != null) {
+            return new BlockThing(block).bake();
+          }
         }
         // this ugly thing seems to be what Forge wants you to use
-        Item item = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation(mod, ident));
-        if (item != null) {
-          return new ItemThing(item).bake();
+        if (allowItem && net.minecraft.item.Item.REGISTRY.containsKey(resourceLocation)) {
+          Item item = net.minecraft.item.Item.REGISTRY.getObject(resourceLocation);
+          if (item != null) {
+            return new ItemThing(item).bake();
+          }
         }
-        return new OreThing(name).bake();
+        if (allowOreDict) {
+          return new OreThing(ident).bake();
+        }
       } else {
         // this ugly thing seems to be what Forge wants you to use
-        Item item = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation(mod, ident));
-        if (item != null) {
-          return new ItemStackThing(new ItemStack(item, 1, meta)).bake();
-        } else {
-          return null;
+        if (allowItem && net.minecraft.item.Item.REGISTRY.containsKey(resourceLocation)) {
+          Item item = net.minecraft.item.Item.REGISTRY.getObject(resourceLocation);
+          if (item != null) {
+            return new ItemStackThing(new ItemStack(item, 1, meta)).bake();
+          }
+        }
+        // this ugly thing seems to be what Forge wants you to use
+        if (allowBlock && net.minecraft.block.Block.REGISTRY.containsKey(resourceLocation)) {
+          Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
+          if (block != null) {
+            return new ItemStackThing(new ItemStack(block, 1, meta)).bake();
+          }
         }
       }
+      return null;
     }
 
     @Override
@@ -505,6 +575,11 @@ public class Things {
     @Override
     public List<Block> getBlocks() {
       return Collections.<Block> emptyList();
+    }
+
+    @Override
+    public Object getRecipeObject() {
+      return null;
     }
 
   }
@@ -563,6 +638,11 @@ public class Things {
     @Override
     public List<Block> getBlocks() {
       return Collections.<Block> emptyList();
+    }
+
+    @Override
+    public Object getRecipeObject() {
+      return null;
     }
 
   }
