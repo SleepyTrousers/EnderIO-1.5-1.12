@@ -1,5 +1,9 @@
 package crazypants.enderio;
 
+import javax.annotation.Nonnull;
+
+import crazypants.util.NullHelper;
+
 public enum ModObject implements IModObject {
   // Enderface
   blockEnderIo,
@@ -120,14 +124,14 @@ public enum ModObject implements IModObject {
   itemEnderFood,
   blockGauge;
 
-  private final String unlocalisedName;
+  private final @Nonnull String unlocalisedName;
 
   private ModObject() {
-    unlocalisedName = name();
+    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()");
   }
 
   @Override
-  public String getUnlocalisedName() {
+  public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 

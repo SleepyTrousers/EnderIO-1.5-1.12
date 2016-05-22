@@ -2,14 +2,18 @@ package crazypants.enderio.material;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIO;
+import crazypants.util.NullHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 
 public enum Alloy implements IStringSerializable {
 
@@ -30,14 +34,14 @@ public enum Alloy implements IStringSerializable {
     return res;
   }
   
-  public final String baseName;
-  public final String unlocalisedName;
-  public final String iconKey;
-  private final List<String> oreIngots = new ArrayList<String>();
-  private final List<String> oreBlocks = new ArrayList<String>();
+  public final @Nonnull String baseName;
+  public final @Nonnull String unlocalisedName;
+  public final @Nonnull String iconKey;
+  private final @Nonnull List<String> oreIngots = new ArrayList<String>();
+  private final @Nonnull List<String> oreBlocks = new ArrayList<String>();
   private final float hardness;
 
-  private Alloy(String baseName, float hardness, String oreDictName) {
+  private Alloy(@Nonnull String baseName, float hardness, @Nullable String oreDictName) {
     this.baseName = baseName;
     this.unlocalisedName = "enderio." + baseName;
     this.iconKey = "enderio:" + baseName;
@@ -50,11 +54,11 @@ public enum Alloy implements IStringSerializable {
     this.hardness = hardness;
   }
 
-  private Alloy(String baseName, float hardness) {
+  private Alloy(@Nonnull String baseName, float hardness) {
     this(baseName, hardness, null);
   }
 
-  public String getBaseName() {
+  public @Nonnull String getBaseName() {
     return baseName;
   }
 
@@ -62,40 +66,41 @@ public enum Alloy implements IStringSerializable {
     return hardness;
   }
 
-  public ItemStack getStackIngot() {
+  public @Nonnull ItemStack getStackIngot() {
     return getStackIngot(1);
   }
 
-  public ItemStack getStackIngot(int size) {
+  public @Nonnull ItemStack getStackIngot(int size) {
     return new ItemStack(EnderIO.itemAlloy, size, ordinal());
   }
 
-  public ItemStack getStackBlock() {
+  public @Nonnull ItemStack getStackBlock() {
     return getStackBlock(1);
   }
 
-  public ItemStack getStackBlock(int size) {
+  public @Nonnull ItemStack getStackBlock(int size) {
     return new ItemStack(EnderIO.blockIngotStorage, size, ordinal());
   }
 
-  public String getOreIngot() {
-    return oreIngots.get(0);
+  public @Nonnull String getOreIngot() {
+    return NullHelper.notnull(oreIngots.get(0), "Data corruption");
   }
 
-  public String getOreBlock() {
-    return oreBlocks.get(0);
+  public @Nonnull String getOreBlock() {
+    return NullHelper.notnull(oreBlocks.get(0), "Data corruption");
   }
 
-  public List<String> getOreIngots() {
+  public @Nonnull List<String> getOreIngots() {
     return oreIngots;
   }
 
-  public List<String> getOreBlocks() {
+  public @Nonnull List<String> getOreBlocks() {
     return oreBlocks;
   }
 
   @Override
-  public String getName() {
-    return baseName.toLowerCase();
+  public @Nonnull String getName() {
+    return NullHelper.notnullJ(baseName.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
+
 }

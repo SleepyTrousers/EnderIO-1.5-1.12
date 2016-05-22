@@ -2,7 +2,10 @@ package crazypants.enderio.machine.solar;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
+import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
@@ -14,30 +17,30 @@ public enum SolarType implements IStringSerializable {
 
   public static final PropertyEnum<SolarType> KIND = PropertyEnum.<SolarType> create("kind", SolarType.class);
 
-  private final String unlocalisedName;
+  private final @Nonnull String unlocalisedName;
 
-  private SolarType(String unlocalisedName) {
+  private SolarType(@Nonnull String unlocalisedName) {
     this.unlocalisedName = unlocalisedName;
   }
 
-  public boolean connectTo(SolarType other) {
+  public boolean connectTo(@Nonnull SolarType other) {
     return this == other;
   }
 
   @Override
-  public String getName() {
-    return name().toLowerCase(Locale.ENGLISH);
+  public @Nonnull String getName() {
+    return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
-  public static SolarType getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+  public static @Nonnull SolarType getTypeFromMeta(int meta) {
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
-  public static int getMetaFromType(SolarType fusedQuartzType) {
+  public static int getMetaFromType(@Nonnull SolarType fusedQuartzType) {
     return fusedQuartzType.ordinal();
   }
 
-  public String getUnlocalisedName() {
+  public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 

@@ -24,6 +24,7 @@ import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -62,7 +63,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  protected AbstractMachineBlock(IModObject mo, Class<T> teClass, Material mat) {
+  protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(mo.getUnlocalisedName(), teClass, mat);
     modObject = mo;
     setHardness(2.0F);
@@ -76,7 +77,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  protected AbstractMachineBlock(IModObject mo, Class<T> teClass) {
+  protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass) {
     this(mo, teClass, new Material(MapColor.IRON));
   }
 
@@ -92,39 +93,39 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
   
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      T tileEntity = getTileEntity(world, pos);
-      if (tileEntity != null) {
-        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
-      }
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
+  public final @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    NullHelper.untrusted(state, "Parameter IBlockState to Block.getExtendedState()");
+    NullHelper.untrusted(world, "Parameter IBlockAccess to Block.getExtendedState()");
+    NullHelper.untrusted(pos, "Parameter BlockPos to Block.getExtendedState()");
+
+    IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+    T tileEntity = getTileEntity(world, pos);
+    if (tileEntity != null) {
+      setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
     }
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   protected abstract void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
@@ -136,20 +137,25 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
   }
 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {   
     if(!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, getGuiId(), world, pos.getX(), pos.getY(), pos.getZ());
+      final EnderIO instance2 = EnderIO.instance;
+      if (instance2 != null) {
+        entityPlayer.openGui(instance2, getGuiId(), world, pos.getX(), pos.getY(), pos.getZ());
+      } else {
+        // TODO handle null value
+      }
     }
     return true;
   }
   
   @Override
-  public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+  public boolean canSilkHarvest(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player) {
     return false;
   }  
 
@@ -166,12 +172,15 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(pos);
-    te.setFacing(getFacingForHeading(heading));
-    te.readFromItemStack(stack);
+    AbstractMachineEntity te = getTileEntity(world, pos);
+    if (te != null) {
+      te.setFacing(getFacingForHeading(heading));
+      te.readFromItemStack(stack);
+    }
     if(world.isRemote) {
       return;
     }        
@@ -193,13 +202,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+  public void onBlockAdded(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     super.onBlockAdded(world, pos,state);
     world.notifyBlockUpdate(pos, state, state, 3);
   }
   
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {   
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock) {
     TileEntity ent = world.getTileEntity(pos);
     if(ent instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;
@@ -213,7 +222,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
     int x = pos.getX();
     int y = pos.getY();
@@ -233,16 +242,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected abstract int getGuiId();
 
-  protected boolean isActive(IBlockAccess blockAccess, BlockPos pos) {
-    TileEntity te = blockAccess.getTileEntity(pos);
-    if(te instanceof AbstractMachineEntity) {
-      return ((AbstractMachineEntity) te).isActive();
+  protected boolean isActive(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos) {
+    AbstractMachineEntity te = getTileEntity(blockAccess, pos);
+    if (te != null) {
+      return te.isActive();
     }
     return false;
   }
   
   @Deprecated
-  protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {    
+  protected boolean isActive(@Nonnull IBlockAccess blockAccess, int x, int y, int z) {
     return isActive(blockAccess, new BlockPos(x,y,z));
   }
 
@@ -293,10 +302,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   // ///////////////////////////////////////////////////////////////////////
 
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    if (world == null || pos == null) {
+      return null;
+    }
     return getPaintSource(getDefaultState(), world, pos);
   }
 
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     if (this instanceof IPaintable) {
       T te = getTileEntity(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {
@@ -305,13 +317,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     if (this instanceof IPaintable) {
       PainterUtil2.setSourceBlock(stack, paintSource);
     }
   }
 
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public @Nullable IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (this instanceof IPaintable) {
       T te = getTileEntity(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {
@@ -321,7 +333,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return null;
   }
 
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public @Nullable IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     if (this instanceof IPaintable) {
       return PainterUtil2.getSourceBlock(stack);
     }
@@ -329,14 +341,14 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return this instanceof IPaintable ? true : super.canRenderInLayer(state, layer);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    if (this instanceof IPaintable) {
+  public int colorMultiplier(@Nonnull IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int renderPass) {
+    if (this instanceof IPaintable && worldIn != null && pos != null) {
       IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
       if (paintSource != null && paintSource.getBlock() instanceof IBlockColor) {
         try {

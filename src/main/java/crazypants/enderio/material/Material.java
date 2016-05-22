@@ -3,14 +3,15 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 public enum Material {
 
@@ -34,17 +35,17 @@ public enum Material {
     return res;
   }
   
-  public final String baseName;
-  public final String unlocalisedName;
-  public final String iconKey;
-  public final String oreDict;
+  public final @Nonnull String baseName;
+  public final @Nonnull String unlocalisedName;
+  public final @Nonnull String iconKey;
+  public final @Nonnull String oreDict;
   public final boolean hasEffect;
 
-  private Material(String unlocalisedName) {
+  private Material(@Nonnull String unlocalisedName) {
     this(unlocalisedName, false);
   }
 
-  private Material(String baseName, boolean hasEffect) {
+  private Material(@Nonnull String baseName, boolean hasEffect) {
     this.baseName = baseName;
     this.unlocalisedName = "enderio." + baseName;
     this.iconKey = "enderio:" + baseName;
@@ -52,17 +53,17 @@ public enum Material {
     this.oreDict = "item" + StringUtils.capitalize(baseName);
   }
 
-  public static void registerOres(Item item) {
+  public static void registerOres(@Nonnull Item item) {
     for (Material m : values()) {
       OreDictionary.registerOre(m.oreDict, new ItemStack(item, 1, m.ordinal()));
     }
   }
 
-  public ItemStack getStack() {
+  public @Nonnull ItemStack getStack() {
     return getStack(1);
   }
   
-  public ItemStack getStack(int size) {
+  public @Nonnull ItemStack getStack(int size) {
     return new ItemStack(EnderIO.itemMaterial, size, ordinal());
   }
 }

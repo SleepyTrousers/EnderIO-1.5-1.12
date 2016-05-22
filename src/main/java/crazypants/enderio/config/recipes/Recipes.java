@@ -85,6 +85,7 @@ public class Recipes implements RecipeGameRecipe {
     }
 
     Object myObject = xstream.fromXML(defaultFile);
+    IOUtils.closeQuietly(defaultFile);
     BufferedWriter writer = null;
     try {
       writer = new BufferedWriter(new FileWriter(configFile, false));

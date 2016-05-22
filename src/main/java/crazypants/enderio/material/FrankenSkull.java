@@ -3,6 +3,8 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,12 +16,12 @@ public enum FrankenSkull {
   ENDER_RESONATOR("skullEnderResonator", "enderio:skullEnderResonator", false),
   SENTIENT_ENDER("skullSentientEnder", "enderio:skullEnderResonator", true);
   
-  public final String baseName;
-  public final String unlocalisedName;
-  public final String iconKey;
+  public final @Nonnull String baseName;
+  public final @Nonnull String unlocalisedName;
+  public final @Nonnull String iconKey;
   public final boolean isAnimated;
   
-  public static List<ResourceLocation> resources() {
+  public static @Nonnull List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
     for(FrankenSkull c : values()) {
       res.add(new ResourceLocation(EnderIO.MODID, c.baseName));
@@ -27,22 +29,22 @@ public enum FrankenSkull {
     return res;
   }
   
-  private FrankenSkull(String baseName, String iconKey, boolean isAnimated) {
+  private FrankenSkull(@Nonnull String baseName, @Nonnull String iconKey, boolean isAnimated) {
     this.baseName = baseName;
     this.unlocalisedName = baseName;
     this.iconKey = iconKey;
     this.isAnimated = isAnimated;
   }
   
-  private FrankenSkull(String unlocalisedName, boolean isAnimated) {
+  private FrankenSkull(@Nonnull String unlocalisedName, boolean isAnimated) {
     this(unlocalisedName, "enderio:" + unlocalisedName, isAnimated);    
   }
 
-  public String getUnlocalisedName() {
+  public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
-  public String getIconKey() {
+  public @Nonnull String getIconKey() {
     return iconKey;
   }
   

@@ -168,7 +168,7 @@ public class UserIdent {
   
   public void saveToNbt(NBTTagCompound nbt, String prefix) {
     if (uuid != null) {
-      nbt.setString(prefix + ".uuid", uuid.toString());
+      nbt.setString(prefix + ".uuid", NullHelper.notnullJ(uuid.toString(), "UUID.toString()"));
     }
     nbt.setString(prefix + ".login", playerName);
   }
@@ -178,8 +178,10 @@ public class UserIdent {
   }
 
   public static @Nonnull UserIdent readfromNbt(NBTTagCompound nbt, String prefix) {
+    @Nonnull
     String suuid = nbt.getString(prefix + ".uuid");
-    String login = nbt.getString(prefix + ".login");
+    @Nonnull
+    String login = NullHelper.untrusted(nbt.getString(prefix + ".login"), "NBTTagCompound.getString()");
     if (Nobody.NOBODY_MARKER.equals(suuid)) {
       return nobody;
     }
@@ -187,10 +189,10 @@ public class UserIdent {
       UUID uuid = UUID.fromString(suuid);
       return create(uuid, login);
     } catch (IllegalArgumentException e) {
-      if (login != null && !login.isEmpty()) {
-        return new UserIdent(null, login);
-      } else {
+      if (login.isEmpty()) {
         return nobody;
+      } else {
+        return new UserIdent(null, login);
       }
     }
   }
@@ -203,7 +205,7 @@ public class UserIdent {
   public static final @Nonnull Nobody nobody = new Nobody();
 
   private static class Nobody extends UserIdent {
-    private static final String NOBODY_MARKER = "nobody";
+    private static final @Nonnull String NOBODY_MARKER = "nobody";
 
     private Nobody() {
       super(null, "[unknown player]");

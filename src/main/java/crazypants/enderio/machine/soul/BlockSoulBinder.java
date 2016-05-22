@@ -63,12 +63,12 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public int getLightOpacity(IBlockState bs) {
+  public int getLightOpacity(@Nonnull IBlockState bs) {
     return 0;
   }
 

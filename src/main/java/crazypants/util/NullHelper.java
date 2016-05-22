@@ -45,4 +45,15 @@ public class NullHelper {
     return o;
   }
 
+  @SuppressWarnings({ "null", "unused" })
+  @Nonnull
+  public static <P> P untrusted(@Nonnull P o, @Nonnull String message) {
+    if (o == null) {
+      throw new NullPointerException("There was a problem with Minecraft: The call '" + message
+          + "' returned null even though it says it is not be able to do that. " //
+          + "Your Minecraft is broken. Ender IO is NOT(!) the cause of this crash");
+    }
+    return o;
+  }
+
 }

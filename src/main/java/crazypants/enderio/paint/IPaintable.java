@@ -1,11 +1,14 @@
 package crazypants.enderio.paint;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.util.IFacade;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import crazypants.util.IFacade;
 
 /**
  * Master interface for paintable things. Do not implement directly, use one of the sub-interfaces.
@@ -17,7 +20,7 @@ public interface IPaintable {
    * (Re-)Paints a block that exists in the world. It's the caller's responsibility to check that the paint source is valid and appropriate, and to trigger a
    * world re-render.
    */
-  void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource);
+  void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource);
 
   /**
    * (Re-)Paints an item stack. It's the caller's responsibility to check that the paint source is valid and appropriate.
@@ -25,12 +28,12 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  void setPaintSource(Block block, ItemStack stack, IBlockState paintSource);
+  void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource);
 
   /**
    * Gets the paint source from a block that exists in the world. Will return null if the block is not painted.
    */
-  IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos);
+  IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos);
 
   /**
    * Gets the paint source from an item stack. Will return null if the item stack is not painted.
@@ -38,7 +41,7 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  IBlockState getPaintSource(Block block, ItemStack stack);
+  IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack);
 
   /**
    * A block that can be painted with a texture. It keeps its model, but applies the texture from the paint source to it.
@@ -70,7 +73,7 @@ public interface IPaintable {
    */
   public static interface IPaintableTileEntity {
 
-    void setPaintSource(IBlockState paintSource);
+    void setPaintSource(@Nullable IBlockState paintSource);
 
     IBlockState getPaintSource();
   }

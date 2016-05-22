@@ -1,5 +1,8 @@
 package crazypants.enderio;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.api.tool.ITool;
@@ -17,18 +20,19 @@ import net.minecraft.world.World;
 
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
-  protected BlockEio(String name, Class<T> teClass) {
+  protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass) {
     super(name, teClass);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
-  protected BlockEio(String name, Class<T> teClass, Material mat) {
+  protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(name, teClass, mat);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side,
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nullable ItemStack heldItem, @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ) {
     if (shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, entityPlayer, heldItem)) {
       return true;

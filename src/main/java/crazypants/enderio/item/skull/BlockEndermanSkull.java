@@ -1,9 +1,14 @@
 package crazypants.enderio.item.skull;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
+import crazypants.util.NullHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -35,21 +40,25 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     TORMENTED("tormented", false),
     REANIMATED_TORMENTED("reanimatedTormented", true);
 
-    final String name;
+    final @Nonnull String name;
     final boolean showEyes;
 
-    SkullType(String name, boolean showEyes) {
+    SkullType(@Nonnull String name, boolean showEyes) {
       this.name = name;
       this.showEyes = showEyes;
     }
 
     @Override
-    public String getName() {
-      return name.toLowerCase();
+    public @Nonnull String getName() {
+      return NullHelper.notnullJ(name.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
+    }
+
+    public static @Nonnull SkullType getTypeFromMeta(int meta) {
+      return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
     }
   }
 
-  public static final PropertyEnum<SkullType> VARIANT = PropertyEnum.<SkullType> create("variant", SkullType.class);
+  public static final @Nonnull PropertyEnum<SkullType> VARIANT = PropertyEnum.<SkullType> create("variant", SkullType.class);
 
   public static BlockEndermanSkull create() {
     BlockEndermanSkull res = new BlockEndermanSkull();
@@ -57,14 +66,14 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return res;
   }
 
-  public static final AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
+  public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 
   private BlockEndermanSkull() {
     super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.CIRCUITS);
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
     return AABB;
   }
 
@@ -75,7 +84,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
   }
 
@@ -91,40 +100,42 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public int damageDropped(IBlockState state) {
+  public int damageDropped(@Nonnull IBlockState state) {
     SkullType var = state.getValue(VARIANT);
     return var.ordinal();
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
-    SkullType var = SkullType.values()[meta];
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
+    @Nonnull
+    SkullType var = SkullType.getTypeFromMeta(meta);
     return getDefaultState().withProperty(VARIANT, var);
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     SkullType var = state.getValue(VARIANT);
     return var.ordinal();
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { VARIANT });
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState bs) {
+  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
   }
 
   @Override
-  public EnumBlockRenderType getRenderType(IBlockState bs) {
+  public @Nonnull EnumBlockRenderType getRenderType(@Nonnull IBlockState bs) {
     return EnumBlockRenderType.MODEL;
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
     float facingYaw = -22.5f * inc;
     TileEndermanSkull te = getTileEntity(world, pos);
@@ -139,7 +150,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {
+  public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World worldIn, @Nonnull BlockPos pos) {
     TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
     if (tileEntity != null) {
       tileEntity.lookingAt = 20;

@@ -41,7 +41,12 @@ public class Output extends Item {
         tag = null;
       } else {
         try {
-          tag = (NBTTagCompound) JsonToNBT.getTagFromJson(nbt);
+          final String nbt2 = nbt;
+          if (nbt2 != null) {
+            tag = JsonToNBT.getTagFromJson(nbt2);
+          } else {
+            // TODO handle null value
+          }
         } catch (NBTException e) {
           throw new InvalidRecipeConfigException(nbt + " is not valid NBT json.");
         }
@@ -50,6 +55,7 @@ public class Output extends Item {
     return this;
   }
 
+  @Override
   public ItemStack getItemStack() {
     ItemStack itemStack = super.getItemStack().copy();
     itemStack.stackSize = amount;

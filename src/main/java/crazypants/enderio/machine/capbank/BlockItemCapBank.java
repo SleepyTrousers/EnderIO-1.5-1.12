@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -10,6 +12,7 @@ import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -17,11 +20,14 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
     PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
     CapBankType type = CapBankType.getTypeFromMeta(meta);
-    type.writeTypeToNBT(res.getTagCompound());
+    final NBTTagCompound tagCompound = res.getTagCompound();
+    if (tagCompound != null) {
+      type.writeTypeToNBT(tagCompound);
+    }
     return res;
   }
 
-  public BlockItemCapBank(BlockCapBank blockCapBank, String name) {
+  public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull String name) {
     super(blockCapBank);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -34,7 +40,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     return CapBankType.getTypeFromMeta(par1ItemStack.getItemDamage()).getUnlocalizedName();
   }
 
@@ -92,7 +98,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean hasEffect(@Nonnull ItemStack stack) {
     return CapBankType.getTypeFromMeta(stack.getItemDamage()).isCreative() || super.hasEffect(stack);
   }
 

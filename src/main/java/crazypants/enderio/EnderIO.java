@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
@@ -155,7 +157,7 @@ import net.minecraftforge.fml.relauncher.Side;
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila;after:Thaumcraft;after:appliedenergistics2", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
-  public static final String MODID = "EnderIO";
+  public static final @Nonnull String MODID = "EnderIO";
   public static final String DOMAIN = MODID.toLowerCase(Locale.US);
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";

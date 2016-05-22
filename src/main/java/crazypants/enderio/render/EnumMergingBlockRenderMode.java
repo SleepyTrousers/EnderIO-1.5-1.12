@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
 import static net.minecraft.util.EnumFacing.NORTH;
@@ -11,6 +14,7 @@ import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
 
+import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -63,14 +67,15 @@ public enum EnumMergingBlockRenderMode implements IStringSerializable {
 
   ;
 
-  public static final PropertyEnum<EnumMergingBlockRenderMode> RENDER = PropertyEnum.<EnumMergingBlockRenderMode> create("render", EnumMergingBlockRenderMode.class);
+  public static final @Nonnull PropertyEnum<EnumMergingBlockRenderMode> RENDER = PropertyEnum.<EnumMergingBlockRenderMode> create("render",
+      EnumMergingBlockRenderMode.class);
 
-  private EnumMergingBlockRenderMode(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
+  private EnumMergingBlockRenderMode(@Nonnull EnumFacing dir1, @Nonnull EnumFacing dir2, @Nonnull EnumFacing dir3) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal()) | (1 << dir3.ordinal());
     Mapping.mapping.put(id, this);
   }
 
-  private EnumMergingBlockRenderMode(EnumFacing dir1, EnumFacing dir2) {
+  private EnumMergingBlockRenderMode(@Nonnull EnumFacing dir1, @Nonnull EnumFacing dir2) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal());
     Mapping.mapping.put(id, this);
   }
@@ -79,22 +84,24 @@ public enum EnumMergingBlockRenderMode implements IStringSerializable {
 
   }
 
-  public static EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
+  public static @Nonnull EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2, EnumFacing dir3) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal()) | (1 << dir3.ordinal());
-    return Mapping.mapping.get(id);
+    final @Nullable EnumMergingBlockRenderMode result = Mapping.mapping.get(id);
+    return result == null ? DEFAULTS : result;
   }
 
-  public static EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2) {
+  public static @Nonnull EnumMergingBlockRenderMode get(EnumFacing dir1, EnumFacing dir2) {
     int id = (1 << dir1.ordinal()) | (1 << dir2.ordinal());
-    return Mapping.mapping.get(id);
+    final @Nullable EnumMergingBlockRenderMode result = Mapping.mapping.get(id);
+    return result == null ? DEFAULTS : result;
   }
 
   @Override
-  public String getName() {
-    return name().toLowerCase(Locale.ENGLISH);
+  public @Nonnull String getName() {
+    return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
   private static class Mapping {
-    private static Map<Integer, EnumMergingBlockRenderMode> mapping = new HashMap<Integer, EnumMergingBlockRenderMode>();
+    private static @Nonnull Map<Integer, EnumMergingBlockRenderMode> mapping = new HashMap<Integer, EnumMergingBlockRenderMode>();
   }
 }

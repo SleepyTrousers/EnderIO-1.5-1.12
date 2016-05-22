@@ -2,7 +2,10 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
+import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
@@ -26,34 +29,34 @@ public enum FusedQuartzType implements IStringSerializable {
     DARKENED
   }
 
-  public static final PropertyEnum<FusedQuartzType> KIND = PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class);
+  public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class);
 
-  private final String unlocalisedName;
-  private final BaseMaterial baseMaterial;
-  private final Upgrade upgrade;
+  private final @Nonnull String unlocalisedName;
+  private final @Nonnull BaseMaterial baseMaterial;
+  private final @Nonnull Upgrade upgrade;
 
-  private FusedQuartzType(String unlocalisedName, BaseMaterial baseMaterial, Upgrade upgrade) {
+  private FusedQuartzType(@Nonnull String unlocalisedName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade) {
     this.unlocalisedName = unlocalisedName;
     this.baseMaterial = baseMaterial;
     this.upgrade = upgrade;
   }
 
-  public boolean connectTo(FusedQuartzType other) {
+  public boolean connectTo(@Nonnull FusedQuartzType other) {
     return (Config.clearGlassConnectToFusedQuartz && Config.glassConnectToTheirVariants)
         || (Config.clearGlassConnectToFusedQuartz && this.upgrade == other.upgrade)
         || (Config.glassConnectToTheirVariants && this.baseMaterial == other.baseMaterial);
   }
 
   @Override
-  public String getName() {
-    return name().toLowerCase(Locale.ENGLISH);
+  public @Nonnull String getName() {
+    return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
-  public static FusedQuartzType getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+  public static @Nonnull FusedQuartzType getTypeFromMeta(int meta) {
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
-  public static int getMetaFromType(FusedQuartzType fusedQuartzType) {
+  public static int getMetaFromType(@Nonnull FusedQuartzType fusedQuartzType) {
     return fusedQuartzType.ordinal();
   }
 
@@ -69,7 +72,7 @@ public enum FusedQuartzType implements IStringSerializable {
     return upgrade == Upgrade.DARKENED ? 255 : 0;
   }
 
-  public String getUnlocalisedName() {
+  public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 }
