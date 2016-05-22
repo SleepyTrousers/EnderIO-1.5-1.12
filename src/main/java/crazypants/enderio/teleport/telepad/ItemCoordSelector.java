@@ -18,7 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -188,7 +188,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     NetHandlerPlayClient netClientHandler = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
 //    netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(new BlockPos(x, y, z), side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
     //TODO: 1.9, I doubt this will still work
-    CPacketPlayerBlockPlacement packet = new CPacketPlayerBlockPlacement(EnumHand.MAIN_HAND);
+    CPacketPlayerTryUseItem packet = new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND);    
     netClientHandler.sendPacket(packet);
   }
 

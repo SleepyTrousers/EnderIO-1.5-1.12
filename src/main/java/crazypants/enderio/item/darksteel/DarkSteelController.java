@@ -28,7 +28,7 @@ import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -427,7 +427,7 @@ public class DarkSteelController {
       SoundHelper.playSound(player.worldObj, player, SoundRegistry.JUMP, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f);
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
-        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
+        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
             player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
         // TODO 1.9 velocity/speed is no longer exposed. use reflection or subclassing to change
         // fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),

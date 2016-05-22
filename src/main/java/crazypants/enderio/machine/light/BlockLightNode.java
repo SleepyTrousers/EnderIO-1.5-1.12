@@ -109,7 +109,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {  
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {  
     TileLightNode te = getTileEntity(world, pos);
     if (te != null) {
       te.onNeighbourChanged();

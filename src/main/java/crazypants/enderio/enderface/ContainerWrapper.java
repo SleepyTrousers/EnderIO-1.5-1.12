@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,12 +59,12 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
   }
 
   @Override
-  public void addListener(ICrafting listener) {
+  public void addListener(IContainerListener listener) {
     wrapped.addListener(listener);
   }
   
   @SideOnly(Side.CLIENT)
-  public void removeListener(ICrafting listener) {
+  public void removeListener(IContainerListener listener) {    
     wrapped.removeListener(listener);    
   }
 

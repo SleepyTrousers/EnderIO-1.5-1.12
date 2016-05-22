@@ -1,21 +1,20 @@
 package crazypants.enderio;
 
+import com.enderio.core.common.TileEntityBase;
+
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-
-import com.enderio.core.common.TileEntityBase;
 
 public abstract class TileEntityEio extends TileEntityBase {
 
   protected boolean doingOtherNbt = false;
 
   @Override
-  public final Packet<?> getDescriptionPacket() {
+  public final SPacketUpdateTileEntity getUpdatePacket() {
     NBTTagCompound root = new NBTTagCompound();
     try {
       doingOtherNbt = true;
@@ -24,6 +23,7 @@ public abstract class TileEntityEio extends TileEntityBase {
       doingOtherNbt = false;
     }
     Writer.write(StoreFor.CLIENT, root, this);
+    
     return new SPacketUpdateTileEntity(getPos(), 1, root);
   }
 

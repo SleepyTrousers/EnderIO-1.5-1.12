@@ -3,7 +3,7 @@ package crazypants.enderio.machine.obelisk.weather;
 import java.awt.Color;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EntityDropParticleFX;
+import net.minecraft.client.particle.ParticleDrip;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityFluidLoadingFX extends EntityDropParticleFX {
+public class EntityFluidLoadingFX extends ParticleDrip {
 
   public static final int MAX_LIFE = 10;
   
@@ -26,6 +26,7 @@ public class EntityFluidLoadingFX extends EntityDropParticleFX {
     particleBlue = color.getBlue() / 256f;
     
     particleGravity = 0;
+        
 
 //    noClip = true;
   }

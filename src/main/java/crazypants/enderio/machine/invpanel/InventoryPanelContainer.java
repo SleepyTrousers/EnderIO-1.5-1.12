@@ -9,18 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
@@ -31,6 +19,17 @@ import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -150,7 +149,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void removeListener(ICrafting crafting) {
+  public void removeListener(IContainerListener crafting) {    
     super.removeListener(crafting);
     removeChangeLog();
   }
@@ -158,7 +157,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   
 
   @Override
-  public void addListener(ICrafting crafting) {    
+  public void addListener(IContainerListener crafting) {    
     if(changedItems != null) {
       sendChangeLog();
     }
@@ -282,7 +281,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         stack = stack.copy();
       }
       inventoryItemStacks.set(slotIdx, stack);
-      for (ICrafting crafter : this.listeners) {
+      for (IContainerListener crafter : this.listeners) {
         crafter.sendSlotContents(this, slotIdx, stack);
       }
     }

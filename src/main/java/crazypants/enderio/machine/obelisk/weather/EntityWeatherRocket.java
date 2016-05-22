@@ -2,7 +2,7 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFirework;
+import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.datasync.DataParameter;
@@ -83,7 +83,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
           double d6 = l + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
           double d7 = MathHelper.sqrt_double(d4 * d4 + d5 * d5 + d6 * d6) / speed + this.rand.nextGaussian() * 0.05D;
 
-          EntityFirework.SparkFX entityfireworksparkfx = new EntityFirework.SparkFX(this.worldObj, d1, d2, d3, d4 / d7, d5 / d7, d6 / d7,
+          ParticleFirework.Spark entityfireworksparkfx = new ParticleFirework.Spark(this.worldObj, d1, d2, d3, d4 / d7, d5 / d7, d6 / d7,
               Minecraft.getMinecraft().effectRenderer);
 
           entityfireworksparkfx.setTrail(true);

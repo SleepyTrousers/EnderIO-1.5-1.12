@@ -112,12 +112,13 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     if(!te.inNetwork()) {
       return bb;
     }
+    
     return te.getBoundingBox();
   }
 
   @Override
-  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block changedTo) {
-    super.onNeighborBlockChange(world, pos, state, changedTo);
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block changedTo) {    
+    super.neighborChanged(state, world, pos, changedTo);
     getTileEntity(world, pos).updateRedstoneState();
   }
 

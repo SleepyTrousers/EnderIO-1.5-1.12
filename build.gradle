@@ -5,7 +5,7 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-20160301.091124-26' }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT' }
 }
 
 plugins {
@@ -37,8 +37,8 @@ if (project.hasProperty('mod_appendix')) {
 }
 
 minecraft {
-    mappings = "snapshot_20160516"
-    version = "${minecraft_version}-${forge_version}"
+    mappings = "snapshot_20160518"
+    version = "${minecraft_version}-${forge_version}-${minecraft_version}"
     runDir = 'run'
 
     replace "@VERSION@", project.version

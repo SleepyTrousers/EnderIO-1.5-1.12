@@ -4,17 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -24,6 +13,17 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketExperianceContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -87,7 +87,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;
         float zOffset = -0.2F - rand.nextFloat() * 0.6F;
 
-        EntityFX fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset,
+        Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset,
             startZ + zOffset, 0.0D, 0.0D, 0.0D, 0);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);

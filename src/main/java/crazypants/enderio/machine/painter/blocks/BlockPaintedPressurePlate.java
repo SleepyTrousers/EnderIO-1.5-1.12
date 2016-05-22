@@ -492,7 +492,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     }
 
     if (isOn) {
-      worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
+      worldIn.scheduleUpdate(new BlockPos(pos), this, this.tickRate(worldIn));
     }
   }
 

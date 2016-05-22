@@ -171,10 +171,10 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block blockID) {
+  public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block neighborBlock) {
     TileElectricLight te = getTileEntity(worldIn, pos);
     if (te != null) {
-      te.onNeighborBlockChange(blockID);
+      te.onNeighborBlockChange(neighborBlock);
     }
   }
 

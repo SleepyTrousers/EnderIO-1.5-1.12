@@ -23,7 +23,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
@@ -43,8 +45,15 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     IOverlayRenderAware { //, IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
 
   //TODO: 1.8
-  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON);
+//  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", "darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON);
+  public static final ArmorMaterial MATERIAL = createMaterial();
 
+  private static ArmorMaterial createMaterial() {
+    //return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", "darkSteel", 35,new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
+    Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
+    return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35,new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f); 
+  }
+                                                                                      
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };
 

@@ -53,8 +53,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -195,7 +195,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, EffectRenderer effectRenderer) {
+  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
 
     TextureAtlasSprite tex = null;
 
@@ -223,7 +223,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer) {
+  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
 
     IBlockState state = world.getBlockState(pos);
     if (state == null || state.getBlock() != this || lastRemovedComponetIcon == null) {
@@ -238,7 +238,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
           double d0 = pos.getX() + (j + 0.5D) / i;
           double d1 = pos.getY() + (k + 0.5D) / i;
           double d2 = pos.getZ() + (l + 0.5D) / i;
-          EntityDiggingFX fx = (EntityDiggingFX) new EntityDiggingFX.Factory().getEntityFX(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
+          ParticleDigging fx = (ParticleDigging) new ParticleDigging.Factory().getEntityFX(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
               d1 - pos.getY() - 0.5D, d2 - pos.getZ() - 0.5D, 0);
           fx.setBlockPos(pos);
           fx.setParticleTexture(tex);
@@ -251,7 +251,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @SideOnly(Side.CLIENT)
-  private void addBlockHitEffects(World world, EffectRenderer effectRenderer, int x, int y, int z, EnumFacing sideEnum, TextureAtlasSprite tex) {
+  private void addBlockHitEffects(World world, ParticleManager effectRenderer, int x, int y, int z, EnumFacing sideEnum, TextureAtlasSprite tex) {
     float f = 0.1F;
     
     double d0 = x + rand.nextDouble() * (bounds.maxX - bounds.minX - f * 2.0F) + f + bounds.minX;
@@ -272,7 +272,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       d0 = x + bounds.maxX + f;
     }
 
-    EntityDiggingFX digFX = (EntityDiggingFX) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1,
+    ParticleDigging digFX = (ParticleDigging) Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.BLOCK_CRACK.getParticleID(), d0, d1,
         d2, 0, 0, 0, 0);
     digFX.init().multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
     digFX.setParticleTexture(tex);
@@ -857,7 +857,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
 
-  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
     TileEntity tile = world.getTileEntity(pos);
     if ((tile instanceof IConduitBundle)) {
       ((IConduitBundle) tile).onNeighborBlockChange(neighborBlock);

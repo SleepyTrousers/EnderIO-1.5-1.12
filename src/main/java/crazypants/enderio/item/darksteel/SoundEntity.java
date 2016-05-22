@@ -1,7 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
+import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.item.darksteel.SoundDetector.SoundSource;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,13 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.item.darksteel.SoundDetector.SoundSource;
-
-public class SoundEntity extends EntityFX {
+public class SoundEntity extends Particle {
 
   private final SoundSource ss;
 

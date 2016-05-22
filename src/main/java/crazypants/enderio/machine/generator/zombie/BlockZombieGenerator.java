@@ -21,7 +21,6 @@ import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -92,7 +91,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
           float yOffset = 0.1f;
           float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           
-          EntityFX fx = new BubbleFX(world, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0.5, 0);
+          BubbleFX fx = new BubbleFX(world, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0.5, 0);
           Minecraft.getMinecraft().effectRenderer.addEffect(fx);
 
         }

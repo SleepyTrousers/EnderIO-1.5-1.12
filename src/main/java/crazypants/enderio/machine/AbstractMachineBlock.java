@@ -199,7 +199,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
   
   @Override
-  public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {   
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {   
     TileEntity ent = world.getTileEntity(pos);
     if(ent instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;

@@ -36,7 +36,7 @@ import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.tileentity.TileEntity;
@@ -285,7 +285,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       return true;
     } else if (ent instanceof EntitySilverfish) {
       EntitySilverfish es = (EntitySilverfish) ent;
-      PathEntity pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
+      Path pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
       es.getNavigator().setPath(pathentity, es.getAIMoveSpeed());
       return true;
     } else if (ent instanceof EntityBlaze) {
@@ -306,7 +306,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
         return;
       }
       EntitySilverfish sf = (EntitySilverfish) ent;
-      PathEntity pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
+      Path pathentity = getPathEntityToEntity(ent, getTarget(), getRange());
       sf.getNavigator().setPath(pathentity, sf.getAIMoveSpeed());
     } else if (ent instanceof EntityBlaze) {
 
@@ -350,7 +350,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     return ent instanceof EntityPigZombie || ent instanceof EntitySpider || ent instanceof EntitySilverfish;
   }
 
-  public PathEntity getPathEntityToEntity(Entity entity, Entity targetEntity, float range) {
+  public Path getPathEntityToEntity(Entity entity, Entity targetEntity, float range) {
 
     int targX = MathHelper.floor_double(targetEntity.posX);
     int targY = MathHelper.floor_double(targetEntity.posY + 1.0D);

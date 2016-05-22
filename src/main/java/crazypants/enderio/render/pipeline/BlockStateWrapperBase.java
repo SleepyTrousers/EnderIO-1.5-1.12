@@ -436,4 +436,14 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     return state.isSideSolid(world, pos, side);
   }
 
+  @Override
+  public boolean onBlockEventReceived(World worldIn, BlockPos pos, int id, int param) {    
+    return state.onBlockEventReceived(worldIn, pos, id, param);
+  }
+
+  @Override
+  public void neighborChanged(World worldIn, BlockPos pos, Block p_189546_3_) {
+    state.neighborChanged(worldIn, pos, p_189546_3_);    
+  }
+
 }

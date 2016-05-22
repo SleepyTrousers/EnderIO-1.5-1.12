@@ -20,8 +20,8 @@ import net.minecraft.network.play.client.CPacketInput;
 import net.minecraft.network.play.client.CPacketKeepAlive;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayerAbilities;
-import net.minecraft.network.play.client.CPacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.network.play.client.CPacketResourcePackStatus;
 import net.minecraft.network.play.client.CPacketSpectate;
 import net.minecraft.network.play.client.CPacketTabComplete;
@@ -60,9 +60,9 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
   @Override
   public void processPlayerDigging(CPacketPlayerDigging p_147345_1_) {
   }
-
+  
   @Override
-  public void processPlayerBlockPlacement(CPacketPlayerBlockPlacement p_147346_1_) {
+  public void processPlayerBlockPlacement(CPacketPlayerTryUseItem packetIn) {
   }
 
   @Override

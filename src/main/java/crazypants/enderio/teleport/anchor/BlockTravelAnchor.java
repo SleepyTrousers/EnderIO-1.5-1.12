@@ -177,8 +177,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         IBlockState bs = PainterUtil2.getSourceBlock(stack);
-        ta.setPaintSource(bs);        
-        te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);
+        ta.setPaintSource(bs);              
+        te.getWorld().notifyBlockUpdate(pos, state, state, 3);
       }
     }
   }

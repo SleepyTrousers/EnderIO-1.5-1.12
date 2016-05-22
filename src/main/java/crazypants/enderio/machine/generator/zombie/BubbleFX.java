@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import net.minecraft.client.particle.EntityBubbleFX;
+import net.minecraft.client.particle.ParticleBubble;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BubbleFX extends EntityBubbleFX {
+public class BubbleFX extends ParticleBubble {
 
   private final double yLimit;
 
