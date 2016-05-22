@@ -514,9 +514,7 @@ public class Things {
         // this ugly thing seems to be what Forge wants you to use
         if (allowBlock && net.minecraft.block.Block.REGISTRY.containsKey(resourceLocation)) {
           Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
-          if (block != null) {
-            return new BlockThing(block).bake();
-          }
+          return new BlockThing(block).bake();
         }
         // this ugly thing seems to be what Forge wants you to use
         if (allowItem && net.minecraft.item.Item.REGISTRY.containsKey(resourceLocation)) {
@@ -539,9 +537,7 @@ public class Things {
         // this ugly thing seems to be what Forge wants you to use
         if (allowBlock && net.minecraft.block.Block.REGISTRY.containsKey(resourceLocation)) {
           Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
-          if (block != null) {
-            return new ItemStackThing(new ItemStack(block, 1, meta)).bake();
-          }
+          return new ItemStackThing(new ItemStack(block, 1, meta)).bake();
         }
       }
       return null;
@@ -598,8 +594,8 @@ public class Things {
         return null;
       }
       // this ugly thing seems to be what Forge wants you to use
-      Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
-      if (block != null) {
+      if (net.minecraft.block.Block.REGISTRY.containsKey(resourceLocation)) {
+        Block block = net.minecraft.block.Block.REGISTRY.getObject(resourceLocation);
         return new BlockThing(block).bake();
       }
       // this ugly thing seems to be what Forge wants you to use
