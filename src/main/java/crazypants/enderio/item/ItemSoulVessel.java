@@ -3,24 +3,7 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.DyeColor;
@@ -32,6 +15,24 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
 
@@ -66,7 +67,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   @Override
-  public int getMetadata(ItemStack stack) {
+  public int getMetadata(@Nonnull ItemStack stack) {
     if (CapturedMob.containsSoul(stack)) {
       return 1;
     }
@@ -75,14 +76,15 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack item) {
+  public boolean hasEffect(@Nonnull ItemStack item) {
     return CapturedMob.containsSoul(item);
   }
   
   
 
   @Override
-  public EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+  public @Nonnull EnumActionResult onItemUse(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX,
       float hitY, float hitZ) {
 
     if (world.isRemote || player == null) {
@@ -116,7 +118,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   @Override
-  public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
+  public boolean itemInteractionForEntity(@Nonnull ItemStack item, @Nonnull EntityPlayer player, @Nonnull EntityLivingBase entity, @Nonnull EnumHand hand) {
     if (entity.worldObj.isRemote || player == null) {
       return false;
     }
@@ -175,12 +177,12 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return getUnlocalizedName(itemStack);
+    return itemStack == null ? null : getUnlocalizedName(itemStack);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
+  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
     CapturedMob capturedMob = CapturedMob.create(par1ItemStack);
     if (capturedMob != null) {
       par3List.add(capturedMob.getDisplayName());
@@ -200,10 +202,8 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       if (fluidName != null) {
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
-          String name = I18n.translateToLocal(fluid.getUnlocalizedName());
-          if (name == null) {
-            name = fluidName;
-          }
+          String unlocalizedName = fluid.getUnlocalizedName();
+          String name = unlocalizedName == null ? fluidName : I18n.translateToLocal(unlocalizedName);
           par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + name);
         }
       }

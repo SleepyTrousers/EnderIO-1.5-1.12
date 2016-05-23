@@ -158,7 +158,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class EnderIO {
 
   public static final @Nonnull String MODID = "EnderIO";
-  public static final String DOMAIN = MODID.toLowerCase(Locale.US);
+  public static final @Nonnull String DOMAIN = MODID.toLowerCase(Locale.US);
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
 

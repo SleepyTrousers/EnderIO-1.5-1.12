@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -32,6 +34,7 @@ import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
+import crazypants.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
@@ -263,7 +266,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  public void actionPerformed(GuiButton b) throws IOException {
+  public void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id == ID_CLEAR) {
       if (getContainer().clearCraftingGrid()) {
@@ -376,7 +379,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void drawFakeItemStack(int x, int y, ItemStack stack) {
-    FontRenderer font = stack.getItem().getFontRenderer(stack);
+    FontRenderer font = NullHelper.untrust(stack.getItem().getFontRenderer(stack));
     if(font == null) {
       font = fontRendererObj;
     }
@@ -421,7 +424,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   @Override
-  public void drawHoveringText(List list, int mouseX, int mouseY, FontRenderer font) {
+  public void drawHoveringText(List<String> list, int mouseX, int mouseY, FontRenderer font) {
     if(ghostSlotTooltipStacksize >= 1000) {
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
     }

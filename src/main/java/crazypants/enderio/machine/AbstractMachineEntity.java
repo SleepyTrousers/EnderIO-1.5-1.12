@@ -1,34 +1,12 @@
 package crazypants.enderio.machine;
 
-import info.loenwind.autosave.Reader;
-import info.loenwind.autosave.Writer;
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.handlers.enderio.HandleIOMode;
-
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.InventoryWrapper;
@@ -43,7 +21,31 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.util.NullHelper;
 import crazypants.util.ResettingFlag;
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleIOMode;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public abstract class AbstractMachineEntity extends TileEntityEio
@@ -74,7 +76,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store(handler = HandleIOMode.class)
   protected Map<EnumFacing, IoMode> faceModes;
 
-  private final int[] allSlots;
+  private final @Nonnull int[] allSlots;
 
   protected boolean notifyNeighbours = false;
 
@@ -157,7 +159,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return slotDefinition;
   }
 
-  public boolean isValidUpgrade(ItemStack itemstack) {
+  public boolean isValidUpgrade(@Nonnull ItemStack itemstack) {
     for (int i = slotDefinition.getMinUpgradeSlot(); i <= slotDefinition.getMaxUpgradeSlot(); i++) {
       if (isItemValidForSlot(i, itemstack)) {
         return true;
@@ -166,7 +168,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return false;
   }
 
-  public boolean isValidInput(ItemStack itemstack) {
+  public boolean isValidInput(@Nonnull ItemStack itemstack) {
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (isItemValidForSlot(i, itemstack)) {
         return true;
@@ -175,7 +177,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return false;
   }
 
-  public boolean isValidOutput(ItemStack itemstack) {
+  public boolean isValidOutput(@Nonnull ItemStack itemstack) {
     for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
       if (isItemValidForSlot(i, itemstack)) {
         return true;
@@ -185,11 +187,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
+  public final boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
+    NullHelper.untrusted(itemstack, "Parameter ItemStack to IInventory.isItemValidForSlot()");
     if (slotDefinition.isUpgradeSlot(i)) {
       final ICapacitorData capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(itemstack);
-      return itemstack != null && ((itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0) || capacitorData != null); // TODO level
-                                                                                                                                                   // check
+      return (itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0) || capacitorData != null; // TODO level
     }
     return isMachineItemValidForSlot(i, itemstack);
   }
@@ -340,7 +342,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return res;
   }
 
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
 
     if (slotDefinition.getNumOutputSlots() <= 0) {
       return false;
@@ -349,8 +351,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       return false;
     }
 
-    BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
+    TileEntity te = worldObj.getTileEntity(getPos().offset(dir));
 
     return doPush(dir, te, slotDefinition.minOutputSlot, slotDefinition.maxOutputSlot);
   }
@@ -376,7 +377,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return false;
   }
 
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
 
     if (slotDefinition.getNumInputSlots() <= 0) {
       return false;
@@ -393,8 +394,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       return false;
     }
 
-    BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
+    TileEntity te = worldObj.getTileEntity(getPos().offset(dir));
     if (te == null) {
       return false;
     }
@@ -408,7 +408,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       target = new InventoryWrapper((IInventory) te);
     }
 
-    int[] targetSlots = target.getSlotsForFace(dir.getOpposite());
+    int[] targetSlots = NullHelper.untrust(target.getSlotsForFace(dir.getOpposite()));
     if (targetSlots == null) {
       return false;
     }
@@ -467,10 +467,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   public void readFromItemStack(ItemStack stack) {
-    if (stack == null || stack.getTagCompound() == null) {
+    if (stack == null) {
       return;
     }
     NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      return;
+    }
     Reader.read(StoreFor.ITEM, root, this);
     if (root.hasKey("eio.abstractMachine")) {
       try {
@@ -534,7 +537,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   // ------------------------------------------------------------------------------
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
+  public boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -579,7 +582,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     if (contents == null) {
       inventory[slot] = contents;
     } else {
@@ -619,15 +622,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public void openInventory(EntityPlayer player) {
+  public void openInventory(@Nonnull EntityPlayer player) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer player) {
+  public void closeInventory(@Nonnull EntityPlayer player) {
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return getMachineName();
   }
 
@@ -637,12 +640,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override
-  public int[] getSlotsForFace(EnumFacing var1) {
+  public @Nonnull int[] getSlotsForFace(@Nonnull EnumFacing var1) {
     if (isSideDisabled(var1)) {
       return new int[0];
     }
@@ -650,7 +653,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     if (isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
       return false;
     }
@@ -666,7 +669,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     if (isSideDisabled(side)) {
       return false;
     }

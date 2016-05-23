@@ -2,6 +2,8 @@ package crazypants.enderio.enchantment;
 
 import java.util.ListIterator;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
 import crazypants.enderio.EnderIO;
@@ -9,6 +11,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
 import crazypants.util.GalacticraftUtil;
+import crazypants.util.NullHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -30,7 +33,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
-  private static final String NAME = "soulBound";
+  private static final @Nonnull String NAME = "soulBound";
 
   public static EnchantmentSoulBound create() {
     EnchantmentSoulBound res = new EnchantmentSoulBound();    
@@ -223,7 +226,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
     for (int i = 0; i < evt.getOriginal().inventory.armorInventory.length; i++) {
       ItemStack item = evt.getOriginal().inventory.armorInventory[i];
-      if (isSoulBound(item)) {
+      if (item != null && isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item) || tryToSpawnItemInWorld(evt.getOriginal(), item)) {
           evt.getOriginal().inventory.armorInventory[i] = null;
         }
@@ -231,7 +234,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     }
     for (int i = 0; i < evt.getOriginal().inventory.mainInventory.length; i++) {
       ItemStack item = evt.getOriginal().inventory.mainInventory[i];
-      if (isSoulBound(item)) {
+      if (item != null && isSoulBound(item)) {
         if (addToPlayerInventory(evt.getEntityPlayer(), item) || tryToSpawnItemInWorld(evt.getOriginal(), item)) {
           evt.getOriginal().inventory.mainInventory[i] = null;
         }
@@ -239,8 +242,8 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     }
   }
 
-  private boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, ItemStack item) {
-    if (entityPlayer != null && entityPlayer.worldObj != null) {
+  private boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, @Nonnull ItemStack item) {
+    if (entityPlayer != null && NullHelper.untrust(entityPlayer.worldObj) != null) {
       EntityItem entityitem = new EntityItem(entityPlayer.worldObj, entityPlayer.posX, entityPlayer.posY + 0.5, entityPlayer.posZ, item);
       entityitem.setPickupDelay(40);
       entityitem.lifespan *= 2;
@@ -264,7 +267,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if(item.getItem() instanceof ItemArmor) {
       ItemArmor arm = (ItemArmor) item.getItem();
       int index = arm.armorType.getIndex();
-      if(entityPlayer.inventory.armorItemInSlot(index) == null) {
+      if (NullHelper.untrust(entityPlayer.inventory.armorItemInSlot(index)) == null) {
         entityPlayer.inventory.armorInventory[index] = item;
         Log.debug("Running addToPlayerInventory/armor logic for " + entityPlayer.getName() + ": " + item);
         return true;

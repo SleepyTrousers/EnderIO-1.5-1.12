@@ -2,6 +2,10 @@ package crazypants.enderio.render;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -22,7 +26,7 @@ public enum EnumRenderPart implements IStringSerializable {
   SOUL_FRAME_WEST(SOUL_FRAME),
   SOUL_FRAME_EAST(SOUL_FRAME);
 
-  public static final PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
+  public static final @Nonnull PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
   private final int parentid;
   private final boolean rotates;
@@ -35,11 +39,11 @@ public enum EnumRenderPart implements IStringSerializable {
     this(null, rotates);
   }
 
-  private EnumRenderPart(EnumRenderPart parent) {
+  private EnumRenderPart(@Nullable EnumRenderPart parent) {
     this(parent, parent != null);
   }
 
-  private EnumRenderPart(EnumRenderPart parent, boolean rotates) {
+  private EnumRenderPart(@Nullable EnumRenderPart parent, boolean rotates) {
     if (parent != null) {
       parentid = parent.ordinal();
       this.rotates = true;
@@ -50,7 +54,7 @@ public enum EnumRenderPart implements IStringSerializable {
   }
 
   /* D0-U1-N2-S3-W4-E5 */
-  public EnumRenderPart rotate(EnumFacing facing) {
+  public EnumRenderPart rotate(@Nonnull EnumFacing facing) {
     if (rotates && facing.getIndex() >= 2) {
       return values()[parentid + facing.getIndex() - 2];
     } else {
@@ -59,8 +63,8 @@ public enum EnumRenderPart implements IStringSerializable {
   }
 
   @Override
-  public String getName() {
-    return name().toLowerCase(Locale.ENGLISH);
+  public @Nonnull String getName() {
+    return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
 }

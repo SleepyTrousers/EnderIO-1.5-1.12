@@ -10,21 +10,15 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
+
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
@@ -34,9 +28,14 @@ import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
@@ -46,10 +45,11 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     CONTROL(2, new ItemStack(Items.REDSTONE));
 
     int tabNo;
+    @Nonnull
     ItemStack itemStack;
     InvisibleButton button;
 
-    private Tab(int tabNo, ItemStack itemStack) {
+    private Tab(int tabNo, @Nonnull ItemStack itemStack) {
       this.tabNo = tabNo;
       this.itemStack = itemStack;
     }
@@ -198,7 +198,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton btn) {
+  protected void actionPerformed(@Nonnull GuiButton btn) {
     if (btn == plus) {
       if (timebase >= 6) {
         return;
@@ -269,7 +269,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
   private void drawGraph(int x, int y) {
     StatCollector stat = getTileEntity().getStatCollector(timebase);
     int[][] values = stat.getValues();
-    for (int i = 0; i < stat.MAX_VALUES; i++) {
+    for (int i = 0; i < StatCollector.MAX_VALUES; i++) {
       int min = values[0][i], max = values[1][i];
       drawTexturedModalRect(x + i, y + 63 - max, 220, 63 - max, 1, max - min + 1);
     }
@@ -514,10 +514,6 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
   }
 
   private int getInt(GuiTextField tf) {
-    String txt = tf.getText();
-    if (txt == null) {
-      return 0;
-    }
     try {
       int val = Integer.parseInt(tf.getText());
       if (val >= 0 && val <= 100) {

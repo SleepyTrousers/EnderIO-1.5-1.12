@@ -9,8 +9,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -23,8 +27,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 
 @SideOnly(Side.CLIENT)
 public class DynaTextureProvider {
@@ -34,21 +36,21 @@ public class DynaTextureProvider {
   protected static final Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
   protected static final List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
 
-  protected static final ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonScreen.png");
+  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonScreen.png");
   protected static final int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
-  protected static final ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
+  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
   protected static final int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
 
-  protected final TilePowerMonitor owner;
-  protected final String id;
-  protected ResourceLocation resourceLocation;
-  protected final int[] imageData;
+  protected final @Nonnull TilePowerMonitor owner;
+  protected final @Nonnull String id;
+  protected @Nullable ResourceLocation resourceLocation;
+  protected @Nonnull final int[] imageData;
 
-  protected final DynamicTexture dynamicTexture;
-  protected final TextureManager textureManager;
-  protected final IResourceManager resourceManager;
+  protected final @Nonnull DynamicTexture dynamicTexture;
+  protected final @Nonnull TextureManager textureManager;
+  protected final @Nonnull IResourceManager resourceManager;
 
-  public DynaTextureProvider(TilePowerMonitor owner) {
+  public DynaTextureProvider(@Nonnull TilePowerMonitor owner) {
     this.owner = owner;
     this.textureManager = Minecraft.getMinecraft().getTextureManager();
     this.resourceManager = Minecraft.getMinecraft().getResourceManager();
@@ -99,13 +101,11 @@ public class DynaTextureProvider {
     }
   }
 
-  protected BufferedImage getTexture(ResourceLocation blockResource) {
+  protected BufferedImage getTexture(@Nonnull ResourceLocation blockResource) {
     try {
       IResource iResource = resourceManager.getResource(blockResource);
-      if (iResource == null) {
-        return null;
-      }
       BufferedImage image = ImageIO.read(iResource.getInputStream());
+      iResource.close();
       return image;
     } catch (IOException e) {
       Log.error("Failed to load " + blockResource + ": " + e);

@@ -3,11 +3,10 @@ package crazypants.enderio.machine.painter.recipe;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import javax.annotation.Nonnull;
+
+import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -15,8 +14,11 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
-
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
 
@@ -100,9 +102,9 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     return paintBlock.getStateFromMeta(paintSource.getMetadata());
   }
 
-  protected ItemStack mkItemStack(ItemStack target, Block targetBlock) {
+  protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {
     Item itemFromBlock = Item.getItemFromBlock(targetBlock);
-    if (itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
+    if (itemFromBlock == null || itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
       return new ItemStack(targetBlock, 1, target.getItemDamage());
     } else {
       return new ItemStack(targetBlock, 1, 0);
@@ -183,9 +185,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     }
     
     Block blk = Block.getBlockFromItem(target.getItem());
-    if(blk == null) {
-      return false;
-    }
+
     if (blk == resultBlock) {
       return true;
     }

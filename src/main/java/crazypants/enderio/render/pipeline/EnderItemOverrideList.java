@@ -3,6 +3,8 @@ package crazypants.enderio.render.pipeline;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.cache.Cache;
@@ -17,6 +19,7 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.ITESRItemBlock;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -40,14 +43,9 @@ public class EnderItemOverrideList extends ItemOverrideList {
   public static final EnderItemOverrideList instance = new EnderItemOverrideList();
 
   @Override
-  public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-    if (originalModel == null) {
-      throw new NullPointerException("Missing parameter 'IBakedModel originalModel'");
-    }
-    if (stack == null) {
-      throw new NullPointerException("Missing parameter 'ItemStack stack'");
-    }
-    Block block = Block.getBlockFromItem(stack.getItem());
+  public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nonnull World world,
+      @Nonnull EntityLivingBase entity) {
+    Block block = NullHelper.untrust(Block.getBlockFromItem(stack.getItem()));
     if (block == null) {
       throw new NullPointerException("Wrong parameter 'ItemStack stack', not an ItemBlock");
     }
@@ -59,7 +57,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
       IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(block, stack);
       if (paintSource != null) {
-        Pair<Block, Long> cacheKey = Pair.of((Block) null, new CacheKey().addCacheKey(paintSource).getCacheKey());
+        Pair<Block, Long> cacheKey = NullHelper.notnull(Pair.of((Block) null, new CacheKey().addCacheKey(paintSource).getCacheKey()), "no way");
         ItemQuadCollector quads = cache.getIfPresent(cacheKey);
         if (quads == null) {
           quads = new ItemQuadCollector();

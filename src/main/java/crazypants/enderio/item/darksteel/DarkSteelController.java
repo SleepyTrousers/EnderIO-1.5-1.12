@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -26,6 +28,7 @@ import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
+import crazypants.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.Particle;
@@ -54,17 +57,17 @@ public class DarkSteelController {
 
   public static final DarkSteelController instance = new DarkSteelController();
 
-  private final AttributeModifier[] walkModifiers = new AttributeModifier[] {
+  private final @Nonnull AttributeModifier[] walkModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[1], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[2], 1), };
 
-  private final AttributeModifier[] sprintModifiers = new AttributeModifier[] {
+  private final @Nonnull AttributeModifier[] sprintModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1), };
 
-  private final AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier", 2, 0);
+  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier", 2, 0);
 
   private boolean wasJumping;
   private int jumpCount;
@@ -85,8 +88,8 @@ public class DarkSteelController {
 
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
-    GameProfile gameProfile = player.getGameProfile();
-    UUID id = gameProfile == null ? null : gameProfile.getId();
+    GameProfile gameProfile = NullHelper.untrusted(player.getGameProfile(), "player.getGameProfile()");
+    UUID id = gameProfile.getId();
     active = id == null ? null : allActive.get(id);
     if (active == null) {
       active = DEFAULT_ACTIVE.clone();
@@ -272,10 +275,10 @@ public class DarkSteelController {
 
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
     if (moveInst.getModifier(walkModifiers[0].getID()) != null) {
-      moveInst.removeModifier(walkModifiers[0]); // any will so as they all have
+      moveInst.removeModifier(walkModifiers[0].getID()); // any will so as they all have
                                                  // the same UID
     } else if (moveInst.getModifier(sprintModifiers[0].getID()) != null) {
-      moveInst.removeModifier(sprintModifiers[0]);
+      moveInst.removeModifier(sprintModifiers[0].getID());
     }
 
     ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
@@ -379,21 +382,16 @@ public class DarkSteelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-      if (player == null) {
-        return;
-      }
+      EntityPlayerSP player = NullHelper.untrusted(Minecraft.getMinecraft().thePlayer, "Minecraft.getMinecraft().thePlayer");
       updateNightvision(player);
       if (player.capabilities.isFlying) {
         return;
       }
-      MovementInput input = player.movementInput;
-      if (input != null) {
-        if (input.jump && !wasJumping) {
-          doJump(player);
-        } else if (input.jump && jumpCount < 3 && ticksSinceLastJump > 5) {
-          doJump(player);
-        }
+      MovementInput input = NullHelper.untrusted(player.movementInput, "Minecraft.getMinecraft().thePlayer.movementInput");
+      if (input.jump && !wasJumping) {
+        doJump(player);
+      } else if (input.jump && jumpCount < 3 && ticksSinceLastJump > 5) {
+        doJump(player);
       }
 
       wasJumping = !player.onGround;
@@ -432,7 +430,7 @@ public class DarkSteelController {
         // TODO 1.9 velocity/speed is no longer exposed. use reflection or subclassing to change
         // fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
         // player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
-        Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+        Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
     }

@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.crafter;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 @Storable
 public class DummyCraftingGrid implements IInventory {
@@ -49,7 +50,7 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int i, ItemStack itemstack) {
+  public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
     if (itemstack != null) {
       inv[i] = itemstack.copy();
       if (i < 9) {
@@ -75,7 +76,7 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return "CraftingGrid";
   }
 
@@ -94,55 +95,25 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {
+  public boolean isUseableByPlayer(@Nonnull EntityPlayer var1) {
     return true;
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
+  public void openInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer e) {
+  public void closeInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int var1, ItemStack var2) {
+  public boolean isItemValidForSlot(int var1, @Nonnull ItemStack var2) {
     return var1 < 9;
   }
 
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    if (itemList == null) {
-      for (int i = 0; i < inv.length; i++) {
-        inv[i] = null;
-      }
-      return;
-    }
-    for (int i = 0; i < itemList.tagCount(); i++) {
-      NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-      byte slot = itemStack.getByte("Slot");
-      if (slot >= 0 && slot < inv.length) {
-        inv[slot] = ItemStack.loadItemStackFromNBT(itemStack);
-      }
-    }
-  }
-
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    NBTTagList itemList = new NBTTagList();
-    for (int i = 0; i < inv.length; i++) {
-      if (inv[i] != null) {
-        NBTTagCompound itemStackNBT = new NBTTagCompound();
-        itemStackNBT.setByte("Slot", (byte) i);
-        inv[i].writeToNBT(itemStackNBT);
-        itemList.appendTag(itemStackNBT);
-      }
-    }
-    nbtRoot.setTag("Items", itemList);
-  }
-
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return new TextComponentString(getName());
   }
 

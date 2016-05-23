@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.MetadataUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
@@ -25,7 +28,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -73,7 +75,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 //  private IIcon iconEastWest;
 //  private IIcon iconEastWestTurned;
 
-  private int linkId;
+  // private int linkId;
 
   protected BlockEnderRail() {
     setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
@@ -111,7 +113,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side,
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
+      @Nullable ItemStack heldItem, @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if(!world.isRemote) {
@@ -128,12 +131,12 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   
   
   @Override
-  public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+  public boolean rotateBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing axis) {
   return false;
   }
     
   @Override
-  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {  
+  public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(pos.down());
       if(te instanceof TileTransceiver) {
@@ -150,7 +153,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 //  }
 
   @Override
-  public boolean canPlaceBlockAt(World world, BlockPos pos) {
+  public boolean canPlaceBlockAt(@Nonnull World world, @Nonnull BlockPos pos) {
     return world.getBlockState(pos.down()).getBlock() == EnderIO.blockTransceiver;
   }
 
@@ -165,7 +168,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   }
 
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock) {
     if(world.isRemote) {
       return;
     }
@@ -188,7 +191,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   
 
   @Override
-  public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
+  public void onMinecartPass(@Nonnull World world, @Nonnull EntityMinecart cart, @Nonnull BlockPos pos) {
     if(world.isRemote) {
       return;
     }
@@ -281,8 +284,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
     List<List<Entity>> toTeleport = new ArrayList<List<Entity>>(allCarts.size());
     List<EntityMinecart> toDespawn = new ArrayList<EntityMinecart>(allCarts.size());
-    EntityPlayerMP playerToTP = null;
-    EntityMinecart playerToMount = null;
+    // EntityPlayerMP playerToTP = null;
+    // EntityMinecart playerToMount = null;
     for (EntityMinecart cartInTrain : allCarts) {
       if(cartInTrain != null) {
         List<Entity> entities = TeleportUtil.createEntitiesForReciever(cartInTrain, sender, reciever);
@@ -302,20 +305,20 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       TeleportUtil.despawn(sender.getWorld(), despawnCart);
     }
     reciever.getRailController().onTrainRecieved(toTeleport);
-    if(playerToTP != null) {
-      PlayerTeleportHandler.instance.teleportPlayer(reciever, playerToTP, playerToMount);
-    }
+    // if(playerToTP != null) {
+    // PlayerTeleportHandler.instance.teleportPlayer(reciever, playerToTP, playerToMount);
+    // }
     return true;
 
   }
 
-  private EntityMinecart getCart(List<Entity> entities) {
-    for (Entity ent : entities) {
-      if(ent instanceof EntityMinecart) {
-        return (EntityMinecart) ent;
-      }
-    }
-    return null;
-  }
+  // private EntityMinecart getCart(List<Entity> entities) {
+  // for (Entity ent : entities) {
+  // if(ent instanceof EntityMinecart) {
+  // return (EntityMinecart) ent;
+  // }
+  // }
+  // return null;
+  // }
 
 }
