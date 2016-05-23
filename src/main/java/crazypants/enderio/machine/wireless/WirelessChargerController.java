@@ -67,7 +67,7 @@ public class WirelessChargerController {
   public void getChargers(World world, BlockCoord bc, Collection<IWirelessCharger> res) {
     Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(world);
     for (IWirelessCharger wc : chargers.values()) {
-      if(wc.getLocation().getDistSq(bc) <= RANGE_SQ) {
+      if (inRange(wc.getLocation(), bc)) {
         res.add(wc);
       }
     }
@@ -80,13 +80,26 @@ public class WirelessChargerController {
     }
     BlockCoord bc = new BlockCoord(player);
     for (IWirelessCharger capBank : chargers.values()) {
-      if(capBank.isActive() && capBank.getLocation().getDistSq(bc) <= RANGE_SQ) {
+      if (capBank.isActive() && inRange(capBank.getLocation(), bc)) {
         boolean done = chargeFromCapBank(player, capBank);
         if(done) {
           return;
         }
       }
     }
+  }
+
+  private boolean inRange(BlockCoord a, BlockCoord b) {
+    // distSq can overflow int, so check for square coords first.
+    int dx = a.x - b.x;
+    if (dx > RANGE || dx < -RANGE) {
+      return false;
+    }
+    int dz = a.z - b.z;
+    if (dz > RANGE || dz < -RANGE) {
+      return false;
+    }
+    return a.getDistSq(b) <= RANGE_SQ;
   }
 
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
