@@ -3,7 +3,6 @@ package crazypants.enderio.thaumcraft;
 import java.util.List;
 
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Loader;
 
 public class ThaumcraftCompat {
@@ -151,10 +150,10 @@ public class ThaumcraftCompat {
 //    return new AspectList(item);
 //  }
 
-  private static void addAspectsFromRecipes(Item item, int meta) {
-    //TODO: 1.8
-    //ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
-  }
+//  private static void addAspectsFromRecipes(Item item, int meta) {
+//    //TODO: 1.8
+//    //ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
+//  }
 
   public static void loadUpgrades(List<IDarkSteelUpgrade> upgrades) {
     upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);

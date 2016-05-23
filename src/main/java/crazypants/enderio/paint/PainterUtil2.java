@@ -59,8 +59,8 @@ public class PainterUtil2 {
         if (bs != null) {
           return false;
         }
-      }
-      solidPaint = block.isOpaqueCube(bs);
+      }      
+      solidPaint = bs.isOpaqueCube();
     }
 
     if (target == null) {
@@ -175,14 +175,15 @@ public class PainterUtil2 {
     if(block == null) {
       return false;
     }
-    return block.getRenderType(block.getDefaultState()) == EnumBlockRenderType.MODEL;
+    
+    return block.getDefaultState().getRenderType() == EnumBlockRenderType.MODEL;
   }
 
   public static boolean shouldHaveTexture(Block block) {
     if (block == null) {
       return false;
     }
-    EnumBlockRenderType rt = block.getRenderType(block.getDefaultState());
+    EnumBlockRenderType rt = block.getDefaultState().getRenderType();
     return  rt != null && rt != EnumBlockRenderType.INVISIBLE;
   }
 

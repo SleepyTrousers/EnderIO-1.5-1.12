@@ -480,7 +480,8 @@ public class TravelController {
     if(block == null || block.isAir(bs, w, bc.getBlockPos())) {
       return true;
     }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBox(bs, w, bc.getBlockPos());
+        
+    final AxisAlignedBB aabb = bs.getBoundingBox(w, bc.getBlockPos());
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
 
@@ -514,8 +515,8 @@ public class TravelController {
   private boolean isClear(World w, IBlockState bs, Block block, BlockPos bp) {
     if(block == null || block.isAir(bs, w, bp)) {
       return true;
-    }
-    final AxisAlignedBB aabb = block.getCollisionBoundingBox(bs, w, bp);
+    }    
+    final AxisAlignedBB aabb = bs.getBoundingBox(w, bp);
     if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
       return true;
     }

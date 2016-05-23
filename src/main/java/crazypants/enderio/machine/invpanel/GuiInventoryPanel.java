@@ -420,7 +420,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       } finally {
         ghostSlotTooltipStacksize = 0;
       }
-    }
+    }    
   }
 
   @Override

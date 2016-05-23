@@ -68,7 +68,7 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
 
   @Override
   public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
-      @SuppressWarnings("deprecation") net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
+      net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     Pair<? extends IBakedModel, Matrix4f> perspective = parent.handlePerspective(cameraTransformType);
 
     double r = (EnderIO.proxy.getTickCount() % 360) + RenderUtil.getTimer().renderPartialTicks;
