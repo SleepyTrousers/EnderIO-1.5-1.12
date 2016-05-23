@@ -67,7 +67,7 @@ public class BlockItemPaintedSlab extends ItemBlock {
   }
 
   @Override
-  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand,  EnumFacing side, float hitX, float hitY, float hitZ) {
+  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand,  EnumFacing side, float hitX, float hitY, float hitZ) {    
     if (stack.stackSize == 0) {
       return EnumActionResult.FAIL;
     } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
@@ -81,11 +81,11 @@ public class BlockItemPaintedSlab extends ItemBlock {
         if ((side == EnumFacing.UP && blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN
             && blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.TOP)) {
           tryPlace(stack, worldIn, pos);
-          return EnumActionResult.PASS;
+          return EnumActionResult.SUCCESS;
         }
       }
 
-      return this.tryPlace(stack, worldIn, pos.offset(side)) ? EnumActionResult.PASS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+      return this.tryPlace(stack, worldIn, pos.offset(side)) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
     }
   }
 

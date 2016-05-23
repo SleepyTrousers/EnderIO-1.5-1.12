@@ -76,14 +76,14 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
-      return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
 
     if(world.isRemote) {
       TravelController.instance.activateTravelAccessable(equipped, world, player, TravelSource.STAFF);
     }
     player.swingArm(EnumHand.MAIN_HAND);
-    return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
+    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
   }
 
   @Override

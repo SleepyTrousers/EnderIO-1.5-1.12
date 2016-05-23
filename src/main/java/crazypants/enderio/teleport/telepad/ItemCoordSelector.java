@@ -137,7 +137,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);
     }
     
-    return EnumActionResult.FAIL;
+    return EnumActionResult.SUCCESS;
   }
 
   // returns false if the raytrace provided no new information
