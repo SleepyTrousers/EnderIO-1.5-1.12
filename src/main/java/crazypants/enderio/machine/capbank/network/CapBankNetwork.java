@@ -98,6 +98,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
     }
     setNetwork(world, cap);
+    addEnergy(0); // ensure energy level is within bounds
   }
 
 
@@ -385,6 +386,8 @@ public class CapBankNetwork implements ICapBankNetwork {
       } else if(energyStored < 0) {
         energyStored = 0;
       }
+    } else {
+      energyStored = maxEnergyStored / 2;
     }
   }
 

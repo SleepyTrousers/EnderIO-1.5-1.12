@@ -1,4 +1,5 @@
-<recipes>
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
   <alias name="ZOMBIE_ELECTRODE" item="enderio:itemFrankenSkull:0" />
   <alias name="ZOMBIE_CONTROLLER" item="enderio:itemFrankenSkull:1" />
@@ -9,12 +10,13 @@
   <alias name="CAPACITOR1" item="enderio:itemBasicCapacitor:0" />
   <alias name="CAPACITOR2" item="enderio:itemBasicCapacitor:1" />
   <alias name="CAPACITOR3" item="enderio:itemBasicCapacitor:2" />
+  
   <alias name="GEAR" item="gearStone" />
   <alias name="CHASSIS" item="itemMachineChassi" />
+  
   <alias name="FUSED_QUARTZ" item="enderio:blockFusedQuartz:0" />
   <alias name="ENLIGHTED_QUARTZ" item="enderio:blockFusedQuartz:2" />
   <alias name="DARK_QUARTZ" item="enderio:blockFusedQuartz:4" />
-  <alias name="SENTIENT_ENDER" item="enderio:itemFrankenSkull:4" />
 
   <alias name="ELECTRICAL_STEEL" item="ingotElectricalSteel" />
   <alias name="ENERGETIC_ALLOY" item="ingotEnergeticAlloy" />
@@ -245,9 +247,9 @@
     </crafting>
   </recipe>
 
-  <alias name="CAP_BANK_1" item="enderio:blockCapBank:2" />
-  <alias name="CAP_BANK_2" item="enderio:blockCapBank:3" />
-  <alias name="CAP_BANK_3" item="enderio:blockCapBank:4" />
+  <alias name="CAP_BANK_1" item="enderio:blockCapBank:1" />
+  <alias name="CAP_BANK_2" item="enderio:blockCapBank:2" />
+  <alias name="CAP_BANK_3" item="enderio:blockCapBank:3" />
 
   <recipe name="Capacitor Bank, simple" required="true">
     <crafting>
@@ -408,6 +410,17 @@
 
   <alias name="CONDUIT_PROBE" item="enderio:itemConduitProbe:0" />
 
+  <recipe name="Conduit Probe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemPowerConduit:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
+        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:2" /><item name="SILICON" />
+      </grid>
+      <output name="CONDUIT_PROBE" />
+    </crafting>
+  </recipe>
+
   <recipe name="Energy Monitor" required="true">
     <crafting>
       <grid size="3x3">
@@ -430,11 +443,10 @@
     </crafting>
   </recipe>
 
-<!-- 
   <recipe name="Enchanter" required="true">
     <crafting>
-      <grid size="3x3">
       <level maxlevel="2" />
+      <grid size="3x3">
         <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
         <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
         <item name="" /><item name="DARK_STEEL" /><item name="" />
@@ -446,13 +458,11 @@
       <grid size="3x3">
         <item name="gemDiamond" /><item name="minecraft:book" /><item name="gemDiamond" />
         <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
-        <item name="" /><item name="DARK_STEEL" /><item name="" />
+        <item /><item name="DARK_STEEL" /><item />
       </grid>
       <output name="enderio:blockEnchanter" />
     </crafting>
   </recipe>
-
- -->
 
   <recipe name="Vacuum Chest" required="true">
     <crafting>
@@ -465,7 +475,7 @@
     </crafting>
   </recipe>
 
-  <alias name="HEAD_ENDERMAN" item="enderio:blockEndermanSkull" />
+  <alias name="HEAD_ENDERMAN" item="enderio:blockEndermanSkull:0" />
   <alias name="HEAD_SKELETON" item="minecraft:skull:0" />
   <alias name="HEAD_CREEPER" item="minecraft:skull:2" />
   <alias name="HEAD_ZOMBIE" item="minecraft:skull:4" />
@@ -491,12 +501,10 @@
     </crafting>
   </recipe>
 
-<!-- 
-
   <recipe name="Attractor Obelisk" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="" /><item name="ATTRACTOR_CRYSTAL" /><item name="" />
+        <item /><item name="ATTRACTOR_CRYSTAL" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
         <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
       </grid>
@@ -509,7 +517,7 @@
   <recipe name="Aversion Obelisk" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="" /><item name="HEAD_ENDERMAN_TORMENTED" /><item name="" />
+        <item /><item name="HEAD_ENDERMAN_TORMENTED" /><item />
         <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
         <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
       </grid>
@@ -521,7 +529,7 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="1x2">
-        <item name="minecraft:prismarine" />
+        <item name="minecraft:prismarine:0" />
         <item name="enderio:blockSpawnGuard" />
       </grid>
       <output name="enderio:blockSpawnRelocator" />
@@ -529,15 +537,270 @@
     <crafting>
       <level minlevel="2" />
       <grid size="3x3">
-        <item name="" /><item name="minecraft:prismarine" /><item name="" />
-        <item name="minecraft:prismarine" /><item name="enderio:blockSpawnGuard" /><item name="minecraft:prismarine" />
-        <item name="" /><item name="minecraft:prismarine" /><item name="" />
+        <item /><item name="minecraft:prismarine:0" /><item />
+        <item name="minecraft:prismarine:0" /><item name="enderio:blockSpawnGuard" /><item name="minecraft:prismarine:0" />
+        <item /><item name="minecraft:prismarine:0" /><item />
       </grid>
       <output name="enderio:blockSpawnRelocator" />
     </crafting>
   </recipe>
 
- -->
+  <recipe name="Experience Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="enderio:itemXpTransfer" /><item />
+        <item /><item name="SOULARIUM" /><item />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:blockExperienceObelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Weather Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="WEATHER_CRYSTAL" /><item />
+        <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="CAP_BANK_1" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:blockWeatherObelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="RF Gauge" required="true">
+    <crafting>
+      <level maxlevel="0" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="enderio:itemConduitProbe:0" /><item name="ingotIron" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockGauge" amount="2" />
+    </crafting>
+    <crafting>
+      <level minlevel="1" maxlevel="1" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="enderio:itemConduitProbe:0" /><item name="ingotIron" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockGauge" />
+    </crafting>
+    <crafting>
+      <level minlevel="2" maxlevel="2" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemConduitProbe:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockGauge" />
+    </crafting>
+    <crafting>
+      <level minlevel="3" />
+      <grid size="3x3">
+        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemConduitProbe:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockGauge" />
+    </crafting>
+  </recipe>
+
+  <alias name="LIGHT_ELECTRIC" item="enderio:blockElectricLight:0" />
+  <alias name="LIGHT_ELECTRIC_INV" item="enderio:blockElectricLight:1" />
+  <alias name="LIGHT_BASIC" item="enderio:blockElectricLight:2" />
+  <alias name="LIGHT_BASIC_INV" item="enderio:blockElectricLight:3" />
+  <alias name="LIGHT_WIRELESS" item="enderio:blockElectricLight:4" />
+  <alias name="LIGHT_WIRELESS_INV" item="enderio:blockElectricLight:5" />
+
+  <recipe name="Light, basic" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="oredict:glass" /><item name="oredict:glass" /><item name="oredict:glass" />
+        <item name="ingotIron" /><item name="oredict:glowstone" /><item name="ingotIron" />
+      </grid>
+      <output name="LIGHT_BASIC" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, basic (un-invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_BASIC_INV" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_BASIC" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, basic, inverted (invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_BASIC" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_BASIC_INV" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, electric" required="true">
+    <crafting>
+      <level maxlevel="1" />
+      <grid size="3x3">
+        <item name="oredict:glass" /><item name="oredict:glass" /><item name="oredict:glass" />
+        <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />
+        <item name="SILICON" /><item name="CAPACITOR1" /><item name="SILICON" />
+      </grid>
+      <output name="LIGHT_ELECTRIC" />
+    </crafting>
+    <crafting>
+      <level minlevel="2" />
+      <grid size="3x3">
+        <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
+        <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />
+        <item name="SILICON" /><item name="CAPACITOR1" /><item name="SILICON" />
+      </grid>
+      <output name="LIGHT_ELECTRIC" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, electric (un-invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_ELECTRIC_INV" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_ELECTRIC" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, electric inverted (invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_ELECTRIC" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_ELECTRIC_INV" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, wireless (upgrade)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_ELECTRIC" />
+        <item name="ENDER_RESONATOR" />
+      </shapeless>
+      <output name="LIGHT_WIRELESS" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, wireless (un-invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_WIRELESS_INV" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_WIRELESS" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, wireless, inverted (upgrade)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_ELECTRIC_INV" />
+        <item name="ENDER_RESONATOR" />
+      </shapeless>
+      <output name="LIGHT_WIRELESS_INV" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Light, wireless, inverted (invert)" required="true">
+    <crafting>
+      <shapeless>
+        <item name="LIGHT_WIRELESS" />
+        <item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="LIGHT_WIRELESS_INV" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Slice'N'Splice" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
+        <item name="minecraft:iron_axe" /><item name="CHASSIS" /><item name="minecraft:shears" />
+        <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:blockSliceAndSplice" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Slice'N'Splice, mirrored" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
+        <item name="minecraft:shears" /><item name="CHASSIS" /><item name="minecraft:iron_axe" />
+        <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:blockSliceAndSplice" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Item Buffer" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="chestWood" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockBuffer:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Power Buffer" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockBuffer:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Omni Buffer" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockBuffer:0" />
+        <item name="enderio:blockBuffer:1" />
+      </shapeless>
+      <output name="enderio:blockBuffer:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Awareness Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
+        <item name="SILICON" /><item name="minecraft:ender_eye" /><item name="SILICON" />
+        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemFunctionUpgrade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="enderio:itemFunctionUpgrade:0" /><item name="DARK_STEEL" />
+        <item name="PULSATING_CYSTAL" /><item name="SENTIENT_ENDER" /><item name="PULSATING_CYSTAL" />
+        <item name="DARK_STEEL" /><item name="enderio:blockTank:0" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:blockInventoryPanel" />
+    </crafting>
+  </recipe>
+
+<!--  
 
 
 
@@ -545,13 +808,9 @@
 
 
 
+-->
 
 
 
 
-
-
-
-
-
-</recipes>
+</enderio:recipes>

@@ -5,9 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.util.NullHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -37,9 +36,8 @@ public class NetworkUtil {
   }
 
   public static void getNeigbours(TileCapBank cap, Collection<TileCapBank> res) {
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      BlockCoord bc = cap.getLocation().getLocation(dir);
-      TileEntity te = cap.getWorld().getTileEntity(bc.getBlockPos());
+    for (EnumFacing dir : EnumFacing.values()) {
+      TileEntity te = cap.getWorld().getTileEntity(cap.getPos().offset(NullHelper.notnullJ(dir, "Enum.values()")));
       if(te instanceof TileCapBank) {
         TileCapBank neighbour = (TileCapBank) te;
         if(neighbour.canConnectTo(cap)) {

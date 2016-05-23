@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.capbank.network;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.IConduitBundle;
@@ -11,14 +13,14 @@ import net.minecraft.util.EnumFacing;
 
 public class EnergyReceptor {
 
-  private final IPowerInterface receptor;
-  private final EnumFacing fromDir;
-  private final IoMode mode;
+  private final @Nonnull IPowerInterface receptor;
+  private final @Nonnull EnumFacing fromDir;
+  private final @Nonnull IoMode mode;
   private final BlockCoord location;
 
   private final IPowerConduit conduit;
 
-  public EnergyReceptor(TileCapBank cb, IPowerInterface receptor, EnumFacing dir) {
+  public EnergyReceptor(@Nonnull TileCapBank cb, @Nonnull IPowerInterface receptor, @Nonnull EnumFacing dir) {
     this.receptor = receptor;
     fromDir = dir;
     mode = cb.getIoMode(dir);
@@ -34,15 +36,15 @@ public class EnergyReceptor {
     return conduit;
   }
 
-  public IPowerInterface getReceptor() {
+  public @Nonnull IPowerInterface getReceptor() {
     return receptor;
   }
 
-  public EnumFacing getDir() {
+  public @Nonnull EnumFacing getDir() {
     return fromDir;
   }
 
-  public IoMode getMode() {
+  public @Nonnull IoMode getMode() {
     return mode;
   }
 
@@ -53,7 +55,7 @@ public class EnergyReceptor {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((fromDir == null) ? 0 : fromDir.hashCode());
+    result = prime * result + fromDir.hashCode();
     result = prime * result + ((location == null) ? 0 : location.hashCode());
     return result;
   }

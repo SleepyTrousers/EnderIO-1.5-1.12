@@ -149,7 +149,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     TileCapBank tileEntity = getTileEntity(world, pos);
     if (tileEntity != null) {
       for (EnumFacing face : EnumFacing.values()) {
-        blockStateWrapper.addCacheKey(tileEntity.getIoMode(face));
+        blockStateWrapper.addCacheKey(tileEntity.getIoMode(NullHelper.notnullJ(face, "Enum.values()")));
         blockStateWrapper.addCacheKey(tileEntity.getDisplayType(face));
       }
     }
@@ -166,15 +166,13 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull Item p_149666_1_, @Nonnull CreativeTabs p_149666_2_, @Nonnull List<ItemStack> list) {
-    int meta = 0;
     for (CapBankType type : CapBankType.types()) {
       if (type.isCreative()) {
-        list.add(BlockItemCapBank.createItemStackWithPower(meta, type.getMaxEnergyStored() / 2));
+        list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), type.getMaxEnergyStored() / 2));
       } else {
-        list.add(BlockItemCapBank.createItemStackWithPower(meta, 0));
-        list.add(BlockItemCapBank.createItemStackWithPower(meta, type.getMaxEnergyStored()));
+        list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), 0));
+        list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), type.getMaxEnergyStored()));
       }
-      meta++;
     }
   }
 

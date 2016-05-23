@@ -15,7 +15,7 @@ public class Grid implements RecipeConfigElement {
   private String size;
 
   @XStreamImplicit(itemFieldName = "item")
-  private List<Item> items;
+  private List<OptionalItem> items;
 
   @XStreamOmitField
   private int width;
@@ -56,8 +56,13 @@ public class Grid implements RecipeConfigElement {
         throw new InvalidRecipeConfigException("Too many items (required=" + (width * height) + ", provided=" + items.size() + ")");
       }
       valid = true;
-      for (Item item : items) {
+      boolean hasAtLeastOneItem = false;
+      for (OptionalItem item : items) {
         valid = valid && item.isValid();
+        hasAtLeastOneItem = hasAtLeastOneItem || item.getRecipeObject() != null;
+      }
+      if (!hasAtLeastOneItem) {
+        throw new InvalidRecipeConfigException("Rejecting crafting recipe without any items, only empty spaces");
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <grid>");

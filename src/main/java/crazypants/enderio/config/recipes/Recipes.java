@@ -22,7 +22,7 @@ import crazypants.enderio.config.recipes.xml.Recipe;
 import crazypants.enderio.config.recipes.xml.RecipeGameRecipe;
 import net.minecraft.launchwrapper.Launch;
 
-@XStreamAlias("recipes")
+@XStreamAlias("enderio:recipes")
 public class Recipes implements RecipeGameRecipe {
 
   @XStreamImplicit(itemFieldName = "alias")

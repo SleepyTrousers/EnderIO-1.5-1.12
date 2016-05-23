@@ -1,21 +1,24 @@
 package crazypants.enderio.machine;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import net.minecraft.util.EnumFacing;
 
 public interface IIoConfigurable {
 
-  public IoMode toggleIoModeForFace(EnumFacing faceHit);
+  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit);
 
-  public boolean supportsMode(EnumFacing faceHit, IoMode mode);
+  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode);
 
-  public void setIoMode(EnumFacing faceHit, IoMode mode);
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode);
 
-  public IoMode getIoMode(EnumFacing face) ;
+  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face);
 
   public void clearAllIoModes();
 
+  @Deprecated
   BlockCoord getLocation();
 
 }

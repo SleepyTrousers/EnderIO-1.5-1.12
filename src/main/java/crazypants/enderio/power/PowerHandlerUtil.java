@@ -1,14 +1,16 @@
 package crazypants.enderio.power;
 
+import javax.annotation.Nonnull;
+
+import cofh.api.energy.IEnergyConnection;
+import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import cofh.api.energy.IEnergyConnection;
-import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class PowerHandlerUtil {
 
-  public static final String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
+  public static final @Nonnull String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
 
   public static IPowerInterface create(Object o) {
     if (o instanceof TileCapBank) {

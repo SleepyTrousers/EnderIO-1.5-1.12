@@ -382,7 +382,10 @@ public class DarkSteelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = NullHelper.untrusted(Minecraft.getMinecraft().thePlayer, "Minecraft.getMinecraft().thePlayer");
+      EntityPlayerSP player = NullHelper.untrust(Minecraft.getMinecraft().thePlayer);
+      if (player == null) {
+        return;
+      }
       updateNightvision(player);
       if (player.capabilities.isFlying) {
         return;

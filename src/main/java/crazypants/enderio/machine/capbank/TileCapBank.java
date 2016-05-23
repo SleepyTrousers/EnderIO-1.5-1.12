@@ -1,11 +1,5 @@
 package crazypants.enderio.machine.capbank;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.handlers.enderio.HandleDisplayMode;
-import info.loenwind.autosave.handlers.enderio.HandleIOMode;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -13,30 +7,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import cofh.api.energy.IEnergyContainerItem;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -55,6 +33,28 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.NullHelper;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleDisplayMode;
+import info.loenwind.autosave.handlers.enderio.HandleIOMode;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
@@ -248,7 +248,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   // ---------- IO
 
   @Override
-  public IoMode toggleIoModeForFace(EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
     IPowerInterface rec = getReceptorForFace(faceHit);
     IoMode curMode = getIoMode(faceHit);
     if (curMode == IoMode.PULL) {
@@ -270,7 +270,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
+  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     IPowerInterface rec = getReceptorForFace(faceHit);
     if (mode == IoMode.NONE) {
       return rec == null || rec.getDelegate() instanceof IConduitBundle;
@@ -279,11 +279,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void setIoMode(EnumFacing faceHit, IoMode mode) {
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     setIoMode(faceHit, mode, true);
   }
 
-  public void setIoMode(EnumFacing faceHit, IoMode mode, boolean updateReceptors) {
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode, boolean updateReceptors) {
     if (mode == IoMode.NONE) {
       if (faceModes == null) {
         return;
@@ -302,14 +302,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       validateModeForReceptor(faceHit);
       receptorsDirty = true;
     }
-    if (worldObj != null) {
+    if (hasWorldObj()) {
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
     }
   }
 
-  public void setDefaultIoMode(EnumFacing faceHit) {
+  public void setDefaultIoMode(@Nonnull EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
     if (er == null || er.getConduit() != null) {
       setIoMode(faceHit, IoMode.NONE);
@@ -334,13 +334,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   private void doClearAllIoModes() {
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      setDefaultIoMode(dir);
+    for (EnumFacing dir : EnumFacing.values()) {
+      setDefaultIoMode(NullHelper.notnullJ(dir, "Enum.values()"));
     }
   }
 
   @Override
-  public IoMode getIoMode(EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
     if (faceModes == null) {
       return IoMode.NONE;
     }
@@ -404,16 +404,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     List<EnumFacing> reset = new ArrayList<EnumFacing>();
     for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
-      BlockCoord bc = getLocation().getLocation(entry.getKey());
-      IBlockState bs = worldObj.getBlockState(bc.getBlockPos());
-      Block block = bs.getBlock();
-      if (block != null && (block.isOpaqueCube(bs) || block == EnderIO.blockCapBank)) {
+      IBlockState bs = worldObj.getBlockState(getPos().offset(NullHelper.notnullJ(entry.getKey(), "EnumMap.getKey()")));
+      if (bs.isOpaqueCube() || bs.getBlock() == EnderIO.blockCapBank) {
         reset.add(entry.getKey());
       }
     }
     for (EnumFacing dir : reset) {
       setDisplayType(dir, InfoDisplayType.NONE);
-      setDefaultIoMode(dir);
+      setDefaultIoMode(NullHelper.notnullJ(dir, "Enum.values()"));
     }
   }
 
@@ -435,7 +433,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getRenderBoundingBox() {
+  public @Nonnull AxisAlignedBB getRenderBoundingBox() {
     if (!getType().isMultiblock() || !(network instanceof CapBankClientNetwork)) {
       return super.getRenderBoundingBox();
     }
@@ -521,7 +519,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isOutputEnabled(EnumFacing direction) {
+  public boolean isOutputEnabled(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();
   }
@@ -534,7 +532,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isInputEnabled(EnumFacing direction) {
+  public boolean isInputEnabled(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
   }
@@ -547,7 +545,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean isNetworkControlledIo(EnumFacing direction) {
+  public boolean isNetworkControlledIo(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.NONE || mode == IoMode.PULL;
   }
@@ -572,12 +570,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     network.removeReceptors(receptors);
 
     receptors.clear();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      IPowerInterface pi = getReceptorForFace(dir);
+    for (EnumFacing dir : EnumFacing.values()) {
+      IPowerInterface pi = getReceptorForFace(NullHelper.notnullJ(dir, "Enum.values()"));
       if (pi != null) {
-        EnergyReceptor er = new EnergyReceptor(this, pi, dir);
+        EnergyReceptor er = new EnergyReceptor(this, pi, NullHelper.notnullJ(dir, "Enum.values()"));
         validateModeForReceptor(er);
-        IoMode ioMode = getIoMode(dir);
+        IoMode ioMode = getIoMode(NullHelper.notnullJ(dir, "Enum.values()"));
         if (ioMode != IoMode.DISABLED && ioMode != IoMode.PULL) {
           receptors.add(er);
         }
@@ -588,9 +586,8 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     receptorsDirty = false;
   }
 
-  private IPowerInterface getReceptorForFace(EnumFacing faceHit) {
-    BlockCoord checkLoc = new BlockCoord(this).getLocation(faceHit);
-    TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
+  private IPowerInterface getReceptorForFace(@Nonnull EnumFacing faceHit) {
+    TileEntity te = worldObj.getTileEntity(getPos().offset(faceHit));
     if (!(te instanceof TileCapBank)) {
       return PowerHandlerUtil.create(te);
     } else {
@@ -602,7 +599,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return null;
   }
 
-  private EnergyReceptor getEnergyReceptorForFace(EnumFacing dir) {
+  private EnergyReceptor getEnergyReceptorForFace(@Nonnull EnumFacing dir) {
     IPowerInterface pi = getReceptorForFace(dir);
     if (pi == null || pi.getDelegate() instanceof TileCapBank) {
       return null;
@@ -610,7 +607,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return new EnergyReceptor(this, pi, dir);
   }
 
-  private void validateModeForReceptor(EnumFacing dir) {
+  private void validateModeForReceptor(@Nonnull EnumFacing dir) {
     validateModeForReceptor(getEnergyReceptorForFace(dir));
   }
 
@@ -700,7 +697,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    if (network == null) {
+    if (network == null || from == null) {
       return 0;
     }
     IoMode mode = getIoMode(from);
@@ -717,7 +714,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
-    return getIoMode(from) != IoMode.DISABLED;
+    return from != null && getIoMode(from) != IoMode.DISABLED;
   }
 
   public int getComparatorOutput() {
@@ -733,7 +730,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   // ------------------- Inventory
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
+  public boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -754,7 +751,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack itemstack) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack itemstack) {
     if (network == null) {
       return;
     }
@@ -783,7 +780,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
   }
 
@@ -798,16 +795,16 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void openInventory(EntityPlayer e) {
+  public void openInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(EntityPlayer e) {
+  public void closeInventory(@Nonnull EntityPlayer e) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemstack == null) {
+  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
+    if (NullHelper.untrust(itemstack) == null) {
       return false;
     }
     return itemstack.getItem() instanceof IEnergyContainerItem;
@@ -860,7 +857,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 

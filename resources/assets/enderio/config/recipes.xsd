@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://enderio.com/recipes"
+  elementFormDefault="unqualified" attributeFormDefault="unqualified"
+  xmlns="http://www.w3.org/2001/XMLSchema" xmlns:enderio="http://enderio.com/recipes">
+
+
+
+
+  <element name="recipes">
+
+
+    <complexType>
+      <sequence maxOccurs="unbounded" minOccurs="0">
+        <choice maxOccurs="1" minOccurs="1">
+          <element name="alias">
+            <complexType>
+              <sequence>
+                <element minOccurs="0" maxOccurs="unbounded"
+                  name="config">
+                  <complexType>
+                    <attribute use="required" name="section"
+                      type="string"></attribute>
+                    <attribute use="required" name="name"
+                      type="string"></attribute>
+                    <attribute use="optional" name="value"
+                      type="boolean"></attribute>
+                  </complexType>
+                </element>
+                <element minOccurs="0" maxOccurs="unbounded"
+                  name="dependency">
+                  <complexType>
+                    <attribute use="required" name="item"
+                      type="string"></attribute>
+                    <attribute use="optional" name="reverse"
+                      type="boolean"></attribute>
+                  </complexType>
+                </element>
+                <element minOccurs="0" maxOccurs="1" name="level">
+                  <complexType>
+                    <attribute use="optional" name="minlevel"
+                      type="int"></attribute>
+                    <attribute use="optional" name="maxlevel"
+                      type="int"></attribute>
+                  </complexType>
+                </element>
+              </sequence>
+              <attribute name="name" type="string" use="required"></attribute>
+              <attribute name="item" type="string" use="required"></attribute>
+            </complexType>
+          </element>
+          <element name="recipe">
+            <complexType>
+              <sequence>
+                <element minOccurs="0" maxOccurs="unbounded"
+                  name="config">
+                  <complexType>
+                    <attribute use="required" name="section"
+                      type="string"></attribute>
+                    <attribute use="required" name="name"
+                      type="string"></attribute>
+                    <attribute use="optional" name="value"
+                      type="boolean"></attribute>
+                  </complexType>
+                </element>
+                <element minOccurs="0" maxOccurs="unbounded"
+                  name="dependency">
+                  <complexType>
+                    <attribute use="required" name="item"
+                      type="string"></attribute>
+                    <attribute use="optional" name="reverse"
+                      type="boolean"></attribute>
+                  </complexType>
+                </element>
+                <element minOccurs="0" maxOccurs="1" name="level">
+                  <complexType>
+                    <attribute use="optional" name="minlevel"
+                      type="int"></attribute>
+                    <attribute use="optional" name="maxlevel"
+                      type="int"></attribute>
+                  </complexType>
+                </element>
+                <choice minOccurs="1" maxOccurs="1">
+                  <element minOccurs="1" maxOccurs="unbounded"
+                    name="crafting">
+                    <complexType>
+                      <sequence>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="config">
+                          <complexType>
+                            <attribute use="required" name="section"
+                              type="string"></attribute>
+                            <attribute use="required" name="name"
+                              type="string"></attribute>
+                            <attribute use="optional" name="value"
+                              type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="dependency">
+                          <complexType>
+                            <attribute use="required" name="item"
+                              type="string"></attribute>
+                            <attribute use="optional" name="reverse"
+                              type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="level">
+                          <complexType>
+                            <attribute use="optional" name="minlevel"
+                              type="int"></attribute>
+                            <attribute use="optional" name="maxlevel"
+                              type="int"></attribute>
+                          </complexType>
+                        </element>
+                        <choice minOccurs="1" maxOccurs="1">
+                          <element minOccurs="1" maxOccurs="1"
+                            name="grid">
+                            <complexType>
+                              <sequence>
+                                <element minOccurs="1"
+                                  maxOccurs="9" name="item">
+                                  <complexType>
+                                    <attribute use="optional"
+                                      name="name" type="string"></attribute>
+                                  </complexType>
+                                </element>
+                              </sequence>
+                              <attribute use="optional" name="size">
+                                <simpleType>
+                                  <restriction base="string">
+                                    <length value="3"></length>
+                                  </restriction>
+                                </simpleType>
+                              </attribute>
+                            </complexType>
+                          </element>
+                          <element minOccurs="1" maxOccurs="1"
+                            name="shapeless">
+                            <complexType>
+                              <sequence>
+                                <element minOccurs="1"
+                                  maxOccurs="9" name="item">
+                                  <complexType>
+                                    <attribute use="optional"
+                                      name="name" type="string"></attribute>
+                                  </complexType>
+                                </element>
+                              </sequence>
+                            </complexType>
+                          </element>
+                        </choice>
+                        <element minOccurs="1" maxOccurs="1"
+                          name="output">
+                          <complexType>
+                            <attribute use="required" name="name"
+                              type="string"></attribute>
+                            <attribute use="optional" name="amount">
+                              <simpleType>
+                                <restriction base="int">
+                                  <minInclusive value="1"></minInclusive>
+                                  <maxInclusive value="64"></maxInclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                      </sequence>
+                    </complexType>
+                  </element>
+                  <element minOccurs="1" maxOccurs="unbounded"
+                    name="smelting">
+                    <complexType>
+                      <sequence>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="config">
+                          <complexType>
+                            <attribute use="required" name="section"
+                              type="string"></attribute>
+                            <attribute use="required" name="name"
+                              type="string"></attribute>
+                            <attribute use="optional" name="value"
+                              type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="dependency">
+                          <complexType>
+                            <attribute use="required" name="item"
+                              type="string"></attribute>
+                            <attribute use="optional" name="reverse"
+                              type="boolean"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded"
+                          name="level">
+                          <complexType>
+                            <attribute use="optional" name="minlevel"
+                              type="int"></attribute>
+                            <attribute use="optional" name="maxlevel"
+                              type="int"></attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="1" maxOccurs="1"
+                          name="input">
+                          <complexType>
+                            <attribute use="required" name="name"
+                              type="string"></attribute>
+                            <attribute use="optional" name="amount">
+                              <simpleType>
+                                <restriction base="int">
+                                  <minInclusive value="1"></minInclusive>
+                                  <maxInclusive value="64"></maxInclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="1" maxOccurs="1"
+                          name="output">
+                          <complexType>
+                            <attribute use="required" name="name"
+                              type="string"></attribute>
+                            <attribute use="optional" name="amount">
+                              <simpleType>
+                                <restriction base="int">
+                                  <minInclusive value="1"></minInclusive>
+                                  <maxInclusive value="64"></maxInclusive>
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                      </sequence>
+                      <attribute use="required" name="exp">
+                        <simpleType>
+                          <restriction base="float">
+                            <minInclusive value="0"></minInclusive>
+                            <maxInclusive value="1"></maxInclusive>
+                          </restriction>
+                        </simpleType>
+                      </attribute>
+                    </complexType>
+                  </element>
+                </choice>
+              </sequence>
+              <attribute use="optional" name="required" type="boolean"></attribute>
+              <attribute use="required" name="name" type="string"></attribute>
+            </complexType>
+          </element>
+        </choice>
+      </sequence>
+    </complexType>
+  </element>
+
+
+
+
+
+
+
+</schema>

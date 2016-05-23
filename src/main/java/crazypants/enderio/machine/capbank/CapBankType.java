@@ -5,18 +5,13 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.config.Config;
 import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.MathHelper;
 
 public enum CapBankType implements IStringSerializable {
-
-  NONE("NONE", "tile.blockCapBank.none", 0, 0, false, true),
 
   CREATIVE("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false, true),
 
@@ -24,39 +19,34 @@ public enum CapBankType implements IStringSerializable {
 
   ACTIVATED("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF, Config.capacitorBankTierTwoMaxStorageRF, true, false),
 
-  VIBRANT("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false);
+  VIBRANT("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF, Config.capacitorBankTierThreeMaxStorageRF, true, false),
+
+  NONE("NONE", "tile.blockCapBank.none", 0, 0, false, true),
+
+  ;
 
   public static final @Nonnull PropertyEnum<CapBankType> KIND = PropertyEnum.<CapBankType> create("kind", CapBankType.class);
 
-  private static final @Nonnull List<CapBankType> TYPES = new ArrayList<CapBankType>();
-
-  static {
-    TYPES.add(CREATIVE);
-    TYPES.add(SIMPLE);
-    TYPES.add(ACTIVATED);
-    TYPES.add(VIBRANT);
-  }
-
   public static @Nonnull List<CapBankType> types() {
-    return TYPES;
+    List<CapBankType> result = new ArrayList<CapBankType>();
+    for (CapBankType capBankType : values()) {
+      if (capBankType != NONE) {
+        result.add(capBankType);
+      }
+    }
+    return result;
   }
 
   public static int getMetaFromType(@Nonnull CapBankType type) {
-    for (int i = 0; i < TYPES.size(); i++) {
-      if (TYPES.get(i) == type) {
-        return i;
-      }
-    }
-    return 1;
+    return type.ordinal();
   }
 
-  public static @Nonnull CapBankType getTypeFromMeta(int metaIn) {
-    int meta = MathHelper.clamp_int(metaIn, 0, TYPES.size() - 1);
-    return NullHelper.notnull(types().get(meta), "CapBank type list corrupted");
+  public static @Nonnull CapBankType getTypeFromMeta(int meta) {
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
   public static @Nonnull CapBankType getTypeFromUID(String uid) {
-    for (CapBankType type : TYPES) {
+    for (CapBankType type : values()) {
       if (type.uid.equals(uid)) {
         return type;
       }
@@ -102,17 +92,6 @@ public enum CapBankType implements IStringSerializable {
 
   public @Nonnull String getUid() {
     return uid;
-  }
-
-  public void writeTypeToNBT(@Nonnull NBTTagCompound nbtRoot) {
-    nbtRoot.setString("type", getUid());
-  }
-
-  public static @Nonnull CapBankType readTypeFromNBT(@Nullable NBTTagCompound nbtRoot) {
-    if (nbtRoot == null || !nbtRoot.hasKey("type")) {
-      return ACTIVATED;
-    }
-    return getTypeFromUID(nbtRoot.getString("type"));
   }
 
   @Override

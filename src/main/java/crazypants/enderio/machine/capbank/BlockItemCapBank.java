@@ -12,17 +12,13 @@ import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
-    PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
-    CapBankType type = CapBankType.getTypeFromMeta(meta);
-    final NBTTagCompound tagCompound = res.getTagCompound();
-    if (tagCompound != null) {
-      type.writeTypeToNBT(tagCompound);
+    if (storedEnergy > 0) {
+      PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
     }
     return res;
   }
@@ -41,7 +37,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
-    return CapBankType.getTypeFromMeta(par1ItemStack.getItemDamage()).getUnlocalizedName();
+    return CapBankType.getTypeFromMeta(par1ItemStack.getMetadata()).getUnlocalizedName();
   }
 
   @Override
@@ -49,7 +45,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     if (container.stackSize > 1) {
       return 0;
     }
-    CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
+    CapBankType type = CapBankType.getTypeFromMeta(container.getMetadata());
     int energy = getEnergyStored(container);
     int maxInput = type.getMaxIO();
     int energyReceived = Math.min(type.getMaxEnergyStored() - energy, Math.min(maxReceive, maxInput));
@@ -67,7 +63,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
     if (container.stackSize > 1) {
       return 0;
     }
-    CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
+    CapBankType type = CapBankType.getTypeFromMeta(container.getMetadata());
     int energy = getEnergyStored(container);
     int maxOutput = type.getMaxIO();
     int energyExtracted = Math.min(energy, Math.min(maxExtract, maxOutput));
@@ -81,13 +77,13 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    return CapBankType.getTypeFromMeta(container.getItemDamage()).isCreative() ? CapBankType.getTypeFromMeta(container.getItemDamage()).getMaxEnergyStored() / 2
+    return CapBankType.getTypeFromMeta(container.getMetadata()).isCreative() ? CapBankType.getTypeFromMeta(container.getItemDamage()).getMaxEnergyStored() / 2
         : PowerHandlerUtil.getStoredEnergyForItem(container);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return CapBankType.getTypeFromMeta(container.getItemDamage()).getMaxEnergyStored();
+    return CapBankType.getTypeFromMeta(container.getMetadata()).getMaxEnergyStored();
   }
 
   @Override
@@ -99,7 +95,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
 
   @Override
   public boolean hasEffect(@Nonnull ItemStack stack) {
-    return CapBankType.getTypeFromMeta(stack.getItemDamage()).isCreative() || super.hasEffect(stack);
+    return CapBankType.getTypeFromMeta(stack.getMetadata()).isCreative() || super.hasEffect(stack);
   }
 
 }
