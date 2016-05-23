@@ -186,7 +186,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if (world.isRemote) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hitX, hitY, hitZ);
     }
-    return EnumActionResult.FAIL;
+    return EnumActionResult.SUCCESS;
   }
 
   @Override

@@ -109,7 +109,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     if (ret) {
       player.swingArm(hand);
     }
-    return (ret && !world.isRemote) ? EnumActionResult.FAIL : EnumActionResult.PASS;
+    return ret ? EnumActionResult.SUCCESS: EnumActionResult.PASS;
   }
 
   
@@ -117,10 +117,10 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if (!Config.useSneakRightClickYetaWrench) {
-      return new ActionResult<ItemStack>(EnumActionResult.FAIL, equipped);
+      return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
     if (!player.isSneaking()) {
-      new ActionResult<ItemStack>(EnumActionResult.FAIL, equipped);
+      new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
     if (curMode == null) {
@@ -128,7 +128,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
     ConduitDisplayMode newMode = curMode.next();
     ConduitDisplayMode.setDisplayMode(equipped, newMode);
-    return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
+    return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
   }
 
   @Override

@@ -87,7 +87,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   
          TileEntity te = world.getTileEntity(pos);
     if(!(te instanceof IConduitBundle)) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
         
     if(itemStack.getItemDamage() == 0) {      
@@ -95,10 +95,10 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
         if(world.isRemote) {
           PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos.getX(), pos.getY(), pos.getZ(), side));
         }
-        return EnumActionResult.PASS;
+        return EnumActionResult.SUCCESS;
       }
     } 
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
 
   protected void init() {

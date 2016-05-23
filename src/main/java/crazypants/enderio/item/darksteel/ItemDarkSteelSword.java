@@ -60,10 +60,10 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private static final @Nonnull String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
-  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
+  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25);                                                                                                                
   
-  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Powered Damage", Config.darkSteelSwordPoweredDamageBonus, 0);
-  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Powered Speed", Config.darkSteelSwordPoweredDamageBonus, 0);
+  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
+  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
 
   public static boolean isEquipped(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);
@@ -288,7 +288,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {    
     Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);       
     if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {      
-      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {        
+      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {            
         res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), swordDamageModifierPowered);        
         res.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), swordAttackSpeedPowered);                
       } 

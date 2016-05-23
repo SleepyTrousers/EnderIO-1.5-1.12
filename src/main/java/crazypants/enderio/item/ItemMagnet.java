@@ -141,6 +141,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if (player.isSneaking()) {
       setActive(equipped, !isActive(equipped));
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
     return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
   }

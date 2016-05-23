@@ -34,6 +34,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -118,10 +119,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {   
-    if (!isTravelUpgradeActive(player, item, hand) && world.isRemote) {
-      return doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
-    }
-    return EnumActionResult.FAIL;
+    if(isTravelUpgradeActive(player, item, hand)) {
+      return EnumActionResult.SUCCESS;
+    }    
+    return doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);    
   }
 
   @SideOnly(Side.CLIENT)
@@ -138,12 +139,18 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 //      boolean result = mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],
 //          mc.objectMouseOver.getBlockPos(), mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
       
+      if(!world.isRemote) {
+        System.out.println("ItemDarkSteelPickaxe.doRightClickItemPlace: ");
+      }
+      
+      
       EnumHand hand = EnumHand.MAIN_HAND;
-      EnumActionResult result = mc.playerController.processRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],hand);      
+      EnumActionResult result = mc.playerController.processRightClickBlock(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);
+//      EnumActionResult result = mc.playerController.processRightClick(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot],hand);      
       player.inventory.currentItem = current;
       return result;
     }
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
 
   @Override

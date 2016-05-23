@@ -88,16 +88,16 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       float hitY, float hitZ) {
 
     if (world.isRemote || player == null) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.PASS;
     }
 
     CapturedMob capturedMob = CapturedMob.create(itemstack);
     if (capturedMob == null) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.SUCCESS;
     }
 
     if (!capturedMob.spawn(world, pos, side, true)) {
-      return EnumActionResult.FAIL;
+      return EnumActionResult.SUCCESS;
     }
 
     if (!player.capabilities.isCreativeMode) {
@@ -114,7 +114,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       }
     }
     
-    return EnumActionResult.PASS;
+    return EnumActionResult.SUCCESS;
   }
 
   @Override

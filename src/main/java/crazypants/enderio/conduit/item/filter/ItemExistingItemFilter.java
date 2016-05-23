@@ -60,7 +60,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   @Override
   public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
     if(world.isRemote) {
-      return EnumActionResult.PASS;
+      return EnumActionResult.SUCCESS;
     }    
 
     if(player.isSneaking()) {
@@ -71,11 +71,11 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
         String unloc = "item.itemExistingItemFilter." + (filter.mergeSnapshot(inv) ? "filterUpdated" : "filterNotUpdated");
         ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, unloc);
         FilterRegister.writeFilterToStack(filter, stack);
-        return EnumActionResult.PASS;
+        return EnumActionResult.SUCCESS;
       }
     }
 
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
 
 //  @Override
