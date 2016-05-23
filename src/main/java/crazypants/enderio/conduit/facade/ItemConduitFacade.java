@@ -53,7 +53,7 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
  public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
     if(world.isRemote) {
-      return EnumActionResult.PASS;
+      return EnumActionResult.SUCCESS;
     }
 
     BlockPos placeAt = pos.offset(side);
@@ -69,18 +69,20 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
         if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
-        return EnumActionResult.PASS;
+        return EnumActionResult.SUCCESS;
       } else {
         Block blockAt = world.getBlockState(placeAt).getBlock();
         if (blockAt == EnderIO.blockConduitBundle) {
-          ((BlockConduitBundle) blockAt)
+          if(((BlockConduitBundle) blockAt)
               .handleFacadeClick(world, placeAt, player, side.getOpposite(),
-              (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand);
+              (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand)) {
+            return EnumActionResult.SUCCESS;
+          }
         }
       }
     }
 
-    return EnumActionResult.FAIL;
+    return EnumActionResult.PASS;
   }
 
   @Override

@@ -15,6 +15,17 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   @Override
   public final SPacketUpdateTileEntity getUpdatePacket() {
+    NBTTagCompound root = createClientUpdateNBT();
+    
+    return new SPacketUpdateTileEntity(getPos(), 1, root);
+  }
+  
+  @Override
+  public NBTTagCompound getUpdateTag() {    
+    return createClientUpdateNBT();
+  }
+
+  protected NBTTagCompound createClientUpdateNBT() {
     NBTTagCompound root = new NBTTagCompound();
     try {
       doingOtherNbt = true;
@@ -23,8 +34,7 @@ public abstract class TileEntityEio extends TileEntityBase {
       doingOtherNbt = false;
     }
     Writer.write(StoreFor.CLIENT, root, this);
-    
-    return new SPacketUpdateTileEntity(getPos(), 1, root);
+    return root;
   }
 
   @Override

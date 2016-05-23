@@ -62,10 +62,8 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
 //    if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, pos, side)) {
 //      return true;
 //    }
-    
-        
+            
     BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle.getDefaultState(), player, world, pos, side);
-//    BlockCoord placeAt = new BlockCoord(pos.offset(side));
     if(placeAt != null) {
       if(!world.isRemote) {
         if(world.setBlockState(placeAt.getBlockPos(), EnderIO.blockConduitBundle.getDefaultState(), 1)) {

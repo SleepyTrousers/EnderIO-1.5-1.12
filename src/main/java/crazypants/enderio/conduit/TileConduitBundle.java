@@ -204,7 +204,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return facade != null ? facade.getBlock().getLightOpacity(facade) : 0;
+      return facade != null ? facade.getLightOpacity() : 0;
     }
     return lightOpacity;
   }
@@ -222,7 +222,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public void doUpdate() {
+  public void doUpdate() {    
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
@@ -238,7 +238,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     //client side only, check for changes in rendering of the bundle
     if(worldObj.isRemote) {
       updateEntityClient();
-    }
+    } 
   }
 
   private void doConduitsDirty() {

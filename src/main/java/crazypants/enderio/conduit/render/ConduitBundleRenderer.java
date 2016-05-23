@@ -122,12 +122,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
     
     // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
-    renderConduits(bundle, brightness, result);
+    addConduitQuads(bundle, brightness, result);
 
     return result;
   }
 
-  public void renderConduits(IConduitBundle bundle, float brightness, List<BakedQuad> quads) {
+  private void addConduitQuads(IConduitBundle bundle, float brightness, List<BakedQuad> quads) {
 
     // Conduits
     Set<EnumFacing> externals = new HashSet<EnumFacing>();
