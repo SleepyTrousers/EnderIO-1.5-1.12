@@ -41,7 +41,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.BlockPos;
@@ -66,8 +65,6 @@ public class DarkSteelController {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1), };
-
-  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier", 2, 0);
 
   private boolean wasJumping;
   private int jumpCount;
@@ -139,9 +136,6 @@ public class DarkSteelController {
 
       // leggings
       updateSpeed(player);
-
-      // sword
-      updateSword(player);
 
       updateGlide(player);
 
@@ -254,18 +248,6 @@ public class DarkSteelController {
       return false;
     }
     return true;
-  }
-
-  private void updateSword(EntityPlayer player) {
-    if (ItemDarkSteelSword.isEquipped(player, EnumHand.MAIN_HAND)) {
-      IAttributeInstance attackInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
-      attackInst.removeModifier(swordDamageModifierPowered);
-
-      ItemStack sword = player.getHeldItemMainhand();
-      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(sword) >= Config.darkSteelSwordPowerUsePerHit) {
-        attackInst.applyModifier(swordDamageModifierPowered);
-      }
-    }
   }
 
   private void updateSpeed(EntityPlayer player) {

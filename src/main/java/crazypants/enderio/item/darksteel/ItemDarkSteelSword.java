@@ -1,6 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -8,6 +9,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
+import com.google.common.collect.Multimap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -22,6 +24,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -29,6 +33,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -56,6 +61,9 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   private static final @Nonnull String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
+  
+  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Powered Damage", Config.darkSteelSwordPoweredDamageBonus, 0);
+  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Powered Speed", Config.darkSteelSwordPoweredDamageBonus, 0);
 
   public static boolean isEquipped(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);
@@ -275,6 +283,18 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   protected void init() {
     GameRegistry.register(this);
   }
+  
+  @Override
+  public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {    
+    Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);       
+    if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {      
+      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {        
+        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), swordDamageModifierPowered);        
+        res.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), swordAttackSpeedPowered);                
+      } 
+    }
+    return res;
+  }
 
   @Override
   public boolean hitEntity(@Nonnull ItemStack stack, @Nonnull EntityLivingBase entity, @Nonnull EntityLivingBase playerEntity) {
@@ -378,14 +398,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     extractEnergy(equipped, power, false);
   }
 
-  private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
-    
+  private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {    
     return (isEquipped(ep, EnumHand.MAIN_HAND) || isEquipped(ep, EnumHand.OFF_HAND)) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
   
-  private boolean isTravelUpgradeActive(EntityPlayer player, ItemStack stack, EnumHand hand) {
-    // TODO Auto-generated method stub
-    return false;
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {    // 
+    return isEquipped(ep, hand)  && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
@@ -395,7 +413,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       if (world.isRemote) {
         if (TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
           player.swingArm(hand);
-          return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+          return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
         }
       }
 
@@ -409,7 +427,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
-      return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 
     return super.onItemRightClick(stack, world, player, hand);

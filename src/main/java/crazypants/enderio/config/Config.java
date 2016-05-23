@@ -188,6 +188,8 @@ public final class Config {
   public static int darkSteelBootsJumpPowerCost = 150;
   public static int darkSteelFallDistanceCost = 75;
 
+  public static float darkSteelSwordPoweredDamageBonus = 2.0f;
+  public static float darkSteelSwordPoweredSpeedBonus = 1.0f;
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.05f;
   public static float darkSteelSwordSkullChance = 0.1f;
@@ -464,7 +466,7 @@ public final class Config {
   public static int photovoltaicRecalcSunTick = 100;
 
   public static int rangeEntityID = 1490325;
-  
+
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -894,6 +896,13 @@ public final class Config {
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullLootingModifier);
 
+    darkSteelSwordPoweredDamageBonus = (float) config.get(sectionDarkSteel.name, "darkSteelSwordPoweredDamageBonus", darkSteelSwordPoweredDamageBonus,
+        "The extra damage dealt when the sword is powered").getDouble(
+            darkSteelSwordPoweredDamageBonus);
+    darkSteelSwordPoweredSpeedBonus = (float) config.get(sectionDarkSteel.name, "darkSteelSwordPoweredSpeedBonus", darkSteelSwordPoweredSpeedBonus,
+        "The increase in attack speed when powered").getDouble(
+            darkSteelSwordPoweredSpeedBonus);
+    
     darkSteelSwordWitherSkullChance = (float) config.get(sectionDarkSteel.name, "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
         "The base chance that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordWitherSkullChance);
