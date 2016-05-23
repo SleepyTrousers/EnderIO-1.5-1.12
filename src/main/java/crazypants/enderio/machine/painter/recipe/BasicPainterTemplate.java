@@ -99,7 +99,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
 
   // This line is in this excessively named method to show up nicely in a stack trace
   private IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
-    return paintBlock.getStateFromMeta(paintSource.getMetadata());
+    return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
   }
 
   protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {
