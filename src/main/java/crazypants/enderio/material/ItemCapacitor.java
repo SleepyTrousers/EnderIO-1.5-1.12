@@ -36,13 +36,14 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
   protected ItemCapacitor() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemBasicCapacitor.getUnlocalisedName());
+    setRegistryName(ModObject.itemBasicCapacitor.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemBasicCapacitor.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @SideOnly(Side.CLIENT)

@@ -22,9 +22,9 @@ import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
@@ -98,7 +98,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   }
 
   private String getPowerOutputLabel() {
-    return I18n.translateToLocal("enderio.gui.max");
+    return I18n.format("enderio.gui.max");
   }
 
   protected int getPowerOutputValue() {

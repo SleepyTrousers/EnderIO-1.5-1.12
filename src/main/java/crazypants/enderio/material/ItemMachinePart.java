@@ -27,10 +27,11 @@ public class ItemMachinePart extends Item implements IHaveRenderers  {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMachinePart.getUnlocalisedName());
+    setRegistryName(ModObject.itemMachinePart.getUnlocalisedName());
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemMachinePart.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

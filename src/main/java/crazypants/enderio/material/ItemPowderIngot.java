@@ -28,11 +28,12 @@ public class ItemPowderIngot extends Item {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemPowderIngot.getUnlocalisedName());
+    setRegistryName(ModObject.itemPowderIngot.getUnlocalisedName());
 
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemPowderIngot.getUnlocalisedName());
+    GameRegistry.register(this);
   }
   
   @SideOnly(Side.CLIENT)
@@ -43,15 +44,6 @@ public class ItemPowderIngot extends Item {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
     }     
   }
-
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    int numParts = PowderIngot.values().length;
-//    for (int i = 0; i < numParts; i++) {
-//      icons[i] = IIconRegister.registerIcon(PowderIngot.values()[i].iconKey);
-//    }
-//  }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {

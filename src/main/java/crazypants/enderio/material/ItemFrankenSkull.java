@@ -28,10 +28,11 @@ public class ItemFrankenSkull extends Item {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemFrankenSkull.getUnlocalisedName());
+    setRegistryName(ModObject.itemFrankenSkull.getUnlocalisedName());
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemFrankenSkull.getUnlocalisedName());
+    GameRegistry.register(this);
   }
   
   @SideOnly(Side.CLIENT)

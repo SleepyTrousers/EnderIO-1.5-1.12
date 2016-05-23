@@ -74,7 +74,7 @@ public class PaintWrangler {
 
       if (memory.doActualStateWithTe) {
         try {
-          paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
+          paint = paint.getActualState(new PaintedBlockAccessWrapper(blockAccess, true), pos);          
         } catch (Throwable t) {
           memory.doActualStateWithTe = false;
           memory.doActualStateWithOutTe = true;
@@ -83,7 +83,7 @@ public class PaintWrangler {
 
       if (memory.doActualStateWithOutTe) {
         try {
-          paint = block.getActualState(paint, new PaintedBlockAccessWrapper(blockAccess, false), pos);
+          paint = paint.getActualState(new PaintedBlockAccessWrapper(blockAccess, false), pos);
         } catch (Throwable t) {
           memory.doActualStateWithOutTe = false;
         }

@@ -70,7 +70,6 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
     return getDefaults().getParticleTexture();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
     return net.minecraft.client.renderer.block.model.ItemCameraTransforms.DEFAULT;
@@ -81,7 +80,6 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
     return EnderItemOverrideList.instance;
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
       net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {

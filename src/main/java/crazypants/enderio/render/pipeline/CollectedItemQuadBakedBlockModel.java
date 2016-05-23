@@ -67,7 +67,6 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
     return parent.getItemCameraTransforms();
   }
 
-  @SuppressWarnings("deprecation")
   @Override
   public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
       net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {

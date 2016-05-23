@@ -8,7 +8,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
@@ -17,7 +17,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   public static final GogglesOfRevealingUpgrade INSTANCE = new GogglesOfRevealingUpgrade();
 
   public static ItemStack getGoggles() {
-    Item i = GameRegistry.findItem("Thaumcraft", "ItemGoggles");
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("Thaumcraft", "ItemGoggles"));    
     if(i != null) {
       return new ItemStack(i);
     }

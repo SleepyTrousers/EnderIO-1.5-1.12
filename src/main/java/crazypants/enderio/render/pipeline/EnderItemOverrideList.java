@@ -42,6 +42,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
 
   public static final EnderItemOverrideList instance = new EnderItemOverrideList();
 
+  @SuppressWarnings("deprecation")
   @Override
   public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nonnull World world,
       @Nonnull EntityLivingBase entity) {

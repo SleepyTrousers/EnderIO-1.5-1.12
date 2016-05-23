@@ -74,7 +74,8 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
             ((ITravelAccessable) te).getPassword()[msg.slot] = msg.stack;
             ((ITravelAccessable) te).clearAuthorisedUsers();
           }
-          BlockPos pos = new BlockPos(msg.x, msg.y, msg.z);
+          
+          BlockPos pos = msg.getPos();
           IBlockState bs = te.getWorld().getBlockState(pos);
           te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);          
         }

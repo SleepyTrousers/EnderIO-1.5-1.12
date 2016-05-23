@@ -30,6 +30,7 @@ public class ItemAlloy extends Item {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemAlloy.getUnlocalisedName());
+    setRegistryName(ModObject.itemAlloy.getUnlocalisedName());
 
     numItems = Alloy.values().length;
     if (useNuggets) {
@@ -38,7 +39,7 @@ public class ItemAlloy extends Item {
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemAlloy.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @SideOnly(Side.CLIENT)

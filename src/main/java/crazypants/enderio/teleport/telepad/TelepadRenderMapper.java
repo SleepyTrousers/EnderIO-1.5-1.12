@@ -72,6 +72,7 @@ public class TelepadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
     return null;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   @SideOnly(Side.CLIENT)
   public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {

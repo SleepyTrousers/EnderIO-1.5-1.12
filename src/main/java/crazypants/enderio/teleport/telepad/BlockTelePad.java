@@ -105,6 +105,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     return false;
   }
 
+  @Deprecated
   @Override
   public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
     AxisAlignedBB bb = super.getSelectedBoundingBox(bs, world,pos);
@@ -116,6 +117,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     return te.getBoundingBox();
   }
 
+  @Deprecated
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block changedTo) {    
     super.neighborChanged(state, world, pos, changedTo);

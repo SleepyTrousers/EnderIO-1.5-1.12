@@ -27,19 +27,19 @@ public class ItemMaterial extends Item implements IHaveRenderers {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMaterial.getUnlocalisedName());
-
+    setRegistryName(ModObject.itemMaterial.getUnlocalisedName());
   }
 
   private void init() {
-    GameRegistry.registerItem(this, ModObject.itemMaterial.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {       
+  public void registerRenderers() {
     for (Material c : Material.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.baseName);
-    }     
+    }
   }
 
   @Override
@@ -59,7 +59,7 @@ public class ItemMaterial extends Item implements IHaveRenderers {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack) {
-    if(par1ItemStack == null) {
+    if (par1ItemStack == null) {
       return false;
     }
     int damage = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
