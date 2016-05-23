@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
@@ -22,7 +23,7 @@ import crazypants.enderio.config.recipes.xml.Recipe;
 import crazypants.enderio.config.recipes.xml.RecipeGameRecipe;
 import net.minecraft.launchwrapper.Launch;
 
-@XStreamAlias("enderio:recipes")
+@XStreamAlias("recipes")
 public class Recipes implements RecipeGameRecipe {
 
   @XStreamImplicit(itemFieldName = "alias")
@@ -59,7 +60,7 @@ public class Recipes implements RecipeGameRecipe {
   }
 
   public static Recipes fromFile() {
-    XStream xstream = new XStream();
+    XStream xstream = new XStream(new StaxDriver());
     if (Recipes.class.getClassLoader() != null) {
       xstream.setClassLoader(Recipes.class.getClassLoader());
     }
