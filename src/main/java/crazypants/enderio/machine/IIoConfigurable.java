@@ -17,8 +17,7 @@ public interface IIoConfigurable {
   public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face);
 
   public void clearAllIoModes();
-
-  @Deprecated
+  
   BlockCoord getLocation();
 
 }

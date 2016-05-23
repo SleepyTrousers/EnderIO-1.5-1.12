@@ -19,7 +19,6 @@ public enum VoidMode {
   NEVER;
 
   @SideOnly(Side.CLIENT)
-  @SuppressWarnings("hiding")
   public static enum IconHolder implements ICycleEnum {
     ALWAYS(VoidMode.ALWAYS, IconEIO.TICK),
     IF_NOT_CONTAINER(VoidMode.IF_NOT_CONTAINER, IconEIO.ITEM_SINGLE),

@@ -74,7 +74,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GlStateManager.scale(scale, scale, scale);
 
     // render
-    @SuppressWarnings("deprecation")
     final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;
     Minecraft.getMinecraft().getRenderItem().renderItem(sword, none);
 

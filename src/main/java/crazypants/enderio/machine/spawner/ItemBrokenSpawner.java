@@ -29,6 +29,7 @@ public class ItemBrokenSpawner extends Item {
   protected ItemBrokenSpawner() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemBrokenSpawner.getUnlocalisedName());
+    setRegistryName(ModObject.itemBrokenSpawner.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
@@ -40,7 +41,7 @@ public class ItemBrokenSpawner extends Item {
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemBrokenSpawner.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

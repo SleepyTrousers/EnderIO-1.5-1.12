@@ -78,7 +78,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
     int y = pos.getY();
     int z = pos.getZ();
     // If active, randomly throw some smoke around
-    if (isActive(world, x, y, z)) {
+    if (isActive(world, pos)) {
       float startX = x + 1.0F;
       float startY = y + 1.0F;
       float startZ = z + 1.0F;

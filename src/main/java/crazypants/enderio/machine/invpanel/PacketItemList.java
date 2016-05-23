@@ -14,7 +14,6 @@ import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -50,7 +49,7 @@ public class PacketItemList extends MessageTileEntity<TileInventoryPanel> implem
   @Override
   public IMessage onMessage(PacketItemList message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.worldObj.getTileEntity(message.getPos());
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       InventoryDatabaseClient db = teInvPanel.getDatabaseClient(message.generation);

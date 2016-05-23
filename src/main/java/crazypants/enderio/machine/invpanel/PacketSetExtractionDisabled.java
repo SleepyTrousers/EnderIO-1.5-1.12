@@ -5,7 +5,6 @@ import com.enderio.core.common.network.MessageTileEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -37,7 +36,7 @@ public class PacketSetExtractionDisabled extends MessageTileEntity<TileInventory
   @Override
   public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.worldObj.getTileEntity(message.getPos());
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.setExtractionDisabled(message.extractionDisabled);

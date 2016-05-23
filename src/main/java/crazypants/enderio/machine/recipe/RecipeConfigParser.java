@@ -9,16 +9,6 @@ import java.util.Locale;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -34,6 +24,15 @@ import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeConfigParser extends DefaultHandler {
 
@@ -417,11 +416,11 @@ public class RecipeConfigParser extends DefaultHandler {
 
     if(modId != null && name != null) {
 
-      Item i = GameRegistry.findItem(modId, name);
+      Item i = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
       if(i != null) {
         res = new ItemStack(i, stackSize, useMeta ? itemMeta : 0);
       } else {
-        Block b = GameRegistry.findBlock(modId, name);
+        Block b = Block.REGISTRY.getObject(new ResourceLocation(modId, name));
         if(b != null) {
           res = new ItemStack(b, stackSize, useMeta ? itemMeta : 0);
         }

@@ -8,8 +8,8 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.text.translation.I18n;
 
 public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiMachineBase<T> {
 
@@ -37,7 +37,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
 
   protected String getPowerOutputLabel() {
-    return I18n.translateToLocal("enderio.gui.max");
+    return I18n.format("enderio.gui.max");
   }
   
   protected int getPowerOutputValue() {

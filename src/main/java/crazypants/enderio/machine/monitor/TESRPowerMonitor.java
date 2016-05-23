@@ -47,10 +47,10 @@ public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor
       GlStateManager.color(1F, 1F, 1F, 1F);
       if (isPainted) {
         helper.setupVertices(bb2, xform);
-        helper.renderSingleFace(tes, EnumFacing.SOUTH, 0 * px, 14 * px, 0 * px, 14 * px, xform, helper.stdBrightness, false);
+        helper.renderSingleFace(tes, EnumFacing.SOUTH, 0 * px, 14 * px, 0 * px, 14 * px, xform, Helper.stdBrightness, false);
       } else {
         helper.setupVertices(bb1, xform);
-        helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, helper.stdBrightness, false);
+        helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, Helper.stdBrightness, false);
       }
 
       Tessellator.getInstance().draw();

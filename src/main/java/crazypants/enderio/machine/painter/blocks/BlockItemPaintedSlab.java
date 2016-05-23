@@ -2,20 +2,20 @@ package crazypants.enderio.machine.painter.blocks;
 
 import java.util.List;
 
+import crazypants.enderio.paint.PainterUtil2;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.paint.PainterUtil2;
 
 public class BlockItemPaintedSlab extends ItemBlock {
   private final BlockPaintedSlab singleSlab;
@@ -98,7 +98,8 @@ public class BlockItemPaintedSlab extends ItemBlock {
       IBlockState paintSource = singleSlab.getPaintSource(iblockstate, worldIn, pos);
       IBlockState paintSource1 = PainterUtil2.getSourceBlock(stack);
 
-      if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)) {
+      
+      if (worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)) {
         if (blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM) {
           doubleSlab.setPaintSource(iblockstate1, worldIn, pos, paintSource);
           doubleSlab.setPaintSource2(iblockstate1, worldIn, pos, paintSource1);

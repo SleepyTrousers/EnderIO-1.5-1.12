@@ -15,7 +15,6 @@ import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -61,7 +60,7 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
   @Override
   public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.worldObj.getTileEntity(message.getPos());
     if(te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       InventoryDatabaseServer db = teInvPanel.getDatabaseServer();

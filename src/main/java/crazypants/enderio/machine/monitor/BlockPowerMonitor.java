@@ -134,6 +134,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     }
   }
 
+  @Deprecated
   @Override
   public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
     TilePowerMonitor te = getTileEntity(blockAccess, pos);
@@ -157,6 +158,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     return super.canConnectRedstone(state, world, pos, side);
   }
 
+  @Deprecated
   @Override
   public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (!super.shouldSideBeRendered(bs, worldIn, pos, side)) {

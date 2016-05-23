@@ -255,12 +255,14 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
+    IBlockState bs = world.getBlockState(pos);
+    return bs.getMaterial() == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
+    IBlockState bs = world.getBlockState(pos);
+    return bs.getMaterial() == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override
@@ -268,6 +270,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     return false;
   }
 
+  @Deprecated
   @Override
   public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockPaintedStairs

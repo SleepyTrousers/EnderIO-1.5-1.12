@@ -331,7 +331,8 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return getMaterial(world.getBlockState(pos)) == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
+    IBlockState bs = world.getBlockState(pos);
+    return bs.getMaterial() == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override

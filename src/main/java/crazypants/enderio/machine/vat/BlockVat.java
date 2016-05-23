@@ -94,9 +94,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
       pX += 0.6f * dir.getFrontOffsetX();
       pZ += 0.6f * dir.getFrontOffsetZ();
 
-      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
-      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
-
+//      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
+//      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
       int num = rand.nextInt(4) + 2;
       for (int k = 0; k < num; k++) {
         ParticleManager er = Minecraft.getMinecraft().effectRenderer;
