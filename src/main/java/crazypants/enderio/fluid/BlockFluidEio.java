@@ -49,7 +49,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   @Override
   public boolean canDisplace(IBlockAccess world, BlockPos pos) {
     IBlockState bs = world.getBlockState(pos);
-    if(bs.getBlock().getMaterial(bs).isLiquid()) {
+    if(bs.getMaterial().isLiquid()) {
       return false;
     }
     return super.canDisplace(world, pos);
@@ -58,7 +58,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   @Override
   public boolean displaceIfPossible(World world, BlockPos pos) {
     IBlockState bs = world.getBlockState(pos);
-    if(bs.getBlock().getMaterial(bs).isLiquid()) {
+    if(bs.getMaterial().isLiquid()) {
       return false;
     }
     return super.displaceIfPossible(world, pos);

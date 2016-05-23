@@ -309,6 +309,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
+  @Deprecated
   public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess par1IBlockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     Block i1 = par1IBlockAccess.getBlockState(pos.offset(side)).getBlock();
     return i1 == this ? false : super.shouldSideBeRendered(bs, par1IBlockAccess, pos, side);
@@ -435,6 +436,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
+  @Deprecated
   public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
     TileCapBank tr = getTileEntity(world, pos);
     if (tr == null) {

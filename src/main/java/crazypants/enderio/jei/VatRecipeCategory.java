@@ -8,6 +8,14 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.vat.GuiVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -21,16 +29,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.vat.GuiVat;
-import crazypants.enderio.machine.vat.VatRecipeManager;
 
 public class VatRecipeCategory extends BlankRecipeCategory {
 

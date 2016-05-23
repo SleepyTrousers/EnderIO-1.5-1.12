@@ -15,6 +15,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -26,7 +27,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -203,7 +203,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
           String unlocalizedName = fluid.getUnlocalizedName();
-          String name = unlocalizedName == null ? fluidName : I18n.translateToLocal(unlocalizedName);
+          String name = unlocalizedName == null ? fluidName : I18n.format(unlocalizedName);
           par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + name);
         }
       }

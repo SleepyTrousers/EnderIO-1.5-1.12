@@ -228,8 +228,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     IBlockState state = world.getBlockState(pos);
     if (state == null || state.getBlock() != this || lastRemovedComponetIcon == null) {
       return false;
-    }
-    state = state.getBlock().getActualState(state, world, pos);
+    }    
+    state = state.getActualState(world, pos);
     int i = 4;
     TextureAtlasSprite tex = lastRemovedComponetIcon;
     for (int j = 0; j < i; ++j) {
@@ -409,8 +409,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     int result = 0;
     if (con.hasFacade()) {
       IBlockState paintSource = con.getPaintSource();
-      result = paintSource.getBlock().getLightValue(bs);
-      if (paintSource.getBlock().isOpaqueCube(bs)) {
+      result = paintSource.getLightValue();
+      if (paintSource.isOpaqueCube()) {
         return result;
       }
     }
@@ -421,6 +421,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result > 15 ? 15 : result;
   }
 
+  @Deprecated
   @Override
   @SideOnly(Side.CLIENT)
   public int getPackedLightmapCoords(IBlockState bs, IBlockAccess worldIn, BlockPos pos) {      
@@ -460,6 +461,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return result;
   }  
 
+  @Deprecated
   @Override
   public float getBlockHardness(IBlockState bs, World world, BlockPos pos) {
     IConduitBundle te = getTileEntity(world, pos);
@@ -872,6 +874,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
   }
 
+  @Deprecated
   @Override
   public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> arraylist, Entity par7Entity) {
     

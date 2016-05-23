@@ -102,8 +102,9 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
+    getTileEntity();
     txt = String.format("%s %d%%", EnderIO.lang.localize("stirlingGenerator.burnRate"),
-        Math.round(getTileEntity().getBurnTimeMultiplier() / getTileEntity().getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
+        Math.round(getTileEntity().getBurnTimeMultiplier() / TileEntityStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

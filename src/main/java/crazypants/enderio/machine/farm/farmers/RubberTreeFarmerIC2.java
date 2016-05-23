@@ -10,9 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RubberTreeFarmerIC2 extends TreeFarmer {
 
@@ -20,12 +20,12 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   private ItemStack stickyResin;
 
   public RubberTreeFarmerIC2() {
-    super(GameRegistry.findBlock("IC2", "blockRubSapling"), GameRegistry.findBlock("IC2", "blockRubWood"));    
-    Item item = GameRegistry.findItem("IC2", "itemTreetap");
+    super(Block.REGISTRY.getObject(new ResourceLocation("IC2", "blockRubSapling")), Block.REGISTRY.getObject(new ResourceLocation("IC2", "blockRubWood")));    
+    Item item = Item.REGISTRY.getObject(new ResourceLocation("IC2", "itemTreetap"));
     if(item != null) {
       treeTap = item.getClass();
     }
-    item = GameRegistry.findItem("IC2", "itemHarz");
+    item = Item.REGISTRY.getObject(new ResourceLocation("IC2", "itemHarz"));
     if(item != null) {
       stickyResin = new ItemStack(item);  
       FarmStationContainer.slotItemsProduce.add(stickyResin);

@@ -149,6 +149,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     world.notifyBlockUpdate(pos, state, state, 3);    
   }
 
+  @Deprecated
   @Override
   public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World worldIn, @Nonnull BlockPos pos) {
     TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);

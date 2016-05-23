@@ -31,13 +31,14 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   protected ItemBasicItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemBasicFilterUpgrade.getUnlocalisedName());
+    setRegistryName(ModObject.itemBasicFilterUpgrade.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemBasicFilterUpgrade.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

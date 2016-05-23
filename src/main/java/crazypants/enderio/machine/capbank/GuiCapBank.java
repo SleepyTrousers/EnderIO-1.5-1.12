@@ -280,9 +280,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
-  public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {    
+  public void drawHoveringText(List<String> par1List, int par2, int par3, FontRenderer font) {    
     super.drawHoveringText(par1List, par2, par3, font);    
   }
 

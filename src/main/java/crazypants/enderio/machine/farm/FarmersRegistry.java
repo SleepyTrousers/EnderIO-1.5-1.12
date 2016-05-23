@@ -21,8 +21,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public final class FarmersRegistry {
 
@@ -30,16 +30,16 @@ public final class FarmersRegistry {
   
   public static void addFarmers() {
 
-//    addExtraUtilities();
-//    addNatura();
-//    addTiC();
-//    addStillHungry();
-//    addIC2();
-//    addMFR();
-//    addThaumcraft();
-//    addFlowers();
-//    addGrowableOres();
-//    addImmersiveEngineering();
+    addExtraUtilities();
+    addNatura();
+    addTiC();
+    addStillHungry();
+    addIC2();
+    addMFR();
+    addThaumcraft();
+    addFlowers();
+    addGrowableOres();
+    addImmersiveEngineering();
 //
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
@@ -58,10 +58,10 @@ public final class FarmersRegistry {
     FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
 
-  public static void addPickable(String mod, String blockName, String itemName) {
-    Block cropBlock = GameRegistry.findBlock(mod, blockName);
-    if(cropBlock != null) {
-      Item seedItem = GameRegistry.findItem(mod, itemName);
+  public static void addPickable(String mod, String blockName, String itemName) {    
+    Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
+    if(cropBlock != null) {      
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, itemName));
       if(seedItem != null) {
         FarmersCommune.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
       }
@@ -69,9 +69,9 @@ public final class FarmersRegistry {
   }
 
   public static CustomSeedFarmer addSeed(String mod, String blockName, String itemName, Block... extraFarmland) {
-    Block cropBlock = GameRegistry.findBlock(mod, blockName);
+    Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(cropBlock != null) {
-      Item seedItem = GameRegistry.findItem(mod, itemName);
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, itemName));
       if(seedItem != null) {
         CustomSeedFarmer farmer = new CustomSeedFarmer(cropBlock, new ItemStack(seedItem));
         if(extraFarmland != null) {
@@ -92,9 +92,9 @@ public final class FarmersRegistry {
     String mod = "TConstruct";
     String blockName = "ore.berries.two";
 
-    Block cropBlock = GameRegistry.findBlock(mod, blockName);
+    Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(cropBlock != null) {
-      Item seedItem = GameRegistry.findItem(mod, blockName);
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
       if(seedItem != null) {
         for (int i = 0; i < 2; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
@@ -105,9 +105,9 @@ public final class FarmersRegistry {
     }
 
     blockName = "ore.berries.one";
-    cropBlock = GameRegistry.findBlock(mod, blockName);
+    cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(cropBlock != null) {
-      Item seedItem = GameRegistry.findItem(mod, blockName);
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
       if(seedItem != null) {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
@@ -123,10 +123,10 @@ public final class FarmersRegistry {
     String mod = "Natura";
     String blockName = "N Crops";
 
-    Block cropBlock = GameRegistry.findBlock(mod, blockName);
+    Block cropBlock =Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(cropBlock != null) {
       DEFAULT_FARMER.addHarvestExlude(cropBlock);
-      Item seedItem = GameRegistry.findItem(mod, "barley.seed");
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, "barley.seed"));
       if(seedItem != null) {
         //barley
         FarmersCommune.joinCommune(new CustomSeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
@@ -136,9 +136,9 @@ public final class FarmersRegistry {
     }
 
     blockName = "BerryBush";
-    cropBlock = GameRegistry.findBlock(mod, blockName);
+    cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(cropBlock != null) {
-      Item seedItem = GameRegistry.findItem(mod, blockName);
+      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
       if(seedItem != null) {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
@@ -149,17 +149,17 @@ public final class FarmersRegistry {
     }
 
     blockName = "florasapling";
-    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    Block saplingBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(saplingBlock != null) {
       FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
-          GameRegistry.findBlock(mod, "tree"),
-          GameRegistry.findBlock(mod, "willow"),
-          GameRegistry.findBlock(mod, "Dark Tree")));
+          Block.REGISTRY.getObject(new ResourceLocation(mod, "tree")),
+          Block.REGISTRY.getObject(new ResourceLocation(mod, "willow")),
+          Block.REGISTRY.getObject(new ResourceLocation(mod, "Dark Tree"))));
     }
     blockName = "Rare Sapling";
-    saplingBlock = GameRegistry.findBlock(mod, blockName);
+    saplingBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(saplingBlock != null) {
-      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, Block.REGISTRY.getObject(new ResourceLocation(mod, "Rare Tree"))));
     }
 
   }
@@ -169,8 +169,8 @@ public final class FarmersRegistry {
     String mod = "Thaumcraft";
     String manaBean = "ItemManaBean";
     String manaPod = "blockManaPod";
-    Block block = GameRegistry.findBlock(mod,manaPod);
-    Item item = GameRegistry.findItem(mod,manaBean);
+    Block block = Block.REGISTRY.getObject(new ResourceLocation(mod, manaPod));
+    Item item = Item.REGISTRY.getObject(new ResourceLocation(mod,manaBean));
     if (Config.farmManaBeansEnabled && block!=null && item!=null)
     {
       FarmersCommune.joinCommune(new ManaBeanFarmer(block, new ItemStack(item)));
@@ -180,9 +180,9 @@ public final class FarmersRegistry {
   private static void addMFR() {
     String mod = "MineFactoryReloaded";
     String blockName = "rubberwood.sapling";
-    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    Block saplingBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
     if(saplingBlock != null) {
-      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "rubberwood.log")));
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, Block.REGISTRY.getObject(new ResourceLocation(mod, "rubberwood.log"))));
     }
     
   }
@@ -203,20 +203,21 @@ public final class FarmersRegistry {
     String mod = "ExtraUtilities";
     String name = "plant/ender_lilly";
 
-    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.END_STONE, GameRegistry.findBlock(mod, "decorativeBlock1"));
+    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.END_STONE, Block.REGISTRY.getObject(new ResourceLocation(mod, "decorativeBlock1")));
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
     }
   }
 
   private static void addFlowers() {
+    
     FarmersCommune.joinCommune(new FlowerPicker().add(
-        GameRegistry.findBlock("minecraft", "yellow_flower"), 
-        GameRegistry.findBlock("minecraft", "red_flower"), 
-        GameRegistry.findBlock("BiomesOPlenty", "flowers"), 
-        GameRegistry.findBlock("BiomesOPlenty", "flowers2"), 
-        GameRegistry.findBlock("Botany", "flower"), 
-        GameRegistry.findBlock("Botania", "flower") ) );
+        Block.REGISTRY.getObject(new ResourceLocation("minecraft", "yellow_flower")), 
+        Block.REGISTRY.getObject(new ResourceLocation("minecraft", "red_flower")), 
+        Block.REGISTRY.getObject(new ResourceLocation("BiomesOPlenty", "flowers")), 
+        Block.REGISTRY.getObject(new ResourceLocation("BiomesOPlenty", "flowers2")), 
+        Block.REGISTRY.getObject(new ResourceLocation("Botany", "flower")), 
+        Block.REGISTRY.getObject(new ResourceLocation("Botania", "flower")) ) );
   }
   
   private static void addGrowableOres() {
@@ -241,8 +242,8 @@ public final class FarmersRegistry {
   }
 
   private static void addImmersiveEngineering() {
-    Block hemp = GameRegistry.findBlock("ImmersiveEngineering", "hemp");
-    Item hempSeed = GameRegistry.findItem("ImmersiveEngineering", "hemp");
+    Block hemp = Block.REGISTRY.getObject(new ResourceLocation("ImmersiveEngineering", "hemp"));
+    Item hempSeed = Item.REGISTRY.getObject(new ResourceLocation("ImmersiveEngineering", "hemp"));
     if (hemp != null && hempSeed != null) {
       FarmersCommune.joinCommune(new StemFarmer(hemp, new ItemStack(hempSeed)));
     }

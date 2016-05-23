@@ -193,8 +193,8 @@ public class IoConfigRenderer {
     for (BlockCoord bc : configurables) {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
-      if (block != null) {
-        RayTraceResult hit = block.collisionRayTrace(bs, world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
+      if (block != null) {        
+        RayTraceResult hit = bs.collisionRayTrace(world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
         if (hit != null) {
           hits.add(hit);
         }

@@ -52,9 +52,8 @@ public class TreeHarvestUtil {
     if (!isInHarvestBounds(bc) || res.harvestedBlocks.contains(bc)) {
       return;
     }
-    IBlockState bs = world.getBlockState(bc);
-    Block blk = bs.getBlock();
-    boolean isLeaves = blk.getMaterial(bs) == Material.LEAVES;
+    IBlockState bs = world.getBlockState(bc);    
+    boolean isLeaves = bs.getMaterial() == Material.LEAVES;
     if (target.isTarget(bs) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -70,9 +69,8 @@ public class TreeHarvestUtil {
       
       for(EnumFacing dir : EnumFacing.HORIZONTALS) {
         BlockPos loc = bc.offset(dir);
-        IBlockState locBS = world.getBlockState(loc);
-        Block targetBlock = locBS.getBlock();
-        if (targetBlock.getMaterial(locBS) == Material.LEAVES) {
+        IBlockState locBS = world.getBlockState(loc);        
+        if (locBS.getMaterial() == Material.LEAVES) {
           harvestAdjacentWood(world, loc, res, target);
         }
       }

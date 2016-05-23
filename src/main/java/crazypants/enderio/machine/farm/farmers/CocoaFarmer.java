@@ -53,11 +53,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
       return null;
     }
 
-    for(EnumFacing dir : EnumFacing.HORIZONTALS) {
-        
-      int x = bc.x + dir.getFrontOffsetX();
-      int y = bc.y + dir.getFrontOffsetY();
-      int z = bc.z + dir.getFrontOffsetZ();
+    for(EnumFacing dir : EnumFacing.HORIZONTALS) {      
        BlockPos p = bc.getBlockPos().offset(dir);
       if (validBlock(worldObj.getBlockState(p)))
         return dir;

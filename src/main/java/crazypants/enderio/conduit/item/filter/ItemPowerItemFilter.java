@@ -23,13 +23,14 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
   protected ItemPowerItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemPowerItemFilter.getUnlocalisedName());
+    setRegistryName(ModObject.itemPowerItemFilter.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemPowerItemFilter.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

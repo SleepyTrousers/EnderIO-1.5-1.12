@@ -162,7 +162,7 @@ public class KeyTracker {
   }
 
   private void handleGoggles() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+//    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     //TODO: 1.9 Thaumcraft
 //    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
 //      return;

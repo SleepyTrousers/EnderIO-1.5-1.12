@@ -7,19 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.enchantment.Enchantment.Rarity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -27,6 +14,18 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.enchantment.Enchantment.Rarity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public final class Config {
 
@@ -521,7 +520,7 @@ public final class Config {
     PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
-  @SuppressWarnings("hiding")
+  
   public static void processConfig(Configuration config) {
 
     capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
@@ -1274,8 +1273,8 @@ public final class Config {
   public static ItemStack getStackForString(String s) {
     String[] nameAndMeta = s.split(";");
     int meta = nameAndMeta.length == 1 ? 0 : Integer.parseInt(nameAndMeta[1]);
-    String[] data = nameAndMeta[0].split(":");
-    Item item = GameRegistry.findItem(data[0], data[1]);
+    String[] data = nameAndMeta[0].split(":");    
+    Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
     if(item == null) {
       return null;
     }    

@@ -28,12 +28,13 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
   protected ItemModItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemModItemFilter.getUnlocalisedName());
+    setRegistryName(ModObject.itemModItemFilter.getUnlocalisedName());
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemModItemFilter.getUnlocalisedName());
+    GameRegistry.register(this);
   }
 
   @Override

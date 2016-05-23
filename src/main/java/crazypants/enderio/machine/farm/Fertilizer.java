@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 public enum Fertilizer {
@@ -41,7 +41,7 @@ public enum Fertilizer {
     }
   },
 
-  FORESTRY_FERTILIZER_COMPOUND(GameRegistry.findItem("Forestry", "fertilizerCompound")) {
+  FORESTRY_FERTILIZER_COMPOUND(Item.REGISTRY.getObject(new ResourceLocation("Forestry", "fertilizerCompound"))) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
@@ -49,7 +49,7 @@ public enum Fertilizer {
     }
   },
 
-  BOTANIA_FLORAL_FERTILIZER(GameRegistry.findItem("Botania", "fertilizer")) {
+  BOTANIA_FLORAL_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("Botania", "fertilizer"))) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
@@ -73,7 +73,7 @@ public enum Fertilizer {
     }
   },
 
-  METALLURGY_FERTILIZER(GameRegistry.findItem("Metallurgy", "fertilizer")) {
+  METALLURGY_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("Metallurgy", "fertilizer"))) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
@@ -81,7 +81,7 @@ public enum Fertilizer {
     }
   },
 
-  GARDEN_CORE_COMPOST(GameRegistry.findItem("GardenCore", "compost_pile")) {
+  GARDEN_CORE_COMPOST(Item.REGISTRY.getObject(new ResourceLocation("GardenCore", "compost_pile"))) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {
@@ -89,7 +89,7 @@ public enum Fertilizer {
     }
   },
 
-  MAGICALCROPS_FERTILIZER(GameRegistry.findItem("magicalcrops", "magicalcrops_MagicalCropFertilizer")) {
+  MAGICALCROPS_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("magicalcrops", "magicalcrops_MagicalCropFertilizer"))) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockCoord bc) {

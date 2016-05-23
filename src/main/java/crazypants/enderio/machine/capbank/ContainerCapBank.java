@@ -109,8 +109,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     p.translate(21, 0);
     return p;
   }
-
-  @SuppressWarnings("hiding")
+  
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
     int startPlayerSlot = 4;

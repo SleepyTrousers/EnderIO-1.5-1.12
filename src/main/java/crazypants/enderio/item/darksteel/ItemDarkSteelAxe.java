@@ -145,8 +145,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockPos bc, Block refBlock) {
 
     IBlockState bs = worldObj.getBlockState(bc);
-    Block block = bs.getBlock();
-    bs = block.getActualState(bs, worldObj, bc);
+    Block block = bs.getBlock();    
+    bs = bs.getActualState(worldObj, bc);
     ItemStack held = player.getHeldItemMainhand();
 
     List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs, 0);
@@ -175,7 +175,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.getState())) {
       evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
     }
-    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getBlock().getMaterial(evt.getState()) == Material.LEAVES) {
+    if (isEquipped(evt.getEntityPlayer()) && evt.getState().getMaterial() == Material.LEAVES) {
       evt.setNewSpeed(6);
     }
   }

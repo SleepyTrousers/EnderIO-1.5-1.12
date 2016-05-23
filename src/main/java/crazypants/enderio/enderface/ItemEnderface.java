@@ -27,10 +27,11 @@ public class ItemEnderface extends Item implements IGuiHandler {
     setCreativeTab(null);
     setUnlocalizedName("enderio." + ModObject.itemEnderface.name());
     setMaxStackSize(1);
+    setRegistryName(ModObject.itemEnderface.getUnlocalisedName());
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemEnderface.getUnlocalisedName());    
+    GameRegistry.register(this);    
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
 

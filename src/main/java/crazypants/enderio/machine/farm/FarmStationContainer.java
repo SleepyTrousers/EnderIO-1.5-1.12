@@ -18,7 +18,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -38,8 +38,8 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     slotItemsStacks1.addAll(Config.farmHoes);
     for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
-    }
-    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears, GameRegistry.findItem("IC2", "itemTreetap") }) {
+    }    
+    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears, Item.REGISTRY.getObject(new ResourceLocation("IC2", "itemTreetap")) }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
     slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));

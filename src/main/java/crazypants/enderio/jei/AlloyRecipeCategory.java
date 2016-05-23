@@ -22,7 +22,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
 
 public class AlloyRecipeCategory extends BlankRecipeCategory {
 

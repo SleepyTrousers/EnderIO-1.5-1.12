@@ -202,7 +202,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         //worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
         worldObj.notifyNeighborsOfStateChange(bc2.getBlockPos(), EnderIO.blockConduitBundle);
         IBlockState bs = bc2.getBlockState(worldObj);
-        if (signal != null && bs.getBlock().isBlockNormalCube(bs)) {
+        if (signal != null && bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockCoord bc3 = bc2.getLocation(dir2);
             if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3.getBlockPos())) {
