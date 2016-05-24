@@ -39,15 +39,15 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
   }
 
   @Override
-  public int colorMultiplier(IBlockState state, IBlockAccess p_186720_2_, BlockPos pos, int tintIndex) {
-    if (state == null || state.getBlock() == null) {
+  public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
+    if (state == null || world == null || pos == null) {
       return -1;
     }
     Block block = state.getBlock();
     
     IBlockState paintSource = null;
     if (block instanceof IPaintable) {
-      paintSource = ((IPaintable) block).getPaintSource(state, p_186720_2_, pos);
+      paintSource = ((IPaintable) block).getPaintSource(state, world, pos);
       if (paintSource != null && paintSource.getBlock() != block) {
         block = paintSource.getBlock();  
         state = paintSource;        
@@ -56,10 +56,10 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
       }
     }
     if (block instanceof IBlockColor) {
-      return ((IBlockColor) block).colorMultiplier(state, p_186720_2_, pos, tintIndex);
+      return ((IBlockColor) block).colorMultiplier(state, world, pos, tintIndex);
     }
     if(paintSource != null) {
-      return Minecraft.getMinecraft().getBlockColors().colorMultiplier(paintSource, p_186720_2_, pos, tintIndex);
+      return Minecraft.getMinecraft().getBlockColors().colorMultiplier(paintSource, world, pos, tintIndex);
     }
     return -1;
   }
