@@ -11,9 +11,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -28,11 +28,12 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
   boolean conserveMotion;
   int entityId;
   int source;
+  int hand;
 
   public PacketTravelEvent() {
   }
 
-  public PacketTravelEvent(Entity entity, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
+  public PacketTravelEvent(Entity entity, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -40,6 +41,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     this.conserveMotion = conserveMotion;
     this.entityId = entity instanceof EntityPlayer ? -1 : entity.getEntityId();
     this.source = source.ordinal();
+    this.hand = (hand == null ? EnumHand.MAIN_HAND : hand).ordinal();
   }
 
   @Override
@@ -51,6 +53,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     buf.writeBoolean(conserveMotion);
     buf.writeInt(entityId);
     buf.writeInt(source);
+    buf.writeInt(hand);
   }
 
   @Override
@@ -62,6 +65,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     conserveMotion = buf.readBoolean();
     entityId = buf.readInt();
     source = buf.readInt();
+    hand = buf.readInt();
   }
 
   @Override
@@ -71,13 +75,14 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     int x = message.x, y = message.y, z = message.z;
 
     TravelSource source = TravelSource.values()[message.source];
+    EnumHand hand = EnumHand.values()[message.hand];
 
-    doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source);
+    doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source, hand);
 
     return null;
   }
 
-  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
+  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
     EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
     
     TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z);
@@ -107,10 +112,10 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         ((EntityPlayerMP) player).connection.sendPacket(p);
       }
 
-      if(powerUse > 0 && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof IItemOfTravel) {
-        ItemStack item = player.getHeldItemMainhand().copy();
+      if (powerUse > 0 && player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof IItemOfTravel) {
+        ItemStack item = player.getHeldItem(hand).copy();
         ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
-        toTp.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, item);
+        player.setHeldItem(hand, item);
       }
     }
     

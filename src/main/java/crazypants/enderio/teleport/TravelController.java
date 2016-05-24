@@ -35,6 +35,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -89,7 +90,19 @@ public class TravelController {
   private TravelController() {
   }
 
-  public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
+  private boolean doesHandAllowTravel(EnumHand hand) {
+    return Config.travelStaffOffhandTravelEnabled || hand == EnumHand.MAIN_HAND;
+  }
+
+  private boolean doesHandAllowBlink(EnumHand hand) {
+    return Config.travelStaffOffhandBlinkEnabled || hand == EnumHand.MAIN_HAND;
+  }
+
+  private boolean doesHandAllowEnderIO(EnumHand hand) {
+    return Config.travelStaffOffhandEnderIOEnabled || hand == EnumHand.MAIN_HAND;
+  }
+
+  public boolean activateTravelAccessable(ItemStack equipped, EnumHand hand, World world, EntityPlayer player, TravelSource source) {
     if(!hasTarget()) {
       return false;
     }
@@ -103,15 +116,23 @@ public class TravelController {
         return true;
       }
     }
-    if(isTargetEnderIO()) {
-      openEnderIO(equipped, world, player);
-    } else if(Config.travelAnchorEnabled) {
-      travelToSelectedTarget(player, source, false);
+    if (isTargetEnderIO()) {
+      if (doesHandAllowEnderIO(hand)) {
+        openEnderIO(equipped, world, player);
+      }
+      return true;
+    }
+    if (Config.travelAnchorEnabled && doesHandAllowTravel(hand)) {
+      travelToSelectedTarget(player, equipped, hand, source, false);
+      return true;
     }
     return true;
   }
 
-  public boolean doBlink(ItemStack equipped, EntityPlayer player) {
+  public boolean doBlink(ItemStack equipped, EnumHand hand, EntityPlayer player) {
+    if (!doesHandAllowBlink(hand)) {
+      return false;
+    }
     Vector3d eye = Util.getEyePositionEio(player);
     Vector3d look = Util.getLookVecEio(player);
 
@@ -137,7 +158,7 @@ public class TravelController {
         sample.add(eye);
         //we test against our feets location
         sample.y -= playerHeight;
-        if(doBlinkAround(player, sample, true)) {
+        if (doBlinkAround(player, equipped, hand, sample, true)) {
           return true;
         }
       }
@@ -169,7 +190,7 @@ public class TravelController {
         //we test against our feets location
         sample.y -= playerHeight;
 
-        if(doBlinkAround(player, sample, false)) {
+        if (doBlinkAround(player, equipped, hand, sample, false)) {
           return true;
         }
         teleDistance++;
@@ -184,7 +205,7 @@ public class TravelController {
         //we test against our feets location
         sample.y -= playerHeight;
 
-        if(doBlinkAround(player, sample, false)) {
+        if (doBlinkAround(player, equipped, hand, sample, false)) {
           return true;
         }
         sampleDistance--;
@@ -199,21 +220,23 @@ public class TravelController {
         && (hitBlock.getBlockHardness(player.worldObj, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
-  private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
-    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)), conserveMomentum)) {
+  private boolean doBlinkAround(EntityPlayer player, ItemStack equipped, EnumHand hand, Vector3d sample, boolean conserveMomentum) {
+    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)),
+        conserveMomentum)) {
       return true;
     }
-    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
+    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
       return true;
     }
-    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)), conserveMomentum)) {
+    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)),
+        conserveMomentum)) {
       return true;
     }
     return false;
   }
 
-  private boolean doBlink(EntityPlayer player, BlockCoord coord, boolean conserveMomentum) {
-    return travelToLocation(player, TravelSource.STAFF_BLINK, coord, conserveMomentum);
+  private boolean doBlink(EntityPlayer player, ItemStack equipped, EnumHand hand, BlockCoord coord, boolean conserveMomentum) {
+    return travelToLocation(player, equipped, hand, TravelSource.STAFF_BLINK, coord, conserveMomentum);
   }
 
   public boolean showTargets() {
@@ -244,7 +267,7 @@ public class TravelController {
     return TravelSource.getMaxDistanceSq();
   }
 
-  public boolean isTargetEnderIO() {
+  private boolean isTargetEnderIO() {
     if(selectedCoord == null) {
       return false;
     }
@@ -281,7 +304,7 @@ public class TravelController {
       }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
-      showTargets = onBlock || isTravelItemActive(player);
+      showTargets = onBlock || isTravelItemActiveForSelecting(player);
       if(showTargets) {
         updateSelectedTarget(player);
       } else {
@@ -327,11 +350,11 @@ public class TravelController {
     }
   }
 
-  public boolean hasTarget() {
+  private boolean hasTarget() {
     return selectedCoord != null;
   }
 
-  public void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
+  private void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
     BlockCoord target = TravelController.instance.selectedCoord;
     TileEntity te = world.getTileEntity(target.getBlockPos());
     if(!(te instanceof TileEnderIO)) {
@@ -339,7 +362,7 @@ public class TravelController {
     }
     TileEnderIO eio = (TileEnderIO) te;
     if(eio.canBlockBeAccessed(player)) {
-      int requiredPower = equipped == null ? 0 : instance.getRequiredPower(player, TravelSource.STAFF, target);
+      int requiredPower = equipped == null ? 0 : instance.getRequiredPower(player, equipped, TravelSource.STAFF, target);
       if(requiredPower <= 0 || requiredPower <= getEnergyInTravelItem(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
@@ -353,29 +376,36 @@ public class TravelController {
     }
   }
 
-  public int getEnergyInTravelItem(ItemStack equipped) {
+  private int getEnergyInTravelItem(ItemStack equipped) {
     if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
       return 0;
     }
     return ((IItemOfTravel) equipped.getItem()).getEnergyStored(equipped);
   }
 
-  public boolean isTravelItemActive(EntityPlayer ep) {
-    if(ep == null || ep.getHeldItemMainhand() == null) {
+  public boolean isTravelItemActiveForRendering(EntityPlayer ep) {
+    if (ep == null) {
       return false;
     }
-    ItemStack equipped = ep.getHeldItemMainhand();
-    if(equipped.getItem() instanceof IItemOfTravel) {
-      return ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
+    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (Config.travelStaffOffhandShowsTravelTargets && isTravelItemActive(ep, ep.getHeldItemOffhand()));
+  }
+
+  private boolean isTravelItemActiveForSelecting(EntityPlayer ep) {
+    if (ep == null) {
+      return false;
     }
-    return false;
+    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || isTravelItemActive(ep, ep.getHeldItemOffhand());
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source, boolean conserveMomentum) {
-    return travelToLocation(player, source, selectedCoord, conserveMomentum);
+  private boolean isTravelItemActive(EntityPlayer ep, ItemStack equipped) {
+    return equipped != null && equipped.getItem() instanceof IItemOfTravel && ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
   }
 
-  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
+  private boolean travelToSelectedTarget(EntityPlayer player, ItemStack equipped, EnumHand hand, TravelSource source, boolean conserveMomentum) {
+    return travelToLocation(player, equipped, hand, source, selectedCoord, conserveMomentum);
+  }
+
+  private boolean travelToLocation(EntityPlayer player, ItemStack equipped, EnumHand hand, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
 
     if(source != TravelSource.STAFF_BLINK) {
       TileEntity te = player.worldObj.getTileEntity(coord.getBlockPos());
@@ -389,7 +419,7 @@ public class TravelController {
     }
 
     int requiredPower = 0;
-    requiredPower = getRequiredPower(player, source, coord);
+    requiredPower = getRequiredPower(player, equipped, source, coord);
     if(requiredPower < 0) {
       return false;
     }
@@ -406,7 +436,7 @@ public class TravelController {
       }
       return false;
     }
-    if(doClientTeleport(player, coord, source, requiredPower, conserveMomentum)) {
+    if (doClientTeleport(player, hand, coord, source, requiredPower, conserveMomentum)) {
       for (int i = 0; i < 6; ++i) {
         player.worldObj.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
             player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
@@ -416,14 +446,13 @@ public class TravelController {
     return true;
   }
 
-  public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
-    if(!isTravelItemActive(player)) {
+  private int getRequiredPower(EntityPlayer player, ItemStack equipped, TravelSource source, BlockCoord coord) {
+    if (!isTravelItemActive(player, equipped)) {
       return 0;
     }
     int requiredPower;
-    ItemStack staff = player.getHeldItemMainhand();
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
-    int canUsePower = getEnergyInTravelItem(staff);
+    int canUsePower = getEnergyInTravelItem(equipped);
     if(requiredPower > canUsePower) {
       player.addChatComponentMessage(new TextComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
       return -1;
@@ -618,7 +647,7 @@ public class TravelController {
 
     if(isTargetEnderIO()) {
       openEnderIO(null, player.worldObj, player);
-    } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
+    } else if (Config.travelAnchorEnabled && travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");
@@ -684,15 +713,7 @@ public class TravelController {
     return d;
   }
 
-  @SideOnly(Side.CLIENT)
-  private int getMaxTravelDistanceSqForPlayer(EntityPlayerSP player) {
-    if(isTravelItemActive(player)) {
-      return TravelSource.STAFF.getMaxDistanceTravelledSq();
-    }
-    return TravelSource.BLOCK.getMaxDistanceTravelledSq();
-  }
-
-  public boolean doClientTeleport(Entity entity, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+  public boolean doClientTeleport(Entity entity, EnumHand hand, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);
     if(MinecraftForge.EVENT_BUS.post(evt)) {
@@ -700,7 +721,7 @@ public class TravelController {
     }
 
     bc = new BlockCoord(evt.targetX, evt.targetY, evt.targetZ);
-    PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source);
+    PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source, hand);
     PacketHandler.INSTANCE.sendToServer(p);
     return true;
   }

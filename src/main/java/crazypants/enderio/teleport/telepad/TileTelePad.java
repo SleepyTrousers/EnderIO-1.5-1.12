@@ -644,7 +644,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private boolean clientTeleport(Entity entity) {
     if (entity.worldObj.provider.getDimension() == targetDim) {
-      return TravelController.instance.doClientTeleport(entity, target, TravelSource.TELEPAD, 0, false);
+      return TravelController.instance.doClientTeleport(entity, null, target, TravelSource.TELEPAD, 0, false);
     }
     return true;
   }
@@ -686,7 +686,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
       }
     }
-    return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD);
+    return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD, null);
   }
 
   /* ITravelAccessable overrides */

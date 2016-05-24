@@ -334,7 +334,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
-        if (TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
+        if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
           player.swingArm(hand);
           return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
         }
@@ -345,7 +345,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
         lastBlickTick = -1;
       }
       if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if (TravelController.instance.doBlink(stack, player)) {
+        if (TravelController.instance.doBlink(stack, hand, player)) {
           player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }

@@ -3,6 +3,7 @@ package crazypants.enderio.teleport;
 import java.util.List;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
@@ -11,6 +12,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,14 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
-
-  public static boolean isEquipped(EntityPlayer ep) {
-    if(ep == null || ep.getHeldItemMainhand() == null) {
-      return false;
-    }
-    return ep.getHeldItemMainhand().getItem() == EnderIO.itemTravelStaff;
-  }
+public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
 
   private long lastBlickTick = 0;
 
@@ -45,9 +40,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   protected ItemTravelStaff() {
     super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemTravelStaff.name());
-    setRegistryName(ModObject.itemTravelStaff.name());
-    setMaxDamage(16);
+    setUnlocalizedName(ModObject.itemTravelStaff.getUnlocalisedName());
+    setRegistryName(ModObject.itemTravelStaff.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
@@ -71,8 +65,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
         lastBlickTick = -1;
       }
       if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if(TravelController.instance.doBlink(equipped, player)) {          
-          player.swingArm(EnumHand.MAIN_HAND);
+        if (TravelController.instance.doBlink(equipped, hand, player)) {
+          player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
@@ -80,9 +74,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     }
 
     if(world.isRemote) {
-      TravelController.instance.activateTravelAccessable(equipped, world, player, TravelSource.STAFF);
+      TravelController.instance.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
     }
-    player.swingArm(EnumHand.MAIN_HAND);
+    player.swingArm(hand);
     return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
   }
 
@@ -96,24 +90,6 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   }
 
   @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    int res = super.receiveEnergy(container, maxReceive, simulate);
-    if(res != 0 && !simulate) {
-      updateDamage(container);
-    }
-    return res;
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    int res = super.extractEnergy(container, maxExtract, simulate);
-    if(res != 0 && !simulate) {
-      updateDamage(container);
-    }
-    return res;
-  }
-
-  @Override
   public void extractInternal(ItemStack item, int powerUse) {
     int res = Math.max(0, getEnergyStored(item) - powerUse);
     setEnergy(item, res);
@@ -124,17 +100,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
       container.setTagCompound(new NBTTagCompound());
     }
     container.getTagCompound().setInteger("Energy", energy);
-    updateDamage(container);
   }
 
   public void setFull(ItemStack container) {
     setEnergy(container, Config.darkSteelPowerStorageLevelTwo);
-  }
-
-  private void updateDamage(ItemStack stack) {
-    float r = (float) getEnergyStored(stack) / getMaxEnergyStored(stack);
-    int res = 16 - (int) (r * 16);
-    stack.setItemDamage(res);
   }
 
   @Override
@@ -156,13 +125,18 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
 
   @Override
   public boolean isActive(EntityPlayer ep, ItemStack equipped) {
-    return isEquipped(ep);
+    return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public boolean isFull3D() {
     return true;
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
   }
 
 }

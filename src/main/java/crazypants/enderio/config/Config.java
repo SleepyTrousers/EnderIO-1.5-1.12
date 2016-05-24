@@ -151,6 +151,11 @@ public final class Config {
       "minecraft:bedrock",
       "Thaumcraft:blockWarded"
   };
+  public static boolean travelStaffOffhandBlinkEnabled = true;
+  public static boolean travelStaffOffhandTravelEnabled = true;
+  public static boolean travelStaffOffhandEnderIOEnabled = true;
+  public static boolean travelStaffOffhandShowsTravelTargets = true;
+
   public static float travelAnchorZoomScale = 0.2f;
 
   public static int enderIoRange = 8;
@@ -754,6 +759,22 @@ public final class Config {
     travelAnchorZoomScale = config.getFloat("travelAnchorZoomScale", sectionStaff.name, travelAnchorZoomScale, 0, 1,
         "Set the max zoomed size of a travel anchor as an aprox. percentage of screen height");
 
+    travelStaffOffhandBlinkEnabled = config
+        .get(sectionStaff.name, "travelStaffOffhandBlinkEnabled", travelStaffOffhandBlinkEnabled,
+            "If set to false: the travel staff can not be used to shift-right click teleport, or blink, when held in the off-hand.")
+        .getBoolean(travelStaffOffhandBlinkEnabled);
+    travelStaffOffhandTravelEnabled = config
+        .get(sectionStaff.name, "travelStaffOffhandTravelEnabled", travelStaffOffhandTravelEnabled,
+            "If set to false: the travel staff can not be used to click teleport to Travel Anchors, when held in the off-hand.")
+        .getBoolean(travelStaffOffhandTravelEnabled);
+    travelStaffOffhandEnderIOEnabled = config
+        .get(sectionStaff.name, "travelStaffOffhandEnderIOEnabled", travelStaffOffhandEnderIOEnabled,
+            "If set to false: the travel staff can not be used to activate the Ender IO, when held in the off-hand.")
+        .getBoolean(travelStaffOffhandEnderIOEnabled);
+    travelStaffOffhandShowsTravelTargets = config
+        .get(sectionStaff.name, "travelStaffOffhandShowsTravelTargets", travelStaffOffhandShowsTravelTargets,
+            "If set to false: Teleportation targets will not be highlighted for travel items held in the off-hand.")
+        .getBoolean(travelStaffOffhandShowsTravelTargets);
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
         "Range accessible (in blocks) when using the Ender IO.").getInt(enderIoRange);
