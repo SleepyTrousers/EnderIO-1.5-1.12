@@ -159,7 +159,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("pressure_plate_down", new ResourceLocation("minecraft", "block/stone_pressure_plate_down"),
         PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("pressure_plate_inventory", new ResourceLocation("minecraft", "block/stone_pressure_plate_inventory"),
+    PaintRegistry.registerModel("pressure_plate_inventory", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"),
         PaintRegistry.PaintMode.ALL_TEXTURES);
 
     defaultPaints[EnumPressurePlateType.WOOD.ordinal()] = Blocks.WOODEN_PRESSURE_PLATE.getDefaultState();

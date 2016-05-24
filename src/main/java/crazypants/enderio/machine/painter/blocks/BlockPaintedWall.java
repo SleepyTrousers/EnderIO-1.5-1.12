@@ -76,13 +76,15 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
+    //TODO: 1.9 the way the models work has changed
     PaintRegistry.registerModel("wall_post", new ResourceLocation("minecraft", "block/cobblestone_wall_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_n", new ResourceLocation("minecraft", "block/cobblestone_wall_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_ne", new ResourceLocation("minecraft", "block/cobblestone_wall_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_ns", new ResourceLocation("minecraft", "block/cobblestone_wall_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_nse", new ResourceLocation("minecraft", "block/cobblestone_wall_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_nsew", new ResourceLocation("minecraft", "block/cobblestone_wall_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("wall_ns_above", new ResourceLocation("minecraft", "block/cobblestone_wall_ns_above"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_n", new ResourceLocation("minecraft", "block/cobblestone_wall_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_ne", new ResourceLocation("minecraft", "block/cobblestone_wall_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_ns", new ResourceLocation("minecraft", "block/cobblestone_wall_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_nse", new ResourceLocation("minecraft", "block/cobblestone_wall_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_nsew", new ResourceLocation("minecraft", "block/cobblestone_wall_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("wall_ns_above", new ResourceLocation("minecraft", "block/cobblestone_wall_ns_above"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("wall_side", new ResourceLocation("minecraft", "block/cobblestone_wall_side"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_inventory", new ResourceLocation("minecraft", "block/cobblestone_wall_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 

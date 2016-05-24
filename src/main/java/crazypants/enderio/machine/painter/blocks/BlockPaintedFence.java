@@ -87,12 +87,16 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
+    //TODO: 1.9 the way the models work has changed
+//    PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_n", new ResourceLocation("minecraft", "block/oak_fence_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_ne", new ResourceLocation("minecraft", "block/oak_fence_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_ns", new ResourceLocation("minecraft", "block/oak_fence_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_nse", new ResourceLocation("minecraft", "block/oak_fence_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_nsew", new ResourceLocation("minecraft", "block/oak_fence_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
+//    PaintRegistry.registerModel("fence_inventory", new ResourceLocation("minecraft", "block/oak_fence_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("fence_n", new ResourceLocation("minecraft", "block/oak_fence_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("fence_ne", new ResourceLocation("minecraft", "block/oak_fence_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("fence_ns", new ResourceLocation("minecraft", "block/oak_fence_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("fence_nse", new ResourceLocation("minecraft", "block/oak_fence_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("fence_nsew", new ResourceLocation("minecraft", "block/oak_fence_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel("oak_fence_side", new ResourceLocation("minecraft", "block/oak_fence_side"), PaintRegistry.PaintMode.ALL_TEXTURES);    
     PaintRegistry.registerModel("fence_inventory", new ResourceLocation("minecraft", "block/oak_fence_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 

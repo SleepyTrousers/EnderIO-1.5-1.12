@@ -23,6 +23,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -122,7 +124,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     if(isTravelUpgradeActive(player, item, hand)) {
       return EnumActionResult.SUCCESS;
     }    
-    return doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);    
+    EnumActionResult res = doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
+    if(!world.isRemote && (Math.random() < 0.001 || true) ) {      
+      Entity cow = EntityList.createEntityByIDFromName("Pig", world);
+      BlockPos p = pos.offset(side);
+      cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
+      world.spawnEntityInWorld(cow);
+    }
+    return res;    
   }
 
   @SideOnly(Side.CLIENT)
