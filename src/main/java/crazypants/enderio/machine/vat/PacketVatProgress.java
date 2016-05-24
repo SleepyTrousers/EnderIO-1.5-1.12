@@ -59,8 +59,8 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeFloat(progress);
-    ByteBufUtils.writeUTF8String(buf, inputFluidId);
-    ByteBufUtils.writeUTF8String(buf, outputFluidId);    
+    ByteBufUtils.writeUTF8String(buf, inputFluidId == null ? "" : inputFluidId);
+    ByteBufUtils.writeUTF8String(buf, outputFluidId == null ? "" : outputFluidId);    
   }
 
   @Override
@@ -68,7 +68,13 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMe
     super.fromBytes(buf);
     progress = buf.readFloat();
     inputFluidId = ByteBufUtils.readUTF8String(buf);
+    if(inputFluidId.isEmpty()) {
+      inputFluidId = null;
+    }
     outputFluidId = ByteBufUtils.readUTF8String(buf);
+    if(outputFluidId.isEmpty()) {
+      outputFluidId = null;
+    }
   }
 
   @Override

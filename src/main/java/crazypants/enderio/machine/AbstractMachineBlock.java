@@ -227,7 +227,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     int x = pos.getX();
     int y = pos.getY();
     int z = pos.getZ();
-    if(isActive(world, x,y,z)) {
+    if(isActive(world, pos)) {
       float startX = x + 1.0F;
       float startY = y + 1.0F;
       float startZ = z + 1.0F;

@@ -4,6 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -72,6 +74,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
     return 0;
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     int x = pos.getX();
@@ -91,8 +94,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
             startZ + zOffset, 0.0D, 0.0D, 0.0D, 0);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
-          //TODO: 1.9
-//          fx.motionY *= 0.5f;
+          ClientUtil.setParticleVelocityY(fx, ClientUtil.getParticleVelocityY(fx) * 0.5);
         }
 
       }

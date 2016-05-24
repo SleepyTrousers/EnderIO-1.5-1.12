@@ -4,6 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -94,15 +96,14 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
       pX += 0.6f * dir.getFrontOffsetX();
       pZ += 0.6f * dir.getFrontOffsetZ();
 
-//      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
-//      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
+      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
+      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
       int num = rand.nextInt(4) + 2;
       for (int k = 0; k < num; k++) {
         ParticleManager er = Minecraft.getMinecraft().effectRenderer;
         Particle fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
         fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
-        //TODO: 1.9
-        //fx.setVelocity(velX, -0.06, velZ);
+        ClientUtil.setParticleVelocity(fx, velX, -0.06, velZ);
       }
     }
   }

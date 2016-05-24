@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.obelisk.xp;
 
+import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -63,6 +65,7 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
             + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.8f, 0.2f);
+          ClientUtil.setParticleVelocityY(fx, ClientUtil.getParticleVelocityY(fx) * 0.5);
           //TODO: 1.9
 //          fx.motionY *= 0.5f;
         }

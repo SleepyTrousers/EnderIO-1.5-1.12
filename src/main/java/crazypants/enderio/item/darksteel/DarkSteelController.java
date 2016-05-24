@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -412,9 +413,8 @@ public class DarkSteelController {
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
             player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
-        // TODO 1.9 velocity/speed is no longer exposed. use reflection or subclassing to change
-        // fx.setVelocity(player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
-        // player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+        ClientUtil.setParticleVelocity(fx, player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
+             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
         Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));

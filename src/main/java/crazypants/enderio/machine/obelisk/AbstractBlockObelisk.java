@@ -4,6 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.IModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -64,8 +66,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
         Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
         if(fx != null) {
           fx.setRBGColorF(0.2f, 0.2f, 0.8f);
-          //TODO: 1.9
-//          fx.motionY *= 0.5f;
+          ClientUtil.setParticleVelocityY(fx, ClientUtil.getParticleVelocityY(fx) * 0.5);
         }
 
       }

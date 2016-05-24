@@ -89,10 +89,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
             .spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), px, y + 0.5, pz, vx, 0, vz, 0);
         if (fx != null) {
           fx.setRBGColorF(0.3f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f), 0.1f + (rand.nextFloat() * 0.1f));
-          //TODO: 1.9
-//          fx.motionX *= 0.25f;
-//          fx.motionY *= 0.25f;
-//          fx.motionZ *= 0.25f;
+          fx.multiplyVelocity(0.25f);
         }
 
       }
