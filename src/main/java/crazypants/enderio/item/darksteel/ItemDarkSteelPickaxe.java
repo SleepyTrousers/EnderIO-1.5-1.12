@@ -125,7 +125,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       return EnumActionResult.SUCCESS;
     }    
     EnumActionResult res = doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
-    if(!world.isRemote && (Math.random() < 0.001 || true) ) {      
+    if(!world.isRemote && Math.random() < 0.001 ) {      
       Entity cow = EntityList.createEntityByIDFromName("Pig", world);
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
