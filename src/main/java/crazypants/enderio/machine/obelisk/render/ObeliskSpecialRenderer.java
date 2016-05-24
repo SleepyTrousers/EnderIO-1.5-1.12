@@ -60,15 +60,24 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
       world = Minecraft.getMinecraft().theWorld;    
     }
 
-    renderItemStack((T) te, world, x, y, z, tick);
+    
 
     if (te == null) {
       // Being rendered as an Item
       GlStateManager.pushMatrix();
       GlStateManager.color(1, 1, 1);
-      GlStateManager.enableLighting();
-      GlStateManager.disableLighting();
+            
+      
+      GlStateManager.translate(0.5, y, z);
+      GlStateManager.scale(0.625, 0.625, 0.625);
+      GlStateManager.rotate(30, 1, 0, 0);
+      GlStateManager.rotate(135, 0, 1, 0);
 
+      GlStateManager.pushMatrix();
+      renderItemStack((T) te, world, x, y, z, tick);
+      GlStateManager.popMatrix();
+      
+      GlStateManager.disableLighting();
       Tessellator tessellator = Tessellator.getInstance();
       VertexBuffer worldrenderer = tessellator.getBuffer();
       worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
@@ -78,8 +87,9 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
       tessellator.draw();
 
       GlStateManager.enableLighting();
-      // RenderHelper.enableStandardItemLighting();
       GlStateManager.popMatrix();
+    } else {
+      renderItemStack((T) te, world, x, y, z, tick);  
     }
   }
 
