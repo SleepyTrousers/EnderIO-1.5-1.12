@@ -145,9 +145,9 @@ public class MaterialRecipes {
     //Balls
     ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
     if (Config.recipeLevel > 2) {
-      addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
+      addShaped(darkBall, "sss", "s s", "sss", 's', darkSteel);
     } else if (Config.recipeLevel > 1) {
-      addShaped(darkBall, " s ", "s s", " s ", 's', darkSteel);
+      addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
     } else {
       addShaped(darkBall, "ss", "ss", 's', darkSteel);
     }
