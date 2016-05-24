@@ -59,7 +59,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
       if(slt.getSlotType() == Type.ARMOR) {
         armorPiece++;
-        addSlotToContainer(new Slot(playerInv, slt.getIndex(), -15 + armorOffset, 12 + armorPiece * 18) {
+        addSlotToContainer(new Slot(playerInv, slt.getSlotIndex(), -15 + armorOffset, 12 + armorPiece * 18) {
 
           @Override
           public int getSlotStackLimit() {
@@ -77,7 +77,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
           @Override
           @SideOnly(Side.CLIENT)
           public String getSlotTexture() {
-            return ItemArmor.EMPTY_SLOT_NAMES[slt.ordinal() - 2];
+            return ItemArmor.EMPTY_SLOT_NAMES[slt.getIndex()];
           }
         });
       }

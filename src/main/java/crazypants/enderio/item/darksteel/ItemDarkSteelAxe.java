@@ -115,6 +115,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+    System.out.println("ItemDarkSteelAxe.onBlockStartBreak: ");
     if (!player.worldObj.isRemote && player.isSneaking()) {
       IBlockState bs = player.worldObj.getBlockState(pos);
       Block block = bs.getBlock();

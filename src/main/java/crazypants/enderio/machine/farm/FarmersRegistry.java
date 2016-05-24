@@ -30,16 +30,16 @@ public final class FarmersRegistry {
   
   public static void addFarmers() {
 
-    addExtraUtilities();
-    addNatura();
-    addTiC();
-    addStillHungry();
-    addIC2();
-    addMFR();
-    addThaumcraft();
-    addFlowers();
-    addGrowableOres();
-    addImmersiveEngineering();
+//    addExtraUtilities();
+//    addNatura();
+//    addTiC();
+//    addStillHungry();
+//    addIC2();
+//    addMFR();
+//    addThaumcraft();
+//    addFlowers();
+//    addGrowableOres();
+//    addImmersiveEngineering();
 //
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));

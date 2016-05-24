@@ -418,7 +418,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       setNotification("noPower");
       return;
     }
-    if("noPower".equals(notification)) {
+    if(EnderIO.lang.localize("farm.note.noPower").equals(notification)) {
       clearNotification();
     }
 

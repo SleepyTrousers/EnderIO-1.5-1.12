@@ -11,15 +11,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockNewLeaf;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
@@ -157,13 +153,7 @@ public class TreeFarmer implements IFarmerJoe {
       }
 
       if (wasAxed && !wasWood) {
-        wasAxed = Config.farmAxeDamageOnLeafBreak;          
-        IBlockState bs = farm.getBlockState(coord);
-        if(bs.getValue(BlockNewLeaf.VARIANT) == BlockPlanks.EnumType.OAK || bs.getValue(BlockOldLeaf.VARIANT) == BlockPlanks.EnumType.OAK) {
-          if(farm.getWorld().rand.nextInt(200) == 0) {
-            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.APPLE)));
-          }
-        }
+        wasAxed = Config.farmAxeDamageOnLeafBreak;
       }
       
       farm.actionPerformed(wasWood || wasSheared);
