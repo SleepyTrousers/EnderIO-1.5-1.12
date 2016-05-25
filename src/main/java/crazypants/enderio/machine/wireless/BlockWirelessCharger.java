@@ -10,6 +10,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
@@ -21,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -188,6 +191,18 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+    return PaintHelper.addHitEffects(state, world, target, effectRenderer);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+    return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
   // ///////////////////////////////////////////////////////////////////////

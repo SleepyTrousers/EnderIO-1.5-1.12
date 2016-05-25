@@ -11,6 +11,7 @@ import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.SmartModelAttacher;
@@ -20,6 +21,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -175,6 +177,18 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+    return PaintHelper.addHitEffects(state, world, target, effectRenderer);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+    return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
 }

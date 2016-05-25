@@ -12,6 +12,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.paint.render.UVLock;
 import crazypants.enderio.render.EnumRenderPart;
@@ -32,6 +33,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -319,6 +321,18 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   @SideOnly(Side.CLIENT)
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
     return null;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+    return PaintHelper.addHitEffects(state, world, target, effectRenderer);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+    return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
 }

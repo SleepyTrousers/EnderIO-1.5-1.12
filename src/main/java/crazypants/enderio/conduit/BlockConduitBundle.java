@@ -278,7 +278,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         d2, 0, 0, 0, 0);
     digFX.init().multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
     digFX.setParticleTexture(tex);
-    effectRenderer.addEffect(digFX);
   }
 
   @SideOnly(Side.CLIENT)

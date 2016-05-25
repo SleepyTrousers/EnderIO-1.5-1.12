@@ -14,6 +14,7 @@ import crazypants.enderio.IModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode;
@@ -32,7 +33,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -42,6 +43,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -49,7 +51,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider, ISmartRenderAwareBlock, IBlockColor {
+    IWailaInfoProvider, ISmartRenderAwareBlock {
   
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
 
@@ -344,19 +346,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return this instanceof IPaintable ? true : super.canRenderInLayer(state, layer);
   }
 
-  @Override
   @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int renderPass) {
-    if (this instanceof IPaintable && worldIn != null && pos != null) {
-      IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-      if (paintSource != null && paintSource.getBlock() instanceof IBlockColor) {
-        try {
-          return ((IBlockColor)paintSource.getBlock()).colorMultiplier(state, worldIn, pos, renderPass);
-        } catch (Throwable e) {
-        }
-      }
-    }
-    return -1;
+  @Override
+  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+    return PaintHelper.addHitEffects(state, world, target, effectRenderer);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+    return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
   // ///////////////////////////////////////////////////////////////////////
