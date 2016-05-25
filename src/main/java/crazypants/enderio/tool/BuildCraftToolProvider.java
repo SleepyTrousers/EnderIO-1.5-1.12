@@ -1,12 +1,9 @@
 package crazypants.enderio.tool;
 
-import java.lang.reflect.Method;
-
-import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.api.tool.ITool;
 import net.minecraft.item.ItemStack;
 
-public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
+public class BuildCraftToolProvider implements IToolProvider {
 
 //  private BCWrench wrench = new BCWrench();
 
@@ -28,37 +25,4 @@ public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
     return null;
   }
 
-  @Override
-  public Class<?> getInterface() {
-    return IToolWrench.class;    
-  }
-
-  @Override
-  public Object handleMethod(ITool yetaWrench, Method method, Object[] args) {
-    if("canWrench".equals(method.getName())) {
-      return true;
-    } else if("wrenchUsed".equals(method.getName())) {
-      return null;
-    }
-    return null;
-  }
-
-  //TODO: 1.9
-//  public static class BCWrench implements ITool {
-//
-//    @Override
-//    public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {
-//      return ((IToolWrench) stack.getItem()).canWrench(player, pos);      
-//    }
-//
-//    @Override
-//    public void used(ItemStack stack, EntityPlayer player, BlockPos pos) {
-//      ((IToolWrench) stack.getItem()).wrenchUsed(player, pos);      
-//    }
-//    
-//    @Override
-//    public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
-//      return true;
-//    }
-//  }
 }
