@@ -9,6 +9,7 @@ import com.enderio.core.common.ContainerEnder;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ShadowInventory;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -21,6 +22,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerCapBank extends ContainerEnder<TileCapBank> {
+
+  private final static int SIDE_SLOT_Y_OFFSET = 12;
+
+  private static int sideSlotY(int no) {
+    return SIDE_SLOT_Y_OFFSET + no * 18;
+  }
 
   private InventoryImpl inv;
 
@@ -51,16 +58,17 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     }
 
     int armorOffset = 21;
+
+    // charging slots
     for (int i = 0; i < 4; i++) {
       addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i * 20, 59));
     }
 
-    
     int armorPiece=0;
     for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
       if(slt.getSlotType() == Type.ARMOR) {
         armorPiece++;
-        addSlotToContainer(new Slot(playerInv, slt.getIndex() + 36, -15 + armorOffset,  84 -armorPiece * 18) {
+        addSlotToContainer(new Slot(playerInv, 36 + slt.getIndex(), -15 + armorOffset, sideSlotY(3 - slt.getIndex())) {
 
           @Override
           public int getSlotStackLimit() {
@@ -84,11 +92,18 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       }
     }
     
-   
+    addSlotToContainer(new Slot(playerInv, 40, -15 + armorOffset, sideSlotY(4)) {
+      @Override
+      @Nullable
+      @SideOnly(Side.CLIENT)
+      public String getSlotTexture() {
+        return "minecraft:items/empty_armor_slot_shield";
+      }
+    });
 
     if (hasBaublesSlots()) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
-        addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, 84 + i * 18) {
+        addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, sideSlotY(5 + i)) {
           @Override
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
@@ -113,12 +128,13 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    int startPlayerSlot = 4;
+    int otherSlots = 4 + 5; // charging + armor + off-hand
+    int startBaublesSlot = otherSlots;
+    int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
+    int startPlayerSlot = baubles == null ? otherSlots : endBaublesSlot + 1;
     int endPlayerSlot = startPlayerSlot + 26;
     int startHotBarSlot = endPlayerSlot + 1;
     int endHotBarSlot = startHotBarSlot + 9;
-    int startBaublesSlot = endHotBarSlot + 1;
-    int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
 
     ItemStack copystack = null;
     Slot slot = inventorySlots.get(slotIndex);
@@ -141,28 +157,26 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
       } else {
         // Check from inv-> charge then inv->hotbar or hotbar->inv
-        if (slotIndex >= startPlayerSlot) {          
-          if (!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
+        if (!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
 
-            if (slotIndex <= endPlayerSlot) {
-              if (/*
-                   * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
-                   */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
-                return null;
-              }
-            } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
-              if (/*
-                   * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
-                   */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-                return null;
-              }
-            } else if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
-              if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-                return null;
-              }
+          if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
+            if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              return null;
             }
-
+          } else if (slotIndex <= endPlayerSlot) {
+            if (/*
+                 * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                 */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+              return null;
+            }
+          } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+            if (/*
+                 * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
+                 */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              return null;
+            }
           }
+
         }
       }
 
@@ -185,11 +199,10 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   }
 
   private boolean mergeItemStackIntoArmor(EntityPlayer entityPlayer, ItemStack origStack, int slotIndex) {
-    if (origStack == null || !(origStack.getItem() instanceof ItemArmor)) {
+    if (origStack == null || EntityLiving.getSlotForItemStack(origStack).getSlotType() != EntityEquipmentSlot.Type.ARMOR) {
       return false;
     }
-    ItemArmor armor = (ItemArmor) origStack.getItem();
-    int index = armor.armorType.getIndex();
+    int index = EntityLiving.getSlotForItemStack(origStack).getIndex();
     ItemStack[] ai = entityPlayer.inventory.armorInventory;
     if (ai[index] == null) {
       ai[index] = origStack.copy();
