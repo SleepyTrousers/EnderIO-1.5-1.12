@@ -1,13 +1,14 @@
 package crazypants.enderio.item;
 
+import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 
 @SideOnly(Side.CLIENT)
 public class MagnetLayer implements IRenderUpgrade {
@@ -35,8 +36,7 @@ public class MagnetLayer implements IRenderUpgrade {
     GlStateManager.scale(0.75f, 0.9f, 2);
     GlStateManager.translate(0.0F, 2.7f * 0.0625F, .49 * 0.0625F);
 
-    Minecraft.getMinecraft().getItemRenderer()
-        .renderItem(entitylivingbaseIn, piece, net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.HEAD);
+    Minecraft.getMinecraft().getItemRenderer().renderItem(entitylivingbaseIn, piece, TransformType.NONE);
 
     GlStateManager.popMatrix();
   }
