@@ -414,7 +414,7 @@ public class IoConfigRenderer {
 
     for (BlockCoord bc : blocks) {
       IBlockState bs = world.getBlockState(bc.getBlockPos());
-      Block block = bs.getBlock();
+      Block block = bs.getBlock();      
       if (block != null && block.canRenderInLayer(bs, layer)) {
         renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
       }
@@ -427,12 +427,12 @@ public class IoConfigRenderer {
   public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
 
     try {
-      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
-      EnumBlockRenderType type = state.getBlock().getRenderType(state);
+      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();      
+      EnumBlockRenderType type = state.getRenderType();
       if (type != EnumBlockRenderType.MODEL) {
         blockrendererdispatcher.renderBlock(state, pos, blockAccess, worldRendererIn);
         return;
-      }
+      }      
 
       // We only want to change one param here, the check sides
       IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);

@@ -170,8 +170,12 @@ public class FillGaugeBakery {
     while (true) {
       other = other.up();
       IBlockState state = world.getBlockState(other);
-      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
-          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(state, world, other.offset(face), face.getOpposite())) {
+      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
+        break;
+      }      
+      IBlockState infrontOfOther = world.getBlockState(other.offset(face));
+      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());      
+      if(isCovered) {
         break;
       }
       TileEntity tileEntity = world.getTileEntity(other);
@@ -186,10 +190,14 @@ public class FillGaugeBakery {
     while (true) {
       other = other.down();
       IBlockState state = world.getBlockState(other);
-      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType
-          || world.getBlockState(other.offset(face)).getBlock().isSideSolid(state, world, other.offset(face), face.getOpposite())) {
+      if (!(state.getBlock() instanceof BlockCapBank) || state.getValue(CapBankType.KIND) != bankType) {
         break;
-      }
+      }      
+      IBlockState infrontOfOther = world.getBlockState(other.offset(face));
+      boolean isCovered = infrontOfOther.isSideSolid(world, other.offset(face), face.getOpposite());      
+      if(isCovered) {
+        break;
+      }      
       TileEntity tileEntity = world.getTileEntity(other);
       if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
         break;
