@@ -60,7 +60,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
       if(slt.getSlotType() == Type.ARMOR) {
         armorPiece++;
-        addSlotToContainer(new Slot(playerInv, slt.getSlotIndex(), -15 + armorOffset, 12 + armorPiece * 18) {
+        addSlotToContainer(new Slot(playerInv, slt.getIndex() + 36, -15 + armorOffset,  84 -armorPiece * 18) {
 
           @Override
           public int getSlotStackLimit() {
@@ -71,7 +71,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             if (par1ItemStack == null) {
               return false;
-            }
+            }            
             return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
           }
 
@@ -141,7 +141,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
       } else {
         // Check from inv-> charge then inv->hotbar or hotbar->inv
-        if (slotIndex >= startPlayerSlot) {
+        if (slotIndex >= startPlayerSlot) {          
           if (!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
 
             if (slotIndex <= endPlayerSlot) {
@@ -189,7 +189,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       return false;
     }
     ItemArmor armor = (ItemArmor) origStack.getItem();
-    int index = 3 - armor.armorType.ordinal() - 2;
+    int index = armor.armorType.getIndex();
     ItemStack[] ai = entityPlayer.inventory.armorInventory;
     if (ai[index] == null) {
       ai[index] = origStack.copy();
