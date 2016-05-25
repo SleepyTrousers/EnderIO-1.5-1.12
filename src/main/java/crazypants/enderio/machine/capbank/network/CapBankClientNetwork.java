@@ -4,11 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -21,6 +17,11 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -261,12 +262,12 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isOutputEnabled(EnumFacing direction) {
+  public boolean isOutputEnabled(@Nonnull EnumFacing direction) {
     return isOutputEnabled();
   }
 
   @Override
-  public boolean isInputEnabled(EnumFacing direction) {
+  public boolean isInputEnabled(@Nonnull EnumFacing direction) {
     return isInputEnabled();
   }
 
@@ -276,7 +277,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isNetworkControlledIo(EnumFacing direction) {
+  public boolean isNetworkControlledIo(@Nonnull EnumFacing direction) {
     return true;
   }
 

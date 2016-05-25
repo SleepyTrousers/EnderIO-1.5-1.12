@@ -2,6 +2,13 @@ package crazypants.enderio.machine.capbank;
 
 import java.awt.Point;
 
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.ContainerEnder;
+
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.util.BaublesUtil;
+import crazypants.util.ShadowInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -12,12 +19,6 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.common.ContainerEnder;
-
-import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.util.BaublesUtil;
-import crazypants.util.ShadowInventory;
 
 public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
@@ -67,7 +68,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
           }
 
           @Override
-          public boolean isItemValid(ItemStack par1ItemStack) {
+          public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             if (par1ItemStack == null) {
               return false;
             }
@@ -89,7 +90,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, 84 + i * 18) {
           @Override
-          public boolean isItemValid(ItemStack par1ItemStack) {
+          public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
           }
         });
@@ -204,7 +205,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemStack) {
+    public boolean isItemValid(@Nullable ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }

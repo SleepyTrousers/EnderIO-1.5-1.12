@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIO;
@@ -74,7 +76,8 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   }
 
   @Override
-  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side,
+  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem,
+      EnumFacing side,
       float hitX, float hitY, float hitZ) {
     playerIn.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, worldIn, pos.getX(), pos.getY(), pos.getZ());
     return true;

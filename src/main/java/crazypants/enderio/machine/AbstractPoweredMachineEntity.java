@@ -1,12 +1,6 @@
 package crazypants.enderio.machine;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -22,6 +16,13 @@ import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 
 @Storable
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
@@ -143,7 +144,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();

@@ -1,15 +1,17 @@
 package crazypants.enderio.conduit.gui.item;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class InventoryUpgrades implements IInventory {
 
@@ -64,7 +66,7 @@ public class InventoryUpgrades implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack var2) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack var2) {
     switch (slot) {
     case 0:
       itemConduit.setSpeedUpgrade(dir, var2);

@@ -2,6 +2,8 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -139,7 +141,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -147,7 +149,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
@@ -169,20 +171,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
     return getPaintSource(getDefaultState(), world, pos);
   }
-
-  // TODO 1.9
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-  // IBlockState paintSource = getPaintSource(null, worldIn, pos);
-  // if (paintSource != null) {
-  // try {
-  // return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-  // } catch (Throwable e) {
-  // }
-  // }
-  // return super.colorMultiplier(worldIn, pos, renderPass);
-  // }
 
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {

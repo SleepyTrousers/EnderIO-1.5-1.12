@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -36,7 +38,7 @@ public class InventoryCraftingWrapper extends InventoryCrafting {
   }
 
   @Override
-  public void setInventorySlotContents(int index, ItemStack stack) {
+  public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
     backing.setInventorySlotContents(index, stack);
     this.eventHandler.onCraftMatrixChanged(this);
   }

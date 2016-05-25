@@ -2,16 +2,17 @@ package crazypants.enderio.machine.obelisk.attractor;
 
 import java.util.List;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> {
 
@@ -22,7 +23,7 @@ public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> 
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemStack) {
+    public boolean isItemValid(@Nullable ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }

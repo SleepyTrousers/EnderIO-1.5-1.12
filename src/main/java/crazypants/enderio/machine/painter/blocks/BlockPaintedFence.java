@@ -139,7 +139,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
     super.harvestBlock(worldIn, player, pos, state, te, stack);
     super.removedByPlayer(state, worldIn, pos, player, true);
   }
@@ -161,7 +161,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -169,7 +169,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 

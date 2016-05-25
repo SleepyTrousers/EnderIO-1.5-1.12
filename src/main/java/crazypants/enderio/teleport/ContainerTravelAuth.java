@@ -3,6 +3,8 @@ package crazypants.enderio.teleport;
 import java.awt.Point;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
@@ -56,7 +58,7 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     }
 
     @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack) {
+    public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
       if(itemstack != null) {
         items[i] = itemstack.copy();
         items[i].stackSize = 0;

@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
@@ -565,12 +567,12 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isOutputEnabled(EnumFacing direction) {
+  public boolean isOutputEnabled(@Nonnull EnumFacing direction) {
     return isOutputEnabled();
   }
 
   @Override
-  public boolean isInputEnabled(EnumFacing direction) {
+  public boolean isInputEnabled(@Nonnull EnumFacing direction) {
     return isInputEnabled();
   }
 
@@ -580,7 +582,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public boolean isNetworkControlledIo(EnumFacing direction) {
+  public boolean isNetworkControlledIo(@Nonnull EnumFacing direction) {
     //This is handled at the block level based on the IO mode
     return true;
   }

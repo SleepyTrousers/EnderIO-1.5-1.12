@@ -3,6 +3,8 @@ package crazypants.enderio.render.pipeline;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -34,7 +36,7 @@ public class CollectedQuadBakedBlockModel implements IBakedModel {
   }
 
   @Override
-  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return quads.getQuads(side, MinecraftForgeClient.getRenderLayer());
   }
 

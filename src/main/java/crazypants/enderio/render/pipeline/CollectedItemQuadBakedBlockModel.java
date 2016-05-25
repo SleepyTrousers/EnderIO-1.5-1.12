@@ -3,6 +3,7 @@ package crazypants.enderio.render.pipeline;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,7 +38,7 @@ public class CollectedItemQuadBakedBlockModel implements IPerspectiveAwareModel 
   }
 
   @Override
-  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return quads.getQuads(side);
   }
 

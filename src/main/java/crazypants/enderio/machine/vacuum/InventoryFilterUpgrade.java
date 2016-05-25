@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class InventoryFilterUpgrade implements IInventory {
 
@@ -54,7 +56,7 @@ public class InventoryFilterUpgrade implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack is) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack is) {
     if (slot == 0) {
       te.setFilterItem(is);
     }

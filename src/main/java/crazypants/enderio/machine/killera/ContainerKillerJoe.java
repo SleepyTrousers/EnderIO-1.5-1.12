@@ -3,6 +3,8 @@ package crazypants.enderio.machine.killera;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -28,7 +30,7 @@ public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> 
   protected void addMachineSlots(InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 80, 25) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });

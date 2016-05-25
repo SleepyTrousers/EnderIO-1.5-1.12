@@ -21,7 +21,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.util.NullHelper;
 import crazypants.util.ResettingFlag;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
@@ -103,7 +102,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public IoMode toggleIoModeForFace(EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
     IoMode curMode = getIoMode(faceHit);
     IoMode mode = curMode.next();
     while (!supportsMode(faceHit, mode)) {
@@ -114,12 +113,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
+  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     return true;
   }
 
   @Override
-  public void setIoMode(EnumFacing faceHit, IoMode mode) {
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     if (mode == IoMode.NONE && faceModes == null) {
       return;
     }
@@ -144,7 +143,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public IoMode getIoMode(EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
     if (faceModes == null) {
       return IoMode.NONE;
     }
@@ -187,8 +186,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public final boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    NullHelper.untrusted(itemstack, "Parameter ItemStack to IInventory.isItemValidForSlot()");
+  public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
+    if (itemstack == null || itemstack.getItem() == null) {
+      return false;
+    }
     if (slotDefinition.isUpgradeSlot(i)) {
       final ICapacitorData capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(itemstack);
       return (itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0) || capacitorData != null; // TODO level
@@ -408,7 +409,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       target = new InventoryWrapper((IInventory) te);
     }
 
-    int[] targetSlots = NullHelper.untrust(target.getSlotsForFace(dir.getOpposite()));
+    int[] targetSlots = target.getSlotsForFace(dir.getOpposite());
     if (targetSlots == null) {
       return false;
     }
@@ -537,7 +538,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   // ------------------------------------------------------------------------------
 
   @Override
-  public boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
+  public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -622,11 +623,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public void openInventory(@Nonnull EntityPlayer player) {
+  public void openInventory(EntityPlayer player) {
   }
 
   @Override
-  public void closeInventory(@Nonnull EntityPlayer player) {
+  public void closeInventory(EntityPlayer player) {
   }
 
   @Override
@@ -645,7 +646,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public @Nonnull int[] getSlotsForFace(@Nonnull EnumFacing var1) {
+  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
     if (isSideDisabled(var1)) {
       return new int[0];
     }
@@ -653,7 +654,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {
     if (isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
       return false;
     }
@@ -669,7 +670,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
+  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
     if (isSideDisabled(side)) {
       return false;
     }

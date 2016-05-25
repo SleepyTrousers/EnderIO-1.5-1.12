@@ -1,5 +1,7 @@
 package crazypants.util;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.Util;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +37,7 @@ public class ShadowInventory implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+  public void setInventorySlotContents(int p_70299_1_, @Nullable ItemStack p_70299_2_) {
     items[p_70299_1_] = p_70299_2_;
   }
 

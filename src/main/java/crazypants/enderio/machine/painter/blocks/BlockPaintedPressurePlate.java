@@ -292,7 +292,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack item) {
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack item) {
     super.harvestBlock(worldIn, player, pos, state, te, item);
     super.removedByPlayer(state, worldIn, pos, player, true);
   }
@@ -316,7 +316,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       if (defaultPaints[getType(world, pos).ordinal()] == paintSource) {
@@ -328,7 +328,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     if (defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()] == paintSource) {
       PainterUtil2.setSourceBlock(stack, null);
     } else {

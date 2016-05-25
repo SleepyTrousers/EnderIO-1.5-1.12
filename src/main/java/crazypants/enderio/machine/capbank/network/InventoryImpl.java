@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.capbank.network;
 
+import javax.annotation.Nullable;
+
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class InventoryImpl implements IInventory {
 
@@ -95,7 +97,7 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack itemstack) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack itemstack) {
     if(inventory == null) {
       return;
     }

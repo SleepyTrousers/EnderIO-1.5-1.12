@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
@@ -125,7 +126,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockKillerJoe.getUnlocalisedName();
   }
 
@@ -164,7 +165,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static final int[] slots = new int[1];
 
   @Override
-  public int[] getSlotsForFace(EnumFacing var1) {
+  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
     return slots;
   }
 
@@ -453,14 +454,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
     boolean res = super.doPull(dir);
     FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
     boolean res = super.doPush(dir);
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);

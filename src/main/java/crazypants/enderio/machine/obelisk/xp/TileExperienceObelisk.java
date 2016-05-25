@@ -1,14 +1,6 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
@@ -22,6 +14,15 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
 public class TileExperienceObelisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
@@ -34,7 +35,7 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockExperienceObelisk.getUnlocalisedName();
   }
 
@@ -58,14 +59,14 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
   }
 
   @Override
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
     boolean res = super.doPull(dir);
     FluidUtil.doPull(this, dir, Config.fluidConduitMaxIoRate);
     return res;
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
     boolean res = super.doPush(dir);
     FluidUtil.doPush(this, dir, Config.fluidConduitMaxIoRate);
     return res;

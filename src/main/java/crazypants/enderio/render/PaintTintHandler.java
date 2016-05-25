@@ -1,5 +1,7 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -39,7 +41,7 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
   }
 
   @Override
-  public int colorMultiplier(IBlockState state, IBlockAccess world, BlockPos pos, int tintIndex) {
+  public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
     if (state == null || world == null || pos == null) {
       return -1;
     }

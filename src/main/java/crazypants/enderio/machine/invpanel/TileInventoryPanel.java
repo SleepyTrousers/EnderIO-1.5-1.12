@@ -1,23 +1,9 @@
 package crazypants.enderio.machine.invpanel;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
-
 import java.util.ArrayList;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 
@@ -39,6 +25,21 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
@@ -131,7 +132,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slot < SLOT_CRAFTING_RESULT && eventHandler != null) {
       eventHandler.onCraftMatrixChanged(this);
@@ -329,21 +330,21 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockInventoryPanel.getUnlocalisedName();
   }
 
   @Override
-  public IoMode getIoMode(EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
     return face == getIODirection() ? IoMode.NONE : IoMode.DISABLED;
   }
 
   @Override
-  public void setIoMode(EnumFacing faceHit, IoMode mode) {
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
   }
 
   @Override
-  public IoMode toggleIoModeForFace(EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
     return getIoMode(faceHit);
   }
 

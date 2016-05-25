@@ -73,7 +73,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
     return AABB;
   }
 
@@ -100,7 +100,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public int damageDropped(@Nonnull IBlockState state) {
+  public int damageDropped(IBlockState state) {
     SkullType var = state.getValue(VARIANT);
     return var.ordinal();
   }
@@ -113,7 +113,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public int getMetaFromState(@Nonnull IBlockState state) {
+  public int getMetaFromState(IBlockState state) {
     SkullType var = state.getValue(VARIANT);
     return var.ordinal();
   }
@@ -124,18 +124,17 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
-  public @Nonnull EnumBlockRenderType getRenderType(@Nonnull IBlockState bs) {
+  public @Nonnull EnumBlockRenderType getRenderType(IBlockState bs) {
     return EnumBlockRenderType.MODEL;
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
     float facingYaw = -22.5f * inc;
     TileEndermanSkull te = getTileEntity(world, pos);
@@ -151,7 +150,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Deprecated
   @Override
-  public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World worldIn, @Nonnull BlockPos pos) {
+  public @Nonnull AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {
     TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
     if (tileEntity != null) {
       tileEntity.lookingAt = 20;

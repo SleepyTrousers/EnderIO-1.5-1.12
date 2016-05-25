@@ -3,23 +3,6 @@ package crazypants.enderio.machine.wireless;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -34,9 +17,24 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, ISmartRenderAwareBlock,
-    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IBlockColor{
+    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockWirelessCharger create() {
 
@@ -161,7 +159,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
     TileWirelessCharger te = getTileEntity(world, pos);
     if (te != null) {
       te.setPaintSource(paintSource);
@@ -169,7 +167,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
@@ -190,21 +188,6 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int renderPass) {
-    if (this instanceof IPaintable) {
-      IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-      if (paintSource != null && paintSource.getBlock() instanceof IBlockColor) {
-        try {
-          return ((IBlockColor)paintSource.getBlock()).colorMultiplier(state, worldIn, pos, renderPass);
-        } catch (Throwable e) {
-        }
-      }
-    }
-    return -1;
   }
 
   // ///////////////////////////////////////////////////////////////////////

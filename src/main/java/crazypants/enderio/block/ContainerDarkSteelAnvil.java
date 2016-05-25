@@ -2,6 +2,10 @@ package crazypants.enderio.block;
 
 import java.lang.reflect.Field;
 
+import javax.annotation.Nullable;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
@@ -48,7 +50,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
     this.inventorySlots.set(2, new Slot(outputSlot, 2, 134, 47) {
 
       @Override
-      public boolean isItemValid(ItemStack stack) {
+      public boolean isItemValid(@Nullable ItemStack stack) {
         return false;
       }
 

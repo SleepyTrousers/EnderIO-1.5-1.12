@@ -67,7 +67,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   @Override
-  public int getMetadata(@Nonnull ItemStack stack) {
+  public int getMetadata(ItemStack stack) {
     if (CapturedMob.containsSoul(stack)) {
       return 1;
     }
@@ -76,15 +76,14 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(@Nonnull ItemStack item) {
+  public boolean hasEffect(ItemStack item) {
     return CapturedMob.containsSoul(item);
   }
   
   
 
   @Override
-  public @Nonnull EnumActionResult onItemUse(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX,
+  public @Nonnull EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {
 
     if (world.isRemote || player == null) {
@@ -118,7 +117,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   @Override
-  public boolean itemInteractionForEntity(@Nonnull ItemStack item, @Nonnull EntityPlayer player, @Nonnull EntityLivingBase entity, @Nonnull EnumHand hand) {
+  public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
     if (entity.worldObj.isRemote || player == null) {
       return false;
     }
@@ -182,7 +181,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
     CapturedMob capturedMob = CapturedMob.create(par1ItemStack);
     if (capturedMob != null) {
       par3List.add(capturedMob.getDisplayName());

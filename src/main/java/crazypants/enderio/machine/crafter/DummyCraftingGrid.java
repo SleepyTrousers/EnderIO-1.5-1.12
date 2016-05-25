@@ -95,20 +95,20 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(@Nonnull EntityPlayer var1) {
+  public boolean isUseableByPlayer(EntityPlayer var1) {
     return true;
   }
 
   @Override
-  public void openInventory(@Nonnull EntityPlayer e) {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(@Nonnull EntityPlayer e) {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int var1, @Nonnull ItemStack var2) {
+  public boolean isItemValidForSlot(int var1, ItemStack var2) {
     return var1 < 9;
   }
 

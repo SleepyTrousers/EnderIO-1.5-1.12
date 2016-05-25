@@ -1,17 +1,13 @@
 package crazypants.enderio.machine.generator.stirling;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
+
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
@@ -21,10 +17,15 @@ import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDistributor;
-
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -47,12 +48,12 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockStirlingGenerator.getUnlocalisedName();
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return "Stirling Generator";
   }
 
@@ -62,7 +63,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public int[] getSlotsForFace(EnumFacing var1) {
+  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
     return new int[] { 0 };
   }
 
@@ -163,7 +164,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
     if (inventory[0] == null) {
       return false;
     }

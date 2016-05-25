@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -15,19 +17,19 @@ public class PainterContainer extends AbstractMachineContainer<TileEntityPainter
   protected void addMachineSlots(InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 67, 34) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 1, 38, 34) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(1, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 2, 121, 34) {
       @Override
-      public boolean isItemValid(ItemStack par1ItemStack) {
+      public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
       }
     });

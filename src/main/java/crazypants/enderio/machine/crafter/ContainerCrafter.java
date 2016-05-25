@@ -4,15 +4,16 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
@@ -68,7 +69,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     }
     addSlotToContainer(new Slot(getInv(), 9, 172, 34) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return false;
       }
     });
@@ -81,7 +82,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemStack) {
+    public boolean isItemValid(@Nullable ItemStack itemStack) {
 
       ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
       if (refStack == null || itemStack == null) {

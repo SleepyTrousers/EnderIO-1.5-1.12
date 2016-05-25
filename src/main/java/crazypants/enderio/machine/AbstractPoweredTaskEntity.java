@@ -1,17 +1,11 @@
 package crazypants.enderio.machine;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
@@ -19,6 +13,13 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 @Storable
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
@@ -49,7 +50,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   @Override
-  public int[] getSlotsForFace(EnumFacing dir) {
+  public @Nonnull int[] getSlotsForFace(EnumFacing dir) {
     IoMode mode = getIoMode(dir);
     if(mode == IoMode.DISABLED) {
       return new int[0];
@@ -386,7 +387,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slotDefinition.isInputSlot(slot)) {
       cachedNextRecipe = null;

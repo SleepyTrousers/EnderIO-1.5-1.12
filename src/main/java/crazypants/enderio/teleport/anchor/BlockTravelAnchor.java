@@ -260,7 +260,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
     T te = getTileEntity(world, pos);
     if (te != null) {
       ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -268,7 +268,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
@@ -290,20 +290,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
   }
-
-  // TODO 1.9: this involves registering the block in init() (not preinit)
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass) {
-  // IBlockState paintSource = getPaintSource(worldIn.getBlockState(pos), worldIn, pos);
-  // if (paintSource != null) {
-  // try {
-  // return paintSource.getBlock().colorMultiplier(worldIn, pos, renderPass);
-  // } catch (Throwable e) {
-  // }
-  // }
-  // return super.colorMultiplier(worldIn, pos, renderPass);
-  // }
 
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END

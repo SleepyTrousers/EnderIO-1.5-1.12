@@ -136,15 +136,10 @@ public interface Scaler {
       }
 
       try {
-        final Factory valueOf = Factory.valueOf(s);
-        if (valueOf != null) {
-          return valueOf;
-        }
+        return Factory.valueOf(s);
       } catch (Exception e) {
         return null;
       }
-
-      return null;
     }
 
   }

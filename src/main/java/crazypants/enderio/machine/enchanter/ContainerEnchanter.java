@@ -2,6 +2,8 @@ package crazypants.enderio.machine.enchanter;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
@@ -32,7 +34,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       }
 
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return te.isItemValidForSlot(0, itemStack);
       }
 
@@ -46,7 +48,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
     addSlotToContainer(new Slot(te, 1, 76, 35) {
 
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return te.isItemValidForSlot(1, itemStack);
       }
 
@@ -65,7 +67,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       }
 
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return false;
       }
 

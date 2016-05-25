@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -106,7 +108,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       i++;
       addSlotToContainer(p.s = new Slot(getInv(), slot, p.x, p.y) {
         @Override
-        public boolean isItemValid(ItemStack itemStack) {
+        public boolean isItemValid(@Nullable ItemStack itemStack) {
           return getInv().isItemValidForSlot(slot, itemStack);
         }
 

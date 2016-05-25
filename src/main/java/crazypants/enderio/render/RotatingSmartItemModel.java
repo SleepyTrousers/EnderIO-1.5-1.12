@@ -2,6 +2,7 @@ package crazypants.enderio.render;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
@@ -36,7 +37,7 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return parent.getQuads(state, side, rand);
   }
 

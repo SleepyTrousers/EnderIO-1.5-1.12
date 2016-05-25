@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -113,8 +112,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   
   @Override
-  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
-      @Nullable ItemStack heldItem, @Nonnull EnumFacing side,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem,
+      EnumFacing side,
       float hitX, float hitY, float hitZ) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if(!world.isRemote) {
@@ -131,12 +130,12 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   
   
   @Override
-  public boolean rotateBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing axis) {
+  public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
   return false;
   }
     
   @Override
-  public boolean removedByPlayer(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(pos.down());
       if(te instanceof TileTransceiver) {
@@ -153,7 +152,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 //  }
 
   @Override
-  public boolean canPlaceBlockAt(@Nonnull World world, @Nonnull BlockPos pos) {
+  public boolean canPlaceBlockAt(World world, BlockPos pos) {
     return world.getBlockState(pos.down()).getBlock() == EnderIO.blockTransceiver;
   }
 
@@ -168,7 +167,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   }
 
   @Override
-  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock) {
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
     if(world.isRemote) {
       return;
     }
@@ -191,7 +190,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   
 
   @Override
-  public void onMinecartPass(@Nonnull World world, @Nonnull EntityMinecart cart, @Nonnull BlockPos pos) {
+  public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos) {
     if(world.isRemote) {
       return;
     }

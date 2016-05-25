@@ -44,9 +44,11 @@ public class EnderItemOverrideList extends ItemOverrideList {
 
   @SuppressWarnings("deprecation")
   @Override
-  public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nonnull World world,
-      @Nonnull EntityLivingBase entity) {
-    Block block = NullHelper.untrust(Block.getBlockFromItem(stack.getItem()));
+  public @Nonnull IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    if (originalModel == null || stack == null || stack.getItem() == null) {
+      return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+    }
+    Block block = Block.getBlockFromItem(stack.getItem());
     if (block == null) {
       throw new NullPointerException("Wrong parameter 'ItemStack stack', not an ItemBlock");
     }

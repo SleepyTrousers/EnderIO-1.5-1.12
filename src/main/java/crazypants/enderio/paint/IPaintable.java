@@ -1,6 +1,5 @@
 package crazypants.enderio.paint;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.util.IFacade;
@@ -20,7 +19,7 @@ public interface IPaintable {
    * (Re-)Paints a block that exists in the world. It's the caller's responsibility to check that the paint source is valid and appropriate, and to trigger a
    * world re-render.
    */
-  void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource);
+  void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource);
 
   /**
    * (Re-)Paints an item stack. It's the caller's responsibility to check that the paint source is valid and appropriate.
@@ -28,12 +27,12 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource);
+  void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource);
 
   /**
    * Gets the paint source from a block that exists in the world. Will return null if the block is not painted.
    */
-  IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos);
+  IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos);
 
   /**
    * Gets the paint source from an item stack. Will return null if the item stack is not painted.
@@ -41,7 +40,7 @@ public interface IPaintable {
    * The given block is the block of the item in the stack. It is given to save the method the effort to get it out of the stack when the caller already had to
    * do it.
    */
-  IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack);
+  IBlockState getPaintSource(Block block, ItemStack stack);
 
   /**
    * A block that can be painted with a texture. It keeps its model, but applies the texture from the paint source to it.

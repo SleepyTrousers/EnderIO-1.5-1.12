@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.painter.recipe;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 
 public class PressurePlatePainterTemplate extends BasicPainterTemplate<BlockPaintedPressurePlate> {
 
@@ -14,7 +16,7 @@ public class PressurePlatePainterTemplate extends BasicPainterTemplate<BlockPain
   }
 
   @Override
-  protected ItemStack mkItemStack(ItemStack target, Block targetBlock) {
+  protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {
     if (targetBlock == resultBlock) {
       return new ItemStack(targetBlock, 1, meta);
     } else {

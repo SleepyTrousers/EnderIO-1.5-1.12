@@ -3,6 +3,8 @@ package crazypants.enderio.machine.reservoir;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
@@ -123,7 +125,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
+      EnumFacing side,
       float hitX, float hitY, float hitZ) {
     TileEntity te;
     if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null

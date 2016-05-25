@@ -2,6 +2,8 @@ package crazypants.enderio.machine.farm;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.Log;
@@ -10,9 +12,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.stats.StatBase;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -72,7 +74,7 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   }
 
   @Override
-  public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, ItemStack p_175151_3_) {
+  public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, @Nullable ItemStack p_175151_3_) {
     return true;
   }
 

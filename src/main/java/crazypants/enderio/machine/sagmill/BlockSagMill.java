@@ -58,7 +58,7 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
   }
 
   @Override
-  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
 
     TileSagMill te = (TileSagMill) world.getTileEntity(pos);
     if (te != null && te.isActive()) {

@@ -2,6 +2,7 @@ package crazypants.enderio.render.pipeline;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,7 +36,7 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     long start = crazypants.util.Profiler.client.start();
     if (state instanceof BlockStateWrapperBase) {
       IBakedModel model = ((BlockStateWrapperBase) state).getModel();

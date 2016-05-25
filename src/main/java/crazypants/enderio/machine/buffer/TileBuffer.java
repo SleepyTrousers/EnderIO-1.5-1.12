@@ -1,12 +1,11 @@
 package crazypants.enderio.machine.buffer;
 
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
+
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -15,9 +14,11 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
-
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
@@ -70,7 +71,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  public void setIoMode(EnumFacing faceHit, IoMode mode) {
+  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     super.setIoMode(faceHit, mode);
     if (dist != null) {
       dist.neighboursChanged();
@@ -117,7 +118,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
     if (isCreative()) {
       ItemStack[] invCopy = new ItemStack[inventory.length];
       for (int i = 0; i < inventory.length; i++) {
@@ -134,7 +135,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
 
     if (!shouldDoWorkThisTick(20)) {
       return false;

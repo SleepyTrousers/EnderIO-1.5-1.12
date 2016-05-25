@@ -36,7 +36,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
   }
 
   @Override
-  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
+  public @Nonnull String getUnlocalizedName(ItemStack par1ItemStack) {
     return CapBankType.getTypeFromMeta(par1ItemStack.getMetadata()).getUnlocalizedName();
   }
 
@@ -94,7 +94,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem,
   }
 
   @Override
-  public boolean hasEffect(@Nonnull ItemStack stack) {
+  public boolean hasEffect(ItemStack stack) {
     return CapBankType.getTypeFromMeta(stack.getMetadata()).isCreative() || super.hasEffect(stack);
   }
 

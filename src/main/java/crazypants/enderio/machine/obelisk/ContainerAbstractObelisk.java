@@ -2,6 +2,8 @@ package crazypants.enderio.machine.obelisk;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -25,7 +27,7 @@ public class ContainerAbstractObelisk extends AbstractMachineContainer<AbstractR
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemStack) {
+    public boolean isItemValid(@Nullable ItemStack itemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }

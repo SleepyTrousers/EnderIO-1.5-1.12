@@ -2,6 +2,15 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.ContainerNoInv;
+import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,13 +19,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.ContainerNoInv;
-import crazypants.enderio.machine.RenderMappers;
-import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
-import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 
 public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceObelisk> {
 
@@ -31,7 +33,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  protected boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
+  protected boolean isActive(@Nonnull IBlockAccess blockAccess, int x, int y, int z) {
     return true; 
   }
 

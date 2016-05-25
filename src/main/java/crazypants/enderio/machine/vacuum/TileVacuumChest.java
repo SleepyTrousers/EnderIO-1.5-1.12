@@ -1,26 +1,8 @@
 package crazypants.enderio.machine.vacuum;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-
 import java.util.List;
 
 import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.ITextComponent;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
@@ -37,6 +19,22 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 @Storable
 public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity {
@@ -192,7 +190,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
 
     if (slot < 0 || slot >= inv.length) {
       System.out.println("TileVacumChest.setInventorySlotContents: " + slot);
@@ -383,7 +381,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   }
 
   @Override
-  public void setPaintSource(IBlockState sourceBlock) {
+  public void setPaintSource(@Nullable IBlockState sourceBlock) {
     this.sourceBlock = sourceBlock;
     markDirty();
     updateBlock();

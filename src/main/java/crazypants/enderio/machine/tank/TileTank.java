@@ -1,18 +1,7 @@
 package crazypants.enderio.machine.tank;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
@@ -27,6 +16,19 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.tool.SmartTank;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
@@ -57,7 +59,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
 
     if(isSideDisabled(dir)) {
       return false;
@@ -86,7 +88,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
 
     if(isSideDisabled(dir)) {
       return false;
@@ -230,7 +232,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
   
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return "tank";
   }
 
@@ -268,7 +270,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
   
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
   }
 

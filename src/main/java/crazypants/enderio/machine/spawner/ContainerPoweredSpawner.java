@@ -2,6 +2,8 @@ package crazypants.enderio.machine.spawner;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -24,13 +26,13 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   protected void addMachineSlots(InventoryPlayer playerInv) {
     slotInput = addSlotToContainer(new Slot(getInv(), 0, 54, 42) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     slotOutput = addSlotToContainer(new Slot(getInv(), 1, 105, 42) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return false;
       }
     });

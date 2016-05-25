@@ -198,7 +198,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
   }
 
   @Override
-  protected void actionPerformed(@Nonnull GuiButton btn) {
+  protected void actionPerformed(GuiButton btn) {
     if (btn == plus) {
       if (timebase >= 6) {
         return;

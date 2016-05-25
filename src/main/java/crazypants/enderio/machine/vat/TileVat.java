@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vat;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
@@ -47,7 +49,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return ModObject.blockVat.getUnlocalisedName();
   }
 
@@ -57,7 +59,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockVat.getUnlocalisedName();
   }
 
@@ -69,7 +71,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  protected boolean doPush(EnumFacing dir) {
+  protected boolean doPush(@Nonnull EnumFacing dir) {
 
     if (isSideDisabled(dir)) {
       return false;
@@ -98,7 +100,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
   }
 
   @Override
-  protected boolean doPull(EnumFacing dir) {
+  protected boolean doPull(@Nonnull EnumFacing dir) {
 
     if (isSideDisabled(dir)) {
       return false;

@@ -126,18 +126,18 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public int getMetaFromState(@Nonnull IBlockState state) {
+  public int getMetaFromState(IBlockState state) {
     return CapBankType.getMetaFromType(state.getValue(CapBankType.KIND));
   }
 
   @Override
-  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+  public @Nonnull IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+  public @Nonnull IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     NullHelper.untrusted(state, "Parameter IBlockState to Block.getExtendedState()");
     NullHelper.untrusted(world, "Parameter IBlockAccess to Block.getExtendedState()");
     NullHelper.untrusted(pos, "Parameter BlockPos to Block.getExtendedState()");
@@ -165,7 +165,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(@Nonnull Item p_149666_1_, @Nonnull CreativeTabs p_149666_2_, @Nonnull List<ItemStack> list) {
+  public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List<ItemStack> list) {
     for (CapBankType type : CapBankType.types()) {
       if (type.isCreative()) {
         list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), type.getMaxEnergyStored() / 2));
@@ -177,7 +177,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public int damageDropped(@Nonnull IBlockState st) {
+  public int damageDropped(IBlockState st) {
     return getMetaFromState(st);
   }
 
@@ -206,8 +206,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
-      @Nonnull EnumHand hand, @Nullable ItemStack heldItem, @Nonnull EnumFacing faceHit,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
+      EnumFacing faceHit,
       float hitX, float hitY, float hitZ) {
 
     TileCapBank tcb = getTileEntity(world, pos);
@@ -298,19 +298,19 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean isSideSolid(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+  public boolean isSideSolid(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
     return true;
   }
 
   @Override
-  public boolean isOpaqueCube(@Nonnull IBlockState bs) {
+  public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   @Deprecated
-  public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess par1IBlockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing side) {
     Block i1 = par1IBlockAccess.getBlockState(pos.offset(side)).getBlock();
     return i1 == this ? false : super.shouldSideBeRendered(bs, par1IBlockAccess, pos, side);
   }
@@ -326,7 +326,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock) {
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
     if (world.isRemote) {
       return;
     }
@@ -338,13 +338,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public int quantityDropped(@Nonnull Random r) {
+  public int quantityDropped(Random r) {
     return 0;
   }
 
   @Override
-  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
-      @Nonnull ItemStack stack) {
+  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
 
     TileCapBank cb = getTileEntity(world, pos);
@@ -405,7 +404,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
     if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileCapBank te = getTileEntity(world, pos);
       if (te != null) {
@@ -424,7 +423,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+  public void breakBlock(World world, BlockPos pos, IBlockState state) {
     if (!world.isRemote) {
       TileCapBank te = getTileEntity(world, pos);
       if (te != null) {
@@ -437,7 +436,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   @SideOnly(Side.CLIENT)
   @Deprecated
-  public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
     TileCapBank tr = getTileEntity(world, pos);
     if (tr == null) {
       return super.getSelectedBoundingBox(bs, world, pos);
@@ -464,12 +463,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean hasComparatorInputOverride(@Nonnull IBlockState bs) {
+  public boolean hasComparatorInputOverride(IBlockState bs) {
     return true;
   }
 
   @Override
-  public int getComparatorInputOverride(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos) {
+  public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
     TileCapBank te = getTileEntity(world, pos);
     if (te != null) {
       return te.getComparatorOutput();

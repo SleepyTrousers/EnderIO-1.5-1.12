@@ -104,7 +104,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item item, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull List<ItemStack> par3List) {
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -297,7 +297,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public boolean hitEntity(@Nonnull ItemStack stack, @Nonnull EntityLivingBase entity, @Nonnull EntityLivingBase playerEntity) {
+  public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase playerEntity) {
 
     if (playerEntity instanceof EntityPlayer) {
 
@@ -352,7 +352,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
+  public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
     return false;
   }
@@ -407,8 +407,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player,
-      @Nonnull EnumHand hand) {
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
         if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {

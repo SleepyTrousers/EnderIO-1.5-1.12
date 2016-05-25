@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
@@ -70,7 +72,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       y = 47;
       slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
         @Override
-        public boolean isItemValid(ItemStack par1ItemStack) {
+        public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
           return getInv().isItemValidForSlot(0, par1ItemStack);
         }
 
@@ -86,7 +88,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       y = 65;
       slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
         @Override
-        public boolean isItemValid(ItemStack par1ItemStack) {
+        public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
           return getInv().isItemValidForSlot(1, par1ItemStack);
         }
 
@@ -276,7 +278,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     }
 
     @Override
-    public boolean isItemValid(ItemStack par1ItemStack) {
+    public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
     }
     

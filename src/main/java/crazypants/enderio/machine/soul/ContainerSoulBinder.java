@@ -2,6 +2,8 @@ package crazypants.enderio.machine.soul;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
@@ -21,25 +23,25 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
   protected void addMachineSlots(InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 38, 34) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 1, 59, 34) {
       @Override
-      public boolean isItemValid(ItemStack itemStack) {
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(1, itemStack);
       }      
     });    
     addSlotToContainer(new Slot(getInv(), 2, 112, 34) {
       @Override
-      public boolean isItemValid(ItemStack par1ItemStack) {
+      public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
       }
     });
     addSlotToContainer(new Slot(getInv(), 3, 134, 34) {
       @Override
-      public boolean isItemValid(ItemStack par1ItemStack) {
+      public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
       }
     });

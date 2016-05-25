@@ -730,7 +730,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   // ------------------- Inventory
 
   @Override
-  public boolean isUseableByPlayer(@Nonnull EntityPlayer player) {
+  public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -795,15 +795,15 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void openInventory(@Nonnull EntityPlayer e) {
+  public void openInventory(EntityPlayer e) {
   }
 
   @Override
-  public void closeInventory(@Nonnull EntityPlayer e) {
+  public void closeInventory(EntityPlayer e) {
   }
 
   @Override
-  public boolean isItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
+  public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
     if (NullHelper.untrust(itemstack) == null) {
       return false;
     }

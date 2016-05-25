@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.wireless;
 
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -7,16 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import cofh.api.energy.IEnergyContainerItem;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.PowerHandlerUtil;
 
 @Storable
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
@@ -173,7 +174,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public void setPaintSource(IBlockState sourceBlock) {
+  public void setPaintSource(@Nullable IBlockState sourceBlock) {
     this.sourceBlock = sourceBlock;
     markDirty();
     updateBlock();

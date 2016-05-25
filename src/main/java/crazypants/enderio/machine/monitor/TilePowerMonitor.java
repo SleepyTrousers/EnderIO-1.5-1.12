@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.monitor;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
+import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
+import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
+import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -25,13 +26,12 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
-
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
-import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
-import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -65,7 +65,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockPowerMonitorv2.getUnlocalisedName();
   }
 
@@ -75,7 +75,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public boolean supportsMode(EnumFacing faceHit, IoMode mode) {
+  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
     return mode == IoMode.NONE;
   }
 

@@ -4,17 +4,18 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
@@ -48,7 +49,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
       final int slot = i; 
       addSlotToContainer(new Slot(getInv(), i, p.x, p.y) {
         @Override
-        public boolean isItemValid(ItemStack itemStack) {
+        public boolean isItemValid(@Nullable ItemStack itemStack) {
           return getInv().isItemValidForSlot(slot, itemStack);
         }
       });
@@ -57,7 +58,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
     
     addSlotToContainer(new Slot(getInv(), 8, OUTPUT_SLOT.x, OUTPUT_SLOT.y) {
       @Override
-      public boolean isItemValid(ItemStack par1ItemStack) {
+      public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
         return false;
       }
     });

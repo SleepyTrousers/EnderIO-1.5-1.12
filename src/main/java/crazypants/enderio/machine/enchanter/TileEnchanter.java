@@ -1,5 +1,10 @@
 package crazypants.enderio.machine.enchanter;
 
+import javax.annotation.Nullable;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;
@@ -8,12 +13,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
+import net.minecraft.util.text.TextComponentString;
 
 @Storable
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
@@ -72,7 +74,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     if (contents == null) {
       inv[slot] = contents;
     } else {

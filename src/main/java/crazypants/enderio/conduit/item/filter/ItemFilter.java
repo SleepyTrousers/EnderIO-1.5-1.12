@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
@@ -20,9 +22,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -336,7 +338,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
   
   @Override
-  public void setInventorySlotContents(int i, ItemStack itemstack) {
+  public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
     if(itemstack != null) {
       items[i] = itemstack.copy();
       items[i].stackSize = 0;
