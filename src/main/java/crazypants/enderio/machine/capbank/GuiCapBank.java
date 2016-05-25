@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -30,9 +31,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
+
+  public static final ResourceLocation baublesBackground = new ResourceLocation("baubles", "textures/gui/expanded_inventory.png");
 
   private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
@@ -243,7 +247,14 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     drawTexturedModalRect(sx, sy, 0, 0, xSize - 21, ySize);
 
     if (container.hasBaublesSlots()) {
-      drawTexturedModalRect(sx, sy + 83, 197, 83, 24, 77);
+      drawTexturedModalRect(sx + 194, sy + 6, 221, 78, 24, 82);
+      RenderUtil.bindTexture(baublesBackground);
+      for (int i = 0; i < container.baubles.getSizeInventory(); i++) {
+        if (container.baubles.getStackInSlot(i) == null) {
+          drawTexturedModalRect(sx + 196, sy + 12 + i * 18, 77, 8 + i * 18, 16, 16);
+        }
+      }
+      bindGuiTexture();
     }
 
     int i1 = getEnergyStoredScaled(POWER_HEIGHT);

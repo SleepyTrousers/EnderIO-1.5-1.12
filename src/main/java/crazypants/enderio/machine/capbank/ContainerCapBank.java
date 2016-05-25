@@ -33,7 +33,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
   // Note: Modifying the Baubles inventory on the client side of an integrated
   // server is a bad idea as Baubles does some very bad things...
-  private IInventory baubles;
+  protected IInventory baubles;
 
   public ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
     super(playerInv, cb);
@@ -57,7 +57,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       baubles = new ShadowInventory(baubles);
     }
 
-    int armorOffset = 21;
+    int armorOffset = 21, baublesOffset = 196;
 
     // charging slots
     for (int i = 0; i < 4; i++) {
@@ -103,7 +103,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
     if (hasBaublesSlots()) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
-        addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, sideSlotY(5 + i)) {
+        addSlotToContainer(new Slot(baubles, i, baublesOffset, sideSlotY(i)) {
           @Override
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
