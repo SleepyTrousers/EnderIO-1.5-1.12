@@ -1,17 +1,13 @@
 package crazypants.enderio.machine.spawner;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -20,16 +16,28 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.util.CapturedMob;
-
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
 
   @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   private CapturedMob capturedMob = null;
@@ -253,5 +261,76 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     super.readFromItemStack(stack);
     capturedMob = CapturedMob.create(stack);
   }
+
+  // RANGE
+
+  private AxisAlignedBB bounds;
+  private boolean showingRange;
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  private final static Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      RangeEntity entity = new RangeEntity(this);
+      entity.setColor(color);
+      worldObj.spawnEntityInWorld(entity);
+    }
+  }
+
+  @Override
+  public void onCapacitorDataChange() {
+    super.onCapacitorDataChange();
+    bounds = null;
+  }
+
+  @Override
+  public BoundingBox getRangeBox() {
+    mkBounds();
+    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
+  }
+
+  protected void mkBounds() {
+    if (bounds == null) {
+      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, 1d, getRange() / 2d);
+      if (capturedMob != null) {
+        Entity ent = capturedMob.getEntity(worldObj, false);
+        if (ent != null) {
+          int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
+          bounds = bounds.setMaxY(bounds.maxY + height);
+        }
+      }
+    }
+  }
+
+  public AxisAlignedBB getBounds() {
+    return bounds;
+  }
+
+  public void setBounds(AxisAlignedBB bounds) {
+    this.bounds = bounds;
+  }
+
+  @Override
+  public World getRangeWorldObj() {
+    return worldObj;
+  }
+
+  @Override
+  public float getRange() {
+    return 8;
+  }
+
+  // RANGE END
 
 }

@@ -1,19 +1,21 @@
 package crazypants.enderio.machine.ranged;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-
 public class RangeEntity extends Entity {
 
   int totalLife = 20;
   int lifeSpan = totalLife;
   private IRanged spawnGuard;
+  private Vector4f color = new Vector4f(1, 1, 1, 0.4f);
 
   public RangeEntity(IRanged sg) {
     super(sg.getRangeWorldObj());
@@ -72,5 +74,13 @@ public class RangeEntity extends Entity {
 
   BoundingBox getRangeBox() {
     return spawnGuard.getRangeBox();
+  }
+
+  public Vector4f getColor() {
+    return color;
+  }
+
+  public void setColor(Vector4f color) {
+    this.color = color;
   }
 }

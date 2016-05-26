@@ -3,11 +3,16 @@ package crazypants.enderio.machine.spawner;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.List;
 
 import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.FontRenderer;
@@ -21,6 +26,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   private final Rectangle progressTooltipRect;
   private boolean wasSpawnMode;
   private String header;
+  ToggleButton showRangeB;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "poweredSpawner");
@@ -32,12 +38,25 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     progressTooltipRect = progressTooltips.get(0).getBounds();
 
     updateSpawnMode(te.isSpawnMode());
+
+    int x = getXSize() - 5 - BUTTON_SIZE;
+    showRangeB = new ToggleButton(this, -1, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
+      @Override
+      public List<String> getToolTipText() {
+        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+      }
+    });
+
   }
 
   @Override
   public void initGui() {
     super.initGui();
     modeB.onGuiInit();    
+    showRangeB.onGuiInit();
+    showRangeB.setSelected(getTileEntity().isShowingRange());
   }
 
   @Override
@@ -45,6 +64,8 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     if(par1GuiButton == modeB) {
       getTileEntity().setSpawnMode(!getTileEntity().isSpawnMode());
       PacketHandler.INSTANCE.sendToServer(new PacketMode(getTileEntity()));
+    } else if (par1GuiButton == showRangeB) {
+      getTileEntity().setShowRange(showRangeB.isSelected());
     } else {
       super.actionPerformed(par1GuiButton);
     }

@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.ranged;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -7,11 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class RangeRenerer extends RenderEntity {
@@ -26,6 +27,7 @@ public class RangeRenerer extends RenderEntity {
   public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float p_76986_9_) {
 
     RangeEntity se = ((RangeEntity) entity);
+    Vector4f color = se.getColor();
 
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glDisable(GL11.GL_LIGHTING);
@@ -41,7 +43,7 @@ public class RangeRenerer extends RenderEntity {
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
-    GL11.glColor4f(1, 1, 1, 0.4f);
+    GL11.glColor4f(color.x, color.y, color.z, color.w);
 
     RenderUtil.bindBlockTexture();
 
