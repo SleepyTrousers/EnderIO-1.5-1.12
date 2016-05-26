@@ -32,7 +32,6 @@ import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import crazypants.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
@@ -127,13 +126,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     setText(tfFilter, te.getGuiFilterString());
     btnSort = new IconButton(this, ID_SORT, 24+233, 27, getSortOrderIcon()) {
       @Override
-      public boolean mousePressed(Minecraft mc, int x, int y) {
-        return mousePressedButton(mc, x, y, 0);
+      public boolean mousePressed(Minecraft mc1, int x, int y) {
+        return mousePressedButton(mc1, x, y, 0);
       }
 
       @Override
-      public boolean mousePressedButton(Minecraft mc, int x, int y, int button) {
-        if(button <= 1 && super.checkMousePress(mc, x, y)) {
+      public boolean mousePressedButton(Minecraft mc1, int x, int y, int button) {
+        if (button <= 1 && super.checkMousePress(mc1, x, y)) {
           toggleSortOrder(button == 0);
           return true;
         }
@@ -377,7 +376,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void drawFakeItemStack(int x, int y, ItemStack stack) {
-    FontRenderer font = NullHelper.untrust(stack.getItem().getFontRenderer(stack));
+    FontRenderer font = stack.getItem().getFontRenderer(stack);
     if(font == null) {
       font = fontRendererObj;
     }
@@ -650,9 +649,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     @Override
     public ItemStack getStack() {
-      TileInventoryPanel te = getTileEntity();
-      StoredCraftingRecipe recipe = te.getStoredCraftingRecipe(index);
-      return recipe != null ? recipe.getResult(te) : null;
+      TileInventoryPanel te1 = getTileEntity();
+      StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
+      return recipe != null ? recipe.getResult(te1) : null;
     }
 
     @Override

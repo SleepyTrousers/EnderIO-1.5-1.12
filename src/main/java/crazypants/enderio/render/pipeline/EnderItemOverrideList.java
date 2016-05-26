@@ -3,8 +3,6 @@ package crazypants.enderio.render.pipeline;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.cache.Cache;
@@ -44,7 +42,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
 
   @SuppressWarnings("deprecation")
   @Override
-  public @Nonnull IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+  public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
     if (originalModel == null || stack == null || stack.getItem() == null) {
       return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
     }

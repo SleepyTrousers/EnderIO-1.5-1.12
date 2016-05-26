@@ -234,7 +234,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       useObsidianSpeed = blockState.getBlock() == Blocks.OBSIDIAN;
       if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
-          useObsidianSpeed = (blockState != null && blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+          useObsidianSpeed = blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess;
         } catch (Exception e) {
           // given we are passing in a null world to getBlockHardness it is
           // possible this could cause an NPE, so just ignore it

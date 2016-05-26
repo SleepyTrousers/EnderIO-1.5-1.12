@@ -173,7 +173,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {
-
     if (entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileTravelAnchor) {

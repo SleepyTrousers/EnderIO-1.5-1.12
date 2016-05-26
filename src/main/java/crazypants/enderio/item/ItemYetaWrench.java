@@ -81,7 +81,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
         if (block == Blocks.CHEST) {
           // This works around a forge bug where you can rotate double chests to invalid directions
           TileEntityChest te = (TileEntityChest) world.getTileEntity(pos);
-          if (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null) {
+          if (te != null && (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null)) {
             // Render master is always the chest to the negative direction
             TileEntityChest masterChest = te.adjacentChestXNeg == null && te.adjacentChestZNeg == null ? te : te.adjacentChestXNeg == null ? te.adjacentChestZNeg: te.adjacentChestXNeg;
             if (masterChest != te) {
@@ -120,7 +120,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
     if (!player.isSneaking()) {
-      new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
+      return new ActionResult<ItemStack>(EnumActionResult.PASS, equipped);
     }
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
     if (curMode == null) {

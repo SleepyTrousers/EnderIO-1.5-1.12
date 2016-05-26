@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Timer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -72,7 +73,8 @@ public class RotatingSmartItemModel implements IPerspectiveAwareModel {
       net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
     Pair<? extends IBakedModel, Matrix4f> perspective = parent.handlePerspective(cameraTransformType);
 
-    double r = (EnderIO.proxy.getTickCount() % 360) + RenderUtil.getTimer().renderPartialTicks;
+    Timer timer = RenderUtil.getTimer();
+    double r = (EnderIO.proxy.getTickCount() % 360) + (timer == null ? 0 : timer.renderPartialTicks);
 
     TRSRTransformation transformOrig = new TRSRTransformation(perspective.getRight());
     Quat4f leftRot = transformOrig.getLeftRot();

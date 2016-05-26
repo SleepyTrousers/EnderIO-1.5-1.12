@@ -118,7 +118,7 @@ public class TravelController {
     }
     if (isTargetEnderIO()) {
       if (doesHandAllowEnderIO(hand)) {
-        openEnderIO(equipped, world, player);
+        openEnderIO(equipped, hand, world, player);
       }
       return true;
     }
@@ -354,7 +354,7 @@ public class TravelController {
     return selectedCoord != null;
   }
 
-  private void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
+  private void openEnderIO(ItemStack equipped, EnumHand hand, World world, EntityPlayer player) {
     BlockCoord target = TravelController.instance.selectedCoord;
     TileEntity te = world.getTileEntity(target.getBlockPos());
     if(!(te instanceof TileEnderIO)) {
@@ -365,7 +365,7 @@ public class TravelController {
       int requiredPower = equipped == null ? 0 : instance.getRequiredPower(player, equipped, TravelSource.STAFF, target);
       if(requiredPower <= 0 || requiredPower <= getEnergyInTravelItem(equipped)) {
         if(requiredPower > 0) {
-          PacketDrainStaff p = new PacketDrainStaff(requiredPower);
+          PacketDrainStaff p = new PacketDrainStaff(requiredPower, hand);
           PacketHandler.INSTANCE.sendToServer(p);
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
@@ -646,7 +646,7 @@ public class TravelController {
     }
 
     if(isTargetEnderIO()) {
-      openEnderIO(null, player.worldObj, player);
+      openEnderIO(null, null, player.worldObj, player);
     } else if (Config.travelAnchorEnabled && travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {

@@ -72,12 +72,12 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
   public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
     Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity : ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.entityId);
 
-    int x = message.x, y = message.y, z = message.z;
+    int x1 = message.x, y1 = message.y, z1 = message.z;
 
-    TravelSource source = TravelSource.values()[message.source];
-    EnumHand hand = EnumHand.values()[message.hand];
+    TravelSource source1 = TravelSource.values()[message.source];
+    EnumHand hand1 = EnumHand.values()[message.hand];
 
-    doServerTeleport(toTp, x, y, z, message.powerUse, message.conserveMotion, source, hand);
+    doServerTeleport(toTp, x1, y1, z1, message.powerUse, message.conserveMotion, source1, hand1);
 
     return null;
   }
@@ -112,8 +112,9 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         ((EntityPlayerMP) player).connection.sendPacket(p);
       }
 
-      if (powerUse > 0 && player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof IItemOfTravel) {
-        ItemStack item = player.getHeldItem(hand).copy();
+      ItemStack heldItem = player.getHeldItem(hand);
+      if (powerUse > 0 && heldItem != null && heldItem.getItem() instanceof IItemOfTravel) {
+        ItemStack item = heldItem.copy();
         ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
         player.setHeldItem(hand, item);
       }

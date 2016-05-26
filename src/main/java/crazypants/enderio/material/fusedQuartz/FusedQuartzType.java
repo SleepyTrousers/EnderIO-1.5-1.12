@@ -29,7 +29,8 @@ public enum FusedQuartzType implements IStringSerializable {
     DARKENED
   }
 
-  public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class);
+  public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = NullHelper.notnullM(PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class),
+      "PropertyEnum.create()");
 
   private final @Nonnull String unlocalisedName;
   private final @Nonnull BaseMaterial baseMaterial;
@@ -41,10 +42,10 @@ public enum FusedQuartzType implements IStringSerializable {
     this.upgrade = upgrade;
   }
 
-  public boolean connectTo(@Nonnull FusedQuartzType other) {
-    return (Config.clearGlassConnectToFusedQuartz && Config.glassConnectToTheirVariants)
+  public boolean connectTo(FusedQuartzType other) {
+    return other != null && ((Config.clearGlassConnectToFusedQuartz && Config.glassConnectToTheirVariants)
         || (Config.clearGlassConnectToFusedQuartz && this.upgrade == other.upgrade)
-        || (Config.glassConnectToTheirVariants && this.baseMaterial == other.baseMaterial);
+        || (Config.glassConnectToTheirVariants && this.baseMaterial == other.baseMaterial));
   }
 
   @Override

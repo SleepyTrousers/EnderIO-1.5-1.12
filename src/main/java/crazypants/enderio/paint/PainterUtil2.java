@@ -2,6 +2,13 @@ package crazypants.enderio.paint;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.FluidUtil;
+import com.google.common.base.Strings;
+
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
+
+import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
@@ -16,31 +23,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.enderio.core.common.util.FluidUtil;
-import com.google.common.base.Strings;
-
-import crazypants.enderio.EnderIO;
-
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
-
 public class PainterUtil2 {
-
-  public static boolean isValid(ItemStack paintSource, ItemStack target) {
-    if (paintSource == null && target == null) {
-      return false;
-    }
-    Block block = null;
-    if (target != null) {
-      Item item = paintSource.getItem();
-      if (item instanceof ItemBlock) {
-        block = ((ItemBlock) item).getBlock();
-      } else {
-        return false;
-      }
-    }
-    return isValid(paintSource, block);
-  }
 
   public static boolean isValid(ItemStack paintSource, Block target) {
     boolean solidPaint = false;
@@ -48,6 +31,7 @@ public class PainterUtil2 {
     if (paintSource != null) {
       Block block = getBlockFromItem(paintSource);
       IBlockState bs = block.getDefaultState();
+      solidPaint = bs.isOpaqueCube();
       if (!shouldHaveModel(block)) {
         if (shouldHaveTexture(block)) {
           textureOnly = true;
@@ -60,7 +44,6 @@ public class PainterUtil2 {
           return false;
         }
       }      
-      solidPaint = bs.isOpaqueCube();
     }
 
     if (target == null) {
@@ -106,12 +89,10 @@ public class PainterUtil2 {
     }
     Block block = paintSource.getBlock();
     ResourceLocation res = Block.REGISTRY.getNameForObject(block);
-    if (res != null) {
-      String name = res.toString();
-      if (!name.trim().isEmpty()) {
-        SOURCE_BLOCK.setString(nbtRoot, name);
-        SOURCE_META.setInt(nbtRoot, block.getMetaFromState(paintSource));
-      }
+    String name = res.toString();
+    if (!name.trim().isEmpty()) {
+      SOURCE_BLOCK.setString(nbtRoot, name);
+      SOURCE_META.setInt(nbtRoot, block.getMetaFromState(paintSource));
     }
   }
 
@@ -145,12 +126,10 @@ public class PainterUtil2 {
     }
     Block block = paintSource.getBlock();
     ResourceLocation res = Block.REGISTRY.getNameForObject(block);
-    if (res != null) {
-      String name = res.toString();
-      if (!name.trim().isEmpty()) {
-        SOURCE_BLOCK.setString(itemStack, name);
-        SOURCE_META.setInt(itemStack, block.getMetaFromState(paintSource));
-      }
+    String name = res.toString();
+    if (!name.trim().isEmpty()) {
+      SOURCE_BLOCK.setString(itemStack, name);
+      SOURCE_META.setInt(itemStack, block.getMetaFromState(paintSource));
     }
   }
 

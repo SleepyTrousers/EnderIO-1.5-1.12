@@ -279,8 +279,10 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     for (Block block : new Block[] { Blocks.STONE, Blocks.COBBLESTONE, Blocks.GRASS, Blocks.DIRT, Blocks.PLANKS, Blocks.GLASS, Blocks.STONE_STAIRS,
         Blocks.RED_FLOWER, Blocks.SLIME_BLOCK, Blocks.TNT}) {
       Item item = Item.getItemFromBlock(block);
-      for (CreativeTabs tab : item.getCreativeTabs()) {
-        item.getSubItems(item, tab, list);
+      if (item != null) {
+        for (CreativeTabs tab : item.getCreativeTabs()) {
+          item.getSubItems(item, tab, list);
+        }
       }
     }
     return list;

@@ -1,6 +1,5 @@
 package crazypants.enderio.capacitor;
 
-import crazypants.util.NullHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +13,7 @@ public class CapacitorHelper {
     if (stack == null) {
       return null;
     }
-    final Item item = NullHelper.untrust(stack.getItem());
+    final Item item = stack.getItem();
     if (item == null) {
       return null;
     }
@@ -29,10 +28,10 @@ public class CapacitorHelper {
   }
 
   protected static ICapacitorData getNBTCapacitorDataFromItemStack(ItemStack stack, final Item item) {
-    if (!stack.hasTagCompound()) {
+    final NBTTagCompound nbtRoot = stack.getTagCompound();
+    if (nbtRoot == null) {
       return null;
     }
-    final NBTTagCompound nbtRoot = stack.getTagCompound();
     if (!nbtRoot.hasKey("eiocap", 10)) {
       return null;
     }
@@ -48,10 +47,11 @@ public class CapacitorHelper {
   }
 
   public static ItemStack addCapData(ItemStack stack, CapacitorKey key, float value) {
-    if (!stack.hasTagCompound()) {
-      stack.setTagCompound(new NBTTagCompound());
-    }
     NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      root = new NBTTagCompound();
+      stack.setTagCompound(root);
+    }
     NBTTagCompound tag = root.getCompoundTag("eiocap");
     root.setTag("eiocap", tag);
     if (key == null) {

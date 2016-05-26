@@ -4,16 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -24,6 +14,16 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> implements IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
@@ -47,18 +47,22 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new ContainerCombustionEngine(player.inventory, te);
+    if (world != null) {
+      TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
+      if (te != null) {
+        return new ContainerCombustionEngine(player.inventory, te);
+      }
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new GuiCombustionGenerator(player.inventory, te);
+    if (world != null) {
+      TileCombustionGenerator te = getTileEntity(world, new BlockPos(x, y, z));
+      if (te != null) {
+        return new GuiCombustionGenerator(player.inventory, te);
+      }
     }
     return null;
   }
@@ -76,7 +80,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // If active, randomly throw some smoke around
-    if (isActive(world, pos)) {
+    if (world != null && pos != null && isActive(world, pos)) {
 
       TileEntity te = world.getTileEntity(pos);
       EnumFacing facing = EnumFacing.SOUTH;

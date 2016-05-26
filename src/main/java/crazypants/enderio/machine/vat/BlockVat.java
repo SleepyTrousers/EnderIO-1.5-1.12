@@ -55,18 +55,22 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileVat te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new ContainerVat(player.inventory, te);
+    if (world != null) {
+      TileVat te = getTileEntity(world, new BlockPos(x, y, z));
+      if (te != null) {
+        return new ContainerVat(player.inventory, te);
+      }
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileVat te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null) {
-      return new GuiVat(player.inventory, te);
+    if (world != null) {
+      TileVat te = getTileEntity(world, new BlockPos(x, y, z));
+      if (te != null) {
+        return new GuiVat(player.inventory, te);
+      }
     }
     return null;
   }
@@ -86,24 +90,28 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // Spit some "steam" out the spout
-    TileVat te = getTileEntity(world, pos);
-    if (te != null && te.isActive()) {
-      float pX = pos.getX() + 0.5f;
-      float pY = pos.getY() + 0.7f;
-      float pZ = pos.getZ() + 0.5f;
+    if (world != null && pos != null && rand != null) {
+      TileVat te = getTileEntity(world, pos);
+      if (te != null && te.isActive()) {
+        float pX = pos.getX() + 0.5f;
+        float pY = pos.getY() + 0.7f;
+        float pZ = pos.getZ() + 0.5f;
 
-      EnumFacing dir = te.getFacing();
-      pX += 0.6f * dir.getFrontOffsetX();
-      pZ += 0.6f * dir.getFrontOffsetZ();
+        EnumFacing dir = te.getFacing();
+        pX += 0.6f * dir.getFrontOffsetX();
+        pZ += 0.6f * dir.getFrontOffsetZ();
 
-      double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
-      double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
-      int num = rand.nextInt(4) + 2;
-      for (int k = 0; k < num; k++) {
-        ParticleManager er = Minecraft.getMinecraft().effectRenderer;
-        Particle fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
-        fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
-        ClientUtil.setParticleVelocity(fx, velX, -0.06, velZ);
+        double velX = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetX();
+        double velZ = ((rand.nextDouble() * 0.075) + 0.025) * dir.getFrontOffsetZ();
+        int num = rand.nextInt(4) + 2;
+        for (int k = 0; k < num; k++) {
+          ParticleManager er = Minecraft.getMinecraft().effectRenderer;
+          Particle fx = er.spawnEffectParticle(EnumParticleTypes.SMOKE_NORMAL.getParticleID(), pX, pY, pZ, 1, 1, 1, 0);
+          if (fx != null) {
+            fx.setRBGColorF(1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
+            ClientUtil.setParticleVelocity(fx, velX, -0.06, velZ);
+          }
+        }
       }
     }
   }

@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+
+import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.util.IFacade;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.render.pipeline.QuadCollector;
-
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlockRenderMapper {
 
@@ -46,7 +47,20 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
   }
 
   protected boolean isSameKind(IBlockState state, IBlockAccess world, BlockPos pos, BlockPos other) {
-    return isSameKind(state, world.getBlockState(other));
+    IBlockState otherState = world.getBlockState(other);
+    if (isSameKind(state, otherState)) {
+      return true;
+    }
+    if (otherState.getBlock() instanceof IFacade) {
+      try {
+        IBlockState facade = ((IFacade) otherState.getBlock()).getFacade(world, pos, null);
+        if (facade != null) {
+          return isSameKind(state, facade);
+        }
+      } catch (Throwable t) {
+      }
+    }
+    return false;
   }
 
   protected boolean getNeighbor(BlockPos pos, BlockPos npos) {

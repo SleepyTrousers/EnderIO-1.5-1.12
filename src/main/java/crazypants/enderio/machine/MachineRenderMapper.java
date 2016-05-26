@@ -6,17 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.render.EnumRenderMode;
@@ -28,6 +17,16 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
@@ -56,6 +55,9 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();
+    if (facing == null) {
+      facing = EnumFacing.SOUTH;
+    }
     boolean active = tileEntity.isActive();
 
     if (body != null) {

@@ -2,22 +2,6 @@ package crazypants.enderio.teleport.telepad;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -32,6 +16,22 @@ import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
 import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock {
 
@@ -108,26 +108,34 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Deprecated
   @Override
   public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
-    AxisAlignedBB bb = super.getSelectedBoundingBox(bs, world,pos);
-    TileTelePad te = (TileTelePad) world.getTileEntity(pos);
-    if(!te.inNetwork()) {
-      return bb;
+    if (world != null && pos != null) {
+      TileTelePad tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null && tileEntity.inNetwork()) {
+        return tileEntity.getBoundingBox();
+      }
     }
-    
-    return te.getBoundingBox();
+    return super.getSelectedBoundingBox(bs, world, pos);
   }
 
   @Deprecated
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block changedTo) {    
-    super.neighborChanged(state, world, pos, changedTo);
-    getTileEntity(world, pos).updateRedstoneState();
+    if (world != null && pos != null) {
+      TileTelePad tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        tileEntity.updateRedstoneState();
+      }
+    }
   }
 
   @Override
   public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-    super.onNeighborChange(world, null, null);
-    ((TileTelePad) world.getTileEntity(pos)).updateConnectedState(true);
+    if (world != null && pos != null) {
+      TileTelePad tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        tileEntity.updateConnectedState(true);
+      }
+    }
   }
 
   @Override
@@ -158,7 +166,12 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack) {  
     super.onBlockPlacedBy(world, pos, state, entity, stack);
-    ((TileTelePad) world.getTileEntity(pos)).updateConnectedState(true);
+    if (world != null && pos != null) {
+      TileTelePad tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        tileEntity.updateConnectedState(true);
+      }
+    }
   }
 
   @Override

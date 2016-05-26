@@ -416,14 +416,13 @@ public class RecipeConfigParser extends DefaultHandler {
 
     if(modId != null && name != null) {
 
-      Item i = Item.REGISTRY.getObject(new ResourceLocation(modId, name));
+      ResourceLocation rl = new ResourceLocation(modId, name);
+      Item i = Item.REGISTRY.getObject(rl);
       if(i != null) {
         res = new ItemStack(i, stackSize, useMeta ? itemMeta : 0);
-      } else {
-        Block b = Block.REGISTRY.getObject(new ResourceLocation(modId, name));
-        if(b != null) {
-          res = new ItemStack(b, stackSize, useMeta ? itemMeta : 0);
-        }
+      } else if (Block.REGISTRY.containsKey(rl)) {
+        Block b = Block.REGISTRY.getObject(rl);
+        res = new ItemStack(b, stackSize, useMeta ? itemMeta : 0);
       }
     }
 

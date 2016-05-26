@@ -63,6 +63,7 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     wrapped.addListener(listener);
   }
   
+  @Override
   @SideOnly(Side.CLIENT)
   public void removeListener(IContainerListener listener) {    
     wrapped.removeListener(listener);    

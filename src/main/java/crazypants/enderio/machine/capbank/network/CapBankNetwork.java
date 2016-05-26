@@ -27,7 +27,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
-import crazypants.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -208,7 +207,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public void onUpdateEntity(TileCapBank tileCapBank) {
-    World world = NullHelper.untrust(tileCapBank.getWorld());
+    World world = tileCapBank.getWorld();
     if(world == null) {
       return;
     }

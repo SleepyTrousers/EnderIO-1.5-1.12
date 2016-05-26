@@ -314,8 +314,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return getPaintSource(getDefaultState(), world, pos);
   }
 
-  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
-    if (this instanceof IPaintable) {
+  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+    if (this instanceof IPaintable && world != null && pos != null) {
       T te = getTileEntity(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {
         ((IPaintable.IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -323,14 +323,14 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
     if (this instanceof IPaintable) {
       PainterUtil2.setSourceBlock(stack, paintSource);
     }
   }
 
-  public @Nullable IBlockState getPaintSource(@Nullable IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    if (this instanceof IPaintable) {
+  public @Nullable IBlockState getPaintSource(@Nullable IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (this instanceof IPaintable && world != null && pos != null) {
       T te = getTileEntity(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {
         return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
@@ -339,7 +339,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return null;
   }
 
-  public @Nullable IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
+  public @Nullable IBlockState getPaintSource(Block block, ItemStack stack) {
     if (this instanceof IPaintable) {
       return PainterUtil2.getSourceBlock(stack);
     }

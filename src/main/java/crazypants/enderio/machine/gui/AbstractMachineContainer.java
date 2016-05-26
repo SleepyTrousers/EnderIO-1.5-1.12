@@ -76,35 +76,37 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     Slot slot = inventorySlots.get(slotNumber);
     if(slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
-      copystack = origStack.copy();
+      if (origStack != null) {
+        copystack = origStack.copy();
 
-      boolean merged = false;
-      for(SlotRange range : getTargetSlotsForTransfer(slotNumber, slot)) {
-        if(mergeItemStack(origStack, range.getStart(), range.getEnd(), range.reverse)) {
-          merged = true;
-          break;
+        boolean merged = false;
+        for (SlotRange range : getTargetSlotsForTransfer(slotNumber, slot)) {
+          if (mergeItemStack(origStack, range.getStart(), range.getEnd(), range.reverse)) {
+            merged = true;
+            break;
+          }
         }
-      }
 
-      if(!merged) {
-        return null;
-      }
+        if (!merged) {
+          return null;
+        }
 
-      if (slotDef.isOutputSlot(slot.getSlotIndex())) {
-        slot.onSlotChange(origStack, copystack);
-      }
+        if (slotDef.isOutputSlot(slot.getSlotIndex())) {
+          slot.onSlotChange(origStack, copystack);
+        }
 
-      if(origStack.stackSize == 0) {
-        slot.putStack((ItemStack) null);
-      } else {
-        slot.onSlotChanged();
-      }
+        if (origStack.stackSize == 0) {
+          slot.putStack((ItemStack) null);
+        } else {
+          slot.onSlotChanged();
+        }
 
-      if(origStack.stackSize == copystack.stackSize) {
-        return null;
-      }
+        if (origStack.stackSize == copystack.stackSize) {
+          return null;
+        }
 
-      slot.onPickupFromSlot(entityPlayer, origStack);
+        slot.onPickupFromSlot(entityPlayer, origStack);
+      }
     }
 
     return copystack;
@@ -128,8 +130,11 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
 
   protected void addInventorySlotRange(List<SlotRange> res, int start, int end) {
     for (int i = start; i < end; i++) {
-      int slotNumber = getSlotFromInventory(getInv(), i).slotNumber;
-      res.add(new SlotRange(slotNumber, slotNumber + 1, false));
+      Slot slotFromInventory = getSlotFromInventory(getInv(), i);
+      if (slotFromInventory != null) {
+        int slotNumber = slotFromInventory.slotNumber;
+        res.add(new SlotRange(slotNumber, slotNumber + 1, false));
+      }
     }
   }
 

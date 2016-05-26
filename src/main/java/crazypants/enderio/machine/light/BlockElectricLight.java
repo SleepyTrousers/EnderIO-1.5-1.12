@@ -47,6 +47,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
 
+  @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
     
     EnumFacing onFace = EnumFacing.DOWN;

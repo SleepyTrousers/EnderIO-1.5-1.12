@@ -164,7 +164,7 @@ public class PaintRegistry {
       return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
         @Override
         public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
-          String locationString = location.toString();
+          String locationString = location == null ? "" : location.toString();
           if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
             if (paintSource == null) {
               return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
@@ -179,6 +179,11 @@ public class PaintRegistry {
         @Override
         public boolean equals(@Nullable Object obj) {
           return super.equals(obj);
+        }
+
+        @Override
+        public int hashCode() {
+          return super.hashCode();
         }
       });
     }

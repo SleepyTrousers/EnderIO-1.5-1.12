@@ -105,9 +105,7 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
     SelectedFace sel = configOverlay.getSelection();
     if(sel != null) {
       IoMode mode = sel.config.getIoMode(sel.face);
-      if(mode != null) {
-        renderSlotHighlights(mode);
-      }
+      renderSlotHighlights(mode);
     }
   }
 

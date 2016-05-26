@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -33,7 +34,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(player.getHeldItemMainhand() == null) {
+    ItemStack heldItemMainhand = player.getHeldItemMainhand();
+    if(heldItemMainhand == null) {
       return false;
     }
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
@@ -88,7 +90,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       }
       return true;
 
-    } else if(player.getHeldItemMainhand().getItem() == Items.BUCKET) {
+    } else if(heldItemMainhand.getItem() == Items.BUCKET) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
         long curTick = getBundle().getEntity().getWorld().getTotalWorldTime();
@@ -114,7 +116,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return true;
     } else {
 
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(player.getHeldItemMainhand());
+      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(heldItemMainhand);
       if (fluid != null) {
         if (!getBundle().getEntity().getWorld().isRemote) {
           if (network != null

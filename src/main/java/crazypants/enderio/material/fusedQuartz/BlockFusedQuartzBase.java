@@ -2,6 +2,14 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
+import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.render.ISmartRenderAwareBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -12,27 +20,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
-import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
-import crazypants.enderio.render.ISmartRenderAwareBlock;
 
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock, INamedSubBlocks {
 
-  public BlockFusedQuartzBase(String name, Class<T> teClass) {
+  public BlockFusedQuartzBase(@Nonnull String name, Class<T> teClass) {
     super(name, teClass, Material.GLASS);
     setSoundType(SoundType.GLASS);
   }
   
+  @Override
   protected ItemBlock createItemBlock() {
     return new BlockItemFusedQuartzBase(this, getName());
   }
