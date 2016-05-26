@@ -233,9 +233,9 @@ public class KeyTracker {
     if(nightVisionKey.isPressed()) {
       boolean isActive = !DarkSteelController.instance.isNightVisionActive();
       if(isActive) {
-        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
+        SoundHelper.playSoundAtPlayer(player.worldObj, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
       } else {
-        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
+        SoundHelper.playSoundAtPlayer(player.worldObj, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
       }
       DarkSteelController.instance.setNightVisionActive(isActive);
     }

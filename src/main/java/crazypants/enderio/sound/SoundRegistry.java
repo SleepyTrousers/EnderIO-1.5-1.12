@@ -29,9 +29,9 @@ public enum SoundRegistry implements IModSound {
     this(soundCategory, new ResourceLocation(EnderIO.DOMAIN, name));
   }
 
-  public static void init() {
+  public static void init() {    
     for (SoundRegistry soundRegistry : values()) {
-      soundRegistry.soundEvent = SoundEvent.REGISTRY.getObject(soundRegistry.resourceLocation);
+      soundRegistry.soundEvent = new SoundEvent(soundRegistry.resourceLocation); 
     }
   }
 
