@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.spawner;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -95,7 +97,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockPoweredSpawner.getUnlocalisedName();
   }
 

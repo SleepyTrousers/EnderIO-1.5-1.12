@@ -51,7 +51,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   @Override
   public @Nonnull int[] getSlotsForFace(EnumFacing dir) {
-    IoMode mode = getIoMode(dir);
+    IoMode mode = dir == null ? IoMode.DISABLED : getIoMode(dir);
     if(mode == IoMode.DISABLED) {
       return new int[0];
     }

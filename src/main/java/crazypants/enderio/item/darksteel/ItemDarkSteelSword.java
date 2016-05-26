@@ -192,11 +192,18 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private boolean handleBeheadingWeapons(EntityPlayer player, LivingDropsEvent evt) {
-    ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null || equipped.getTagCompound() == null) {
+    if (player == null) {
       return false;
     }
-    NBTTagCompound infiToolRoot = equipped.getTagCompound().getCompoundTag("InfiTool");
+    ItemStack equipped = player.getHeldItemMainhand();
+    if (equipped == null) {
+      return false;
+    }
+    NBTTagCompound tagCompound = equipped.getTagCompound();
+    if (tagCompound == null) {
+      return false;
+    }
+    NBTTagCompound infiToolRoot = tagCompound.getCompoundTag("InfiTool");
 
     boolean isCleaver = "tconstruct.items.tools.Cleaver".equals(equipped.getItem().getClass().getName());
     boolean hasBeheading = infiToolRoot.hasKey("Beheading");
@@ -402,12 +409,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return (isEquipped(ep, EnumHand.MAIN_HAND) || isEquipped(ep, EnumHand.OFF_HAND)) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
   
-  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {    // 
-    return isEquipped(ep, hand)  && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {
+    return ep != null && equipped != null && hand != null && isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
-  public @Nonnull ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
         if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {

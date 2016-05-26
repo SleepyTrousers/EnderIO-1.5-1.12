@@ -2,11 +2,14 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 
 public enum BufferType implements IStringSerializable {
 
@@ -25,18 +28,19 @@ public enum BufferType implements IStringSerializable {
     this.isCreative = isCreative;
   }
 
-  public static BufferType get(TileBuffer buffer) {
+  public static @Nonnull BufferType get(TileBuffer buffer) {
     return !buffer.hasPower() ? ITEM : !buffer.hasInventory() ? POWER : !buffer.isCreative() ? OMNI : CREATIVE;
   }
 
-  public static final PropertyEnum<BufferType> TYPE = PropertyEnum.<BufferType> create("type", BufferType.class);
+  public static final @Nonnull PropertyEnum<BufferType> TYPE = NullHelper.notnullM(PropertyEnum.<BufferType> create("type", BufferType.class),
+      "PropertyEnum.create()");
 
   @Override
   public String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
 
-  public String getUnlocalizedName() {
+  public @Nonnull String getUnlocalizedName() {
     return "tile." + ModObject.blockBuffer.getUnlocalisedName() + "." + getName();
   }
 
@@ -48,7 +52,7 @@ public enum BufferType implements IStringSerializable {
     return value.ordinal();
   }
 
-  public static ItemStack getStack(BufferType type) {
+  public static @Nonnull ItemStack getStack(BufferType type) {
     return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
   }
 

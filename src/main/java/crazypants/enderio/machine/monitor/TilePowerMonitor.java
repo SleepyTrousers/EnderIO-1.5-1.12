@@ -75,7 +75,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode == IoMode.NONE;
   }
 

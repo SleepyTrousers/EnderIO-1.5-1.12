@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.obelisk.xp;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
@@ -59,14 +60,14 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     FluidUtil.doPull(this, dir, Config.fluidConduitMaxIoRate);
     return res;
   }
 
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     FluidUtil.doPush(this, dir, Config.fluidConduitMaxIoRate);
     return res;

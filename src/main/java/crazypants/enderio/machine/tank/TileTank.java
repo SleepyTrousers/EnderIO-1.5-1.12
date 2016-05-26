@@ -59,9 +59,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
 
-    if(isSideDisabled(dir)) {
+    if (dir == null || isSideDisabled(dir)) {
       return false;
     }
 
@@ -88,9 +88,9 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
 
-    if(isSideDisabled(dir)) {
+    if (dir == null || isSideDisabled(dir)) {
       return false;
     }
 

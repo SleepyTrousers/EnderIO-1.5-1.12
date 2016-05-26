@@ -3,6 +3,7 @@ package crazypants.enderio.machine.soul;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
@@ -156,7 +157,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     int req = getXPRequired();
     if(req > 0) {
@@ -166,7 +167,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
   
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
     if (maxAmount > 0) {

@@ -45,6 +45,7 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.NullHelper;
+import info.loenwind.autosave.Reader;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -57,7 +58,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -121,7 +121,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public @Nonnull IBlockState getStateFromMeta(int meta) {
+  public IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(CapBankType.KIND, CapBankType.getTypeFromMeta(meta));
   }
 
@@ -131,30 +131,30 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public @Nonnull IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    NullHelper.untrusted(state, "Parameter IBlockState to Block.getExtendedState()");
-    NullHelper.untrusted(world, "Parameter IBlockAccess to Block.getExtendedState()");
-    NullHelper.untrusted(pos, "Parameter BlockPos to Block.getExtendedState()");
-
-    CapBankBlockRenderMapper renderMapper = new CapBankBlockRenderMapper(state, world, pos);
-    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
-    blockStateWrapper.addCacheKey(state.getValue(CapBankType.KIND));
-    blockStateWrapper.addCacheKey(renderMapper);
-    TileCapBank tileEntity = getTileEntity(world, pos);
-    if (tileEntity != null) {
-      for (EnumFacing face : EnumFacing.values()) {
-        blockStateWrapper.addCacheKey(tileEntity.getIoMode(NullHelper.notnullJ(face, "Enum.values()")));
-        blockStateWrapper.addCacheKey(tileEntity.getDisplayType(face));
+  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (state != null && world != null && pos != null) {
+      CapBankBlockRenderMapper renderMapper = new CapBankBlockRenderMapper(state, world, pos);
+      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
+      blockStateWrapper.addCacheKey(state.getValue(CapBankType.KIND));
+      blockStateWrapper.addCacheKey(renderMapper);
+      TileCapBank tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        for (EnumFacing face : EnumFacing.values()) {
+          blockStateWrapper.addCacheKey(tileEntity.getIoMode(NullHelper.notnullJ(face, "Enum.values()")));
+          blockStateWrapper.addCacheKey(tileEntity.getDisplayType(face));
+        }
       }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
     }
-    blockStateWrapper.bakeModel();
-    return blockStateWrapper;
   }
 
   @Override
@@ -192,10 +192,20 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
         .getMaxEnergyStored()));
     final @Nullable NBTTagCompound tagCompound = itemstack.getTagCompound();
-    if (tagCompound != null && tagCompound.hasKey("Items")) { // TODO
-      NBTTagList itemList = (NBTTagList) tagCompound.getTag("Items");
-      String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
-      list.add(TextFormatting.GOLD + MessageFormat.format(msg, itemList.tagCount()));
+    if (tagCompound != null) { // TODO
+      ItemStack[] stacks = Reader.readField(tagCompound, ItemStack[].class, "inventory", new ItemStack[4]);
+      if (stacks != null) {
+        int count = 0;
+        for (ItemStack stack : stacks) {
+          if (stack != null) {
+            count++;
+          }
+        }
+        if (count > 0) {
+          String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
+          list.add(TextFormatting.GOLD + MessageFormat.format(msg, count));
+        }
+      }
     }
   }
 
@@ -207,55 +217,53 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
-      EnumFacing faceHit,
-      float hitX, float hitY, float hitZ) {
-
-    TileCapBank tcb = getTileEntity(world, pos);
-    if (tcb == null) {
-      return false;
-    }
-
-    if (entityPlayer.isSneaking() && entityPlayer.getHeldItem(hand) == null && faceHit.getFrontOffsetY() == 0) {
-      InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
-      if (newDisplayType == InfoDisplayType.NONE) {
-        tcb.setDefaultIoMode(faceHit);
-      } else {
-        tcb.setIoMode(faceHit, IoMode.DISABLED);
+      EnumFacing faceHit, float hitX, float hitY, float hitZ) {
+    if (world != null && pos != null && state != null && entityPlayer != null && hand != null && faceHit != null) {
+      TileCapBank tcb = getTileEntity(world, pos);
+      if (tcb == null) {
+        return false;
       }
-      tcb.setDisplayType(faceHit, newDisplayType);
-      return true;
-    }
 
-    if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer, hand)) {
-      IoMode ioMode = tcb.getIoMode(faceHit);
-      if (faceHit.getFrontOffsetY() == 0) {
-        if (ioMode == IoMode.DISABLED) {
-          InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
-          tcb.setDisplayType(faceHit, newDisplayType);
-          if (newDisplayType == InfoDisplayType.NONE) {
+      if (entityPlayer.isSneaking() && entityPlayer.getHeldItem(hand) == null && faceHit.getFrontOffsetY() == 0) {
+        InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
+        if (newDisplayType == InfoDisplayType.NONE) {
+          tcb.setDefaultIoMode(faceHit);
+        } else {
+          tcb.setIoMode(faceHit, IoMode.DISABLED);
+        }
+        tcb.setDisplayType(faceHit, newDisplayType);
+        return true;
+      }
+
+      if (!entityPlayer.isSneaking() && ToolUtil.isToolEquipped(entityPlayer, hand)) {
+        IoMode ioMode = tcb.getIoMode(faceHit);
+        if (faceHit.getFrontOffsetY() == 0) {
+          if (ioMode == IoMode.DISABLED) {
+            InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
+            tcb.setDisplayType(faceHit, newDisplayType);
+            if (newDisplayType == InfoDisplayType.NONE) {
+              tcb.toggleIoModeForFace(faceHit);
+            }
+          } else {
             tcb.toggleIoModeForFace(faceHit);
           }
         } else {
           tcb.toggleIoModeForFace(faceHit);
         }
-      } else {
-        tcb.toggleIoModeForFace(faceHit);
-      }
 
-      IBlockState bs = world.getBlockState(pos);
-      if (world.isRemote) {        
-        world.notifyBlockUpdate(pos, bs, bs, 3);        
-      } else {
-        final BlockCapBank blockCapBank2 = EnderIO.blockCapBank;
-        if (blockCapBank2 != null) {
-          world.notifyNeighborsOfStateChange(pos, blockCapBank2);
+        IBlockState bs = world.getBlockState(pos);
+        if (world.isRemote) {
+          world.notifyBlockUpdate(pos, bs, bs, 3);
         } else {
-          // TODO handle null value
+          final BlockCapBank blockCapBank2 = EnderIO.blockCapBank;
+          if (blockCapBank2 != null) {
+            world.notifyNeighborsOfStateChange(pos, blockCapBank2);
+          }
+          world.notifyBlockUpdate(pos, bs, bs, 3);
         }
-        world.notifyBlockUpdate(pos, bs, bs, 3);
-      }
 
-      return true;
+        return true;
+      }
     }
 
     return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, faceHit, hitX, hitY, hitZ);
@@ -272,8 +280,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       final EnderIO instance2 = EnderIO.instance;
       if (instance2 != null) {
         entityPlayer.openGui(instance2, GuiHandler.GUI_ID_CAP_BANK, world, pos.getX(), pos.getY(), pos.getZ());
-      } else {
-        // TODO handle null value
       }
     }
     return true;
@@ -346,6 +352,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
 
+    if (world != null && pos != null && stack != null) {
     TileCapBank cb = getTileEntity(world, pos);
     if (cb == null) {
       return;
@@ -356,13 +363,15 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
     Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
     if (neigbours.isEmpty()) {
-      int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-      EnumFacing dir = getDirForHeading(heading);
-      cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+        if (player != null) {
+          int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+          EnumFacing dir = getDirForHeading(heading);
+          cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+        }
     } else {
       boolean modifiedDisplayType;
-      modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.down()));
-      modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, pos.up()));
+        modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, NullHelper.notnullM(pos.down(), "EnumFacing.down()")));
+        modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, NullHelper.notnullM(pos.up(), "EnumFacing.up()")));
       if (modifiedDisplayType) {
         cb.validateDisplayTypes();
       }
@@ -374,6 +383,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     
     IBlockState bs = world.getBlockState(pos);
     world.notifyBlockUpdate(pos, bs, bs, 3);    
+    }
   }
 
   protected boolean setDisplayToVerticalFillBar(TileCapBank cb, TileCapBank capBank) {
@@ -405,7 +415,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-    if (!world.isRemote && (!player.capabilities.isCreativeMode)) {
+    if (world != null && pos != null && player != null && !world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileCapBank te = getTileEntity(world, pos);
       if (te != null) {
         te.moveInventoryToNetwork();
@@ -424,7 +434,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public void breakBlock(World world, BlockPos pos, IBlockState state) {
-    if (!world.isRemote) {
+    if (world != null && pos != null && !world.isRemote) {
       TileCapBank te = getTileEntity(world, pos);
       if (te != null) {
         te.onBreakBlock();
@@ -437,6 +447,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @SideOnly(Side.CLIENT)
   @Deprecated
   public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
+    if (world == null || pos == null) {
+      return super.getSelectedBoundingBox(bs, world, pos);
+    }
     TileCapBank tr = getTileEntity(world, pos);
     if (tr == null) {
       return super.getSelectedBoundingBox(bs, world, pos);
@@ -469,9 +482,11 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   public int getComparatorInputOverride(IBlockState bs, World world, BlockPos pos) {
-    TileCapBank te = getTileEntity(world, pos);
-    if (te != null) {
-      return te.getComparatorOutput();
+    if (world != null && pos != null) {
+      TileCapBank te = getTileEntity(world, pos);
+      if (te != null) {
+        return te.getComparatorOutput();
+      }
     }
     return 0;
   }

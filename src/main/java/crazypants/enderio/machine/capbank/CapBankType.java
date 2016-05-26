@@ -25,7 +25,8 @@ public enum CapBankType implements IStringSerializable {
 
   ;
 
-  public static final @Nonnull PropertyEnum<CapBankType> KIND = PropertyEnum.<CapBankType> create("kind", CapBankType.class);
+  public static final @Nonnull PropertyEnum<CapBankType> KIND = NullHelper.notnullM(PropertyEnum.<CapBankType> create("kind", CapBankType.class),
+      "PropertyEnum.create()");
 
   public static @Nonnull List<CapBankType> types() {
     List<CapBankType> result = new ArrayList<CapBankType>();
@@ -37,8 +38,8 @@ public enum CapBankType implements IStringSerializable {
     return result;
   }
 
-  public static int getMetaFromType(@Nonnull CapBankType type) {
-    return type.ordinal();
+  public static int getMetaFromType(CapBankType type) {
+    return type == null ? 0 : type.ordinal();
   }
 
   public static @Nonnull CapBankType getTypeFromMeta(int meta) {

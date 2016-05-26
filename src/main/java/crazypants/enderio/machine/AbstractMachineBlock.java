@@ -25,7 +25,6 @@ import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -100,7 +99,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public @Nonnull IBlockState getStateFromMeta(int meta) {
+  public IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
@@ -110,24 +109,24 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public @Nonnull IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public final @Nonnull IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    NullHelper.untrusted(state, "Parameter IBlockState to Block.getExtendedState()");
-    NullHelper.untrusted(world, "Parameter IBlockAccess to Block.getExtendedState()");
-    NullHelper.untrusted(pos, "Parameter BlockPos to Block.getExtendedState()");
-
-    IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-    T tileEntity = getTileEntity(world, pos);
-    if (tileEntity != null) {
-      setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
+  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (state != null && world != null && pos != null) {
+      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+      T tileEntity = getTileEntity(world, pos);
+      if (tileEntity != null) {
+        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
+      }
+      blockStateWrapper.bakeModel();
+      return blockStateWrapper;
+    } else {
+      return state;
     }
-    blockStateWrapper.bakeModel();
-    return blockStateWrapper;
   }
 
   protected abstract void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
@@ -176,16 +175,20 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
-    int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    AbstractMachineEntity te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setFacing(getFacingForHeading(heading));
-      te.readFromItemStack(stack);
+    if (world != null && pos != null) {
+      AbstractMachineEntity te = getTileEntity(world, pos);
+      if (te != null) {
+        te.readFromItemStack(stack);
+        if (player != null) {
+          int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+          te.setFacing(getFacingForHeading(heading));
+        }
+      }
+      if (world.isRemote) {
+        return;
+      }
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
-    if(world.isRemote) {
-      return;
-    }        
-    world.notifyBlockUpdate(pos, state, state, 3);    
   }
 
   protected EnumFacing getFacingForHeading(int heading) {
@@ -225,18 +228,20 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
     // If active, randomly throw some smoke around
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    if(isActive(world, pos)) {
-      float startX = x + 1.0F;
-      float startY = y + 1.0F;
-      float startZ = z + 1.0F;
-      for (int i = 0; i < 4; i++) {
-        float xOffset = -0.2F - rand.nextFloat() * 0.6F;
-        float yOffset = -0.1F + rand.nextFloat() * 0.2F;
-        float zOffset = -0.2F - rand.nextFloat() * 0.6F;
-        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
+    if (world != null && pos != null && rand != null) {
+      int x = pos.getX();
+      int y = pos.getY();
+      int z = pos.getZ();
+      if (isActive(world, pos)) {
+        float startX = x + 1.0F;
+        float startY = y + 1.0F;
+        float startZ = z + 1.0F;
+        for (int i = 0; i < 4; i++) {
+          float xOffset = -0.2F - rand.nextFloat() * 0.6F;
+          float yOffset = -0.1F + rand.nextFloat() * 0.2F;
+          float zOffset = -0.2F - rand.nextFloat() * 0.6F;
+          world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
+        }
       }
     }
   }
@@ -324,7 +329,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  public @Nullable IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+  public @Nullable IBlockState getPaintSource(@Nullable IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (this instanceof IPaintable) {
       T te = getTileEntity(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {

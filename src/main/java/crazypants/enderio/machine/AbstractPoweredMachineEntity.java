@@ -185,12 +185,13 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   @Override
   public void readFromItemStack(ItemStack stack) {
-    if (stack == null || stack.getTagCompound() == null) {
-      return;
-    }
     super.readFromItemStack(stack);
-    NBTTagCompound nbtRoot = stack.getTagCompound();
-    setEnergyStored(nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+    if (stack != null) {
+      NBTTagCompound root = stack.getTagCompound();
+      if (root != null) {
+        setEnergyStored(root.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+      }
+    }
   }
 
   @Override
@@ -199,10 +200,10 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
       return;
     }
     super.writeToItemStack(stack);
-    if (!stack.hasTagCompound()) {
-      stack.setTagCompound(new NBTTagCompound());
-    }
     NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      stack.setTagCompound(root = new NBTTagCompound());
+    }
     root.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
   }
 

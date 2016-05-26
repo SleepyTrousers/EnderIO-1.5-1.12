@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.generator.zombie;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.BlockCoord;
@@ -58,30 +59,32 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
 
   @Override
-  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
-    BlockCoord loc = getLocation().getLocation(dir);
-    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    if(target != null) {
-      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-      if(infos != null) {
-        for (FluidTankInfo info : infos) {
-          if(info.fluid != null && info.fluid.amount > 0) {
-            if(canFill(dir, info.fluid.getFluid())) {
-              FluidStack canPull = info.fluid.copy();
-              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-              if(drained != null && drained.amount > 0) {
-                int filled = fill(dir, drained, false);
-                if(filled > 0) {
-                  drained = target.drain(dir.getOpposite(), filled, true);
-                  fill(dir, drained, true);
-                  return res;
+    if (dir != null) {
+      BlockCoord loc = getLocation().getLocation(dir);
+      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+      if (target != null) {
+        FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+        if (infos != null) {
+          for (FluidTankInfo info : infos) {
+            if (info.fluid != null && info.fluid.amount > 0) {
+              if (canFill(dir, info.fluid.getFluid())) {
+                FluidStack canPull = info.fluid.copy();
+                canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+                FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
+                if (drained != null && drained.amount > 0) {
+                  int filled = fill(dir, drained, false);
+                  if (filled > 0) {
+                    drained = target.drain(dir.getOpposite(), filled, true);
+                    fill(dir, drained, true);
+                    return res;
+                  }
                 }
               }
             }

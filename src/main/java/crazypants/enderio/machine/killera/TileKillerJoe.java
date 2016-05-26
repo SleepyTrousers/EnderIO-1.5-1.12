@@ -162,7 +162,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return xpCon;
   }
 
-  private static final int[] slots = new int[1];
+  private static final @Nonnull int[] slots = new int[1];
 
   @Override
   public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
@@ -454,23 +454,25 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
 
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
-    BlockCoord loc = getLocation().getLocation(dir);
-    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    if (target != null) {
-      FluidStack canDrain = drain(dir, IO_MB_TICK, false);
-      if (canDrain != null && canDrain.amount > 0) {
-        int drained = target.fill(dir.getOpposite(), canDrain, true);
-        if (drained > 0) {
-          drain(dir, drained, true);
+    if (dir != null) {
+      BlockCoord loc = getLocation().getLocation(dir);
+      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+      if (target != null) {
+        FluidStack canDrain = drain(dir, IO_MB_TICK, false);
+        if (canDrain != null && canDrain.amount > 0) {
+          int drained = target.fill(dir.getOpposite(), canDrain, true);
+          if (drained > 0) {
+            drain(dir, drained, true);
+          }
         }
       }
     }
@@ -575,6 +577,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public boolean shouldRenderInPass(int pass) {
     return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
   }
 
 }

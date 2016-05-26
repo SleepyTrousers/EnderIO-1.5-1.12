@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -87,11 +88,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private ICapBankNetwork network;
 
   @Store
-  private final ItemStack[] inventory;
-
-  public TileCapBank() {
-    inventory = new ItemStack[4];
-  }
+  private final ItemStack[] inventory = new ItemStack[4];
 
   // Client side reference to look up network state
   private int networkId = -1;
@@ -176,6 +173,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
             inventory[i] = null;
           }
           network.getInventory().setCapBank(cb);
+          markDirty();
           break;
         }
       }
@@ -183,7 +181,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   public void onBreakBlock() {
-    // If we are holding the networks inventory when we care broken, transfer it to another member of the network
+    // If we are holding the networks inventory when we are broken, transfer it to another member of the network
     moveInventoryToNetwork();
   }
 
@@ -248,7 +246,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   // ---------- IO
 
   @Override
-  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nullable EnumFacing faceHit) {
+    if (faceHit == null) {
+      return IoMode.NONE;
+    }
     IPowerInterface rec = getReceptorForFace(faceHit);
     IoMode curMode = getIoMode(faceHit);
     if (curMode == IoMode.PULL) {
@@ -270,7 +271,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+    if (faceHit == null || mode == null) {
+      return false;
+    }
     IPowerInterface rec = getReceptorForFace(faceHit);
     if (mode == IoMode.NONE) {
       return rec == null || rec.getDelegate() instanceof IConduitBundle;
@@ -279,8 +283,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
-    setIoMode(faceHit, mode, true);
+  public void setIoMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+    if (faceHit != null && mode != null) {
+      setIoMode(faceHit, mode, true);
+    }
   }
 
   public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode, boolean updateReceptors) {
@@ -340,7 +346,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nullable EnumFacing face) {
     if (faceModes == null) {
       return IoMode.NONE;
     }
@@ -433,7 +439,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull AxisAlignedBB getRenderBoundingBox() {
+  public AxisAlignedBB getRenderBoundingBox() {
     if (!getType().isMultiblock() || !(network instanceof CapBankClientNetwork)) {
       return super.getRenderBoundingBox();
     }
@@ -804,7 +810,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-    if (NullHelper.untrust(itemstack) == null) {
+    if (itemstack == null) {
       return false;
     }
     return itemstack.getItem() instanceof IEnergyContainerItem;
@@ -834,6 +840,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       inventory[i] = null;
     }
     dropItems = false;
+    markDirty();
   }
 
   // ---------------- NBT
@@ -873,6 +880,19 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public int getFieldCount() {
     return 0;
+  }
+
+  @Override
+  protected void readCustomNBT(NBTTagCompound root) {
+    System.out.println("Before read: " + Arrays.toString(inventory));
+    super.readCustomNBT(root);
+    System.out.println("After read:  " + Arrays.toString(inventory));
+  }
+
+  @Override
+  protected void writeCustomNBT(NBTTagCompound root) {
+    System.out.println("Saving:      " + Arrays.toString(inventory));
+    super.writeCustomNBT(root);
   }
 
 }

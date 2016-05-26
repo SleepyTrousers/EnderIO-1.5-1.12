@@ -172,6 +172,9 @@ public class InventoryImpl implements IInventory {
 
   @Override
   public void markDirty() {
+    if (capBank != null) {
+      capBank.markDirty();
+    }
   }
 
   @Override

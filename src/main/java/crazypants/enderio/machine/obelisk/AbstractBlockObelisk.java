@@ -28,7 +28,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
 
   public static final AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
 
-  protected AbstractBlockObelisk(IModObject mo, Class<T> teClass) {
+  protected AbstractBlockObelisk(@Nonnull IModObject mo, Class<T> teClass) {
     super(mo, teClass);
   }
 
@@ -54,7 +54,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
-    if(isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
+    if (world != null && pos != null && rand != null && isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 0.85F;
       float startZ = pos.getZ() + 1.0F;

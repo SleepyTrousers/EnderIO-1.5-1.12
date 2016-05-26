@@ -58,7 +58,8 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     }
   }
 
-  public static final @Nonnull PropertyEnum<SkullType> VARIANT = PropertyEnum.<SkullType> create("variant", SkullType.class);
+  public static final @Nonnull PropertyEnum<SkullType> VARIANT = NullHelper.notnullM(PropertyEnum.<SkullType> create("variant", SkullType.class),
+      "PropertyEnum.create()");
 
   public static BlockEndermanSkull create() {
     BlockEndermanSkull res = new BlockEndermanSkull();
@@ -69,7 +70,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 
   private BlockEndermanSkull() {
-    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, Material.CIRCUITS);
+    super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, NullHelper.notnullM(Material.CIRCUITS, "Material.CIRCUITS"));
   }
 
   @Override
@@ -106,7 +107,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  public @Nonnull IBlockState getStateFromMeta(int meta) {
+  public IBlockState getStateFromMeta(int meta) {
     @Nonnull
     SkullType var = SkullType.getTypeFromMeta(meta);
     return getDefaultState().withProperty(VARIANT, var);
@@ -135,25 +136,33 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
-    int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
-    float facingYaw = -22.5f * inc;
-    TileEndermanSkull te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setYaw(facingYaw);
+    if (world != null && pos != null) {
+      if (player != null) {
+        int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
+        float facingYaw = -22.5f * inc;
+        TileEndermanSkull te = getTileEntity(world, pos);
+        if (te != null) {
+          te.setYaw(facingYaw);
+        }
+      }
+      if (world.isRemote) {
+        return;
+      }
+      if (stack != null) {
+        world.setBlockState(pos, getStateFromMeta(stack.getItemDamage()));
+        world.notifyBlockUpdate(pos, state, state, 3);
+      }
     }
-    if (world.isRemote) {
-      return;
-    }
-    world.setBlockState(pos, getStateFromMeta(stack.getItemDamage()));
-    world.notifyBlockUpdate(pos, state, state, 3);    
   }
 
   @Deprecated
   @Override
-  public @Nonnull AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {
-    TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
-    if (tileEntity != null) {
-      tileEntity.lookingAt = 20;
+  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {
+    if (worldIn != null && pos != null) {
+      TileEndermanSkull tileEntity = getTileEntity(worldIn, pos);
+      if (tileEntity != null) {
+        tileEntity.lookingAt = 20;
+      }
     }
     return super.getSelectedBoundingBox(bs, worldIn, pos);
   }

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -41,7 +42,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return BufferType.get(this).getUnlocalizedName();
   }
 
@@ -71,7 +72,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public void setIoMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     super.setIoMode(faceHit, mode);
     if (dist != null) {
       dist.neighboursChanged();
@@ -118,7 +119,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
     if (isCreative()) {
       ItemStack[] invCopy = new ItemStack[inventory.length];
       for (int i = 0; i < inventory.length; i++) {
@@ -135,9 +136,9 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
 
-    if (!shouldDoWorkThisTick(20)) {
+    if (dir == null || !shouldDoWorkThisTick(20)) {
       return false;
     }
 

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
@@ -164,7 +165,11 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
+    if (dir == null) {
+      return false;
+    }
+
     if (inventory[0] == null) {
       return false;
     }

@@ -86,8 +86,8 @@ public class DarkSteelController {
 
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
-    GameProfile gameProfile = NullHelper.untrusted(player.getGameProfile(), "player.getGameProfile()");
-    UUID id = gameProfile.getId();
+    GameProfile gameProfile = player.getGameProfile();
+    UUID id = gameProfile == null ? null : gameProfile.getId();
     active = id == null ? null : allActive.get(id);
     if (active == null) {
       active = DEFAULT_ACTIVE.clone();
@@ -365,7 +365,7 @@ public class DarkSteelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = NullHelper.untrust(Minecraft.getMinecraft().thePlayer);
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       if (player == null) {
         return;
       }
@@ -373,11 +373,13 @@ public class DarkSteelController {
       if (player.capabilities.isFlying) {
         return;
       }
-      MovementInput input = NullHelper.untrusted(player.movementInput, "Minecraft.getMinecraft().thePlayer.movementInput");
+      MovementInput input = player.movementInput;
+      if (input != null) {
       if (input.jump && !wasJumping) {
         doJump(player);
       } else if (input.jump && jumpCount < 3 && ticksSinceLastJump > 5) {
         doJump(player);
+      }
       }
 
       wasJumping = !player.onGround;

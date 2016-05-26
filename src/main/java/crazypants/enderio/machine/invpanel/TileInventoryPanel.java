@@ -335,16 +335,16 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nullable EnumFacing face) {
     return face == getIODirection() ? IoMode.NONE : IoMode.DISABLED;
   }
 
   @Override
-  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public void setIoMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
   }
 
   @Override
-  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nullable EnumFacing faceHit) {
     return getIoMode(faceHit);
   }
 

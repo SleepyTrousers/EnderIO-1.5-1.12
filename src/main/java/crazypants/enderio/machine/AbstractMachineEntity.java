@@ -102,23 +102,23 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public @Nonnull IoMode toggleIoModeForFace(@Nonnull EnumFacing faceHit) {
+  public @Nonnull IoMode toggleIoModeForFace(@Nullable EnumFacing faceHit) {
     IoMode curMode = getIoMode(faceHit);
     IoMode mode = curMode.next();
     while (!supportsMode(faceHit, mode)) {
       mode = mode.next();
     }
     setIoMode(faceHit, mode);
-    return mode;
+    return mode != null ? mode : IoMode.NONE;
   }
 
   @Override
-  public boolean supportsMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return true;
   }
 
   @Override
-  public void setIoMode(@Nonnull EnumFacing faceHit, @Nonnull IoMode mode) {
+  public void setIoMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     if (mode == IoMode.NONE && faceModes == null) {
       return;
     }
@@ -143,7 +143,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public @Nonnull IoMode getIoMode(@Nonnull EnumFacing face) {
+  public @Nonnull IoMode getIoMode(@Nullable EnumFacing face) {
     if (faceModes == null) {
       return IoMode.NONE;
     }
@@ -343,12 +343,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return res;
   }
 
-  protected boolean doPush(@Nonnull EnumFacing dir) {
+  protected boolean doPush(@Nullable EnumFacing dir) {
 
-    if (slotDefinition.getNumOutputSlots() <= 0) {
-      return false;
-    }
-    if (!shouldDoWorkThisTick(20)) {
+    if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20)) {
       return false;
     }
 
@@ -378,12 +375,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return false;
   }
 
-  protected boolean doPull(@Nonnull EnumFacing dir) {
+  protected boolean doPull(@Nullable EnumFacing dir) {
 
-    if (slotDefinition.getNumInputSlots() <= 0) {
-      return false;
-    }
-    if (!shouldDoWorkThisTick(20)) {
+    if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20)) {
       return false;
     }
 
@@ -506,11 +500,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (stack == null) {
       return;
     }
-    if (!stack.hasTagCompound()) {
-      stack.setTagCompound(new NBTTagCompound());
+    NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      root = new NBTTagCompound();
+      stack.setTagCompound(root);
     }
 
-    NBTTagCompound root = stack.getTagCompound();
     root.setBoolean("eio.abstractMachine", true);
     try {
       doingOtherNbt = true;
@@ -572,13 +567,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
     if (fromStack.stackSize <= amount) {
       inventory[fromSlot] = null;
+      markDirty();
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    if (fromStack.getTagCompound() != null) {
-      result.setTagCompound((NBTTagCompound) fromStack.getTagCompound().copy());
+    NBTTagCompound tagCompound = fromStack.getTagCompound();
+    if (tagCompound != null) {
+      result.setTagCompound((NBTTagCompound) tagCompound.copy());
     }
     fromStack.stackSize -= amount;
+    markDirty();
     return result;
   }
 
@@ -592,6 +590,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (contents != null && contents.stackSize > getInventoryStackLimit(slot)) {
       contents.stackSize = getInventoryStackLimit(slot);
     }
+    markDirty();
   }
 
   @Override
@@ -599,12 +598,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     for (int i = 0; i < inventory.length; ++i) {
       inventory[i] = null;
     }
+    markDirty();
   }
 
   @Override
   public ItemStack removeStackFromSlot(int index) {
     ItemStack res = inventory[index];
     inventory[index] = null;
+    markDirty();
     return res;
   }
 
@@ -688,7 +689,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   public boolean isSideDisabled(EnumFacing dir) {
-    IoMode mode = getIoMode(dir);
+    IoMode mode = dir == null ? IoMode.DISABLED : getIoMode(dir);
     if (mode == IoMode.DISABLED) {
       return true;
     }
@@ -718,7 +719,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store
   private IBlockState paintSource = null;
 
-  public void setPaintSource(IBlockState paintSource) {
+  public void setPaintSource(@Nullable IBlockState paintSource) {
     this.paintSource = paintSource;
     markDirty();
     updateBlock();
