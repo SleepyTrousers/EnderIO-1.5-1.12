@@ -1,10 +1,13 @@
 package crazypants.enderio.config.recipes.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public abstract class AbstractCrafting extends AbstractConditional {
 
-  @XStreamAlias("output")
   private Output output;
 
   @Override
@@ -21,6 +24,23 @@ public abstract class AbstractCrafting extends AbstractConditional {
 
   public Output getOutput() {
     return output;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("output".equals(name)) {
+      if (output == null) {
+        output = factory.read(new Output(), startElement);
+        return true;
+      }
+    }
+
+    return super.setElement(factory, name, startElement);
   }
 
 }

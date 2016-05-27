@@ -1,5 +1,7 @@
 package crazypants.enderio.config.recipes.xml;
 
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+
 public class Item extends OptionalItem {
 
   @Override

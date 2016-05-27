@@ -2,29 +2,22 @@ package crazypants.enderio.config.recipes.xml;
 
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeConfigElement;
+import crazypants.enderio.config.recipes.StaxFactory;
 import crazypants.util.Things;
 import net.minecraft.item.ItemStack;
 
 public class OptionalItem implements RecipeConfigElement {
 
-  @XStreamAlias("name")
-  @XStreamAsAttribute
   private String name;
-  @XStreamOmitField
-  private ItemStack stack;
-  @XStreamOmitField
-  private Object recipeObject;
-  @XStreamOmitField
-  protected boolean valid;
-
-  public OptionalItem() {
-    super();
-  }
+  private transient ItemStack stack;
+  private transient Object recipeObject;
+  protected transient boolean valid;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -63,6 +56,21 @@ public class OptionalItem implements RecipeConfigElement {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("name".equals(name)) {
+      this.name = value;
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
   }
 
 }

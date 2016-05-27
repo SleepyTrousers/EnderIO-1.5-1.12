@@ -1,18 +1,17 @@
 package crazypants.enderio.config.recipes.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeConfigElement;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public class Level implements RecipeConfigElement {
 
-  @XStreamAsAttribute
-  @XStreamAlias("minlevel")
   private Integer minlevel;
 
-  @XStreamAsAttribute
-  @XStreamAlias("maxlevel")
   private Integer maxlevel;
 
   @Override
@@ -33,6 +32,25 @@ public class Level implements RecipeConfigElement {
   @Override
   public boolean isValid() {
     return Config.recipeLevel >= minlevel && Config.recipeLevel <= maxlevel;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("minlevel".equals(name)) {
+      this.minlevel = Integer.valueOf(value);
+      return true;
+    }
+    if ("maxlevel".equals(name)) {
+      this.maxlevel = Integer.valueOf(value);
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
   }
 
 }

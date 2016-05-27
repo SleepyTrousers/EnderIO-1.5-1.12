@@ -3,26 +3,22 @@ package crazypants.enderio.config.recipes.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeConfigElement;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public class Grid implements RecipeConfigElement {
 
-  @XStreamAsAttribute
-  @XStreamAlias("size")
   private String size;
 
-  @XStreamImplicit(itemFieldName = "item")
   private List<OptionalItem> items;
 
-  @XStreamOmitField
-  private int width;
-  @XStreamOmitField
-  private int height;
-  @XStreamOmitField
-  private boolean valid;
+  private transient int width;
+  private transient int height;
+  private transient boolean valid;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -99,6 +95,29 @@ public class Grid implements RecipeConfigElement {
 
     rowStrings.addAll(elements);
     return rowStrings.toArray();
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("size".equals(name)) {
+      this.size = value;
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("item".equals(name)) {
+      if (items == null) {
+        items = new ArrayList<OptionalItem>();
+      }
+      items.add(factory.read(new OptionalItem(), startElement));
+      return true;
+    }
+
+    return false;
   }
 
 }

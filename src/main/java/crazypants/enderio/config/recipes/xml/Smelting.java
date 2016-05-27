@@ -1,17 +1,16 @@
 package crazypants.enderio.config.recipes.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Smelting extends AbstractCrafting {
 
-  @XStreamAsAttribute
-  @XStreamAlias("exp")
   private float exp;
 
-  @XStreamAlias("input")
   private Output input;
 
   @Override
@@ -41,6 +40,28 @@ public class Smelting extends AbstractCrafting {
     if (isValid() && isActive()) {
       GameRegistry.addSmelting(input.getItemStack(), getOutput().getItemStack(), exp);
     }
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("exp".equals(name)) {
+      this.exp = Float.parseFloat(value);
+      return true;
+    }
+
+    return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("input".equals(name)) {
+      if (input == null) {
+        input = factory.read(new Output(), startElement);
+        return true;
+      }
+    }
+
+    return super.setElement(factory, name, startElement);
   }
 
 }

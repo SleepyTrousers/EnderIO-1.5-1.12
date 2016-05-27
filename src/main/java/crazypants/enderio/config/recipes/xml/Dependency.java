@@ -1,18 +1,18 @@
 package crazypants.enderio.config.recipes.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeConfigElement;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public class Dependency implements RecipeConfigElement {
 
-  @XStreamAsAttribute
-  @XStreamAlias("item")
   private String itemString;
-  @XStreamAsAttribute
-  @XStreamAlias("reverse")
   private boolean reverse;
 
-  private Item item;
+  private transient Item item;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -32,6 +32,25 @@ public class Dependency implements RecipeConfigElement {
   @Override
   public boolean isValid() {
     return item.isValid() != reverse;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("item".equals(name)) {
+      this.itemString = value;
+      return true;
+    }
+    if ("reverse".equals(name)) {
+      this.reverse = Boolean.parseBoolean(value);
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
   }
 
 }

@@ -68,8 +68,6 @@ dependencies {
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"   
     
-    exportedCompile("com.thoughtworks.xstream:xstream:1.4.9") { transitive = false }
-
     compile fileTree(dir: 'lib', include: '*.jar') 
 }
 

@@ -2,17 +2,18 @@ package crazypants.enderio.config.recipes.xml;
 
 import java.util.Locale;
 
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeConfigElement;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public class ConfigReference implements RecipeConfigElement {
 
-  @XStreamAsAttribute
   private String section;
-  @XStreamAsAttribute
   private String name;
-  @XStreamAsAttribute
   private boolean value;
 
   @Override
@@ -33,6 +34,29 @@ public class ConfigReference implements RecipeConfigElement {
   @Override
   public boolean isValid() {
     return Config.config.getCategory(section).get(name).getBoolean() == value;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("section".equals(name)) {
+      this.section = value;
+      return true;
+    }
+    if ("name".equals(name)) {
+      this.name = value;
+      return true;
+    }
+    if ("value".equals(name)) {
+      this.value = Boolean.parseBoolean(value);
+      return true;
+    }
+
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
   }
 
 }

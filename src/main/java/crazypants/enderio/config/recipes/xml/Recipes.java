@@ -1,48 +1,32 @@
-package crazypants.enderio.config.recipes;
+package crazypants.enderio.config.recipes.xml;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
-
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.config.recipes.xml.Alias;
-import crazypants.enderio.config.recipes.xml.InvalidRecipeConfigException;
-import crazypants.enderio.config.recipes.xml.Recipe;
-import crazypants.enderio.config.recipes.xml.RecipeGameRecipe;
-import net.minecraft.launchwrapper.Launch;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeRoot;
+import crazypants.enderio.config.recipes.StaxFactory;
 
-@XStreamAlias("recipes")
-public class Recipes implements RecipeGameRecipe {
+public class Recipes implements RecipeRoot {
 
-  @XStreamImplicit(itemFieldName = "alias")
   private List<Alias> aliases;
 
-  @XStreamImplicit(itemFieldName = "recipe")
   private List<Recipe> recipes;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    if (recipes == null || recipes.isEmpty()) {
-      throw new InvalidRecipeConfigException("No recipes");
-    }
     return this;
   }
 
   @Override
   public boolean isValid() {
-    return recipes != null;
+    return recipes != null || aliases != null;
   }
 
   @Override
@@ -53,48 +37,71 @@ public class Recipes implements RecipeGameRecipe {
   @Override
   public void register() {
     Log.debug("Starting registering XML recipes");
-    for (Recipe recipe : recipes) {
-      recipe.register();
+    if (recipes != null) {
+      for (Recipe recipe : recipes) {
+        recipe.register();
+      }
     }
     Log.debug("Done registering XML recipes");
   }
 
-  public static Recipes fromFile() {
-    XStream xstream = new XStream(new StaxDriver());
-    if (Recipes.class.getClassLoader() != null) {
-      xstream.setClassLoader(Recipes.class.getClassLoader());
-    }
-    xstream.processAnnotations(Recipes.class);
+  void initEmpty() {
+    recipes = new ArrayList<Recipe>();
+  }
 
-    try {
-      return (Recipes) readConfig(xstream, "recipes.xml");
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+  @Override
+  public void addRecipes(RecipeRoot other) {
+    if (other instanceof Recipes && ((Recipes) other).recipes != null) {
+      if (recipes != null) {
+        Set<String> recipeNames = new HashSet<String>();
+        for (Recipe recipe : recipes) {
+          recipeNames.add(recipe.getName());
+        }
+
+        for (Recipe recipe : ((Recipes) other).recipes) {
+          if (!recipeNames.contains(recipe.getName())) {
+            recipes.add(recipe);
+          }
+        }
+      } else {
+        recipes = ((Recipes) other).recipes;
+      }
     }
   }
 
-  private static Object readConfig(XStream xstream, String fileName) throws IOException {
-    File configFile = new File(Config.configDirectory, fileName);
-
-    if (configFile.exists() && !((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))) {
-      return xstream.fromXML(configFile);
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("enderio".equals(name)) {
+      return true;
+    }
+    if ("xsi".equals(name)) {
+      return true;
+    }
+    if ("schemaLocation".equals(name)) {
+      return true;
     }
 
-    InputStream defaultFile = Recipes.class.getResourceAsStream("/assets/" + EnderIO.DOMAIN + "/config/" + fileName);
-    if (defaultFile == null) {
-      throw new IOException("Could not get resource /assets/" + EnderIO.DOMAIN + "/config/" + fileName + " from classpath. ");
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("alias".equals(name)) {
+      if (aliases == null) {
+        aliases = new ArrayList<Alias>();
+      }
+      aliases.add(factory.read(new Alias(), startElement));
+      return true;
+    }
+    if ("recipe".equals(name)) {
+      if (recipes == null) {
+        recipes = new ArrayList<Recipe>();
+      }
+      recipes.add(factory.read(new Recipe(), startElement));
+      return true;
     }
 
-    Object myObject = xstream.fromXML(defaultFile);
-    IOUtils.closeQuietly(defaultFile);
-    BufferedWriter writer = null;
-    try {
-      writer = new BufferedWriter(new FileWriter(configFile, false));
-      xstream.toXML(myObject, writer);
-    } finally {
-      IOUtils.closeQuietly(writer);
-    }
-    return myObject;
+    return false;
   }
 
 }

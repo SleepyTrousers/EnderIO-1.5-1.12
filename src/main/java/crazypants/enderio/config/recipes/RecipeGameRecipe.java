@@ -1,4 +1,4 @@
-package crazypants.enderio.config.recipes.xml;
+package crazypants.enderio.config.recipes;
 
 public interface RecipeGameRecipe extends RecipeConfigElement {
 

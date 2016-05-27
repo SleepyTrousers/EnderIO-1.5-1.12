@@ -1,28 +1,25 @@
 package crazypants.enderio.config.recipes.xml;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeGameRecipe;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public abstract class AbstractConditional implements RecipeGameRecipe {
 
-  @XStreamAsAttribute
-  @XStreamAlias("level")
   private Level level;
 
-  @XStreamImplicit(itemFieldName = "config")
   private List<ConfigReference> configReferences;
 
-  @XStreamImplicit(itemFieldName = "dependency")
   private List<Dependency> dependencies;
 
-  @XStreamOmitField
-  protected boolean valid;
-  @XStreamOmitField
-  protected boolean active;
+  protected transient boolean valid;
+  protected transient boolean active;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -57,6 +54,37 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
   @Override
   public boolean isActive() {
     return active;
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("level".equals(name)) {
+      if (level == null) {
+        level = factory.read(new Level(), startElement);
+        return true;
+      }
+    }
+    if ("config".equals(name)) {
+      if (configReferences == null) {
+        configReferences = new ArrayList<ConfigReference>();
+      }
+      configReferences.add(factory.read(new ConfigReference(), startElement));
+      return true;
+    }
+    if ("dependency".equals(name)) {
+      if (dependencies == null) {
+        dependencies = new ArrayList<Dependency>();
+      }
+      dependencies.add(factory.read(new Dependency(), startElement));
+      return true;
+    }
+
+    return false;
   }
 
 }

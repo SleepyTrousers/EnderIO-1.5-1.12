@@ -2,19 +2,20 @@ package crazypants.enderio.config.recipes.xml;
 
 import java.util.Arrays;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class Crafting extends AbstractCrafting {
 
-  @XStreamAlias("grid")
   private Grid grid;
 
-  @XStreamAlias("shapeless")
   private Shapeless shapeless;
 
   @Override
@@ -50,6 +51,29 @@ public class Crafting extends AbstractCrafting {
     } else {
       Log.debug("Skipping Crafting '" + (getOutput() == null ? "null" : getOutput().getItemStack()) + "' (valid=" + valid + ", active=" + active + ")");
     }
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("grid".equals(name)) {
+      if (grid == null) {
+        grid = factory.read(new Grid(), startElement);
+        return true;
+      }
+    }
+    if ("shapeless".equals(name)) {
+      if (shapeless == null) {
+        shapeless = factory.read(new Shapeless(), startElement);
+        return true;
+      }
+    }
+
+    return super.setElement(factory, name, startElement);
   }
 
 }

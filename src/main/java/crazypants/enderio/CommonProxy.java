@@ -1,11 +1,13 @@
 package crazypants.enderio;
 
+import java.io.IOException;
+
 import javax.annotation.Nonnull;
+import javax.xml.stream.XMLStreamException;
 
-import com.thoughtworks.xstream.converters.ConversionException;
-
-import crazypants.enderio.config.recipes.Recipes;
-import crazypants.enderio.config.recipes.xml.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.RecipeFactory;
+import crazypants.enderio.config.recipes.xml.Recipes;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -45,22 +47,26 @@ public class CommonProxy {
   public void preInit() {       
   }
   
+  private static final String[] RECIPE_FILES = { "aliases", "machines", "materials" };
+
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
 
-    try {
-      Recipes recipes = Recipes.fromFile();
-      if (recipes.isValid()) {
-        recipes.register();
-      } else {
-        Log.warn("Recipes config file is empty or invalid!");
-      }
-    } catch (ConversionException e) {
-      if (e.getCause() instanceof InvalidRecipeConfigException) {
-        Log.warn("Recipes config file is invalid: " + e.getCause().getMessage());
-      } else {
-        throw e;
+    for (String filename : RECIPE_FILES) {
+      try {
+        Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
+        if (recipes.isValid()) {
+          recipes.register();
+        } else {
+          Log.warn("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
+        }
+      } catch (InvalidRecipeConfigException e) {
+        Log.warn("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+      } catch (IOException e) {
+        Log.warn("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
+      } catch (XMLStreamException e) {
+        Log.warn("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
       }
     }
   }

@@ -1,31 +1,32 @@
 package crazypants.enderio.config.recipes.xml;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.StaxFactory;
 
 public class Recipe extends AbstractConditional {
 
-  @XStreamAsAttribute
-  @XStreamAlias("name")
   private String name;
 
-  @XStreamAsAttribute
-  @XStreamAlias("required")
   private boolean required;
 
-  @XStreamImplicit(itemFieldName = "crafting")
+  private boolean disabled;
+
   private List<Crafting> craftings;
 
-  @XStreamImplicit(itemFieldName = "smelting")
   private List<Smelting> smeltings;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
+    if (disabled) {
+      return this;
+    }
     try {
       super.readResolve();
       int validSubs = 0;
@@ -77,7 +78,7 @@ public class Recipe extends AbstractConditional {
 
   @Override
   public void register() {
-    if (valid && active) {
+    if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
       if (craftings != null) {
         for (Crafting crafting : craftings) {
@@ -96,7 +97,7 @@ public class Recipe extends AbstractConditional {
         }
       }
     } else {
-      Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ")");
+      Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }
   }
 
@@ -105,6 +106,57 @@ public class Recipe extends AbstractConditional {
       return name.trim();
     }
     return "unnamed recipe";
+  }
+
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("name".equals(name)) {
+      this.name = value;
+      return true;
+    }
+    if ("required".equals(name)) {
+      this.required = Boolean.parseBoolean(value);
+      return true;
+    }
+    if ("disabled".equals(name)) {
+      this.disabled = Boolean.parseBoolean(value);
+      return true;
+    }
+
+    return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("crafting".equals(name)) {
+      if (craftings == null) {
+        craftings = new ArrayList<Crafting>();
+      }
+      craftings.add(factory.read(new Crafting(), startElement));
+      return true;
+    }
+    if ("smelting".equals(name)) {
+      if (smeltings == null) {
+        smeltings = new ArrayList<Smelting>();
+      }
+      smeltings.add(factory.read(new Smelting(), startElement));
+      return true;
+    }
+
+    return super.setElement(factory, name, startElement);
+  }
+
+
+  @Override
+  public boolean isValid() {
+    return disabled || super.isValid();
+  }
+
+
+  @Override
+  public boolean isActive() {
+    return !disabled && super.isActive();
   }
 
 }

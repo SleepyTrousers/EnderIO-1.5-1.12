@@ -1,18 +1,16 @@
 package crazypants.enderio.config.recipes.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.config.recipes.StaxFactory;
 import crazypants.util.Things;
 
 public class Alias extends AbstractConditional {
 
-  @XStreamAlias("name")
-  @XStreamAsAttribute
   private String name;
 
-  @XStreamAlias("item")
-  @XStreamAsAttribute
   private String item;
 
   @Override
@@ -30,6 +28,24 @@ public class Alias extends AbstractConditional {
 
   @Override
   public void register() {
+  }
+
+  @Override
+  public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("name".equals(name)) {
+      this.name = value;
+      return true;
+    }
+    if ("item".equals(name)) {
+      this.item = value;
+      return true;
+    }
+    return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    return super.setElement(factory, name, startElement);
   }
 
 }
