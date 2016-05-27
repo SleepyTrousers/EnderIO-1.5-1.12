@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.capbank;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -884,14 +883,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   protected void readCustomNBT(NBTTagCompound root) {
-    System.out.println("Before read: " + Arrays.toString(inventory));
     super.readCustomNBT(root);
-    System.out.println("After read:  " + Arrays.toString(inventory));
   }
 
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
-    System.out.println("Saving:      " + Arrays.toString(inventory));
     super.writeCustomNBT(root);
   }
 

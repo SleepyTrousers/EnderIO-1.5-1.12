@@ -6,6 +6,7 @@ import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -21,6 +22,11 @@ public class RangeRenerer extends RenderEntity {
 
   public RangeRenerer(RenderManager renderManagerIn) {
     super(renderManagerIn);
+  }
+
+  @Override
+  public boolean shouldRender(Entity livingEntity, ICamera camera, double camX, double camY, double camZ) {    
+    return true;
   }
 
   @Override

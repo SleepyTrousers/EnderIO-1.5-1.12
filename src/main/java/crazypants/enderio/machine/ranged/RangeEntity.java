@@ -46,6 +46,11 @@ public class RangeEntity extends Entity {
   public AxisAlignedBB getEntityBoundingBox() {
     return noBB;
   }
+  
+  @SideOnly(Side.CLIENT)
+  public AxisAlignedBB getRenderBoundingBox() {
+    return getRangeBox().getAxisAlignedBB();
+  }
 
   @Override
   public void onUpdate() {
