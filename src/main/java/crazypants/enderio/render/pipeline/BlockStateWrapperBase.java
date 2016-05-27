@@ -160,7 +160,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     String cacheResult;
 
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
-      rawPaintSource = ((IBlockPaintableBlock) block).getPaintSource(state, world, pos);
+      rawPaintSource = PaintWrangler.getActualBlockState(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos));
       paintSource = PaintWrangler.getDynamicBlockState(world, pos, rawPaintSource);
     }
 

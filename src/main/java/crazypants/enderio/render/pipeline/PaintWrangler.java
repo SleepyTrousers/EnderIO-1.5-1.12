@@ -58,7 +58,7 @@ public class PaintWrangler {
     return true;
   }
 
-  public static IBlockState getDynamicBlockState(IBlockAccess blockAccess, BlockPos pos, IBlockState paint) {
+  public static IBlockState getActualBlockState(IBlockAccess blockAccess, BlockPos pos, IBlockState paint) {
     if (paint == null) {
       return null;
     }
@@ -71,7 +71,6 @@ public class PaintWrangler {
     }
 
     if (memory.doPaint) {
-
       if (memory.doActualStateWithTe) {
         try {
           paint = paint.getActualState(new PaintedBlockAccessWrapper(blockAccess, true), pos);          
@@ -89,6 +88,23 @@ public class PaintWrangler {
         }
       }
 
+    }
+    return paint;
+  }
+
+  public static IBlockState getDynamicBlockState(IBlockAccess blockAccess, BlockPos pos, IBlockState paint) {
+    if (paint == null) {
+      return null;
+    }
+
+    Block block = paint.getBlock();
+    Memory memory = cache.get(block);
+    if (memory == null) {
+      memory = new Memory();
+      cache.put(block, memory);
+    }
+
+    if (memory.doPaint) {
       if (memory.doExtendedStateWithTe) {
         try {
           paint = block.getExtendedState(paint, new PaintedBlockAccessWrapper(blockAccess, true), pos);
