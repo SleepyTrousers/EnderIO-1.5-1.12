@@ -10,10 +10,8 @@ import net.minecraft.item.ItemStack;
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name(), "enderio:itemRedstoneConduit"),
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Switch", "enderio:itemRedstoneSwitch"),
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit")
-
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit"),
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Switch", "enderio:itemRedstoneSwitch")      
   };
 
   public static ItemRedstoneConduit create() {
@@ -34,12 +32,9 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
   @Override
   public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     if(stack.getItemDamage() == 0) {
-      return new RedstoneConduit();
-    }
-    if(stack.getItemDamage() == 1) {
-      return new RedstoneSwitch();
+      return new InsulatedRedstoneConduit();      
     } else {
-      return new InsulatedRedstoneConduit();
+      return new RedstoneSwitch();
     }
   }
 

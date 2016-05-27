@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
+public abstract class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
@@ -62,7 +62,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   protected boolean neighbourDirty = true;
 
   @SuppressWarnings("unused")
-  public RedstoneConduit() {
+  protected RedstoneConduit() {
     for (EnumFacing ignored : EnumFacing.VALUES) {
       externalSignals.add(new HashSet<Signal>());
     }
