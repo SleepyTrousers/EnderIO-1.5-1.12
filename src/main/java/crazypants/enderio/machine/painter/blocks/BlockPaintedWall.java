@@ -78,14 +78,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
-    //TODO: 1.9 the way the models work has changed
     PaintRegistry.registerModel("wall_post", new ResourceLocation("minecraft", "block/cobblestone_wall_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_n", new ResourceLocation("minecraft", "block/cobblestone_wall_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_ne", new ResourceLocation("minecraft", "block/cobblestone_wall_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_ns", new ResourceLocation("minecraft", "block/cobblestone_wall_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_nse", new ResourceLocation("minecraft", "block/cobblestone_wall_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_nsew", new ResourceLocation("minecraft", "block/cobblestone_wall_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("wall_ns_above", new ResourceLocation("minecraft", "block/cobblestone_wall_ns_above"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_side", new ResourceLocation("minecraft", "block/cobblestone_wall_side"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_inventory", new ResourceLocation("minecraft", "block/cobblestone_wall_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
@@ -214,80 +207,26 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   }
 
   @SideOnly(Side.CLIENT)
-  private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
+  private List<IBakedModel> mapRender(IBlockState state, @Nullable IBlockState paint) {
+    List<IBakedModel> result = new ArrayList<IBakedModel>();
 
-    Boolean up = state.getValue(UP);
-    Boolean north = state.getValue(NORTH);
-    Boolean east = state.getValue(EAST);
-    Boolean west = state.getValue(WEST);
-    Boolean south = state.getValue(SOUTH);
-
-    if (!east && !north && !south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_post", paint, new UVLock(null));
-    } else if (!east && north && !south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(null));
-    } else if (east && !north && !south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && !north && south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (!east && !north && !south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (east && north && !south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(null));
-    } else if (east && !north && south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && !north && south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (!east && north && !south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (!east && north && south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ns", paint, new UVLock(null));
-    } else if (east && !north && !south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ns", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (east && north && south && !up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(null));
-    } else if (east && !north && south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && north && south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (east && north && !south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (east && north && south && !up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nsew", paint, new UVLock(null));
-    } else if (!east && !north && !south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_post", paint, new UVLock(null));
-    } else if (!east && north && !south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(null));
-    } else if (east && !north && !south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && !north && south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (!east && !north && !south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_n", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (east && north && !south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(null));
-    } else if (east && !north && south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && !north && south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (!east && north && !south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ne", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (!east && north && south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ns_above", paint, new UVLock(null));
-    } else if (east && !north && !south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_ns_above", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (east && north && south && up && !west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(null));
-    } else if (east && !north && south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y90));
-    } else if (!east && north && south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y180));
-    } else if (east && north && !south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nse", paint, new UVLock(ModelRotation.X0_Y270));
-    } else if (east && north && south && up && west) {
-      return PaintRegistry.getModel(IBakedModel.class, "wall_nsew", paint, new UVLock(null));
+    if (state.getValue(UP)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "wall_post", paint, null));
     }
-      return null;
+    if (state.getValue(NORTH)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "wall_side", paint, new UVLock(null)));
+    }
+    if (state.getValue(EAST)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "wall_side", paint, new UVLock(ModelRotation.X0_Y90)));
+    }
+    if (state.getValue(SOUTH)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "wall_side", paint, new UVLock(ModelRotation.X0_Y180)));
+    }
+    if (state.getValue(WEST)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "wall_side", paint, new UVLock(ModelRotation.X0_Y270)));
+    }
+
+    return result;
   }
 
   @Override
@@ -329,7 +268,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
-      quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
+      for (IBakedModel model : mapRender(state, paintSource)) {
+        quadCollector.addFriendlybakedModel(blockLayer, model, paintSource, MathHelper.getPositionRandom(pos));
+      }
     }
     return null;
   }

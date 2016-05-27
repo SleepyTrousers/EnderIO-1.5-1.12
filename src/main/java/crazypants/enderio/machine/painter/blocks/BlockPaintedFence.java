@@ -89,16 +89,8 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
     SmartModelAttacher.registerNoProps(this);
-    //TODO: 1.9 the way the models work has changed
-//    PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_n", new ResourceLocation("minecraft", "block/oak_fence_n"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_ne", new ResourceLocation("minecraft", "block/oak_fence_ne"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_ns", new ResourceLocation("minecraft", "block/oak_fence_ns"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_nse", new ResourceLocation("minecraft", "block/oak_fence_nse"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_nsew", new ResourceLocation("minecraft", "block/oak_fence_nsew"), PaintRegistry.PaintMode.ALL_TEXTURES);
-//    PaintRegistry.registerModel("fence_inventory", new ResourceLocation("minecraft", "block/oak_fence_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("oak_fence_side", new ResourceLocation("minecraft", "block/oak_fence_side"), PaintRegistry.PaintMode.ALL_TEXTURES);    
+    PaintRegistry.registerModel("fence_side", new ResourceLocation("minecraft", "block/oak_fence_side"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_inventory", new ResourceLocation("minecraft", "block/oak_fence_inventory"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
@@ -209,44 +201,25 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @SideOnly(Side.CLIENT)
-  private IBakedModel mapRender(IBlockState state, @Nullable IBlockState paint) {
-    int x = (state.getValue(BlockFence.EAST) ? 8 : 0) + (state.getValue(BlockFence.NORTH) ? 4 : 0) + (state.getValue(BlockFence.SOUTH) ? 2 : 0)
-        + (state.getValue(BlockFence.WEST) ? 1 : 0);
-    switch (x) {
-    case 0 + 0 + 0 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_post", paint, new UVLock(null));
-    case 0 + 0 + 0 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_n", paint, new UVLock(ModelRotation.X0_Y270));
-    case 0 + 0 + 2 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_n", paint, new UVLock(ModelRotation.X0_Y180));
-    case 0 + 0 + 2 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ne", paint, new UVLock(ModelRotation.X0_Y180));
-    case 0 + 4 + 0 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_n", paint, new UVLock(null));
-    case 0 + 4 + 0 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ne", paint, new UVLock(ModelRotation.X0_Y270));
-    case 0 + 4 + 2 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ns", paint, new UVLock(null));
-    case 0 + 4 + 2 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_nse", paint, new UVLock(ModelRotation.X0_Y180));
-    case 8 + 0 + 0 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_n", paint, new UVLock(ModelRotation.X0_Y90));
-    case 8 + 0 + 0 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ns", paint, new UVLock(ModelRotation.X0_Y90));
-    case 8 + 0 + 2 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ne", paint, new UVLock(ModelRotation.X0_Y90));
-    case 8 + 0 + 2 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_nse", paint, new UVLock(ModelRotation.X0_Y90));
-    case 8 + 4 + 0 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_ne", paint, new UVLock(null));
-    case 8 + 4 + 0 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_nse", paint, new UVLock(ModelRotation.X0_Y270));
-    case 8 + 4 + 2 + 0:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_nse", paint, new UVLock(null));
-    case 8 + 4 + 2 + 1:
-      return PaintRegistry.getModel(IBakedModel.class, "fence_nsew", paint, new UVLock(null));
+  private List<IBakedModel> mapRender(IBlockState state, @Nullable IBlockState paint) {
+    List<IBakedModel> result = new ArrayList<IBakedModel>();
+
+    result.add(PaintRegistry.getModel(IBakedModel.class, "fence_post", paint, null));
+
+    if (state.getValue(BlockFence.NORTH)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "fence_side", paint, new UVLock(null)));
     }
-    return null;
+    if (state.getValue(BlockFence.EAST)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "fence_side", paint, new UVLock(ModelRotation.X0_Y90)));
+    }
+    if (state.getValue(BlockFence.SOUTH)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "fence_side", paint, new UVLock(ModelRotation.X0_Y180)));
+    }
+    if (state.getValue(BlockFence.WEST)) {
+      result.add(PaintRegistry.getModel(IBakedModel.class, "fence_side", paint, new UVLock(ModelRotation.X0_Y270)));
+    }
+
+    return result;
   }
 
   @Override
@@ -312,7 +285,9 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
     if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
-      quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
+      for (IBakedModel model : mapRender(state, paintSource)) {
+        quadCollector.addFriendlybakedModel(blockLayer, model, paintSource, MathHelper.getPositionRandom(pos));
+      }
     }
     return null;
   }
