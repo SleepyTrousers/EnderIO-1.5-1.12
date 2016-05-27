@@ -5,12 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import crazypants.enderio.Log;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 
 public class FluidFuelRegister implements IFluidRegister {
 
@@ -27,14 +25,12 @@ public class FluidFuelRegister implements IFluidRegister {
   private final List<IFluidRegister> otherRegisters = new ArrayList<IFluidRegister>();
 
   private FluidFuelRegister() {
-    addCoolant(FluidRegistry.WATER, 0.0023f);
-    if(Loader.isModLoaded("BuildCraft|Energy")) {
-      try {
-        IFluidRegister reg = (IFluidRegister) Class.forName("crazypants.enderio.fluid.BuildCraftFluidRegister").newInstance();
-        otherRegisters.add(reg);
-      } catch (Exception e) {
-        Log.error("FluidFuelRegister: Error occured registering build craft fuels: " + e);
-      }
+    addCoolant(FluidRegistry.WATER, 0.0023f);    
+  }
+  
+  public void addRegister(IFluidRegister register) {
+    if(register != null) {
+      otherRegisters.add(register);
     }
   }
 

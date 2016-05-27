@@ -22,6 +22,7 @@ import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockReinforcedObsidian;
+import crazypants.enderio.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -585,6 +586,7 @@ public class EnderIO {
 //    }
     
 //    ThaumcraftCompat.load();
+    BuildcraftIntegration.init();
   }
 
   @EventHandler

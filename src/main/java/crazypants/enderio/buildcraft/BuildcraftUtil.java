@@ -1,4 +1,4 @@
-package crazypants.util;
+package crazypants.enderio.buildcraft;
 
 import com.enderio.core.api.common.util.IFluidReceptor;
 import com.enderio.core.api.common.util.IItemReceptor;

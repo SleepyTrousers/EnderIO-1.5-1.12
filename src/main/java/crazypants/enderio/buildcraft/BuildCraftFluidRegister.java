@@ -1,12 +1,16 @@
-package crazypants.enderio.fluid;
+package crazypants.enderio.buildcraft;
 
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import buildcraft.api.fuels.ICoolant;
 import buildcraft.api.fuels.IFuel;
+import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.FluidFuelRegister.CoolantImpl;
 import crazypants.enderio.fluid.FluidFuelRegister.FuelImpl;
+import crazypants.enderio.fluid.IFluidCoolant;
+import crazypants.enderio.fluid.IFluidFuel;
+import crazypants.enderio.fluid.IFluidRegister;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BuildCraftFluidRegister implements IFluidRegister {
 
@@ -14,6 +18,7 @@ public class BuildCraftFluidRegister implements IFluidRegister {
     //Make it go splat in object construction if an older version of
     //build craft is installed
     Class.forName("buildcraft.api.fuels.BuildcraftFuelRegistry");
+    FluidFuelRegister.instance.addRegister(this);
   }
 
   @Override

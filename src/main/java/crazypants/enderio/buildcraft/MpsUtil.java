@@ -1,4 +1,4 @@
-package crazypants.enderio.tool;
+package crazypants.enderio.buildcraft;
 
 import java.lang.reflect.Method;
 

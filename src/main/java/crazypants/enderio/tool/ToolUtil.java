@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import crazypants.enderio.api.tool.ITool;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -47,7 +46,7 @@ public class ToolUtil {
 
   private static ToolUtil instance;
 
-  private static ToolUtil getInstance() {
+  public static ToolUtil getInstance() {
     if(instance == null) {
       instance = new ToolUtil();
     }
@@ -57,13 +56,6 @@ public class ToolUtil {
   private final List<IToolProvider> toolProviders = new ArrayList<IToolProvider>();
 
   private ToolUtil() {
-    try {
-      Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
-      toolProviders.add((IToolProvider) obj);      
-    } catch (Exception e) {
-      Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
-    }
-//    toolProviders.add(new TEToolProvider());
   }
 
   public void registerToolProvider(IToolProvider toolProvider) {
