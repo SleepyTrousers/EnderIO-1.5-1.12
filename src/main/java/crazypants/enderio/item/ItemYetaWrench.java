@@ -1,7 +1,5 @@
 package crazypants.enderio.item;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
+import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -23,6 +22,7 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -38,23 +38,22 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, InvocationHandler {
+@Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core") })
+public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench {
 
   public static ItemYetaWrench create() {
     if (Config.useSneakMouseWheelYetaWrench) {
       PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
     }
     ItemYetaWrench result = new ItemYetaWrench();
-    //TODO: 1.9 Mod integration
-    //result = ToolUtil.addInterfaces(result);
-
     GameRegistry.register(result);
-
     return result;
   }
 
@@ -73,7 +72,6 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     boolean ret = false;
     if (block != null) {
       RightClickBlock e = new RightClickBlock(player, hand, player.getHeldItem(hand), pos,side, new Vec3d(hitX, hitY, hitZ));
-//      EntityInteractSpecific e = new EntityInteractSpecific(player, hand, pos, side, world, new Vec3d(hitX, hitY, hitZ));
       if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.getUseBlock() == Result.DENY || e.getUseItem() == Result.DENY) {
         return EnumActionResult.PASS;
       }
@@ -194,11 +192,26 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
   }
 
-  /* InvocationHandler */
+  @Override
+  @Optional.Method(modid = "BuildCraftAPI|core")
+  public boolean canWrench(EntityPlayer arg0, BlockPos arg1) {
+    return true;
+  }
 
   @Override
-  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-    System.out.println("ItemYetaWrench.invoke: method = " + method.getName());
-    return null;
+  @Optional.Method(modid = "BuildCraftAPI|core")
+  public boolean canWrench(EntityPlayer arg0, Entity arg1) {    
+    return false;
+  }
+
+  @Override
+  @Optional.Method(modid = "BuildCraftAPI|core")
+  public void wrenchUsed(EntityPlayer player, BlockPos pos) {
+    used(player.getHeldItemMainhand(), player, pos);    
+  }
+
+  @Override
+  @Optional.Method(modid = "BuildCraftAPI|core")
+  public void wrenchUsed(EntityPlayer player, Entity arg1) {       
   }
 }

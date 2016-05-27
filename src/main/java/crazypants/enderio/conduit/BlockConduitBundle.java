@@ -81,15 +81,11 @@ import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Optional.InterfaceList({ @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
-    @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks") })
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create() {
