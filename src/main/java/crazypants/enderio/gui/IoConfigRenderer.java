@@ -413,9 +413,12 @@ public class IoConfigRenderer {
     Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
 
     for (BlockCoord bc : blocks) {
+      
       IBlockState bs = world.getBlockState(bc.getBlockPos());
-      Block block = bs.getBlock();      
-      if (block != null && block.canRenderInLayer(bs, layer)) {
+      Block block = bs.getBlock();
+      bs = bs.getActualState(world, bc.getBlockPos());      
+      bs = block.getExtendedState(bs, world, bc.getBlockPos());            
+      if (block.canRenderInLayer(bs, layer)) {
         renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
       }
     }
