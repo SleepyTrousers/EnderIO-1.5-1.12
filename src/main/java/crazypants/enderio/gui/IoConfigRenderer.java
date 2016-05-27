@@ -416,8 +416,7 @@ public class IoConfigRenderer {
       
       IBlockState bs = world.getBlockState(bc.getBlockPos());
       Block block = bs.getBlock();
-      bs = bs.getActualState(world, bc.getBlockPos());      
-      bs = block.getExtendedState(bs, world, bc.getBlockPos());            
+      bs = bs.getActualState(world, bc.getBlockPos());                        
       if (block.canRenderInLayer(bs, layer)) {
         renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
       }
@@ -439,6 +438,7 @@ public class IoConfigRenderer {
 
       // We only want to change one param here, the check sides
       IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);
+      state = state.getBlock().getExtendedState(state, world, pos);
       blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, worldRendererIn, false);
       
     } catch (Throwable throwable) {
