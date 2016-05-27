@@ -134,7 +134,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
       TileReservoir tank = ((TileReservoir) te);
       if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
         tank.setAutoEject(!tank.isAutoEject());
-        world.notifyBlockUpdate(pos, state, state, 0); // TODO 1.9 is this right?
+        world.notifyBlockUpdate(pos, state, state, 3); 
         return true;
       }
       if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {

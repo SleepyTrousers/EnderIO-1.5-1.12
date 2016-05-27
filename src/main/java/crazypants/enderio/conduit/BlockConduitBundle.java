@@ -68,6 +68,8 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -126,18 +128,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
-    //TODO: 1.9
-//    this.stepSound = new SoundType("silence", 0, 0) {
-//      @Override
-//      public String getBreakSound() {
-//        return "EnderIO:" + soundName + ".dig";
-//      }
-//
-//      @Override
-//      public String getStepSound() {
-//        return "EnderIO:" + soundName + ".step";
-//      }
-//    };
+    SoundType curType = getSoundType();
+    SoundEvent silent = new SoundEvent(new ResourceLocation(EnderIO.DOMAIN, "silence"));
+    setSoundType(new SoundType(curType.volume, curType.pitch, silent, silent, curType.getPlaceSound(), curType.getHitSound(), curType.getFallSound()));
 
     setDefaultState(blockState.getBaseState());
   }
