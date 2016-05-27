@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <recipe name="Frank'N'Zombie" required="true">
+    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+        <item name="gemDiamond" /><item name="ZOMBIE_CONTROLLER" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
+      </grid>
+      <output name="FRANKEN_ZOMBIE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Sentient Ender" required="true">
+    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="gemDiamond" /><item name="gemDiamond" /><item name="gemDiamond" />
+        <item name="gemDiamond" /><item name="ENDER_RESONATOR" /><item name="gemDiamond" />
+        <item name="ingotGold" /><item name="blockGold" /><item name="ingotGold" />
+      </grid>
+      <output name="SENTIENT_ENDER" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Probe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemPowerConduit:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
+        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:2" /><item name="SILICON" />
+      </grid>
+      <output name="CONDUIT_PROBE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Awareness Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
+        <item name="SILICON" /><item name="pearlEnderEye" /><item name="SILICON" />
+        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:itemFunctionUpgrade:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Staff Of Travelling" required="true">
+    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="ENDER_CRYSTAL" />
+        <item /><item name="DARK_STEEL" /><item />
+        <item name="DARK_STEEL" /><item /><item />
+      </grid>
+      <output name="enderio:itemTravelStaff" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Coordinate Selector (endercore)" required="true">
+    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
+    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="pearlEnder" /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="minecraft:compass" /><item name="ELECTRICAL_STEEL" />
+        <item /><item  /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemCoordSelector" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Coordinate Selector (Forge)" required="true">
+    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
+    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderpearl" /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="minecraft:compass" /><item name="ELECTRICAL_STEEL" />
+        <item /><item /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemCoordSelector" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Yeta Wrench" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="" /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="GEAR" /><item />
+        <item /><item name="ELECTRICAL_STEEL" /><item />
+      </grid>
+      <output name="enderio:itemYetaWrench" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Electromagnet" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CONDUCTIVE_IRON" /><item name="VIBRANT_CRYSTAL" /><item name="CONDUCTIVE_IRON" />
+        <item name="CONDUCTIVE_IRON" /><item /><item name="CONDUCTIVE_IRON" />
+        <item name="ELECTRICAL_STEEL" /><item /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:itemMagnet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Helmet" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_helmet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Chestplate" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_chestplate" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Leggings" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_leggings" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Boots" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:darkSteel_boots" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Glider Wing" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="DARK_STEEL" />
+        <item /><item name="DARK_STEEL" /><item name="itemLeather" />
+        <item name="DARK_STEEL" /><item name="itemLeather" /><item name="itemLeather" />
+      </grid>
+      <output name="enderio:itemGliderWing:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Gilder Wings" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item /><item name="DARK_STEEL" /><item />
+        <item name="enderio:itemGliderWing:0" /><item name="DARK_STEEL" /><item name="enderio:itemGliderWing:0" />
+      </grid>
+      <output name="enderio:itemGliderWing:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Shears" required="true">
+    <crafting>
+      <grid size="2x2">
+        <item /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item />
+      </grid>
+      <output name="enderio:darkSteel_shears" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Soul Vial" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="SOULARIUM" /><item />
+        <item name="FUSED_QUARTZ" /><item /><item name="FUSED_QUARTZ" />
+        <item /><item name="FUSED_QUARTZ" /><item />
+      </grid>
+      <output name="enderio:itemSoulVessel" />
+    </crafting>
+  </recipe>
+
+  <recipe name="XP Rod" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item /><item name="SOULARIUM" />
+        <item /><item name="ENERGETIC_ALLOY" /><item />
+        <item name="SOULARIUM" /><item /><item />
+      </grid>
+      <output name="enderio:itemXpTransfer" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Ender" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="DARK_STEEL" />
+        <item name="DARK_STEEL" />
+        <item name="stickWood" />
+      </grid>
+      <output name="enderio:darkSteel_sword" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Other Ender" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="DARK_STEEL" />
+        <item name="DARK_STEEL" />
+        <item name="woodStick" />
+      </grid>
+      <output name="enderio:darkSteel_sword" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Pickaxe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item /><item name="stickWood" /><item />
+        <item /><item name="stickWood" /><item />
+      </grid>
+      <output name="enderio:darkSteel_pickaxe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Not Quite Bright Pickaxe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item /><item name="woodStick" /><item />
+        <item /><item name="woodStick" /><item />
+      </grid>
+      <output name="enderio:darkSteel_pickaxe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Dark Axe" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="stickWood" />
+        <item /><item name="stickWood" />
+      </grid>
+      <output name="enderio:darkSteel_axe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Dark Woodcutter" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="woodStick" />
+        <item /><item name="woodStick" />
+      </grid>
+      <output name="enderio:darkSteel_axe" />
+    </crafting>
+  </recipe>
+
+
+
+</enderio:recipes>

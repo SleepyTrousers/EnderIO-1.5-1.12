@@ -47,7 +47,7 @@ public class CommonProxy {
   public void preInit() {       
   }
   
-  private static final String[] RECIPE_FILES = { "aliases", "machines", "materials" };
+  private static final String[] RECIPE_FILES = { "aliases", "materials", "items", "machines" };
 
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);

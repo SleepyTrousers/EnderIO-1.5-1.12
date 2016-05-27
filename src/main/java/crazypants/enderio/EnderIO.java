@@ -42,7 +42,6 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.BlockEnderIO;
-import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
@@ -126,7 +125,6 @@ import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
-import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
@@ -439,12 +437,10 @@ public class EnderIO {
     MaterialRecipes.registerDependantOresInDictionary();
 
     if (Config.recipeLevel >= 0) {
-      EnderfaceRecipes.addRecipes();
       MaterialRecipes.addRecipes();
       ConduitRecipes.addRecipes();
       MachineRecipes.addRecipes();
       ItemRecipes.addRecipes();
-      TeleportRecipes.addRecipes();
     }
 
     proxy.init();

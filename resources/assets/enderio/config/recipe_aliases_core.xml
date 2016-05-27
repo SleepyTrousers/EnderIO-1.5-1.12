@@ -32,8 +32,8 @@
   <alias name="BINDER_COMPOSITE" item="itemBinderComposite" />
   <alias name="PULSATING_IRON_NUGGET" item="itemPulsatingIronNugget" />
   <alias name="VIBRANT_NUGGET" item="itemVibrantNugget" />
-  <alias name="PULSATING_CYSTAL" item="itemPulsatingCrystal" />
-  <alias name="VIBRANT_CYSTAL" item="itemVibrantCrystal" />
+  <alias name="PULSATING_CRYSTAL" item="itemPulsatingCrystal" />
+  <alias name="VIBRANT_CRYSTAL" item="itemVibrantCrystal" />
   <alias name="DARK_GRINDING_BALL" item="itemDarkGrindingBall" />
   <alias name="ENDER_CRYSTAL" item="itemEnderCrystal" />
   <alias name="ATTRACTOR_CRYSTAL" item="itemAttractorCrystal" />
@@ -62,5 +62,21 @@
   <alias name="LIGHT_BASIC_INV" item="enderio:blockElectricLight:3" />
   <alias name="LIGHT_WIRELESS" item="enderio:blockElectricLight:4" />
   <alias name="LIGHT_WIRELESS_INV" item="enderio:blockElectricLight:5" />
+
+  <alias name="PPP_WOOD" item="enderio:blockPaintedPressurePlate:0" />
+  <alias name="PPP_STONE" item="enderio:blockPaintedPressurePlate:2" />
+  <alias name="PPP_IRON" item="enderio:blockPaintedPressurePlate:4" />
+  <alias name="PPP_GOLD" item="enderio:blockPaintedPressurePlate:6" />
+  <alias name="PPP_DARK_STEEL" item="enderio:blockPaintedPressurePlate:8" />
+  <alias name="PPP_SOULARIUM" item="enderio:blockPaintedPressurePlate:10" />
+  <alias name="PPP_TUNED" item="enderio:blockPaintedPressurePlate:12" />
+
+  <alias name="PPP_WOOD_SILENT" item="enderio:blockPaintedPressurePlate:1" />
+  <alias name="PPP_STONE_SILENT" item="enderio:blockPaintedPressurePlate:3" />
+  <alias name="PPP_IRON_SILENT" item="enderio:blockPaintedPressurePlate:5" />
+  <alias name="PPP_GOLD_SILENT" item="enderio:blockPaintedPressurePlate:7" />
+  <alias name="PPP_DARK_STEEL_SILENT" item="enderio:blockPaintedPressurePlate:9" />
+  <alias name="PPP_SOULARIUM_SILENT" item="enderio:blockPaintedPressurePlate:11" />
+  <alias name="PPP_TUNED_SILENT" item="enderio:blockPaintedPressurePlate:13" />
 
 </enderio:recipes>

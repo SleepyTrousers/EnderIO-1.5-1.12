@@ -110,11 +110,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
-    setFull(is);
     par3List.add(is);
 
     is = new ItemStack(this);
-    setEnergy(is, 0);
+    setFull(is);
     par3List.add(is);
   }
 

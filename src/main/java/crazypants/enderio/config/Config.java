@@ -738,7 +738,7 @@ public final class Config {
     travelStaffBlinkPauseTicks = config.get(sectionStaff.name, "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
-    travelStaffEnabled = config.get(sectionStaff.name, "travelStaffEnabled", travelAnchorEnabled,
+    travelStaffEnabled = config.get(sectionStaff.name, "travelStaffEnabled", travelStaffEnabled,
         "If set to false: the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
     travelStaffBlinkEnabled = config.get(sectionStaff.name, "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
         "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);

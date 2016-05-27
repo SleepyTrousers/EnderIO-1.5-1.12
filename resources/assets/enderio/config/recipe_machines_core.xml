@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
-  <recipe name="Frank'N'Zombie" required="true">
-    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
-    <crafting>
-      <grid size="3x3">
-        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
-        <item name="gemDiamond" /><item name="ZOMBIE_CONTROLLER" /><item name="gemDiamond" />
-        <item name="ingotGold" /><item name="gemDiamond" /><item name="ingotGold" />
-      </grid>
-      <output name="FRANKEN_ZOMBIE" />
-    </crafting>
-  </recipe>
-
-  <recipe name="Sentient Ender" required="true">
-    <config section="Recipe Settings" name="addPeacefulRecipes" value="true" />
-    <crafting>
-      <grid size="3x3">
-        <item name="gemDiamond" /><item name="gemDiamond" /><item name="gemDiamond" />
-        <item name="gemDiamond" /><item name="ENDER_RESONATOR" /><item name="gemDiamond" />
-        <item name="ingotGold" /><item name="blockGold" /><item name="ingotGold" />
-      </grid>
-      <output name="SENTIENT_ENDER" />
-    </crafting>
-  </recipe>
-
   <recipe name="Stirling Generator" required="true">
     <crafting>
       <grid size="3x3">
@@ -97,7 +73,7 @@
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-        <item name="VIBRANT_CYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CYSTAL" />
+        <item name="VIBRANT_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CRYSTAL" />
       </grid>
       <output name="enderio:blockPoweredSpawner" />
     </crafting>
@@ -106,7 +82,7 @@
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-        <item name="VIBRANT_CYSTAL" /><item name="FRANKEN_ZOMBIE" /><item name="VIBRANT_CYSTAL" />
+        <item name="VIBRANT_CRYSTAL" /><item name="FRANKEN_ZOMBIE" /><item name="VIBRANT_CRYSTAL" />
       </grid>
       <output name="enderio:blockPoweredSpawner" />
     </crafting>
@@ -137,9 +113,9 @@
   <recipe name="Tank" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="minecraft:iron_bars" /><item name="ingotIron" />
-        <item name="minecraft:iron_bars" /><item name="oredict:glass" /><item name="minecraft:iron_bars" />
-        <item name="ingotIron" /><item name="minecraft:iron_bars" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="barsIron" /><item name="ingotIron" />
+        <item name="barsIron" /><item name="blockGlass" /><item name="barsIron" />
+        <item name="ingotIron" /><item name="barsIron" /><item name="ingotIron" />
       </grid>
       <output name="enderio:blockTank:0" />
     </crafting>
@@ -160,7 +136,7 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
-        <item name="minecraft:flint" /><item name="minecraft:flint" /><item name="minecraft:flint" />
+        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
         <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
       </grid>
@@ -169,8 +145,8 @@
     <crafting>
       <level minlevel="2" />
       <grid size="3x3">
-        <item name="minecraft:obsidian" /><item name="minecraft:obsidian" /><item name="minecraft:obsidian" />
-        <item name="minecraft:flint" /><item name="CHASSIS" /><item name="minecraft:flint" />
+        <item name="oredict:obsidian" /><item name="oredict:obsidian" /><item name="oredict:obsidian" />
+        <item name="itemFlint" /><item name="CHASSIS" /><item name="itemFlint" />
         <item name="minecraft:piston" /><item name="ingotIron" /><item name="minecraft:piston" />
       </grid>
       <output name="enderio:blockSagMill" />
@@ -235,7 +211,7 @@
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
-        <item name="CAPACITOR3" /><item name="VIBRANT_CYSTAL" /><item name="CAPACITOR3" />
+        <item name="CAPACITOR3" /><item name="VIBRANT_CRYSTAL" /><item name="CAPACITOR3" />
         <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
       </grid>
       <output name="CAP_BANK_3" />
@@ -268,7 +244,7 @@
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-        <item name="PULSATING_CYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="PULSATING_CYSTAL" />
+        <item name="PULSATING_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="PULSATING_CRYSTAL" />
       </grid>
       <output name="enderio:blockFarmStation" />
     </crafting>
@@ -279,9 +255,9 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
-        <item name="minecraft:obsidian" /><item name="minecraft:ender_eye" /><item name="minecraft:obsidian" />
+        <item name="oredict:obsidian" /><item name="pearlEnderEye" /><item name="oredict:obsidian" />
         <item name="ENERGETIC_ALLOY" /><item name="gemDiamond" /><item name="ENERGETIC_ALLOY" />
-        <item name="minecraft:obsidian" /><item name="CAPACITOR3" /><item name="minecraft:obsidian" />
+        <item name="oredict:obsidian" /><item name="CAPACITOR3" /><item name="oredict:obsidian" />
       </grid>
       <output name="enderio:blockTransceiver" />
     </crafting>
@@ -324,7 +300,7 @@
       <level maxlevel="1" />
       <grid size="3x3">
         <item name="VIBRANT_ALLOY" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_ALLOY" />
-        <item name="VIBRANT_CYSTAL" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_CYSTAL" />
+        <item name="VIBRANT_CRYSTAL" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_CRYSTAL" />
         <item name="PULSATING_IRON" /><item name="minecraft:daylight_detector" /><item name="PULSATING_IRON" />
       </grid>
       <output name="SOLAR_2" />
@@ -359,17 +335,6 @@
         <item name="SOLAR_2" /><item name="SOLAR_2" /><item name="SOLAR_2" />
       </grid>
       <output name="SOLAR_3" />
-    </crafting>
-  </recipe>
-
-  <recipe name="Conduit Probe" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemPowerConduit:0" /><item name="ELECTRICAL_STEEL" />
-        <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
-        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:2" /><item name="SILICON" />
-      </grid>
-      <output name="CONDUIT_PROBE" />
     </crafting>
   </recipe>
 
@@ -421,7 +386,7 @@
       <grid size="3x3">
         <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="chestWood" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="PULSATING_CYSTAL" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="PULSATING_CRYSTAL" /><item name="ingotIron" />
       </grid>
       <output name="enderio:blockVacuumChest" />
     </crafting>
@@ -431,7 +396,7 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
-        <item name="SOULARIUM" /><item name="PULSATING_CYSTAL" /><item name="SOULARIUM" />
+        <item name="SOULARIUM" /><item name="PULSATING_CRYSTAL" /><item name="SOULARIUM" />
         <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
         <item name="SOULARIUM" /><item name="HEAD_SKELETON" /><item name="SOULARIUM" />
       </grid>
@@ -474,7 +439,7 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="1x2">
-        <item name="minecraft:prismarine:0" />
+        <item name="blockPrismarine" />
         <item name="enderio:blockSpawnGuard" />
       </grid>
       <output name="enderio:blockSpawnRelocator" />
@@ -482,9 +447,9 @@
     <crafting>
       <level minlevel="2" />
       <grid size="3x3">
-        <item /><item name="minecraft:prismarine:0" /><item />
-        <item name="minecraft:prismarine:0" /><item name="enderio:blockSpawnGuard" /><item name="minecraft:prismarine:0" />
-        <item /><item name="minecraft:prismarine:0" /><item />
+        <item /><item name="blockPrismarine" /><item />
+        <item name="blockPrismarine" /><item name="enderio:blockSpawnGuard" /><item name="blockPrismarine" />
+        <item /><item name="blockPrismarine" /><item />
       </grid>
       <output name="enderio:blockSpawnRelocator" />
     </crafting>
@@ -716,29 +681,109 @@
     </crafting>
   </recipe>
 
-  <recipe name="Awareness Upgrade" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="CONDUIT_BINDER" /><item name="SILICON" /><item name="CONDUIT_BINDER" />
-        <item name="SILICON" /><item name="minecraft:ender_eye" /><item name="SILICON" />
-        <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
-      </grid>
-      <output name="enderio:itemFunctionUpgrade:0" />
-    </crafting>
-  </recipe>
-
   <recipe name="Inventory Panel" required="true">
     <crafting>
       <grid size="3x3">
         <item name="DARK_STEEL" /><item name="enderio:itemFunctionUpgrade:0" /><item name="DARK_STEEL" />
-        <item name="PULSATING_CYSTAL" /><item name="SENTIENT_ENDER" /><item name="PULSATING_CYSTAL" />
+        <item name="PULSATING_CRYSTAL" /><item name="SENTIENT_ENDER" /><item name="PULSATING_CRYSTAL" />
         <item name="DARK_STEEL" /><item name="enderio:blockTank:0" /><item name="DARK_STEEL" />
       </grid>
       <output name="enderio:blockInventoryPanel" />
     </crafting>
   </recipe>
 
+  <recipe name="Ender IO" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="FUSED_QUARTZ" /><item name="ELECTRICAL_STEEL" />
+        <item name="FUSED_QUARTZ" /><item name="pearlEnderEye" /><item name="FUSED_QUARTZ" />
+        <item name="ELECTRICAL_STEEL" /><item name="FUSED_QUARTZ" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:blockEnderIo" />
+    </crafting>
+  </recipe>
 
+  <recipe name="Travel Anchor" required="true">
+    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="CONDUIT_BINDER" /><item name="ingotIron" />
+        <item name="CONDUIT_BINDER" /><item name="PULSATING_CRYSTAL" /><item name="CONDUIT_BINDER" />
+        <item name="ingotIron" /><item name="CONDUIT_BINDER" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockTravelAnchor" />
+    </crafting>
+  </recipe>
 
+  <recipe name="TelePad" required="true">
+    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
+    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item name="FUSED_QUARTZ" /><item name="enderio:itemTravelStaff" /><item name="FUSED_QUARTZ" />
+        <item name="DARK_STEEL" /><item name="enderio:blockTravelAnchor" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:blockTelePad" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Dark Steel" required="true">
+    <crafting>
+      <grid size="2x1">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="PPP_DARK_STEEL" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Soularium" required="true">
+    <crafting>
+      <grid size="2x1">
+        <item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="PPP_SOULARIUM" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Wood, Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:wooden_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_WOOD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Stone, Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:stone_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_STONE_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Iron Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_IRON_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Gold Silent" required="true">
+    <crafting>
+      <grid size="1x2">
+        <item name="minecraft:light_weighted_pressure_plate" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_GOLD_SILENT" />
+    </crafting>
+  </recipe>
 
 </enderio:recipes>
