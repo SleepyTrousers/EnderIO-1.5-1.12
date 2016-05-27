@@ -1,133 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://enderio.com/recipes"
-  elementFormDefault="unqualified" attributeFormDefault="unqualified"
+<schema targetNamespace="http://enderio.com/recipes" elementFormDefault="unqualified" attributeFormDefault="unqualified"
   xmlns="http://www.w3.org/2001/XMLSchema" xmlns:enderio="http://enderio.com/recipes">
 
-
-
-
   <element name="recipes">
-
-
     <complexType>
       <sequence maxOccurs="unbounded" minOccurs="0">
         <choice maxOccurs="1" minOccurs="1">
           <element name="alias">
-            <complexType>
+                        <annotation>
+                          <documentation>Adds an alias into the system. The alias can be used in following elements just like the value itself. Aliases can be replaced.</documentation>
+                        </annotation>
+                        <complexType>
               <sequence>
-                <element minOccurs="0" maxOccurs="unbounded"
-                  name="config">
-                  <complexType>
-                    <attribute use="required" name="section"
-                      type="string"></attribute>
-                    <attribute use="required" name="name"
-                      type="string"></attribute>
-                    <attribute use="optional" name="value"
-                      type="boolean"></attribute>
+                <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                    <annotation>
+                                      <documentation>Restricts this alias to only be used if thegiven config value has the given value.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="required" name="section" type="string"></attribute>
+                    <attribute use="required" name="name" type="string"></attribute>
+                    <attribute use="optional" name="value" type="boolean"></attribute>
                   </complexType>
                 </element>
-                <element minOccurs="0" maxOccurs="unbounded"
-                  name="dependency">
-                  <complexType>
-                    <attribute use="required" name="item"
-                      type="string"></attribute>
-                    <attribute use="optional" name="reverse"
-                      type="boolean"></attribute>
+                <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                    <annotation>
+                                      <documentation>Restricts this alias to only be used if the given elements descriptor can (not) be found in the game. Use this to prevent replacing good aliases with bad ones.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="required" name="item" type="string"></attribute>
+                    <attribute use="optional" name="reverse" type="boolean"></attribute>
                   </complexType>
                 </element>
                 <element minOccurs="0" maxOccurs="1" name="level">
-                  <complexType>
-                    <attribute use="optional" name="minlevel"
-                      type="int"></attribute>
-                    <attribute use="optional" name="maxlevel"
-                      type="int"></attribute>
+                                    <annotation>
+                                      <documentation>Restricts this alias to only be used if the recipe level is in the given range.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="optional" name="minlevel" type="int"></attribute>
+                    <attribute use="optional" name="maxlevel" type="int"></attribute>
                   </complexType>
                 </element>
               </sequence>
-              <attribute name="name" type="string" use="required"></attribute>
-              <attribute name="item" type="string" use="required"></attribute>
+              <attribute name="name" type="string" use="required">
+                <annotation>
+                  <documentation>The name of the alias. You can use anything here, but be aware that you share the namespace with all other game elements.</documentation>
+                </annotation></attribute>
+              <attribute name="item" type="string" use="required">
+                <annotation>
+                  <documentation>A descriptor naming an item, block, ordict or another alias.</documentation>
+                </annotation></attribute>
             </complexType>
           </element>
           <element name="recipe">
-            <complexType>
+                        <annotation>
+                          <documentation>A single recipe. It can have any number of crafting or any number of smelting variants (no mixing), but at any time only one of them may be active.</documentation>
+                        </annotation>
+                        <complexType>
               <sequence>
-                <element minOccurs="0" maxOccurs="unbounded"
-                  name="config">
-                  <complexType>
-                    <attribute use="required" name="section"
-                      type="string"></attribute>
-                    <attribute use="required" name="name"
-                      type="string"></attribute>
-                    <attribute use="optional" name="value"
-                      type="boolean"></attribute>
+                <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                    <annotation>
+                                      <documentation>Restricts this recipe to only be used if the given config value has the given value.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="required" name="section" type="string">
+                    </attribute>
+                    <attribute use="required" name="name" type="string">
+                    </attribute>
+                    <attribute use="optional" name="value" type="boolean">
+                    </attribute>
                   </complexType>
                 </element>
-                <element minOccurs="0" maxOccurs="unbounded"
-                  name="dependency">
-                  <complexType>
-                    <attribute use="required" name="item"
-                      type="string"></attribute>
-                    <attribute use="optional" name="reverse"
-                      type="boolean"></attribute>
+                <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                    <annotation>
+                                      <documentation>Restricts this recipe to only be used if the given game element can (not) be found in the game.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="required" name="item" type="string">
+                    </attribute>
+                    <attribute use="optional" name="reverse" type="boolean">
+                    </attribute>
                   </complexType>
                 </element>
                 <element minOccurs="0" maxOccurs="1" name="level">
-                  <complexType>
-                    <attribute use="optional" name="minlevel"
-                      type="int"></attribute>
-                    <attribute use="optional" name="maxlevel"
-                      type="int"></attribute>
+                                    <annotation>
+                                      <documentation>Restricts this recipe to only be used if the recipe level is within the given bounds.</documentation>
+                                    </annotation>
+                                    <complexType>
+                    <attribute use="optional" name="minlevel" type="int">
+                    </attribute>
+                    <attribute use="optional" name="maxlevel" type="int">
+                    </attribute>
                   </complexType>
                 </element>
                 <choice minOccurs="1" maxOccurs="1">
-                  <element minOccurs="1" maxOccurs="unbounded"
-                    name="crafting">
-                    <complexType>
+                  <element minOccurs="1" maxOccurs="unbounded" name="crafting">
+                                        <annotation>
+                                          <documentation>Crafting variants are crafted in a crafting table.</documentation>
+                                        </annotation>
+                                        <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="config">
-                          <complexType>
-                            <attribute use="required" name="section"
-                              type="string"></attribute>
-                            <attribute use="required" name="name"
-                              type="string"></attribute>
-                            <attribute use="optional" name="value"
-                              type="boolean"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the given config value has the given value.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="section" type="string">
+                            </attribute>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
+                            <attribute use="optional" name="value" type="boolean">
+                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="dependency">
-                          <complexType>
-                            <attribute use="required" name="item"
-                              type="string"></attribute>
-                            <attribute use="optional" name="reverse"
-                              type="boolean"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the given game element can (not) be found in the game.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="item" type="string">
+                            </attribute>
+                            <attribute use="optional" name="reverse" type="boolean">
+                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="level">
-                          <complexType>
-                            <attribute use="optional" name="minlevel"
-                              type="int"></attribute>
-                            <attribute use="optional" name="maxlevel"
-                              type="int"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the recipe level is within the given bounds.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="optional" name="minlevel" type="int">
+                            </attribute>
+                            <attribute use="optional" name="maxlevel" type="int">
+                            </attribute>
                           </complexType>
                         </element>
                         <choice minOccurs="1" maxOccurs="1">
-                          <element minOccurs="1" maxOccurs="1"
-                            name="grid">
-                            <complexType>
+                          <element minOccurs="1" maxOccurs="1" name="grid">
+                                                        <annotation>
+                                                          <documentation>A grid represents a shaped recipe. All items must be in the exact position they are given here. If the recipe is smaller than 3x3, it may be moved in the grid.</documentation>
+                                                        </annotation>
+                                                        <complexType>
                               <sequence>
-                                <element minOccurs="1"
-                                  maxOccurs="9" name="item">
-                                  <complexType>
-                                    <attribute use="optional"
-                                      name="name" type="string"></attribute>
+                                <element minOccurs="1" maxOccurs="9" name="item">
+                                                                    <annotation>
+                                                                      <documentation>An item to be used for crafting.</documentation>
+                                                                    </annotation>
+                                                                    <complexType>
+                                    <attribute use="optional" name="name" type="string">
+                                    </attribute>
                                   </complexType>
                                 </element>
                               </sequence>
                               <attribute use="optional" name="size">
-                                <simpleType>
+                                                                <annotation>
+                                                                  <documentation>The size of the grid in the form "width 'x' height". Default is "3x3".</documentation>
+                                                                </annotation>
+                                                                <simpleType>
                                   <restriction base="string">
                                     <length value="3"></length>
                                   </restriction>
@@ -135,26 +163,31 @@
                               </attribute>
                             </complexType>
                           </element>
-                          <element minOccurs="1" maxOccurs="1"
-                            name="shapeless">
-                            <complexType>
+                          <element minOccurs="1" maxOccurs="1" name="shapeless">
+                                                        <annotation>
+                                                          <documentation>A shapeless recipe only required the given items to be in the grid, regardless of their position.</documentation>
+                                                        </annotation>
+                                                        <complexType>
                               <sequence>
-                                <element minOccurs="1"
-                                  maxOccurs="9" name="item">
-                                  <complexType>
-                                    <attribute use="optional"
-                                      name="name" type="string"></attribute>
+                                <element minOccurs="1" maxOccurs="9" name="item">
+                                                                    <annotation>
+                                                                      <documentation>An item to be used for crafting.</documentation></annotation>
+                                                                    <complexType>
+                                    <attribute use="optional" name="name" type="string">
+                                    </attribute>
                                   </complexType>
                                 </element>
                               </sequence>
                             </complexType>
                           </element>
                         </choice>
-                        <element minOccurs="1" maxOccurs="1"
-                          name="output">
-                          <complexType>
-                            <attribute use="required" name="name"
-                              type="string"></attribute>
+                        <element minOccurs="1" maxOccurs="1" name="output">
+                                                    <annotation>
+                                                      <documentation>The result of the crafting.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <restriction base="int">
@@ -168,44 +201,48 @@
                       </sequence>
                     </complexType>
                   </element>
-                  <element minOccurs="1" maxOccurs="unbounded"
-                    name="smelting">
-                    <complexType>
+                  <element minOccurs="1" maxOccurs="unbounded" name="smelting">
+                                        <annotation>
+                                          <documentation>Smelting variants are crafted in a furnace (or alloy smelter in furnace mode).</documentation>
+                                        </annotation>
+                                        <complexType>
                       <sequence>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="config">
-                          <complexType>
-                            <attribute use="required" name="section"
-                              type="string"></attribute>
-                            <attribute use="required" name="name"
-                              type="string"></attribute>
-                            <attribute use="optional" name="value"
-                              type="boolean"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the given config value has the given value.</documentation></annotation>
+                                                    <complexType>
+                            <attribute use="required" name="section" type="string">
+                            </attribute>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
+                            <attribute use="optional" name="value" type="boolean">
+                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="dependency">
-                          <complexType>
-                            <attribute use="required" name="item"
-                              type="string"></attribute>
-                            <attribute use="optional" name="reverse"
-                              type="boolean"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the given game element can (not) be found in the game.</documentation></annotation>
+                                                    <complexType>
+                            <attribute use="required" name="item" type="string">
+                            </attribute>
+                            <attribute use="optional" name="reverse" type="boolean">
+                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="0" maxOccurs="unbounded"
-                          name="level">
-                          <complexType>
-                            <attribute use="optional" name="minlevel"
-                              type="int"></attribute>
-                            <attribute use="optional" name="maxlevel"
-                              type="int"></attribute>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                                                    <annotation>
+                                                      <documentation>Restricts this variant to only be used if the recipe level is within the given bounds.</documentation></annotation>
+                                                    <complexType>
+                            <attribute use="optional" name="minlevel" type="int">
+                            </attribute>
+                            <attribute use="optional" name="maxlevel" type="int">
+                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="1" maxOccurs="1"
-                          name="input">
+                        <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
-                            <attribute use="required" name="name"
-                              type="string"></attribute>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <restriction base="int">
@@ -216,11 +253,13 @@
                             </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="1" maxOccurs="1"
-                          name="output">
-                          <complexType>
-                            <attribute use="required" name="name"
-                              type="string"></attribute>
+                        <element minOccurs="1" maxOccurs="1" name="output">
+                                                    <annotation>
+                                                      <documentation>The result of the smelting.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <restriction base="int">
@@ -244,19 +283,24 @@
                   </element>
                 </choice>
               </sequence>
-              <attribute use="optional" name="required" type="boolean"></attribute>
-              <attribute use="required" name="name" type="string"></attribute>
+              <attribute use="optional" name="required" type="boolean">
+                                <annotation>
+                                  <documentation>If a recipe is required, it is an error if none of its variants is valid.</documentation>
+                                </annotation>
+              </attribute>
+              <attribute use="required" name="name" type="string">
+                <annotation>
+                  <documentation>A display name. Used for error messages only.</documentation>
+                </annotation></attribute>
+              <attribute name="disabled" type="boolean" use="optional">
+                <annotation>
+                  <documentation>If a recipe is disabled it will not be registered and it will not check the validity of its content. Use this in the user file to disable core recipes.</documentation>
+                </annotation></attribute>
             </complexType>
           </element>
         </choice>
       </sequence>
     </complexType>
   </element>
-
-
-
-
-
-
 
 </schema>
