@@ -46,8 +46,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   public static final ArmorMaterial MATERIAL = createMaterial();
 
-  private static ArmorMaterial createMaterial() {
-    //TODO: 1.9, there is currently a PR to fix EnumHelper.addArmorMaterial, once done can go back to using that    
+  private static ArmorMaterial createMaterial() {    
     Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
     return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35,new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f); 
   }

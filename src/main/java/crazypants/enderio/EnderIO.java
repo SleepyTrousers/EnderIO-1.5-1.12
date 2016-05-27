@@ -186,17 +186,17 @@ public class EnderIO {
   public static BlockDarkIronBars blockDarkIronBars;
   public static ItemEnderFood itemEnderFood;
 
-//  // Enderface
+  // // Enderface
   public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
-//  //Teleporting
+  // //Teleporting
   public static BlockTravelAnchor<TileTravelAnchor> blockTravelPlatform;
   public static BlockTelePad blockTelePad;
   public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
-//
-//  // Painter
+  //
+  // // Painter
   public static BlockPainter blockPainter;
   public static BlockPaintedFence blockPaintedFence;
   public static BlockPaintedFenceGate blockPaintedFenceGate;
@@ -206,8 +206,8 @@ public class EnderIO {
   public static BlockPaintedGlowstone blockPaintedGlowstone;
   public static BlockPaintedCarpet blockPaintedCarpet;
   public static BlockPaintedPressurePlate blockPaintedPressurePlate;
-//
-//  // Conduits
+  //
+  // // Conduits
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
@@ -232,7 +232,7 @@ public class EnderIO {
 
   public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
-  public static BlockSagMill blockCrusher; 
+  public static BlockSagMill blockCrusher;
   public static Block blockPowerMonitor;
   public static Block blockPowerMonitorAdvanced;
   public static BlockVat blockVat;
@@ -259,14 +259,14 @@ public class EnderIO {
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
-  //Blocks
+  // Blocks
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockDarkSteelLadder blockDarkSteelLadder;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
   public static BlockEnderRail blockEnderRail;
 
-  public static Fluids fluids;  
+  public static Fluids fluids;
 
   // Items
   public static ItemYetaWrench itemYetaWench;
@@ -280,11 +280,11 @@ public class EnderIO {
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
-  
+
     EnderIOCrashCallable.create();
 
     Config.load(event);
-    
+
     proxy.loadIcons();
 
     // Dummy blocks that contain the models for all the other blocks
@@ -295,7 +295,7 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     blockStirlingGenerator = BlockStirlingGenerator.create();
-        
+
     blockCombustionGenerator = BlockCombustionGenerator.create();
     blockZombieGenerator = BlockZombieGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
@@ -303,7 +303,7 @@ public class EnderIO {
     blockCrusher = BlockSagMill.create();
     blockAlloySmelter = BlockAlloySmelter.create();
     blockCapBank = BlockCapBank.create();
-    
+
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
     blockPaintedFenceGate = BlockPaintedFenceGate.create();
@@ -314,16 +314,16 @@ public class EnderIO {
     blockPaintedCarpet = BlockPaintedCarpet.create();
     blockPaintedPressurePlate = BlockPaintedPressurePlate.create();
 
-    blockCrafter = BlockCrafter.create();    
+    blockCrafter = BlockCrafter.create();
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.createPowerMonitor();
     blockPowerMonitorAdvanced = BlockPowerMonitor.createAdvancedPowerMonitor();
     blockFarmStation = BlockFarmStation.create();
 
     blockWirelessCharger = BlockWirelessCharger.create();
-    
+
     blockTank = BlockTank.create();
-    
+
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
 
@@ -333,11 +333,11 @@ public class EnderIO {
     blockInventoryPanel = BlockInventoryPanel.create();
 
     blockEnderIo = BlockEnderIO.create();
-    
+
     blockTravelPlatform = BlockTravelAnchor.create();
     itemCoordSelector = ItemCoordSelector.create();
-    
-    blockTelePad = BlockTelePad.createTelepad();    
+
+    blockTelePad = BlockTelePad.createTelepad();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();
@@ -354,7 +354,7 @@ public class EnderIO {
 
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
-        
+
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
 
@@ -363,10 +363,10 @@ public class EnderIO {
     blockFusedQuartz = BlockFusedQuartz.create();
     BlockPaintedFusedQuartz.create();
 
-//    blockEnderRail = BlockEnderRail.create();
+    // blockEnderRail = BlockEnderRail.create();
 
     blockConduitBundle = BlockConduitBundle.create();
-    
+
     blockConduitFacade = BlockConduitFacade.create();
 
     itemBrokenSpawner = ItemBrokenSpawner.create();
@@ -406,7 +406,7 @@ public class EnderIO {
     blockIngotStorage = BlockIngotStorage.create();
 
     blockDarkIronBars = BlockDarkIronBars.create();
-    
+
     itemEnderFood = ItemEnderFood.create();
 
     blockGauge = BlockGauge.create();
@@ -418,7 +418,7 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
-    
+
     proxy.preInit();
   }
 
@@ -436,66 +436,6 @@ public class EnderIO {
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
-    //TODO: 1.9
-    //Register Custom Dungeon Loot here
-//    if(Config.lootDarkSteel) {
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
-//    }
-//
-//    if(Config.lootItemConduitProbe) {
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
-//    }
-//
-//    if(Config.lootQuartz) {
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
-//    }
-//
-//    if(Config.lootNetherWart) {
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 10));
-//    }
-//
-//    if(Config.lootEnderPearl) {
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
-//    }
-//
-//    if(Config.lootElectricSteel) {
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
-//    }
-//
-//    if(Config.lootRedstoneAlloy) {
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
-//    }
-//
-//    if(Config.lootDarkSteel) {
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
-//    }
-//
-//    if(Config.lootPhasedIron) {
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PULSATING_IRON.ordinal()), 1, 2, 10));
-//    }
-//
-//    if(Config.lootPhasedGold) {
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-//          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.VIBRANT_ALLOY.ordinal()), 1, 2, 5));
-//    }
-//
-//    if(Config.lootTravelStaff) {
-//      ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
-//    }
-
-    DarkSteelItems.addLoot();
-
-    if(Loader.isModLoaded("ComputerCraft")) {
-      ConduitBundledRedstoneProvider.register();
-    }
-
     MaterialRecipes.registerDependantOresInDictionary();
 
     if (Config.recipeLevel >= 0) {
@@ -506,19 +446,22 @@ public class EnderIO {
       ItemRecipes.addRecipes();
       TeleportRecipes.addRecipes();
     }
-    
+
     proxy.init();
   }
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
-
+    
     Config.postInit();
 
-    //Regsiter the enchants
-    Enchantments.getInstance();
+    LootManager.register();
     
-    //This must be loaded before parsing the recipes so we get the preferred outputs
+    // Regsiter the enchants
+    Enchantments.register();
+
+    // This must be loaded before parsing the recipes so we get the preferred
+    // outputs
     OreDictionaryPreferences.loadConfig();
 
     SagMillRecipeManager.getInstance().loadRecipesFromConfig();
@@ -530,109 +473,85 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    if(Fluids.fluidXpJuice == null) { //should have been registered by open blocks
-      fluids.forgeRegisterXPJuice();      
+    //should have been registered by open  blocks
+    if (Fluids.fluidXpJuice == null) {                                       
+      fluids.forgeRegisterXPJuice();
     }
-
-    if(Config.dumpMobNames) {
-      File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
-      List<String> names = EntityUtil.getAllRegisteredMobNames();
-
-      try {
-        BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));
-        for (String name : names) {
-          br.append(name);
-          br.newLine();
-        }
-        br.flush();
-        br.close();
-      } catch (Exception e) {
-        Log.error("Could not write mob types file: " + e);
-      }
-
+    if (Config.dumpMobNames) {
+      dumpMobNamesToFile();
     }
-
     addModIntegration();
-    
-    //Register villagers
-    FMLInterModComms.sendMessage("EnderStructures", "addResourcePath", "/assets/enderio/villagers");
-    FMLInterModComms.sendMessage("EnderStructures", "registerVillageGenerator", "enderioMobDropVillager");
   }
 
   @EventHandler
   public void loadComplete(FMLLoadCompleteEvent event) {
-    processImc(FMLInterModComms.fetchRuntimeMessages(this)); //Some mods send IMCs during PostInit, so we catch them here.
+    // Some mods send IMCs during PostInit, so we catch them here.
+    processImc(FMLInterModComms.fetchRuntimeMessages(this)); 
+  }
+  
+  @EventHandler
+  public void serverStarted(FMLServerStartedEvent event) {
+    ServerChannelRegister.load();
   }
 
-  private void addModIntegration() {
-
-  //TODO: 1.9 Mod Compat
-    
-//    if(Loader.isModLoaded("TConstruct")) {
-//      try {
-//        Class<?> ttClass = Class.forName("tconstruct.tools.TinkerTools");
-//        Field modFluxF = ttClass.getField("modFlux");
-//        Object modFluxInst = modFluxF.get(null);
-//
-//        Class<?> modFluxClass = Class.forName("tconstruct.modifiers.tools.ModFlux");
-//        Field batteriesField = modFluxClass.getField("batteries");
-//        List<ItemStack> batteries = (List<ItemStack>) batteriesField.get(modFluxInst);
-//        batteries.add(new ItemStack(blockCapBank));
-//        Log.info("Registered Capacitor Banks as Tinkers Construct Flux Upgrades");
-//      } catch (Exception e) {
-//        //Doesn't matter if it didnt work
-//        Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
-//      }
-//    }
-    
-//    ThaumcraftCompat.load();
-    BuildcraftIntegration.init();
+  @EventHandler
+  public void serverStopped(FMLServerStoppedEvent event) {
+    ServerChannelRegister.store();
   }
 
   @EventHandler
   public void onImc(IMCEvent evt) {
     processImc(evt.getMessages());
   }
+  
+  private void addModIntegration() {
+    // ThaumcraftCompat.load();
+    BuildcraftIntegration.init();
+    
+    if (Loader.isModLoaded("ComputerCraft")) {
+      ConduitBundledRedstoneProvider.register();
+    }
+  }
 
   private void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
       String key = msg.key;
       try {
-        if(msg.isStringMessage()) {
+        if (msg.isStringMessage()) {
           String value = msg.getStringValue();
-          if(IMC.VAT_RECIPE.equals(key)) {
+          if (IMC.VAT_RECIPE.equals(key)) {
             VatRecipeManager.getInstance().addCustomRecipes(value);
-          } else if(IMC.SAG_RECIPE.equals(key)) {
+          } else if (IMC.SAG_RECIPE.equals(key)) {
             SagMillRecipeManager.getInstance().addCustomRecipes(value);
-          } else if(IMC.ALLOY_RECIPE.equals(key)) {
+          } else if (IMC.ALLOY_RECIPE.equals(key)) {
             AlloyRecipeManager.getInstance().addCustomRecipes(value);
-          } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
+          } else if (IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
-          } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
+          } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             TRAVEL_BLACKLIST.add(value);
-          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
+          } else if (IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
             CapturedMob.addToBlackList(value);
-          } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
+          } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
-          } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
+          } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           }
-        } else if(msg.isNBTMessage()) {
-          if(IMC.SOUL_BINDER_RECIPE.equals(key)) {
+        } else if (msg.isNBTMessage()) {
+          if (IMC.SOUL_BINDER_RECIPE.equals(key)) {
             SoulBinderRecipeManager.getInstance().addRecipeFromNBT(msg.getNBTValue());
-          } else if(IMC.POWERED_SPAWNER_COST_MULTIPLIER.equals(key)) {
+          } else if (IMC.POWERED_SPAWNER_COST_MULTIPLIER.equals(key)) {
             PoweredSpawnerConfig.getInstance().addEntityCostFromNBT(msg.getNBTValue());
-          } else if(IMC.FLUID_FUEL_ADD.equals(key)) {
+          } else if (IMC.FLUID_FUEL_ADD.equals(key)) {
             FluidFuelRegister.instance.addFuel(msg.getNBTValue());
-          } else if(IMC.FLUID_COOLANT_ADD.equals(key)) {
+          } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(msg.getNBTValue());
-          } else if(IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
+          } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
             InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
-        } else if(msg.isItemStackMessage()) {
-          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
+        } else if (msg.isItemStackMessage()) {
+          if (IMC.PAINTER_WHITELIST_ADD.equals(key)) {
             PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
-          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
+          } else if (IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
             PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
           }
         }
@@ -641,14 +560,22 @@ public class EnderIO {
       }
     }
   }
+  
+  private void dumpMobNamesToFile() {
+    File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
+    List<String> names = EntityUtil.getAllRegisteredMobNames();
 
-  @EventHandler
-  public void serverStarted(FMLServerStartedEvent event) {    
-    ServerChannelRegister.load();
+    try {
+      BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));
+      for (String name : names) {
+        br.append(name);
+        br.newLine();
+      }
+      br.flush();
+      br.close();
+    } catch (Exception e) {
+      Log.error("Could not write mob types file: " + e);
+    }
   }
 
-  @EventHandler
-  public void serverStopped(FMLServerStoppedEvent event) {
-    ServerChannelRegister.store();
-  }
 }

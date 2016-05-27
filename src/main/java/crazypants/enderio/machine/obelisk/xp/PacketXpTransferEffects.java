@@ -66,8 +66,6 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
         if (fx != null) {
           fx.setRBGColorF(0.2f, 0.8f, 0.2f);
           ClientUtil.setParticleVelocityY(fx, ClientUtil.getParticleVelocityY(fx) * 0.5);
-          //TODO: 1.9
-//          fx.motionY *= 0.5f;
         }
       }
 

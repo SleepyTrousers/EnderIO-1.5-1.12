@@ -41,23 +41,6 @@ public class DarkSteelItems {
     itemMagnet = ItemMagnet.create();
   }
 
-  public static void addLoot() {
-    //TODO: 1.9
-//    if(Config.lootTheEnder) {
-//      ItemStack sword = new ItemStack(itemDarkSteelSword, 1, 0);
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
-//      ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
-//    }
-//
-//    if(Config.lootDarkSteelBoots) {
-//      ItemStack boots = new ItemStack(itemDarkSteelBoots, 1, 0);
-//      ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
-//      ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
-//    }
-  }
-
   @SideOnly(Side.CLIENT)
   public static void registerItemRenderers() {  
     itemGliderWing.registerRenderers();

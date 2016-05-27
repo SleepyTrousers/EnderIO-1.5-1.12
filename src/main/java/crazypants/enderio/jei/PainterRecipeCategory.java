@@ -84,7 +84,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
           }
         }
       } catch (Exception e) {
-        Log.warn("Error while accessing item '" + paint + "': " + e);
+        Log.warn("PainterRecipeCategory: Error while accessing item '" + paint + "': " + e);
         e.printStackTrace();
       }
     }
@@ -92,11 +92,11 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
     for (PainterRecipeWrapper painterRecipeWrapper : recipesWrappers) {
       if (painterRecipeWrapper.results.isEmpty()) {
-        Log.warn("Empty recipe group: " + painterRecipeWrapper.recipe + " for " + painterRecipeWrapper.target);
+        Log.warn("PainterRecipeCategory: Empty recipe group: " + painterRecipeWrapper.recipe + " for " + painterRecipeWrapper.target);
       }
     }
 
-    Log.info(String.format("Added %d painter recipes in %d groups to JEI in %.3f seconds.", count, recipesWrappers.size(), (end - start) / 1000000000d));
+    Log.info(String.format("PainterRecipeCategory: Added %d painter recipes in %d groups to JEI in %.3f seconds.", count, recipesWrappers.size(), (end - start) / 1000000000d));
 
     return recipesWrappers;
   }

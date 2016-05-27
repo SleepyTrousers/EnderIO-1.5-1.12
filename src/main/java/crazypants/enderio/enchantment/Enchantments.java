@@ -6,12 +6,11 @@ public class Enchantments {
 
   private static Enchantments instance;
 
-  public static Enchantments getInstance() {
+  public static void register() {
     if(instance == null) {
       instance = new Enchantments();
       instance.registerEnchantments();
-    }
-    return instance;
+    }    
   }
 
   private void registerEnchantments() {

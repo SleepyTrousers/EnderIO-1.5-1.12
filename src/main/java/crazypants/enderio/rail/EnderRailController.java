@@ -250,7 +250,7 @@ public class EnderRailController {
     if(entity == null) {
       return;
     }
-  //TODO: 1.8
+  //
 //    double oX = entity.posX;
 //    double oZ = entity.posZ;
 //    World world = transciever.getWorld();
@@ -277,26 +277,26 @@ public class EnderRailController {
 //    worldserver.spawnEntityInWorld(entity);
   }
 
-  private void resetForRandomRandomSpawn(Entity entity) {
-    CartLinkUtil.instance.breakLinks(transciever.getWorld(), entity);
-    //TODO: 1.9
-//    entity.riddenByEntity = null;
-//    entity.ridingEntity = null;
-    entity.motionX = 0;
-    entity.motionY = 0;
-    entity.motionZ = 0;
-    //    if(entity instanceof EntityMinecart) {
-    //      entity.posY -= 0.3;      
-    //    }
-    entity.prevPosX = entity.posX;
-    entity.prevPosY = entity.posY;
-    entity.prevPosZ = entity.posZ;
-    entity.rotationYaw = (float) (transciever.getWorld().rand.nextDouble() * 360);
-  }
-
-  private int randOffset(int spread) {
-    return (int) Math.round((transciever.getWorld().rand.nextDouble() - 0.5) * spread * 2);
-  }
+//  private void resetForRandomRandomSpawn(Entity entity) {
+//    CartLinkUtil.instance.breakLinks(transciever.getWorld(), entity);
+//    
+////    entity.riddenByEntity = null;
+////    entity.ridingEntity = null;
+//    entity.motionX = 0;
+//    entity.motionY = 0;
+//    entity.motionZ = 0;
+//    //    if(entity instanceof EntityMinecart) {
+//    //      entity.posY -= 0.3;      
+//    //    }
+//    entity.prevPosX = entity.posX;
+//    entity.prevPosY = entity.posY;
+//    entity.prevPosZ = entity.posZ;
+//    entity.rotationYaw = (float) (transciever.getWorld().rand.nextDouble() * 360);
+//  }
+//
+//  private int randOffset(int spread) {
+//    return (int) Math.round((transciever.getWorld().rand.nextDouble() - 0.5) * spread * 2);
+//  }
 
   public void onPlayerTeleported(EntityPlayerMP playerToTP, EntityMinecart toMount) {
     if(playerToTP != null) {
