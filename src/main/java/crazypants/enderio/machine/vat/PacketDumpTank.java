@@ -43,6 +43,8 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
       } else {
         if (te.inputTank.isEmpty()) {
           // NOP
+        } else if (te.isActive()) {
+          ctx.getServerHandler().playerEntity.addChatMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.active"));
         } else if (te.outputTank.isEmpty()) {
           te.outputTank.setFluid(te.inputTank.getFluid());
           te.inputTank.setFluid(null);

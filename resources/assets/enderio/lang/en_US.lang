@@ -1077,6 +1077,7 @@ enderio.vat.inputTank=Input Tank
 enderio.gui.machine.vat.dump.1=Dump Input Tank Into Output Tank
 enderio.gui.machine.vat.dump.2=Void Output Tank
 enderio.gui.machine.vat.dump.fail=Dumping failed, output tank is not empty
+enderio.gui.machine.vat.dump.active=Dumping failed, cannot put liquids into the output tank while the Vat is working
 
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Coolant
