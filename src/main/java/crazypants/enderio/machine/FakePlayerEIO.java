@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
@@ -34,6 +36,9 @@ public class FakePlayerEIO extends FakePlayer {
 
   @Override
   protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
+  }
+  
+  protected void playEquipSound(@Nullable ItemStack stack) {  
   }
 
 }
