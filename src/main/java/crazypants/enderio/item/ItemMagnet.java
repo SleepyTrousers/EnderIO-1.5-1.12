@@ -195,11 +195,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
         ItemMagnet.drainPerSecondPower(itemstack);
         IInventory baubles = BaublesUtil.instance().getBaubles((EntityPlayer) player);
         if(baubles != null) {
-          for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            if(baubles.getStackInSlot(i) == itemstack) {
-              baubles.setInventorySlotContents(i, itemstack);
-            }
-          }
+          baubles.markDirty();
         }
       }
     }

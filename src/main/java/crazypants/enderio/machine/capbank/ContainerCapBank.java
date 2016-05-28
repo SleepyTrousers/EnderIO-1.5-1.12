@@ -23,7 +23,16 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   private InventoryImpl inv;
 
   // Note: Modifying the Baubles inventory on the client side of an integrated
-  // server is a bad idea as Baubles does some very bad things...
+  // server is a bad idea because Baubles actually shares the object between
+  // server and client. However, by not doing so, we prevent the callback hooks
+  // to be called in the client thread. It doesn't seem to matter now, but if we
+  // ever get reports of problems, we need to find a solution to synthesize
+  // these calls.
+  // In a multiplayer client this works well, but we need to prevent Baubles
+  // from calling those callbacks when the server syncs the slot contents to the
+  // client (packet 30) initially. They are still called every time the server
+  // updates the slots (which is wrong), but the original Baubles inventory
+  // works this way, so...
   private IInventory baubles;
 
   public ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
@@ -207,4 +216,24 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       return inventory.isItemValidForSlot(getSlotIndex(), itemStack);
     }
   }
+
+  /**
+   * called when the content of slots is synced from the server to the client
+   * (packet 30)
+   */
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void putStacksInSlots(ItemStack[] p_75131_1_) {
+    if (hasBaublesSlots() && BaublesUtil.WhoAmI.whoAmI(getInv().getWorldObj()) == BaublesUtil.WhoAmI.MPCLIENT) {
+      try {
+        BaublesUtil.instance().disableCallbacks(baubles, true);
+        super.putStacksInSlots(p_75131_1_);
+      } finally {
+        BaublesUtil.instance().disableCallbacks(baubles, false);
+      }
+    } else {
+      super.putStacksInSlots(p_75131_1_);
+    }
+  }
+
 }
