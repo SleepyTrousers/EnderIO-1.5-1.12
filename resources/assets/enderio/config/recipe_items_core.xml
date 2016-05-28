@@ -30,7 +30,7 @@
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="enderio:itemPowerConduit:0" /><item name="ELECTRICAL_STEEL" />
         <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
-        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:2" /><item name="SILICON" />
+        <item name="SILICON" /><item name="enderio:itemRedstoneConduit:0" /><item name="SILICON" />
       </grid>
       <output name="CONDUIT_PROBE" />
     </crafting>
