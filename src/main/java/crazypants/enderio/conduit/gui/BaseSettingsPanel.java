@@ -18,6 +18,7 @@ import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -126,22 +127,15 @@ public class BaseSettingsPanel implements ITabPanel {
     FontRenderer fr = gui.getFontRenderer();
 
     int rgb = ColorUtil.getRGB(Color.darkGray);
-    int x = left + (width - fr.getStringWidth(getTypeName())) / 2;
-
-    //fr.drawString(getTypeName(), x, top, rgb);
-
-    x = left;
-    
-    int y = gui.getGuiTop() + 13;//customTop + 8;//gap + fr.FONT_HEIGHT + gap;
+    int x = left;    
+    int y = gui.getGuiTop() + 13;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
     String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
-    GL11.glColor3f(1, 1, 1);
-    // TODO figure out what this should be
-//    IconEIO icon = new IconEIO(10, 48, 64, 16);
-//    icon.getMap().render(icon, x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    GlStateManager.color(1, 1, 1);    
+    IconEIO.MODE_BACKGROUND.getMap().render(IconEIO.MODE_BACKGROUND, x - gap, y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;
@@ -149,7 +143,6 @@ public class BaseSettingsPanel implements ITabPanel {
     gui.getFontRenderer().drawString(modeString, x, y, rgb);
 
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
-    //renderCustomOptions(y + gap, par1, par2, par3);
   }
 
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
