@@ -112,7 +112,7 @@ enderio.itemGasConduit.tooltip.maxIo=最大IO:
 enderio.itemGasConduit.tooltip.detailed.line1=传送和通用机械兼容的气体
 
 enderio.itemMEConduit.name=ME导管
-enderio.itemMEConduitDense.name=密集ME导管
+enderio.itemMEConduitDense.name=致密ME导管
 enderio.itemMEConduit.channelsUsed=第{0,number}频道, 共{1,number}频道
 
 enderio.itemOCConduit.name=网络管道(OC)
@@ -692,7 +692,7 @@ item.darkSteel_chestplate.name=玄钢胸甲
 item.darkSteel_leggings.name=玄钢护腿
 item.darkSteel_boots.name=玄钢靴子
 item.darkSteel_sword.name=终结之剑
-item.darkSteel_pickaxe.name=玄钢铲
+item.darkSteel_pickaxe.name=玄钢镐
 item.darkSteel_axe.name=玄钢斧
 item.darkSteel_shears.name=玄钢剪
 
