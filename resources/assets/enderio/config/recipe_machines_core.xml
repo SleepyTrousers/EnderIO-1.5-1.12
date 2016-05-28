@@ -134,7 +134,7 @@
 
   <recipe name="SAG Mill" required="true">
     <crafting>
-      <level maxlevel="1" />
+      <level maxlevel="2" />
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
         <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
@@ -143,7 +143,7 @@
       <output name="enderio:blockSagMill" />
     </crafting>
     <crafting>
-      <level minlevel="2" />
+      <level minlevel="3" />
       <grid size="3x3">
         <item name="oredict:obsidian" /><item name="oredict:obsidian" /><item name="oredict:obsidian" />
         <item name="itemFlint" /><item name="CHASSIS" /><item name="itemFlint" />
@@ -155,7 +155,7 @@
 
   <recipe name="Alloy Smelter" required="true">
     <crafting>
-      <level maxlevel="1" />
+      <level maxlevel="2" />
       <grid size="3x3">
         <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
         <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
@@ -164,7 +164,7 @@
       <output name="enderio:blockAlloySmelter" />
     </crafting>
     <crafting>
-      <level minlevel="2" />
+      <level minlevel="3" />
       <grid size="3x3">
         <item name="blockIron" /><item name="minecraft:furnace" /><item name="blockIron" />
         <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
@@ -220,7 +220,7 @@
 
   <recipe name="Painter" required="true">
     <crafting>
-      <level maxlevel="1" />
+      <level maxlevel="2" />
       <grid size="3x3">
         <item name="gemQuartz" /><item name="gemDiamond" /><item name="gemQuartz" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
@@ -229,7 +229,7 @@
       <output name="enderio:blockPainter" />
     </crafting>
     <crafting>
-      <level minlevel="2" />
+      <level minlevel="3" />
       <grid size="3x3">
         <item name="gemQuartz" /><item name="gemQuartz" /><item name="gemQuartz" />
         <item name="ELECTRICAL_STEEL" /><item name="blockDiamond" /><item name="ELECTRICAL_STEEL" />
@@ -364,18 +364,18 @@
     <crafting>
       <level maxlevel="2" />
       <grid size="3x3">
-        <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
-        <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
-        <item name="" /><item name="DARK_STEEL" /><item name="" />
+        <item name="gemDiamond" /><item name="minecraft:book" /><item name="gemDiamond" />
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item /><item name="DARK_STEEL" /><item />
       </grid>
       <output name="enderio:blockEnchanter" />
     </crafting>
     <crafting>
       <level minlevel="3" />
       <grid size="3x3">
-        <item name="gemDiamond" /><item name="minecraft:book" /><item name="gemDiamond" />
-        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
-        <item /><item name="DARK_STEEL" /><item />
+        <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
+        <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
+        <item name="" /><item name="DARK_STEEL" /><item name="" />
       </grid>
       <output name="enderio:blockEnchanter" />
     </crafting>
