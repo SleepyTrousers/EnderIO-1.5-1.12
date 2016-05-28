@@ -126,7 +126,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setCreativeTab(null);
     SoundType curType = getSoundType();
     SoundEvent silent = new SoundEvent(new ResourceLocation(EnderIO.DOMAIN, "silence"));
-    setSoundType(new SoundType(curType.volume, curType.pitch, silent, silent, curType.getPlaceSound(), curType.getHitSound(), curType.getFallSound()));
+    setSoundType(new SoundType(curType.volume, curType.pitch, silent, silent, curType.getPlaceSound(), silent, curType.getFallSound()));
 
     setDefaultState(blockState.getBaseState());
   }
