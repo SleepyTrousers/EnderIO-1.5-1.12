@@ -300,7 +300,13 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    return inputTank;
+    MachineRecipeInput[] inputs = getRecipeInputs();
+    inputs[inputs.length - 1] = new MachineRecipeInput(0, forFluidType);
+    if (VatRecipeManager.getInstance().isValidInput(inputs)) {
+      return inputTank;
+    } else {
+      return null;
+    }
   }
 
   @Override
