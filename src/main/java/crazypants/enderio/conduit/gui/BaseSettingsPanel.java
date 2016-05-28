@@ -2,8 +2,6 @@ package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.MultiIconButton;
