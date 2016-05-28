@@ -689,11 +689,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   public boolean isSideDisabled(EnumFacing dir) {
-    IoMode mode = dir == null ? IoMode.DISABLED : getIoMode(dir);
-    if (mode == IoMode.DISABLED) {
-      return true;
-    }
-    return false;
+    return getIoMode(dir) == IoMode.DISABLED;
   }
 
   public void onNeighborBlockChange(Block blockId) {
