@@ -5,7 +5,6 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
-import crazypants.enderio.Log;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeConfigElement;
 import crazypants.enderio.config.recipes.StaxFactory;
@@ -14,17 +13,17 @@ import net.minecraft.item.ItemStack;
 
 public class OptionalItem implements RecipeConfigElement {
 
-  private String name;
-  private transient ItemStack stack;
-  private transient Object recipeObject;
-  protected transient boolean valid;
+  protected String name;
+  protected transient ItemStack stack;
+  protected transient Object recipeObject;
+  protected transient boolean nullItem;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     if (name == null || name.trim().isEmpty()) {
       stack = null;
       recipeObject = null;
-      valid = true;
+      nullItem = true;
       return this;
     }
     Things thing = new Things(name);
@@ -35,15 +34,12 @@ public class OptionalItem implements RecipeConfigElement {
       throw new InvalidRecipeConfigException("Name \"" + name + "\"> references " + itemStacks.size() + " different things: " + recipeObjects);
     }
     recipeObject = recipeObjects.isEmpty() ? null : recipeObjects.get(0);
-    if (!isValid()) {
-      Log.info("Could not find a crafting ingredient for '" + name + "' (stack=" + stack + ", object=" + recipeObject + ")");
-    }
     return this;
   }
 
   @Override
   public boolean isValid() {
-    return valid || (stack != null && recipeObject != null);
+    return nullItem || (stack != null && recipeObject != null);
   }
 
   public Object getRecipeObject() {

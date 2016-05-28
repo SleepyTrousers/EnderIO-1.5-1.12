@@ -34,8 +34,15 @@ public abstract class AbstractCrafting extends AbstractConditional {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("output".equals(name)) {
-      if (output == null) {
-        output = factory.read(new Output(), startElement);
+      Output outputIn = factory.read(new Output(), startElement);
+      if (outputIn.isActive()) {
+        if (output == null) {
+          output = outputIn;
+          return true;
+        } else {
+          throw new InvalidRecipeConfigException("Duplicate <output>");
+        }
+      } else {
         return true;
       }
     }

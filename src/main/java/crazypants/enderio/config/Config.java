@@ -97,8 +97,6 @@ public final class Config {
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static int numConduitsPerRecipe = -1;
-
   public static boolean transceiverEnabled = true;
   public static double transceiverEnergyLoss = 0.1;
   public static int transceiverBucketTransmissionCostRF = 100;
@@ -585,8 +583,6 @@ public final class Config {
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
         "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
         .getBoolean(allowTileEntitiesAsPaintSource);
-    numConduitsPerRecipe = config.get(sectionRecipe.name, "numConduitsPerRecipe", numConduitsPerRecipe,
-        "The number of conduits crafted per recipe. (-1 to use default from recipeLevel)").getInt(numConduitsPerRecipe);
     createSyntheticRecipes = config
         .get(
             sectionRecipe.name,

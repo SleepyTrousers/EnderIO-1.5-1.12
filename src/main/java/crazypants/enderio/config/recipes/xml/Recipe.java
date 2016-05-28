@@ -18,9 +18,7 @@ public class Recipe extends AbstractConditional {
 
   private boolean disabled;
 
-  private List<Crafting> craftings;
-
-  private List<Smelting> smeltings;
+  private List<AbstractCrafting> craftings;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -33,7 +31,7 @@ public class Recipe extends AbstractConditional {
       int activeSubs = 0;
       int activatableSubs = 0;
       if (craftings != null) {
-        for (Crafting crafting : craftings) {
+        for (AbstractCrafting crafting : craftings) {
           if (crafting.isValid()) {
             validSubs++;
           }
@@ -45,20 +43,10 @@ public class Recipe extends AbstractConditional {
           }
         }
       }
-      if (smeltings != null) {
-        for (Smelting smelting : smeltings) {
-          if (smelting.isValid() && smelting.isActive()) {
-            if (valid) {
-              throw new InvalidRecipeConfigException("Multiple active <crafting>s");
-            }
-            valid = true;
-          }
-        }
-      }
       valid = validSubs > 0;
 
       if (active) {
-        if ((craftings == null || craftings.isEmpty()) && (smeltings == null || smeltings.isEmpty())) {
+        if (craftings == null || craftings.isEmpty()) {
           throw new InvalidRecipeConfigException("No <crafting>s or <smelting>s");
         }
         if (activatableSubs > 1) {
@@ -81,17 +69,9 @@ public class Recipe extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
       if (craftings != null) {
-        for (Crafting crafting : craftings) {
+        for (AbstractCrafting crafting : craftings) {
           if (crafting.isValid() && crafting.isActive()) {
             crafting.register();
-            return;
-          }
-        }
-      }
-      if (smeltings != null) {
-        for (Smelting smelting : smeltings) {
-          if (smelting.isValid() && smelting.isActive()) {
-            smelting.register();
             return;
           }
         }
@@ -131,16 +111,16 @@ public class Recipe extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("crafting".equals(name)) {
       if (craftings == null) {
-        craftings = new ArrayList<Crafting>();
+        craftings = new ArrayList<AbstractCrafting>();
       }
       craftings.add(factory.read(new Crafting(), startElement));
       return true;
     }
     if ("smelting".equals(name)) {
-      if (smeltings == null) {
-        smeltings = new ArrayList<Smelting>();
+      if (craftings == null) {
+        craftings = new ArrayList<AbstractCrafting>();
       }
-      smeltings.add(factory.read(new Smelting(), startElement));
+      craftings.add(factory.read(new Smelting(), startElement));
       return true;
     }
 

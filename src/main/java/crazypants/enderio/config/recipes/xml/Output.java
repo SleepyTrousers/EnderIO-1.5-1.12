@@ -9,22 +9,27 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class Output extends Item {
+public class Output extends AbstractConditional {
 
   private int amount;
 
   private String nbt;
+
+  private Item item;
 
   private transient NBTTagCompound tag;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
-    if (super.isValid()) {
+    if (item == null) {
+      throw new InvalidRecipeConfigException("Missing name in <output>");
+    }
+    if (item.isValid()) {
       if (amount < 0) {
         throw new InvalidRecipeConfigException("Invalid negative amount in <output>");
       }
-      if (amount > super.getItemStack().getMaxStackSize()) {
+      if (amount > item.getItemStack().getMaxStackSize()) {
         throw new InvalidRecipeConfigException("Invalid amount in <output>, bigger than maximum stack size");
       }
       if (amount == 0) {
@@ -51,8 +56,12 @@ public class Output extends Item {
   }
 
   @Override
+  public boolean isValid() {
+    return item != null && item.isValid();
+  }
+
   public ItemStack getItemStack() {
-    ItemStack itemStack = super.getItemStack().copy();
+    ItemStack itemStack = item.getItemStack().copy();
     itemStack.stackSize = amount;
     if (tag != null) {
       itemStack.setTagCompound(tag);
@@ -70,8 +79,18 @@ public class Output extends Item {
       this.nbt = value;
       return true;
     }
+    if ("name".equals(name)) {
+      item = new Item();
+      item.setName(value);
+      item.readResolve();
+      return true;
+    }
 
     return super.setAttribute(factory, name, value);
+  }
+
+  @Override
+  public void register() {
   }
 
 }

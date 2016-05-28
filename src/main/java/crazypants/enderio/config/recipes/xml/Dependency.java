@@ -12,7 +12,7 @@ public class Dependency implements RecipeConfigElement {
   private String itemString;
   private boolean reverse;
 
-  private transient Item item;
+  private transient OptionalItem item;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -20,7 +20,7 @@ public class Dependency implements RecipeConfigElement {
       if (itemString == null || itemString.trim().isEmpty()) {
         throw new InvalidRecipeConfigException("Missing item");
       }
-      item = new Item();
+      item = new OptionalItem();
       item.setName(itemString);
       item.readResolve();
     } catch (InvalidRecipeConfigException e) {

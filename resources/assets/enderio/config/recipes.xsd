@@ -181,22 +181,58 @@
                             </complexType>
                           </element>
                         </choice>
-                        <element minOccurs="1" maxOccurs="1" name="output">
+                        <element minOccurs="1" maxOccurs="unbounded" name="output">
                                                     <annotation>
                                                       <documentation>The result of the crafting.</documentation>
                                                     </annotation>
                                                     <complexType>
+                                                      <sequence>
+                                                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the given config value has the given value.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="section" type="string">
+                            </attribute>
                             <attribute use="required" name="name" type="string">
                             </attribute>
-                            <attribute use="optional" name="amount">
-                              <simpleType>
-                                <restriction base="int">
-                                  <minInclusive value="1"></minInclusive>
-                                  <maxInclusive value="64"></maxInclusive>
-                                </restriction>
-                              </simpleType>
+                            <attribute use="optional" name="value" type="boolean">
                             </attribute>
                           </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the given game element can (not) be found in the game.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="item" type="string">
+                            </attribute>
+                            <attribute use="optional" name="reverse" type="boolean">
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the recipe level is within the given bounds.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="optional" name="minlevel" type="int">
+                            </attribute>
+                            <attribute use="optional" name="maxlevel" type="int">
+                            </attribute>
+                          </complexType>
+                        </element>
+                                                      </sequence>
+                                                      <attribute use="required" name="name" type="string"></attribute>
+                                                      <attribute use="optional" name="amount">
+                                                        <simpleType>
+                                                          <restriction base="int">
+                                                            <minInclusive value="1"></minInclusive>
+                                                            <maxInclusive value="64"></maxInclusive>
+                                                          </restriction>
+                                                        </simpleType>
+                                                      </attribute>
+                                                    </complexType>
                         </element>
                       </sequence>
                     </complexType>
@@ -243,21 +279,50 @@
                           <complexType>
                             <attribute use="required" name="name" type="string">
                             </attribute>
-                            <attribute use="optional" name="amount">
-                              <simpleType>
-                                <restriction base="int">
-                                  <minInclusive value="1"></minInclusive>
-                                  <maxInclusive value="64"></maxInclusive>
-                                </restriction>
-                              </simpleType>
-                            </attribute>
                           </complexType>
                         </element>
-                        <element minOccurs="1" maxOccurs="1" name="output">
+                        <element minOccurs="1" maxOccurs="unbounded" name="output">
                                                     <annotation>
                                                       <documentation>The result of the smelting.</documentation>
                                                     </annotation>
                                                     <complexType>
+                                                    <sequence>
+                                                        <element minOccurs="0" maxOccurs="unbounded" name="config">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the given config value has the given value.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="section" type="string">
+                            </attribute>
+                            <attribute use="required" name="name" type="string">
+                            </attribute>
+                            <attribute use="optional" name="value" type="boolean">
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the given game element can (not) be found in the game.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="required" name="item" type="string">
+                            </attribute>
+                            <attribute use="optional" name="reverse" type="boolean">
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="level">
+                                                    <annotation>
+                                                      <documentation>Restricts this output to only be used if the recipe level is within the given bounds.</documentation>
+                                                    </annotation>
+                                                    <complexType>
+                            <attribute use="optional" name="minlevel" type="int">
+                            </attribute>
+                            <attribute use="optional" name="maxlevel" type="int">
+                            </attribute>
+                          </complexType>
+                        </element>
+                                                      </sequence>
                             <attribute use="required" name="name" type="string">
                             </attribute>
                             <attribute use="optional" name="amount">
