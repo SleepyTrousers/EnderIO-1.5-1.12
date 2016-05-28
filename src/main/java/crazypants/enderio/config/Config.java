@@ -495,6 +495,8 @@ public final class Config {
   public static boolean telepadLockCoords = true;
   public static int telepadPowerCoefficient = 100000;
   public static int telepadPowerInterdimensional = 100000;
+  public static int telepadPowerPerTickRF = 1000;
+  public static int telepadPowerStorageRF = 100000;
 
   public static boolean inventoryPanelFree = false;;
   public static float inventoryPanelPowerPerMB = 800.0f;
@@ -1340,6 +1342,10 @@ public final class Config {
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
         "The amount of RF required for an interdimensional teleport.").getInt();
+    telepadPowerPerTickRF = config.get(sectionTelepad.name, "telepadPowerPerTickRF", telepadPowerPerTickRF,
+        "The number of RF/t consumed by a telepad.").getInt();
+    telepadPowerStorageRF = config.get(sectionTelepad.name, "telepadPowerStorageRF", telepadPowerStorageRF,
+        "The amount of RF a telepad can store.").getInt();
 
     inventoryPanelFree = config.getBoolean("inventoryPanelFree", sectionInventoryPanel.name, inventoryPanelFree, "If true, the inv panel will not accept fluids and will be active permanently.");
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
