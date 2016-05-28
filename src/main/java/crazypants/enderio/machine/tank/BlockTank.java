@@ -10,6 +10,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
@@ -150,7 +151,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     int meta = getMetaFromState(bs);
     meta = MathHelper.clamp_int(meta, 0, 1);
     if(meta == 1) {
-      return 2000;
+      return Config.EXPLOSION_RESISTANT;
     } else {
       return super.getExplosionResistance(par1Entity);
     }

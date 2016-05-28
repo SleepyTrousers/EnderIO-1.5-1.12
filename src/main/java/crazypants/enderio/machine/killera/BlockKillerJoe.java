@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -65,7 +66,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-    return 2000;
+    return Config.EXPLOSION_RESISTANT;
   }
   
   @SubscribeEvent

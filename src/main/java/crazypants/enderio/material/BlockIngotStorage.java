@@ -21,8 +21,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -90,6 +90,7 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {  
     return getBlockHardness(world.getBlockState(pos), world, pos) * 2.0f; // vanilla default is / 5.0f, this means hardness*2 = resistance
+    // TODO 1.9 um, I cannot follow that comment above. Shouldn't this be /5f?
   }
     
   @Override
