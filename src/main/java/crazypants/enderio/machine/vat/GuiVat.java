@@ -4,12 +4,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -23,6 +17,11 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
@@ -63,9 +62,9 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     });
 
-    dump1 = new IconButton(this, 1, 29, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump1 = new IconButton(this, 1, 29, 62, IconEIO.DUMP_LIQUID);
     dump1.setToolTip(EnderIO.lang.localize("gui.machine.vat.dump.1"));
-    dump2 = new IconButton(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump2 = new IconButton(this, 2, 131, 62, IconEIO.VOID_LIQUID);
     dump2.setToolTip(EnderIO.lang.localize("gui.machine.vat.dump.2"));
 
     addProgressTooltip(81, 63, 14, 14);

@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.vat;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.enderio.core.common.network.MessageTileEntity;
 
 public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessageHandler<PacketDumpTank, IMessage> {
 
@@ -19,7 +20,6 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
   public PacketDumpTank(TileVat te, int tank) {
     super(te);
     this.tank = tank;
-    getTank(te).setFluid(null);
   }
 
   @Override
@@ -34,20 +34,27 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
     tank = buf.readInt();
   }
 
-  private FluidTank getTank(TileVat te) {
-    if (tank == 1) {
-      return te.inputTank;
-    } else if (tank == 2) {
-      return te.outputTank;
-    }
-    return null;
-  }
-
   @Override
   public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
     TileVat te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
     if (te != null) {
-      message.getTank(te).setFluid(null);
+      if (message.tank == 2) {
+        te.outputTank.setFluid(null);
+      } else {
+        if (te.inputTank.isEmpty()) {
+          // NOP
+        } else if (te.outputTank.isEmpty()) {
+          te.outputTank.setFluid(te.inputTank.getFluid());
+          te.inputTank.setFluid(null);
+        } else if (te.outputTank.getFluid().isFluidEqual(te.inputTank.getFluid()) && te.outputTank.getAvailableSpace() > 0) {
+          FluidStack drain = te.inputTank.drain(te.outputTank.getAvailableSpace(), true);
+          te.outputTank.fill(drain, true);
+        } else {
+          ctx.getServerHandler().playerEntity.addChatMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.fail"));
+        }
+      }
+      te.markDirty();
+      return new PacketTanks(te);
     }
     return null;
   }

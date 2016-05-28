@@ -1,13 +1,12 @@
 package crazypants.enderio.gui;
 
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.client.render.IWidgetMap;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.util.ResourceLocation;
 
 public enum IconEIO implements IWidgetIcon {
 
@@ -79,6 +78,9 @@ public enum IconEIO implements IWidgetIcon {
   DISABLED(64, 176),
   LOOP(80, 176),
   LOOP_OFF(96, 176),
+
+  VOID_LIQUID(112, 176),
+  DUMP_LIQUID(128, 176),
 
   ROUND_ROBIN(64, 240),
   ROUND_ROBIN_OFF(80, 240),
