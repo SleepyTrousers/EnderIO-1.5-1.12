@@ -35,8 +35,14 @@ public class BucketHandler {
 
   @SubscribeEvent
   public void onBucketFill(FillBucketEvent event) {
-    // no instanceof check, someone may subclass the vanilla bucket
-    if (event.getEmptyBucket() != null && event.getEmptyBucket().getItem() == Items.BUCKET && event.getEmptyBucket().stackSize > 0) {
+    // no instanceof check, someone may subclass the vanilla bucket. Also, this event comes in for emptying buckets that contain something.
+    if (event != null && !event.hasResult() && !event.isCanceled() && event.getTarget() != null && event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK
+        && event.getTarget().getBlockPos() != null && event.getFilledBucket() == null && event.getEntityPlayer() != null && event.getWorld() != null
+        && event.getWorld().isBlockModifiable(event.getEntityPlayer(), event.getTarget().getBlockPos()) && event.getEmptyBucket() != null
+        && event.getEmptyBucket().getItem() == Items.BUCKET && event.getEmptyBucket().stackSize > 0 && event.getTarget().sideHit != null
+        && event.getEntityPlayer().canPlayerEdit(event.getTarget().getBlockPos().offset(event.getTarget().sideHit), event.getTarget().sideHit,
+            event.getEmptyBucket())
+    ) {
       ItemStack res = getFilledBucket(event.getWorld(), event.getTarget());
       if (res != null) {
         event.setFilledBucket(res);
