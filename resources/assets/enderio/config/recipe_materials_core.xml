@@ -199,14 +199,14 @@
   <recipe name="Iron Dust, Smelting" required="true">
     <smelting exp="0">
       <input name="enderio:itemPowderIngot:1"/>
-      <output name="ingotIron"/>
+      <output name="minecraft:iron_ingot"/>
     </smelting>
   </recipe>
 
   <recipe name="Gold Dust, Smelting" required="true">
     <smelting exp="0">
       <input name="enderio:itemPowderIngot:2"/>
-      <output name="ingotGold"/>
+      <output name="minecraft:gold_ingot"/>
     </smelting>
   </recipe>
 
