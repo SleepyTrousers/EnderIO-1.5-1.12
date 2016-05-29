@@ -39,6 +39,16 @@ public class Crafting extends AbstractCrafting {
   }
 
   @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    super.enforceValidity();
+    if (grid != null) {
+      grid.enforceValidity();
+    } else if (shapeless != null) {
+      shapeless.enforceValidity();
+    }
+  }
+
+  @Override
   public void register() {
     if (valid && active) {
       if (grid != null) {

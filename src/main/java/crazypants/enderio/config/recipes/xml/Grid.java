@@ -67,6 +67,13 @@ public class Grid implements RecipeConfigElement {
   }
 
   @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    for (OptionalItem item : items) {
+      item.enforceValidity();
+    }
+  }
+
+  @Override
   public boolean isValid() {
     return valid;
   }

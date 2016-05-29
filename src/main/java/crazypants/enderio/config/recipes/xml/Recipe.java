@@ -27,41 +27,51 @@ public class Recipe extends AbstractConditional {
     }
     try {
       super.readResolve();
-      int validSubs = 0;
-      int activeSubs = 0;
-      int activatableSubs = 0;
-      if (craftings != null) {
-        for (AbstractCrafting crafting : craftings) {
-          if (crafting.isValid()) {
-            validSubs++;
-          }
-          if (crafting.isActive()) {
-            activeSubs++;
-          }
-          if (crafting.isValid() && crafting.isActive()) {
-            activatableSubs++;
-          }
-        }
-      }
-      valid = validSubs > 0;
-
-      if (active) {
-        if (craftings == null || craftings.isEmpty()) {
-          throw new InvalidRecipeConfigException("No <crafting>s or <smelting>s");
-        }
-        if (activatableSubs > 1) {
-          throw new InvalidRecipeConfigException("Multiple active <crafting>s and/or <smelting>s");
-        }
-        if (required && !valid) {
-          throw new InvalidRecipeConfigException("No valid <crafting>s or <smelting>s");
-        }
-
-        active = activeSubs > 0;
+      if (craftings == null || craftings.isEmpty()) {
+        throw new InvalidRecipeConfigException("No <crafting>s or <smelting>s");
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
     }
     return this;
+  }
+
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    if (disabled || !active) {
+      return;
+    }
+    try {
+      int count = 0;
+      for (AbstractCrafting crafting : craftings) {
+        if (required) {
+          if (crafting.isActive()) {
+            crafting.enforceValidity();
+            if (crafting.isValid()) {
+              count++;
+            }
+          }
+        } else {
+          if (crafting.isActive() && crafting.isValid()) {
+            count++;
+          }
+        }
+      }
+      if (count > 1) {
+        throw new InvalidRecipeConfigException("Multiple active <crafting>s and/or <smelting>s");
+      } else if (count < 1) {
+        if (required) {
+          throw new InvalidRecipeConfigException("No valid <crafting>s or <smelting>s");
+        } else {
+          Log.debug("No valid <crafting>s or <smelting>s in optional recipe '" + name + "'");
+          valid = false;
+        }
+      } else {
+        valid = true;
+      }
+    } catch (InvalidRecipeConfigException e) {
+      throw new InvalidRecipeConfigException(e, "in recipe '" + getName() + "'");
+    }
   }
 
   @Override

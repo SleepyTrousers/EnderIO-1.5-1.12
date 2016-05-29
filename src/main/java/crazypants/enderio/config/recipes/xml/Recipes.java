@@ -104,4 +104,13 @@ public class Recipes implements RecipeRoot {
     return false;
   }
 
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    if (recipes != null) {
+      for (Recipe recipe : recipes) {
+        recipe.enforceValidity();
+      }
+    }
+  }
+
 }

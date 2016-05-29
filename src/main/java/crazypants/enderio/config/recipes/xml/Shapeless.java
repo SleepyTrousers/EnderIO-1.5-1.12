@@ -37,6 +37,13 @@ public class Shapeless implements RecipeConfigElement {
   }
 
   @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    for (Item item : items) {
+      item.enforceValidity();
+    }
+  }
+
+  @Override
   public boolean isValid() {
     return valid;
   }

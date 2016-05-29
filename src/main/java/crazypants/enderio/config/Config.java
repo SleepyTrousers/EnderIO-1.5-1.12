@@ -87,6 +87,8 @@ public final class Config {
 
   public static final float EXPLOSION_RESISTANT = 2000f * 3.0f / 5.0f; // obsidian
 
+  public static boolean registerRecipes = true;
+
   public static boolean jeiUseShortenedPainterRecipes = true;
 
   public static boolean reinforcedObsidianEnabled = true;
@@ -579,6 +581,11 @@ public final class Config {
     recipeLevel = config.get(sectionRecipe.name, "recipeLevel", recipeLevel,
         "How expensive should the crafting recipes be? -1=don't register any crafting/smelting recipes, 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(
         recipeLevel);
+
+    registerRecipes = config
+        .get(sectionRecipe.name, "registerRecipes", registerRecipes,
+            "If set to false: No crafting recipes (crafting table and furnace) will be registered. You need to use Creative mode or something like minetweaker to add them yourself.")
+        .getBoolean(registerRecipes);
 
     addPeacefulRecipes = config.get(sectionRecipe.name, "addPeacefulRecipes", addPeacefulRecipes, "When enabled peaceful recipes are added for soulbinder based crafting components.")
         .getBoolean(addPeacefulRecipes);

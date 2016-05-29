@@ -1,5 +1,8 @@
 package crazypants.enderio.config.recipes.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -8,22 +11,34 @@ import crazypants.enderio.config.recipes.StaxFactory;
 
 public abstract class AbstractCrafting extends AbstractConditional {
 
-  private Output output;
+  private List<Output> outputs;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
-    if (output == null) {
+    if (outputs == null || outputs.isEmpty()) {
       throw new InvalidRecipeConfigException("Missing <output>");
     }
 
-    valid = output.isValid();
+    int count = 0;
+    for (Output output : outputs) {
+      if (output.isValid() && output.isActive()) {
+        count++;
+      }
+    }
+
+    valid = count == 1;
 
     return this;
   }
 
   public Output getOutput() {
-    return output;
+    for (Output output : outputs) {
+      if (output.isValid() && output.isActive()) {
+        return output;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -34,20 +49,23 @@ public abstract class AbstractCrafting extends AbstractConditional {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("output".equals(name)) {
-      Output outputIn = factory.read(new Output(), startElement);
-      if (outputIn.isActive()) {
-        if (output == null) {
-          output = outputIn;
-          return true;
-        } else {
-          throw new InvalidRecipeConfigException("Duplicate <output>");
-        }
-      } else {
-        return true;
+      if (outputs == null) {
+        outputs = new ArrayList<Output>();
       }
+      outputs.add(factory.read(new Output(), startElement));
+      return true;
     }
 
     return super.setElement(factory, name, startElement);
+  }
+
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    for (Output output : outputs) {
+      if (output.isActive()) {
+        output.enforceValidity();
+      }
+    }
   }
 
 }

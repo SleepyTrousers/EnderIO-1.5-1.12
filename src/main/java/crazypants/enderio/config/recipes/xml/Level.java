@@ -53,4 +53,8 @@ public class Level implements RecipeConfigElement {
     return false;
   }
 
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+  }
+
 }

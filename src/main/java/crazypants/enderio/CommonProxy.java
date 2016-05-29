@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
+import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeFactory;
 import crazypants.enderio.config.recipes.xml.Recipes;
@@ -53,20 +54,41 @@ public class CommonProxy {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
 
-    for (String filename : RECIPE_FILES) {
-      try {
-        Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
-        if (recipes.isValid()) {
-          recipes.register();
-        } else {
-          throw new InvalidRecipeConfigException("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
+    if (Config.registerRecipes) {
+      for (String filename : RECIPE_FILES) {
+        try {
+          Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
+          if (recipes.isValid()) {
+            recipes.enforceValidity();
+            recipes.register();
+          } else {
+            throw new InvalidRecipeConfigException("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
+          }
+        } catch (InvalidRecipeConfigException e) {
+          Log.error("Failed to read recipe config file " + filename + "_core.xml or " + filename + "_user.xml\n\n\n\n"
+              + "\n======================================================================="
+              + "\n== FATAL ERROR ========================================================"
+              + "\n======================================================================="
+              + "\n== Cannot register recipes as configured. This means that either     =="
+              + "\n== your custom config file has an error or another mod does bad      =="
+              + "\n== things to vanilla items or the Ore Dictionary.                    =="
+              + "\n=======================================================================" //
+              + "\n== Bad file: " + filename + "_core.xml or " + filename + "_user.xml"
+              + "\n=======================================================================" //
+              + "\n== Error: " + e.getMessage() //
+              + "\n======================================================================="
+              + "\n======================================================================="
+              + "\n== Note: To start the game anyway, you can disable recipe loading in =="
+              + "\n======== the Ender IO config file. However, then all of Ender IO's   =="
+              + "\n======== crafting recipes will be missing.                           =="
+              + "\n=======================================================================" //
+              + "\n\n\n");
+          throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+        } catch (IOException e) {
+          throw new RuntimeException("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
+        } catch (XMLStreamException e) {
+          throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
         }
-      } catch (InvalidRecipeConfigException e) {
-        throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
-      } catch (IOException e) {
-        throw new RuntimeException("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
-      } catch (XMLStreamException e) {
-        throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
       }
     }
   }

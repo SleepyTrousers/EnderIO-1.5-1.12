@@ -48,4 +48,8 @@ public class Alias extends AbstractConditional {
     return super.setElement(factory, name, startElement);
   }
 
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+  }
+
 }

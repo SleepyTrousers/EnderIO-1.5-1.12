@@ -197,14 +197,14 @@
   </recipe>
 
   <recipe name="Iron Dust, Smelting" required="true">
-    <smelting exp="0">
+    <smelting>
       <input name="enderio:itemPowderIngot:1"/>
       <output name="minecraft:iron_ingot"/>
     </smelting>
   </recipe>
 
   <recipe name="Gold Dust, Smelting" required="true">
-    <smelting exp="0">
+    <smelting>
       <input name="enderio:itemPowderIngot:2"/>
       <output name="minecraft:gold_ingot"/>
     </smelting>
@@ -423,15 +423,15 @@
   </recipe>
 
   <recipe name="Copper" required="false">
-    <smelting exp="0">
-      <input name="dustCopper"/>
+    <smelting>
+      <input name="enderio:itemPowderIngot:3"/>
       <output name="ingotCopper"/>
     </smelting>
   </recipe>
 
   <recipe name="Tin" required="false">
-    <smelting exp="0">
-      <input name="dustTin"/>
+    <smelting>
+      <input name="enderio:itemPowderIngot:4"/>
       <output name="ingotTin"/>
     </smelting>
   </recipe>

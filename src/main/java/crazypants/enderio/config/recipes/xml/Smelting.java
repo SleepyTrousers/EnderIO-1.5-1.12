@@ -5,11 +5,12 @@ import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.StaxFactory;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Smelting extends AbstractCrafting {
 
-  private float exp;
+  private Float exp;
 
   private Item input;
 
@@ -17,11 +18,17 @@ public class Smelting extends AbstractCrafting {
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (exp < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'exp'");
-      }
-      if (exp > 1) {
-        throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
+      if (exp == null) {
+        if (valid) {
+          exp = FurnaceRecipes.instance().getSmeltingExperience(getOutput().getItemStack());
+        }
+      } else {
+        if (exp < 0) {
+          throw new InvalidRecipeConfigException("Invalid negative value for 'exp'");
+        }
+        if (exp > 1) {
+          throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
+        }
       }
       if (input == null) {
         throw new InvalidRecipeConfigException("Missing <input>");
@@ -33,6 +40,12 @@ public class Smelting extends AbstractCrafting {
       throw new InvalidRecipeConfigException(e, "in <crafting>");
     }
     return this;
+  }
+
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    super.enforceValidity();
+    input.enforceValidity();
   }
 
   @Override

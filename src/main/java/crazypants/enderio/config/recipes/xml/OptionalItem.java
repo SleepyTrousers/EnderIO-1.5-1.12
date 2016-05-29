@@ -38,6 +38,13 @@ public class OptionalItem implements RecipeConfigElement {
   }
 
   @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    if (!isValid()) {
+      throw new InvalidRecipeConfigException("Could not find a crafting ingredient for '" + name + "' (stack=" + stack + ", object=" + recipeObject + ")");
+    }
+  }
+
+  @Override
   public boolean isValid() {
     return nullItem || (stack != null && recipeObject != null);
   }

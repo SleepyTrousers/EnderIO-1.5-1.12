@@ -336,8 +336,15 @@
                           </complexType>
                         </element>
                       </sequence>
-                      <attribute use="required" name="exp">
-                        <simpleType>
+                      <attribute use="optional" name="exp">
+                                                <annotation>
+                                                  <documentation>The chance to get 1 EXP from the smelting one output item. Note that this is always for one item, regardless of the recipe size. The number must be between 0.0 (for no EXP) and 1.0 for a 100% chance.
+
+If this attribute is missing it's value will be taken from already existing smelting recipes that produce this item (really recommended for stuff that already has vanilla smelting recipes). If there's no existing smelting, it will be 0.
+
+Please note that items have the possibility to override this value.</documentation>
+                                                </annotation>
+                                                <simpleType>
                           <restriction base="float">
                             <minInclusive value="0"></minInclusive>
                             <maxInclusive value="1"></maxInclusive>

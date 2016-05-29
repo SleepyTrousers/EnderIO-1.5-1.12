@@ -41,18 +41,18 @@ public class Output extends AbstractConditional {
         tag = null;
       } else {
         try {
-          final String nbt2 = nbt;
-          if (nbt2 != null) {
-            tag = JsonToNBT.getTagFromJson(nbt2);
-          } else {
-            // TODO handle null value
-          }
+          tag = JsonToNBT.getTagFromJson(nbt);
         } catch (NBTException e) {
           throw new InvalidRecipeConfigException(nbt + " is not valid NBT json.");
         }
       }
     }
     return this;
+  }
+
+  @Override
+  public void enforceValidity() throws InvalidRecipeConfigException {
+    item.enforceValidity();
   }
 
   @Override
