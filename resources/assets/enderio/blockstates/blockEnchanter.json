@@ -3,7 +3,7 @@
     "defaults": {
         "model": "minecraft:cube_all",
         "textures": {
-            "all": "enderio:blocks/blockReinforcedObsidian"
+            "all": "enderio:blocks/machineBottom"
         },
         "transform": "forge:default-block"
     },

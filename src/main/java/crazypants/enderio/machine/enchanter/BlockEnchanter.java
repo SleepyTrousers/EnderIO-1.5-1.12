@@ -55,7 +55,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
 
   @Override
   public EnumBlockRenderType getRenderType(IBlockState bs) { 
-    return EnumBlockRenderType.MODEL;
+    return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
   }
 
   protected EnumFacing getFacingForHeading(int heading) {
@@ -107,7 +107,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
 
   @Override
   public int quantityDropped(Random p_149745_1_) {
-    return 0;
+    return 1;
   }
 
   @Override
