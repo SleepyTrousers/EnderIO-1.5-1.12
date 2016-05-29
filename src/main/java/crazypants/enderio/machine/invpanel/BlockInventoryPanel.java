@@ -92,29 +92,17 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   public boolean isFullCube(IBlockState bs) {
     return false;
   }
-  
-  @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-   return getBoundingBox(worldIn, pos);
-  }
-  
-  @Override
-  public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos) {  
-    return getBoundingBox(bs, worldIn, pos);
-  }  
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-    return getBoundingBox(source, pos);
-  }
-
-  public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos) {
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {   
     EnumFacing facing = getFacing(world, pos);
-    return getBoundingBox(pos, facing);
+    return getBoundingBox(facing);
   }
 
-  public AxisAlignedBB getBoundingBox(BlockPos pos, EnumFacing facing) {
-    int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+  public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+    int x=0;
+    int y=0;
+    int z=0;
     switch (facing) {
     case DOWN:
       return new AxisAlignedBB(x, y + (1 - BLOCK_SIZE), z, x + 1, y + 1, z + 1);
