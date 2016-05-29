@@ -3,7 +3,6 @@ package crazypants.enderio.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.enderio.core.common.util.OreDictionaryHelper.DUST_ENDERPEARL;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_COPPER;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_ENDERIUM;
 import static com.enderio.core.common.util.OreDictionaryHelper.INGOT_TIN;
@@ -18,7 +17,7 @@ public enum PowderIngot {
   POWDER_GOLD("powderGold", null, "dustGold"), //
   POWDER_COPPER("powderCopper", INGOT_COPPER, "dustCopper"), //
   POWDER_TIN("powderTin", INGOT_TIN, "dustTin"), //
-  POWDER_ENDER("powderEnder", DUST_ENDERPEARL, "nuggetEnderpearl", true), //
+  POWDER_ENDER("powderEnder", "nuggetEnderpearl", "nuggetEnderpearl", true), //
   INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM, "ingotEnderiumBase"), //
   POWDER_OBSIDIAN("powderObsidian", null, "dustObsidian"), //
   FLOUR("dustWheat", null);
