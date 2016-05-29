@@ -182,7 +182,6 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private void notifyConduitNeighbours(IRedstoneConduit con, Signal signal) {
     if (con.getBundle() == null) {
-      System.out.println("RedstoneConduitNetwork.notifyNeigborsOfSignalUpdate: NULL BUNDLE!!!!");
       return;
     }
     TileEntity te = con.getBundle().getEntity();

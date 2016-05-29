@@ -8,6 +8,7 @@ import java.util.Set;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.ConduitUtil;
+import jline.internal.Log;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -70,7 +71,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
         if(doFlow() && printFlowTiming) {
           long took = System.nanoTime() - start;
           double secs = took / 1000000000.0;
-          System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
+          Log.info("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
         }
       }
     }

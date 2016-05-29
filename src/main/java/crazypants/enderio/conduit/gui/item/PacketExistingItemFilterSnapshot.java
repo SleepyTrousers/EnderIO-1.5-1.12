@@ -71,7 +71,6 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
     switch (message.opcode) {
       case CLEAR:
         filter.setSnapshot((List<ItemStack>)null);
-        System.out.println("PacketExistingItemFilterSnapshot.onMessage: Cleared snapshot");
         break;
 
       case SET: {

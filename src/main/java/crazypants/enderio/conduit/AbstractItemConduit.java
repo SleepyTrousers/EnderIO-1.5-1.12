@@ -88,15 +88,13 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
       if(world.getBlockState(place).getBlock() == EnderIO.blockConduitBundle) {
 
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
-        if(bundle == null) {
-          System.out.println("AbstractItemConduit.onItemUse: Bundle null");
+        if(bundle == null) {          
           return EnumActionResult.PASS;
         }
         if(!bundle.hasType(getBaseConduitType())) {
           if(!world.isRemote) {
             IConduit con = createConduit(stack, player);
             if(con == null) {
-              System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
               return EnumActionResult.PASS;
             }
             bundle.addConduit(con);
@@ -134,8 +132,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
     if (!ItemUtil.areStacksEqual(existingConduitAsItemStack, stack)) {
       if (!world.isRemote) {
         IConduit newConduit = createConduit(stack, player);
-        if (newConduit == null) {
-          System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
+        if (newConduit == null) {          
           return EnumActionResult.PASS;
         }
         bundle.removeConduit(existingConduit);

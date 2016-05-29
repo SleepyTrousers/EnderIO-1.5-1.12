@@ -193,7 +193,6 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
 
     if (slot < 0 || slot >= inv.length) {
-      System.out.println("TileVacumChest.setInventorySlotContents: " + slot);
       return;
     }
 

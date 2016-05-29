@@ -67,7 +67,6 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
-    System.out.println("BlockEnderIO.openGui: ");
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;

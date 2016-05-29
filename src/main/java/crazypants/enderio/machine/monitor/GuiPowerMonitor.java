@@ -408,11 +408,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     ItemStack capBankStack = new ItemStack(EnderIO.blockCapBank, 1, 3);
     if (statData.maxPowerInCapBanks > 0) {
       PowerHandlerUtil.setStoredEnergyForItem(capBankStack,
-              (int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));
-      System.out
-          .println((int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));
-      System.out.println("1:" + (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack)));
-      System.out.println("2:" + (((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));
+              (int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));      
     }
 
     itemRender.renderItemIntoGUI(capBankStack, x, y + LINE_Y_OFFSET);
