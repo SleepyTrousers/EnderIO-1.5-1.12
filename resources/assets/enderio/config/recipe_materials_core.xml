@@ -231,41 +231,15 @@
     </crafting>
   </recipe>
 
-  <alias name="CHASIS_METAL" item="ingotSteel">
-    <dependency item="ingotSteel" reverse="false"/>
-  </alias>
-  <alias name="CHASIS_METAL" item="ingotIron">
-    <dependency item="ingotSteel" reverse="true"/>
-  </alias>
-
   <recipe name="Chassis" required="true">
-    <crafting>
-      <level maxlevel="1"/>
+    <crafting>      
       <grid>
         <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
         <item name="ingotIron"/><item name="CAPACITOR1"/><item name="ingotIron"/>
         <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
       </grid>
       <output name="CHASSIS"/>
-    </crafting>
-    <crafting>
-      <level minlevel="2" maxlevel="2"/>
-      <grid>
-        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
-        <item name="CHASIS_METAL"/><item name="CAPACITOR1"/><item name="CHASIS_METAL"/>
-        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
-      </grid>
-      <output name="CHASSIS"/>
-    </crafting>
-    <crafting>
-      <level minlevel="3"/>
-      <grid>
-        <item name="barsIron"/><item name="CHASIS_METAL"/><item name="barsIron"/>
-        <item name="CHASIS_METAL"/><item name="CAPACITOR1"/><item name="CHASIS_METAL"/>
-        <item name="barsIron"/><item name="CHASIS_METAL"/><item name="barsIron"/>
-      </grid>
-      <output name="CHASSIS"/>
-    </crafting>
+    </crafting>    
   </recipe>
 
   <recipe name="Gear" required="true">
