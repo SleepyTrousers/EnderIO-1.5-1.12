@@ -93,9 +93,9 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
-        <item name="oredict:glass" /><item name="FUSED_QUARTZ" /><item name="oredict:glass" />
-        <item name="oredict:glass" /><item name="item:minecraft:cauldron" /><item name="oredict:glass" />
-        <item name="oredict:glass" /><item name="FUSED_QUARTZ" /><item name="oredict:glass" />
+        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
+        <item name="blockGlass" /><item name="item:minecraft:cauldron" /><item name="blockGlass" />
+        <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
       </grid>
       <output name="enderio:blockReservoir" amount="2" />
     </crafting>
@@ -519,7 +519,7 @@
   <recipe name="Light, basic" required="true">
     <crafting>
       <grid size="3x2">
-        <item name="oredict:glass" /><item name="oredict:glass" /><item name="oredict:glass" />
+        <item name="blockGlass" /><item name="blockGlass" /><item name="blockGlass" />
         <item name="ingotIron" /><item name="oredict:glowstone" /><item name="ingotIron" />
       </grid>
       <output name="LIGHT_BASIC" />
@@ -550,7 +550,7 @@
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
-        <item name="oredict:glass" /><item name="oredict:glass" /><item name="oredict:glass" />
+        <item name="blockGlass" /><item name="blockGlass" /><item name="blockGlass" />
         <item name="SILICON" /><item name="dustGlowstone" /><item name="SILICON" />
         <item name="SILICON" /><item name="CAPACITOR1" /><item name="SILICON" />
       </grid>

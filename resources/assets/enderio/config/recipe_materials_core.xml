@@ -1,6 +1,466 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
+  <recipe name="Compatibility: Glass 2 Glass" required="false">
+    <crafting>
+      <shapeless>
+        <item name="FUSED_GLASS"/>
+      </shapeless>
+      <output name="minecraft:glass"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Compatibility: End Crystal" required="false">
+    <crafting>
+      <grid>
+        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
+        <item name="blockGlassColorless"/><item name="pearlEnderEye"/><item name="blockGlassColorless"/>
+        <item name="blockGlassColorless"/><item name="itemGhastTear"/><item name="blockGlassColorless"/>
+      </grid>
+      <output name="minecraft:end_crystal"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Compatibility: Beacon" required="false">
+    <crafting>
+      <grid>
+        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
+        <item name="blockGlassColorless"/><item name="netherStar"/><item name="blockGlassColorless"/>
+        <item name="oredict:obsidian"/><item name="oredict:obsidian"/><item name="oredict:obsidian"/>
+      </grid>
+      <output name="minecraft:beacon"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Compatibility: Bottle" required="false">
+    <crafting>
+      <grid size="3x2">
+        <item name="blockGlassColorless"/><item /><item name="blockGlassColorless"/>
+        <item /><item name="blockGlassColorless"/><item />
+      </grid>
+      <output name="minecraft:glass_bottle" amount="3"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Compatibility: Glass Pane" required="false">
+    <crafting>
+      <grid size="3x2">
+        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
+        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
+      </grid>
+      <output name="minecraft:glass_pane" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Compatibility: Daylight Sensor" required="false">
+    <crafting>
+      <grid>
+        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
+        <item name="gemQuartz"/><item name="gemQuartz"/><item name="gemQuartz"/>
+        <item name="slabWood"/><item name="slabWood"/><item name="slabWood"/>
+      </grid>
+      <output name="minecraft:daylight_detector"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Binder Composite" required="true">
+    <crafting>
+      <level maxlevel="0"/>
+      <grid size="3x3">
+        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
+        <item name="oredict:sand" /><item name="oredict:itemClay" /><item name="oredict:sand" />
+        <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
+      </grid>
+      <output name="BINDER_COMPOSITE" />
+    </crafting>
+    <crafting>
+      <level minlevel="1" maxlevel="2"/>
+      <grid size="3x3">
+        <item name="oredict:gravel" /><item name="oredict:itemClay" /><item name="oredict:gravel" />
+        <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
+        <item name="oredict:gravel" /><item name="oredict:itemClay" /><item name="oredict:gravel" />
+      </grid>
+      <output name="BINDER_COMPOSITE" />
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid size="3x3">
+        <item name="oredict:gravel" /><item name="minecraft:clay" /><item name="oredict:gravel" />
+        <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
+        <item name="oredict:gravel" /><item name="minecraft:clay" /><item name="oredict:gravel" />
+      </grid>
+      <output name="BINDER_COMPOSITE" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Binder" required="true">
+    <smelting exp="0">
+      <input name="BINDER_COMPOSITE"/>
+      <output name="CONDUIT_BINDER" amount="4">
+        <level maxlevel="1"/>
+      </output>
+      <output name="CONDUIT_BINDER" amount="2">
+        <level minlevel="2"/>
+      </output>
+    </smelting>
+  </recipe>
+
+  <recipe name="Pulsating Iron, Nuggets" required="true">
+    <crafting>
+      <shapeless>
+        <item name="PULSATING_IRON"/>
+      </shapeless>
+      <output name="PULSATING_IRON_NUGGET" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Pulsating Iron, De-Nuggeting" required="true">
+    <crafting>
+      <shapeless>
+        <item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/>
+        <item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/>
+        <item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/>
+      </shapeless>
+      <output name="PULSATING_IRON"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy, Nuggets" required="true">
+    <crafting>
+      <shapeless>
+        <item name="VIBRANT_ALLOY"/>
+      </shapeless>
+      <output name="VIBRANT_NUGGET" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Vibrant Alloy, De-Nuggeting" required="true">
+    <crafting>
+      <shapeless>
+        <item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/>
+        <item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/>
+        <item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/>
+      </shapeless>
+      <output name="VIBRANT_ALLOY"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Pulsating Crystal" required="true">
+    <crafting>
+      <grid>
+        <item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/>
+        <item name="PULSATING_IRON_NUGGET"/><item name="gemDiamond"/><item name="PULSATING_IRON_NUGGET"/>
+        <item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/><item name="PULSATING_IRON_NUGGET"/>
+      </grid>
+      <output name="PULSATING_CRYSTAL"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Vibrant Crystal" required="true">
+    <crafting>
+      <grid>
+        <item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/>
+        <item name="VIBRANT_NUGGET"/><item name="gemEmerald"/><item name="VIBRANT_NUGGET"/>
+        <item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/><item name="VIBRANT_NUGGET"/>
+      </grid>
+      <output name="VIBRANT_CRYSTAL"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Grinding Ball" required="true">
+    <crafting>
+      <level maxlevel="1"/>
+      <grid size="2x2">
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="DARK_GRINDING_BALL" amount="5"/>
+    </crafting>
+    <crafting>
+      <level minlevel="2" maxlevel="2"/>
+      <grid>
+        <item/><item name="DARK_STEEL"/><item/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item/><item name="DARK_STEEL"/><item/>
+      </grid>
+      <output name="DARK_GRINDING_BALL" amount="5"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="DARK_GRINDING_BALL" amount="5"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Iron Dust, Smelting" required="true">
+    <smelting exp="0">
+      <input name="enderio:itemPowderIngot:1"/>
+      <output name="ingotIron"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Gold Dust, Smelting" required="true">
+    <smelting exp="0">
+      <input name="enderio:itemPowderIngot:2"/>
+      <output name="ingotGold"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Ender Pearl Nuggets" required="true">
+    <crafting>
+      <shapeless>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
+      </shapeless>
+      <output name="oredict:enderpearl"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Iron Bars" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="enderio:blockDarkIronBars" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <alias name="CHASIS_METAL" item="ingotSteel">
+    <dependency item="ingotSteel" reverse="false"/>
+  </alias>
+  <alias name="CHASIS_METAL" item="ingotIron">
+    <dependency item="ingotSteel" reverse="true"/>
+  </alias>
+
+  <recipe name="Chassis" required="true">
+    <crafting>
+      <level maxlevel="1"/>
+      <grid>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+        <item name="ingotIron"/><item name="CAPACITOR1"/><item name="ingotIron"/>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+      </grid>
+      <output name="CHASSIS"/>
+    </crafting>
+    <crafting>
+      <level minlevel="2" maxlevel="2"/>
+      <grid>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+        <item name="CHASIS_METAL"/><item name="CAPACITOR1"/><item name="CHASIS_METAL"/>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+      </grid>
+      <output name="CHASSIS"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="barsIron"/><item name="CHASIS_METAL"/><item name="barsIron"/>
+        <item name="CHASIS_METAL"/><item name="CAPACITOR1"/><item name="CHASIS_METAL"/>
+        <item name="barsIron"/><item name="CHASIS_METAL"/><item name="barsIron"/>
+      </grid>
+      <output name="CHASSIS"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Gear" required="true">
+    <crafting>
+      <level maxlevel="2"/>
+      <grid>
+        <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
+        <item name="oredict:cobblestone"/><item /><item name="oredict:cobblestone"/>
+        <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
+      </grid>
+      <output name="GEAR"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
+        <item name="oredict:cobblestone"/><item name="CHASIS_METAL"/><item name="oredict:cobblestone"/>
+        <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
+      </grid>
+      <output name="GEAR"/>
+    </crafting>
+  </recipe>
+
+  <alias name="CAPACITOR_METAL" item="ingotCopper">
+    <dependency item="ingotCopper" reverse="false"/>
+  </alias>
+  <alias name="CAPACITOR_METAL" item="nuggetGold">
+    <dependency item="ingotCopper" reverse="true"/>
+  </alias>
+
+  <recipe name="Capacitor 1" required="true">
+    <crafting>
+      <level maxlevel="1"/>
+      <grid>
+        <item /><item name="dustRedstone"/><item name="nuggetGold"/>
+        <item name="dustRedstone"/><item name="ingotIron"/><item name="dustRedstone"/>
+        <item name="nuggetGold"/><item name="dustRedstone"/><item />
+      </grid>
+      <output name="CAPACITOR1"/>
+    </crafting>
+    <crafting>
+      <level minlevel="1" maxlevel="2"/>
+      <grid>
+        <item /><item name="dustRedstone"/><item name="nuggetGold"/>
+        <item name="dustRedstone"/><item name="CAPACITOR_METAL"/><item name="dustRedstone"/>
+        <item name="nuggetGold"/><item name="dustRedstone"/><item />
+      </grid>
+      <output name="CAPACITOR1"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item /><item name="dustRedstone"/><item name="ingotGold"/>
+        <item name="dustRedstone"/><item name="CAPACITOR_METAL"/><item name="dustRedstone"/>
+        <item name="ingotGold"/><item name="dustRedstone"/><item />
+      </grid>
+      <output name="CAPACITOR1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor 2" required="true">
+    <crafting>
+      <level maxlevel="2"/>
+      <grid>
+        <item /><item name="ENERGETIC_ALLOY"/><item />
+        <item name="CAPACITOR1"/><item name="dustCoal"/><item name="CAPACITOR1"/>
+        <item /><item name="ENERGETIC_ALLOY"/><item />
+      </grid>
+      <output name="CAPACITOR2"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/>
+        <item name="CAPACITOR1"/><item name="dustCoal"/><item name="CAPACITOR1"/>
+        <item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/><item name="ENERGETIC_ALLOY"/>
+      </grid>
+      <output name="CAPACITOR2"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor 3" required="true">
+    <crafting>
+      <level maxlevel="1"/>
+      <grid>
+        <item /><item name="VIBRANT_ALLOY"/><item />
+        <item name="CAPACITOR2"/><item name="oredict:dustGlowstone"/><item name="CAPACITOR2"/>
+        <item /><item name="VIBRANT_ALLOY"/><item />
+      </grid>
+      <output name="CAPACITOR3"/>
+    </crafting>
+    <crafting>
+      <level minlevel="2" maxlevel="2"/>
+      <grid>
+        <item /><item name="VIBRANT_ALLOY"/><item />
+        <item name="CAPACITOR2"/><item name="oredict:glowstone"/><item name="CAPACITOR2"/>
+        <item /><item name="VIBRANT_ALLOY"/><item />
+      </grid>
+      <output name="CAPACITOR3"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/>
+        <item name="CAPACITOR2"/><item name="oredict:glowstone"/><item name="CAPACITOR2"/>
+        <item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY"/>
+      </grid>
+      <output name="CAPACITOR3"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Weather Crystal" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="PULSATING_CRYSTAL"/><item />
+        <item name="VIBRANT_CRYSTAL"/><item name="ENDER_CRYSTAL"/><item name="VIBRANT_CRYSTAL"/>
+        <item /><item name="PULSATING_CRYSTAL"/><item />
+      </grid>
+      <output name="WEATHER_CRYSTAL"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Reinforced Obsidian" required="true">
+    <config name="reinforcedObsidianEnabled" section="Item Enabling" value="true"/>
+    <crafting>
+      <level maxlevel="2"/>
+      <grid>
+        <item name="DARK_STEEL"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL"/>
+        <item name="enderio:blockDarkIronBars"/><item name="oredict:obsidian"/><item name="enderio:blockDarkIronBars"/>
+        <item name="DARK_STEEL"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="enderio:blockReinforcedObsidian"/>
+    </crafting>
+    <crafting>
+      <level minlevel="3"/>
+      <grid>
+        <item name="DARK_STEEL_BLOCK"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL_BLOCK"/>
+        <item name="enderio:blockDarkIronBars"/><item name="oredict:obsidian"/><item name="enderio:blockDarkIronBars"/>
+        <item name="DARK_STEEL_BLOCK"/><item name="enderio:blockDarkIronBars"/><item name="DARK_STEEL_BLOCK"/>
+      </grid>
+      <output name="enderio:blockReinforcedObsidian"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Anvil" required="true">
+    <crafting>
+      <grid>
+        <item name="DARK_STEEL_BLOCK"/><item name="DARK_STEEL_BLOCK"/><item name="DARK_STEEL_BLOCK"/>
+        <item/><item name="DARK_STEEL"/><item/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="enderio:blockDarkSteelAnvil"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Ladder" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="enderio:blockDarkIronBars"/>
+        <item name="enderio:blockDarkIronBars"/>
+        <item name="enderio:blockDarkIronBars"/>
+      </grid>
+      <output name="enderio:blockDarkSteelLadder" amount="12"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Bread" required="true">
+    <smelting exp="0.35">
+      <input name="dustWheat"/>
+      <output name="minecraft:bread"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Enderios" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:bowl"/><item name="minecraft:milk_bucket"/><item name="cropWheat"/><item name="nuggetEnderpearl"/>
+      </shapeless>
+      <output name="enderio:itemEnderFood:0"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Copper" required="false">
+    <smelting exp="0">
+      <input name="dustCopper"/>
+      <output name="ingotCopper"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Tin" required="false">
+    <smelting exp="0">
+      <input name="dustTin"/>
+      <output name="ingotTin"/>
+    </smelting>
+  </recipe>
 
 
 </enderio:recipes>

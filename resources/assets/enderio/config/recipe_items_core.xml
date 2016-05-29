@@ -213,17 +213,6 @@
     </crafting>
   </recipe>
 
-  <recipe name="The Other Ender" required="true">
-    <crafting>
-      <grid size="1x3">
-        <item name="DARK_STEEL" />
-        <item name="DARK_STEEL" />
-        <item name="woodStick" />
-      </grid>
-      <output name="enderio:darkSteel_sword" />
-    </crafting>
-  </recipe>
-
   <recipe name="Dark Pickaxe" required="true">
     <crafting>
       <grid size="3x3">
@@ -235,34 +224,12 @@
     </crafting>
   </recipe>
   
-  <recipe name="Not Quite Bright Pickaxe" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
-        <item /><item name="woodStick" /><item />
-        <item /><item name="woodStick" /><item />
-      </grid>
-      <output name="enderio:darkSteel_pickaxe" />
-    </crafting>
-  </recipe>
-  
   <recipe name="Dark Axe" required="true">
     <crafting>
       <grid size="2x3">
         <item name="DARK_STEEL" /><item name="DARK_STEEL" />
         <item name="DARK_STEEL" /><item name="stickWood" />
         <item /><item name="stickWood" />
-      </grid>
-      <output name="enderio:darkSteel_axe" />
-    </crafting>
-  </recipe>
-  
-  <recipe name="Dark Woodcutter" required="true">
-    <crafting>
-      <grid size="2x3">
-        <item name="DARK_STEEL" /><item name="DARK_STEEL" />
-        <item name="DARK_STEEL" /><item name="woodStick" />
-        <item /><item name="woodStick" />
       </grid>
       <output name="enderio:darkSteel_axe" />
     </crafting>
@@ -720,16 +687,6 @@
     </crafting>
   </recipe>
 
-  <recipe name="Downgrade, Speed" required="true">
-    <crafting>
-      <grid>
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
-        <item name="ELECTRICAL_STEEL" /><item name="slimeball" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="woodStick" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:itemExtractSpeedUpgrade:1" />
-    </crafting>
-  </recipe>
 
 
 

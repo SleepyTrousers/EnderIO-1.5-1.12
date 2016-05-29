@@ -43,9 +43,11 @@ public class Crafting extends AbstractCrafting {
     if (valid && active) {
       if (grid != null) {
         Log.debug("Registering ShapedOreRecipe: "+getOutput().getItemStack()+": "+Arrays.toString(grid.getElements()));
+        System.out.println("Registering ShapedOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
         GameRegistry.addRecipe(new ShapedOreRecipe(getOutput().getItemStack(), grid.getElements()));
       } else {
-        Log.debug("Registering Shaped ShapelessOreRecipe: "+getOutput().getItemStack()+": "+Arrays.toString(shapeless.getElements()));
+        Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
+        System.out.println("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
         GameRegistry.addRecipe(new ShapelessOreRecipe(getOutput().getItemStack(), shapeless.getElements()));
       }
     } else {

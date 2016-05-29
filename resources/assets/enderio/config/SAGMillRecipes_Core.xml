@@ -234,7 +234,7 @@
         <itemStack modID="minecraft" itemName="ender_pearl" />
       </input>
       <output>
-        <itemStack oreDictionary="dustEnderPearl" number="1" />
+        <itemStack oreDictionary="nuggetEnderpearl" number="9" />
       </output>
     </recipe>
   </recipeGroup>

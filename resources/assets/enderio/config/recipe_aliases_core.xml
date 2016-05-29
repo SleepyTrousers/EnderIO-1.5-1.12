@@ -30,6 +30,15 @@
   <alias name="DARK_STEEL" item="ingotDarkSteel" />
   <alias name="SOULARIUM" item="ingotSoularium" />
 
+  <alias name="ELECTRICAL_STEEL_BLOCK" item="blockElectricalSteel" />
+  <alias name="ENERGETIC_ALLOY_BLOCK" item="blockEnergeticAlloy" />
+  <alias name="VIBRANT_ALLOY_BLOCK" item="blockVibrantAlloy" />
+  <alias name="REDSTONE_ALLOY_BLOCK" item="blockRedstoneAlloy" />
+  <alias name="CONDUCTIVE_IRON_BLOCK" item="blockConductiveIron" />
+  <alias name="PULSATING_IRON_BLOCK" item="blockPulsatingIron" />
+  <alias name="DARK_STEEL_BLOCK" item="blockDarkSteel" />
+  <alias name="SOULARIUM_BLOCK" item="blockSoularium" />
+
   <alias name="SILICON" item="itemSilicon" />
   <alias name="CONDUIT_BINDER" item="itemConduitBinder" />
   <alias name="BINDER_COMPOSITE" item="itemBinderComposite" />

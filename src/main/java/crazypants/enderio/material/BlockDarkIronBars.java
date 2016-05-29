@@ -6,7 +6,6 @@ import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockDarkIronBars extends BlockPane {
   
@@ -29,7 +28,6 @@ public class BlockDarkIronBars extends BlockPane {
   protected void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemDarkIronBars(this, ModObject.blockDarkIronBars.getUnlocalisedName()));
-    OreDictionary.registerOre("barsIron", this);
   }
 
 }
