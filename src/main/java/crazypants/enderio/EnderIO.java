@@ -129,7 +129,6 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
-import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
 import net.minecraft.block.Block;
@@ -279,7 +278,8 @@ public class EnderIO {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
-    EnderIOCrashCallable.create();
+    //TODO: 1.9.4 This causes a crash on forge version 1.9.4-12.17.0.1925-27 I have opened issue on #2924 on forge github
+//    EnderIOCrashCallable.create();
 
     Config.load(event);
 
