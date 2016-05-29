@@ -7,8 +7,8 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitUtil;
-import jline.internal.Log;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;

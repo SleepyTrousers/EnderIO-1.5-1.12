@@ -31,6 +31,9 @@ archivesBaseName = "EnderIO"
 version = "${minecraft_version}-${mod_version}.${buildnumber}"
 boolean release = true
 
+// dependency string for the @Mod annotation
+ext.dependencies = "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},)"
+
 if (project.hasProperty('mod_appendix')) {
     version += "_${project.mod_appendix}"
     release = false
@@ -42,7 +45,6 @@ minecraft {
     runDir = 'run'
 
     replace "@VERSION@", project.version
-   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},)"
     replaceIn "EnderIO.java"
 }
 
@@ -98,6 +100,14 @@ processResources {
         exclude '**/*.info'
         exclude '**/*.properties'
     }
+}
+
+compileJava.doFirst {
+    String modFile = 'build/sources/main/java/crazypants/enderio/EnderIO.java'
+    File modFileFile = new File(projectDir, modFile) 
+    String contents = modFileFile.getText('UTF-8')
+    contents = contents.replaceAll('dependencies = ".*", guiFactory', 'dependencies = "' + project.ext.dependencies + '", guiFactory')
+    modFileFile.write(contents, 'UTF-8')
 }
 
 jar {
