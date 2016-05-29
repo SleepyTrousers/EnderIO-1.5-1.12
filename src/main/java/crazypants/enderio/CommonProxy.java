@@ -59,14 +59,14 @@ public class CommonProxy {
         if (recipes.isValid()) {
           recipes.register();
         } else {
-          Log.warn("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
+          throw new InvalidRecipeConfigException("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
         }
       } catch (InvalidRecipeConfigException e) {
-        Log.warn("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+        throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
       } catch (IOException e) {
-        Log.warn("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
+        throw new RuntimeException("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
       } catch (XMLStreamException e) {
-        Log.warn("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+        throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
       }
     }
   }
