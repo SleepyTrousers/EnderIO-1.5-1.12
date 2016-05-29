@@ -1,9 +1,8 @@
 package crazypants.enderio.machine.invpanel.server;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 
 class NormalInventory extends AbstractInventory {
   final NetworkedInventory ni;
@@ -14,41 +13,40 @@ class NormalInventory extends AbstractInventory {
 
   @Override
   int scanInventory(InventoryDatabaseServer db) {
-    ISidedInventory inv = ni.getInventoryRecheck();
-    EnumFacing side = ni.getInventorySide();
-    int[] slotIndices = inv.getSlotsForFace(side);
-    if (slotIndices == null || slotIndices.length == 0) {
+    IItemHandler inv = ni.getInventory();
+    
+    int numSlots = inv.getSlots();
+    if (numSlots < 1) {
       setEmpty(db);
       return 0;
+    }    
+    if (numSlots != slotKeys.length) {
+      reset(db, numSlots);
     }
-    int count = slotIndices.length;
-    if (count != slotKeys.length) {
-      reset(db, count);
-    }
-    for (int slot = 0; slot < count; slot++) {
-      int invSlot = slotIndices[slot];
-      ItemStack stack = inv.getStackInSlot(invSlot);
-      if (stack != null && !inv.canExtractItem(invSlot, stack, side)) {
-        stack = null;
+    for (int slot = 0; slot < numSlots; slot++) {      
+      ItemStack stack = inv.getStackInSlot(slot);
+      if (stack != null) {
+        ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
+        if(extracted == null || extracted.stackSize != stack.stackSize) {
+          stack = null;  
+        }        
       }
       updateSlot(db, slot, stack);
     }
-    return count;
+    return numSlots;
   }
 
   @Override
   public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
-    ISidedInventory inv = ni.getInventoryRecheck();
-    EnumFacing side = ni.getInventorySide();
-    int[] slotIndices = inv.getSlotsForFace(side);
-    if (slotIndices == null || slot >= slotIndices.length) {
+    IItemHandler inv = ni.getInventory();        
+    ItemStack stack = inv.getStackInSlot(slot);
+    if (stack == null) {
       return 0;
     }
-    int invSlot = slotIndices[slot];
-    ItemStack stack = inv.getStackInSlot(invSlot);
-    if (stack == null || !inv.canExtractItem(invSlot, stack, side)) {
+    ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
+    if(extracted == null || extracted.stackSize != stack.stackSize) {
       return 0;
-    }
+    }    
     if (db.lookupItem(stack, entry, false) != entry) {
       return 0;
     }
@@ -56,7 +54,7 @@ class NormalInventory extends AbstractInventory {
     if (count > remaining) {
       count = remaining;
     }
-    ni.itemExtracted(invSlot, count);
+    ni.itemExtracted(slot, count);
     remaining -= count;
     updateCount(db, slot, entry, remaining);
     return count;

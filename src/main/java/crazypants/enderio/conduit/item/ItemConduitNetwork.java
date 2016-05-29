@@ -11,11 +11,11 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
@@ -44,7 +44,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     TileEntity te = con.getBundle().getEntity();
     if(te != null) {
       for (EnumFacing direction : con.getExternalConnections()) {
-        IInventory extCon = con.getExternalInventory(direction);
+        IItemHandler extCon = con.getExternalInventory(direction);
         if(extCon != null) {
           BlockPos p = te.getPos().offset(direction);
           inventoryAdded(con, direction, p.getX(), p.getY(), p.getZ(), extCon);
@@ -53,9 +53,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
   }
 
-  public void inventoryAdded(IItemConduit itemConduit, EnumFacing direction, int x, int y, int z, IInventory externalInventory) {
+  public void inventoryAdded(IItemConduit itemConduit, EnumFacing direction, int x, int y, int z, IItemHandler externalInventory) {
     BlockCoord bc = new BlockCoord(x, y, z);
-    NetworkedInventory inv = new NetworkedInventory(this, externalInventory, itemConduit, direction, bc);
+    NetworkedInventory inv = new NetworkedInventory(this, itemConduit, direction, externalInventory, bc);
     inventories.add(inv);
     getOrCreate(bc).add(inv);
     requiresSort = true;

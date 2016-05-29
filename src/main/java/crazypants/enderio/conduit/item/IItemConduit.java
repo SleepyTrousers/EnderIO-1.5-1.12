@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.item;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.inventory.IInventory;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
@@ -22,7 +22,7 @@ public interface IItemConduit extends IExtractor {
 
   TextureAtlasSprite getEnderIcon();
 
-  IInventory getExternalInventory(EnumFacing direction);
+  IItemHandler getExternalInventory(EnumFacing direction);
 
   int getMaximumExtracted(EnumFacing direction);
 

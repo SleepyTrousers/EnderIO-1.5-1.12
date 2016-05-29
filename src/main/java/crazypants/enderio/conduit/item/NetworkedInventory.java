@@ -7,26 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.InventoryWrapper;
-import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 
+import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
+import jline.internal.Log;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 public class NetworkedInventory {
 
-  private ISidedInventory inv;
+  private IItemHandler inv;
   IItemConduit con;
   EnumFacing conDir;
   BlockCoord location;
@@ -39,33 +37,26 @@ public class NetworkedInventory {
 
   int tickDeficit;
 
-  //work around for a vanilla chest changing into a double chest without doing unneeded checks all the time 
-  boolean recheckInv = false;
-  //Hack for TiC crafting station not working correctly when setting output slot to null
-  boolean ticHack = false;
-
   boolean inventoryPanel = false;
 
   World world;
   ItemConduitNetwork network;
+  String invName;
 
-  NetworkedInventory(ItemConduitNetwork network, IInventory inv, IItemConduit con, EnumFacing conDir, BlockCoord location) {
+  NetworkedInventory(ItemConduitNetwork network, IItemConduit con, EnumFacing conDir, IItemHandler inv, BlockCoord location) {
     this.network = network;
     inventorySide = conDir.getOpposite();
-
+    this.inv = inv;
     this.con = con;
     this.conDir = conDir;
     this.location = location;
     world = con.getBundle().getBundleWorldObj();
 
-    TileEntity te = world.getTileEntity(location.getBlockPos());
-    if(te.getClass().getName().equals("tconstruct.tools.logic.CraftingStationLogic")) {
-      ticHack = true;
-    } else if(te.getClass().getName().contains("cpw.mods.ironchest")) {
-      recheckInv = true;
-    } else if(te instanceof TileEntityChest) {
-      recheckInv = true;
-    } else if(te instanceof TileInventoryPanel) {
+    IBlockState bs = world.getBlockState(location.getBlockPos());
+    invName = bs.getBlock().getLocalizedName();
+    
+    TileEntity te = world.getTileEntity(location.getBlockPos());       
+    if(te instanceof TileInventoryPanel) {
       inventoryPanel = true;
     }
     updateInventory();
@@ -133,28 +124,23 @@ public class NetworkedInventory {
   }
 
   private boolean transferItems() {
-
-    if(recheckInv) {
-      updateInventory();
-    }
-    
-    int[] slotIndices = getInventory().getSlotsForFace(inventorySide);
-    if(slotIndices == null) {
+        
+    int numSlots = getInventory().getSlots();
+    if(numSlots < 1) {
       return false;
     }
-    int numSlots = slotIndices.length;
+    
     ItemStack extractItem = null;
     int maxExtracted = con.getMaximumExtracted(conDir);
 
     int slot = -1;
     int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
     for (int i = 0; i < slotChecksPerTick; i++) {
-      int index = nextSlot(numSlots);
-      slot = slotIndices[index];
+      slot = nextSlot(numSlots);      
       ItemStack item = getInventory().getStackInSlot(slot);
       if(canExtractItem(item)) {
-        extractItem = item.copy();
-        if(getInventory().canExtractItem(slot, extractItem, inventorySide)) {
+        extractItem = item.copy();        
+        if(getInventory().extractItem(slot, extractItem.stackSize, true) != null) {
           if(doTransfer(extractItem, slot, maxExtracted)) {
             setNextStartingSlot(slot);
             return true;
@@ -193,20 +179,10 @@ public class NetworkedInventory {
 
   public void itemExtracted(int slot, int numInserted) {
     ItemStack curStack = getInventory().getStackInSlot(slot);
-    if(curStack != null) {
-      if(ticHack) {
-        getInventory().decrStackSize(slot, numInserted);
-        getInventory().markDirty();
-      } else {
-        curStack = curStack.copy();
-        curStack.stackSize -= numInserted;
-        if(curStack.stackSize > 0) {
-          getInventory().setInventorySlotContents(slot, curStack);
-          getInventory().markDirty();          
-        } else {
-          getInventory().setInventorySlotContents(slot, null);
-          getInventory().markDirty();
-        }
+    if (curStack != null) {
+      ItemStack extracted = getInventory().extractItem(slot, numInserted, false);
+      if(extracted == null || extracted.stackSize != numInserted) {
+        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + curStack.getDisplayName() + " but only removed " + (extracted == null ? "null" : extracted.stackSize));
       }
     }
     con.itemsExtracted(numInserted, slot);
@@ -230,10 +206,7 @@ public class NetworkedInventory {
         IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
         matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this, toExtract);
       }
-      if(target.stickyInput || !matchedStickyInput) {
-        if(target.inv.recheckInv) {
-          target.inv.updateInventory();
-        }
+      if(target.stickyInput || !matchedStickyInput) {        
         int inserted = target.inv.insertItem(toExtract);
         if(inserted > 0) {
           toExtract.stackSize -= inserted;
@@ -256,11 +229,9 @@ public class NetworkedInventory {
 
   public final void updateInventory() {
     TileEntity te = world.getTileEntity(location.getBlockPos());
-    if(te instanceof ISidedInventory) {
-      inv = (ISidedInventory) te;
-    } else if(te instanceof IInventory) {
-      inv = new InventoryWrapper((IInventory) te);
-    }
+    if(te.hasCapability(ItemConduit.ITEM_HANDLER_CAPABILITY, inventorySide)) {
+      inv = te.getCapability(ItemConduit.ITEM_HANDLER_CAPABILITY, inventorySide);
+    }    
   }
 
   private int insertItem(ItemStack item) {
@@ -273,7 +244,7 @@ public class NetworkedInventory {
         return 0;
       }
     }
-    return ItemUtil.doInsertItem(getInventory(), item, inventorySide);
+    return ItemTools.doInsertItem(getInventory(), item);
   }
 
   void updateInsertOrder() {
@@ -367,14 +338,7 @@ public class NetworkedInventory {
     return con.getLocation().getDistSq(other.con.getLocation());
   }
 
-  public ISidedInventory getInventory() {
-    return inv;
-  }
-
-  public ISidedInventory getInventoryRecheck() {
-    if(recheckInv) {
-      updateInventory();
-    }
+  public IItemHandler getInventory() {
     return inv;
   }
 
@@ -384,17 +348,6 @@ public class NetworkedInventory {
 
   public void setInventorySide(EnumFacing inventorySide) {
     this.inventorySide = inventorySide;
-  }
-
-  public String getLocalizedInventoryName() {
-    String inventoryName = getInventory().getName();
-    if(inventoryName == null) {
-      return "null";
-    } else {
-      // don't use Lang.localize as that passes the localized string to
-      // String.format which might crash when it contains formatting specifiers
-      return I18n.translateToLocal(inventoryName);
-    }
   }
 
   static class Target implements Comparable<Target> {
@@ -425,4 +378,9 @@ public class NetworkedInventory {
     }
 
   }
+
+  public String getLocalizedInventoryName() {
+    return invName;
+  }
+
 }

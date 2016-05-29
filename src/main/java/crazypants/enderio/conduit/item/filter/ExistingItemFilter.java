@@ -48,8 +48,8 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   private boolean isStackInInventory(NetworkedInventory ni, ItemStack item) {
-    int[] slots = ni.getInventory().getSlotsForFace(ni.getInventorySide());
-    for (int i = 0; i < slots.length; i++) {
+    int numSlots = ni.getInventory().getSlots();
+    for (int i = 0; i < numSlots; i++) {
       ItemStack stack = ni.getInventory().getStackInSlot(i);
       if (stackEqual(item, stack)) {
         return true;
@@ -140,8 +140,8 @@ public class ExistingItemFilter implements IItemFilter {
     if (snapshot == null) {
       snapshot = new ArrayList<ItemStack>();
     }
-    int[] slots = ni.getInventory().getSlotsForFace(ni.getInventorySide());
-    for (int i = 0; i < slots.length; i++) {
+    int numSlots = ni.getInventory().getSlots();    
+    for (int i = 0; i < numSlots; i++) {
       ItemStack stack = ni.getInventory().getStackInSlot(i);
       if (stack != null && !isStackInSnapshot(stack)) {
         snapshot.add(stack);

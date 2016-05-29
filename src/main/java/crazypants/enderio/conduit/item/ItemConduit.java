@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -20,12 +19,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
 
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.Log;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -33,7 +37,6 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
@@ -44,6 +47,8 @@ import crazypants.enderio.tool.ToolUtil;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
+  public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+  
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
   public static final String ICON_KEY = "enderio:blocks/itemConduit";
@@ -67,7 +72,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
+      
       @Override
       public void registerIcons(TextureMap register) {
         ICONS.put(ICON_KEY, register.registerSprite(new ResourceLocation(ICON_KEY)));
@@ -112,42 +117,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public ItemConduit(int itemDamage) {
     metaData = itemDamage;
-    updateFromNonUpgradeableVersion();
   }
 
-  private void updateFromNonUpgradeableVersion() {
-    int filterMeta = metaData;
-    if(metaData == 1) {
-
-      for (Entry<EnumFacing, IItemFilter> entry : inputFilters.entrySet()) {
-        if(entry.getValue() != null) {
-          IItemFilter f = entry.getValue();
-          if(f != null) {
-            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 15, 0));
-          }
-        }
-      }
-
-      metaData = 0;
-    }
-
-    Map<EnumFacing, ItemStack> converted = new HashMap<EnumFacing, ItemStack>();
-
-    convertToItemUpgrades(filterMeta, converted, inputFilters);
-    for (Entry<EnumFacing, ItemStack> entry : converted.entrySet()) {
-      setInputFilter(entry.getKey(), null);
-      setInputFilterUpgrade(entry.getKey(), entry.getValue());
-    }
-
-    converted.clear();
-    convertToItemUpgrades(filterMeta, converted, outputFilters);
-    for (Entry<EnumFacing, ItemStack> entry : converted.entrySet()) {
-      setOutputFilter(entry.getKey(), null);
-      setOutputFilterUpgrade(entry.getKey(), entry.getValue());
-    }
-
-
-  }
 
   @Override
   protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {    
@@ -448,15 +419,19 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public IInventory getExternalInventory(EnumFacing direction) {
+  public IItemHandler getExternalInventory(EnumFacing direction) {
     World world = getBundle().getBundleWorldObj();
     if(world == null) {
       return null;
     }
     BlockCoord loc = getLocation().getLocation(direction);
     TileEntity te = world.getTileEntity(loc.getBlockPos());
-    if(te instanceof IInventory && !(te instanceof IConduitBundle)) {
-      return (IInventory) te;
+    if(te != null && te.hasCapability(ITEM_HANDLER_CAPABILITY, direction.getOpposite())) {
+      return te.getCapability(ITEM_HANDLER_CAPABILITY, direction.getOpposite());
+    }   
+    if(te instanceof IInventory) {
+      Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + loc);
+      return new InvWrapper((IInventory)te);
     }
     return null;
   }
@@ -550,18 +525,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
-    IInventory inv = getExternalInventory(direction);
-    if (inv==null) {
-      return false;
-//    }  else if (inv instanceof IInventoryConnection){
-//      return ((IInventoryConnection)inv).canConnectInventory(direction.getOpposite()).canConnect;
-    } else if(inv instanceof ISidedInventory) {
-           
-      int[] slots = ((ISidedInventory) inv).getSlotsForFace(direction.getOpposite());
-      return slots!=null && slots.length>0;
-    } else {
-      return true;
-    }
+    return getExternalInventory(direction) != null;    
   }
 
   @Override
@@ -868,10 +832,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
           outputColors.put(dir, DyeColor.values()[ord]);
         }
       }
-    }
-
-    if(nbtRoot.hasKey("metaData")) {
-      updateFromNonUpgradeableVersion();
     }
 
     if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {

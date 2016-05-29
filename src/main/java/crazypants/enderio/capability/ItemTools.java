@@ -108,6 +108,22 @@ public class ItemTools {
     }
     return movedSomething ? MoveResult.MOVED : MoveResult.NO_ACTION;
   }
+  
+  /**
+   * 
+   * @param inventory
+   * @param item
+   * @return the number inserted
+   */
+  public static int doInsertItem(IItemHandler inventory, ItemStack item) {
+    if(inventory == null || item == null) {
+      return 0;
+    }
+    int startSize = item.stackSize;
+    ItemStack res = ItemHandlerHelper.insertItemStacked(inventory, item.copy(), false);
+    int val = res == null ? startSize : startSize - res.stackSize;
+    return val;
+  }
 
   public static boolean hasFreeSpace(IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
@@ -178,5 +194,7 @@ public class ItemTools {
     }
 
   }
+
+  
 
 }

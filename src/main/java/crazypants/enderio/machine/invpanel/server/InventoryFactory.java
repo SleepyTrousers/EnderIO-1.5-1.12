@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.items.IItemHandler;
 
 public abstract class InventoryFactory {
 
@@ -46,7 +46,7 @@ public abstract class InventoryFactory {
   static class DrawerFactory extends InventoryFactory {
     @Override
     AbstractInventory create(NetworkedInventory ni) {
-      ISidedInventory inv = ni.getInventory();
+      IItemHandler inv = ni.getInventory();
       if (inv instanceof IDrawerGroup) {
         return new DrawerGroupInventory((IDrawerGroup) inv);
       }
