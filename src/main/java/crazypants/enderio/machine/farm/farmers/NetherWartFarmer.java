@@ -18,7 +18,7 @@ public class NetherWartFarmer extends CustomSeedFarmer {
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
 
-    if (!farm.isOpen(bc)) {
+    if (!farm.isOpen(bc.getBlockPos())) {
       return false;
     }
     return plantFromInventory(farm, bc);

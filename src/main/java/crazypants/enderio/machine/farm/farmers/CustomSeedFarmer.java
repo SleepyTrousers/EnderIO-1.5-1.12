@@ -12,9 +12,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
@@ -90,7 +90,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-    if(!farm.isOpen(bc)) {
+    if (!farm.isOpen(bc.getBlockPos())) {
       return false;
     }
     if(requiresFarmland()) {      

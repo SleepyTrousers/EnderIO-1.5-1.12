@@ -1,19 +1,17 @@
 package crazypants.enderio.machine.farm;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.util.ClientUtil;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.util.ClientUtil;
 
 public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> {
 
@@ -31,6 +29,11 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
   public PacketFarmAction(BlockCoord bc) {
     this.coords = new ArrayList<BlockPos>(1);
     this.coords.add(bc.getBlockPos());
+  }
+
+  public PacketFarmAction(BlockPos bc) {
+    this.coords = new ArrayList<BlockPos>(1);
+    this.coords.add(bc);
   }
 
   @Override

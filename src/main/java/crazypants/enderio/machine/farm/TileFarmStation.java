@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.farm;
 
 import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
@@ -126,7 +127,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public static final String NOTIFICATION_NO_AXE = "noAxe";
   public static final String NOTIFICATION_NO_SEEDS = "noSeeds";
 
-  private BlockCoord lastScanned;
+  private BlockPos lastScanned;
   private EntityPlayerMP farmerJoe;
 
   public static final int NUM_TOOL_SLOTS = 3;
@@ -324,10 +325,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return worldObj.getBlockState(posIn);
   }
 
-  public boolean isOpen(BlockCoord bc) {
+  public boolean isOpen(BlockPos bc) {
     Block block = getBlock(bc);
-    IBlockState bs = getBlockState(bc.getBlockPos());
-    return block.isAir(bs, worldObj, bc.getBlockPos()) || block.isReplaceable(worldObj, bc.getBlockPos());
+    IBlockState bs = getBlockState(bc);
+    return block.isAir(bs, worldObj, bc) || block.isReplaceable(worldObj, bc);
   }
 
   public void setNotification(String unloc) {
@@ -423,17 +424,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       clearNotification();
     }
 
-    BlockCoord bc = null;
+    BlockPos bc = null;
     int infiniteLoop = 20;
-    while (bc == null || bc.equals(getLocation()) || !worldObj.getChunkProvider().chunkExists(bc.x >> 4, bc.z >> 4)) {
+    while (bc == null || bc.equals(getLocation()) || !worldObj.isBlockLoaded(bc)) {
       if (infiniteLoop-- <= 0) {
         return;
       }
       bc = getNextCoord();
     }
-    lastScanned = bc;
 
-    IBlockState bs = getBlockState(bc.getBlockPos());
+    IBlockState bs = getBlockState(bc);
     Block block = bs.getBlock();
     
     if(farmerJoe == null) {
@@ -441,8 +441,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
 
     if(isOpen(bc)) {
-      FarmersCommune.instance.prepareBlock(this, bc, block, bs);
-      bs = getBlockState(bc.getBlockPos());
+      FarmersCommune.instance.prepareBlock(this, new BlockCoord(bc), block, bs);
+      bs = getBlockState(bc);
       block = bs.getBlock();
     }
 
@@ -457,10 +457,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
 
     if(!isOpen(bc)) {
-      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, bs);
+      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, new BlockCoord(bc), block, bs);
       if(harvest != null && harvest.getDrops() != null) {
         PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.x, bc.y, bc.z, 64));
+        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
         for (EntityItem ei : harvest.getDrops()) {
           if(ei != null) {
             insertHarvestDrop(ei, bc);
@@ -480,12 +480,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     if (hasBonemeal() && bonemealCooldown-- <= 0) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
-      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc.getBlockPos()))) {
+      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc))) {
         farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
         farmerJoe.inventory.currentItem = 0;
-        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
+        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, new BlockCoord(bc))) {
           inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
-          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc), new TargetPoint(worldObj.provider.getDimension(), bc.x, bc.y, bc.z, 64));
+          PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc),
+              new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
           if (inventory[minFirtSlot] != null && inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = null;
           }
@@ -527,7 +528,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   public boolean hasSeed(ItemStack seeds, BlockCoord bc) {
-    int slot = getSupplySlotForCoord(bc);
+    int slot = getSupplySlotForCoord(bc.getBlockPos());
     ItemStack inv = inventory[slot];
     return inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
   }
@@ -540,7 +541,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
    *  90 - break 90% of the leaves for saplings
    */
   public int isLowOnSaplings(BlockCoord bc) {
-    int slot = getSupplySlotForCoord(bc);
+    int slot = getSupplySlotForCoord(bc.getBlockPos());
     ItemStack inv = inventory[slot];
     
     return 90 * (Config.farmSaplingReserveAmount - (inv == null ? 0 : inv.stackSize)) / Config.farmSaplingReserveAmount;
@@ -554,7 +555,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if(stack == null || forBlock == null) {
       return null;
     }
-    int slot = getSupplySlotForCoord(forBlock);
+    int slot = getSupplySlotForCoord(forBlock.getBlockPos());
     ItemStack inv = inventory[slot];
     if(inv != null) {
       if(matchMetadata ? inv.isItemEqual(stack) : inv.getItem() == stack.getItem()) {
@@ -582,7 +583,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   public ItemStack getSeedTypeInSuppliesFor(BlockCoord bc) {
-    int slot = getSupplySlotForCoord(bc);
+    int slot = getSupplySlotForCoord(bc.getBlockPos());
     ItemStack inv = inventory[slot];
     if(inv != null && (inv.stackSize > 1 || !isSlotLocked(slot))) {
       return inv.copy();
@@ -590,21 +591,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return null;
   }
 
-  protected int getSupplySlotForCoord(BlockCoord forBlock) {
+  protected int getSupplySlotForCoord(BlockPos forBlock) {
 
     int xCoord = getPos().getX();
     int zCoord = getPos().getZ();
-    if(forBlock.x <= xCoord && forBlock.z > zCoord) {
+    if (forBlock.getX() <= xCoord && forBlock.getZ() > zCoord) {
       return minSupSlot;
-    } else if(forBlock.x > xCoord && forBlock.z > zCoord - 1) {
+    } else if (forBlock.getX() > xCoord && forBlock.getZ() > zCoord - 1) {
       return minSupSlot + 1;
-    } else if(forBlock.x < xCoord && forBlock.z <= zCoord) {
+    } else if (forBlock.getX() < xCoord && forBlock.getZ() <= zCoord) {
       return minSupSlot + 2;
     }
     return minSupSlot + 3;
   }
 
-  private void insertHarvestDrop(Entity entity, BlockCoord bc) {
+  private void insertHarvestDrop(Entity entity, BlockPos bc) {
     if(!worldObj.isRemote) {
       if(entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
@@ -620,7 +621,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
 
-  private int insertResult(ItemStack stack, BlockCoord bc) {
+  private int insertResult(ItemStack stack, BlockPos bc) {
 
     int slot = bc != null ? getSupplySlotForCoord(bc) : minSupSlot;
     int[] slots = new int[NUM_SUPPLY_SLOTS];
@@ -668,26 +669,26 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   }
 
-  private @Nonnull BlockCoord getNextCoord() {
+  private @Nonnull BlockPos getNextCoord() {
 
     int size = getFarmSize();
 
-    BlockCoord loc = getLocation();
+    BlockPos loc = getPos();
     if(lastScanned == null) {
-      return lastScanned = new BlockCoord(loc.x - size, loc.y, loc.z - size);
+      return lastScanned = new BlockPos(loc.getX() - size, loc.getY(), loc.getZ() - size);
     }
 
-    int nextX = lastScanned.x + 1;
-    int nextZ = lastScanned.z;
-    if(nextX > loc.x + size) {
-      nextX = loc.x - size;
+    int nextX = lastScanned.getX() + 1;
+    int nextZ = lastScanned.getZ();
+    if (nextX > loc.getX() + size) {
+      nextX = loc.getX() - size;
       nextZ += 1;
-      if(nextZ > loc.z + size) {
-        lastScanned = null;
-        return getNextCoord();
+      if (nextZ > loc.getZ() + size) {
+        nextX = loc.getX() - size;
+        nextZ = loc.getZ() - size;
       }
     }
-    return new BlockCoord(nextX, lastScanned.y, nextZ);
+    return lastScanned = new BlockPos(nextX, lastScanned.getY(), nextZ);
   }
 
   public void toggleLockedState(int slot) {
