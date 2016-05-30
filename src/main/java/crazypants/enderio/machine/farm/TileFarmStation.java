@@ -416,7 +416,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       bc = getNextCoord();
     }
-    lastScanned = bc;
 
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
     if(block == null) {
@@ -667,11 +666,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       nextX = loc.x - size;
       nextZ += 1;
       if(nextZ > loc.z + size) {
-        lastScanned = null;
-        return getNextCoord();
+        nextX = loc.x - size;
+        nextZ = loc.z - size;
       }
     }
-    return new BlockCoord(nextX, lastScanned.y, nextZ);
+    return lastScanned = new BlockCoord(nextX, lastScanned.y, nextZ);
   }
 
   public void toggleLockedState(int slot) {
