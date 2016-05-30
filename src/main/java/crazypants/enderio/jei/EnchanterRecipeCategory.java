@@ -6,7 +6,13 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.enchanter.GuiEnchanter;
@@ -104,6 +110,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
     });
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockEnchanter), EnchanterRecipeCategory.UID);
 
     List<EnchanterRecipeWrapper> result = new ArrayList<EnchanterRecipeWrapper>();
 
@@ -112,6 +119,9 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     }
 
     registry.addRecipes(result);
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category

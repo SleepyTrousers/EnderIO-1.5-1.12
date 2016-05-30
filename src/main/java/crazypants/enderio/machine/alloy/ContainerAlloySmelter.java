@@ -15,6 +15,12 @@ import net.minecraft.stats.AchievementList;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 0;
+  public static int NUM_RECIPE_SLOT = 3;
+  public static int FIRST_INVENTORY_SLOT = 3 + 1 + 1; // input + output + upgrade
+  public static int NUM_INVENTORY_SLOT = 4 * 9;
+
   private final EntityPlayer thePlayer;
 
   public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {

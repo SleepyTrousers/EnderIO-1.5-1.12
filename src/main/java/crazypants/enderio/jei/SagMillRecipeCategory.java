@@ -6,6 +6,20 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.TooltipHandlerGrinding;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.sagmill.ContainerSagMill;
+import crazypants.enderio.machine.sagmill.GrindingBall;
+import crazypants.enderio.machine.sagmill.GuiSagMill;
+import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -19,17 +33,9 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.TooltipHandlerGrinding;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
-import crazypants.enderio.machine.sagmill.GrindingBall;
-import crazypants.enderio.machine.sagmill.GuiSagMill;
-import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 
 public class SagMillRecipeCategory extends BlankRecipeCategory implements ITooltipCallback<ItemStack> {
 
@@ -48,12 +54,16 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
     registry.addRecipeCategories(new SagMillRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<SagRecipe>(SagRecipe.class, SagMillRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSagMill.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockCrusher), SagMillRecipeCategory.UID);
 
     List<SagRecipe> result = new ArrayList<SagRecipe>();
     for (IRecipe rec : SagMillRecipeManager.getInstance().getRecipes()) {
       result.add(new SagRecipe(rec));
     }
     registry.addRecipes(result);
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSagMill.class, SagMillRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category
@@ -108,7 +118,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
       return;
     }
     String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
-    minecraft.fontRendererObj.drawString(energyString, 135 - xOff, 63 - yOff, 0x808080, false);
+    minecraft.fontRendererObj.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
   }
 
@@ -126,11 +136,11 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
     guiItemStacks.addTooltipCallback(this);
 
     guiItemStacks.init(0, true, 79 - xOff, 11 - yOff);
-    guiItemStacks.init(1, true, 48 - xOff, 58 - yOff);
-    guiItemStacks.init(2, true, 69 - xOff, 58 - yOff);
+    guiItemStacks.init(1, false, 48 - xOff, 58 - yOff);
+    guiItemStacks.init(2, false, 69 - xOff, 58 - yOff);
     guiItemStacks.init(3, false, 90 - xOff, 58 - yOff);
     guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);    
-    guiItemStacks.init(5, true, 121 - xOff, 22 - yOff);
+    guiItemStacks.init(5, false, 121 - xOff, 22 - yOff);
 
     Object ingredients = currentRecipe.getInputs().get(0);
     if (ingredients != null) {

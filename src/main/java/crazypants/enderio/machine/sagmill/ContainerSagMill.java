@@ -9,6 +9,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSagMill extends AbstractMachineContainer<TileSagMill> {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 0;
+  public static int NUM_RECIPE_SLOT = 1;
+  public static int FIRST_INVENTORY_SLOT = 2 + 4 + 1; // input + output + upgrade
+  public static int NUM_INVENTORY_SLOT = 4 * 9;
+
   public ContainerSagMill(InventoryPlayer playerInv, TileSagMill te) {
     super(playerInv, te);
   }

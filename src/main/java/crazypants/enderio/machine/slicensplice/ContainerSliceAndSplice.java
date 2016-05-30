@@ -19,6 +19,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 0;
+  public static int NUM_RECIPE_SLOT = 6;
+  public static int FIRST_INVENTORY_SLOT = 8 + 1 + 1; // input + output + upgrade
+  public static int NUM_INVENTORY_SLOT = 4 * 9;
+
   static private final Item[] slotItems1 = { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE,
       Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe };
   static private final Item[] slotItems2 = { Items.SHEARS, Items.SHEARS, Items.SHEARS, Items.SHEARS,
@@ -52,6 +58,17 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
         public boolean isItemValid(@Nullable ItemStack itemStack) {
           return getInv().isItemValidForSlot(slot, itemStack);
         }
+
+        @Override
+        public void putStack(@Nullable ItemStack stack) {
+          if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+            super.putStack(stack);
+          } else {
+            throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+                + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
+          }
+        }
+
       });
     }
     

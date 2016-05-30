@@ -15,6 +15,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 0;
+  public static int NUM_RECIPE_SLOT = 2;
+  public static int FIRST_INVENTORY_SLOT = 2 + 2 + 1; // input + output + upgrade
+  public static int NUM_INVENTORY_SLOT = 4 * 9;
+
   public ContainerSoulBinder(InventoryPlayer playerInv, TileSoulBinder te) {
     super(playerInv, te);
   }
@@ -26,12 +32,32 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
       public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
+
+      @Override
+      public void putStack(@Nullable ItemStack stack) {
+        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+          super.putStack(stack);
+        } else {
+          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+              + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
+        }
+      }
     });
     addSlotToContainer(new Slot(getInv(), 1, 59, 34) {
       @Override
       public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(1, itemStack);
       }      
+
+      @Override
+      public void putStack(@Nullable ItemStack stack) {
+        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+          super.putStack(stack);
+        } else {
+          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+              + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
+        }
+      }
     });    
     addSlotToContainer(new Slot(getInv(), 2, 112, 34) {
       @Override

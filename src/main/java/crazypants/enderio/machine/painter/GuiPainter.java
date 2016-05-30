@@ -14,7 +14,7 @@ import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
 
   public GuiPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter te) {
-    super(te, new PainterContainer(par1InventoryPlayer, te), "painter");
+    super(te, new ContainerPainter(par1InventoryPlayer, te), "painter");
 
     addProgressTooltip(88, 34, 24, 16);
   }

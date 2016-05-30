@@ -5,10 +5,16 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import mezz.jei.api.IGuiHelper;
@@ -43,12 +49,16 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeCategories(new SliceAndSpliceRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<SliceAndSpliceRecipe>(SliceAndSpliceRecipe.class, SliceAndSpliceRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSliceAndSplice.class, 155, 42, 16, 16, SliceAndSpliceRecipeCategory.UID);
-    
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockSliceAndSplice), SliceAndSpliceRecipeCategory.UID);
+
     List<SliceAndSpliceRecipe> result = new ArrayList<SliceAndSpliceRecipe>();    
     for (IRecipe rec : SliceAndSpliceRecipeManager.getInstance().getRecipes()) {
       result.add(new SliceAndSpliceRecipe(rec));
     }    
     registry.addRecipes(result);
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSliceAndSplice.class, SliceAndSpliceRecipeCategory.UID, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category
@@ -114,8 +124,8 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
     
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-    guiItemStacks.init(0, true, 53 - xOff, 15 - yOff);
-    guiItemStacks.init(1, true, 71 - xOff, 15 - yOff);
+    guiItemStacks.init(0, false, 53 - xOff, 15 - yOff);
+    guiItemStacks.init(1, false, 71 - xOff, 15 - yOff);
     guiItemStacks.init(2, true, 43 - xOff, 39 - yOff);
     guiItemStacks.init(3, true, 61 - xOff, 39 - yOff);
     guiItemStacks.init(4, true, 79 - xOff, 39 - yOff);

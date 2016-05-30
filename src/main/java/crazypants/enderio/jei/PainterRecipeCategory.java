@@ -7,6 +7,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
 import static crazypants.util.NbtValue.SOURCE_BLOCK;
 import static crazypants.util.NbtValue.SOURCE_META;
 
@@ -17,6 +21,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.ContainerPainter;
 import crazypants.enderio.machine.painter.GuiPainter;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -147,8 +152,12 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeCategories(new PainterRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<PainterRecipeWrapper>(PainterRecipeWrapper.class, PainterRecipeCategory.UID));
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
-    
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockPainter), PainterRecipeCategory.UID);
+
     registry.addRecipes(splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.getUnlocalisedName()).values(), getValidItems()));
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerPainter.class, PainterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category
@@ -256,7 +265,10 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
             }
           }
         } catch (Throwable t) {
+          Log.debug(t.getMessage());
         }
+      } else {
+        Log.debug("Assertion failed");
       }
 
       guiItemStacks.set(1, currentRecipe.paints);

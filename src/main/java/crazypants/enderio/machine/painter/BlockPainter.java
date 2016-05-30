@@ -41,7 +41,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileEntityPainter) {
-      return new PainterContainer(player.inventory, (TileEntityPainter) te);
+      return new ContainerPainter(player.inventory, (TileEntityPainter) te);
     }
     return null;
   }

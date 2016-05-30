@@ -10,10 +10,16 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.RenderUtil;
 
+import static crazypants.enderio.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.vat.ContainerVat;
 import crazypants.enderio.machine.vat.GuiVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
 import mezz.jei.api.IGuiHelper;
@@ -138,12 +144,16 @@ public class VatRecipeCategory extends BlankRecipeCategory {
 
     });
     registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockVat), VatRecipeCategory.UID);
 
     List<VatRecipeWrapper> result = new ArrayList<VatRecipeWrapper>();
     for (IRecipe rec : VatRecipeManager.getInstance().getRecipes()) {
       result.add(new VatRecipeWrapper(rec));
     }
     registry.addRecipes(result);
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerVat.class, VatRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category

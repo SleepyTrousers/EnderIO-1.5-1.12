@@ -7,6 +7,21 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.soul.ContainerSoulBinder;
+import crazypants.enderio.machine.soul.GuiSoulBinder;
+import crazypants.enderio.machine.soul.ISoulBinderRecipe;
+import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
+import crazypants.util.CapturedMob;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -22,16 +37,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.soul.GuiSoulBinder;
-import crazypants.enderio.machine.soul.ISoulBinderRecipe;
-import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
-import crazypants.util.CapturedMob;
 
 public class SoulBinderRecipeCategory extends BlankRecipeCategory {
 
@@ -81,7 +86,8 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     registry.addRecipeCategories(new SoulBinderRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<SoulBinderRecipeWrapper>(SoulBinderRecipeWrapper.class, SoulBinderRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
-    
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockSoulFuser), SoulBinderRecipeCategory.UID);
+
     List<SoulBinderRecipeWrapper> result = new ArrayList<SoulBinderRecipeWrapper>(); 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.getUnlocalisedName());
     if(recipes.isEmpty()) {
@@ -93,6 +99,9 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
       }
     }
     registry.addRecipes(result);
+
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSoulBinder.class, SoulBinderRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+        FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
   // ------------ Category

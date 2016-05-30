@@ -6,6 +6,13 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.crafter.ContainerCrafter;
+import crazypants.enderio.machine.crafter.ContainerCrafter.DummySlot;
+import crazypants.enderio.machine.crafter.GuiCrafter;
+import crazypants.enderio.machine.gui.AbstractMachineContainer.SlotRange;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -19,19 +26,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.common.util.ItemUtil;
-
-import crazypants.enderio.machine.crafter.ContainerCrafter;
-import crazypants.enderio.machine.crafter.ContainerCrafter.DummySlot;
-import crazypants.enderio.machine.crafter.GuiCrafter;
-import crazypants.enderio.machine.gui.AbstractMachineContainer.SlotRange;
-
 public class CrafterRecipeTransferHandler implements IRecipeTransferHandler {
 
   public static void register(IModRegistry registry) {
     IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
     recipeTransferRegistry.addRecipeTransferHandler(new CrafterRecipeTransferHandler());
     registry.addRecipeClickArea(GuiCrafter.class, 219 - 21, 43 + 19, 16, 16, VanillaRecipeCategoryUid.CRAFTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockCrafter), VanillaRecipeCategoryUid.CRAFTING);
   }
 
   private CrafterRecipeTransferHandler() {
