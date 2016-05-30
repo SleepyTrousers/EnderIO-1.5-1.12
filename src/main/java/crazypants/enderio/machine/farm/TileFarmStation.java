@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.farm;
 
+import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
@@ -422,12 +423,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       clearNotification();
     }
 
-    BlockCoord bc = getNextCoord();
-    if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
+    BlockCoord bc = null;
+    int infiniteLoop = 20;
+    while (bc == null || bc.equals(getLocation()) || !worldObj.getChunkProvider().chunkExists(bc.x >> 4, bc.z >> 4)) {
+      if (infiniteLoop-- <= 0) {
+        return;
+      }
       bc = getNextCoord();
-    }
-    if(bc == null) {
-      return;
     }
     lastScanned = bc;
 
@@ -666,14 +668,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   }
 
-  private BlockCoord getNextCoord() {
+  private @Nonnull BlockCoord getNextCoord() {
 
     int size = getFarmSize();
 
     BlockCoord loc = getLocation();
     if(lastScanned == null) {
-      lastScanned = new BlockCoord(loc.x - size, loc.y, loc.z - size);
-      return lastScanned;
+      return lastScanned = new BlockCoord(loc.x - size, loc.y, loc.z - size);
     }
 
     int nextX = lastScanned.x + 1;
