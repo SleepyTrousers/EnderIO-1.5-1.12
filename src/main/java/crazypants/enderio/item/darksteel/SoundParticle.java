@@ -16,11 +16,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class SoundEntity extends Particle {
+public class SoundParticle extends Particle {
 
   private final SoundSource ss;
 
-  public SoundEntity(World worldIn, SoundSource ss) {
+  public SoundParticle(World worldIn, SoundSource ss) {
     super(worldIn, ss.pos.x, ss.pos.y, ss.pos.z, 0.0D, 0.0D, 0.0D);
     this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
     this.motionX = this.motionY = this.motionZ = 0.0D;

@@ -77,7 +77,7 @@ public class SoundDetector {
         double distSq = ss.pos.distanceSquared(eye);
         int minDist = ss.isEntity ? 4 : 49;
         if (distSq > minDist && distSq <= maxRangeSq) {
-          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundEntity(mc.thePlayer.worldObj, ss));
+          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundParticle(mc.thePlayer.worldObj, ss));
         }
       }
     } catch (Exception ex) {
