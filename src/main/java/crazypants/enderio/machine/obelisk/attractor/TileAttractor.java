@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.enderio.core.client.render.BoundingBox;
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
@@ -16,11 +17,9 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.Entity;
@@ -40,25 +39,18 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
+public class TileAttractor extends AbstractRangedTileEntity {
 
-  private AxisAlignedBB bounds;
   private FakePlayer target;
   private Set<EntityLiving> tracking = new HashSet<EntityLiving>();
   private int tickCounter = 0;
   private int maxMobsAttracted = 20;
-
-  private boolean showingRange;
 
   public TileAttractor() {
     super(new SlotDefinition(12, 0), ATTRACTOR_POWER_INTAKE, ATTRACTOR_POWER_BUFFER, ATTRACTOR_POWER_USE);
@@ -70,35 +62,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public boolean isShowingRange() {
-    return showingRange;
-  }
-
-  @SideOnly(Side.CLIENT)
-  public void setShowRange(boolean showRange) {
-    if (showingRange == showRange) {
-      return;
-    }
-    showingRange = showRange;
-    if (showingRange) {
-      worldObj.spawnEntityInWorld(new RangeEntity(this));
-    }
-  }
-
-  @Override
-  public World getRangeWorldObj() {
-    return getWorld();
-  }
-
-  @Override
-  public void onCapacitorDataChange() {
-    super.onCapacitorDataChange();
-    bounds = null;
-  }
-
-  @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockAttractor.getUnlocalisedName();
   }
 
@@ -131,9 +95,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     }
     tickCounter = 0;
 
-    mkBounds();
     Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
-    List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, bounds);
+    List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, getBounds());
 
     for (EntityLiving ent : entsInBounds) {
       if (!ent.isDead && isMobInFilter(ent)) {
@@ -154,12 +117,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     tracking.clear();
     tracking = trackingThisTick;
     return false;
-  }
-
-  protected void mkBounds() {
-    if (bounds == null) {
-      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
-    }
   }
 
   private void onUntracked(EntityLiving e) {
@@ -212,7 +169,7 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if (mob == null) {
       return false;
     }
-    return bounds.isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
+    return getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 
   private boolean isMobInFilter(EntityLiving entity) {
@@ -426,12 +383,6 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
       }
     }
 
-  }
-
-  @Override
-  public BoundingBox getRangeBox() {
-    mkBounds();
-    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
 }

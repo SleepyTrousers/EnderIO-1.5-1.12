@@ -37,8 +37,6 @@ import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.enderio.machine.monitor.TESRPowerMonitor;
 import crazypants.enderio.machine.monitor.TilePowerMonitor;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.machine.ranged.RangeRenerer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.soul.SoulBinderTESR;
@@ -67,7 +65,6 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -242,9 +239,6 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.getUnlocalisedName());
     DarkSteelItems.registerItemRenderers();
     Buckets.registerRenderers();
-
-    // Entities
-    RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, RangeRenerer.FACTORY);
 
     // Item Models
     ItemModelRegistry.create();

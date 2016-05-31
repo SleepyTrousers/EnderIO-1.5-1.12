@@ -8,9 +8,11 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.machine.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,7 +44,7 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     showingRange = showRange;
     if(showingRange) {
       Log.debug("AbstractRangedTileEntity.setShowRange: Spawned range entity into the world with a range of " + getRange());
-      worldObj.spawnEntityInWorld(new RangeEntity(this));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this));
     }
   }
   
@@ -54,22 +56,23 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
   
   @Override
   public BoundingBox getRangeBox() {
-    mkBounds();
-    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
+    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
   
-  protected void mkBounds() {
+  public AxisAlignedBB getBounds() {
     if (bounds == null) {
       bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
     }
-  }
-
-  public AxisAlignedBB getBounds() {
     return bounds;
   }
 
   public void setBounds(AxisAlignedBB bounds) {
     this.bounds = bounds;
+  }
+
+  @Override
+  public World getRangeWorldObj() {
+    return worldObj;
   }
 
 }

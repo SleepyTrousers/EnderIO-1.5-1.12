@@ -66,7 +66,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTi
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    mkBounds();
     if (redstoneCheck && hasPower()) {
       if(!registered) {
         SpawningObeliskController.instance.registerGuard(this);

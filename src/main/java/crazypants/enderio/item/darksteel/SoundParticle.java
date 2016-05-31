@@ -29,6 +29,7 @@ public class SoundParticle extends Particle {
     this.ss = ss;
   }
 
+  // layer 3: we can use our own texture but also have to set up GL ourself and start/end drawing
   @Override
   public int getFXLayer() {
     return 3;

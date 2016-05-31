@@ -473,8 +473,6 @@ public final class Config {
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
 
-  public static int rangeEntityID = 1490325;
-
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -1283,9 +1281,6 @@ public final class Config {
         "Internal power used per item extracted (not a stack of items)");
     inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
         10000.0f, "Internal power used per extract operation (independent of stack size)");
-    
-    rangeEntityID = config.get(sectionMisc.name, "rangeEntityID", rangeEntityID,
-        "The ID used to register the entity used to display ranges of blocks").getInt(rangeEntityID);
     
     CapacitorKey.processConfig(config);
   }

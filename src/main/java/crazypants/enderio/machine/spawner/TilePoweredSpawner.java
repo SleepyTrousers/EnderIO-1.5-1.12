@@ -19,12 +19,13 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
@@ -284,9 +285,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     }
     showingRange = showRange;
     if (showingRange) {
-      RangeEntity entity = new RangeEntity(this);
-      entity.setColor(color);
-      worldObj.spawnEntityInWorld(entity);
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this, color));
     }
   }
 

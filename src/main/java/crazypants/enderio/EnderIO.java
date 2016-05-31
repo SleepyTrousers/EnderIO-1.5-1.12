@@ -88,7 +88,6 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
-import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
@@ -149,7 +148,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:Waila", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -409,8 +407,6 @@ public class EnderIO {
     blockGauge = BlockGauge.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
-
-    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", Config.rangeEntityID, this, 0, 0, false);
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
