@@ -297,11 +297,10 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public BoundingBox getRangeBox() {
-    mkBounds();
-    return new BoundingBox(bounds.expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
+    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
-  protected void mkBounds() {
+  public AxisAlignedBB getBounds() {
     if (bounds == null) {
       bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, 1d, getRange() / 2d);
       if (capturedMob != null) {
@@ -312,9 +311,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         }
       }
     }
-  }
-
-  public AxisAlignedBB getBounds() {
     return bounds;
   }
 

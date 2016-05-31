@@ -5,7 +5,9 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.EnderIO;
@@ -17,6 +19,8 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
 import info.loenwind.autosave.annotations.Storable;
@@ -24,6 +28,7 @@ import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
@@ -35,9 +40,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileVacuumChest extends TileEntityEio implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity {
+public class TileVacuumChest extends TileEntityEio
+    implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
@@ -96,10 +105,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   private void doHoover() {
 
     int rangeSqr = range * range;
-    BoundingBox bb = new BoundingBox(getPos());
-    AxisAlignedBB aabb = new AxisAlignedBB(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    aabb = aabb.expand(range, range, range);
-    List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, aabb, this);
+    List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, getBounds(), this);
 
     for (EntityItem entity : interestingItems) {
       if (filter == null || filter.doesItemPassFilter(entity.getEntityItem())) {
@@ -182,8 +188,9 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    if (fromStack.getTagCompound() != null) {
-      result.setTagCompound((NBTTagCompound) fromStack.getTagCompound().copy());
+    NBTTagCompound tagCompound = fromStack.getTagCompound();
+    if (tagCompound != null) {
+      result.setTagCompound((NBTTagCompound) tagCompound.copy());
     }
     fromStack.stackSize -= amount;
     return result;
@@ -248,10 +255,6 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     return itemstack != null && itemstack.getItem() == EnderIO.itemBasicFilterUpgrade && itemstack.getItemDamage() == 0;
   }
 
-  public int getRange() {
-    return range;
-  }
-
   private int limitRange(int rangeIn) {
     return Math.max(1, Math.min(Config.vacuumChestRange, rangeIn));
   }
@@ -259,6 +262,7 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
   public void setRange(int range) {
     this.range = limitRange(range);
     updateBlock();
+    bounds = null;
   }
 
   public ItemStack getFilterItem() {
@@ -385,5 +389,67 @@ public class TileVacuumChest extends TileEntityEio implements Predicate<EntityIt
     markDirty();
     updateBlock();
   }
+
+  @Override
+  public int hashCode() {
+    return super.hashCode();
+  }
+
+  // RANGE
+
+  private AxisAlignedBB bounds;
+  private boolean showingRange;
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  private final static Vector4f color = new Vector4f(.11f, .11f, .94f, .4f);
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this, color));
+    }
+  }
+
+  @Override
+  public BoundingBox getRangeBox() {
+    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
+  }
+
+  public AxisAlignedBB getBounds() {
+    if (bounds == null) {
+      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange(), getRange(), getRange());
+    }
+    return bounds;
+  }
+
+  public void setBounds(AxisAlignedBB bounds) {
+    this.bounds = bounds;
+  }
+
+  @Override
+  public World getRangeWorldObj() {
+    return worldObj;
+  }
+
+  @Override
+  public float getRange() {
+    return range;
+  }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(getPos());
+  }
+
+  // RANGE END
 
 }
