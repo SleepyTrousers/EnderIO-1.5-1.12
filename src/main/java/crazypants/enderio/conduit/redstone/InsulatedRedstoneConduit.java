@@ -268,7 +268,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
   }
 
   @Override
