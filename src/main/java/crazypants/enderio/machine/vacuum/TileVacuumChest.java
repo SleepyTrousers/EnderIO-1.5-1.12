@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
@@ -40,7 +39,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -415,7 +413,7 @@ public class TileVacuumChest extends TileEntityEio
     }
     showingRange = showRange;
     if (showingRange) {
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this, color));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileVacuumChest>(this, color));
     }
   }
 
@@ -431,23 +429,8 @@ public class TileVacuumChest extends TileEntityEio
     return bounds;
   }
 
-  public void setBounds(AxisAlignedBB bounds) {
-    this.bounds = bounds;
-  }
-
-  @Override
-  public World getRangeWorldObj() {
-    return worldObj;
-  }
-
-  @Override
   public float getRange() {
     return range;
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(getPos());
   }
 
   // RANGE END

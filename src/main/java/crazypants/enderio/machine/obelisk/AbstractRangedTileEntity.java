@@ -2,7 +2,6 @@ package crazypants.enderio.machine.obelisk;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -12,7 +11,6 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -43,8 +41,7 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     }
     showingRange = showRange;
     if(showingRange) {
-      Log.debug("AbstractRangedTileEntity.setShowRange: Spawned range entity into the world with a range of " + getRange());
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<AbstractRangedTileEntity>(this));
     }
   }
   
@@ -66,13 +63,6 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
     return bounds;
   }
 
-  public void setBounds(AxisAlignedBB bounds) {
-    this.bounds = bounds;
-  }
-
-  @Override
-  public World getRangeWorldObj() {
-    return worldObj;
-  }
+  abstract protected float getRange();
 
 }

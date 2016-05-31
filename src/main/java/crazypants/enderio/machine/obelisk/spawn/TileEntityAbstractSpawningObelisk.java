@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
+import javax.annotation.Nonnull;
+
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 import crazypants.enderio.ModObject;
@@ -11,7 +13,6 @@ import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 @Storable
 public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTileEntity implements ISpawnCallback {
@@ -22,7 +23,7 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTi
   public abstract Result isSpawnPrevented(EntityLivingBase mob);
 
   @Override
-  public abstract String getMachineName();
+  public abstract @Nonnull String getMachineName();
   
 
   public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored,
@@ -32,11 +33,6 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractRangedTi
 
   public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ModObject modObject) {
     super(slotDefinition, modObject);
-  }
-
-  @Override
-  public World getRangeWorldObj() {   
-    return getWorld();
   }
 
   @Override

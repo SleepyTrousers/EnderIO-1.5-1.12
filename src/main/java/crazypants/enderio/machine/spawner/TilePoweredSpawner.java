@@ -35,7 +35,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -285,7 +284,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     }
     showingRange = showRange;
     if (showingRange) {
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle(this, color));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TilePoweredSpawner>(this, color));
     }
   }
 
@@ -314,16 +313,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return bounds;
   }
 
-  public void setBounds(AxisAlignedBB bounds) {
-    this.bounds = bounds;
-  }
-
-  @Override
-  public World getRangeWorldObj() {
-    return worldObj;
-  }
-
-  @Override
   public float getRange() {
     return 8;
   }

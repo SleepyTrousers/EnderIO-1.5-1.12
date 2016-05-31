@@ -13,21 +13,21 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
-public class RangeParticle extends Particle {
+public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
   private static final int INIT_TIME = 20;
   private static final int AGE_LIMIT = 20 * 60 * 5; // 5 minutes
 
-  private final IRanged owner;
+  private final T owner;
   private final Vector4f color;
   private int age = 0;
 
-  public RangeParticle(IRanged owner) {
+  public RangeParticle(T owner) {
     this(owner, new Vector4f(1, 1, 1, 0.4f));
   }
 
-  public RangeParticle(IRanged owner, Vector4f color) {
-    super(owner.getRangeWorldObj(), owner.getLocation().x, owner.getLocation().y, owner.getLocation().z);
+  public RangeParticle(T owner, Vector4f color) {
+    super(owner.getWorld(), owner.getPos().getX(), owner.getPos().getY(), owner.getPos().getZ());
     this.owner = owner;
     this.color = color;
   }
@@ -40,7 +40,7 @@ public class RangeParticle extends Particle {
   @Override
   public boolean isAlive() {
     return age < AGE_LIMIT && ((TileEntity) owner).hasWorldObj() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
-        && worldObj.getTileEntity(owner.getLocation().getBlockPos()) == owner;
+        && worldObj.getTileEntity(owner.getPos()) == owner;
   }
 
   @Override
@@ -64,7 +64,7 @@ public class RangeParticle extends Particle {
 
     float scale = Math.min((age + partialTicks) / INIT_TIME, 1);
 
-    GlStateManager.translate(owner.getLocation().x - interpPosX, owner.getLocation().y - interpPosY, owner.getLocation().z - interpPosZ);
+    GlStateManager.translate(owner.getPos().getX() - interpPosX, owner.getPos().getY() - interpPosY, owner.getPos().getZ() - interpPosZ);
 
     GlStateManager.color(color.x, color.y, color.z, color.w);
 
