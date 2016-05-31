@@ -35,7 +35,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -260,7 +259,6 @@ public class TileVacuumChest extends TileEntityEio
   public void setRange(int range) {
     this.range = limitRange(range);
     updateBlock();
-    bounds = null;
   }
 
   public ItemStack getFilterItem() {
@@ -395,7 +393,6 @@ public class TileVacuumChest extends TileEntityEio
 
   // RANGE
 
-  private AxisAlignedBB bounds;
   private boolean showingRange;
 
   @Override
@@ -418,15 +415,8 @@ public class TileVacuumChest extends TileEntityEio
   }
 
   @Override
-  public BoundingBox getRangeBox() {
-    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
-  }
-
-  public AxisAlignedBB getBounds() {
-    if (bounds == null) {
-      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange(), getRange(), getRange());
-    }
-    return bounds;
+  public BoundingBox getBounds() {
+    return new BoundingBox(getPos()).expand(getRange());
   }
 
   public float getRange() {

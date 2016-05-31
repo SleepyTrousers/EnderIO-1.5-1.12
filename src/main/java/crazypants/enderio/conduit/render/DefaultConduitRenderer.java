@@ -343,20 +343,20 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     // NB This on handles the really simple conduit case!
 
-    float width = bb.maxX - bb.minX;
-    float height = bb.maxY - bb.minY;
-    float depth = bb.maxZ - bb.minZ;
+    double width = bb.maxX - bb.minX;
+    double height = bb.maxY - bb.minY;
+    double depth = bb.maxZ - bb.minZ;
 
     if (width > 0 && height > 0 && depth > 0) {
       if (width / depth > 1.5f || depth / width > 1.5f) {
         // split horizontally
         if (width > depth) {
-          int numSplits = Math.round(width / depth);
-          float newWidth = width / numSplits;
+          int numSplits = (int) Math.round(width / depth);
+          double newWidth = width / numSplits;
           BoundingBox[] result = new BoundingBox[numSplits];
-          float lastMax = bb.minX;
+          double lastMax = bb.minX;
           for (int i = 0; i < numSplits; i++) {
-            float max = lastMax + newWidth;
+            double max = lastMax + newWidth;
             result[i] = new BoundingBox(lastMax, bb.minY, bb.minZ, max, bb.maxY, bb.maxZ);
             lastMax = max;
           }
@@ -364,12 +364,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
         } else {
 
-          int numSplits = Math.round(depth / width);
-          float newWidth = depth / numSplits;
+          int numSplits = (int) Math.round(depth / width);
+          double newWidth = depth / numSplits;
           BoundingBox[] result = new BoundingBox[numSplits];
-          float lastMax = bb.minZ;
+          double lastMax = bb.minZ;
           for (int i = 0; i < numSplits; i++) {
-            float max = lastMax + newWidth;
+            double max = lastMax + newWidth;
             result[i] = new BoundingBox(bb.minX, bb.minY, lastMax, bb.maxX, bb.maxY, max);
             lastMax = max;
           }
@@ -379,12 +379,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       } else if (height / width > 1.5) {
 
-        int numSplits = Math.round(height / width);
-        float newWidth = height / numSplits;
+        int numSplits = (int) Math.round(height / width);
+        double newWidth = height / numSplits;
         BoundingBox[] result = new BoundingBox[numSplits];
-        float lastMax = bb.minY;
+        double lastMax = bb.minY;
         for (int i = 0; i < numSplits; i++) {
-          float max = lastMax + newWidth;
+          double max = lastMax + newWidth;
           result[i] = new BoundingBox(bb.minX, lastMax, bb.minZ, bb.maxX, max, bb.maxZ);
           lastMax = max;
         }

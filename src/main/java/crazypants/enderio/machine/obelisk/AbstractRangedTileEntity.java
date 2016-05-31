@@ -10,14 +10,12 @@ import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEntity implements IRanged {
   
-  private AxisAlignedBB bounds;
   private boolean showingRange;
   
   public AbstractRangedTileEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
@@ -46,21 +44,8 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
   }
   
   @Override
-  public void onCapacitorDataChange() {
-    super.onCapacitorDataChange();
-    bounds = null;
-  }
-  
-  @Override
-  public BoundingBox getRangeBox() {
-    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
-  }
-  
-  public AxisAlignedBB getBounds() {
-    if (bounds == null) {
-      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d);
-    }
-    return bounds;
+  public BoundingBox getBounds() {
+    return new BoundingBox(getPos()).expand(getRange() / 2d);
   }
 
   abstract protected float getRange();

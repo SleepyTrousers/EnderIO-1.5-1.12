@@ -64,15 +64,11 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
     float scale = Math.min((age + partialTicks) / INIT_TIME, 1);
 
-    GlStateManager.translate(owner.getPos().getX() - interpPosX, owner.getPos().getY() - interpPosY, owner.getPos().getZ() - interpPosZ);
+    GlStateManager.translate(-interpPosX, -interpPosY, -interpPosZ);
 
     GlStateManager.color(color.x, color.y, color.z, color.w);
 
-    GlStateManager.translate(0.5f, 0.5f, 0.5f);
-    GlStateManager.scale(scale, scale, scale);
-    GlStateManager.translate(-0.5f, -0.5f, -0.5f);
-
-    RenderUtil.renderBoundingBox(owner.getRangeBox(), IconUtil.instance.whiteTexture);
+    RenderUtil.renderBoundingBox(owner.getBounds().scale(scale).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
 
     GlStateManager.depthMask(true);
     GlStateManager.disableBlend();

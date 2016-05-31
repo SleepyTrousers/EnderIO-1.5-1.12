@@ -556,7 +556,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         addConduitCores(cores, con);
         if(cores.size() > 1) {
           BoundingBox bb = cores.get(0).bound;
-          float area = bb.getArea();
+          double area = bb.getArea();
           for (CollidableComponent cc : cores) {
             bb = bb.expandBy(cc.bound);
           }

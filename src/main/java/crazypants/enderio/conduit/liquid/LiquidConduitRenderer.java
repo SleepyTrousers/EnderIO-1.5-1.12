@@ -209,9 +209,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     float ys = id.getFrontOffsetY() == 0 ? Math.min(yScale, scale) : yScale;
     float zs = id.getFrontOffsetZ() == 0 ? scale : 1;
 
-    float sizeY = bound.sizeY();
+    double sizeY = bound.sizeY();
     bound = bound.scale(xs, ys, zs);
-    float transY = (bound.sizeY() - sizeY) / 2;
+    double transY = (bound.sizeY() - sizeY) / 2;
     Vector3d translation = new Vector3d(0, transY + 0.025, 0);
     setupVertices(bound.translate(translation));
   }

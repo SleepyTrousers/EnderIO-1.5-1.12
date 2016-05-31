@@ -2,8 +2,6 @@ package crazypants.enderio.machine.obelisk.inhibitor;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.render.BoundingBox;
-
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 import crazypants.enderio.ModObject;
@@ -11,7 +9,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
 
 @Storable
 public class TileInhibitorObelisk extends AbstractRangedTileEntity {
@@ -67,12 +64,6 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
   public void onChunkUnload() {
     super.onChunkUnload();
     BlockInhibitorObelisk.instance.activeInhibitors.remove(getLocation());
-  }
-
-  @Override
-  public BoundingBox getRangeBox() {
-    return new BoundingBox(new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, getRange() / 2d, getRange() / 2d)
-        .expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
   }
 
 }

@@ -120,7 +120,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   protected BlockConduitBundle() {
     super(ModObject.blockConduitBundle.getUnlocalisedName(), TileConduitBundle.class);
-    setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
+    setBlockBounds(0.334, 0.334, 0.334, 0.667, 0.667, 0.667);
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
@@ -131,7 +131,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setDefaultState(blockState.getBaseState());
   }
 
-  private void setBlockBounds(float f, float g, float h, float i, float j, float k) {
+  private void setBlockBounds(double f, double g, double h, double i, double j, double k) {
     bounds = new AxisAlignedBB(f, g, h, i, j, k);    
   }
 

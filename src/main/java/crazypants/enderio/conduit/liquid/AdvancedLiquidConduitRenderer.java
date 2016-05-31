@@ -84,9 +84,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         float minV = texture.getMinV();
         float maxV = texture.getMaxV();
 
-        float sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
+        double sideScale = Math.max(bb.sizeX(), bb.sizeY()) * 2 / 16f;
         sideScale = Math.max(sideScale, bb.sizeZ() * 2 / 16f);
-        float width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
+        double width = Math.min(bb.sizeX(), bb.sizeY()) * 15f / 16f;
 
         List<Vertex> corners = bb.getCornersWithUvForFace(d, minU, maxU, minV, maxV);
         moveEdgeCorners(corners, vDir, width);
@@ -122,7 +122,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
   }
 
-  private void moveEdgeCorners(List<Vertex> vertices, EnumFacing edge, float scaleFactor) {
+  private void moveEdgeCorners(List<Vertex> vertices, EnumFacing edge, double scaleFactor) {
     int[] indices = getClosest(edge, vertices);
     vertices.get(indices[0]).xyz.x -= scaleFactor * edge.getFrontOffsetX();
     vertices.get(indices[1]).xyz.x -= scaleFactor * edge.getFrontOffsetX();

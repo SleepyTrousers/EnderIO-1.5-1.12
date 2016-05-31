@@ -214,7 +214,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       return false;
     }
     EntityLiving entityliving = (EntityLiving) entity;
-    int spawnRange = Config.poweredSpawnerSpawnRange;
+    int spawnRange = getRange();
 
     int xCoord = getPos().getX();
     int yCoord = getPos().getY();
@@ -266,7 +266,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   // RANGE
 
-  private AxisAlignedBB bounds;
+  private BoundingBox bounds;
   private boolean showingRange;
 
   @Override
@@ -295,26 +295,26 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public BoundingBox getRangeBox() {
-    return new BoundingBox(getBounds().expand(0.01, 0.01, 0.01).offset(-getPos().getX(), -getPos().getY(), -getPos().getZ()));
-  }
-
-  public AxisAlignedBB getBounds() {
-    if (bounds == null) {
-      bounds = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(getRange() / 2d, 1d, getRange() / 2d);
-      if (capturedMob != null) {
-        Entity ent = capturedMob.getEntity(worldObj, false);
-        if (ent != null) {
-          int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
-          bounds = bounds.setMaxY(bounds.maxY + height);
+  public BoundingBox getBounds() {
+    if (isSpawnMode) {
+      if (bounds == null) {
+        bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
+        if (capturedMob != null) {
+          Entity ent = capturedMob.getEntity(worldObj, false);
+          if (ent != null) {
+            int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
+            bounds = bounds.setMaxY(bounds.maxY + height);
+          }
         }
       }
+      return bounds;
+    } else {
+      return new BoundingBox(getPos());
     }
-    return bounds;
   }
 
-  public float getRange() {
-    return 8;
+  public int getRange() {
+    return Config.poweredSpawnerSpawnRange;
   }
 
   // RANGE END
