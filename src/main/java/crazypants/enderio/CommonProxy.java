@@ -16,6 +16,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -45,7 +47,10 @@ public class CommonProxy {
   public void loadIcons() {
   }
   
-  public void preInit() {       
+  public void preInit() {
+    if (Loader.isModLoaded("theoneprobe")) {
+      FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.top.TOPCompatibility");
+    }
   }
   
   private static final String[] RECIPE_FILES = { "aliases", "materials", "items", "machines" };

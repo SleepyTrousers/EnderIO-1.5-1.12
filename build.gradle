@@ -68,7 +68,8 @@ dependencies {
     }
 
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"   
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     
     compile fileTree(dir: 'lib', include: '*.jar') 
 }
