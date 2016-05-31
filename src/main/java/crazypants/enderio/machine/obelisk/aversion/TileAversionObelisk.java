@@ -1,13 +1,16 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.entity.EntityLivingBase;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
+import javax.annotation.Nonnull;
+
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityLivingBase;
 
 @Storable
 public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
@@ -17,13 +20,18 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   }
   
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockSpawnGuard.getUnlocalisedName();
   }
 
   @Override
   public Result isSpawnPrevented(EntityLivingBase mob) {
     return (redstoneCheckPassed && hasPower() && isMobInRange(mob) && isMobInFilter(mob)) ? Result.DENY : Result.NEXT;
+  }
+
+  @Override
+  public SpawnObeliskAction getSpawnObeliskAction() {
+    return SpawnObeliskAction.AVERT;
   }
 
 }

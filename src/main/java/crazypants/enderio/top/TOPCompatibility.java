@@ -1,5 +1,7 @@
 package crazypants.enderio.top;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
@@ -12,8 +14,11 @@ import crazypants.enderio.Log;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
+import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk.SpawnObeliskAction;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.util.CapturedMob;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
@@ -47,15 +52,14 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   @Override
   public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-    if (blockState.getBlock() instanceof BlockEio) {
-      boolean active = true;
-      float progress = -1;
-      int rf = -1, maxrf = 0;
-      String range = null;
-
+    if (probeInfo != null && world != null && blockState != null && data != null && blockState.getBlock() instanceof BlockEio) {
       TileEntity tileEntity = world.getTileEntity(data.getPos());
-
       if (tileEntity != null) {
+        boolean active = true;
+        float progress = -1;
+        int rf = -1, maxrf = 0;
+        String range = null;
+
         if (tileEntity instanceof AbstractMachineEntity) {
           AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;
           active = te.isActive();
@@ -110,7 +114,35 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
           eiobox.horizontal().item(new ItemStack(Blocks.STONE)).text("Range: " + range);
         }
 
-      }
+        if (tileEntity instanceof AbstractMobObelisk) {
+          AbstractMobObelisk te = (AbstractMobObelisk) tileEntity;
+          List<CapturedMob> mobsInFilter = te.getMobsInFilter();
+          SpawnObeliskAction spawnObeliskAction = te.getSpawnObeliskAction();
+
+          IProbeInfo mobbox = probeInfo.vertical(probeInfo.defaultLayoutStyle().borderColor(0xffff0000));
+
+          mobbox.text(spawnObeliskAction.getActionString() + ":");
+
+          if (mobsInFilter.isEmpty()) {
+            mobbox.text("nothing");
+          } else if (mobsInFilter.size() <= 4) {
+            for (CapturedMob capturedMob : mobsInFilter) {
+              mobbox.horizontal().entity(capturedMob.getEntityName()).text(capturedMob.getDisplayName());
+            }
+          } else {
+            IProbeInfo mobList = mobbox.horizontal();
+            int count = 0;
+            for (CapturedMob capturedMob : mobsInFilter) {
+              if (++count > 6) {
+                mobList = mobbox.horizontal();
+                count = 0;
+              }
+              mobList.entity(capturedMob.getEntityName());
+            }
+          }
+        }
+
+      } // end eio te
     }
 
   }

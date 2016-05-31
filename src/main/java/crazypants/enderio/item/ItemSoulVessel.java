@@ -16,6 +16,7 @@ import crazypants.enderio.config.Config;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -172,6 +173,16 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
     }
 
     return capturedMob.toStack(this, 1, 1);
+  }
+
+  @Override
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    super.getSubItems(itemIn, tab, subItems);
+    if (tab != null) {
+      for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
+        subItems.add(capturedMob.toStack(this, 1, 1));
+      }
+    }
   }
 
   @Override

@@ -1,29 +1,29 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
-import info.loenwind.autosave.annotations.Storable;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
+
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.PacketFarmAction;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import crazypants.enderio.network.PacketHandler;
-
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
@@ -36,7 +36,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   }
   
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockSpawnRelocator.getUnlocalisedName();
   }
 
@@ -90,6 +90,11 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
       }
     }
     return super.processTasks(redstoneCheck);
+  }
+
+  @Override
+  public SpawnObeliskAction getSpawnObeliskAction() {
+    return SpawnObeliskAction.RELOCATE;
   }
 
 }

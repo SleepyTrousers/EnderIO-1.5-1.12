@@ -19,7 +19,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
+import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.Entity;
@@ -34,7 +34,6 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.WalkNodeProcessor;
@@ -45,7 +44,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.FakePlayer;
 
 @Storable
-public class TileAttractor extends AbstractRangedTileEntity {
+public class TileAttractor extends AbstractMobObelisk {
 
   private FakePlayer target;
   private Set<EntityLiving> tracking = new HashSet<EntityLiving>();
@@ -64,19 +63,6 @@ public class TileAttractor extends AbstractRangedTileEntity {
   @Override
   public @Nonnull String getMachineName() {
     return ModObject.blockAttractor.getUnlocalisedName();
-  }
-
-  @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (!slotDefinition.isInputSlot(i)) {
-      return false;
-    }
-    return CapturedMob.containsSoul(itemstack);
-  }
-
-  @Override
-  public boolean isActive() {
-    return hasPower();
   }
 
   @Override
@@ -140,16 +126,6 @@ public class TileAttractor extends AbstractRangedTileEntity {
     tracking.clear();
   }
 
-  protected double usePower() {
-    return usePower(getPowerUsePerTick());
-  }
-
-  protected int usePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored() - used));
-    return used;
-  }
-
   FakePlayer getTarget() {
     if (target == null) {
       target = new Target();
@@ -162,10 +138,6 @@ public class TileAttractor extends AbstractRangedTileEntity {
   }
 
   private boolean isMobInRange(EntityLiving mob) {
-    return isMobInRange(mob, (int) (getRange() * getRange()));
-  }
-
-  private boolean isMobInRange(EntityLiving mob, int rangeIn) {
     if (mob == null) {
       return false;
     }
@@ -315,6 +287,11 @@ public class TileAttractor extends AbstractRangedTileEntity {
 
     PathFinder pf = new PathFinder(new WalkNodeProcessor());
     return pf.findPath(worldObj, (EntityLiving)entity, new BlockPos(targX, targY, targZ), range);
+  }
+
+  @Override
+  public SpawnObeliskAction getSpawnObeliskAction() {
+    return SpawnObeliskAction.ATTRACT;
   }
 
   private class Target extends FakePlayerEIO {

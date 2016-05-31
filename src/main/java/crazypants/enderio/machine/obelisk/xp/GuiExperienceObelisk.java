@@ -2,11 +2,6 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -19,6 +14,10 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
 
@@ -134,6 +133,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
+    System.out.println("Rendering " + xSize + "x" + ySize);
 
     int width1 = 110;
     ExperienceBarRenderer.render(this, getGuiLeft() + xSize / 2 - width1 / 2, getGuiTop() + 55, width1, getTileEntity().getContainer());
