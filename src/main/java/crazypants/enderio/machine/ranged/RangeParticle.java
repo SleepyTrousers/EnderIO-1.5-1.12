@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import net.minecraft.client.particle.Particle;
@@ -17,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 public class RangeParticle extends Particle {
 
   private static final int INIT_TIME = 20;
+  private static final int AGE_LIMIT = 20 * 60 * 5; // 5 minutes
 
   private final IRanged owner;
   private final Vector4f color;
@@ -39,14 +39,8 @@ public class RangeParticle extends Particle {
 
   @Override
   public boolean isAlive() {
-    if (!((TileEntity) owner).hasWorldObj() || ((TileEntity) owner).isInvalid() || !owner.isShowingRange()) {
-      return false;
-    }
-    BlockCoord bc = owner.getLocation();
-    if (!(worldObj.getTileEntity(bc.getBlockPos()) instanceof IRanged)) {
-      return false;
-    }
-    return true;
+    return age < AGE_LIMIT && ((TileEntity) owner).hasWorldObj() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
+        && worldObj.getTileEntity(owner.getLocation().getBlockPos()) == owner;
   }
 
   @Override
