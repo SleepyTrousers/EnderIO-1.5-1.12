@@ -19,14 +19,12 @@ import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -45,9 +43,7 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(TextureMap register) {
-        ICONS.put(KEY_CORE_OFF_ICON, register.registerSprite(new ResourceLocation(KEY_CORE_OFF_ICON)));
-        ICONS.put(KEY_CORE_ON_ICON, register.registerSprite(new ResourceLocation(KEY_CORE_ON_ICON)));
+      public void registerIcons(TextureMap register) {        
         ICONS.put(KEY_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_CONDUIT_ICON)));
         ICONS.put(KEY_TRANSMISSION_ICON, register.registerSprite(new ResourceLocation(KEY_TRANSMISSION_ICON)));
       }
@@ -69,11 +65,6 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
-  }
-
-  @Override
   public Class<? extends IConduit> getBaseConduitType() {
     return IRedstoneConduit.class;
   }
@@ -87,11 +78,6 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
   public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (RedstoneConduitNetwork) network;
     return true;
-  }
-
-  @Override
-  public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
-    return false;
   }
 
   @Override
@@ -182,11 +168,6 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public DyeColor getSignalColor(EnumFacing dir) {
-    return DyeColor.RED;
-  }
-
-  @Override
   public Set<Signal> getNetworkOutputs(EnumFacing side) {
     if(network == null) {
       return Collections.emptySet();
@@ -262,11 +243,7 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
 //    BlockCoord loc = getLocation().getLocation(dir);
 //    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getBundleWorldObj(), loc.getBlockPos(), dir.getOpposite());
 //  }
-
-  @Override
-  public int isProvidingStrongPower(EnumFacing toDirection) {
-    return 0;
-  }
+ 
 
   @Override
   public int isProvidingWeakPower(EnumFacing toDirection) {
@@ -281,95 +258,8 @@ public abstract class RedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public TextureAtlasSprite getTextureForState(CollidableComponent component) {
-    if(component.dir == null) {
-      return isActive() ? ICONS.get(KEY_CORE_ON_ICON) : ICONS.get(KEY_CORE_OFF_ICON);
-    }
-    return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
-  }
-
-  @Override
-  public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
-    return isActive() ? RedstoneConduit.ICONS.get(KEY_TRANSMISSION_ICON) : RedstoneConduit.ICONS.get(KEY_CONDUIT_ICON);
-  }
-
-  @Override
   public String toString() {
     return "RedstoneConduit [network=" + network + " connections=" + conduitConnections + " active=" + active + "]";
-  }
-
-  @Override
-  public int[] getOutputValues(World world, int x, int y, int z, EnumFacing side) {
-    int[] result = new int[16];
-
-    Set<Signal> outs = network != null ? network.getSignals() : null;
-    if(outs != null) {
-      BlockCoord loc = getLocation().getLocation(side);
-      for (Signal s : outs) {
-        // Avoid "feedback loops", i.e. don't report an output on a side where
-        // we have an input (otherwise a RedNet cable connected to a conduit
-        // will keep a signal high, even if the original source vanishes).
-        // Note that it's still possible to get loops if there are two
-        // connections between a conduit set and a RedNet network. I'm not
-        // sure there's anything we could do to avoid this, though, nor am I
-        // convinced we should.
-        if(s.dir != side || s.x != loc.x || s.y != loc.y || s.z != loc.z) {
-          int subnet = convertColorForRedNet(s.color.ordinal());
-          result[subnet] = s.strength;
-        }
-      }
-    }
-
-    return result;
-  }
-
-  @Override
-  public int getOutputValue(World world, int x, int y, int z, EnumFacing side, int subnet) {
-    Set<Signal> outs = network != null ? network.getSignals() : null;
-    if(outs != null) {
-      BlockCoord loc = getLocation().getLocation(side);
-      int color = convertColorForRedNet(subnet);
-      for (Signal s : outs) {
-        // Avoid "feedback loops", see comment in getOutputValues.
-        if(s.dir != side || s.x != loc.x || s.y != loc.y || s.z != loc.z) {
-          if(s.color.ordinal() == color) {
-            return s.strength;
-          }
-        }
-      }
-    }
-
-    return 0;
-  }
-
-  @Override
-  public void onInputsChanged(World world, int x, int y, int z, EnumFacing side, int[] inputValues) {
-    // Check if anything changed, if so mark neighbor dirty to trigger an
-    // update in the next tick. We have to iterate over the colors in the
-    // outer loop to make sure we check all of them, because for channels
-    // with zero signal strength no signals are stored.
-    Set<Signal> inputs = getNetworkInputs(side);
-    externalSignals.get(side.ordinal()).clear();
-    BlockCoord loc = getLocation().getLocation(side);
-    for (int subnet = 0; subnet < inputValues.length; ++subnet) {
-      int color = convertColorForRedNet(subnet);
-      int newInput = inputValues[subnet];
-      int oldInput = 0;
-      for (Signal input : inputs) {
-        if(input.color.ordinal() == color) {
-          oldInput = input.strength;
-          break;
-        }
-      }
-
-      neighbourDirty |= oldInput != newInput;
-
-      // Store external inputs to allow regenerating the global list of signals
-      // in getNetworkInputs. This is required for RedNet cables to work, e.g.
-      if(newInput > 1) { // force signal strength reduction to avoid cycles
-        externalSignals.get(side.ordinal()).add(new Signal(loc.x, loc.y, loc.z, side, newInput - 1, DyeColor.fromIndex(color)));
-      }
-    }
   }
   
   @Override

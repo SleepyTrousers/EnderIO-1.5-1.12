@@ -7,20 +7,6 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
@@ -30,8 +16,21 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -48,7 +47,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     this.cb = cb;
     cons = new HashSet<EnumFacing>();
     for (IConduit con : cb.getConduits()) {
-      if(con instanceof IInsulatedRedstoneConduit) {
+      if(con instanceof IRedstoneConduit) {
         Set<EnumFacing> conCons = con.getConduitConnections();
         for(EnumFacing dir : EnumFacing.VALUES) {
           if(!conCons.contains(dir)) {

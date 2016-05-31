@@ -4,16 +4,18 @@ import java.util.Set;
 
 import com.enderio.core.common.util.DyeColor;
 
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
 
 public interface IRedstoneConduit extends IConduit {
 
   public static final String KEY_CONDUIT_ICON = "enderio:blocks/redstoneConduit";
   public static final String KEY_TRANSMISSION_ICON = "enderio:blocks/redstoneConduitTransmission";
-  public static final String KEY_CORE_OFF_ICON = "enderio:blocks/redstoneConduitCoreOff";
-  public static final String KEY_CORE_ON_ICON = "enderio:blocks/redstoneConduitCoreOn";
+  
+  public static final String KEY_INS_CONDUIT_ICON = "enderio:blocks/redstoneInsulatedConduit";
+  public static final String KEY_INS_CORE_OFF_ICON = "enderio:blocks/redstoneInsulatedConduitCoreOff";
+  public static final String KEY_INS_CORE_ON_ICON = "enderio:blocks/redstoneInsulatedConduitCoreOn";
 
   // External redstone interface
 
@@ -31,11 +33,23 @@ public interface IRedstoneConduit extends IConduit {
 
   void updateNetwork();
 
-  // MFR RedNet
+  
+  // Old insulated interface
 
-  int[] getOutputValues(World world, int x, int y, int z, EnumFacing side);
 
-  int getOutputValue(World world, int x, int y, int z, EnumFacing side, int subnet);
+  public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  void onInputsChanged(World world, int x, int y, int z, EnumFacing side, int[] inputValues);
+  void onInputsChanged(EnumFacing side, int[] inputValues);
+
+  void onInputChanged(EnumFacing side, int inputValue);
+
+  void forceConnectionMode(EnumFacing dir, ConnectionMode mode);
+
+  void setSignalColor(EnumFacing dir, DyeColor col);
+
+  boolean isSpecialConnection(EnumFacing dir);
+
+  boolean isOutputStrong(EnumFacing dir);
+
+  void setOutputStrength(EnumFacing dir, boolean isStrong);
 }

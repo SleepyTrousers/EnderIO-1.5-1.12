@@ -1,13 +1,13 @@
 package crazypants.enderio.conduit.packet;
 
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<IInsulatedRedstoneConduit> implements
+public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<IRedstoneConduit> implements
     IMessageHandler<PacketRedstoneConduitOutputStrength, IMessage> {
 
   private EnumFacing dir;
@@ -16,7 +16,7 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
   public PacketRedstoneConduitOutputStrength() {
   }
 
-  public PacketRedstoneConduitOutputStrength(IInsulatedRedstoneConduit con, EnumFacing dir) {
+  public PacketRedstoneConduitOutputStrength(IRedstoneConduit con, EnumFacing dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.REDSTONE);
     this.dir = dir;
     isStrong = con.isOutputStrong(dir);
@@ -47,7 +47,7 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
 
   @Override
   public IMessage onMessage(PacketRedstoneConduitOutputStrength message, MessageContext ctx) {
-    IInsulatedRedstoneConduit tile = message.getTileCasted(ctx);
+    IRedstoneConduit tile = message.getTileCasted(ctx);
     if(tile != null) {
       tile.setOutputStrength(message.dir, message.isStrong);
       //message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);

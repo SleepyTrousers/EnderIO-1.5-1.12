@@ -1,9 +1,5 @@
 package crazypants.enderio.conduit.render;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.item.ItemConduit;
@@ -19,10 +15,12 @@ import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
 import crazypants.enderio.conduit.redstone.RedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneSwitch;
-import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderManager {
@@ -40,15 +38,13 @@ public class ConduitBundleRenderManager {
   public void registerRenderers() {
 
     RedstoneConduit.initIcons();
-    InsulatedRedstoneConduit.initIcons();
-    RedstoneSwitch.initIcons();
+    InsulatedRedstoneConduit.initIcons();    
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
     AdvancedLiquidConduit.initIcons();
     EnderLiquidConduit.initIcons();
     ItemConduit.initIcons();
-        
-    cbr.registerRenderer(RedstoneSwitchRenderer.getInstance());
+            
     cbr.registerRenderer(new AdvancedLiquidConduitRenderer());
     cbr.registerRenderer(LiquidConduitRenderer.create());
     cbr.registerRenderer(new PowerConduitRenderer());

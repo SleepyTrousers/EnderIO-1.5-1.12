@@ -37,7 +37,6 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -922,7 +921,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
       // This is an ugly special case, TODO fix this
       for (RaytraceResult hit : results) {
-        IInsulatedRedstoneConduit cond = con.getConduit(IInsulatedRedstoneConduit.class);
+        IRedstoneConduit cond = con.getConduit(IRedstoneConduit.class);
         if (cond != null && hit.component != null && cond.getExternalConnections().contains(hit.component.dir) && !cond.isSpecialConnection(hit.component.dir)
             && hit.component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
           minBB = hit.component.bound;

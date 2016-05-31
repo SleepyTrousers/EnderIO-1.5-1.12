@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IInsulatedRedstoneConduit> implements IMessageHandler<PacketRedstoneConduitSignalColor, IMessage> {
+public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRedstoneConduit> implements IMessageHandler<PacketRedstoneConduitSignalColor, IMessage> {
 
   private EnumFacing dir;
   private DyeColor col;
@@ -18,7 +18,7 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IIns
   public PacketRedstoneConduitSignalColor() {
   }
 
-  public PacketRedstoneConduitSignalColor(IInsulatedRedstoneConduit con, EnumFacing dir) {
+  public PacketRedstoneConduitSignalColor(IRedstoneConduit con, EnumFacing dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.REDSTONE);
     this.dir = dir;
     col = con.getSignalColor(dir);

@@ -33,8 +33,6 @@ enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
 enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
-enderio.itemRedstoneConduit.name=Redstone Conduit
-enderio.itemRedstoneConduitSwitch.name=Conduit Switch
 enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
 
 enderio.itemLiquidConduit.name=Fluid Conduit

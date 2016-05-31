@@ -10,6 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -26,24 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.DyeColor;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.tool.ToolUtil;
-
-public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
+public class InsulatedRedstoneConduit extends RedstoneConduit implements IRedstoneConduit {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
@@ -270,12 +268,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   public ItemStack createItem() {
     return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
   }
-
-  @Override
-  public Class<? extends IConduit> getCollidableType() {
-    return IInsulatedRedstoneConduit.class;
-  }
-
+ 
   @Override
   public void onInputsChanged(EnumFacing side, int[] inputValues) {
   }

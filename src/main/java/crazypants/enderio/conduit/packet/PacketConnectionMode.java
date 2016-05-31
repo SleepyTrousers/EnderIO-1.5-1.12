@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.packet;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -54,8 +54,8 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
     if(conduit == null) {
       return null;
     }
-    if(conduit instanceof IInsulatedRedstoneConduit) {
-      ((IInsulatedRedstoneConduit)conduit).forceConnectionMode(message.dir, message.mode);
+    if(conduit instanceof IRedstoneConduit) {
+      ((IRedstoneConduit)conduit).forceConnectionMode(message.dir, message.mode);
     } else {
       conduit.setConnectionMode(message.dir, message.mode);
     }

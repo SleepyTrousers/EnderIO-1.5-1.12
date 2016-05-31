@@ -11,7 +11,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -26,7 +26,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   private String signalColorStr = EnderIO.lang.localize("gui.conduit.redstone.color");
   private String signalStringthStr = EnderIO.lang.localize("gui.conduit.redstone.signalStrengh");
-  private IInsulatedRedstoneConduit insCon;
+  private IRedstoneConduit insCon;
 
   private int stongLabelX;
 
@@ -36,8 +36,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
     int x = 0;
     int y = customTop;
 
-    if(con instanceof IInsulatedRedstoneConduit) {
-      insCon = (IInsulatedRedstoneConduit) con;
+    if(con instanceof IRedstoneConduit) {
+      insCon = (IRedstoneConduit) con;
     }
 
     if(insCon != null) {
