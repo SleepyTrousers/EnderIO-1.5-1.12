@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.spawner;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +77,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   private final List<ResourceLocation> toolBlackList = new ArrayList<ResourceLocation>();
 
   private Field fieldpersistenceRequired; 
-  private Field entNameField;
+  private Method getEntNameMethod;
   private Field spawnDelayField;
 
   protected BlockPoweredSpawner() {
@@ -92,8 +93,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     } catch (Exception e) {
       Log.error("BlockPoweredSpawner: Could not find field: persistenceRequired");
     }
-    try {
-    entNameField = ReflectionHelper.findField(MobSpawnerBaseLogic.class, "mobID", "field_98288_a" );
+    try {      
+      getEntNameMethod = ReflectionHelper.findMethod(MobSpawnerBaseLogic.class, null, new String[] {"getEntityNameToSpawn", "func_98276_e"}, new Class<?>[0]);
     } catch (Exception e) {
       Log.error("BlockPoweredSpawner: Could not find field: mobID");
     }
@@ -185,10 +186,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  private String getEntityName(MobSpawnerBaseLogic logic) {    
-    if(entNameField != null) {
+  private String getEntityName(MobSpawnerBaseLogic logic) {      
+    if(getEntNameMethod != null) {
       try {
-        return (String)entNameField.get(logic);
+        return (String)getEntNameMethod.invoke(logic, new Object[0]);        
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -197,7 +198,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   private void setSpawnDelay(MobSpawnerBaseLogic logic) {
-    if (entNameField != null) {
+    if (spawnDelayField != null) {
       try {
         spawnDelayField.set(logic, 0);
       } catch (Exception e) {
