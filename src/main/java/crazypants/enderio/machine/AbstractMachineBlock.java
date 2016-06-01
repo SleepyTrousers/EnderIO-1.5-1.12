@@ -309,9 +309,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
     if (world == null || pos == null) {
-      return null;
+      throw new NullPointerException("Hey, how should I get you a block state without a world or position?");
     }
-    return getPaintSource(getDefaultState(), world, pos);
+    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
+    return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
