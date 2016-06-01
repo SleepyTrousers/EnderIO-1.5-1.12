@@ -215,7 +215,8 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
 
   @Override
   public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    return getPaintSource(getDefaultState(), world, pos);
+    IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
+    return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   @Override
