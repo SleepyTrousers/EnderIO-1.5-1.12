@@ -13,12 +13,11 @@ import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Item[] slotItems = { Items.WATER_BUCKET, Items.LAVA_BUCKET, Buckets.itemBucketNutrientDistillation,
+  static private final ItemStack[] slotItems = { new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.LAVA_BUCKET), Buckets.itemBucketNutrientDistillation,
       Buckets.itemBucketHootch, Buckets.itemBucketRocketFuel, Buckets.itemBucketFireWater };
   static private final Random rand = new Random();
 

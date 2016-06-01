@@ -1,45 +1,72 @@
 package crazypants.enderio.fluid;
 
+import crazypants.util.ClientUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeModContainer;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.util.ClientUtil;
 
 public class Buckets {
 
-  public static ItemBucketEio itemBucketNutrientDistillation;
-  public static ItemBucketEio itemBucketHootch;
-  public static ItemBucketEio itemBucketRocketFuel;
-  public static ItemBucketEio itemBucketFireWater;
-  public static ItemBucketEio itemBucketXpJuice;
-  public static ItemBucketEio itemBucketLiquidSunshine;
-  public static ItemBucketEio itemBucketCloudSeed;
-  public static ItemBucketEio itemBucketCloudSeedConcentrated;
-  
+  public static ItemStack itemBucketNutrientDistillation;
+  public static ItemStack itemBucketHootch;
+  public static ItemStack itemBucketRocketFuel;
+  public static ItemStack itemBucketFireWater;
+  public static ItemStack itemBucketXpJuice;
+  public static ItemStack itemBucketLiquidSunshine;
+  public static ItemStack itemBucketCloudSeed;
+  public static ItemStack itemBucketCloudSeedConcentrated;
+
   public static void createBuckets() {
-    if(Fluids.fluidXpJuice != null) {
-      itemBucketXpJuice = ItemBucketEio.create(null, Fluids.fluidXpJuice);
-    } 
-    itemBucketNutrientDistillation = ItemBucketEio.create(Fluids.blockNutrientDistillation, Fluids.fluidNutrientDistillation);
-    itemBucketHootch = ItemBucketEio.create(Fluids.blockHootch, Fluids.fluidHootch);
-    itemBucketRocketFuel = ItemBucketEio.create(Fluids.blockRocketFuel, Fluids.fluidRocketFuel);
-    itemBucketFireWater = ItemBucketEio.create(Fluids.blockFireWater, Fluids.fluidFireWater);
-    itemBucketLiquidSunshine = ItemBucketEio.create(Fluids.blockLiquidSunshine, Fluids.fluidLiquidSunshine);
-    itemBucketCloudSeed = ItemBucketEio.create(Fluids.blockCloudSeed, Fluids.fluidCloudSeed);
-    itemBucketCloudSeedConcentrated = ItemBucketEio.create(Fluids.blockCloudSeedConcentrated, Fluids.fluidCloudSeedConcentrated);
+    if (FluidRegistry.isUniversalBucketEnabled()) {
+      if (Fluids.fluidXpJuice != null) {
+        FluidRegistry.addBucketForFluid(Fluids.fluidXpJuice);
+        itemBucketXpJuice = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidXpJuice);
+      }
+      FluidRegistry.addBucketForFluid(Fluids.fluidNutrientDistillation);
+      itemBucketNutrientDistillation = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidNutrientDistillation);
+      FluidRegistry.addBucketForFluid(Fluids.fluidHootch);
+      itemBucketHootch = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidHootch);
+      FluidRegistry.addBucketForFluid(Fluids.fluidRocketFuel);
+      itemBucketRocketFuel = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidRocketFuel);
+      FluidRegistry.addBucketForFluid(Fluids.fluidFireWater);
+      itemBucketFireWater = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidFireWater);
+      FluidRegistry.addBucketForFluid(Fluids.fluidLiquidSunshine);
+      itemBucketLiquidSunshine = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidLiquidSunshine);
+      FluidRegistry.addBucketForFluid(Fluids.fluidCloudSeed);
+      itemBucketCloudSeed = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeed);
+      FluidRegistry.addBucketForFluid(Fluids.fluidCloudSeedConcentrated);
+      itemBucketCloudSeedConcentrated = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeedConcentrated);
+    } else {
+      if (Fluids.fluidXpJuice != null) {
+        itemBucketXpJuice = new ItemStack(ItemBucketEio.create(null, Fluids.fluidXpJuice));
+      }
+      itemBucketNutrientDistillation = new ItemStack(ItemBucketEio.create(Fluids.blockNutrientDistillation, Fluids.fluidNutrientDistillation));
+      itemBucketHootch = new ItemStack(ItemBucketEio.create(Fluids.blockHootch, Fluids.fluidHootch));
+      itemBucketRocketFuel = new ItemStack(ItemBucketEio.create(Fluids.blockRocketFuel, Fluids.fluidRocketFuel));
+      itemBucketFireWater = new ItemStack(ItemBucketEio.create(Fluids.blockFireWater, Fluids.fluidFireWater));
+      itemBucketLiquidSunshine = new ItemStack(ItemBucketEio.create(Fluids.blockLiquidSunshine, Fluids.fluidLiquidSunshine));
+      itemBucketCloudSeed = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeed, Fluids.fluidCloudSeed));
+      itemBucketCloudSeedConcentrated = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeedConcentrated, Fluids.fluidCloudSeedConcentrated));
+    }
   }
-  
+
   @SideOnly(Side.CLIENT)
   public static void registerRenderers() {
-    ClientUtil.registerRenderer(itemBucketNutrientDistillation, itemBucketNutrientDistillation.getItemName());
-    ClientUtil.registerRenderer(itemBucketHootch, itemBucketHootch.getItemName());
-    ClientUtil.registerRenderer(itemBucketRocketFuel, itemBucketRocketFuel.getItemName());
-    ClientUtil.registerRenderer(itemBucketFireWater, itemBucketFireWater.getItemName());
-    ClientUtil.registerRenderer(itemBucketLiquidSunshine, itemBucketLiquidSunshine.getItemName());
-    ClientUtil.registerRenderer(itemBucketCloudSeed, itemBucketCloudSeed.getItemName());
-    ClientUtil.registerRenderer(itemBucketCloudSeedConcentrated, itemBucketCloudSeedConcentrated.getItemName());
-    if(itemBucketXpJuice != null) {
-      ClientUtil.registerRenderer(itemBucketXpJuice, itemBucketXpJuice.getItemName());
-    }    
+    if (!FluidRegistry.isUniversalBucketEnabled()) {
+      ClientUtil.registerRenderer(itemBucketNutrientDistillation.getItem(), ((ItemBucketEio) itemBucketNutrientDistillation.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketHootch.getItem(), ((ItemBucketEio) itemBucketHootch.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketRocketFuel.getItem(), ((ItemBucketEio) itemBucketRocketFuel.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketFireWater.getItem(), ((ItemBucketEio) itemBucketFireWater.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketLiquidSunshine.getItem(), ((ItemBucketEio) itemBucketLiquidSunshine.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketCloudSeed.getItem(), ((ItemBucketEio) itemBucketCloudSeed.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketCloudSeedConcentrated.getItem(), ((ItemBucketEio) itemBucketCloudSeedConcentrated.getItem()).getItemName());
+      if (itemBucketXpJuice != null) {
+        ClientUtil.registerRenderer(itemBucketXpJuice.getItem(), ((ItemBucketEio) itemBucketXpJuice.getItem()).getItemName());
+      }
+    }
   }
-  
+
 }
