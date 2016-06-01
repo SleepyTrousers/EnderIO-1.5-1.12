@@ -165,7 +165,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     final List<String> supportedSouls = currentRecipe.recipe.getSupportedSouls();
     final ItemStack inputStack = currentRecipe.recipe.getInputStack();
 
-    List<CapturedMob> souls = getSouls(supportedSouls);
+    List<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
     final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
     for (CapturedMob soul : souls) {
       soulStacks.add(soul.toStack(EnderIO.itemSoulVessel, 1, 1));
@@ -185,20 +185,6 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
     }
 
     guiItemStacks.setFromRecipe(3, new ItemStack(EnderIO.itemSoulVessel));
-  }
-  
-  private @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
-    List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
-    for (String mobName : mobs) {
-      CapturedMob soul = CapturedMob.create(mobName, false);
-      if (soul != null) {
-        result.add(soul);
-        if ("Skeleton".equals(mobName)) {
-          CapturedMob.create(mobName, true);
-        }
-      }
-    }
-    return result;
   }
   
 }

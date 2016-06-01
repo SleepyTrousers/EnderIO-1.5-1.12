@@ -374,4 +374,21 @@ public class CapturedMob {
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
   }
 
+  public static @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
+    List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
+    for (String mobName : mobs) {
+      CapturedMob soul = create(mobName, false);
+      if (soul != null) {
+        result.add(soul);
+        if ("Skeleton".equals(mobName)) {
+          create(mobName, true);
+        }
+      }
+    }
+    return result;
+  }
+
+  public static @Nonnull List<CapturedMob> getAllSouls() {
+    return getSouls(EntityUtil.getAllRegisteredMobNames());
+  }
 }

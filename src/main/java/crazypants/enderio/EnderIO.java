@@ -569,4 +569,9 @@ public class EnderIO {
     }
   }
 
+  static {
+    // uncomment to always use the universal bucket. leave it out to only use it if another mod requests it.
+    // net.minecraftforge.fluids.FluidRegistry.enableUniversalBucket();
+  }
+
 }
