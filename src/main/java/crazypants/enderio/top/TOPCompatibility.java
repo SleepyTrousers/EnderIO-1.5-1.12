@@ -135,7 +135,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             mobbox.text("nothing");
           } else if (mobsInFilter.size() <= 4) {
             for (CapturedMob capturedMob : mobsInFilter) {
-              mobbox.horizontal().entity(capturedMob.getEntityName()).text(capturedMob.getDisplayName());
+              mobbox.horizontal().entity(capturedMob.getEntity(world, false)).text(capturedMob.getDisplayName());
             }
           } else {
             IProbeInfo mobList = mobbox.horizontal();
@@ -145,7 +145,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
                 mobList = mobbox.horizontal();
                 count = 0;
               }
-              mobList.entity(capturedMob.getEntityName());
+              mobList.entity(capturedMob.getEntity(world, false));
             }
           }
         }

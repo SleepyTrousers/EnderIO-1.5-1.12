@@ -252,6 +252,7 @@ public class CapturedMob {
       }
     }
     if (isVariant && entity instanceof EntitySkeleton) {
+      // TODO 1.9 move this after onInitialSpawn() in TileSpawner
       EntitySkeleton skel = (EntitySkeleton) entity;
       skel.setSkeletonType(1);
       skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));

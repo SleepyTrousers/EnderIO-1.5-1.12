@@ -236,6 +236,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
       if (canSpawnEntity(entityliving)) {
         entityliving.onInitialSpawn(worldObj.getDifficultyForLocation(new BlockPos(x, y, z)), null);
+        // TODO 1.9 move wither skeleton enforcing code here
         worldObj.spawnEntityInWorld(entityliving);
         worldObj.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
