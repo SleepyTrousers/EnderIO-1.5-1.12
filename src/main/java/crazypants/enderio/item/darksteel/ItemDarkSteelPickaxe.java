@@ -136,6 +136,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @SideOnly(Side.CLIENT)
   static EnumActionResult doRightClickItemPlace(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
+    
+    if(!Config.darkSteelRightClickPlaceEnabled) {
+      return EnumActionResult.PASS;
+    }
+    
     int current = player.inventory.currentItem;
     int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
     if (slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {

@@ -163,6 +163,8 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
+  public static boolean darkSteelRightClickPlaceEnabled = true;
+  
   public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.75, 0.95};
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
@@ -472,6 +474,8 @@ public final class Config {
 
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
+
+  
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -792,6 +796,10 @@ public final class Config {
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
 
+    
+    darkSteelRightClickPlaceEnabled = config.get(sectionDarkSteel.name, "darkSteelRightClickPlaceEnabled", darkSteelRightClickPlaceEnabled,
+        "Enable / disable right click to place block using dark steel tools.").getBoolean(darkSteelRightClickPlaceEnabled);
+    
     darkSteelPowerDamgeAbsorptionRatios = config
         .get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
             "A list of the amount of durability damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durability damage when powered.")
