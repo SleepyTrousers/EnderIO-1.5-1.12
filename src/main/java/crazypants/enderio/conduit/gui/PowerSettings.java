@@ -47,6 +47,11 @@ public class PowerSettings extends BaseSettingsPanel {
       public RedstoneControlMode getRedstoneControlMode() {
         return conduit.getExtractionRedstoneMode(gui.getDir());
       }
+
+      @Override
+      public boolean getRedstoneControlStatus() {
+        return false;
+      }
     });
 
     x += rsB.getWidth() + gap;

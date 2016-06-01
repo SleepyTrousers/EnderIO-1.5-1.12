@@ -6,4 +6,6 @@ public interface IRedstoneModeControlable {
 
   void setRedstoneControlMode(RedstoneControlMode mode);
 
+  boolean getRedstoneControlStatus();
+
 }

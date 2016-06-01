@@ -122,6 +122,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       public RedstoneControlMode getRedstoneControlMode() {
         return network.getInputControlMode();
       }
+
+      @Override
+      public boolean getRedstoneControlStatus() {
+        return false;
+      }
     });
     inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
 
@@ -137,6 +142,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       @Override
       public RedstoneControlMode getRedstoneControlMode() {
         return network.getOutputControlMode();
+      }
+
+      @Override
+      public boolean getRedstoneControlStatus() {
+        return false;
       }
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");

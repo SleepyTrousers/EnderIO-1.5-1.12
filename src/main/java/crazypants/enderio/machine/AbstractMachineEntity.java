@@ -708,6 +708,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return new BlockCoord(pos);
   }
 
+  @Override
+  public boolean getRedstoneControlStatus() {
+    return redstoneCheckPassed;
+  }
+
   // ///////////////////////////////////////////////////////////////////////
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////

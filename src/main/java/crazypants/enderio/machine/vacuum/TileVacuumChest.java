@@ -425,4 +425,9 @@ public class TileVacuumChest extends TileEntityEio
 
   // RANGE END
 
+  @Override
+  public boolean getRedstoneControlStatus() {
+    return redstoneCheckPassed;
+  }
+
 }

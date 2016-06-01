@@ -1273,4 +1273,6 @@ enderio.top.suffix.rf=RF
 enderio.top.header.range=Range: %s
 enderio.top.machine.outofpower=No Power
 enderio.top.progress.outofpower=Out of Power
-enderio.top.
+enderio.top.redstone.true=%s (on)
+enderio.top.redstone.false=%s (off)
+

@@ -3,16 +3,13 @@ package crazypants.enderio.machine;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.tileentity.TileEntity;
 
 public enum RedstoneControlMode {
   IGNORE,
@@ -20,7 +17,7 @@ public enum RedstoneControlMode {
   OFF,
   NEVER;
 
-  @SideOnly(Side.CLIENT)
+  // @SideOnly(Side.CLIENT)
   @SuppressWarnings("hiding")
   public static enum IconHolder implements ICycleEnum {
 

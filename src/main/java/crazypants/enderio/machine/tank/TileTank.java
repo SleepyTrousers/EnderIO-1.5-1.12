@@ -21,7 +21,6 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -313,7 +312,11 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       int thisFluidLuminosity = tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluidAmount() == 0 ? 0 : tank.getFluid().getFluid()
           .getLuminosity(tank.getFluid());
       if (thisFluidLuminosity != lastFluidLuminosity) {
-        worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+        worldObj.checkLight(getPos());
+        worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
+        // worldObj.notifyLightSet(getPos());
+        // worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+        // updateBlock();
         lastFluidLuminosity = thisFluidLuminosity;
       }
       tankDirty = false;
