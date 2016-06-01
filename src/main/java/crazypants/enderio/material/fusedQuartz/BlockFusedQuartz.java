@@ -89,7 +89,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND));
     } else if (otherBlock instanceof IFacade) {
       IBlockState facade = ((IFacade) otherBlock).getFacade(world, pos.offset(side), side);
-      if (facade.getBlock() == this) {
+      if (facade != null && facade.getBlock() == this) {
         IBlockState ourState = world.getBlockState(pos);
         return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND));
       }
