@@ -381,7 +381,7 @@ public class CapturedMob {
       if (soul != null) {
         result.add(soul);
         if ("Skeleton".equals(mobName)) {
-          create(mobName, true);
+          result.add(create(mobName, true));
         }
       }
     }
