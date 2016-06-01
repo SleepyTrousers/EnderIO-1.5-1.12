@@ -1264,7 +1264,7 @@ enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (wi
 // There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
 
-enderio.top.header.actionr=%s:
+enderio.top.header.action=%s:
 enderio.top.machine.active=active
 enderio.top.machine.idle=idle
 enderio.top.progress.idle=idle
