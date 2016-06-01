@@ -1261,5 +1261,16 @@ enderio.config.capacitor.crafter_power_buffer=Crafter: Internal power buffer siz
 enderio.config.capacitor.crafter_power_intake=Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
 enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
 
-// There's a 1% change that a soul vial containing a pig is names this:
+// There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
+
+enderio.top.header.actionr=%s:
+enderio.top.machine.active=active
+enderio.top.machine.idle=idle
+enderio.top.progress.idle=idle
+enderio.top.suffix.percent=%
+enderio.top.suffix.rf=RF
+enderio.top.header.range=Range: %s
+enderio.top.machine.outofpower=No Power
+enderio.top.progress.outofpower=Out of Power
+enderio.top.

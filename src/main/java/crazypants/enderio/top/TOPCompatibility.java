@@ -94,24 +94,32 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
         if (progress > 0) {
           if (active) {
-            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).progress((int) (progress * 100), 100, probeInfo.defaultProgressStyle().suffix("%"));
+            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).progress((int) (progress * 100), 100,
+                probeInfo.defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.percent")));
+          } else if (maxrf > 0 && rf == 0) {
+            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text(EnderIO.lang.localize("top.progress.outofpower"));
           } else {
-            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text("idle");
+            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text(EnderIO.lang.localize("top.progress.idle"));
           }
         } else {
           if (active) {
-            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text("active");
+            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text(EnderIO.lang.localize("top.machine.active"));
           } else {
-            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text("idle");
+            eiobox.horizontal().item(new ItemStack(Items.CLOCK)).text(EnderIO.lang.localize("top.machine.idle"));
           }
         }
 
-        if (rf >= 0 && maxrf > 0) {
-          eiobox.horizontal().item(new ItemStack(Items.REDSTONE)).progress(rf, maxrf, probeInfo.defaultProgressStyle().suffix("RF"));
+        if (maxrf > 0) {
+          if (rf > 0) {
+            eiobox.horizontal().item(new ItemStack(Items.REDSTONE)).progress(rf, maxrf,
+                probeInfo.defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf")));
+          } else {
+            eiobox.horizontal().item(new ItemStack(Items.REDSTONE)).text(EnderIO.lang.localize("top.machine.outofpower"));
+          }
         }
 
         if (range != null) {
-          eiobox.horizontal().item(new ItemStack(Blocks.STONE)).text("Range: " + range);
+          eiobox.horizontal().item(new ItemStack(Blocks.STONE)).text(EnderIO.lang.localize("top.header.range", range));
         }
 
         if (tileEntity instanceof AbstractMobObelisk) {
@@ -121,7 +129,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
           IProbeInfo mobbox = probeInfo.vertical(probeInfo.defaultLayoutStyle().borderColor(0xffff0000));
 
-          mobbox.text(spawnObeliskAction.getActionString() + ":");
+          mobbox.text(EnderIO.lang.localize("top.header.action", spawnObeliskAction.getActionString()));
 
           if (mobsInFilter.isEmpty()) {
             mobbox.text("nothing");
