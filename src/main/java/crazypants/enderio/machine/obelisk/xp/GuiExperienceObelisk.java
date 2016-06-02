@@ -31,7 +31,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
 
   public GuiExperienceObelisk(InventoryPlayer playerInv, TileExperienceObelisk te) {
     super(te, new ContainerNoInv(te), "experianceObelisk");
-    ySize = 115;
+    ySize = 116;
 
     int spacing = 5;
     int bw = 20;
@@ -132,8 +132,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    System.out.println("Rendering " + xSize + "x" + ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);    
 
     int width1 = 110;
     ExperienceBarRenderer.render(this, getGuiLeft() + xSize / 2 - width1 / 2, getGuiTop() + 55, width1, getTileEntity().getContainer());

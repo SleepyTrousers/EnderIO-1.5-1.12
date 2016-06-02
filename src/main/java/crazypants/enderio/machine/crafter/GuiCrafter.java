@@ -71,7 +71,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 
   @Override
   public final int getXSize() {
-    return 219;
+    return 220;
   }
 
   @Override
