@@ -1,7 +1,5 @@
 package crazypants.enderio;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
@@ -9,7 +7,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.fluid.Buckets;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
@@ -59,7 +56,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -292,11 +288,6 @@ public class ClientProxy extends CommonProxy {
       ++clientTickCount;
       YetaUtil.onTick();
     }
-  }
-
-  @Override
-  public @Nonnull ResourceLocation getGuiTexture(String name) {
-    return GuiContainerBaseEIO.getGuiTexture(name);
   }
 
 }

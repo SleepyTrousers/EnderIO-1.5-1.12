@@ -5,30 +5,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import com.enderio.core.client.gui.GuiContainerBase;
+import com.enderio.core.client.render.RenderUtil;
 
+import crazypants.enderio.EnderIO;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.client.gui.GuiContainerBase;
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.EnderIO;
-
 @SideOnly(Side.CLIENT)
 public abstract class GuiContainerBaseEIO extends GuiContainerBase {
-
-  private static final String TEXTURE_PATH = ":textures/gui/23/";
-  private static final String TEXTURE_EXT = ".png";
 
   private final List<ResourceLocation> guiTextures = new ArrayList<ResourceLocation>();
 
   public GuiContainerBaseEIO(Container par1Container, String... guiTexture) {
     super(par1Container);
     for (String string : guiTexture) {
-      guiTextures.add(getGuiTexture(string));
+      guiTextures.add(EnderIO.proxy.getGuiTexture(string));
     }
   }
 
@@ -46,10 +40,6 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 
   public List<Rectangle> getBlockingAreas() {
     return Collections.<Rectangle> emptyList();
-  }
-
-  public static @Nonnull ResourceLocation getGuiTexture(String name) {
-    return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
 }

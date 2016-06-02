@@ -178,7 +178,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             IProbeInfo mobList = mobbox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
             int count = 0;
             for (CapturedMob capturedMob : mobsInFilter) {
-              if (++count > 4) {
+              if (count++ >= 4) {
                 mobList = mobbox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
                 count = 0;
               }

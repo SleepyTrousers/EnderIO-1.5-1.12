@@ -1,13 +1,19 @@
 package crazypants.enderio;
 
 import com.enderio.core.common.TileEntityBase;
+import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.ranged.MarkerParticle;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileEntityEio extends TileEntityBase {
 
@@ -38,6 +44,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
     NBTTagCompound root = pkt.getNbtCompound();
     Reader.read(StoreFor.CLIENT, root, this);
@@ -48,6 +55,9 @@ public abstract class TileEntityEio extends TileEntityBase {
       doingOtherNbt = false;
     }
     onAfterDataPacket();
+    if (Config.debugUpdatePackets) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(worldObj, pos, new Vector4f(1, 182f / 255f, 0, 0.4f)));
+    }
   }
 
   protected void onAfterDataPacket() {

@@ -134,8 +134,11 @@ public class CommonProxy {
     }
   }
 
+  private static final String TEXTURE_PATH = ":textures/gui/23/";
+  private static final String TEXTURE_EXT = ".png";
+
   public @Nonnull ResourceLocation getGuiTexture(String name) {
-    return new ResourceLocation(EnderIO.DOMAIN + ":unknown");
+    return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
 }

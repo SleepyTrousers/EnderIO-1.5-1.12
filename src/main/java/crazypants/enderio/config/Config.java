@@ -475,7 +475,7 @@ public final class Config {
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
 
-  
+  public static boolean debugUpdatePackets = false;
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -1290,6 +1290,9 @@ public final class Config {
     inventoryPanelExtractCostPerOperation = config.getFloat("extractCostPerOperation", sectionInventoryPanel.name, inventoryPanelExtractCostPerOperation, 0.0f,
         10000.0f, "Internal power used per extract operation (independent of stack size)");
     
+    debugUpdatePackets = config.getBoolean("debugUpdatePackets", sectionPersonal.name, debugUpdatePackets,
+        "DEBUG: If true, TEs will flash when they recieve an update packet.");
+
     CapacitorKey.processConfig(config);
   }
 
