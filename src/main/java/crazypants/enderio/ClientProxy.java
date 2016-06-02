@@ -1,6 +1,7 @@
 package crazypants.enderio;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
@@ -34,6 +35,7 @@ import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.enderio.machine.monitor.TESRPowerMonitor;
 import crazypants.enderio.machine.monitor.TilePowerMonitor;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
+import crazypants.enderio.machine.ranged.MarkerParticle;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.soul.SoulBinderTESR;
@@ -56,6 +58,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -288,6 +291,11 @@ public class ClientProxy extends CommonProxy {
       ++clientTickCount;
       YetaUtil.onTick();
     }
+  }
+
+  @Override
+  public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
+    Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(worldObj, pos, color));
   }
 
 }

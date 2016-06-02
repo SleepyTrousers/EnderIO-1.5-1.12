@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeFactory;
@@ -14,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -139,6 +142,9 @@ public class CommonProxy {
 
   public @Nonnull ResourceLocation getGuiTexture(String name) {
     return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
+  }
+
+  public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
   }
 
 }
