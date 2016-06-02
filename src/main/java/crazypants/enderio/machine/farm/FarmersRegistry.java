@@ -1,13 +1,8 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.Iterator;
-import java.util.regex.Pattern;
-
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.FlowerPicker;
-import crazypants.enderio.machine.farm.farmers.ManaBeanFarmer;
 import crazypants.enderio.machine.farm.farmers.MelonFarmer;
 import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
 import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
@@ -22,7 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public final class FarmersRegistry {
 
@@ -30,17 +25,14 @@ public final class FarmersRegistry {
   
   public static void addFarmers() {
 
-//    addExtraUtilities();
-//    addNatura();
-//    addTiC();
-//    addStillHungry();
-//    addIC2();
-//    addMFR();
-//    addThaumcraft();
-//    addFlowers();
-//    addGrowableOres();
-//    addImmersiveEngineering();
-//
+    addTechreborn();
+    addExtraUtilities2();
+    addNatura();
+    addIC2();
+    addMFR();
+    addFlowers();
+    addImmersiveEngineering();
+
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
     FarmersCommune.joinCommune(new TreeFarmer(Blocks.SAPLING, Blocks.LOG));
@@ -88,37 +80,6 @@ public final class FarmersRegistry {
     return null;
   }
 
-  private static void addTiC() {
-    String mod = "TConstruct";
-    String blockName = "ore.berries.two";
-
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      if(seedItem != null) {
-        for (int i = 0; i < 2; i++) {
-          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
-          farmer.setRequiresFarmland(false);
-          FarmersCommune.joinCommune(farmer);
-        }
-      }
-    }
-
-    blockName = "ore.berries.one";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      if(seedItem != null) {
-        for (int i = 0; i < 4; i++) {
-          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
-          farmer.setRequiresFarmland(false);
-          FarmersCommune.joinCommune(farmer);
-        }
-      }
-    }
-
-  }
-
   private static void addNatura() {
     String mod = "Natura";
     String blockName = "N Crops";
@@ -164,20 +125,6 @@ public final class FarmersRegistry {
 
   }
 
-  private static void addThaumcraft()
-  {
-    String mod = "Thaumcraft";
-    String manaBean = "ItemManaBean";
-    String manaPod = "blockManaPod";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, manaPod))) {
-      Block block = Block.REGISTRY.getObject(new ResourceLocation(mod, manaPod));
-      Item item = Item.REGISTRY.getObject(new ResourceLocation(mod, manaBean));
-      if (Config.farmManaBeansEnabled && item != null) {
-        FarmersCommune.joinCommune(new ManaBeanFarmer(block, new ItemStack(item)));
-      }
-    }
-  }
-  
   private static void addMFR() {
     String mod = "MineFactoryReloaded";
     String blockName = "rubberwood.sapling";
@@ -195,20 +142,17 @@ public final class FarmersRegistry {
     }
   }
 
-  private static void addStillHungry() {
-    String mod = "stillhungry";
-    addPickable(mod, "grapeBlock", "StillHungry_grapeSeed");
-  }
 
-  private static void addExtraUtilities() {
-    String mod = "ExtraUtilities";
-    String name = "plant/ender_lilly";
+  private static void addExtraUtilities2() {
+    String mod = "extrautils2";
+    String name = "EnderLilly";
 
     CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.END_STONE, Block.REGISTRY.getObject(new ResourceLocation(mod, "decorativeBlock1")));
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
     }
   }
+
 
   private static void addFlowers() {
     
@@ -221,26 +165,7 @@ public final class FarmersRegistry {
         Block.REGISTRY.getObject(new ResourceLocation("Botania", "flower")) ) );
   }
   
-  private static void addGrowableOres() {
-    String mod = "B0bGrowsOre";
-    if (!Loader.isModLoaded(mod)) {
-      return;
-    }
-    Pattern[] growableOres = { Pattern.compile("(.+)Reed"), Pattern.compile("oreGrowable(.+)") };
 
-    Iterator<Block> blockIter = Block.REGISTRY.iterator();
-    while (blockIter.hasNext()) {
-      Block block = blockIter.next();
-      String name = Block.REGISTRY.getNameForObject(block).toString();
-      if (name != null && name.startsWith(mod)) {
-        for (Pattern blockPattern : growableOres) {
-          if (blockPattern.matcher(name).find()) {
-            FarmersCommune.joinCommune(new StemFarmer(block, new ItemStack(block)));
-          }
-        }
-      }
-    }
-  }
 
   private static void addImmersiveEngineering() {
     if (Block.REGISTRY.containsKey(new ResourceLocation("ImmersiveEngineering", "hemp"))) {
@@ -253,6 +178,19 @@ public final class FarmersRegistry {
   }
   
   private FarmersRegistry() {
+  }
+
+  @ItemStackHolder("techreborn:techreborn.rubberlog")
+  private static final ItemStack techreborn_rubberlog = null;
+
+  @ItemStackHolder("techreborn:techreborn.rubbersapling")
+  private static final ItemStack techreborn_rubbersapling = null;
+
+  private static void addTechreborn() { // untested
+    if (techreborn_rubberlog != null && techreborn_rubbersapling != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(techreborn_rubbersapling, techreborn_rubberlog));
+    }
+
   }
 
 }

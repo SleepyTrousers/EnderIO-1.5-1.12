@@ -48,6 +48,10 @@ public class TreeFarmer implements IFarmerJoe {
     this.ignoreMeta = ignoreMeta;
   }
 
+  public TreeFarmer(ItemStack sapling, ItemStack wood) {
+    this(Block.getBlockFromItem(sapling.getItem()), Block.getBlockFromItem(wood.getItem()));
+  }
+
   @Override
   public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState bs) {
     return isWood(block);
