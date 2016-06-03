@@ -36,11 +36,14 @@
   <enchantment name="minecraft:aqua_affinity" costPerLevel="4" >
     <itemStack modID="minecraft" itemName="waterlily" />
   </enchantment>
-  <enchantment name="minecraft:aqua_affinity" costPerLevel="4" >
-    <itemStack modID="minecraft" itemName="waterlily" />
-  </enchantment>
   <enchantment name="minecraft:depth_strider" costPerLevel="4" >
     <itemStack modID="minecraft" itemName="prismarine" itemMeta="0" />
+  </enchantment>
+  <enchantment name="minecraft:frost_walker" costPerLevel="4" >
+    <itemStack modID="minecraft" itemName="ice" number="16"/>
+  </enchantment>
+  <enchantment name="minecraft:thorns" costPerLevel="8" >
+    <itemStack modID="minecraft" itemName="double_plant" itemMeta="4" />
   </enchantment>
   <enchantment name="minecraft:sharpness" costPerLevel="1" >
     <itemStack modID="minecraft" itemName="quartz" number="12" />
@@ -68,6 +71,9 @@
   </enchantment>
   <enchantment name="minecraft:unbreaking" costPerLevel="2" >
     <itemStack modID="minecraft" itemName="obsidian" />
+  </enchantment>
+  <enchantment name="minecraft:mending" costPerLevel="26" >
+    <itemStack modID="EnderIO" itemName="itemXpTransfer"/>
   </enchantment>
   <enchantment name="minecraft:fortune" costPerLevel="4" >
     <itemStack modID="minecraft" itemName="emerald" number="4" />
