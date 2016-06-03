@@ -181,10 +181,10 @@ public final class FarmersRegistry {
   }
 
   @ItemStackHolder("techreborn:techreborn.rubberlog")
-  private static final ItemStack techreborn_rubberlog = null;
+  public static final ItemStack techreborn_rubberlog = null;
 
   @ItemStackHolder("techreborn:techreborn.rubbersapling")
-  private static final ItemStack techreborn_rubbersapling = null;
+  public static final ItemStack techreborn_rubbersapling = null;
 
   private static void addTechreborn() { // untested
     if (techreborn_rubberlog != null && techreborn_rubbersapling != null) {

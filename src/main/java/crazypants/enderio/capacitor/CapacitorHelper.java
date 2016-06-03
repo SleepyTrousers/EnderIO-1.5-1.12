@@ -46,7 +46,14 @@ public class CapacitorHelper {
     return new NBTCapacitorData(item.getUnlocalizedName(stack), capLevel, nbtTag);
   }
 
-  public static ItemStack addCapData(ItemStack stack, CapacitorKey key, float value) {
+  public static enum SetType {
+    LEVEL,
+    NAME,
+    OWNER_TYPE,
+    TYPE;
+  }
+
+  public static ItemStack addCapData(ItemStack stack, SetType setType, CapacitorKey key, float value) {
     NBTTagCompound root = stack.getTagCompound();
     if (root == null) {
       root = new NBTTagCompound();
@@ -54,10 +61,20 @@ public class CapacitorHelper {
     }
     NBTTagCompound tag = root.getCompoundTag("eiocap");
     root.setTag("eiocap", tag);
-    if (key == null) {
+    switch (setType) {
+    case LEVEL:
       tag.setInteger("level", (int) value);
-    } else {
+      break;
+    case NAME:
       tag.setFloat(key.getName(), value);
+      break;
+    case OWNER_TYPE:
+      NBTTagCompound subtag = tag.getCompoundTag(key.getOwner().getUnlocalisedName());
+      subtag.setFloat(key.getValueType().getName(), value);
+      break;
+    case TYPE:
+      tag.setFloat(key.getValueType().getName(), value);
+      break;
     }
     return stack;
   }

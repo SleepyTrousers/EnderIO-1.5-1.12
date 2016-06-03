@@ -3,6 +3,7 @@ package crazypants.enderio;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.capacitor.LootSelector;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Alloy;
@@ -64,6 +65,7 @@ public class LootManager {
       if(Config.lootDarkSteelBoots) {
         entries.add(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1,1, 5));
       }
+      entries.add(createLootCapacitor(25));
       if (entries.isEmpty()) {
         return;
       }
@@ -99,7 +101,8 @@ public class LootManager {
       if(Config.lootDarkSteelBoots) {
         entries.add(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1,1, 5));
       }
-      
+      entries.add(createLootCapacitor(15));
+
       if (entries.isEmpty()) {
         return;
       }
@@ -122,6 +125,7 @@ public class LootManager {
       if(Config.lootTravelStaff) {
         mainPool.addEntry(createLootEntry(EnderIO.itemTravelStaff, 1,1, 1));
       }
+      mainPool.addEntry(createLootCapacitor(35));
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
       LootPool mainPool = table.getPool("main");
       if(mainPool == null) {
@@ -134,6 +138,7 @@ public class LootManager {
       if(Config.lootTravelStaff) {
         mainPool.addEntry(createLootEntry(EnderIO.itemTravelStaff, 1,1, 1));
       }
+      mainPool.addEntry(createLootCapacitor(35));
     } 
 
   }
@@ -155,6 +160,11 @@ public class LootManager {
 
     };
     return new LootEntryItem(item, weight, 1, functionsIn, noConditions, item.getUnlocalizedName() + ":" + meta);
+  }
+
+  private LootEntryItem createLootCapacitor(int weight) {
+    LootFunction[] functionsIn = new LootFunction[] { new SetCount(noConditions, new RandomValueRange(1, 1)), new LootSelector(noConditions) };
+    return new LootEntryItem(EnderIO.itemBasicCapacitor, weight, 1, functionsIn, noConditions, EnderIO.itemBasicCapacitor.getUnlocalizedName());
   }
 
 }

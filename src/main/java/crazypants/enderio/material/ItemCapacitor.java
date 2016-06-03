@@ -2,28 +2,28 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.CapacitorHelper.SetType;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorDataItem;
 import crazypants.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCapacitor extends Item implements ICapacitorDataItem {
 
@@ -66,8 +66,9 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
     for (int j = 0; j < DefaultCapacitorData.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
-    final ItemStack stack = CapacitorHelper.addCapData(CapacitorHelper.addCapData(new ItemStack(par1, 1, 0), null, 1), CapacitorKey.ALLOY_SMELTER_POWER_USE, 5);
-    stack.setStackDisplayName("Smelting Capacitor"); // TODO remve this test
+    final ItemStack stack = CapacitorHelper.addCapData(CapacitorHelper.addCapData(new ItemStack(par1, 1, 0), SetType.NAME, null, 1), SetType.NAME,
+        CapacitorKey.ALLOY_SMELTER_POWER_USE, 5);
+    stack.setStackDisplayName("Smelting Capacitor"); // TODO remove this test
     par3List.add(stack);
   }
 
