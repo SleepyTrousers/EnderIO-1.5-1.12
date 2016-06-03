@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
   private static final int INIT_TIME = 20;
-  private static final int AGE_LIMIT = 20 * 60 * 5; // 5 minutes
+  private static final int AGE_LIMIT = 20 * 60 * 10; // 10 minutes
 
   private final T owner;
   private final Vector4f color;
