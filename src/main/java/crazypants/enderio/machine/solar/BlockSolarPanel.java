@@ -171,7 +171,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
-    return face == EnumFacing.UP;
+    return face == EnumFacing.DOWN;
   }
 
   @Override
