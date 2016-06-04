@@ -30,6 +30,7 @@ import mezz.jei.gui.ingredients.IGuiIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -45,7 +46,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     private final EnchanterRecipe rec;
 
     Map<Integer, ? extends IGuiIngredient<ItemStack>> currentIngredients;
-    
+
     public EnchanterRecipeWrapper(EnchanterRecipe rec) {
       this.rec = rec;
     }
@@ -53,46 +54,49 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     public boolean isValid() {
       return rec != null && rec.isValid();
     }
-    
+
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      if(currentIngredients == null) {
+      if (currentIngredients == null) {
         return;
       }
-      
+
       ItemStack stack = null;
-      IGuiIngredient<ItemStack> ging = currentIngredients.get(1);            
-      if(ging instanceof GuiIngredient) {
-        GuiIngredient<ItemStack> gi = (GuiIngredient<ItemStack>)ging;
+      IGuiIngredient<ItemStack> ging = currentIngredients.get(1);
+      if (ging instanceof GuiIngredient) {
+        GuiIngredient<ItemStack> gi = (GuiIngredient<ItemStack>) ging;
         stack = gi.getIngredient();
       }
-      if(stack == null) {
+      if (stack == null) {
         return;
       }
       int level = rec.getLevelForStackSize(stack.stackSize);
       int cost = TileEnchanter.getEnchantmentCost(rec, level);
       String str = I18n.format("container.repair.cost", new Object[] { cost });
-      minecraft.fontRendererObj.drawString(str, 6, 36, 0x80FF20);      
+      minecraft.fontRendererObj.drawString(str, 6, 36, 0x80FF20);
     }
 
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
-     currentIngredients = ings;      
+      currentIngredients = ings;
     }
-    
+
     @Override
     public @Nonnull List<?> getInputs() {
-      List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
-      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
-      getItemStacks(rec, itemInputs, itemOutputs);
+      List<ItemStack> itemInputs = new ArrayList<ItemStack>();
+      List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
+      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
+      getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
       itemInputs.add(new ItemStack(Items.WRITABLE_BOOK));
+      itemInputs.addAll(lapizInputs);
       return itemInputs;
     }
 
     @Override
     public @Nonnull List<?> getOutputs() {
-      List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
-      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
-      getItemStacks(rec, itemInputs, itemOutputs);
+      List<ItemStack> itemInputs = new ArrayList<ItemStack>();
+      List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
+      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
+      getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
       return itemOutputs;
     }
 
@@ -128,7 +132,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
   // Offsets from full size gui, makes it much easier to get the location
   // correct
-  private int xOff = 22;
+  private int xOff = 15;
   private int yOff = 24;
 
   @Nonnull
@@ -138,7 +142,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
 
   public EnchanterRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("enchanter");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 134, 48);
+    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 48);
   }
 
   @Override
@@ -167,29 +171,33 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
       return;
     }
 
-    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();   
-    
+    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+
     Map<Integer, ? extends IGuiIngredient<ItemStack>> ings = guiItemStacks.getGuiIngredients();
     currentRecipe.setInfoData(ings);
-    
-    guiItemStacks.init(0, true, 25 - xOff, 34 - yOff);
-    guiItemStacks.init(1, true, 75 - xOff, 34 - yOff);
-    guiItemStacks.init(2, false, 133 - xOff, 34 - yOff);
+
+    guiItemStacks.init(0, true, 16 - xOff - 1, 34 - yOff);
+    guiItemStacks.init(1, true, 65 - xOff - 1, 34 - yOff);
+    guiItemStacks.init(2, true, 85 - xOff - 1, 34 - yOff);
+    guiItemStacks.init(3, false, 144 - xOff - 1, 34 - yOff);
 
     guiItemStacks.setFromRecipe(0, new ItemStack(Items.WRITABLE_BOOK));
-    
+
     EnchanterRecipe rec = currentRecipe.rec;
-    List<ItemStack> itemInputs = new ArrayList<ItemStack>();        
-    List<ItemStack> itemOutputs = new ArrayList<ItemStack>();        
-    getItemStacks(rec, itemInputs, itemOutputs);
+    List<ItemStack> itemInputs = new ArrayList<ItemStack>();
+    List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
+    List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
+    getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
     guiItemStacks.set(1, itemInputs);
-    guiItemStacks.set(2, itemOutputs);
+    guiItemStacks.set(2, lapizInputs);
+    guiItemStacks.set(3, itemOutputs);
   }
 
-  private static void getItemStacks(EnchanterRecipe rec, List<ItemStack> itemInputs, List<ItemStack> itemOutputs) {
+  private static void getItemStacks(EnchanterRecipe rec, List<ItemStack> itemInputs, List<ItemStack> lapizInputs, List<ItemStack> itemOutputs) {
     ItemStack item = rec.getInput().getInput();
     for (int level = 1; level <= rec.getEnchantment().getMaxLevel(); level++) {
-      itemInputs.add(new ItemStack(item.getItem(), level  * rec.getItemsPerLevel() ,item.getMetadata()));      
+      itemInputs.add(new ItemStack(item.getItem(), level * rec.getItemsPerLevel(), item.getMetadata()));
+      lapizInputs.add(new ItemStack(Blocks.LAPIS_BLOCK, rec.getLapizForStackSize(level * rec.getItemsPerLevel())));
       EnchantmentData enchantment = new EnchantmentData(rec.getEnchantment(), level);
       ItemStack output = new ItemStack(Items.ENCHANTED_BOOK);
       Items.ENCHANTED_BOOK.addEnchantment(output, enchantment);

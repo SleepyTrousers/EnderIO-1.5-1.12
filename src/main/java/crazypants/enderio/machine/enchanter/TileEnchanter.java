@@ -9,8 +9,10 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -21,7 +23,7 @@ import net.minecraft.util.text.TextComponentString;
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   @Store
-  private ItemStack[] inv = new ItemStack[3];
+  private ItemStack[] inv = new ItemStack[4];
 
   @Store
   private EnumFacing facing = EnumFacing.NORTH;
@@ -134,6 +136,9 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if (slot == 1) {
       return EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(stack) != null;
     }
+    if (slot == 2) {
+      return Item.getItemFromBlock(Blocks.LAPIS_BLOCK) == stack.getItem();
+    }
     return false;
   }
 
@@ -144,6 +149,9 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if (inv[1] == null) {
       return null;
     }
+    if (inv[2] == null) {
+      return null;
+    }
     EnchanterRecipe ench = EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(inv[1]);
     if (ench == null) {
       return null;
@@ -152,64 +160,20 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if (level <= 0) {
       return null;
     }
+    if ((inv[2].stackSize) < ench.getLapizForStackSize(inv[1].stackSize)) {
+      return null;
+    }
     return ench;
   }
 
   public EnchantmentData getCurrentEnchantmentData() {
     EnchanterRecipe rec = getCurrentEnchantmentRecipe();
-    if (rec == null || inv[1] == null) {
+    if (rec == null) {
       return null;
     }
     int level = rec.getLevelForStackSize(inv[1].stackSize);
-    if (level <= 0) {
-      return null;
-    }
     return new EnchantmentData(rec.getEnchantment(), level);
   }
-
-  // public static int getEnchantmentCost(EnchantmentData enchData) {
-  // if(enchData == null) {
-  // return 0;
-  // }
-  // int level = enchData.enchantmentLevel;
-  // Enchantment enchantment = enchData.enchantmentobj;
-  //
-  // if(level > enchantment.getMaxLevel()) {
-  // level = enchantment.getMaxLevel();
-  // }
-  //
-  // int costPerLevel = 0;
-  // switch (enchantment.getWeight()) {
-  // case 1:
-  // costPerLevel = 8;
-  // //Stops silk touch and infinity being too cheap
-  // if(enchantment.getMaxLevel() == 1) {
-  // level = 2;
-  // }
-  // break;
-  // case 2:
-  // costPerLevel = 4;
-  // case 3:
-  // case 4:
-  // case 6:
-  // case 7:
-  // case 8:
-  // case 9:
-  // default:
-  // break;
-  // case 5:
-  // costPerLevel = 2;
-  // break;
-  // case 10:
-  // costPerLevel = 1;
-  // }
-  //
-  // int res = 4;
-  // for (int i = 0; i < level; i++) {
-  // res += costPerLevel * level;
-  // }
-  // return res;
-  // }
 
   public int getCurrentEnchantmentCost() {
     return getEnchantmentCost(getCurrentEnchantmentRecipe());
@@ -254,8 +218,6 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     return new TextComponentString(getName());
   }
 
-  
-
   @Override
   public int getField(int id) {
     return 0;
@@ -280,7 +242,5 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
     return false;
   }
-
-  
 
 }

@@ -60,6 +60,8 @@ public class EnchanterRecipe {
     return stackSizePerLevel;
   }
   
-  
+  public int getLapizForStackSize(int size) {
+    return enchantment.getMaxLevel() == 1 ? 5 : getLevelForStackSize(size);
+  }
   
 }

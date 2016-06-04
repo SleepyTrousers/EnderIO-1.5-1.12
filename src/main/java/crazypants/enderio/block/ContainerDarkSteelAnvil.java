@@ -91,13 +91,13 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
           if (l > 2) {
             world.setBlockToAir(blockPosIn);
-            world.playEvent(1020, blockPosIn, 0);
+            world.playEvent(1029, blockPosIn, 0);
           } else {
             world.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(l)), 2);
-            world.playEvent(1021, blockPosIn, 0);
+            world.playEvent(1030, blockPosIn, 0);
           }
         } else if (!world.isRemote) {
-          world.playEvent(1021, blockPosIn, 0);
+          world.playEvent(1030, blockPosIn, 0);
         }
       }
     });

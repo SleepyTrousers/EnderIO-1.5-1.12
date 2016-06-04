@@ -8,9 +8,11 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 
+import crazypants.enderio.Log;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -19,8 +21,8 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
-  public static int NUM_RECIPE_SLOT = 2;
-  public static int FIRST_INVENTORY_SLOT = 2 + 1 + 0; // input + output + upgrade
+  public static int NUM_RECIPE_SLOT = 3;
+  public static int FIRST_INVENTORY_SLOT = 3 + 1 + 0; // input + output + upgrade
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
   public ContainerEnchanter(EntityPlayer player, InventoryPlayer playerInv, TileEnchanter te) {
@@ -32,7 +34,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
     final TileEnchanter te = getInv();
     
-    addSlotToContainer(new Slot(te, 0, 27, 35) {
+    addSlotToContainer(new Slot(te, 0, 16, 35) {
 
       @Override
       public int getSlotStackLimit() {
@@ -51,7 +53,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
     });
 
-    addSlotToContainer(new Slot(te, 1, 76, 35) {
+    addSlotToContainer(new Slot(te, 1, 65, 35) {
 
       @Override
       public boolean isItemValid(@Nullable ItemStack itemStack) {
@@ -65,7 +67,21 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
     });
 
-    addSlotToContainer(new Slot(te, 2, 134, 35) {
+    addSlotToContainer(new Slot(te, 2, 85, 35) {
+
+      @Override
+      public boolean isItemValid(@Nullable ItemStack itemStack) {
+        return te.isItemValidForSlot(2, itemStack);
+      }
+
+      @Override
+      public void onSlotChanged() {
+        updateOutput();
+      }
+
+    });
+
+    addSlotToContainer(new Slot(te, 3, 144, 35) {
 
       @Override
       public int getSlotStackLimit() {
@@ -85,23 +101,18 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
         EnchantmentData enchData = te.getCurrentEnchantmentData();
         EnchanterRecipe recipe = te.getCurrentEnchantmentRecipe();
         ItemStack curStack = te.getStackInSlot(1);
-        if(recipe == null || enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
-          te.setInventorySlotContents(1, (ItemStack) null);
+        if (recipe == null || enchData == null || curStack == null) {
+          Log.error("Enchanting yielded result without resources");
         } else {
-
-          curStack = curStack.copy();
-          curStack.stackSize -= recipe.getItemsPerLevel() * enchData.enchantmentLevel;
-          if(curStack.stackSize > 0) {
-            te.setInventorySlotContents(1, curStack);
-          } else {
-            te.setInventorySlotContents(1, null);
-          }
+          te.decrStackSize(2, recipe.getLapizForStackSize(curStack.stackSize));
+          te.decrStackSize(1, recipe.getItemsPerLevel() * enchData.enchantmentLevel);
           te.markDirty();
         }
 
         te.setInventorySlotContents(0, (ItemStack) null);
         if (!te.getWorld().isRemote) {
-          te.getWorld().playEvent(1021, te.getPos(), 0);
+          te.getWorld().playEvent(1030, te.getPos(), 0);
+          te.getWorld().playEvent(2005, te.getPos().up(), 0);
         }
       }
 
@@ -114,7 +125,8 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, 27, 35));
+    slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, inventorySlots.get(0)));
+    slots.add(new GhostBackgroundItemSlot(Blocks.LAPIS_BLOCK, inventorySlots.get(2)));
   }
 
   public boolean playerHasEnoughLevels(EntityPlayer player) {
@@ -143,14 +155,16 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       ItemStack origStack = slot.getStack();
       copyStack = origStack.copy();
 
-      if (par2 <= 2) {
-        if (!mergeItemStack(origStack, 2, inventorySlots.size(), true)) {
+      if (par2 <= 3) {
+        if (!mergeItemStack(origStack, 4, inventorySlots.size(), true)) {
           return null;
         }
       } else {
         if (!getInv().isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 1, false)) {
           if (!getInv().isItemValidForSlot(1, origStack) || !mergeItemStack(origStack, 1, 2, false)) {
-            return null;
+            if (!getInv().isItemValidForSlot(2, origStack) || !mergeItemStack(origStack, 2, 3, false)) {
+              return null;
+            }
           }
         }
       }
