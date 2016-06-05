@@ -2,6 +2,7 @@ package crazypants.enderio.machine.recipe;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeInput {
 
@@ -92,7 +93,15 @@ public class RecipeInput {
   }
 
   public ItemStack[] getEquivelentInputs() {
-    return null;
+    if (input == null) {
+      return null;
+    } else if (useMeta) {
+      return new ItemStack[] {input};
+    } else {
+      ItemStack result = input.copy();
+      result.setItemDamage(OreDictionary.WILDCARD_VALUE);
+      return new ItemStack[] {result};
+    }
   }
 
   @Override

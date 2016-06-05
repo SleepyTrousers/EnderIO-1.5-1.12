@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.recipe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -31,5 +34,7 @@ public interface IRecipe {
   boolean isValidInput(int slotNumber, ItemStack item);
 
   boolean isValidInput(FluidStack fluid);
+
+  List<List<ItemStack>> getInputStackAlternatives();
 
 }

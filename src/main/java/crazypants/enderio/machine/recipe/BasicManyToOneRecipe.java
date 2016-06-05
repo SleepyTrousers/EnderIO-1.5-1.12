@@ -120,5 +120,10 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     }
     return null;
   }
+
+  @Override
+  public List<List<ItemStack>> getInputStackAlternatives() {
+    return recipe.getInputStackAlternatives();
+  }
   
 }

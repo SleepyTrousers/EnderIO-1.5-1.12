@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class RecipeWrapper extends BlankRecipeWrapper {
 
@@ -21,7 +21,7 @@ public class RecipeWrapper extends BlankRecipeWrapper {
 
   @Override
   public @Nonnull List<?> getInputs() {
-    List<ItemStack> inputStacks = recipe.getInputStacks();
+    List<List<ItemStack>> inputStacks = recipe.getInputStackAlternatives();
     return inputStacks != null ? inputStacks : new ArrayList<ItemStack>();
   }
 

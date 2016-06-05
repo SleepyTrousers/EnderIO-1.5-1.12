@@ -123,6 +123,33 @@ public class Recipe implements IRecipe {
   }
 
   @Override
+  public List<List<ItemStack>> getInputStackAlternatives() {
+    if (inputs == null) {
+      return Collections.emptyList();
+    }
+    List<List<ItemStack>> res = new ArrayList<List<ItemStack>>(inputs.length);
+    for (int i = 0; i < inputs.length; i++) {
+      RecipeInput in = inputs[i];
+      if (in != null) {
+        ItemStack[] equivelentInputs = in.getEquivelentInputs();
+        if (equivelentInputs != null && equivelentInputs.length != 0) {
+          res.add(Arrays.asList(equivelentInputs));
+        } else {
+          ItemStack input = in.getInput();
+          if (input != null) {
+            res.add(Collections.singletonList(input));
+          } else {
+            res.add(Collections.<ItemStack> emptyList());
+          }
+        }
+      } else {
+        res.add(Collections.<ItemStack> emptyList());
+      }
+    }
+    return res;
+  }
+
+  @Override
   public List<FluidStack> getInputFluidStacks() {
     if(inputs == null) {
       return Collections.emptyList();

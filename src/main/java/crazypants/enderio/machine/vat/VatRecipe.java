@@ -2,11 +2,6 @@ package crazypants.enderio.machine.vat;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.google.common.collect.HashBasedTable;
@@ -18,10 +13,15 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class VatRecipe implements IRecipe {
 
   protected final List<ItemStack> inputStacks;
+  private final List<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
   protected final Table<RecipeInput, RecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
@@ -36,6 +36,7 @@ public class VatRecipe implements IRecipe {
     FluidStack inputFluidStack = null, outputFluidStack = null;
 
     inputs = recipe.getInputs();
+    inputStackAlternatives = recipe.getInputStackAlternatives();
 
     for (RecipeOutput recipeOutput : recipe.getOutputs()) {
       if (recipeOutput.isFluid()) {
@@ -254,6 +255,11 @@ public class VatRecipe implements IRecipe {
       }
     }
     return 1;
+  }
+
+  @Override
+  public List<List<ItemStack>> getInputStackAlternatives() {
+    return inputStackAlternatives;
   }
 
 }

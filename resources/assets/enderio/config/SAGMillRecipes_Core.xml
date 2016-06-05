@@ -295,7 +295,7 @@
     </recipe>
     <recipe name="Glass" energyCost="1200" >
       <input>
-        <itemStack oreDictionary="glass" />
+        <itemStack oreDictionary="blockGlass" />
       </input>
       <output>
         <itemStack oreDictionary="sand" />
