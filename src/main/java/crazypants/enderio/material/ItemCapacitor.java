@@ -66,7 +66,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
     for (int j = 0; j < DefaultCapacitorData.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
-    final ItemStack stack = CapacitorHelper.addCapData(CapacitorHelper.addCapData(new ItemStack(par1, 1, 0), SetType.NAME, null, 1), SetType.NAME,
+    final ItemStack stack = CapacitorHelper.addCapData(CapacitorHelper.addCapData(new ItemStack(par1, 1, 0), SetType.LEVEL, null, 1), SetType.NAME,
         CapacitorKey.ALLOY_SMELTER_POWER_USE, 5);
     stack.setStackDisplayName("Smelting Capacitor"); // TODO remove this test
     par3List.add(stack);
