@@ -32,7 +32,7 @@ version = "${minecraft_version}-${mod_version}.${buildnumber}"
 boolean release = true
 
 // dependency string for the @Mod annotation
-ext.dependencies = "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},)"
+ext.dependencies = "required-after:Forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},)"
 
 if (project.hasProperty('mod_appendix')) {
     version += "_${project.mod_appendix}"

@@ -8,12 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.renderer.VertexBuffer;
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.ITabPanel;
-import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -22,17 +17,13 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 public class GuiExternalConnection extends GuiContainerBaseEIO {
-
-  private static final int TAB_HEIGHT = 24;
 
   private static int nextButtonId = 1;
 
@@ -58,8 +49,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   private final List<IConduit> conduits = new ArrayList<IConduit>();
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
-
-  private int tabYOffset = 4;
 
   private final ExternalConnectionContainer container;
 
@@ -130,22 +119,16 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
 
-    int tabLeftX = xSize;
-    int tabRightX = tabLeftX + 22;
-
-    int minY = tabYOffset;
-    int maxY = minY + (conduits.size() * TAB_HEIGHT);
+    int tabFromCoords = getTabFromCoords(x, y);
+    if (tabFromCoords >= 0) {
+      activeTab = tabFromCoords;
+      initGui();
+      return;
+    }
 
     x = (x - guiLeft);
     y = (y - guiTop);
 
-    if(x > tabLeftX && x < tabRightX + 24) {
-      if(y > minY && y < maxY) {
-        activeTab = (y - minY) / 24;
-        initGui();
-        return;
-      }
-    }
     tabs.get(activeTab).mouseClicked(x, y, par3);
 
   }
@@ -163,43 +146,20 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1, 1, 1, 1);
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-    int tabX = sx + xSize - 3;
-
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-    for (int i = 0; i < tabs.size(); i++) {
-      if(i != activeTab) {
-        RenderUtil.bindTexture(IconEIO.TEXTURE);
-        IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
-        IWidgetIcon icon = tabs.get(i).getIcon();
-        icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (i * TAB_HEIGHT) + 4);
-      }
-    }
-
-    Tessellator.getInstance().draw();
 
     bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-
-    RenderUtil.bindTexture(IconEIO.TEXTURE);
     
-               
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-    
-    IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
-
-    if(tabs.size() > 0) {
-      IWidgetIcon icon = tabs.get(activeTab).getIcon();
-      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
-      Tessellator.getInstance().draw();
-      tabs.get(activeTab).render(par1, par2, par3);
-    } else {
-      Tessellator.getInstance().draw();
+    startTabs();
+    for (int i = 0; i < tabs.size(); i++) {
+      renderStdTab(sx, sy, i, tabs.get(i).getIcon(), i == activeTab);
     }
+
+    tabs.get(activeTab).render(par1, par2, par3);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }

@@ -1,36 +1,24 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ITabPanel;
-import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
-  private static final int TAB_HEIGHT = 24;
-
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
-  private final int tabYOffset = 4;
   GeneralTab generalTab;
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
@@ -166,23 +154,17 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   protected void mouseClicked(int x, int y, int par3) throws IOException {
     super.mouseClicked(x, y, par3);
 
-    int tabLeftX = xSize;
-    int tabRightX = tabLeftX + 22;
-
-    int minY = tabYOffset;
-    int maxY = minY + (tabs.size() * TAB_HEIGHT);
+    int tabFromCoords = getTabFromCoords(x, y);
+    if (tabFromCoords >= 0) {
+      activeTab = tabFromCoords;
+      hideOverlays();
+      initGui();
+      return;
+    }
 
     x = (x - guiLeft);
     y = (y - guiTop);
 
-    if (x > tabLeftX && x < tabRightX + 24) {
-      if (y > minY && y < maxY) {
-        activeTab = (y - minY) / 24;
-        hideOverlays();
-        initGui();
-        return;
-      }
-    }
     tabs.get(activeTab).mouseClicked(x, y, par3);
   }
 
@@ -198,38 +180,18 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-    int tabX = sx + xSize - 3;
-
-    VertexBuffer tes = Tessellator.getInstance().getBuffer();
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-    for (int i = 0; i < tabs.size(); i++) {
-      if (i != activeTab) {
-        RenderUtil.bindTexture(IconEIO.TEXTURE);
-        IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
-        IWidgetIcon icon = tabs.get(i).getIcon();
-        icon.getMap().render(icon, tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 6, 11, 11, 0, false);
-      }
-    }
-
-    Tessellator.getInstance().draw();
 
     bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture(IconEIO.TEXTURE);
-    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-    IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
-    Tessellator.getInstance().draw();
-
-    if (tabs.size() > 0) {
-      IWidgetIcon icon = tabs.get(activeTab).getIcon();
-      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4, true);
-      tabs.get(activeTab).render(par1, par2, par3);
+    startTabs();
+    for (int i = 0; i < tabs.size(); i++) {
+      renderStdTab(sx, sy, i, tabs.get(i).getIcon(), i == activeTab);
     }
 
+    tabs.get(activeTab).render(par1, par2, par3);
+
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   public TileTransceiver getTransciever() {
@@ -238,19 +200,6 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   public ContainerTransceiver getContainer() {
     return (ContainerTransceiver) inventorySlots;
-  }
-
-  @Override
-  public List<Rectangle> getBlockingAreas() {
-    if (tabs.size() > 0) {
-      int sx = (width - xSize) / 2;
-      int sy = (height - ySize) / 2;
-      int tabX = sx + xSize - 3;
-      int tabY = sy + tabYOffset;
-
-      return Collections.singletonList(new Rectangle(tabX, tabY, 14, tabs.size() * TAB_HEIGHT));
-    }
-    return super.getBlockingAreas();
   }
 
   // @Override

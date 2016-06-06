@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -21,7 +20,6 @@ import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
@@ -31,7 +29,6 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -307,9 +304,10 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
     super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
 
+    startTabs();
     for (Tab drawTab : Tab.values()) {
       if (drawTab != Tab.GRAPH || getTileEntity().isAdvanced()) {
-        drawTab(sx, sy, drawTab, drawTab == tab, getTileEntity().isAdvanced() ? 0 : 1);
+        renderStdTab(sx, sy, drawTab.tabNo - (getTileEntity().isAdvanced() ? 0 : 1), drawTab.itemStack, drawTab.button, drawTab == tab);
       }
     }
   }
@@ -469,44 +467,6 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     sb.append(PowerDisplayUtil.perTickStr());
     fontRenderer.drawString(sb.toString(), x + TEXT_X_OFFSET + TEXT_WIDTH / 2, y + TEXT_Y_OFFSET + 2 * LINE_Y_OFFSET, valuesCol, false);
 
-  }
-
-  // offset from the upper right corner of gui background
-  private final static int tabXOffset = -3;
-  private final static int tabYOffset = 4;
-  private static final int TAB_WIDTH = 4 + 16 + 4;
-  private static final int TAB_HEIGHT = 24;
-
-  private void drawTab(int sx, int sy, Tab drawTab, boolean active, int tabOffset) {
-    int tabX = sx + xSize + tabXOffset;
-    int tabY = sy + tabYOffset + TAB_HEIGHT * (drawTab.tabNo - tabOffset);
-
-    // (1) Tab
-    if (active) {
-      IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, tabY, true);
-    } else {
-      IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, tabY, true);
-    }
-    IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX + 5, tabY, true);
-
-    // (2) Icon
-    RenderHelper.enableGUIStandardItemLighting();
-    itemRender.renderItemIntoGUI(drawTab.itemStack, tabX + 4, tabY + 4);
-    RenderHelper.disableStandardItemLighting();
-
-    // (3) Button
-    drawTab.button.xPosition = tabX + 4;
-    drawTab.button.yPosition = tabY + 4;
-    drawTab.button.width = 16;
-    drawTab.button.height = 16;
-
-    GlStateManager.color(1, 1, 1, 1);
-  }
-
-  @Override
-  public List<Rectangle> getBlockingAreas() {
-    return Collections.singletonList(new Rectangle((width + xSize) / 2 + tabXOffset, (height - ySize) / 2 + tabYOffset, TAB_WIDTH + 1, TAB_HEIGHT
-        * (Tab.values().length - (getTileEntity().isAdvanced() ? 0 : 1))));
   }
 
   private int getInt(GuiTextField tf) {
