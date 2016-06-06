@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.recipe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import crazypants.enderio.machine.MachineRecipeInput;

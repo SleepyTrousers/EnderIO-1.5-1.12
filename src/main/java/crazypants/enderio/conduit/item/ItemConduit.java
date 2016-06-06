@@ -10,9 +10,9 @@ import java.util.Map.Entry;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.Log;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -28,8 +28,6 @@ import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,8 +41,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -426,19 +422,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       return null;
     }
     BlockCoord loc = getLocation().getLocation(direction);
-    TileEntity te = world.getTileEntity(loc.getBlockPos());
-    if(te != null && te.hasCapability(ITEM_HANDLER_CAPABILITY, direction.getOpposite())) {
-      return te.getCapability(ITEM_HANDLER_CAPABILITY, direction.getOpposite());
-    }   
-    if (te instanceof ISidedInventory) {
-      Log.info("ItemConduit.getExternalInventory: Found non-capability sided inv at " + loc);
-      return new SidedInvWrapper((ISidedInventory) te, direction.getOpposite());
-    }
-    if(te instanceof IInventory) {
-      Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + loc);
-      return new InvWrapper((IInventory)te);
-    }
-    return null;
+    return ItemTools.getExternalInventory(world, loc.getBlockPos(), direction.getOpposite());
   }
 
   @Override

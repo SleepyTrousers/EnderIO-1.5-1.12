@@ -1,17 +1,25 @@
 package crazypants.enderio.capability;
 
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.Log;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class ItemTools {
 
@@ -195,6 +203,23 @@ public class ItemTools {
 
   }
 
-  
+  public static @Nullable IItemHandler getExternalInventory(IBlockAccess world, BlockPos pos, EnumFacing face) {
+    if (world == null || pos == null || face == null) {
+      return null;
+    }
+    TileEntity te = world.getTileEntity(pos);
+    if (te != null && te.hasCapability(ITEM_HANDLER_CAPABILITY, face)) {
+      return te.getCapability(ITEM_HANDLER_CAPABILITY, face);
+    }
+    if (te instanceof ISidedInventory) {
+      Log.info("ItemConduit.getExternalInventory: Found non-capability sided inv at " + pos);
+      return new SidedInvWrapper((ISidedInventory) te, face);
+    }
+    if (te instanceof IInventory) {
+      Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + pos);
+      return new InvWrapper((IInventory) te);
+    }
+    return null;
+  }
 
 }

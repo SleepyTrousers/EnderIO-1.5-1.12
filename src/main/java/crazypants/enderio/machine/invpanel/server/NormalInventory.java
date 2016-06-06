@@ -15,6 +15,10 @@ class NormalInventory extends AbstractInventory {
   int scanInventory(InventoryDatabaseServer db) {
     IItemHandler inv = ni.getInventory();
     
+    if (inv == null) {
+      setEmpty(db);
+      return 0;
+    }
     int numSlots = inv.getSlots();
     if (numSlots < 1) {
       setEmpty(db);
@@ -38,7 +42,10 @@ class NormalInventory extends AbstractInventory {
 
   @Override
   public int extractItem(InventoryDatabaseServer db, ItemEntry entry, int slot, int count) {
-    IItemHandler inv = ni.getInventory();        
+    IItemHandler inv = ni.getInventory();
+    if (inv == null) {
+      return 0;
+    }
     ItemStack stack = inv.getStackInSlot(slot);
     if (stack == null) {
       return 0;

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
@@ -24,7 +26,6 @@ import net.minecraftforge.items.IItemHandler;
 
 public class NetworkedInventory {
 
-  private IItemHandler inv;
   IItemConduit con;
   EnumFacing conDir;
   BlockCoord location;
@@ -46,7 +47,6 @@ public class NetworkedInventory {
   NetworkedInventory(ItemConduitNetwork network, IItemConduit con, EnumFacing conDir, IItemHandler inv, BlockCoord location) {
     this.network = network;
     inventorySide = conDir.getOpposite();
-    this.inv = inv;
     this.con = con;
     this.conDir = conDir;
     this.location = location;
@@ -59,7 +59,6 @@ public class NetworkedInventory {
     if(te instanceof TileInventoryPanel) {
       inventoryPanel = true;
     }
-    updateInventory();
   }
 
   public boolean hasTarget(IItemConduit conduit, EnumFacing dir) {
@@ -124,8 +123,11 @@ public class NetworkedInventory {
   }
 
   private boolean transferItems() {
-        
-    int numSlots = getInventory().getSlots();
+    IItemHandler inventory = getInventory();
+    if (inventory == null) {
+      return false;
+    }
+    int numSlots = inventory.getSlots();
     if(numSlots < 1) {
       return false;
     }
@@ -137,10 +139,10 @@ public class NetworkedInventory {
     int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
     for (int i = 0; i < slotChecksPerTick; i++) {
       slot = nextSlot(numSlots);      
-      ItemStack item = getInventory().getStackInSlot(slot);
+      ItemStack item = inventory.getStackInSlot(slot);
       if(canExtractItem(item)) {
         extractItem = item.copy();        
-        if(getInventory().extractItem(slot, extractItem.stackSize, true) != null) {
+        if (inventory.extractItem(slot, extractItem.stackSize, true) != null) {
           if(doTransfer(extractItem, slot, maxExtracted)) {
             setNextStartingSlot(slot);
             return true;
@@ -177,12 +179,17 @@ public class NetworkedInventory {
 
   }
 
+  // TODO: what should this do? Need to handle error cases, I think.
   public void itemExtracted(int slot, int numInserted) {
-    ItemStack curStack = getInventory().getStackInSlot(slot);
-    if (curStack != null) {
-      ItemStack extracted = getInventory().extractItem(slot, numInserted, false);
-      if(extracted == null || extracted.stackSize != numInserted) {
-        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + curStack.getDisplayName() + " but only removed " + (extracted == null ? "null" : extracted.stackSize));
+    IItemHandler inventory = getInventory();
+    if (inventory != null) {
+      ItemStack curStack = inventory.getStackInSlot(slot);
+      if (curStack != null) {
+        ItemStack extracted = inventory.extractItem(slot, numInserted, false);
+        if (extracted == null || extracted.stackSize != numInserted) {
+          Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + curStack.getDisplayName() + " but only removed "
+              + (extracted == null ? "null" : extracted.stackSize));
+        }
       }
     }
     con.itemsExtracted(numInserted, slot);
@@ -225,13 +232,6 @@ public class NetworkedInventory {
       return rrIter;
     }
     return sendPriority;
-  }
-
-  public final void updateInventory() {
-    TileEntity te = world.getTileEntity(location.getBlockPos());
-    if(te.hasCapability(ItemConduit.ITEM_HANDLER_CAPABILITY, inventorySide)) {
-      inv = te.getCapability(ItemConduit.ITEM_HANDLER_CAPABILITY, inventorySide);
-    }    
   }
 
   private int insertItem(ItemStack item) {
@@ -291,10 +291,10 @@ public class NetworkedInventory {
 
     ArrayList<BlockCoord> nextSteps = new ArrayList<BlockCoord>();
     for (BlockCoord bc : steps) {
-      IItemConduit con = network.conMap.get(bc);
-      if(con != null) {
-        for (EnumFacing dir : con.getExternalConnections()) {
-          Target target = getTarget(targets, con, dir);
+      IItemConduit con1 = network.conMap.get(bc);
+      if (con1 != null) {
+        for (EnumFacing dir : con1.getExternalConnections()) {
+          Target target = getTarget(targets, con1, dir);
           if(target != null && target.distance > distance) {
             target.distance = distance;
           }
@@ -310,7 +310,7 @@ public class NetworkedInventory {
           visited.put(bc, distance);
         }
 
-        for (EnumFacing dir : con.getConduitConnections()) {
+        for (EnumFacing dir : con1.getConduitConnections()) {
           nextSteps.add(bc.getLocation(dir));
         }
       }
@@ -318,17 +318,17 @@ public class NetworkedInventory {
     calculateDistances(targets, visited, nextSteps, distance + 1);
   }
 
-  private Target getTarget(List<Target> targets, IItemConduit con, EnumFacing dir) {
-    if(targets == null || con == null || con.getLocation() == null) {
+  private Target getTarget(List<Target> targets, IItemConduit con1, EnumFacing dir) {
+    if (targets == null || con1 == null || con1.getLocation() == null) {
       return null;
     }
     for (Target target : targets) {
       BlockCoord targetConLoc = null;
       if(target != null && target.inv != null && target.inv.con != null) {
         targetConLoc = target.inv.con.getLocation();
-      }
-      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
-        return target;
+        if (targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con1.getLocation())) {
+          return target;
+        }
       }
     }
     return null;
@@ -338,8 +338,8 @@ public class NetworkedInventory {
     return con.getLocation().getDistSq(other.con.getLocation());
   }
 
-  public IItemHandler getInventory() {
-    return inv;
+  public @Nullable IItemHandler getInventory() {
+    return ItemTools.getExternalInventory(world, location.getBlockPos(), inventorySide);
   }
 
   public EnumFacing getInventorySide() {

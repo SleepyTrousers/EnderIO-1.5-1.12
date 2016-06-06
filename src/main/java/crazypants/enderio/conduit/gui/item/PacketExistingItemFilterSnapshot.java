@@ -76,7 +76,6 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
       case SET: {
         ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
         NetworkedInventory inv = icn.getInventory(conduit, message.dir);
-        inv.updateInventory();
         filter.setSnapshot(inv);
         break;
       }
