@@ -131,10 +131,6 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     int otherSlots = 4 + 5; // charging + armor + off-hand
     int startBaublesSlot = otherSlots;
     int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
-    int startPlayerSlot = baubles == null ? otherSlots : endBaublesSlot + 1;
-    int endPlayerSlot = startPlayerSlot + 26;
-    int startHotBarSlot = endPlayerSlot + 1;
-    int endHotBarSlot = startHotBarSlot + 9;
 
     ItemStack copystack = null;
     Slot slot = inventorySlots.get(slotIndex);
@@ -159,17 +155,17 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
         // Check from inv-> charge then inv->hotbar or hotbar->inv
         if (!inv.isItemValidForSlot(0, origStack) || !mergeItemStack(origStack, 0, 4, false)) {
 
-          if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
+          if (slotIndex >= startBaublesSlot && slotIndex < endBaublesSlot) {
             if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false) && !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
               return null;
             }
-          } else if (slotIndex <= endPlayerSlot) {
+          } else if (slotIndex < endPlayerSlot) {
             if (/*
                  * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                  */!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
               return null;
             }
-          } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+          } else if (slotIndex >= startHotBarSlot && slotIndex < endHotBarSlot) {
             if (/*
                  * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false)) &&
                  */!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
