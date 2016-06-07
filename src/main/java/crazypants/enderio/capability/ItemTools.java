@@ -2,8 +2,6 @@ package crazypants.enderio.capability;
 
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.Log;
-
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import net.minecraft.entity.item.EntityItem;
@@ -212,11 +210,11 @@ public class ItemTools {
       return te.getCapability(ITEM_HANDLER_CAPABILITY, face);
     }
     if (te instanceof ISidedInventory) {
-      Log.info("ItemConduit.getExternalInventory: Found non-capability sided inv at " + pos);
+      // Log.info("ItemConduit.getExternalInventory: Found non-capability sided inv at " + pos);
       return new SidedInvWrapper((ISidedInventory) te, face);
     }
     if (te instanceof IInventory) {
-      Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + pos);
+      // Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + pos);
       return new InvWrapper((IInventory) te);
     }
     return null;
