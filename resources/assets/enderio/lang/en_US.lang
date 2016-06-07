@@ -1264,6 +1264,7 @@ enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (wi
 // There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
 
+// These are used for the "The One Probe" integration
 enderio.top.action.header=%s:
 enderio.top.action.none=nothing
 enderio.top.machine.active=active
@@ -1279,6 +1280,12 @@ enderio.top.redstone.header=Currently: %s
 enderio.top.redstone.true=On
 enderio.top.redstone.false=Off
 
+// Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
+// "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
+
+// Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
+// machines baffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
+// green=Farming Station area, red=Stirling Generator power generation
 enderio.loot.capacitor.smelting=Smelting %s
 enderio.loot.capacitor.intake=Hungry %s
 enderio.loot.capacitor.buffer=Insatiable %s
@@ -1287,13 +1294,16 @@ enderio.loot.capacitor.area=Big %s
 enderio.loot.capacitor.green=Planting %s
 enderio.loot.capacitor.red=Hot %s
 
-enderio.loot.capacitor.baselevel.00=%s Dud
+// Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
+// This is the general level of the capacitor
+enderio.loot.capacitor.baselevel.10=%s Dud
 enderio.loot.capacitor.baselevel.15=%s
 enderio.loot.capacitor.baselevel.25=Enhanced %s
 enderio.loot.capacitor.baselevel.35=Wonder %s
 enderio.loot.capacitor.baselevel.45=Impossible %s
 
-enderio.loot.capacitor.level.00=Failed %s
+// As above but for the special attribute
+enderio.loot.capacitor.level.10=Failed %s
 enderio.loot.capacitor.level.15=Simple %s
 enderio.loot.capacitor.level.25=Nice %s
 enderio.loot.capacitor.level.30=Good %s
