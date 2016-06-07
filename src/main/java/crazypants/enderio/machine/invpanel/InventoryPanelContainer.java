@@ -33,6 +33,17 @@ import net.minecraft.item.crafting.CraftingManager;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
+  // JEI wants this data without giving us a chance to instantiate a container
+  public static int FIRST_RECIPE_SLOT = 1;
+  public static int NUM_RECIPE_SLOT = 9;
+  public static int FIRST_INVENTORY_SLOT = 11;
+  public static int NUM_INVENTORY_SLOT = 10 + 4 * 9; // return area + player inventory
+
+  /*
+   * Slots: slotCraftResult=0 firstSlotCraftingGrid=1 endSlotCraftingGrid=10 firstSlotReturn=11 endSlotReturn=21 startHotBarSlot=48 endHotBarSlot=57
+   * startPlayerSlot=21 endPlayerSlot=48
+   */
+
   public static final int CRAFTING_GRID_X = 24+7;
   public static final int CRAFTING_GRID_Y = 16;
 
