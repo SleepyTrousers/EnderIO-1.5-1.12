@@ -26,6 +26,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
         RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
+        GlStateManager.enableLighting();
         renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), false); // TODO 1.9 hand
         GlStateManager.popMatrix();
       } else if (MinecraftForgeClient.getRenderPass() == 1) {
@@ -69,9 +70,12 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GlStateManager.translate(13.6f / 16f, 0.6f, (leftHand ? 1.5f : 14.5f) / 16f);
 
     // scale to size
-    GlStateManager.pushMatrix();
+    GlStateManager.pushMatrix();    
     float scale = 0.75f;    
     GlStateManager.scale(scale, scale, scale);
+    //Adjust rotation so axe is facing the correct way
+    GlStateManager.rotate(180, 0, 1, 0);
+    GlStateManager.rotate(90, 0, 0, 1);
 
     // render
     final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;

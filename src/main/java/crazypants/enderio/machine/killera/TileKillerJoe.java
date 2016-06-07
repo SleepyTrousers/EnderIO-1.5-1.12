@@ -39,6 +39,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
@@ -134,7 +135,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof ItemSword;
+    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe;
   }
 
   @Override
