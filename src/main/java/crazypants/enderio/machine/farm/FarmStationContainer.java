@@ -45,17 +45,21 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       slotItemsStacks3.add(new ItemStack(item));
     }
     slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));
-    slotItemsSeeds.add(new ItemStack(Blocks.CARROTS));
-    slotItemsSeeds.add(new ItemStack(Blocks.POTATOES));
+    slotItemsSeeds.add(new ItemStack(Items.CARROT));
+    slotItemsSeeds.add(new ItemStack(Items.POTATO));
     slotItemsSeeds.add(new ItemStack(Blocks.RED_MUSHROOM));
     slotItemsSeeds.add(new ItemStack(Blocks.BROWN_MUSHROOM));
-    slotItemsSeeds.add(new ItemStack(Blocks.NETHER_WART));
+    slotItemsSeeds.add(new ItemStack(Items.NETHER_WART));
     slotItemsSeeds.add(new ItemStack(Blocks.SAPLING));
     slotItemsSeeds.add(new ItemStack(Items.REEDS));
+    slotItemsSeeds.add(new ItemStack(Items.MELON_SEEDS));
+    slotItemsSeeds.add(new ItemStack(Items.PUMPKIN_SEEDS));
     slotItemsProduce.add(new ItemStack(Blocks.LOG, 1, 0));
     slotItemsProduce.add(new ItemStack(Blocks.WHEAT));
     slotItemsProduce.add(new ItemStack(Blocks.LEAVES, 1, 0));
     slotItemsProduce.add(new ItemStack(Items.APPLE));
+    slotItemsProduce.add(new ItemStack(Items.MELON));
+    slotItemsProduce.add(new ItemStack(Blocks.PUMPKIN));
     slotItemsFertilizer.add(new ItemStack(Items.DYE, 1, 15));
   }
 
