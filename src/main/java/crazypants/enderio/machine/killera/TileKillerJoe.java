@@ -39,6 +39,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.DamageSource;
@@ -48,7 +49,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -85,7 +85,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   protected AxisAlignedBB hooverBounds;
 
-  protected FakePlayer attackera;
+  protected Attackera attackera;
 
   protected WirelessChargedLocation chargedLocation;
 
@@ -135,7 +135,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof ItemSword;
+    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe;
   }
 
   @Override
@@ -183,17 +183,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
 
-    if (!shouldDoWorkThisTick(10)) {
-      return false;
-    }
-
-    if (tanksDirty) {
-      PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
-      tanksDirty = false;
-    }
-    if (xpCon.isDirty()) {
-      PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
-      xpCon.setDirty(false);
+    //send any maintaince packets no more than twice a second
+    if (shouldDoWorkThisTick(10)) {
+      if (tanksDirty) {
+        PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
+        tanksDirty = false;
+      }
+      if (xpCon.isDirty()) {
+        PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
+        xpCon.setDirty(false);
+      }
     }
 
     if (!redstoneCheck) {
@@ -205,6 +204,13 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
 
     if (getStackInSlot(0) == null) {
+      return false;
+    }
+
+    
+    Attackera atackera = getAttackera();
+    atackera.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, getStackInSlot(0));
+    if(atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
       return false;
     }
 
@@ -227,25 +233,23 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           if (Config.killerJoeMustSee && !canJoeSee(ent)) {
             continue;
           }
-
           if (ent instanceof EntityZombie) {
             zCache.cache.add((EntityZombie) ent);
-          }
-          FakePlayer fakee = getAttackera();
-          fakee.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, getStackInSlot(0));          
+          }                      
           try {
             if (togglePvp) {
               FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(true);
             }
-            fakee.attackTargetEntityWithCurrentItem(ent);
+            atackera.attackTargetEntityWithCurrentItem(ent);
           } finally {
             if (togglePvp) {
               FMLCommonHandler.instance().getMinecraftServerInstance().setAllowPvp(false);
             }
           }
+          atackera.resetCooldown();
           useNutrient();
           swingWeapon();
-          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || fakee.getHeldItemMainhand() == null) {
+          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || atackera.getHeldItemMainhand() == null) {
             setInventorySlotContents(0, null);
           }
           return false;
@@ -374,7 +378,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return 6;
   }
 
-  FakePlayer getAttackera() {
+  Attackera getAttackera() {
     if (attackera == null) {
       attackera = new Attackera();
     }
@@ -543,7 +547,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       }
 
       getChargedLocation().chargeItems(inventory.mainInventory);
+      ticksSinceLastSwing++;
+      
     }
+    
+    public int getTicksSinceLastSwing() {
+      return ticksSinceLastSwing;
+    }
+       
   }
 
   @Override

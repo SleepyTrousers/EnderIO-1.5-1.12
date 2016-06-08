@@ -63,7 +63,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25);                                                                                                                
   
   private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
-  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
+  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredSpeedBonus, 0);
 
   public static boolean isEquipped(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);

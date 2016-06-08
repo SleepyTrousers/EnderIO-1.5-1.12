@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 public class CraftingHelper {
   final ItemStack[][] ingredients;
 
-  protected CraftingHelper(ItemStack[][] ingredients) {
+  public CraftingHelper(ItemStack[][] ingredients) {
     this.ingredients = ingredients;
   }
 
@@ -62,7 +62,11 @@ public class CraftingHelper {
 
   public void refill(GuiInventoryPanel gui, int amount) {
     InventoryPanelContainer container = gui.getContainer();
-    InventoryDatabaseClient db = gui.getDatabase();
+    refill(container, amount);
+  }
+
+  public void refill(InventoryPanelContainer container, int amount) {
+    InventoryDatabaseClient db = container.getInv().getDatabaseClient();
     List<Slot> craftingGrid = container.getCraftingGridSlots();
     int slotsToProcess = (1 << 9) - 1;
     boolean madeProgress;
@@ -84,9 +88,9 @@ public class CraftingHelper {
               if (!isStackCompatible(pstack, stack)) {
                 return;
               }
-              candidate = findCandidates(stack, gui, db, candidates);
+              candidate = findCandidates(stack, container, db, candidates);
             } else {
-              candidate = findAllCandidates(pstack, gui, db, candidates);
+              candidate = findAllCandidates(pstack, container, db, candidates);
             }
             if (candidate == null) {
               return;
@@ -158,11 +162,11 @@ public class CraftingHelper {
     return false;
   }
 
-  private Candidate findAllCandidates(ItemStack[] pstack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
+  private Candidate findAllCandidates(ItemStack[] pstack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
     Candidate bestInventory = null;
     Candidate bestNetwork = null;
     for (ItemStack istack : pstack) {
-      Candidate candidate = findCandidates(istack, gui, db, candidates);
+      Candidate candidate = findCandidates(istack, container, db, candidates);
       if (candidate.available > 0) {
         if (bestInventory == null || bestInventory.available < candidate.available) {
           bestInventory = candidate;
@@ -181,14 +185,13 @@ public class CraftingHelper {
     }
   }
 
-  private Candidate findCandidates(ItemStack stack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
+  private Candidate findCandidates(ItemStack stack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
     for (Candidate candidate : candidates) {
       if (candidate != null && ItemUtil.areStackMergable(candidate.stack, stack)) {
         return candidate;
       }
     }
     Candidate candidate = new Candidate(stack);
-    InventoryPanelContainer container = gui.getContainer();
     if(container.getInventoryPanel().isExtractionDisabled()) {
       findCandidates(candidate, stack, container.getReturnAreaSlots());
     }

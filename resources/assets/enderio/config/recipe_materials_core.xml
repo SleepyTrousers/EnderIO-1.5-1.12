@@ -71,7 +71,7 @@
         <item name="oredict:sand" /><item name="oredict:itemClay" /><item name="oredict:sand" />
         <item name="oredict:gravel" /><item name="oredict:gravel" /><item name="oredict:gravel" />
       </grid>
-      <output name="BINDER_COMPOSITE" />
+      <output name="BINDER_COMPOSITE" amount="16" />
     </crafting>
     <crafting>
       <level minlevel="1" maxlevel="2"/>
@@ -80,7 +80,7 @@
         <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
         <item name="oredict:gravel" /><item name="oredict:itemClay" /><item name="oredict:gravel" />
       </grid>
-      <output name="BINDER_COMPOSITE" />
+      <output name="BINDER_COMPOSITE" amount="8" />
     </crafting>
     <crafting>
       <level minlevel="3"/>
@@ -89,7 +89,7 @@
         <item name="oredict:sand" /><item name="oredict:gravel" /><item name="oredict:sand" />
         <item name="oredict:gravel" /><item name="minecraft:clay" /><item name="oredict:gravel" />
       </grid>
-      <output name="BINDER_COMPOSITE" />
+      <output name="BINDER_COMPOSITE" amount="4" />
     </crafting>
   </recipe>
 

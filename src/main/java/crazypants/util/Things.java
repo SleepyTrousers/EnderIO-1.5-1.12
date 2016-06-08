@@ -8,6 +8,7 @@ import java.util.Map;
 
 import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -147,7 +148,10 @@ public class Things {
     if (itemList == null) {
       itemList = new ArrayList<Item>();
       for (IThing thing : things) {
-        itemList.addAll(thing.getItems());
+        List<Item> items = thing.getItems();
+        if (items != null && !items.isEmpty()) {
+          itemList.addAll(items);
+        }
       }
     }
     return itemList;
@@ -159,7 +163,10 @@ public class Things {
     if (itemStackListRaw == null) {
       itemStackListRaw = new ArrayList<ItemStack>();
       for (IThing thing : things) {
-        itemStackListRaw.addAll(thing.getItemStacks());
+        List<ItemStack> itemStacks = thing.getItemStacks();
+        if (itemStacks != null && !itemStacks.isEmpty()) {
+          itemStackListRaw.addAll(itemStacks);
+        }
       }
     }
     return itemStackListRaw;
@@ -170,7 +177,9 @@ public class Things {
     if (itemStackList == null) {
       itemStackList = new ArrayList<ItemStack>();
       for (ItemStack stack : getItemStacksRaw()) {
-        if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+        if (stack == null || stack.getItem() == null) {
+          // NOP
+        } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
           stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
         } else {
           itemStackList.add(stack);
@@ -186,7 +195,10 @@ public class Things {
     if (blockList == null) {
       blockList = new ArrayList<Block>();
       for (IThing thing : things) {
-        blockList.addAll(thing.getBlocks());
+        List<Block> blocks = thing.getBlocks();
+        if (blocks != null && !blocks.isEmpty()) {
+          blockList.addAll(thing.getBlocks());
+        }
       }
     }
     return blockList;
@@ -263,7 +275,7 @@ public class Things {
     @Override
     public List<Block> getBlocks() {
       Block block = Block.getBlockFromItem(item);
-      return block != null ? Collections.singletonList(block) : Collections.<Block> emptyList();
+      return block != null && block != Blocks.AIR ? Collections.singletonList(block) : Collections.<Block> emptyList();
     }
 
     @Override
@@ -316,7 +328,7 @@ public class Things {
     @Override
     public List<Block> getBlocks() {
       Block block = Block.getBlockFromItem(itemStack.getItem());
-      return block != null ? Collections.singletonList(block) : Collections.<Block> emptyList();
+      return block != null && block != Blocks.AIR ? Collections.singletonList(block) : Collections.<Block> emptyList();
     }
 
     @Override
@@ -362,7 +374,8 @@ public class Things {
 
     @Override
     public List<ItemStack> getItemStacks() {
-      return Collections.singletonList(new ItemStack(block));
+      Item item = Item.getItemFromBlock(block);
+      return item != null ? Collections.singletonList(new ItemStack(item)) : null;
     }
 
     @Override
@@ -448,8 +461,11 @@ public class Things {
     public List<Block> getBlocks() {
       List<Block> result = new ArrayList<Block>();
       for (ItemStack itemStack : ores) {
-        if (itemStack != null && Block.getBlockFromItem(itemStack.getItem()) != null) {
-          result.add(Block.getBlockFromItem(itemStack.getItem()));
+        if (itemStack != null && itemStack.getItem() != null) {
+          Block block = Block.getBlockFromItem(itemStack.getItem());
+          if (block != null && block != Blocks.AIR) {
+            result.add(block);
+          }
         }
       }
       return result;

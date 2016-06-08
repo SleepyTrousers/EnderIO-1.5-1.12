@@ -1,19 +1,19 @@
 package crazypants.enderio.machine.killera;
 
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
+import crazypants.enderio.render.TankRenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
-import crazypants.enderio.render.TankRenderHelper;
 
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
@@ -26,7 +26,10 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
         RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
-        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), false); // TODO 1.9 hand
+        GlStateManager.enableLighting();
+        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks),
+            Minecraft.getMinecraft().thePlayer.getPrimaryHand() == EnumHandSide.LEFT);
+        GlStateManager.disableLighting();
         GlStateManager.popMatrix();
       } else if (MinecraftForgeClient.getRenderPass() == 1) {
         HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
@@ -69,9 +72,12 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     GlStateManager.translate(13.6f / 16f, 0.6f, (leftHand ? 1.5f : 14.5f) / 16f);
 
     // scale to size
-    GlStateManager.pushMatrix();
+    GlStateManager.pushMatrix();    
     float scale = 0.75f;    
     GlStateManager.scale(scale, scale, scale);
+    //Adjust rotation so axe is facing the correct way
+    GlStateManager.rotate(180, 0, 1, 0);
+    GlStateManager.rotate(90, 0, 0, 1);
 
     // render
     final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;

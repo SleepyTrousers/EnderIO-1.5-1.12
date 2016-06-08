@@ -55,11 +55,11 @@ public class LootSelector extends LootFunction {
     for (int i = 0; i < no; i++) {
       Upgrade randomKey = getUpgrade(rand);
       float randomLevel = getRandomLevel(baselevel, rand);
+      baselevel -= Math.max(randomLevel / 10f * rand.nextFloat(), .5f);
       if (keys.containsKey(randomKey)) {
-        keys.put(randomKey, Math.max(randomLevel, keys.get(randomKey)));
-      } else {
-        keys.put(randomKey, randomLevel);
+        randomLevel = Math.max(randomLevel, keys.get(randomKey));
       }
+      keys.put(randomKey, randomLevel);
     }
 
     String name = buildBaseName(EnderIO.lang.localize("itemBasicCapacitor.name"), baselevel);
@@ -107,7 +107,7 @@ public class LootSelector extends LootFunction {
 
   private String buildBaseName(String name, float level) {
     if (level < 1f) {
-      name = EnderIO.lang.localize("loot.capacitor.baselevel.00", name);
+      name = EnderIO.lang.localize("loot.capacitor.baselevel.10", name);
     } else if (level < 1.5f) {
       name = EnderIO.lang.localize("loot.capacitor.baselevel.15", name);
     } else if (level < 2.5f) {
@@ -122,7 +122,7 @@ public class LootSelector extends LootFunction {
 
   private String buildName(String name, float level) {
     if (level < 1f) {
-      name = EnderIO.lang.localize("loot.capacitor.level.00", name);
+      name = EnderIO.lang.localize("loot.capacitor.level.10", name);
     } else if (level < 1.5f) {
       name = EnderIO.lang.localize("loot.capacitor.level.15", name);
     } else if (level < 2.5f) {
