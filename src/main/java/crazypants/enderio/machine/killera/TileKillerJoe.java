@@ -13,6 +13,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
@@ -25,6 +26,8 @@ import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
@@ -34,6 +37,7 @@ import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
@@ -61,7 +65,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Storable
-public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb> {
+public class TileKillerJoe extends AbstractMachineEntity
+    implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
 
   public static class ZombieCache {
 
@@ -79,7 +84,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private static final int IO_MB_TICK = 250;
 
-  protected AxisAlignedBB killBounds;
+  protected BoundingBox killBounds;
 
   private EnumFacing[] frontFaceAndSides;
 
@@ -392,7 +397,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return chargedLocation;
   }
 
-  private AxisAlignedBB getKillBounds() {
+  private BoundingBox getKillBounds() {
     if (killBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
@@ -416,7 +421,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         min.z -= Config.killerJoeAttackWidth;
         max.z += Config.killerJoeAttackWidth;
       }
-      killBounds = new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);
+      killBounds = new BoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
     }
     return killBounds;
   }
@@ -593,6 +598,29 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public int hashCode() {
     return super.hashCode();
+  }
+
+  private boolean showingRange = false;
+  private final static Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
+
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileKillerJoe>(this, color));
+    }
+  }
+
+  @Override
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  @Override
+  public BoundingBox getBounds() {
+    return getKillBounds();
   }
 
 }

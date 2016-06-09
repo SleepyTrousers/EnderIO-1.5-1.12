@@ -26,7 +26,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   private final Rectangle progressTooltipRect;
   private boolean wasSpawnMode;
   private String header;
-  ToggleButton showRangeB;
+  private ToggleButton showRangeB;
 
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te), "poweredSpawner");
