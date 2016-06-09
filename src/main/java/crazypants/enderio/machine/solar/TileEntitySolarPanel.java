@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.solar;
 
-import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.TileEntityEio;
@@ -14,6 +7,13 @@ import crazypants.enderio.power.IInternalPowerProvider;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
@@ -86,7 +86,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   int getEnergyPerTick() {
-    return this.worldObj.getBlockState(this.pos).getValue(SolarType.KIND).getRfperTick();
+    return getEnergyPerTick(worldObj, pos);
+  }
+
+  static int getEnergyPerTick(World world, BlockPos pos) {
+    return world.getBlockState(pos).getValue(SolarType.KIND).getRfperTick();
   }
 
   float calculateLightRatio() {
@@ -94,7 +98,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   boolean canSeeSun() {
-    return worldObj.canBlockSeeSky(pos.up());
+    return canSeeSun(worldObj, pos);
+  }
+
+  static boolean canSeeSun(World world, BlockPos pos) {
+    return world.canBlockSeeSky(pos.up());
   }
 
   public static float calculateLightRatio(World world) {
@@ -115,9 +123,9 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private void transmitEnergy() {
     IPowerInterface receptor = PowerHandlerUtil.create(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)));
-    if (receptor != null) {
+    if (receptor != null && receptor.getPowerRequest(EnumFacing.UP) > 0) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
-      if (canTransmit > 0 && receptor.getMinEnergyReceived(EnumFacing.UP) <= canTransmit) {
+      if (canTransmit > 0) {
         network.extractEnergy(receptor.recieveEnergy(EnumFacing.UP, canTransmit));
       }
     }

@@ -6,13 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class SolarPanelNetwork {
 
@@ -159,15 +159,12 @@ public class SolarPanelNetwork {
         float lightRatio = TileEntitySolarPanel.calculateLightRatio(world);
         for (BlockPos panel : panels) {
           if (world.isBlockLoaded(panel)) {
-            TileEntity tileEntity = world.getTileEntity(panel);
-            if (tileEntity instanceof TileEntitySolarPanel) {
-              if (rfMax < 0 || Config.photovoltaicCanTypesJoins) {
-                rfMax = ((TileEntitySolarPanel) tileEntity).getEnergyPerTick();
-              }
-              energyMaxPerTick += rfMax;
-              if (((TileEntitySolarPanel) tileEntity).canSeeSun()) {
-                energyAvailablePerTick += rfMax * lightRatio;
-              }
+            if (rfMax < 0 || Config.photovoltaicCanTypesJoins) {
+              rfMax = TileEntitySolarPanel.getEnergyPerTick(world, panel);
+            }
+            energyMaxPerTick += rfMax;
+            if (TileEntitySolarPanel.canSeeSun(world, panel)) {
+              energyAvailablePerTick += rfMax * lightRatio;
             }
           }
         }
