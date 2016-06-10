@@ -77,7 +77,7 @@ public class LootSelector extends LootFunction {
 
   private int getRandomCount(Random rand) {
     int no = 0;
-    switch (rand.nextInt(30)) {
+    switch (rand.nextInt(40)) {
     case 0:
       no++;
     case 1:
@@ -142,7 +142,11 @@ public class LootSelector extends LootFunction {
   }
 
   private float getRandomBaseLevel(Random rand) {
-    return 1f + rand.nextFloat() + rand.nextFloat() + rand.nextFloat() + rand.nextFloat();
+    if (rand.nextFloat() < .6f) {
+      return 1f + (rand.nextFloat() - rand.nextFloat()) * .5f;
+    } else {
+      return 1f + rand.nextFloat() + rand.nextFloat() + rand.nextFloat() + rand.nextFloat();
+    }
   }
 
   /**
