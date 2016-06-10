@@ -52,6 +52,7 @@ public class PacketGivePlayerXP extends MessageTileEntity<TileEntity> implements
     if (tile instanceof IHaveExperience) {      
       IHaveExperience xpTile = (IHaveExperience)tile;
       xpTile.getContainer().givePlayerXp(player, message.levels);
+      return new PacketExperianceContainer(tile);
     }
     return null;
   }

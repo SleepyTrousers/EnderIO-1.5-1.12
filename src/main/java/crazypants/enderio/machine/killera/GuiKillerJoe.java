@@ -2,13 +2,16 @@ package crazypants.enderio.machine.killera;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.SoundUtil;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
@@ -25,11 +28,10 @@ import net.minecraft.util.SoundEvent;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
-  private static final int XP_ID = 3489;
-  private static final int XP10_ID = 34892;
-
-  private IconButton xpB;
-  private IconButton xp10B;
+  private IconButton m;
+  private IconButton mm;
+  private IconButton mmm;
+  private ToggleButton showRangeB;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killerJoe");
@@ -49,33 +51,66 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
     });
 
-    xpB = new IconButton(this, XP_ID, 128, 56, IconEIO.XP);
-    xpB.setToolTip(EnderIO.lang.localize("killerJoe.giveXp.tooltip"));
+    int spacing = 5;
+    int bw = 16;
 
-    xp10B = new IconButton(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
-    xp10B.setToolTip(EnderIO.lang.localize("killerJoe.giveXp10.tooltip"));
+    int x = 81;
+    int y = 44;
+
+    m = new IconButton(this, 803, x, y, IconEIO.SINGLE_MINUS);
+    m.setSize(bw, bw);
+    m.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevel"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevel"));
+
+    x += spacing + bw;
+    mm = new IconButton(this, 804, x, y, IconEIO.DOUBLE_MINUS);
+    mm.setSize(bw, bw);
+    mm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrievelevels"), EnderIO.lang.localize("gui.machine.tooltip.retrievelevels"));
+
+    x += spacing + bw;
+    mmm = new IconButton(this, 805, x, y, IconEIO.TRIPLE_MINUS);
+    mmm.setSize(bw, bw);
+    mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"), EnderIO.lang.localize("gui.machine.tooltip.retrieveall"));
+
+    x = getXSize() - 5 - BUTTON_SIZE;
+    showRangeB = new ToggleButton(this, -1, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
+      @Override
+      public List<String> getToolTipText() {
+        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+      }
+    });
 
   }
 
   @Override
   public void initGui() {
     super.initGui();
-    xpB.onGuiInit();
-    xp10B.onGuiInit();
+    m.onGuiInit();
+    mm.onGuiInit();
+    mmm.onGuiInit();
+    showRangeB.onGuiInit();
+    showRangeB.setSelected(getTileEntity().isShowingRange());
     ((ContainerKillerJoe) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override
   protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
-    if(b.id == XP_ID) {
+    if (b == m) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 1));
       SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.experience_orb.pickup"));
       SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
-    } else if(b.id == XP10_ID) {
+    } else if (b == mm) {
       PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 10));
       SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.experience_orb.pickup"));
       SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
+    } else if (b == mmm) {
+      PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 5000));
+      SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.experience_orb.pickup"));
+      SoundUtil.playClientSoundFX(soundEvent, getTileEntity());
+    } else if (b == showRangeB) {
+      getTileEntity().setShowRange(showRangeB.isSelected());
     }
   }
 
@@ -112,7 +147,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     if(joe.tank.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(joe.tank.getFluid(), joe.tank.getCapacity(), joe.tank.getFluidAmount(), x, y, zLevel, 16, 47);
     }
-    ExperienceBarRenderer.render(this, sx + 56, sy + 62, 65, joe.getContainer());
+    ExperienceBarRenderer.render(this, sx + 77, sy + 30, 66, joe.getContainer());
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 

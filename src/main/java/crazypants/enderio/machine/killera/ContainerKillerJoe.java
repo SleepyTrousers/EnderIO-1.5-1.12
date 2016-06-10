@@ -19,25 +19,28 @@ import net.minecraft.item.ItemStack;
 public class ContainerKillerJoe extends AbstractMachineContainer<TileKillerJoe> {
 
   static private final Item[] slotItems = { Items.WOODEN_SWORD, Items.STONE_SWORD, Items.IRON_SWORD, Items.GOLDEN_SWORD,
-      Items.DIAMOND_SWORD, DarkSteelItems.itemDarkSteelSword };
+      Items.DIAMOND_SWORD, DarkSteelItems.itemDarkSteelSword, Items.WOODEN_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE,
+      DarkSteelItems.itemDarkSteelAxe };
   static private final Random rand = new Random();
 
   public ContainerKillerJoe(InventoryPlayer playerInv, TileKillerJoe te) {
     super(playerInv, te);
   }
 
+  private int slotno;
+
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(getInv(), 0, 80, 25) {
+    slotno = inventorySlots.indexOf(addSlotToContainer(new Slot(getInv(), 0, 48, 24) {
       @Override
       public boolean isItemValid(@Nullable ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
-    });
+    }));
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(slotItems[rand.nextInt(slotItems.length)], 80, 25));
+    slots.add(new GhostBackgroundItemSlot(slotItems[rand.nextInt(slotItems.length)], inventorySlots.get(slotno)));
   }
 
 }
