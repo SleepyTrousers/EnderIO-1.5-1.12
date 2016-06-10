@@ -65,7 +65,7 @@ public class LootManager {
       if(Config.lootDarkSteelBoots) {
         entries.add(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1,1, 5));
       }
-      entries.add(createLootCapacitor(25));
+      entries.add(createLootCapacitor(15));
       if (entries.isEmpty()) {
         return;
       }
@@ -101,7 +101,7 @@ public class LootManager {
       if(Config.lootDarkSteelBoots) {
         entries.add(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1,1, 5));
       }
-      entries.add(createLootCapacitor(15));
+      entries.add(createLootCapacitor(5));
 
       if (entries.isEmpty()) {
         return;
@@ -125,7 +125,7 @@ public class LootManager {
       if(Config.lootTravelStaff) {
         mainPool.addEntry(createLootEntry(EnderIO.itemTravelStaff, 1,1, 1));
       }
-      mainPool.addEntry(createLootCapacitor(35));
+      mainPool.addEntry(createLootCapacitor(25));
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
       LootPool mainPool = table.getPool("main");
       if(mainPool == null) {
@@ -138,7 +138,7 @@ public class LootManager {
       if(Config.lootTravelStaff) {
         mainPool.addEntry(createLootEntry(EnderIO.itemTravelStaff, 1,1, 1));
       }
-      mainPool.addEntry(createLootCapacitor(35));
+      mainPool.addEntry(createLootCapacitor(15));
     } 
 
   }
