@@ -28,7 +28,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
 
   public EntityWeatherRocket(World world, WeatherTask task) {
     this(world);    
-    dataManager.register(DATA_ID, task.ordinal());
+    dataManager.set(DATA_ID, task.ordinal());
   }
 
   @Override
