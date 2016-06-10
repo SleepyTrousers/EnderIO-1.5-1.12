@@ -911,7 +911,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     IConduitBundle con = (IConduitBundle) te;
 
-    BoundingBox minBB = new BoundingBox(1, 1, 1, 0, 0, 0);
+    BoundingBox minBB = null;
 
     if (!ConduitUtil.isSolidFacadeRendered(con, EnderIO.proxy.getClientPlayer())) {
 
@@ -933,7 +933,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         }
       }
 
-      if (!minBB.isValid()) {
+      if (minBB == null) {
         RaytraceResult hit = RaytraceResult.getClosestHit(Util.getEyePosition(player), results);
         if (hit != null && hit.component != null && hit.component.bound != null) {
           minBB = hit.component.bound;
@@ -953,7 +953,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       minBB = new BoundingBox(0, 0, 0, 1, 1, 1);
     }
 
-    if (!minBB.isValid()) {
+    if (minBB == null) {
       minBB = new BoundingBox(0, 0, 0, 1, 1, 1);
     }
 
