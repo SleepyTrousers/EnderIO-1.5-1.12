@@ -33,13 +33,13 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   private int lastLightValue;
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    ItemStack heldItemMainhand = player.getHeldItemMainhand();
-    if(heldItemMainhand == null) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+    ItemStack heldItem = player.getHeldItem(hand);
+    if(heldItem == null) {
       return false;
     }
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
-    if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+    if(ToolUtil.isToolEquipped(player, hand)) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
 
@@ -90,7 +90,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       }
       return true;
 
-    } else if(heldItemMainhand.getItem() == Items.BUCKET) {
+    } else if(heldItem.getItem() == Items.BUCKET) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
         long curTick = getBundle().getEntity().getWorld().getTotalWorldTime();
@@ -116,7 +116,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return true;
     } else {
 
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(heldItemMainhand);
+      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
       if (fluid != null) {
         if (!getBundle().getEntity().getWorld().isRemote) {
           if (network != null

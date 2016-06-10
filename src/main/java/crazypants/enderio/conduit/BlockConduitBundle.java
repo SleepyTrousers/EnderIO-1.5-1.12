@@ -672,7 +672,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (closest != null) {
       all = doRayTraceAll(world, x, y, z, player);
     }
-
+    
     if (closest != null && closest.component != null && closest.component.data instanceof ConduitConnectorType) {
 
       ConduitConnectorType conType = (ConduitConnectorType) closest.component.data;
@@ -681,7 +681,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         // if its a connector pass the event on to all conduits
         for (IConduit con : bundle.getConduits()) {
           if (ConduitUtil.renderConduit(player, con.getCollidableType())
-              && con.onBlockActivated(player, getHitForConduitType(all, con.getCollidableType()), all)) {
+              && con.onBlockActivated(player, hand, getHitForConduitType(all, con.getCollidableType()), all)) {
             bundle.getEntity().markDirty();
             result = true;
           }
@@ -710,7 +710,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         if (ConduitUtil.renderConduit(player, rr.component.conduitType) && !(rr.component.data instanceof ConduitConnectorType)) {
 
           IConduit con = bundle.getConduit(rr.component.conduitType);
-          if (con != null && con.onBlockActivated(player, rr, all)) {
+          if (con != null && con.onBlockActivated(player, hand, rr, all)) {
             bundle.getEntity().markDirty();
             return true;
           }
@@ -718,7 +718,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     } else {
       IConduit closestConduit = bundle.getConduit(closest.component.conduitType);
-      if (closestConduit != null && ConduitUtil.renderConduit(player, closestConduit) && closestConduit.onBlockActivated(player, closest, all)) {
+      if (closestConduit != null && ConduitUtil.renderConduit(player, closestConduit) && closestConduit.onBlockActivated(player, hand, closest, all)) {
         bundle.getEntity().markDirty();
         return true;
       }

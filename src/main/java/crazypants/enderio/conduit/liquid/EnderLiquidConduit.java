@@ -67,12 +67,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(player.getHeldItemMainhand() == null) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+    if(player.getHeldItem(hand) == null) {
       return false;
     }
 
-    if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+    if(ToolUtil.isToolEquipped(player, hand)) {
 
       if(!getBundle().getEntity().getWorld().isRemote) {
 

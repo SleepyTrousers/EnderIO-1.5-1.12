@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -145,6 +146,7 @@ public abstract class AbstractConduit implements IConduit {
     if (oldVal == mode) {
       return;
     }
+    System.out.println("AbstractConduit.setConnectionMode: Set connection mode from " + oldVal + " to " + mode);
 
     if (mode == null) {
       conectionModes.remove(dir);
@@ -371,7 +373,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
     return false;
   }
 

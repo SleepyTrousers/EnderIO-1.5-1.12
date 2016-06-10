@@ -131,16 +131,16 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IRedsto
   private Map<EnumFacing, Boolean> signalStrengths = new HashMap<EnumFacing, Boolean>();
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
 
     World world = getBundle().getEntity().getWorld();
     if(!world.isRemote) {
 
-      DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
+      DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
       if(col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
         return true;
-      } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+      } else if(ToolUtil.isToolEquipped(player, hand)) {
 
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;

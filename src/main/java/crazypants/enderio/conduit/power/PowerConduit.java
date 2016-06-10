@@ -109,9 +109,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
-    if(ConduitUtil.isProbeEquipped(player, EnumHand.MAIN_HAND)) {
+    if(ConduitUtil.isProbeEquipped(player, hand)) {
       if(!player.worldObj.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this);
       }
@@ -119,7 +119,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
       setExtractionSignalColor(res.component.dir, col);
       return true;
-    } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+    } else if(ToolUtil.isToolEquipped(player, hand)) {
       if(!getBundle().getEntity().getWorld().isRemote) {
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;

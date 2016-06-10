@@ -170,13 +170,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(ConduitUtil.isProbeEquipped(player, EnumHand.MAIN_HAND)) {
+  public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
+    if(ConduitUtil.isProbeEquipped(player, hand)) {
       if(!player.worldObj.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
-    } else if(ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
+    } else if(ToolUtil.isToolEquipped(player, hand)) {
       if(!getBundle().getEntity().getWorld().isRemote) {
         if(res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;
@@ -203,7 +203,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
           if(!player.worldObj.isRemote) {
-            PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItemMainhand());
+            PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
           }
           return true;
         }

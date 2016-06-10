@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -124,7 +125,7 @@ public interface IConduit {
 
   // Actions
 
-  boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all);
+  boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all);
 
   void onChunkUnload(World worldObj);
 
