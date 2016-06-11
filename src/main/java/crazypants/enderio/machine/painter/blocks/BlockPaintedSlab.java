@@ -8,6 +8,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -27,7 +29,6 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -143,8 +144,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   public Comparable<?> getTypeForItem(ItemStack stack) {
-    // TODO: 1.9 Not sure this is the correct impl
-    return BlockStoneSlab.EnumType.byMetadata(stack.getMetadata() & 7);
+    throw new NotImplementedException("This method is only used by ItemSlab for vanilla slabs.");
   }
   
   @Override
@@ -349,13 +349,12 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos here, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState ourBlockState, IBlockAccess worldIn, BlockPos here, EnumFacing side) {
     BlockPos there = here.offset(side);
     IBlockState blockState2 = worldIn.getBlockState(there);
     Block block2 = blockState2.getBlock();
     if (block2 instanceof BlockPaintedSlab) {
       BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;      
-      IBlockState ourBlockState = worldIn.getBlockState(here);
       if (isDouble()) {
         if (!otherBlock.isDouble()) {
           return true;
@@ -374,7 +373,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
         return paintSource != getPaintSource(blockState2, worldIn, there);
       }
     }
-    return super.shouldSideBeRendered(bs, worldIn, there, side);
+    return super.shouldSideBeRendered(ourBlockState, worldIn, here, side);
   }
 
   @Override
