@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
-
 import crazypants.enderio.render.pipeline.QuadCollector;
 import crazypants.util.IFacade;
 import net.minecraft.block.properties.IProperty;
@@ -16,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
 
 public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlockRenderMapper {
 
@@ -53,7 +53,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     }
     if (otherState.getBlock() instanceof IFacade) {
       try {
-        IBlockState facade = ((IFacade) otherState.getBlock()).getFacade(world, pos, null);
+        IBlockState facade = ((IFacade) otherState.getBlock()).getFacade(world, other, null);
         if (facade != null) {
           return isSameKind(state, facade);
         }
