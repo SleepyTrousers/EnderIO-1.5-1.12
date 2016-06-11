@@ -63,6 +63,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileKillerJoe extends AbstractMachineEntity
@@ -603,6 +605,7 @@ public class TileKillerJoe extends AbstractMachineEntity
   private boolean showingRange = false;
   private final static Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
 
+  @SideOnly(Side.CLIENT)
   public void setShowRange(boolean showRange) {
     if (showingRange == showRange) {
       return;
@@ -614,6 +617,7 @@ public class TileKillerJoe extends AbstractMachineEntity
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean isShowingRange() {
     return showingRange;
   }
