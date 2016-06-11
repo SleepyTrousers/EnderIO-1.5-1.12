@@ -742,22 +742,22 @@ tile.blockPaintedStoneFence.name=Painted Stone Fence
 tile.blockPaintedFenceGate.name=Painted Gate
 tile.blockPaintedWall.name=Painted Wall
 tile.blockPaintedStair.name=Painted Stairs
-tile.blockPaintedStair2.name=Painted Stone Stairs
+tile.blockPaintedStoneStair.name=Painted Stone Stairs
 tile.blockPaintedSlab.name=Painted Slab
-tile.blockPaintedSlab2.name=Painted Stone Slab
+tile.blockPaintedStoneSlab.name=Painted Stone Slab
 tile.blockPaintedDoubleSlab.name=Painted Slab
-tile.blockPaintedDoubleSlab2.name=Painted Stone Slab
+tile.blockPaintedStoneDoubleSlab.name=Painted Stone Slab
 tile.blockPaintedGlowstone.name=Painted Glowstone
-tile.blockPaintedGlowstone2.name=Painted Glowstone
+tile.blockPaintedGlowstoneSolid.name=Painted Glowstone
 tile.blockPaintedCarpet.name=Painted Carpet
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
 tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
 tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpet,
-tile.blockPainter.tooltip.detailed.line5=Dark Steel Pressure Plates,
-tile.blockPainter.tooltip.detailed.line6=and many machines
+tile.blockPainter.tooltip.detailed.line4=Glowstone, Carpet, Pressure Plates,
+tile.blockPainter.tooltip.detailed.line5=Quite Clear Glass, Fused Quartz,
+tile.blockPainter.tooltip.detailed.line6=and most machines
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench
