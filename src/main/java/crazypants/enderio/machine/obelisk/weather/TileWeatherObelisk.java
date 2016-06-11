@@ -5,10 +5,6 @@ import java.awt.Color;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
@@ -34,6 +30,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
@@ -214,7 +214,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
           inputTank.drain(toUse, true);
           fluidUsed += toUse;
           tanksDirty = true;
-          res = true;
         }
 
         if (fluidUsed >= 1000) {
@@ -227,7 +226,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       }
     }
     
-    if(tanksDirty) {
+    if (tanksDirty && shouldDoWorkThisTick(5)) {
       PacketHandler.sendToAllAround(new PacketWeatherTank(this), this);
       tanksDirty = false;
     }
