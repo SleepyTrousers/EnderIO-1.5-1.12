@@ -2,26 +2,17 @@ package crazypants.enderio.machine.obelisk.render;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.render.RenderUtil;
-
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslated;
 
 import crazypants.enderio.EnderIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,6 +22,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslated;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
@@ -51,44 +45,13 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
   @SuppressWarnings("unchecked")
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick, int b) {
-
-    World world = null;
-    if (te != null) {
-      world = te.getWorld();
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-    } else {
-      world = Minecraft.getMinecraft().theWorld;    
-    }
-
-    
-
     if (te == null) {
       // Being rendered as an Item
-      GlStateManager.pushMatrix();
-      GlStateManager.color(1, 1, 1);
-            
-      
-      GlStateManager.translate(0.5, y, z);
-      GlStateManager.scale(0.625, 0.625, 0.625);
-      GlStateManager.rotate(30, 1, 0, 0);
-      GlStateManager.rotate(135, 0, 1, 0);
-
-      GlStateManager.pushMatrix();
-      renderItemStack((T) te, world, x, y, z, tick);
-      GlStateManager.popMatrix();
-      
-      GlStateManager.disableLighting();
-      Tessellator tessellator = Tessellator.getInstance();
-      VertexBuffer worldrenderer = tessellator.getBuffer();
-      worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-      for (BakedQuad bakedQuad : ObeliskBakery.bake(ObeliskRenderManager.INSTANCE.getActiveTextures())) {
-        net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(worldrenderer, bakedQuad, -1);
-      }
-      tessellator.draw();
-
-      GlStateManager.enableLighting();
-      GlStateManager.popMatrix();
+      renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, tick);
+      ObeliskBakery.render(ObeliskRenderManager.INSTANCE.getActiveTextures());
     } else {
+      World world = te.getWorld();
+      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
       renderItemStack((T) te, world, x, y, z, tick);  
     }
   }

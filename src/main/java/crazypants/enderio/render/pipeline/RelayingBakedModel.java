@@ -19,6 +19,7 @@ import net.minecraftforge.client.model.IPerspectiveAwareModel;
 public class RelayingBakedModel implements IPerspectiveAwareModel {
 
   private IBakedModel defaults;
+  private final boolean isTESRTransformsOnly;
 
   private IBakedModel getDefaults() {
     if (defaults == null) {
@@ -31,8 +32,26 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
     return defaults;
   }
 
-  public RelayingBakedModel(IBakedModel defaults) {
+  public static RelayingBakedModel wrapModelForTESRRendering(IBakedModel model) {
+    if (model instanceof RelayingBakedModel) {
+      RelayingBakedModel rbm = (RelayingBakedModel) model;
+      if (rbm.isTESRTransformsOnly) {
+        return rbm;
+      } else {
+        return new RelayingBakedModel(rbm.defaults, true);
+      }
+    } else {
+      return new RelayingBakedModel(model, true);
+    }
+  }
+
+  public RelayingBakedModel(IBakedModel defaults, boolean isTESRTransformsOnly) {
     this.defaults = defaults;
+    this.isTESRTransformsOnly = isTESRTransformsOnly;
+  }
+
+  public RelayingBakedModel(IBakedModel defaults) {
+    this(defaults, false);
   }
 
   @Override
@@ -63,7 +82,7 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
 
   @Override
   public boolean isBuiltInRenderer() {
-    return false;
+    return isTESRTransformsOnly;
   }
 
   @Override
