@@ -112,11 +112,13 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         ((EntityPlayerMP) player).connection.sendPacket(p);
       }
 
-      ItemStack heldItem = player.getHeldItem(hand);
-      if (powerUse > 0 && hand != null && heldItem != null && heldItem.getItem() instanceof IItemOfTravel) {
-        ItemStack item = heldItem.copy();
-        ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
-        player.setHeldItem(hand, item);
+      if (powerUse > 0 && hand != null) {
+        ItemStack heldItem = player.getHeldItem(hand);
+        if (heldItem != null && heldItem.getItem() instanceof IItemOfTravel) {
+          ItemStack item = heldItem.copy();
+          ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
+          player.setHeldItem(hand, item);
+        }
       }
     }
     
