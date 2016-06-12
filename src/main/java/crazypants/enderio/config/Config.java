@@ -197,8 +197,8 @@ public final class Config {
   public static int darkSteelBootsJumpPowerCost = 150;
   public static int darkSteelFallDistanceCost = 75;
 
-  public static float darkSteelSwordPoweredDamageBonus = 2.0f;
-  public static float darkSteelSwordPoweredSpeedBonus = 0.8f;
+  public static float darkSteelSwordPoweredDamageBonus = 1.0f;
+  public static float darkSteelSwordPoweredSpeedBonus = 0.4f;
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.05f;
   public static float darkSteelSwordSkullChance = 0.1f;
