@@ -267,7 +267,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if(item.getItem() instanceof ItemArmor) {
       ItemArmor arm = (ItemArmor) item.getItem();
       int index = arm.armorType.getIndex();
-      if (NullHelper.untrust(entityPlayer.inventory.armorItemInSlot(index)) == null) {
+      if (entityPlayer.inventory.armorInventory[index] == null) {
         entityPlayer.inventory.armorInventory[index] = item;
         Log.debug("Running addToPlayerInventory/armor logic for " + entityPlayer.getName() + ": " + item);
         return true;
