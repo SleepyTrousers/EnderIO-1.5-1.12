@@ -2,10 +2,12 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.google.common.collect.Multimap;
 
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
@@ -17,6 +19,8 @@ import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -48,7 +52,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   private static ArmorMaterial createMaterial() {    
     Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
-    return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35,new int[] { 2, 6, 5, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f); 
+    return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35, new int[] { 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
   }
                                                                                       
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
@@ -236,6 +240,31 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
     int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;    
     return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
+  }
+
+  private static final UUID[] ARMOR_MODIFIERS = new UUID[] { UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"),
+      UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"),
+      UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150") };
+
+  @Override
+  public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {
+    Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
+
+    if (equipmentSlot == this.armorType) {
+      boolean isPowered = getEnergyStored(stack) > 0;
+      if (isPowered) {
+        int toughnessBonus = 1;
+        multimap.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getAttributeUnlocalizedName());
+        multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getAttributeUnlocalizedName(),
+            new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", toughness + toughnessBonus, 0));
+        int powerBonus = getPoweredProtectionIncrease(3 - equipmentSlot.getIndex());
+        multimap.removeAll(SharedMonsterAttributes.ARMOR.getAttributeUnlocalizedName());
+        multimap.put(SharedMonsterAttributes.ARMOR.getAttributeUnlocalizedName(),
+            new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", damageReduceAmount + powerBonus, 0));
+      }
+    }
+
+    return multimap;
   }
 
   @Override

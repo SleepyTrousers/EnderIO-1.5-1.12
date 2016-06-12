@@ -42,6 +42,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -142,7 +143,7 @@ public class TileKillerJoe extends AbstractMachineEntity
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe;
+    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || itemstack.getItem() == Items.STICK;
   }
 
   @Override
