@@ -28,16 +28,31 @@ public class XpUtil {
     return experienceToLiquid(getExperienceForLevel(level));
   }
 
+  private static final Integer[] xpmap = new Integer[256];
+
+  static {
+    for (int i = 0; i < xpmap.length; i++) {
+      xpmap[i] = getExperienceForLevelImpl(i);
+    }
+  }
+
   public static int getExperienceForLevel(int level) {
-    if(level >= 21863) {
+    if (level >= 0 && level < xpmap.length) {
+      return xpmap[level];
+    }
+    if (level >= 21863) {
       return Integer.MAX_VALUE;
     }
-    if (level == 0) {
-      return 0;
-    }
+    return getExperienceForLevelImpl(level);
+  }
+
+  private static int getExperienceForLevelImpl(int level) {
     int res = 0;
     for (int i = 0; i < level; i++) {
-      res += getXpBarCapacity(i);      
+      res += getXpBarCapacity(i);
+      if (res < 0) {
+        return Integer.MAX_VALUE;
+      }
     }
     return res;
   }
@@ -52,7 +67,12 @@ public class XpUtil {
   }
 
   public static int getLevelForExperience(int experience) {
-    int i = 0;
+    for (int i = 0; i < xpmap.length; i++) {
+      if (xpmap[i] > experience) {
+        return i - 1;
+      }
+    }
+    int i = xpmap.length;
     while (getExperienceForLevel(i) <= experience) {
       i++;
     }
