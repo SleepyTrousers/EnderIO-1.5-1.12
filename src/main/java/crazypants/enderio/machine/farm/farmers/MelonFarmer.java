@@ -18,9 +18,9 @@ public class MelonFarmer extends CustomSeedFarmer {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    int xVal = farm.getLocation().x % 2; 
-    int zVal = farm.getLocation().z % 2;
-    if(bc.x % 2 != xVal || bc.z % 2 != zVal) {
+    int xVal = farm.getLocation().x & 1;
+    int zVal = farm.getLocation().z & 1;
+    if ((bc.x & 1) != xVal || (bc.z & 1) != zVal) {
       //if we have melon seeds, we still want ot return true here so they are not planted by the default plantable
       //handlers
       return canPlant(farm.getSeedTypeInSuppliesFor(bc));
