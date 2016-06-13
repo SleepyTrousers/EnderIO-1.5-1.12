@@ -13,6 +13,7 @@ import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -92,10 +93,9 @@ public class ClientUtil {
     tile.totalBurnTime = message.totalBurnTime;
   }
   
-  public static void regRenderer(BlockEnder<?> block, int meta, String name) {
+  public static void regRenderer(Block block, int meta, String name) {
     Item item = Item.getItemFromBlock(block);
-    String blockName = block.getName();
-    ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, blockName);
+    ResourceLocation resourceLocation = block.getRegistryName();
     ModelResourceLocation modelResourceLocation = new ModelResourceLocation(resourceLocation, name);
     ModelLoader.setCustomModelResourceLocation(item, meta, modelResourceLocation);
   }

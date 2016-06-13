@@ -15,7 +15,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -66,9 +65,6 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
       }
     });
   }
-  
-  
-  
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
@@ -86,10 +82,9 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    Item item = Item.getItemFromBlock(this);           
-    ClientUtil.regRenderer(item, 0,"anvil_undamaged");
-    ClientUtil.regRenderer(item, 1,"anvil_slightly_damaged");
-    ClientUtil.regRenderer(item, 2 ,"anvil_very_damaged");
+    for (Integer dmg : DAMAGE.getAllowedValues()) {
+      ClientUtil.regRenderer(this, dmg, DAMAGE.getName() + "=" + DAMAGE.getName(dmg) + "," + FACING.getName() + "=" + FACING.getName(EnumFacing.WEST));
+    }
   }
 
 }
