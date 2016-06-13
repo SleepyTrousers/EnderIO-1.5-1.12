@@ -2,16 +2,6 @@ package crazypants.util;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
-
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
@@ -23,6 +13,15 @@ import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoader;
 
 public class ClientUtil {
 
@@ -93,6 +92,13 @@ public class ClientUtil {
     tile.totalBurnTime = message.totalBurnTime;
   }
   
+  public static void regRenderer(BlockEnder<?> block, int meta, String name) {
+    Item item = Item.getItemFromBlock(block);
+    String blockName = block.getName();
+    ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, blockName);
+    ModelResourceLocation modelResourceLocation = new ModelResourceLocation(resourceLocation, name);
+    ModelLoader.setCustomModelResourceLocation(item, meta, modelResourceLocation);
+  }
   
   public static void regRenderer(Item item, int meta, String name) {
     regRenderer(item, meta, EnderIO.DOMAIN, name);

@@ -9,19 +9,21 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.ITESRItemBlock;
+import crazypants.enderio.render.SmartModelAttacher;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider {
+public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider, ITESRItemBlock {
 
   public static BlockEnchanter create() {
     BlockEnchanter res = new BlockEnchanter();
@@ -38,6 +40,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
+    SmartModelAttacher.registerItemOnly(this);
   }
 
   @Override

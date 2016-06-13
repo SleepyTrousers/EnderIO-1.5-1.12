@@ -103,4 +103,12 @@ public enum Alloy implements IStringSerializable {
     return NullHelper.notnullJ(baseName.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
+  public static @Nonnull Alloy getTypeFromMeta(int meta) {
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
+  }
+
+  public static int getMetaFromType(Alloy value) {
+    return value.ordinal();
+  }
+
 }

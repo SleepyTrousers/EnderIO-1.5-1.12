@@ -18,7 +18,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -51,11 +50,9 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {   
-    Item item = Item.getItemFromBlock(this);   
-    int numAlloys = Alloy.values().length;
-    for (int i = 0; i < numAlloys; i++) {
-      ClientUtil.regRenderer(item, i, Alloy.values()[i].baseName + "Block");
+  public void registerRenderers() {
+    for (Alloy alloy : Alloy.values()) {
+      ClientUtil.regRenderer(this, Alloy.getMetaFromType(alloy), VARIANT.getName() + "=" + VARIANT.getName(alloy));
     }
   }
   

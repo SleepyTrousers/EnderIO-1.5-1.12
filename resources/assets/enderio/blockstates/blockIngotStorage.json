@@ -7,7 +7,6 @@
 		}
 	},
 	"variants": {
-	    "inventory": [{}],
 		"variant": {
 			"electricalsteel": {
 				"textures": {
@@ -24,7 +23,6 @@
 					"all": "enderio:blocks/vibrantAlloyBlock"
 				}
 			},
-			
 			"redstonealloy": {
 				"textures": {
 					"all": "enderio:blocks/redstoneAlloyBlock"

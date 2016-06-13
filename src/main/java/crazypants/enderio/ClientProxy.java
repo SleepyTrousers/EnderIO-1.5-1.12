@@ -165,7 +165,6 @@ public class ClientProxy extends CommonProxy {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);      
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), ModObject.blockEnchanter.getUnlocalisedName());
     }
     if (EnderIO.blockFarmStation != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
