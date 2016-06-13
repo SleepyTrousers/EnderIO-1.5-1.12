@@ -7,10 +7,8 @@
     },
     "variants":{
         "render":{
-	        "defaults":{
-                "model":"enderio:null"	            
-	        },
-            "auto":{ },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{          "submodel":{ "front":{ "model":"enderio:null" } }, "y":0 },
             "front_east":{     "submodel":{ "front":{ "model":"enderio:null" } }, "y":90 },
             "front_south":{    "submodel":{ "front":{ "model":"enderio:null" } }, "y":180 },

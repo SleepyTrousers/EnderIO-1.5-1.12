@@ -1,5 +1,6 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "parent": "enderio:block/transform/block",
     "textures": {
         "particle": "enderio:blocks/conduitConnector",
         "side": "enderio:blocks/conduitConnector",

@@ -8,10 +8,8 @@
     },
     "variants":{
         "render":{
-          "defaults":{
-                "model":"enderio:null"
-          },
-            "auto":{ },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{          "submodel":{
 	            	"frame":{ "model":"enderio:machine_frame" },
 	          		"s1":{ "model":"enderio:blockWirelessCharger", "y":0 },

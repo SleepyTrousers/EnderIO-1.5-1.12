@@ -1,11 +1,10 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "minecraft:cube_all",
+        "model": "enderio:transform/block",
         "textures": {
-            "all": "enderio:blocks/machineBottom"
-        },
-        "transform": "forge:default-block"
+            "particle": "enderio:blocks/machineBottom"
+        }
     },
 	"variants": {
         "normal": [{}],

@@ -2,34 +2,28 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/conduitFacade",    
-            "side":"enderio:items/conduitFacade",
-            "top":"enderio:items/conduitFacade",
-            "bottom":"enderio:items/conduitFacade"
-        }
+            "all":"enderio:items/conduitFacade"
+        },
+        "model":"enderio:cube"
    },
     "variants":{
         "render":{
-            "defaults":{
-                "model":"enderio:null"
-            },
-            "auto":{ },
-            "front":{          "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":0 },
-            "front_east":{     "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":90 },
-            "front_south":{    "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":180 },
-            "front_west":{     "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":270 },
-            "front_on":{       "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":0 },
-            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":90 },
-            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":180 },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:hollowCube" } }, "y":270 }            
+			"defaults":{ },
+			"auto":{ },
+            "front":{          "y":0 },
+            "front_east":{     "y":90 },
+            "front_south":{    "y":180 },
+            "front_west":{     "y":270 },
+            "front_on":{       "y":0 },
+            "front_on_east":{  "y":90 },
+            "front_on_south":{ "y":180 },
+            "front_on_west":{  "y":270 }            
         },
         "type":{
             "basic":{},
             "hardened":{
                 "textures":{ 
-                    "side":"enderio:items/conduitFacadeHardened",
-		            "top":"enderio:items/conduitFacadeHardened",
-		            "bottom":"enderio:items/conduitFacadeHardened"
+                    "all":"enderio:items/conduitFacadeHardened"
                 }
             }
         }

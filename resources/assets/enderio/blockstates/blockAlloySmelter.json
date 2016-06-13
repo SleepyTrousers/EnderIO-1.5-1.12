@@ -9,9 +9,8 @@
     },
     "variants":{
         "render":{
-	        "defaults":{
-                "model":"enderio:null"
-	        },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "auto":{ },
             "front":{                                             "submodel":{ "front":{ "model":"enderio:blockAlloySmelter", "y":180 } } },
             "front_east":{                                        "submodel":{ "front":{ "model":"enderio:blockAlloySmelter", "y":270 } } },

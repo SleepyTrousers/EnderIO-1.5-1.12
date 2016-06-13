@@ -11,9 +11,7 @@
     },
     "variants":{
         "render":{
-          "defaults":{
-                "model":"enderio:null"
-          },
+            "defaults":{ "model":"enderio:transform/block" },
             "auto":{ "model":"enderio:null" },
             "front":{          "submodel":{ 
             	"s":{ "model":"enderio:blockTankSide", "y":0   },

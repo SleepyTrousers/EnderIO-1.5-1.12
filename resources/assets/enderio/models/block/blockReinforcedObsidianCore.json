@@ -1,5 +1,6 @@
 {
 "__comment": "Designed by - with BDcraft Cubik PRO 0.95 Beta - http://bdcraft.net",
+    "parent": "enderio:block/transform/block",
 "elements": [ 
 {
     "from": [ 0.5, 0.5, 0.5 ],

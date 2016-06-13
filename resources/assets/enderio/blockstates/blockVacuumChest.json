@@ -11,10 +11,8 @@
     },
     "variants":{
         "render":{
-            "defaults":{
-                "model":"minecraft:cube_all"
-            },
-            "auto":{                                              "submodel":{ "front":{ "model":"minecraft:cube_all" } } },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{                                             "submodel":{ 
 				            "s1":{ "model":"enderio:blockTravelAnchor", "y":0   },
 				            "s2":{ "model":"enderio:blockTravelAnchor", "y":90  },

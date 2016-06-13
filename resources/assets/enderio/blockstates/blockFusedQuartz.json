@@ -15,11 +15,9 @@
       "dark_fused_glass":         { "textures": { "side": "enderio:blocks/fusedGlassItem" } }
     },
     "render":{
-      "auto":{},
+      "auto":{ "model":"enderio:null" },
       
-      "defaults":{
-        "model":"enderio:null"
-      },
+      "defaults":{ "model":"enderio:transform/block" },
 
       "sides":{
         "__comment":"only used for the item. the block simply renders nothing.",

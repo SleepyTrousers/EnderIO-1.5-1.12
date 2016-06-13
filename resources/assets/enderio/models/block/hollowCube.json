@@ -1,5 +1,5 @@
 {
-    "parent": "block/block",
+    "parent": "enderio:block/transform/block",
     "elements":[
         {
             "from":[ 0, 0, 0 ],

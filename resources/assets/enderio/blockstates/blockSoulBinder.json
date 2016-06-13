@@ -13,10 +13,8 @@
     },
     "variants":{
         "render":{
-	        "defaults":{
-                "model":"enderio:null"
-	        },
-            "auto":{ },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{          "submodel":{ "front":{ "model":"enderio:blockSoulBinder_core",  "y":180 } } },
             "front_east":{     "submodel":{ "front":{ "model":"enderio:blockSoulBinder_core",  "y":270 } } },
             "front_south":{    "submodel":{ "front":{ "model":"enderio:blockSoulBinder_core",  "y":0   } } },

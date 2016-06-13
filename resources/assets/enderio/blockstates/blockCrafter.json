@@ -14,10 +14,8 @@
     },
     "variants":{
         "render":{
-	        "defaults":{
-                "model":"enderio:null"
-	        },
-            "auto":{ },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{                                             "submodel":{ "front":{ "model":"enderio:crafter_front", "y":180 }, "body":{ "model":"enderio:machine_body", "y":180 } } },
             "front_east":{                                        "submodel":{ "front":{ "model":"enderio:crafter_front", "y":270 }, "body":{ "model":"enderio:machine_body", "y":270 } } },
             "front_south":{                                       "submodel":{ "front":{ "model":"enderio:crafter_front", "y":0   }, "body":{ "model":"enderio:machine_body", "y":0   } } },

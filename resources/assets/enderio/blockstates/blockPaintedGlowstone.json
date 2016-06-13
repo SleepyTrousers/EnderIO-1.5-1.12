@@ -4,7 +4,7 @@
         "textures":{
             "particle":"blocks/glowstone"
         },
-        "model":"enderio:null"
+        "model":"enderio:transform/block"
     },
     "variants": {
         "inventory": [{}],

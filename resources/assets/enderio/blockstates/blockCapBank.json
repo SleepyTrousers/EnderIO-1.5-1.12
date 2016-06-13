@@ -15,11 +15,8 @@
       "creative": { "textures": { "side": "enderio:blocks/capacitorBankCreativeBorder" } }
   		},
     "render":{
-      "auto":{},
-      
-      "defaults":{
-        "model":"enderio:null"
-      },
+		"defaults":{ "model":"enderio:transform/block" },
+		"auto":{ "model":"enderio:null" },
 
       "sides":{
         "__comment":"only used for the item. the block uses the capbank io overlays.",

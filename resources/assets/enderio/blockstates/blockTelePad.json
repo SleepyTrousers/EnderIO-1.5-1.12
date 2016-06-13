@@ -13,10 +13,8 @@
     },
     "variants":{
         "render":{
-          "defaults":{
-                "model":"enderio:null"
-          },
-            "auto":{           "submodel":{ "front":{ "model":"enderio:null" } } },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{          "submodel":{ "front":{ "model":"enderio:telepad_single" } } },
             "front_east":{     "submodel":{ "front":{ "model":"enderio:telepad" } } },
             "front_south":{    "submodel":{ "front":{ "model":"enderio:telepad_single" } }, "textures": { "singletop": "enderio:blocks/telepad/center" } },

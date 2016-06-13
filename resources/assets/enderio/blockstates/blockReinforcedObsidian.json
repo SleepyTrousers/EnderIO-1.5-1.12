@@ -5,8 +5,7 @@
         "textures": {
             "particle": "enderio:blocks/blockReinforcedObsidian",
             "texture": "enderio:blocks/blockReinforcedObsidian"
-        },
-        "transform": "forge:default-block"
+        }
     },
 	"variants": {
         "normal": [{

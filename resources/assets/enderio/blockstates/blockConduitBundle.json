@@ -1,11 +1,10 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "minecraft:cube_all",
+        "model": "enderio:null",
         "textures": {
-            "all": "enderio:blocks/blockReinforcedObsidian"
+            "particle": "enderio:blocks/blockReinforcedObsidian"
         },
-        "transform": "forge:default-block"
     },
 	"variants": {
         "normal": [{}],

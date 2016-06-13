@@ -13,18 +13,16 @@
     },
     "variants":{
         "render":{
-	        "defaults":{
-                "model":"enderio:null"
-	        },
-            "auto":{ },
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
             "front":{                                             "submodel":{ "front":{ "model":"enderio:blockFarmStation" } } },
-            "front_east":{      },
-            "front_south":{     },
-            "front_west":{      },
+            "front_east":{     "model":"enderio:null" },
+            "front_south":{    "model":"enderio:null" },
+            "front_west":{     "model":"enderio:null" },
             "front_on":{                                          "submodel":{ "portal":{ "model":"enderio:farmPortal" } } },
-            "front_on_east":{   },
-            "front_on_south":{  },
-            "front_on_west":{   }
+            "front_on_east":{  "model":"enderio:null" },
+            "front_on_south":{ "model":"enderio:null" },
+            "front_on_west":{  "model":"enderio:null" }
         }
     }
 }

@@ -1,8 +1,7 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "enderio:light",		
-		"transform": "forge:default-block"
+		"model": "enderio:light"
 	},
 	"variants": {
 	    "inventory": [{}],
