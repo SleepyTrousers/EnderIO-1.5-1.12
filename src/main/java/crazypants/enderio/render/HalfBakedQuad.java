@@ -14,6 +14,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.CullFace;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -146,18 +147,28 @@ public class HalfBakedQuad {
       }
     }
 
+    /*
+     * Use for liquids in TE render pass 1
+     */
     public void render() {
       RenderUtil.bindBlockTexture();
       GlStateManager.enableBlend();
       GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GlStateManager.enableLighting();
       GlStateManager.disableLighting();
-      GlStateManager.depthMask(false);
       VertexBuffer tes = Tessellator.getInstance().getBuffer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-      render(tes);
-      Tessellator.getInstance().draw();
-      GlStateManager.depthMask(true);
+      for (int i = 0; i <= 1; i++) {
+        if (i == 0) {
+          GlStateManager.cullFace(CullFace.FRONT);
+        } else {
+          GlStateManager.cullFace(CullFace.BACK);
+        }
+        tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+        render(tes);
+        Tessellator.getInstance().draw();
+      }
+      GlStateManager.disableBlend();
+      GlStateManager.enableLighting();
     }
 
   }

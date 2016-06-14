@@ -1,12 +1,12 @@
 package crazypants.enderio.enderface;
 
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 
 @Storable
 public class TileEnderIO extends TileTravelAnchor {
@@ -28,7 +28,7 @@ public class TileEnderIO extends TileTravelAnchor {
 
   @Override
   public boolean shouldRenderInPass(int passNo) {
-    return passNo == 0;
+    return true;
   }
 
   @Override

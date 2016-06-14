@@ -4,20 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.pipeline.LightUtil;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -25,6 +11,20 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GlStateManager.CullFace;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.pipeline.LightUtil;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
 
@@ -53,6 +53,8 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
       renderTankFluid(tileentity.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
       tessellator.draw();
 
+      GlStateManager.disableBlend();
+      GlStateManager.enableLighting();
       GlStateManager.popMatrix();
     }
   }
@@ -200,25 +202,32 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
       float minU = icon.getMinU(), maxU = icon.getMaxU(), minV = icon.getMinV(), maxV = icon.getMaxV();
 
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        float fullness2 = 0;
-        if (mergers.contains(dir)) {
-          BlockPos pos2 = pos.offset(dir);
-          TileEntity tileEntity = world.getTileEntity(pos2);
-          if (tileEntity instanceof TileReservoir) {
-            TileReservoir res2 = (TileReservoir) tileEntity;
-            fullness2 = res2.tank.getFilledRatio();
-          }
+      for (int i = 0; i <= 1; i++) {
+        if (i == 0) {
+          GlStateManager.cullFace(CullFace.FRONT);
+        } else {
+          GlStateManager.cullFace(CullFace.BACK);
         }
-        BoundingBox bb = mkFace(merge, dir, fullness, fullness2);
-        if (bb != null) {
-          float minVx = minV, maxVx = maxV;
-          if (dir.getAxis() != EnumFacing.Axis.Y) {
-            minVx = icon.getInterpolatedV((1 - fullness) * 16);
-            maxVx = icon.getInterpolatedV((1 - fullness2) * 16);
+        for (EnumFacing dir : EnumFacing.VALUES) {
+          float fullness2 = 0;
+          if (mergers.contains(dir)) {
+            BlockPos pos2 = pos.offset(dir);
+            TileEntity tileEntity = world.getTileEntity(pos2);
+            if (tileEntity instanceof TileReservoir) {
+              TileReservoir res2 = (TileReservoir) tileEntity;
+              fullness2 = res2.tank.getFilledRatio();
+            }
           }
+          BoundingBox bb = mkFace(merge, dir, fullness, fullness2);
+          if (bb != null) {
+            float minVx = minV, maxVx = maxV;
+            if (dir.getAxis() != EnumFacing.Axis.Y) {
+              minVx = icon.getInterpolatedV((1 - fullness) * 16);
+              maxVx = icon.getInterpolatedV((1 - fullness2) * 16);
+            }
 
-          renderFace(tes, bb, dir, minU, maxU, minVx, maxVx, color);
+            renderFace(tes, bb, dir, minU, maxU, minVx, maxVx, color);
+          }
         }
       }
     }

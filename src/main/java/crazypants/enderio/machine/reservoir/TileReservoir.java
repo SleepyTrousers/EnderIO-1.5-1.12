@@ -6,8 +6,6 @@ import java.util.Set;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
-
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.tool.SmartTank;
@@ -22,6 +20,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 @Storable
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
@@ -140,15 +140,17 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
 
     if (shouldDoWorkThisTick(10)) {
-      canRefill = tank.isFull() ? canRefill || hasEnoughLiquid() : hasEnoughLiquid();
-    } else if (Config.reservoirEnabled && shouldDoWorkThisTick(10, -1) && canRefill) {
+      if (tankDirty || !tank.isFull() || !canRefill) {
+        canRefill = hasEnoughLiquid();
+      }
+    } else if (Config.reservoirEnabled && shouldDoWorkThisTick(10, -1) && canRefill && !tank.isFull()) {
       tank.addFluidAmount(BUCKET_VOLUME / 2);
       tankDirty = true;
     }
 
-    if (shouldDoWorkThisTick(15, 1) && tank.getFluidAmount() > 0) {
+    if (shouldDoWorkThisTick(15, 1) && !tank.isEmpty()) {
       doLeak();
-      if (tank.getFluidAmount() > 0) {
+      if (!tank.isEmpty()) {
         doEqualize();
       }
     }
@@ -231,6 +233,11 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public void setTanksDirty() {
     tankDirty = true;
+  }
+
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    return pass == 1 && !tank.isEmpty();
   }
 
 }

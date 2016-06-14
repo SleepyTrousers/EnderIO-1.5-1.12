@@ -12,8 +12,6 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import static crazypants.util.Things.TRAVEL_BLACKLIST;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.api.teleport.IItemOfTravel;
@@ -52,6 +50,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
 public class TravelController {
 
@@ -694,7 +694,7 @@ public class TravelController {
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
-      scale = Math.max(1, scale);
+      scale = Math.max(1.01, scale);
 
     }
     return scale;

@@ -1,10 +1,8 @@
 package crazypants.enderio.teleport.anchor;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
@@ -15,31 +13,39 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
-  private final Vector4f selectedColor;
-  private final Vector4f highlightColor;
+  private final Vector4f selectedColor = new Vector4f(1, 0.25f, 0, 0.5f);
+  private final Vector4f itemBlend = new Vector4f(0.3f, 0.3f, 0.3f, 0.3f);
+  private final Vector4f blockBlend = new Vector4f(0.6f, 0.6f, 0.6f, 0.4f);
+  private final Vector4f selectedBlockBlend = new Vector4f(0.9f, 0.33f, 0.1f, 0.35f);
 
   public TravelEntitySpecialRenderer() {
-    this(new Vector4f(1, 0.25f, 0, 0.5f), new Vector4f(1, 1, 1, 0.25f));
-  }
-
-  public TravelEntitySpecialRenderer(Vector4f selectedColor, Vector4f highlightColor) {
-    this.selectedColor = selectedColor;
-    this.highlightColor = highlightColor;
   }
 
   @Override
@@ -68,144 +74,116 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
     }
 
     double sf = TravelController.instance.getScaleForCandidate(loc);
+    boolean highlight = TravelController.instance.isBlockSelected(ta.getLocation());
 
-    BlockCoord bc = new BlockCoord(tileentity);
-    TravelController.instance.addCandidate(bc);
+    TravelController.instance.addCandidate(ta.getLocation());
 
     Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
     RenderUtil.bindBlockTexture();
-    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-    GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+    GlStateManager.enableRescaleNormal();
+    GlStateManager.disableDepth();
+    GlStateManager.disableLighting();
+    GlStateManager.enableBlend();
+    GlStateManager.color(1, 1, 1, 1);
 
-    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(x, y, z);
+    renderBlock(tileentity.getPos(), tileentity.getWorld(), sf, highlight);
+    renderItemLabel(ta.getItemLabel(), sf);
+    renderLabel(ta.getLabel(), sf, highlight);
+    GlStateManager.popMatrix();
 
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    GL11.glDisable(GL11.GL_LIGHTING);
-
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-    GL11.glEnable(GL11.GL_CULL_FACE);
-    GL11.glColor3f(1, 1, 1);
-
-    GL11.glPushMatrix();
-    GL11.glTranslated(x, y, z);
-    
-    renderBlock(tileentity.getWorld(), sf);
-
-    
-    //Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    if(TravelController.instance.isBlockSelected(bc)) {
-      //Tessellator.instance.setColorRGBA_F(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);   
-      GlStateManager.color(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
-      RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getSelectedIcon());
-    } else {
-      GlStateManager.color(highlightColor.x, highlightColor.y, highlightColor.z, highlightColor.w);
-      RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getHighlightIcon());
-    }    
-    GL11.glPopMatrix();
-
-    renderLabel(tileentity, x, y, z, ta, sf);
-
-    GL11.glPopAttrib();
-    GL11.glPopAttrib();
-
+    GlStateManager.enableLighting();
+    GlStateManager.enableDepth();
+    GlStateManager.disableRescaleNormal();
     Minecraft.getMinecraft().entityRenderer.enableLightmap();
 
   }
 
-  private EntityItem ei;
-
-  private void renderLabel(TileEntity tileentity, double x, double y, double z, ITravelAccessable ta, double sf) {
-    float globalScale = (float) sf;
-    ItemStack itemLabel = ta.getItemLabel();
+  private void renderItemLabel(ItemStack itemLabel, double globalScale) {
     if (itemLabel != null && itemLabel.getItem() != null) {
+      RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+      RenderItem itemRenderer = Minecraft.getMinecraft().getRenderItem();
 
-      boolean isBlock = itemLabel.getItem() instanceof ItemBlock;
-      
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
-      float col = 0.5f;
-      GL14.glBlendColor(col, col, col, col);
-      GL11.glColor4f(1, 1, 1, 1);
-      {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
-        if (!isBlock && Minecraft.getMinecraft().gameSettings.fancyGraphics) {
-          RenderUtil.rotateToPlayer();
-        }
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(0.5f, 0.75f, 0.5f);
+      // TODO: This doesn't work that well with 3D items, find a rotation that does
+      GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+      GlStateManager.rotate((renderManager.options.thirdPersonView == 2 ? -1 : 1) * renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+      GlStateManager.scale(globalScale, globalScale, globalScale);
+      GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 
-        {
-          GL11.glPushMatrix();
-          GL11.glScalef(globalScale, globalScale, globalScale);
+      RenderHelper.enableStandardItemLighting();
 
-          {
-            GL11.glPushMatrix();
-            if (isBlock) {
-              GL11.glTranslatef(0f, -0.25f, 0);
-            } else {
-              GL11.glTranslatef(0f, -0.5f, 0);
-            }
+      IBakedModel bakedmodel = itemRenderer.getItemModelWithOverrides(itemLabel, (World) null, (EntityLivingBase) null);
+      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+      GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR, GlStateManager.SourceFactor.ONE.factor,
+          GlStateManager.DestFactor.ZERO.factor);
+      GL14.glBlendColor(itemBlend.x, itemBlend.y, itemBlend.z, itemBlend.w);
+      bakedmodel = ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.GUI, false);
+      itemRenderer.renderItem(itemLabel, bakedmodel);
 
-            GL11.glScalef(2, 2, 2);
+      RenderHelper.disableStandardItemLighting();
 
-            if (ei == null) {
-              ei = new EntityItem(tileentity.getWorld(), x, y, z, itemLabel);
-            } else {
-              ei.setEntityItemStack(itemLabel);
-            }
-            RenderUtil.render3DItem(ei, false);
-            GL11.glPopMatrix();
-          }
-          GL11.glPopMatrix();
-        }
-        GL11.glPopMatrix();
-      }
+      GL14.glBlendColor(1, 1, 1, 1);
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.popMatrix();
     }
+  }
 
-    String toRender = ta.getLabel();
+  private void renderLabel(String toRender, double globalScale, boolean highlight) {
     if (toRender != null && toRender.trim().length() > 0) {
-      GL11.glColor4f(1, 1, 1, 1);
+      GlStateManager.color(1, 1, 1, 1);
       Vector4f bgCol = RenderUtil.DEFAULT_TEXT_BG_COL;
-      if (TravelController.instance.isBlockSelected(new BlockCoord(tileentity))) {
+      if (highlight) {
         bgCol = new Vector4f(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
       }
 
-      {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
-        {
-          GL11.glPushMatrix();
-          GL11.glScalef(globalScale, globalScale, globalScale);
-          Vector3f pos = new Vector3f(0, 1.2f, 0);
-          float size = 0.5f;
-          RenderUtil.drawBillboardedText(pos, toRender, size, bgCol);
-          GL11.glPopMatrix();
-        }
-        GL11.glPopMatrix();
-      }
+      GlStateManager.pushMatrix();
+      GlStateManager.translate(0.5f, 0.5f, 0.5f);
+      GlStateManager.scale(globalScale, globalScale, globalScale);
+      Vector3f pos = new Vector3f(0, 1.2f, 0);
+      float size = 0.5f;
+      RenderUtil.drawBillboardedText(pos, toRender, size, bgCol);
+      GL11.glPopMatrix();
     }
   }
 
-  protected void renderBlock(IBlockAccess world, double sf) {
-    //TODO: 1.8  EnderIO.blockTravelPlatform.getIcon(0, 0)
-    RenderUtil.renderBoundingBox(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), getSelectedIcon());
-  }
+  public void renderBlock(BlockPos pos, IBlockAccess blockAccess, double globalScale, boolean highlight) {
+    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
-  public Vector4f getSelectedColor() {
-    return selectedColor;
-  }
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(0.5f, 0.5f, 0.5f);
+    GlStateManager.scale(globalScale, globalScale, globalScale);
+    GlStateManager.translate(-0.5f, -0.5f, -0.5f);
+    IBlockState state = blockAccess.getBlockState(pos).getActualState(blockAccess, pos);
+    IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);
+    state = state.getBlock().getExtendedState(state, blockAccess, pos);
 
-  public TextureAtlasSprite getSelectedIcon() {
-    return BlockTravelAnchor.selectedOverlayIcon.get(TextureAtlasSprite.class);
-  }
+    tes.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+    Vector4f color = highlight ? selectedBlockBlend : blockBlend;
 
-  public Vector4f getHighlightColor() {
-    return highlightColor;
-  }
+    GlStateManager.color(1, 1, 1, 1);
+    GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR, GlStateManager.SourceFactor.ONE.factor,
+        GlStateManager.DestFactor.ZERO.factor);
+    GL14.glBlendColor(color.x, color.y, color.z, color.w);
 
-  public TextureAtlasSprite getHighlightIcon() {
-    return BlockTravelAnchor.highlightOverlayIcon.get(TextureAtlasSprite.class);
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+    for (BlockRenderLayer layer : BlockRenderLayer.values()) {
+      if (state.getBlock().canRenderInLayer(state, layer)) {
+        ForgeHooksClient.setRenderLayer(layer);
+        blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, tes, false);
+      }
+    }
+    Tessellator.getInstance().draw();
+
+    GL14.glBlendColor(1, 1, 1, 1);
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    tes.setTranslation(0, 0, 0);
+
+    GlStateManager.popMatrix();
   }
 
 }

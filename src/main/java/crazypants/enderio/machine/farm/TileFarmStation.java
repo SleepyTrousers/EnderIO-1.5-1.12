@@ -4,14 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
-import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -46,6 +38,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
+import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
 
 @Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -711,7 +711,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return EnderIO.blockFarmStation.getLocalizedName();
   }
 
@@ -721,7 +721,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockFarmStation.getUnlocalisedName();
   }
 

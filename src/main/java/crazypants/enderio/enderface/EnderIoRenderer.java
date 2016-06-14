@@ -20,21 +20,18 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
   private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
 
-    @Override
-    public TextureAtlasSprite getSelectedIcon() {
-      return BlockEnderIO.selectedOverlayIcon.get(TextureAtlasSprite.class);
-    }
-
-    @Override
-    public TextureAtlasSprite getHighlightIcon() {
-      return BlockEnderIO.highlightOverlayIcon.get(TextureAtlasSprite.class);
-    }
-
   };
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f, int breakingStage) {
     
+    if (net.minecraftforge.client.MinecraftForgeClient.getRenderPass() == 1) {
+      if (te != null) {
+        selectionRenderer.renderTileEntityAt(te, x, y, z, f, breakingStage);
+      }
+      return;
+    }
+
     Matrix4d lookMat = null;
     int brightness = 255;
     if(te != null) {
@@ -48,10 +45,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     }
         
     render(x, y, z, lookMat, brightness);
-
-    if(te != null) {
-      selectionRenderer.renderTileEntityAt(te, x, y, z, f, breakingStage);
-    }
   }
 
   public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {
@@ -73,11 +66,11 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
     RenderUtil.bindGlintTexture();
     
     float maxUV = 32;
-    GlStateManager.depthFunc(GL11.GL_EQUAL);        
+    GlStateManager.depthFunc(GL11.GL_EQUAL);
     GlStateManager.enableLighting();
     GlStateManager.disableLighting();
     GlStateManager.enableBlend();
-    GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);    
+    GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     float blendFactor = 1F;
     GlStateManager.color(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
     
@@ -101,7 +94,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
 
     GlStateManager.matrixMode(GL11.GL_MODELVIEW);
     GlStateManager.disableBlend();
-    GlStateManager.enableLighting();    
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GlStateManager.enableLighting();
     GlStateManager.depthFunc(GL11.GL_LEQUAL);
 
     GL11.glColor4f(1, 1, 1, 1.0F);

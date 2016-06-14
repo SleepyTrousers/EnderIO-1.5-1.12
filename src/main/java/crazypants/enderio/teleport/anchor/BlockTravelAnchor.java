@@ -22,8 +22,6 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.ContainerTravelAuth;
@@ -73,9 +71,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     result.init();
     return result;
   }
-
-  public static final TextureSupplier selectedOverlayIcon = TextureRegistry.registerTexture("blocks/blockTravelAnchorSelected");
-  public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/blockTravelAnchorHighlight");
 
   private BlockTravelAnchor(Class<T> clz) {
     super(ModObject.blockTravelAnchor.getUnlocalisedName(), clz);
