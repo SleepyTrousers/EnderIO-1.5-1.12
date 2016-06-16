@@ -76,7 +76,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
           int filled = target.fill(dir.getOpposite(), push, true);
           if(filled > 0) {
             tank.drain(filled, true);
-            tankDirty = true;
+            setTanksDirty();
             return res;
           }
         }
@@ -106,7 +106,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
           FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
           if(drained != null && drained.amount > 0) {
             tank.fill(drained, true);
-            tankDirty = true;
+            setTanksDirty();
             return res;
           }
         } else {
@@ -121,7 +121,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
                   FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
                   if(drained != null && drained.amount > 0) {
                     tank.fill(drained, true);
-                    tankDirty = true;
+                    setTanksDirty();
                     return res;
                   }
                 }
@@ -146,7 +146,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   int fillInternal(FluidStack resource, boolean doFill) {
     int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
-      tankDirty = true;
+      setTanksDirty();
     }
     return res;
   }
@@ -162,7 +162,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   FluidStack drainInternal(FluidStack resource, boolean doDrain) {
     FluidStack res = tank.drain(resource, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
-      tankDirty = true;
+      setTanksDirty();
     }
     return res;
   }
@@ -178,7 +178,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   FluidStack drainInternal(int maxDrain, boolean doDrain) {
     FluidStack res = tank.drain(maxDrain, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
-      tankDirty = true;
+      setTanksDirty();
     }
     return res;
   }
@@ -304,7 +304,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     int filledLevel = getFilledLevel();
     if(lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
-      tankDirty = true;
+      setTanksDirty();
     }
     if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
@@ -413,7 +413,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   public void setTanksDirty() {
-    tankDirty = true;
+    if (!tankDirty) {
+      tankDirty = true;
+      markDirty();
+    }
   }
 
   @Override
