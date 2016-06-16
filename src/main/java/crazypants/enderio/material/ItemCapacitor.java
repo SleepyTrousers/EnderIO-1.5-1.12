@@ -94,9 +94,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
       }
     }
     if (NbtValue.GLINT.hasTag(stack)) {
-      par3List.add(
-          EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack)) + NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")
-              + EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack) + ".end"));
+      par3List.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
     }
 
   }
