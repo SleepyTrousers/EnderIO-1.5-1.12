@@ -2170,6 +2170,24 @@ item<y:LabelModel>
         </y:ShapeNode>
       </data>
     </node>
+    <node id="n128">
+      <data key="d5"/>
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="163.55777718120817" x="3495.0" y="-165.0"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="123.390625" x="20.083576090603856" y="5.6494140625">enderio:transform/light<y:LabelModel>
+              <y:SmartNodeLabelModel distance="4.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>
     <edge id="e0" source="n3" target="n1">
       <data key="d10">
         <y:BezierEdge>
@@ -4010,16 +4028,7 @@ item<y:LabelModel>
         </y:BezierEdge>
       </data>
     </edge>
-    <edge id="e158" source="n28" target="n123">
-      <data key="d10">
-        <y:GenericEdge configuration="com.yworks.edge.framed">
-          <y:Path sx="26.5" sy="15.0" tx="-6.625" ty="-26.15625"/>
-          <y:LineStyle color="#000000" type="line" width="3.0"/>
-          <y:Arrows source="none" target="standard"/>
-        </y:GenericEdge>
-      </data>
-    </edge>
-    <edge id="e159" source="n76" target="n123">
+    <edge id="e158" source="n76" target="n123">
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
           <y:Path sx="85.65160805369132" sy="15.0" tx="-19.875" ty="-17.84375">
@@ -4031,7 +4040,7 @@ item<y:LabelModel>
         </y:GenericEdge>
       </data>
     </edge>
-    <edge id="e160" source="n76" target="n75">
+    <edge id="e159" source="n76" target="n75">
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="0.0" sy="15.0" tx="57.48153825503357" ty="-15.0">
@@ -4043,7 +4052,7 @@ item<y:LabelModel>
         </y:BezierEdge>
       </data>
     </edge>
-    <edge id="e161" source="n126" target="n31">
+    <edge id="e160" source="n126" target="n31">
       <data key="d10">
         <y:BezierEdge>
           <y:Path sx="47.26611328125" sy="15.0" tx="0.0" ty="-15.0">
@@ -4055,7 +4064,7 @@ item<y:LabelModel>
         </y:BezierEdge>
       </data>
     </edge>
-    <edge id="e162" source="n124" target="n44">
+    <edge id="e161" source="n124" target="n44">
       <data key="d9"/>
       <data key="d10">
         <y:BezierEdge>
@@ -4065,7 +4074,7 @@ item<y:LabelModel>
         </y:BezierEdge>
       </data>
     </edge>
-    <edge id="e163" source="n127" target="n44">
+    <edge id="e162" source="n127" target="n44">
       <data key="d9"/>
       <data key="d10">
         <y:BezierEdge>
@@ -4075,7 +4084,27 @@ item<y:LabelModel>
         </y:BezierEdge>
       </data>
     </edge>
-    <edge id="e164" source="n127" target="n124">
+    <edge id="e163" source="n127" target="n124">
+      <data key="d9"/>
+      <data key="d10">
+        <y:GenericEdge configuration="com.yworks.edge.framed">
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="3.0"/>
+          <y:Arrows source="none" target="standard"/>
+        </y:GenericEdge>
+      </data>
+    </edge>
+    <edge id="e164" source="n128" target="n28">
+      <data key="d9"/>
+      <data key="d10">
+        <y:BezierEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="none"/>
+        </y:BezierEdge>
+      </data>
+    </edge>
+    <edge id="e165" source="n128" target="n124">
       <data key="d9"/>
       <data key="d10">
         <y:GenericEdge configuration="com.yworks.edge.framed">
