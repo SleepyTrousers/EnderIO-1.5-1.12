@@ -2,11 +2,8 @@ package crazypants.enderio.machine.tank;
 
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.render.RenderUtil;
-
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.TankRenderHelper;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
