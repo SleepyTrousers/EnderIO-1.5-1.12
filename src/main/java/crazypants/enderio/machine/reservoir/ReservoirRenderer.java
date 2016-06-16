@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,14 +37,11 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
 
   @Override
   public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
-    if (tileentity != null && tileentity.tank.getFluidAmount() > 0) {
+    if (tileentity != null && tileentity.tank.getFluidAmount() > 0 && MinecraftForgeClient.getRenderPass() == 1) {
 
       GlStateManager.pushMatrix();
       GlStateManager.translate(x, y, z);
       RenderUtil.bindBlockTexture();
-      GlStateManager.enableBlend();
-      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
 
       Tessellator tessellator = Tessellator.getInstance();
@@ -53,7 +51,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
       renderTankFluid(tileentity.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
       tessellator.draw();
 
-      GlStateManager.disableBlend();
       GlStateManager.enableLighting();
       GlStateManager.popMatrix();
     }
