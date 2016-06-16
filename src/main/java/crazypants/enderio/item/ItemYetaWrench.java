@@ -24,10 +24,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -66,6 +64,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override  
   public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+   
+    if (world.isRemote) {
+      //If its client side we have to return pass so this method is called on server, where we need to perform the op 
+      return EnumActionResult.PASS;
+    }
+    
     final IBlockState blockState = world.getBlockState(pos);
     IBlockState bs = blockState;
     Block block = bs.getBlock();
@@ -76,22 +80,6 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
         return EnumActionResult.PASS;
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
-        if (block == Blocks.CHEST) {
-          // This works around a forge bug where you can rotate double chests to invalid directions
-          TileEntityChest te = (TileEntityChest) world.getTileEntity(pos);
-          if (te != null && (te.adjacentChestXNeg != null || te.adjacentChestXPos != null || te.adjacentChestZNeg != null || te.adjacentChestZPos != null)) {
-            // Render master is always the chest to the negative direction
-            TileEntityChest masterChest = te.adjacentChestXNeg == null && te.adjacentChestZNeg == null ? te : te.adjacentChestXNeg == null ? te.adjacentChestZNeg: te.adjacentChestXNeg;
-            if (masterChest != te) {
-              //TODO: 1.8
-//              int meta = world.getBlockMetadata(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord);
-//              world.setBlockMetadataWithNotify(masterChest.xCoord, masterChest.yCoord, masterChest.zCoord, meta ^ 1, 3);
-            } else {
-              // If this is the master chest, we can just rotate twice
-              block.rotateBlock(world,pos, side);
-            }
-          }
-        }
         ret = true;
       } else if (block instanceof IBlockPaintableBlock && !player.isSneaking() && !YetaUtil.shouldHeldItemHideFacades()) {
         IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(blockState, world, pos);
