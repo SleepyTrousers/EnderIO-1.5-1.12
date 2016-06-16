@@ -180,15 +180,15 @@ public final class Config {
   public static float darkSteelSpeedTwoSprintMultiplier = 0.3f;
   public static float darkSteelSpeedThreeSprintMultiplier = 0.5f;
 
-  public static int darkSteelSpeedOneCost = 10;
-  public static int darkSteelSpeedTwoCost = 15;
-  public static int darkSteelSpeedThreeCost = 20;
+  public static int darkSteelSpeedOneCost = 4;
+  public static int darkSteelSpeedTwoCost = 6;
+  public static int darkSteelSpeedThreeCost = 8;
 
 
   public static double darkSteelBootsJumpModifier = 1.5;
-  public static int darkSteelJumpOneCost = 10;
-  public static int darkSteelJumpTwoCost = 15;
-  public static int darkSteelJumpThreeCost = 20;
+  public static int darkSteelJumpOneCost = 4;
+  public static int darkSteelJumpTwoCost = 6;
+  public static int darkSteelJumpThreeCost = 8;
 
   public static boolean slotZeroPlacesEight = true;
 
@@ -232,37 +232,37 @@ public final class Config {
   public static int darkSteelShearsBlockAreaBoostWhenPowered = 2;
   public static float darkSteelShearsEntityAreaBoostWhenPowered = 3.0f;
 
-  public static int darkSteelUpgradeVibrantCost = 10;
-  public static int darkSteelUpgradePowerOneCost = 10;
-  public static int darkSteelUpgradePowerTwoCost = 15;
-  public static int darkSteelUpgradePowerThreeCost = 20;
+  public static int darkSteelUpgradeVibrantCost = 4;
+  public static int darkSteelUpgradePowerOneCost = 4;
+  public static int darkSteelUpgradePowerTwoCost = 6;
+  public static int darkSteelUpgradePowerThreeCost = 8;
 
-  public static int darkSteelGliderCost = 10;
+  public static int darkSteelGliderCost = 4;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
 
-  public static int darkSteelGogglesOfRevealingCost = 10;
+  public static int darkSteelGogglesOfRevealingCost = 4;
 
-  public static int darkSteelApiaristArmorCost = 10;
+  public static int darkSteelApiaristArmorCost = 4;
 
-  public static int darkSteelSwimCost = 10;
+  public static int darkSteelSwimCost = 4;
 
-  public static int darkSteelNightVisionCost = 10;
+  public static int darkSteelNightVisionCost = 4;
 
-  public static int darkSteelSoundLocatorCost = 10;
+  public static int darkSteelSoundLocatorCost = 4;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
 
-  public static int darkSteelTravelCost = 30;
-  public static int darkSteelSpoonCost = 10;
+  public static int darkSteelTravelCost = 16;
+  public static int darkSteelSpoonCost = 4;
 
   public static int darkSteelSolarOneGen = 10;
-  public static int darkSteelSolarOneCost = 10;
+  public static int darkSteelSolarOneCost = 4;
   public static int darkSteelSolarTwoGen = 40;
-  public static int darkSteelSolarTwoCost = 20;
+  public static int darkSteelSolarTwoCost = 8;
   public static int darkSteelSolarThreeGen = 80;
-  public static int darkSteelSolarThreeCost = 40;
+  public static int darkSteelSolarThreeCost = 24;
   public static boolean darkSteelSolarChargeOthers = true;
 
   public static float darkSteelAnvilDamageChance = 0.024f;
@@ -366,7 +366,7 @@ public final class Config {
   public static String[] brokenSpawnerToolBlacklist = new String[] {
     "RotaryCraft:rotarycraft_item_bedpick"
   };
-  public static int powerSpawnerAddSpawnerCost = 30;
+  public static int powerSpawnerAddSpawnerCost = 16;
 
   public static int painterEnergyPerTaskRF = 2000;
 
@@ -376,7 +376,7 @@ public final class Config {
 
   public static long nutrientFoodBoostDelay = 400;
 
-  public static int enchanterBaseLevelCost = 4;
+  public static int enchanterBaseLevelCost = 2;
 
   public static boolean machineSoundsEnabled = true;
 
@@ -404,16 +404,16 @@ public final class Config {
   public static boolean soulVesselCapturesBosses = false;
 
   public static int soulBinderBrokenSpawnerRF = 2500000;
-  public static int soulBinderBrokenSpawnerLevels = 15;
+  public static int soulBinderBrokenSpawnerLevels = 6;
   public static int soulBinderReanimationRF = 100000;
-  public static int soulBinderReanimationLevels = 10;
+  public static int soulBinderReanimationLevels = 4;
   public static int soulBinderEnderCystalRF = 100000;
-  public static int soulBinderEnderCystalLevels = 10;
+  public static int soulBinderEnderCystalLevels = 4;
   public static int soulBinderAttractorCystalRF = 100000;
-  public static int soulBinderAttractorCystalLevels = 10;
+  public static int soulBinderAttractorCystalLevels = 4;
   public static int soulBinderEnderRailRF = 100000;
-  public static int soulBinderEnderRailLevels = 10;
-  public static int soulBinderTunedPressurePlateLevels = 3;
+  public static int soulBinderEnderRailLevels = 4;
+  public static int soulBinderTunedPressurePlateLevels = 2;
   public static int soulBinderTunedPressurePlateRF = 250000;
   public static int soulBinderMaxXpLevel = 40;
 
