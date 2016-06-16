@@ -16,8 +16,19 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -87,6 +98,35 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
   @Override
   public ICapacitorData getCapacitorData(ItemStack stack) {
     return DefaultCapacitorData.values()[getMetadata(stack)];
+  }
+
+  @Override
+  public boolean hasEffect(ItemStack stack) {
+    return super.hasEffect(stack) || (stack != null && stack.hasTagCompound() && stack.getTagCompound().hasKey("glinted"));
+  }
+
+  @Override
+  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+      EnumHand hand) {
+
+    if (world.isRemote || System.getProperty("INDEV") == null) {
+      return EnumActionResult.PASS;
+    }
+    TileEntity te = world.getTileEntity(pos);
+    if (!(te instanceof TileEntityChest)) {
+      return EnumActionResult.PASS;
+    }
+    TileEntityChest chest = (TileEntityChest) te;
+    chest.clear();
+
+    LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) world);
+    if (player != null) {
+      lootcontext$builder.withLuck(player.getLuck());
+    }
+
+    LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+    loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
+    return EnumActionResult.PASS;
   }
 
 }

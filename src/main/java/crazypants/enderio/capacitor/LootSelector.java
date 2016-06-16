@@ -1,6 +1,8 @@
 package crazypants.enderio.capacitor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -13,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -22,40 +25,20 @@ public class LootSelector extends LootFunction {
     super(conditionsIn);
   }
 
-  private static enum Upgrade {
-    SMELTING(SetType.NAME, CapacitorKey.ALLOY_SMELTER_POWER_USE, "smelting"),
-    INTAKE(SetType.TYPE, CapacitorKey.ALLOY_SMELTER_POWER_INTAKE, "intake"),
-    BUFFER(SetType.TYPE, CapacitorKey.ALLOY_SMELTER_POWER_BUFFER, "buffer"),
-    CRAFTING(SetType.NAME, CapacitorKey.CRAFTER_TICKS, "crafting"),
-    AREA(SetType.TYPE, CapacitorKey.ATTRACTOR_RANGE, "area"),
-    GREEN(SetType.NAME, CapacitorKey.FARM_BONUS_SIZE, "green"),
-    RED(SetType.NAME, CapacitorKey.STIRLING_POWER_GEN, "red"),
-
-    ;
-
-    final SetType setType;
-    final CapacitorKey capacitorKey;
-    final String langKey;
-
-    private Upgrade(SetType setType, CapacitorKey capacitorKey, String langKey) {
-      this.setType = setType;
-      this.capacitorKey = capacitorKey;
-      this.langKey = "loot.capacitor." + langKey;
-    }
-  }
-
   @Override
   public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-    Map<Upgrade, Float> keys = new HashMap<Upgrade, Float>();
+    Map<WeightedUpgrade, Float> keys = new HashMap<WeightedUpgrade, Float>();
 
     float baselevel = getRandomBaseLevel(rand);
 
     int no = getRandomCount(rand);
 
     for (int i = 0; i < no; i++) {
-      Upgrade randomKey = getUpgrade(rand);
+      WeightedUpgrade randomKey = getUpgrade(rand);
       float randomLevel = getRandomLevel(baselevel, rand);
-      baselevel -= Math.max(randomLevel / 10f * rand.nextFloat(), .5f);
+      System.out.println("baselevel=" + baselevel + " randomLevel=" + randomLevel);
+      baselevel = Math.max(baselevel - randomLevel / 10f * rand.nextFloat(), .5f);
+      System.out.println("baselevel=" + baselevel);
       if (keys.containsKey(randomKey)) {
         randomLevel = Math.max(randomLevel, keys.get(randomKey));
       }
@@ -65,44 +48,28 @@ public class LootSelector extends LootFunction {
     String name = buildBaseName(EnderIO.lang.localize("itemBasicCapacitor.name"), baselevel);
     stack = CapacitorHelper.addCapData(stack, SetType.LEVEL, null, baselevel);
 
-    for (Entry<Upgrade, Float> entry : keys.entrySet()) {
+    for (Entry<WeightedUpgrade, Float> entry : keys.entrySet()) {
       stack = CapacitorHelper.addCapData(stack, entry.getKey().setType, entry.getKey().capacitorKey, entry.getValue());
       name = buildName(EnderIO.lang.localize(entry.getKey().langKey, name), entry.getValue());
     }
 
     stack.setStackDisplayName(name);
+    stack.getTagCompound().setBoolean("glinted", true);
 
     return stack;
   }
 
+  private static final List<WeightedInteger> weightedCount = new ArrayList<WeightedInteger>();
+  static {
+    weightedCount.add(new WeightedInteger(1, 5));
+    weightedCount.add(new WeightedInteger(3, 4));
+    weightedCount.add(new WeightedInteger(6, 3));
+    weightedCount.add(new WeightedInteger(6, 2));
+    weightedCount.add(new WeightedInteger(24, 1));
+  }
+
   private int getRandomCount(Random rand) {
-    int no = 0;
-    switch (rand.nextInt(40)) {
-    case 0:
-      no++;
-    case 1:
-    case 2:
-    case 3:
-      no++;
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-      no++;
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-      no++;
-    default:
-      no++;
-    }
-    return no;
+    return WeightedRandom.getRandomItem(rand, weightedCount).getInteger();
   }
 
   private String buildBaseName(String name, float level) {
@@ -142,7 +109,7 @@ public class LootSelector extends LootFunction {
   }
 
   private float getRandomBaseLevel(Random rand) {
-    if (rand.nextFloat() < .6f) {
+    if (rand.nextFloat() < .3f) {
       return 1f + (rand.nextFloat() - rand.nextFloat()) * .5f;
     } else {
       return 1f + rand.nextFloat() + rand.nextFloat() + rand.nextFloat() + rand.nextFloat();
@@ -173,8 +140,8 @@ public class LootSelector extends LootFunction {
     return Math.min(result, 4.75f);
   }
 
-  private Upgrade getUpgrade(Random rand) {
-    return Upgrade.values()[rand.nextInt(Upgrade.values().length)];
+  private WeightedUpgrade getUpgrade(Random rand) {
+    return WeightedRandom.getRandomItem(rand, WeightedUpgrade.getWeightedupgrades()).getUpgrade();
   }
 
   public static class Serializer extends LootFunction.Serializer<LootSelector> {
