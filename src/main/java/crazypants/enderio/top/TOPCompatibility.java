@@ -13,6 +13,7 @@ import com.google.common.base.Function;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -23,11 +24,11 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
-import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk.SpawnObeliskAction;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.CapturedMob;
 import mcjty.theoneprobe.api.ElementAlignment;
+import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
 import mcjty.theoneprobe.api.IProbeConfigProvider;
 import mcjty.theoneprobe.api.IProbeHitData;
@@ -47,6 +48,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.config.Config.topEnabled;
+import static crazypants.enderio.config.Config.topShowMobsByDefault;
+import static crazypants.enderio.config.Config.topShowPowerByDefault;
+import static crazypants.enderio.config.Config.topShowProgressByDefault;
+import static crazypants.enderio.config.Config.topShowRangeByDefault;
+import static crazypants.enderio.config.Config.topShowRedstoneByDefault;
+import static crazypants.enderio.config.Config.topShowSideConfigByDefault;
+
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
   public static ITheOneProbe probe;
@@ -54,10 +63,14 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   @Nullable
   @Override
   public Void apply(@Nullable ITheOneProbe theOneProbe) {
-    probe = theOneProbe;
-    Log.info("Enabled support for The One Probe");
-    probe.registerProvider(this);
-    probe.registerProbeConfigProvider(this);
+    if (topEnabled) {
+      probe = theOneProbe;
+      Log.info("Enabled support for The One Probe");
+      probe.registerProvider(this);
+      probe.registerProbeConfigProvider(this);
+    } else {
+      Log.info("Support for The One Probe is DISABLED by a configuration setting");
+    }
     return null;
   }
 
@@ -67,138 +80,301 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   }
 
   @Override
-  public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-    if (probeInfo != null && world != null && blockState != null && data != null && blockState.getBlock() instanceof BlockEio) {
-      TileEntity tileEntity = world.getTileEntity(data.getPos());
+  public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData hitData) {
+    if (probeInfo != null && world != null && blockState != null && hitData != null && blockState.getBlock() instanceof BlockEio) {
+      TileEntity tileEntity = world.getTileEntity(hitData.getPos());
       if (tileEntity != null) {
-        boolean active = true;
-        float progress = -1;
-        int rf = -1, maxrf = 0;
+        EioBox eiobox = new EioBox(probeInfo);
 
-        if (tileEntity instanceof AbstractMachineEntity) {
-          AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;
-          active = te.isActive();
-        }
-        if (tileEntity instanceof IInternalPoweredTile) {
-          IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
-          if (te.displayPower()) {
-            maxrf = te.getMaxEnergyStored();
-            rf = te.getEnergyStored();
-          }
-        }
-        if (tileEntity instanceof IProgressTile) {
-          IProgressTile progressTile = (IProgressTile) tileEntity;
-          progress = progressTile.getProgress();
-          if (tileEntity instanceof AbstractPoweredTaskEntity) {
-            AbstractPoweredTaskEntity te = (AbstractPoweredTaskEntity) tileEntity;
-            if (te.getCurrentTask() instanceof ContinuousTask) {
-              progress = -1;
-            }
-          }
-        }
+        Data data = new Data(tileEntity, hitData);
 
-        IProbeInfo eiobox = probeInfo.vertical(probeInfo.defaultLayoutStyle().borderColor(0xffff0000));
+        mkProgressLine(mode, eiobox, data);
 
-        if (progress > 0) {
-          if (active) {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.CLOCK)).progress(
-                (int) (progress * 100), 100,
-                probeInfo.defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.percent")).filledColor(0xffffb600).alternateFilledColor(0xffffb600));
-          } else if (maxrf > 0 && rf == 0) {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.CLOCK))
-                .text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.progress.outofpower"));
-          } else {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.CLOCK))
-                .text(EnderIO.lang.localize("top.progress.idle"));
-          }
-        } else {
-          if (active) {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.CLOCK))
-                .text(EnderIO.lang.localize("top.machine.active"));
-          } else {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.CLOCK))
-                .text(EnderIO.lang.localize("top.machine.idle"));
-          }
-        }
+        mkRfLine(mode, eiobox, data);
 
-        if (maxrf > 0) {
-          if (rf > 0) {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.REDSTONE)).progress(rf, maxrf,
-                probeInfo.defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf")).filledColor(0xffd63223).alternateFilledColor(0xffd63223));
-          } else {
-            eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Items.REDSTONE))
-                .text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.machine.outofpower"));
-          }
-        }
+        mkRedstoneLine(mode, eiobox, data);
 
-        if (tileEntity instanceof IRedstoneModeControlable) {
-          IRedstoneModeControlable te = (IRedstoneModeControlable) tileEntity;
-          RedstoneControlMode redstoneControlMode = te.getRedstoneControlMode();
-          boolean redstoneControlStatus = te.getRedstoneControlStatus();
-          IconHolder iconHolder = RedstoneControlMode.IconHolder.getFromMode(redstoneControlMode);
-          IWidgetIcon icon = iconHolder.getIcon();
-          String tooltip = iconHolder.getTooltip();
+        mkSideConfigLine(mode, eiobox, data);
 
-          addIcon(eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)), icon)
-              .vertical(probeInfo.defaultLayoutStyle().spacing(-1)).text(tooltip).text(TextFormatting.YELLOW
-                  + EnderIO.lang.localize("top.redstone.header", TextFormatting.WHITE + EnderIO.lang.localize("top.redstone." + redstoneControlStatus)));
-        }
+        mkRangeLine(mode, eiobox, data);
 
-        if (tileEntity instanceof IIoConfigurable) {
-          IIoConfigurable te = (IIoConfigurable) tileEntity;
-          IoMode ioMode = te.getIoMode(data.getSideHit());
+        eiobox.finish();
 
-          addIcon(eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)), IconEIO.IO_CONFIG_UP)
-              .vertical(probeInfo.defaultLayoutStyle().spacing(-1))
-              .text(TextFormatting.YELLOW + EnderIO.lang.localize("gui.machine.side",
-                  TextFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + data.getSideHit().name().toLowerCase(Locale.US))))
-              .text(TextFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", ioMode.colorLocalisedName()));
-        }
+        EioBox mobbox = new EioBox(probeInfo);
 
-        if (tileEntity instanceof IRanged) {
-          IRanged te = (IRanged) tileEntity;
-          BoundingBox bounds = te.getBounds();
-          int sizeX = (int) bounds.sizeX();
-          int sizeY = (int) bounds.sizeY();
-          int sizeZ = (int) bounds.sizeZ();
+        mkMobsBox(mode, mobbox, world, data);
 
-          eiobox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).item(new ItemStack(Blocks.STONE))
-              .text(TextFormatting.YELLOW
-                  + EnderIO.lang.localize("top.range.header", TextFormatting.WHITE + EnderIO.lang.localize("top.range", sizeX, sizeY, sizeZ)));
-        }
+        mobbox.finish();
+      }
+    }
+  }
 
-        if (tileEntity instanceof AbstractMobObelisk) {
-          AbstractMobObelisk te = (AbstractMobObelisk) tileEntity;
-          List<CapturedMob> mobsInFilter = te.getMobsInFilter();
-          SpawnObeliskAction spawnObeliskAction = te.getSpawnObeliskAction();
+  private static class EioBox {
+    private final IProbeInfo probeinfo;
+    private IProbeInfo eiobox;
+    private boolean addMoreIndicator = false;
 
-          IProbeInfo mobbox = probeInfo.vertical(probeInfo.defaultLayoutStyle().borderColor(0xffff0000));
-
-          mobbox.text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", spawnObeliskAction.getActionString()));
-
-          if (mobsInFilter.isEmpty()) {
-            mobbox.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.action.none"));
-          } else if (mobsInFilter.size() <= 4) {
-            for (CapturedMob capturedMob : mobsInFilter) {
-              mobbox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER)).entity(capturedMob.getEntity(world, false))
-                  .text(capturedMob.getDisplayName());
-            }
-          } else {
-            IProbeInfo mobList = mobbox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-            int count = 0;
-            for (CapturedMob capturedMob : mobsInFilter) {
-              if (count++ >= 4) {
-                mobList = mobbox.horizontal(probeInfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER));
-                count = 0;
-              }
-              mobList.entity(capturedMob.getEntity(world, false));
-            }
-          }
-        }
-
-      } // end eio te
+    public EioBox(IProbeInfo probeinfo) {
+      this.probeinfo = probeinfo;
     }
 
+    public IProbeInfo getProbeinfo() {
+      return probeinfo;
+    }
+
+    public IProbeInfo get() {
+      if (eiobox == null) {
+        eiobox = probeinfo.vertical(probeinfo.defaultLayoutStyle().borderColor(0xffff0000));
+      }
+      return eiobox;
+    }
+
+    public ILayoutStyle center() {
+      return probeinfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER);
+    }
+
+    public void addMore() {
+      addMoreIndicator = true;
+    }
+
+    public void finish() {
+      if (eiobox != null) {
+        if (addMoreIndicator) {
+          addIcon(addIcon(get().horizontal(center()), IconEIO.TOP_NOICON, 0), IconEIO.TOP_MORE, 0);
+        } else {
+          addIcon(addIcon(get().horizontal(center()), IconEIO.TOP_NOICON, 0), IconEIO.TOP_NOMORE, 0);
+        }
+      } else if (addMoreIndicator) {
+        addIcon(addIcon(probeinfo.vertical().horizontal(center()), IconEIO.TOP_NOICON_WIDE, 0), IconEIO.TOP_MORE, 0);
+      }
+    }
+  }
+
+  private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, Data data) {
+    if (data.hasMobs) {
+      if (mode != ProbeMode.NORMAL || topShowMobsByDefault) {
+        mobbox.get().text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", data.mobAction));
+
+        if (data.mobs.isEmpty()) {
+          mobbox.get().text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.action.none"));
+        } else if (data.mobs.size() <= 4) {
+          for (CapturedMob capturedMob : data.mobs) {
+            mobbox.get().horizontal(mobbox.center()).entity(capturedMob.getEntity(world, false)).text(capturedMob.getDisplayName());
+          }
+        } else {
+          IProbeInfo mobList = mobbox.get().horizontal(mobbox.center());
+          int count = 0;
+          for (CapturedMob capturedMob : data.mobs) {
+            if (count++ >= 4) {
+              mobList = mobbox.get().horizontal(mobbox.center());
+              count = 0;
+          }
+            mobList.entity(capturedMob.getEntity(world, false));
+        }
+        }
+      } else {
+        mobbox.addMore();
+      }
+    }
+  }
+
+  private void mkRangeLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.hasRange) {
+      if (mode != ProbeMode.NORMAL || topShowRangeByDefault) {
+        int sizeX = (int) data.bounds.sizeX();
+        int sizeY = (int) data.bounds.sizeY();
+        int sizeZ = (int) data.bounds.sizeZ();
+
+        eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.STONE)).text(
+            TextFormatting.YELLOW + EnderIO.lang.localize("top.range.header", TextFormatting.WHITE + EnderIO.lang.localize("top.range", sizeX, sizeY, sizeZ)));
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
+  private void mkSideConfigLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.hasIOMode) {
+      if (mode != ProbeMode.NORMAL || topShowSideConfigByDefault) {
+        addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.IO_CONFIG_UP).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
+            .text(TextFormatting.YELLOW
+                + EnderIO.lang.localize("gui.machine.side", TextFormatting.WHITE + EnderIO.lang.localize("gui.machine.side." + data.sideName)))
+            .text(TextFormatting.YELLOW + EnderIO.lang.localize("gui.machine.ioMode", data.ioMode.colorLocalisedName()));
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
+  private void mkRedstoneLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.hasRedstone) {
+      if (mode != ProbeMode.NORMAL || topShowRedstoneByDefault) {
+        addIcon(eiobox.get().horizontal(eiobox.center()), data.redstoneIcon).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
+            .text(data.redstoneTooltip).text(TextFormatting.YELLOW
+                + EnderIO.lang.localize("top.redstone.header", TextFormatting.WHITE + EnderIO.lang.localize("top.redstone." + data.redstoneControlStatus)));
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
+  private void mkRfLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.hasRF) {
+      if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
+        final IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
+        if (data.isPowered) {
+          rfLine.progress(data.rf, data.maxrf, eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf"))
+              .filledColor(0xffd63223).alternateFilledColor(0xffd63223));
+        } else {
+          rfLine.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.machine.outofpower"));
+        }
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
+
+  private static class Data {
+    static enum ProgressResult {
+      NONE,
+      PROGRESS,
+      PROGRESS_ACTIVE,
+      PROGRESS_NO_POWER,
+      PROGRESS_IDLE,
+      NO_PROGRESS_ACTIVE,
+      NO_PROGRESS_IDLE;
+    }
+
+    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs;
+    boolean isActive, isPowered, redstoneControlStatus;
+    float progress;
+    int rf, maxrf;
+    String redstoneTooltip, sideName, mobAction;
+    IWidgetIcon redstoneIcon;
+    IoMode ioMode;
+    BoundingBox bounds;
+    List<CapturedMob> mobs;
+    Data.ProgressResult progressResult = Data.ProgressResult.NONE;
+
+    public Data(TileEntity tileEntity, IProbeHitData hitData) {
+
+      if (tileEntity instanceof AbstractMachineEntity) {
+        AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;
+        isActive = te.isActive();
+        hasStatus = true;
+      }
+
+      if (tileEntity instanceof IInternalPoweredTile) {
+        IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
+        if (te.displayPower()) {
+          maxrf = te.getMaxEnergyStored();
+          rf = te.getEnergyStored();
+          isPowered = rf > 0;
+          hasRF = maxrf > 0;
+        }
+      }
+
+      if (tileEntity instanceof IProgressTile) {
+        IProgressTile progressTile = (IProgressTile) tileEntity;
+        progress = progressTile.getProgress();
+        hasProgress = true;
+        if (tileEntity instanceof AbstractPoweredTaskEntity) {
+          AbstractPoweredTaskEntity te = (AbstractPoweredTaskEntity) tileEntity;
+          if (te.getCurrentTask() instanceof ContinuousTask) {
+            hasProgress = false;
+          }
+        } else if (tileEntity instanceof IConduitBundle) {
+          hasProgress = false;
+        }
+      }
+
+      if (tileEntity instanceof IRedstoneModeControlable) {
+        IRedstoneModeControlable te = (IRedstoneModeControlable) tileEntity;
+        RedstoneControlMode redstoneControlMode = te.getRedstoneControlMode();
+        redstoneControlStatus = te.getRedstoneControlStatus();
+        IconHolder iconHolder = RedstoneControlMode.IconHolder.getFromMode(redstoneControlMode);
+        redstoneIcon = iconHolder.getIcon();
+        redstoneTooltip = iconHolder.getTooltip();
+        hasRedstone = true;
+      }
+
+      if (tileEntity instanceof IIoConfigurable) {
+        IIoConfigurable te = (IIoConfigurable) tileEntity;
+        sideName = hitData.getSideHit().name().toLowerCase(Locale.US);
+        ioMode = te.getIoMode(hitData.getSideHit());
+        hasIOMode = true;
+      }
+
+      if (tileEntity instanceof IRanged) {
+        IRanged te = (IRanged) tileEntity;
+        bounds = te.getBounds();
+        hasRange = bounds != null;
+      }
+
+      if (tileEntity instanceof AbstractMobObelisk) {
+        AbstractMobObelisk te = (AbstractMobObelisk) tileEntity;
+        mobs = te.getMobsInFilter();
+        mobAction = te.getSpawnObeliskAction().getActionString();
+        hasMobs = true;
+      }
+
+      calculateProgress();
+    }
+
+    private void calculateProgress() {
+      if (hasProgress) {
+        if (progress > 0) {
+          if (hasRF && !isPowered) {
+            progressResult = ProgressResult.PROGRESS_NO_POWER;
+          } else {
+            progressResult = ProgressResult.PROGRESS;
+          }
+        } else if (hasStatus && isActive) {
+          progressResult = ProgressResult.PROGRESS_ACTIVE;
+        } else {
+          progressResult = ProgressResult.PROGRESS_IDLE;
+        }
+      } else if (hasStatus) {
+        if (isActive) {
+          progressResult = ProgressResult.NO_PROGRESS_ACTIVE;
+        } else {
+          progressResult = ProgressResult.NO_PROGRESS_IDLE;
+        }
+      }
+    }
+  }
+
+  /**
+   * @return true if some information was hidden
+   */
+  private void mkProgressLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.progressResult != Data.ProgressResult.NONE) {
+      if (mode != ProbeMode.NORMAL || topShowProgressByDefault || data.progressResult == Data.ProgressResult.PROGRESS_NO_POWER) {
+        final IProbeInfo progressLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.CLOCK));
+        switch (data.progressResult) {
+        case PROGRESS:
+          progressLine.progress((int) (data.progress * 100), 100, eiobox.getProbeinfo().defaultProgressStyle()
+              .suffix(EnderIO.lang.localize("top.suffix.percent")).filledColor(0xffffb600).alternateFilledColor(0xffffb600));
+          break;
+        case PROGRESS_NO_POWER:
+          progressLine.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.progress.outofpower"));
+          break;
+        case PROGRESS_ACTIVE:
+        case NO_PROGRESS_ACTIVE:
+          progressLine.text(EnderIO.lang.localize("top.machine.active"));
+          break;
+        case PROGRESS_IDLE:
+        case NO_PROGRESS_IDLE:
+          progressLine.text(EnderIO.lang.localize("top.machine.idle"));
+          break;
+        case NONE:
+          break;
+        }
+      } else {
+        eiobox.addMore();
+      }
+    }
   }
 
   @Override
@@ -222,14 +398,18 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private IProbeInfo addIcon(IProbeInfo probeInfo, IWidgetIcon icon) {
+  private static IProbeInfo addIcon(IProbeInfo probeInfo, IWidgetIcon icon) {
+    return addIcon(probeInfo, icon, 4);
+  }
+
+  private static IProbeInfo addIcon(IProbeInfo probeInfo, IWidgetIcon icon, int border) {
     ResourceLocation texture = icon.getMap().getTexture();
     int x = icon.getX();
     int y = icon.getY();
     int width = icon.getWidth();
     int height = icon.getHeight();
 
-    return probeInfo.icon(texture, x, y, width, height, probeInfo.defaultIconStyle().width(20).height(20));
+    return probeInfo.icon(texture, x, y, width, height, probeInfo.defaultIconStyle().width(width + border).height(height + border));
   }
 
 }

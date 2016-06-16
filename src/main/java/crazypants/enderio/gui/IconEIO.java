@@ -10,6 +10,11 @@ import net.minecraft.util.ResourceLocation;
 
 public enum IconEIO implements IWidgetIcon {
 
+  TOP_NOICON(0, 0, 20, 1),
+  TOP_MORE(0, 0, 100, 1),
+  TOP_NOICON_WIDE(0, 1, 23, 1),
+  TOP_NOMORE(0, 1, 100, 1),
+
   TICK(0, 192),
   MINUS(16, 192),
   LOCK_UNLOCKED(32, 192),

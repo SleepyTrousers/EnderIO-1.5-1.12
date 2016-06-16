@@ -82,6 +82,7 @@ public final class Config {
   public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
   public static final Section sectionMisc = new Section("Misc", "misc");
   public static final Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
+  public static final Section sectionTOP = new Section("The One Probe integration", "top");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -476,6 +477,14 @@ public final class Config {
   public static int photovoltaicRecalcSunTick = 100;
 
   public static boolean debugUpdatePackets = false;
+
+  public static boolean topEnabled = true;
+  public static boolean topShowProgressByDefault = true;
+  public static boolean topShowPowerByDefault = true;
+  public static boolean topShowRedstoneByDefault = false;
+  public static boolean topShowSideConfigByDefault = false;
+  public static boolean topShowRangeByDefault = false;
+  public static boolean topShowMobsByDefault = true;
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -1292,6 +1301,21 @@ public final class Config {
     
     debugUpdatePackets = config.getBoolean("debugUpdatePackets", sectionPersonal.name, debugUpdatePackets,
         "DEBUG: If true, TEs will flash when they recieve an update packet.");
+
+    topEnabled = config.getBoolean("topEnabled", sectionTOP.name, topEnabled, "If true, 'The One Probe' by McJty will be supported");
+
+    topShowProgressByDefault = config.getBoolean("topShowProgressByDefault", sectionTOP.name, topShowProgressByDefault,
+        "If true, the progress will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowPowerByDefault = config.getBoolean("topShowPowerByDefault", sectionTOP.name, topShowPowerByDefault,
+        "If true, the power level will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowRedstoneByDefault = config.getBoolean("topShowRedstoneByDefault", sectionTOP.name, topShowRedstoneByDefault,
+        "If true, the resdstone status will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowSideConfigByDefault = config.getBoolean("topShowSideConfigByDefault", sectionTOP.name, topShowSideConfigByDefault,
+        "If true, the side config will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowRangeByDefault = config.getBoolean("topShowRangeByDefault", sectionTOP.name, topShowRangeByDefault,
+        "If true, the range will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowMobsByDefault = config.getBoolean("topShowMobsByDefault", sectionTOP.name, topShowMobsByDefault,
+        "If true, the mob list will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     CapacitorKey.processConfig(config);
   }
