@@ -5,7 +5,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public enum NbtValue {
   SOURCE_BLOCK("sourceBlockId"),
-  SOURCE_META("sourceBlockMeta");
+  SOURCE_META("sourceBlockMeta"),
+  GLINT("glinted"),
+  CAPNAME("capname"),
+  CAPNO("capno"),
+
+  ;
 
   private final String key;
 

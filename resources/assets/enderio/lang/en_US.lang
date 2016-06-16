@@ -1313,5 +1313,39 @@ enderio.loot.capacitor.level.40=Premium %s
 enderio.loot.capacitor.level.42=Incredibly %s 
 enderio.loot.capacitor.level.45=Unstable %s
 
+enderio.loot.capacitor.entry.count=8
+enderio.loot.capacitor.entry.0=An attached note describes this as "
+enderio.loot.capacitor.entry.0.end="
+enderio.loot.capacitor.entry.1=You can decipher ancient runes that translate roughly as "
+enderio.loot.capacitor.entry.1.end=". Odd...
+enderio.loot.capacitor.entry.2=By the power of Enderskull, I have the 
+enderio.loot.capacitor.entry.2.end=!
+enderio.loot.capacitor.entry.3=If you had to describe this, "
+enderio.loot.capacitor.entry.3.end=" would be a good name.
+enderio.loot.capacitor.entry.4=If you had to describe this, "
+enderio.loot.capacitor.entry.4.end=" would be a bad name.
+enderio.loot.capacitor.entry.5=This "
+enderio.loot.capacitor.entry.5.end=" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
+enderio.loot.capacitor.entry.6=This "
+enderio.loot.capacitor.entry.6.end=" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
+enderio.loot.capacitor.entry.7=Your "
+enderio.loot.capacitor.entry.7.end=" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
+
+enderio.loot.capacitor.title.count=15
+enderio.loot.capacitor.title.0=Remarkable Capacitor
+enderio.loot.capacitor.title.1=Unremarkable Capacitor
+enderio.loot.capacitor.title.2=Found Capacitor
+enderio.loot.capacitor.title.3=Lost Capacitor
+enderio.loot.capacitor.title.4=Ancient Capacitor
+enderio.loot.capacitor.title.5=Magic Capacitor
+enderio.loot.capacitor.title.6=Capacitor of Holding
+enderio.loot.capacitor.title.7=Capacitor of the Southern Winds
+enderio.loot.capacitor.title.8=Capacitor of What is This Doing Here
+enderio.loot.capacitor.title.9=Modified Power Holding Device
+enderio.loot.capacitor.title.10=A Mystery wrapped in tin foil
+enderio.loot.capacitor.title.11=Something wonderful
+enderio.loot.capacitor.title.12=A Capacitor. Maybe
+enderio.loot.capacitor.title.13=Heaven Cent
+enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
 
 

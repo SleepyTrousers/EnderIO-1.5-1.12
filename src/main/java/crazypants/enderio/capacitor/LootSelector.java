@@ -12,7 +12,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
+import crazypants.util.NbtValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandom;
@@ -36,9 +38,7 @@ public class LootSelector extends LootFunction {
     for (int i = 0; i < no; i++) {
       WeightedUpgrade randomKey = getUpgrade(rand);
       float randomLevel = getRandomLevel(baselevel, rand);
-      System.out.println("baselevel=" + baselevel + " randomLevel=" + randomLevel);
       baselevel = Math.max(baselevel - randomLevel / 10f * rand.nextFloat(), .5f);
-      System.out.println("baselevel=" + baselevel);
       if (keys.containsKey(randomKey)) {
         randomLevel = Math.max(randomLevel, keys.get(randomKey));
       }
@@ -53,8 +53,27 @@ public class LootSelector extends LootFunction {
       name = buildName(EnderIO.lang.localize(entry.getKey().langKey, name), entry.getValue());
     }
 
-    stack.setStackDisplayName(name);
-    stack.getTagCompound().setBoolean("glinted", true);
+    NbtValue.CAPNAME.setString(stack, name);
+
+    String count_s = EnderIO.lang.localize("loot.capacitor.entry.count");
+    int count = 8;
+    try {
+      count = Integer.valueOf(count_s);
+    } catch (NumberFormatException e) {
+      Log.warn("The value of the language key 'enderio.loot.capacitor.entry.count' is not a valid number!");
+    }
+    NbtValue.CAPNO.setInt(stack, rand.nextInt(count));
+
+    count_s = EnderIO.lang.localize("loot.capacitor.title.count");
+    count = 8;
+    try {
+      count = Integer.valueOf(count_s);
+    } catch (NumberFormatException e) {
+      Log.warn("The value of the language key 'enderio.loot.capacitor.title.count' is not a valid number!");
+    }
+    stack.setStackDisplayName(EnderIO.lang.localize("loot.capacitor.title." + rand.nextInt(count)));
+
+    NbtValue.GLINT.setInt(stack, 1);
 
     return stack;
   }

@@ -11,6 +11,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorDataItem;
 import crazypants.util.ClientUtil;
+import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,6 +93,11 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
         SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       }
     }
+    if (NbtValue.GLINT.hasTag(stack)) {
+      par3List.add(
+          EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack)) + NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")
+              + EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack) + ".end"));
+    }
 
   }
 
@@ -102,7 +108,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
 
   @Override
   public boolean hasEffect(ItemStack stack) {
-    return super.hasEffect(stack) || (stack != null && stack.hasTagCompound() && stack.getTagCompound().hasKey("glinted"));
+    return super.hasEffect(stack) || NbtValue.GLINT.hasTag(stack);
   }
 
   @Override
