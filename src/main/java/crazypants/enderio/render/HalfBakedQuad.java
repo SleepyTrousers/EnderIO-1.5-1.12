@@ -152,9 +152,6 @@ public class HalfBakedQuad {
      */
     public void render() {
       RenderUtil.bindBlockTexture();
-      GlStateManager.enableBlend();
-      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GlStateManager.enableLighting();
       GlStateManager.disableLighting();
       VertexBuffer tes = Tessellator.getInstance().getBuffer();
       for (int i = 0; i <= 1; i++) {
@@ -167,7 +164,6 @@ public class HalfBakedQuad {
         render(tes);
         Tessellator.getInstance().draw();
       }
-      GlStateManager.disableBlend();
       GlStateManager.enableLighting();
     }
 
