@@ -1,0 +1,45 @@
+{
+    "parent": "enderio:block/null",
+    "display": {
+        "head": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, -11.15 ],
+            "scale":[ 1, 1, 1 ]
+        },
+        "gui": {
+            "rotation": [ 30, 135, 0 ],
+            "translation": [ -2.983107,-1.491553,2.583446 ],
+            "scale":[ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 1.375],
+            "scale":[ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, -4],
+            "scale":[ 0.5, 0.5, 0.5 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ -1.789864,4.228876,-0.463251 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ -1.789864,4.228876,-0.463251 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ -1.909188,0,1.909188 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ -1.909188,0,1.909188 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    }
+}

@@ -15,10 +15,8 @@
     },
     "variants":{
         "render":{
-          "defaults":{
-                "model":"enderio:null"
-          },
-            "auto":{ },
+            "defaults":{ "model":"enderio:transform/invpanel" },
+            "auto":{ "model":"enderio:null" },
             "front":{          "submodel":{ "front":{ "model":"enderio:invPanel_off", "x":270 } } },
             "front_up":{       "submodel":{ "front":{ "model":"enderio:invPanel_off", "x":90  } } },
             "front_north":{    "submodel":{ "front":{ "model":"enderio:invPanel_off", "y":180 } } },
