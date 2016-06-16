@@ -78,7 +78,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
             int filled = target.fill(dir.getOpposite(), push, true);
             if (filled > 0) {
               tank.drain(filled, true);
-              tankDirty = true;
+              setTanksDirty();
               if (tank.getFluidAmount() == 0) {
                 return;
               }
@@ -109,7 +109,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       if (canDrain != null && canDrain.amount > 0) {
         int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
         tank.drain(fill, true);
-        ((TileReservoir) tileEntity).tankDirty = tankDirty = true;
+        ((TileReservoir) tileEntity).setTanksDirty();
+        setTanksDirty();
       }
     }
   }
@@ -126,7 +127,8 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
           if (canDrain != null && canDrain.amount > 0) {
             int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
             tank.drain(fill, true);
-            ((TileReservoir) tileEntity).tankDirty = tankDirty = true;
+            ((TileReservoir) tileEntity).setTanksDirty();
+            setTanksDirty();
           }
         }
       }
@@ -145,7 +147,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       }
     } else if (Config.reservoirEnabled && shouldDoWorkThisTick(10, -1) && canRefill && !tank.isFull()) {
       tank.addFluidAmount(BUCKET_VOLUME / 2);
-      tankDirty = true;
+      setTanksDirty();
     }
 
     if (shouldDoWorkThisTick(15, 1) && !tank.isEmpty()) {
@@ -167,7 +169,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     int ret = tank.fill(resource, doFill);
-    tankDirty |= doFill && ret != 0;
+    if (doFill && ret != 0) {
+      setTanksDirty();
+    }
     return ret;
   }
 
@@ -175,7 +179,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if (canRefill) {
       FluidStack ret = tank.drain(maxDrain, doDrain);
-      tankDirty |= doDrain && ret != null && ret.amount != 0;
+      if (doDrain && ret != null && ret.amount != 0) {
+        setTanksDirty();
+      }
       return ret;
     } else {
       return null;
@@ -232,7 +238,10 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public void setTanksDirty() {
-    tankDirty = true;
+    if (!tankDirty) {
+      tankDirty = true;
+      markDirty();
+    }
   }
 
   @Override
