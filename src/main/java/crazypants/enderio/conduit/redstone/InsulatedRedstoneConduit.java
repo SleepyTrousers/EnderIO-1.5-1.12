@@ -342,16 +342,20 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IRedsto
       return false;
     }
         
-    if(block.canConnectRedstone(bs, world, loc.getBlockPos(), direction.getOpposite()) || CONECTABLE_BLOCKS.contains(block)) {
-      return true;
-    }
-    
     if (block instanceof IRedstoneConnectable) {
       return ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
     
     if (te instanceof IRedstoneConnectable) {
       return ((IRedstoneConnectable) te).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
+    }
+
+    if (block.canConnectRedstone(bs, world, loc.getBlockPos(), direction.getOpposite()) || CONECTABLE_BLOCKS.contains(block)) {
+      return true;
+    }
+
+    if (bs.canProvidePower()) {
+      return true;
     }
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
