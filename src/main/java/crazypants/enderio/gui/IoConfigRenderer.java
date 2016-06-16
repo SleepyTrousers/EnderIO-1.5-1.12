@@ -397,9 +397,7 @@ public class IoConfigRenderer {
           at.x += bc.x - origin.x;
           at.y += bc.y - origin.y;
           at.z += bc.z - origin.z;
-          GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
           TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
-          GL11.glPopAttrib();
         }
       }
     }    
