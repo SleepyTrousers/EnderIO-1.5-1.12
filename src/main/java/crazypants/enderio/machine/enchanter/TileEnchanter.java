@@ -4,15 +4,12 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -137,7 +134,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(stack) != null;
     }
     if (slot == 2) {
-      return Item.getItemFromBlock(Blocks.LAPIS_BLOCK) == stack.getItem();
+      return stack.getItem() == Items.DYE && stack.getMetadata() == 4;
     }
     return false;
   }
@@ -188,20 +185,10 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return 0;
     }    
     int level = currentEnchantment.getLevelForStackSize(item.stackSize);
-    return getEnchantmentCost(currentEnchantment, level);
+    return currentEnchantment.getCostForLevel(level);
   }
 
-  public static int getEnchantmentCost(EnchanterRecipe recipe, int level) {
-    if (level > recipe.getEnchantment().getMaxLevel()) {
-      level = recipe.getEnchantment().getMaxLevel();
-    }
-    int costPerLevel = recipe.getCostPerLevel();
-    int res = Config.enchanterBaseLevelCost;
-    for (int i = 0; i < level; i++) {
-      res += costPerLevel * level;
-    }
-    return res;
-  }
+
 
   public void setOutput(ItemStack output) {
     inv[inv.length - 1] = output;

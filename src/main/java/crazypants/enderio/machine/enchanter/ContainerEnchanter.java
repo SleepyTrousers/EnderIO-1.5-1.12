@@ -12,7 +12,6 @@ import crazypants.enderio.Log;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -126,7 +125,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
   public void createGhostSlots(List<GhostSlot> slots) {
     slots.add(new GhostBackgroundItemSlot(Items.WRITABLE_BOOK, inventorySlots.get(0)));
-    slots.add(new GhostBackgroundItemSlot(Blocks.LAPIS_BLOCK, inventorySlots.get(2)));
+    slots.add(new GhostBackgroundItemSlot(new ItemStack(Items.DYE,1, 4), inventorySlots.get(2)));
   }
 
   public boolean playerHasEnoughLevels(EntityPlayer player) {

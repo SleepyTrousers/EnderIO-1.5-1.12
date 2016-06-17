@@ -50,12 +50,12 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
   @Override
   public int getMaxEnchantability(int level) {
-    return super.getMaxEnchantability(level) + 30;
+    return 60;
   }
 
   @Override
   public int getMinEnchantability(int level) {
-    return super.getMinEnchantability(level);
+    return 16;
   }
 
   @Override

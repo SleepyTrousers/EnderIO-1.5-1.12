@@ -25,6 +25,33 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LootManager {
 
+//Add this code to an item (e.g. ItemAlloy) to easily test generation of loot  
+//@Override
+//public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+//    EnumHand hand) {
+//
+//  if (world.isRemote) {
+//    return EnumActionResult.PASS;
+//  }
+//  TileEntity te = world.getTileEntity(pos);
+//  if (!(te instanceof TileEntityChest)) {
+//    return EnumActionResult.PASS;
+//  }
+//  TileEntityChest chest = (TileEntityChest) te;
+//  chest.clear();
+//
+//  LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) world);
+//  if (player != null) {
+//    lootcontext$builder.withLuck(player.getLuck());
+//  }
+//
+////  LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+//  LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_VILLAGE_BLACKSMITH);
+//  loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
+//  return EnumActionResult.PASS;
+//}
+
+  
   private static LootManager INSTANCE = new LootManager();
 
   public static void register() {

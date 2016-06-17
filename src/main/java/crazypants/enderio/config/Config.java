@@ -376,7 +376,9 @@ public final class Config {
 
   public static long nutrientFoodBoostDelay = 400;
 
-  public static int enchanterBaseLevelCost = 2;
+  public static int enchanterBaseLevelCost = 2;  
+  public static double enchanterLevelCostFactor = 0.75;
+  public static double enchanterLapisCostFactor = 3;
 
   public static boolean machineSoundsEnabled = true;
 
@@ -619,7 +621,11 @@ public final class Config {
 
     enchanterBaseLevelCost = config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
         "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);
-
+    enchanterLevelCostFactor = config.get(sectionRecipe.name, "enchanterLevelCostFactor", enchanterLevelCostFactor,
+        "The final XP cost for an enchantment is multiplied by this value. To halve costs set to 0.5, to double them set it to 2").getDouble(enchanterLevelCostFactor);
+    enchanterLapisCostFactor = config.get(sectionRecipe.name, "enchanterLapisCostFactor", enchanterLapisCostFactor,
+        "The lapis cost is enchant level multiplied by this value").getDouble(enchanterLapisCostFactor);
+    
     photovoltaicCellEnabled = config.get(sectionItems.name, "photovoltaicCellEnabled", photovoltaicCellEnabled,
         "If set to false: Photovoltaic Cells will not be craftable.")
         .getBoolean(photovoltaicCellEnabled);

@@ -16,7 +16,6 @@ import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -70,8 +69,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
       if (stack == null) {
         return;
       }
-      int level = rec.getLevelForStackSize(stack.stackSize);
-      int cost = TileEnchanter.getEnchantmentCost(rec, level);
+      int level = rec.getLevelForStackSize(stack.stackSize);      
+      int cost = rec.getCostForLevel(level);
       String str = I18n.format("container.repair.cost", new Object[] { cost });
       minecraft.fontRendererObj.drawString(str, 6, 36, 0x80FF20);
     }
@@ -150,7 +149,6 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     return UID;
   }
 
-  @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
     return EnderIO.blockEnchanter.getLocalizedName();
@@ -197,7 +195,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     ItemStack item = rec.getInput().getInput();
     for (int level = 1; level <= rec.getEnchantment().getMaxLevel(); level++) {
       itemInputs.add(new ItemStack(item.getItem(), level * rec.getItemsPerLevel(), item.getMetadata()));
-      lapizInputs.add(new ItemStack(Blocks.LAPIS_BLOCK, rec.getLapizForStackSize(level * rec.getItemsPerLevel())));
+      lapizInputs.add(new ItemStack(Items.DYE, rec.getLapizForStackSize(level * rec.getItemsPerLevel()), 4));
       EnchantmentData enchantment = new EnchantmentData(rec.getEnchantment(), level);
       ItemStack output = new ItemStack(Items.ENCHANTED_BOOK);
       Items.ENCHANTED_BOOK.addEnchantment(output, enchantment);
