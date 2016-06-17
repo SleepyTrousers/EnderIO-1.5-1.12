@@ -13,11 +13,36 @@ import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
+
+  private class InvSlot extends Slot {
+    private final int slot;
+
+    private InvSlot(IInventory inventoryIn, int index, int xPosition, int yPosition, int slot) {
+      super(inventoryIn, index, xPosition, yPosition);
+      this.slot = slot;
+    }
+
+    @Override
+    public boolean isItemValid(@Nullable ItemStack itemStack) {
+      return getInv().isItemValidForSlot(slot, itemStack);
+    }
+
+    @Override
+    public void putStack(@Nullable ItemStack stack) {
+      if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+        super.putStack(stack);
+      } else {
+        throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+            + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
+      }
+    }
+  }
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
@@ -53,23 +78,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
     for(int i=0;i<INPUT_SLOTS.length;i++) {
       Point p = INPUT_SLOTS[i];
       final int slot = i; 
-      addSlotToContainer(new Slot(getInv(), i, p.x, p.y) {
-        @Override
-        public boolean isItemValid(@Nullable ItemStack itemStack) {
-          return getInv().isItemValidForSlot(slot, itemStack);
-        }
-
-        @Override
-        public void putStack(@Nullable ItemStack stack) {
-          if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
-            super.putStack(stack);
-          } else {
-            throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
-                + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
-          }
-        }
-
-      });
+      addSlotToContainer(new InvSlot(getInv(), i, p.x, p.y, slot));
     }
     
     
@@ -84,10 +93,12 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
 
   public void createGhostSlots(List<GhostSlot> slots) {
     for (Slot slot : inventorySlots) {
-      if (slot.getSlotIndex() == TileSliceAndSplice.axeIndex) {
-        slots.add(new GhostBackgroundItemSlot(slotItems1[rand.nextInt(slotItems1.length)], slot));
-      } else if (slot.getSlotIndex() == TileSliceAndSplice.shearsIndex) {
-        slots.add(new GhostBackgroundItemSlot(slotItems2[rand.nextInt(slotItems2.length)], slot));
+      if (slot instanceof InvSlot) {
+        if (slot.getSlotIndex() == TileSliceAndSplice.axeIndex) {
+          slots.add(new GhostBackgroundItemSlot(slotItems1[rand.nextInt(slotItems1.length)], slot));
+        } else if (slot.getSlotIndex() == TileSliceAndSplice.shearsIndex) {
+          slots.add(new GhostBackgroundItemSlot(slotItems2[rand.nextInt(slotItems2.length)], slot));
+        }
       }
     }
   }
