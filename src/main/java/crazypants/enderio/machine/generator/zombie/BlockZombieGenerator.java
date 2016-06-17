@@ -18,6 +18,7 @@ import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -47,7 +48,15 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.ANVIL);
+    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, new Material(MapColor.IRON) {
+
+      @Override
+      public boolean isOpaque() {
+        return false;
+      }
+
+    });
+    setLightOpacity(5);
   }
   
   @Override
@@ -77,6 +86,11 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   @Override
   public boolean isOpaqueCube(IBlockState bs) {
+    return false;
+  }
+
+  @Override
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }
 

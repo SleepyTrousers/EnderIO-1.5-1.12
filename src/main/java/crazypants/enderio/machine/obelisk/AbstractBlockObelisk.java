@@ -13,6 +13,8 @@ import crazypants.enderio.machine.obelisk.render.ObeliskRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ITESRItemBlock;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -29,7 +31,15 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   public static final AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
 
   protected AbstractBlockObelisk(@Nonnull IModObject mo, Class<T> teClass) {
-    super(mo, teClass);
+    super(mo, teClass, new Material(MapColor.IRON) {
+
+      @Override
+      public boolean isOpaque() {
+        return false;
+      }
+
+    });
+    setLightOpacity(5);
   }
 
   @Override
@@ -43,14 +53,9 @@ public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> exte
   }
   
   @Override
-  public boolean isFullBlock(IBlockState bs) {
+  public boolean isFullCube(IBlockState bs) {
     return false;
   }  
-  
-  @Override
-  public int getLightOpacity(IBlockState bs) {
-    return 0;
-  }
   
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {

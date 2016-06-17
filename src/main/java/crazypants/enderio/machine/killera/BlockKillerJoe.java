@@ -15,6 +15,8 @@ import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +57,15 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
 
   protected BlockKillerJoe() {
-    super(ModObject.blockKillerJoe, TileKillerJoe.class);
+    super(ModObject.blockKillerJoe, TileKillerJoe.class, new Material(MapColor.IRON) {
+
+      @Override
+      public boolean isOpaque() {
+        return false;
+      }
+
+    });
+    setLightOpacity(5);
     setSoundType(SoundType.GLASS);    
   }
 
@@ -96,6 +106,11 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return false;
   }
   
+  @Override
+  public boolean isFullCube(IBlockState bs) {
+    return false;
+  }
+
   @Override
   protected EnumFacing getFacingForHeading(int heading) {
     switch (heading) {

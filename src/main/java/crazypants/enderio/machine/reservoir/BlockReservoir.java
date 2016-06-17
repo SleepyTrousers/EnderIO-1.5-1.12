@@ -9,8 +9,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
-
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -23,6 +21,7 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.tool.SmartTank;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -43,6 +42,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
@@ -55,7 +56,14 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   private BlockReservoir() {
-    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, Material.ROCK);
+    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, new Material(MapColor.WATER) {
+
+      @Override
+      public boolean isToolNotRequired() {
+        return false;
+      }
+
+    });
     setSoundType(SoundType.GLASS);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO));
   }
