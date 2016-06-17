@@ -2976,9 +2976,11 @@
       <itemStack modID="minecraft" itemName="quartz_stairs" />
       <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
       <itemStack modID="minecraft" itemName="quartz" />
+      <itemStack modID="minecraft" itemName="ender_pearl" />
       <itemStack oreDictionary="sandstone" />
       <itemStack oreDictionary="crystalCertusQuartz" />
       <itemStack oreDictionary="crystalFluix" />
+      <itemStack oreDictionary="enderpearl" />
     </excludes>
   </grindingBalls>
 
