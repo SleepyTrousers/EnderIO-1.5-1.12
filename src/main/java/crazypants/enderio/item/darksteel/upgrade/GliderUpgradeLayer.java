@@ -65,8 +65,8 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       // removed: this.playerRenderer.getMainModel().renderCape(0.0625F);
 
       // added start
-      GlStateManager.translate(0.0F, 0.55F + 0.15F, 0.0F);
-      GlStateManager.scale(3, 3, 3);
+      GlStateManager.translate(0.0F, 0.55F + 0.15F, 0.1F);
+      GlStateManager.scale(3, 3, 0.5);
 
       ItemStack glider = new ItemStack(DarkSteelItems.itemGliderWing, 1, 1);
 
