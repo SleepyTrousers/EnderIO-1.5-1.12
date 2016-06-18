@@ -1195,7 +1195,8 @@ public final class Config {
         "Entities listed here will can not be captured in a Soul Vial"));
 
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
-        "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
+        "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial. Note: The Ender Dragon can not "
+            + "be captured, even with this enabled. This is a limitation of the dragon, not the Soul Vial.");
 
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);

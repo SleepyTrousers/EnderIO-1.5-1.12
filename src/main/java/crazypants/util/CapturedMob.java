@@ -179,9 +179,6 @@ public class CapturedMob {
     if (entityId == null || entityId.trim().isEmpty() || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())) {
       return true;
     }
-    if(!Config.soulVesselCapturesBosses && !entity.isNonBoss()) {
-      return true;
-    }
     return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
   }
 
@@ -375,11 +372,15 @@ public class CapturedMob {
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
   }
 
+  /*
+   * Note: The Ender Dragon cannot be spawned as expected. All of its logic (moving, fighting, being hit, ...) is a special manager class, which is very
+   * hardcoded to the specifics of the vanilla dragon fight.
+   */
   public static @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
     List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
     for (String mobName : mobs) {
       CapturedMob soul = create(mobName, false);
-      if (soul != null) {
+      if (soul != null && !"EnderDragon".equals(mobName)) {
         result.add(soul);
         if ("Skeleton".equals(mobName)) {
           result.add(create(mobName, true));
