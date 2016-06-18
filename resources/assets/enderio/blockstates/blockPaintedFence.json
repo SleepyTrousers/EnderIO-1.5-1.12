@@ -4,7 +4,7 @@
         "textures":{
             "particle":"blocks/planks_oak"
         },
-        "model": "enderio:null"
+        "model": "enderio:transform/fence"
     },
     "variants": {
         "inventory": [{}],

@@ -4,7 +4,7 @@
         "textures":{
             "particle":"blocks/nether_brick"
         },
-        "model": "enderio:null"
+        "model": "enderio:transform/fence"
     },
     "variants": {
         "inventory": [{}],
