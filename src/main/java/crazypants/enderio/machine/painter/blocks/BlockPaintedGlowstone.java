@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.painter.blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
@@ -22,11 +24,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -35,6 +40,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -95,10 +101,59 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   private void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedGlowstone>(this,
-        Blocks.GLOWSTONE));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+        new BasicPainterTemplate<BlockPaintedGlowstone>(this, Blocks.GLOWSTONE));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
+  }
+
+  public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {    
+     return world != null && pos != null && world.getTileEntity(pos) instanceof IPaintable.IPaintableTileEntity;
+  }
+
+  
+  @Override
+  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        
+    //if silk touch is required, the painted drop is handled in harvestBlock as that has the required te
+    if (world == null || pos == null || Config.paintedGlowstoneRequireSilkTouch) {
+      return super.getDrops(world, pos, state, fortune);
+    }
+    
+    List<ItemStack> res = new ArrayList<ItemStack>();    
+    TileEntity te = world.getTileEntity(pos);
+    res.add(createPaintedDrop(te));    
+    return res;
+  }
+
+  private ItemStack createPaintedDrop(TileEntity te) {    
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      ItemStack itemstack = new ItemStack(this);
+      IBlockState paintSource = ((IPaintableTileEntity) te).getPaintSource();
+      PainterUtil2.setSourceBlock(itemstack, paintSource);
+      return itemstack;
+      
+    } 
+    return new ItemStack(Blocks.GLOWSTONE);        
+  }
+  
+  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
+        
+    if(Config.paintedGlowstoneRequireSilkTouch && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) <= 0 ) {
+      super.harvestBlock(worldIn, player, pos, state, te, stack);
+      return;
+    }
+
+    //need special code so we can get the paint source from the te
+    player.addStat(StatList.getBlockStats(this));
+    player.addExhaustion(0.025F);
+
+    List<ItemStack> items = new java.util.ArrayList<ItemStack>();        
+    items.add(createPaintedDrop(te));
+    ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, state, 0, 1.0f, true, player);
+    for (ItemStack item : items) {
+      spawnAsEntity(worldIn, pos, item);
+    }
   }
 
   @Override
@@ -110,7 +165,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.notifyBlockUpdate(pos, state, state, 3);      
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 

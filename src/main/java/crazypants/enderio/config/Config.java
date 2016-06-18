@@ -487,6 +487,8 @@ public final class Config {
   public static boolean topShowSideConfigByDefault = false;
   public static boolean topShowRangeByDefault = false;
   public static boolean topShowMobsByDefault = true;
+  
+  public static boolean paintedGlowstoneRequireSilkTouch = false;
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
@@ -1274,6 +1276,8 @@ public final class Config {
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
     clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
 
+    paintedGlowstoneRequireSilkTouch = config.getBoolean("paintedGlowstoneRequireSilkTouch", sectionMisc.name, paintedGlowstoneRequireSilkTouch, "If true, painted glowstone will drop dust unless broken with silk touch");
+    
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
         "If false the soul bound enchantment will not be available");
     
