@@ -4,7 +4,7 @@
         "textures":{
             "particle":"blocks/cobblestone"
         },
-        "model": "enderio:null"
+        "model": "enderio:transform/stairs"
     },
     "variants": {
         "inventory": [{}],
