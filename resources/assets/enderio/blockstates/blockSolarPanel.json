@@ -13,11 +13,9 @@
       "vibrant":  { "textures": { "side": "enderio:blocks/solarPanelVibrantSide", "top": "enderio:blocks/solarPanelVibrantTop" } }
       },
     "render":{
-      "auto":{},
+      "auto":{ "model":"enderio:null" },
       
-      "defaults":{
-        "model":"enderio:null"
-      },
+      "defaults":{ "model":"enderio:transform/thin_block" },
 
       "sides":{
         "submodel":{
