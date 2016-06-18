@@ -131,7 +131,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   public @Nonnull EnumBlockRenderType getRenderType(IBlockState bs) {
-    return EnumBlockRenderType.MODEL;
+    return EnumBlockRenderType.INVISIBLE;
   }
 
   @Override

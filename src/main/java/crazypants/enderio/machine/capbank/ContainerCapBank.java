@@ -17,6 +17,7 @@ import net.minecraft.inventory.EntityEquipmentSlot.Type;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -80,7 +81,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
             if (par1ItemStack == null) {
               return false;
             }            
-            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
+            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player) || par1ItemStack.getItem() instanceof ItemBlock;
           }
 
           @Override

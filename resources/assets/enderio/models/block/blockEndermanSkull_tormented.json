@@ -15,7 +15,7 @@
             "faces": {                
                 "north": { "texture": "#front", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "east": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-                "south": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "west": { "texture": "#side", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "up": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
                 "down": { "texture": "#top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
