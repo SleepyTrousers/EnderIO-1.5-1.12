@@ -30,10 +30,23 @@ class NormalInventory extends AbstractInventory {
     for (int slot = 0; slot < numSlots; slot++) {      
       ItemStack stack = inv.getStackInSlot(slot);
       if (stack != null) {
-        ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
-        if(extracted == null || extracted.stackSize != stack.stackSize) {
-          stack = null;  
-        }        
+        if (stack.stackSize == 0) {
+          // empty but type-restricted slot
+          stack = null;
+        } else {
+          // HL: I'm not sure why we double check the slot's content here
+          ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
+          if (extracted == null) {
+            stack = null;
+          } else if (stack.stackSize > stack.getMaxStackSize()) {
+            // big storage
+            if (extracted.stackSize < stack.getMaxStackSize()) {
+              stack = null;
+            }
+          } else if (extracted.stackSize != stack.stackSize) {
+            stack = null;
+          }
+        }
       }
       updateSlot(db, slot, stack);
     }
@@ -47,8 +60,11 @@ class NormalInventory extends AbstractInventory {
       return 0;
     }
     ItemStack stack = inv.getStackInSlot(slot);
-    if (stack == null) {
+    if (stack == null || stack.stackSize == 0) {
       return 0;
+    } else if (stack.stackSize > stack.getMaxStackSize()) {
+      stack = stack.copy();
+      stack.stackSize = stack.getMaxStackSize();
     }
     ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
     if(extracted == null || extracted.stackSize != stack.stackSize) {
