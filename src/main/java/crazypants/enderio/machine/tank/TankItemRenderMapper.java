@@ -3,15 +3,6 @@ package crazypants.enderio.machine.tank;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.EnumRenderMode;
@@ -23,6 +14,15 @@ import crazypants.enderio.render.TankRenderHelper;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TankItemRenderMapper extends MachineRenderMapper implements IItemRenderMapper.IDynamicOverlayMapper,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware {
@@ -39,7 +39,7 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
                                           QuadCollector quadCollector) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
-    if (blockLayer == BlockRenderLayer.SOLID) {
+    if (blockLayer == BlockRenderLayer.CUTOUT) {
       states.add(state.getState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     } else if (blockLayer == BlockRenderLayer.TRANSLUCENT) {
       states.add(state.getState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
