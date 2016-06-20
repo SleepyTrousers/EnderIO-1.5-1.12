@@ -11,14 +11,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
@@ -38,10 +34,16 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.FakePlayer;
+
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 
 @Storable
 public class TileAttractor extends AbstractMobObelisk {
@@ -115,6 +117,8 @@ public class TileAttractor extends AbstractMobObelisk {
     if (e instanceof EntityEnderman) {
       e.getEntityData().setBoolean("EIO:tracked", true);
     }
+    PacketObeliskFx.create(e, EnumParticleTypes.HEART, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL,
+        EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
   }
 
   @Override

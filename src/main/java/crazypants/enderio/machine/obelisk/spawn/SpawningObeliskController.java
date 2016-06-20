@@ -3,6 +3,7 @@ package crazypants.enderio.machine.obelisk.spawn;
 import java.util.HashMap;
 import java.util.Map;
 
+import crazypants.enderio.config.Config;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.config.Config;
 
 public class SpawningObeliskController {
 
@@ -43,6 +43,7 @@ public class SpawningObeliskController {
     chargers.remove(guard.getPos());
   }
   
+  // Note: This is called even if spawning mechanics (e.g. light levels) will prevent the entity from being spawned later
   @SubscribeEvent
   public void onEntitySpawn(LivingSpawnEvent.CheckSpawn evt) {
     if (evt.getResult() == Result.DENY) {
