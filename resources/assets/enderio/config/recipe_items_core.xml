@@ -432,7 +432,7 @@
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="VIBRANT_ALLOY" /><item name="enderio:itemPowerConduit:2" /><item name="VIBRANT_ALLOY" />
+        <item name="VIBRANT_ALLOY" /><item name="enderio:itemPowerConduit:1" /><item name="VIBRANT_ALLOY" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:itemPowerConduit:2" amount="12">
