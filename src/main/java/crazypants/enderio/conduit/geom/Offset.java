@@ -23,7 +23,11 @@ public enum Offset {
   EAST_DOWN(ForgeDirection.EAST, ForgeDirection.DOWN),
   WEST_DOWN(ForgeDirection.WEST, ForgeDirection.DOWN),
   SOUTH_DOWN(ForgeDirection.SOUTH, ForgeDirection.DOWN),
-  NORTH_DOWN(ForgeDirection.NORTH, ForgeDirection.DOWN);
+  NORTH_DOWN(ForgeDirection.NORTH, ForgeDirection.DOWN),
+  NORTH_EAST(ForgeDirection.NORTH, ForgeDirection.EAST),
+  NORTH_WEST(ForgeDirection.NORTH, ForgeDirection.WEST),
+  SOUTH_EAST(ForgeDirection.SOUTH, ForgeDirection.EAST),
+  SOUTH_WEST(ForgeDirection.SOUTH, ForgeDirection.WEST);
 
   public final int xOffset;
   public final int yOffset;
@@ -36,9 +40,9 @@ public enum Offset {
   }
 
   private Offset(ForgeDirection dir, ForgeDirection yDir) {
-    xOffset = dir.offsetX;
-    yOffset = yDir.offsetY;
-    zOffset = dir.offsetZ;
+    xOffset = dir.offsetX + yDir.offsetX;
+    yOffset = dir.offsetY + yDir.offsetY;
+    zOffset = dir.offsetZ + yDir.offsetZ;
   }
 
   private Offset(int xOffset, int yOffset, int zOffset) {

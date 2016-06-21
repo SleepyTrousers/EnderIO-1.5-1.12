@@ -1,60 +1,46 @@
 package crazypants.enderio;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class BlockEio extends Block {
+import com.enderio.core.common.BlockEnder;
 
-  protected final Class<? extends TileEntity> teClass;
-  protected final String name;
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.tool.ToolUtil;
 
-  protected BlockEio(String name, Class<? extends TileEntity> teClass) {
-    this(name, teClass, new Material(MapColor.ironColor));
-  }
+public abstract class BlockEio extends BlockEnder {
 
-  protected BlockEio(String name, Class<? extends TileEntity> teClass, Material mat) {
-    super(mat);
-    this.teClass = teClass;
-    this.name = name;
-    setHardness(0.5F);
-    setBlockName(name);
-    setStepSound(Block.soundTypeMetal);
+  protected BlockEio(String name, Class<? extends TileEntityEio> teClass) {
+    super(name, teClass);
     setCreativeTab(EnderIOTab.tabEnderIO);
-
   }
 
-  protected void init() {
-    GameRegistry.registerBlock(this, name);
-    if(teClass != null) {
-      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+  protected BlockEio(String name, Class<? extends TileEntityEio> teClass, Material mat) {
+    super(name, teClass, mat);
+    setCreativeTab(EnderIOTab.tabEnderIO);
+  }
+
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
+
+    if(shouldWrench(world, x, y, z, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
     }
-  }
+    TileEntity te = world.getTileEntity(x, y, z);
 
-  @Override
-  public boolean hasTileEntity(int metadata) {
-    return teClass != null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    if(teClass != null) {
-      try {
-        return teClass.newInstance();
-      } catch (Exception e) {
-        Log.error("Could not create tile entity for block " + name + " for class " + teClass);
+    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
+    if(tool != null && !entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
+      if(te instanceof AbstractMachineEntity) {
+        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
+        world.markBlockForUpdate(x, y, z);
+        return true;
       }
     }
-    return null;
+    
+    return super.onBlockActivated(world, x, y, z, entityPlayer, side, par7, par8, par9);
   }
-
-  @Override
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:" + name);
-  }
-
 }

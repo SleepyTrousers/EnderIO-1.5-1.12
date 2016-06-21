@@ -9,11 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.util.BlockCoord;
 
 public interface IConduit {
 
@@ -65,6 +68,8 @@ public interface IConduit {
 
   void conduitConnectionRemoved(ForgeDirection fromDirection);
 
+  void connectionsChanged();
+
   AbstractConduitNetwork<?, ?> getNetwork();
 
   boolean setNetwork(AbstractConduitNetwork<?, ?> network);
@@ -83,7 +88,7 @@ public interface IConduit {
 
   boolean isConnectedTo(ForgeDirection dir);
 
-  ConnectionMode getConectionMode(ForgeDirection dir);
+  ConnectionMode getConnectionMode(ForgeDirection dir);
 
   void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
 
@@ -122,5 +127,20 @@ public interface IConduit {
   void updateEntity(World worldObj);
 
   boolean onNeighborBlockChange(Block blockId);
+  
+  boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
+
+  //For Copy/Paste of connection settings
+  boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
+
+  boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
+  
+  public AbstractConduitNetwork<?, ?> createNetworkForType();
+
+  /**
+   * Should the texture of the conduit connectors be mirrored around the conduit
+   * node?
+   */
+  boolean shouldMirrorTexture();
 
 }

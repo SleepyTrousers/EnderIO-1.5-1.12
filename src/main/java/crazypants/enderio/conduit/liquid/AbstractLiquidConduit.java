@@ -8,8 +8,14 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -17,9 +23,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
-import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
-import crazypants.util.FluidUtil;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -29,8 +32,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   protected boolean redstoneStateDirty = true;
 
+  public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
+    IFluidHandler con = FluidUtil.getFluidHandler(world, bc);
+    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
+  }
+
   public IFluidHandler getExternalHandler(ForgeDirection direction) {
-    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+    IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
@@ -48,11 +56,11 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     //it causes issues with not conecting to empty tanks such as dim. trans +
     //BC fluid pipes, so I am removing it for now.
 
-//    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
-//    if(info == null) {
-//      return false;
-//    }
-//    return  info.length > 0;
+    //    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
+    //    if(info == null) {
+    //      return false;
+    //    }
+    //    return  info.length > 0;
     return true;
   }
 
@@ -98,7 +106,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean canOutputToDir(ForgeDirection dir) {
-    if(isExtractingFromDir(dir) || getConectionMode(dir) == ConnectionMode.DISABLED) {
+    if(!canInputToDir(dir)) {
       return false;
     }
     if(conduitConnections.contains(dir)) {
@@ -117,7 +125,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   protected boolean autoExtractForDir(ForgeDirection dir) {
-    if(!isExtractingFromDir(dir)) {
+    if(!canExtractFromDir(dir)) {
       return false;
     }
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
@@ -134,11 +142,16 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
     DyeColor col = getExtractionSignalColor(dir);
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    if(mode.isConditionMet(mode, signal) && mode != RedstoneControlMode.OFF) {
-      return true;
+    
+    boolean res;
+    if(mode == RedstoneControlMode.OFF) {
+      //if checking for no signal, must be no signal from both
+      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || isConditionMetByExternalSignal(dir, mode, col));     
+    } else {
+      //if checking for a signal, either is fine
+      res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && isConditionMetByExternalSignal(dir, mode, col));
     }
-
-    return isConditionMetByExternalSignal(dir, mode, col);
+    return res;
   }
 
   private boolean isConditionMetByExternalSignal(ForgeDirection dir, RedstoneControlMode mode, DyeColor col) {
@@ -158,8 +171,29 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean isExtractingFromDir(ForgeDirection dir) {
-    return getConectionMode(dir) == ConnectionMode.INPUT;
+  public boolean canExtractFromDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsInput();
+  }
+  
+  @Override
+  public boolean canInputToDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsOutput() && !autoExtractForDir(dir);
+  }
+
+  protected boolean hasExtractableMode() {
+    return hasConnectionMode(ConnectionMode.INPUT) || hasConnectionMode(ConnectionMode.IN_OUT);
+  }
+
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+  }
+
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
   }
 
   @Override

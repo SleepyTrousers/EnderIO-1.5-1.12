@@ -6,7 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.teleport.TileTravelAnchor;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 
 /**
  * Created by CrazyPants on 27/02/14.
@@ -47,8 +48,8 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
   public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-    if(te instanceof TileTravelAnchor) {
-      ((TileTravelAnchor) te).setAccessMode(message.mode);
+    if(te instanceof ITravelAccessable) {
+      ((ITravelAccessable) te).setAccessMode(message.mode);
       player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
       player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);      
     }

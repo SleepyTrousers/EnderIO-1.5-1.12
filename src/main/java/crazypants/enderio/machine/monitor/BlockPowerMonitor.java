@@ -1,19 +1,21 @@
 package crazypants.enderio.machine.monitor;
 
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.DyeColor;
 
-public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements ITileEntityProvider {
+public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> {
 
   public static BlockPowerMonitor create() {
 
@@ -31,6 +33,10 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TilePowerMonitor) {
+      return new ContainerNoInv((TilePowerMonitor) te);
+    }
     return null;
   }
 
@@ -38,7 +44,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {
-      return new GuiPowerMonitor((TilePowerMonitor) te);
+      return new GuiPowerMonitor(player.inventory, (TilePowerMonitor) te);
     }
     return null;
 
@@ -48,6 +54,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   protected int getGuiId() {
     return GuiHandler.GUI_ID_POWER_MONITOR;
   }
+
 
   @Override
   public boolean canProvidePower() {

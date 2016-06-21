@@ -1,20 +1,20 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -27,16 +27,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
+public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintedBlock {
 
   private IIcon lastRemovedComponetIcon = null;
 
@@ -45,13 +39,15 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
   private final boolean isDouble;
 
   public BlockPaintedSlab(boolean isDouble) {
-    super(isDouble, new Material(MapColor.stoneColor));
+    super(isDouble, Material.rock);
     this.isDouble = isDouble;
     setCreativeTab(null);
     setBlockName(ModObject.blockPaintedSlab.unlocalisedName + (isDouble ? "Double" : ""));
     setHardness(0.5F);
     setResistance(5.0F);
-    setLightOpacity(0);
+    if(!isDouble) {
+      useNeighborBrightness = true;
+    }
   }
 
   public void init() {
@@ -73,7 +69,15 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
     return result;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -124,7 +128,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -203,9 +207,8 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
    * Remove the tile entity too.
    */
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
+    if(!world.isRemote && !player.capabilities.isCreativeMode) {
       TileEntity te = world.getTileEntity(x, y, z);
 
       if(te instanceof TileEntityPaintedSlab && !((TileEntityPaintedSlab) te).isConvertingToFullBlock) {
@@ -214,17 +217,11 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
         for (int i = 0; i < super.quantityDropped(null); i++) {
           ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
+          dropBlockAsItem(world, x, y, z, itemStack);
         }
       }
     }
-    world.removeTileEntity(x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, false);
   }
 
   @Override
@@ -237,10 +234,24 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
     return 0; // need to do custom dropping to maintain source metadata
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        PaintedBlockAccessWrapper ba = new PaintedBlockAccessWrapper(world);
+        return tef.getSourceBlock().colorMultiplier(ba, x, y, z);
+      }
+    }
+    return super.colorMultiplier(world, x, y, z);
+  }
+
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.wooden_slab, Blocks.stone_slab, EnderIO.blockPaintedDoubleSlab, EnderIO.blockPaintedSlab);
+      super(Blocks.wooden_slab, Blocks.stone_slab, EnderIO.blockPaintedDoubleSlab, BlockPaintedSlab.this);
     }
 
     @Override
@@ -261,14 +272,6 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
       return blk instanceof BlockSlab;
     }
 
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockSlab>(new ItemStack(Blocks.stone_slab), BlockSlab.class, new ItemStack(Blocks.wooden_slab));
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockPaintedSlab, 1, 0));
-
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
   }
 
 }

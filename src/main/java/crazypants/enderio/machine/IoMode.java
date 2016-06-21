@@ -1,7 +1,8 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.util.EnumChatFormatting;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.util.Lang;
 
 public enum IoMode {
 
@@ -45,9 +46,34 @@ public enum IoMode {
   public boolean pushes() {
     return this == PUSH || this == PUSH_PULL;
   }
+  
+  public boolean canOutput() {
+    return pushes() || this == NONE;
+  }
+  
+  public boolean canRecieveInput() {
+    return pulls() || this == NONE;
+  }
 
   public String getLocalisedName() {
-    return Lang.localize(unlocalisedName);
+    return EnderIO.lang.localize(unlocalisedName);
+  }
+  
+  public String colorLocalisedName() {
+    String loc = getLocalisedName();
+    switch (this) {
+    case DISABLED:
+      return EnumChatFormatting.RED + loc;
+    case NONE:
+      return EnumChatFormatting.GRAY + loc;
+    case PULL:
+      return EnumChatFormatting.AQUA + loc;
+    case PUSH:
+      return EnumChatFormatting.GOLD + loc;
+    case PUSH_PULL:
+      return String.format(EnderIO.lang.localize(this.getUnlocalisedName() + ".colored"), EnumChatFormatting.GOLD, EnumChatFormatting.WHITE, EnumChatFormatting.AQUA);
+    default: return loc;
+    }
   }
 
   public IoMode next() {
@@ -57,5 +83,4 @@ public enum IoMode {
     }
     return values()[index];
   }
-
 }

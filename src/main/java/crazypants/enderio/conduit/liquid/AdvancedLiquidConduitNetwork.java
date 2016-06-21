@@ -4,19 +4,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.transport.IPipeTile;
-import buildcraft.api.transport.IPipeTile.PipeType;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.util.BlockCoord;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -26,23 +23,14 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   private Iterator<LiquidOutput> outputIterator;
 
-  private int ticksActiveUnsynced;
-
   private boolean lastSyncedActive = false;
 
   private int lastSyncedVolume = -1;
 
-  private long timeAtLastApply;
-
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
+  private int ticksEmpty;
 
   public AdvancedLiquidConduitNetwork() {
     super(AdvancedLiquidConduit.class);
-  }
-
-  @Override
-  public Class<ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
   }
 
   @Override
@@ -52,7 +40,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       tank.addAmount(con.getTank().getFluidAmount());
     }
     for (ForgeDirection dir : con.getExternalConnections()) {
-      if(con.getConectionMode(dir).acceptsOutput()) {
+      if(con.getConnectionMode(dir).acceptsOutput()) {
         outputs.add(new LiquidOutput(con.getLocation().getLocation(dir), dir.getOpposite()));
       }
     }
@@ -108,24 +96,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-
-    long curTime = world.getTotalWorldTime();
-    if(curTime > 0 && curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-
-  }
-
-  private void doTick() {
+  public void doNetworkTick() {
     if(liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
       updateActiveState();
       return;
@@ -160,22 +131,32 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   private void updateActiveState() {
+
     boolean isActive = tank.containsValidLiquid() && !tank.isEmpty();
-    if(lastSyncedActive != isActive) {
-      ticksActiveUnsynced++;
-    } else {
-      ticksActiveUnsynced = 0;
-    }
-    if(ticksActiveUnsynced >= 10 || ticksActiveUnsynced > 0 && isActive) {
-      if(!isActive && !fluidTypeLocked) {
-        setFluidType(null);
+    if(!isActive) {
+      if(!fluidTypeLocked && liquidType != null) {
+        ticksEmpty++;
+        if(ticksEmpty > 40) {
+          setFluidType(null);
+          ticksEmpty = 0;
+          for (IConduit con : conduits) {
+            con.setActive(false);
+          }
+          lastSyncedActive = false;
+        }
       }
+      return;
+    }
+
+    ticksEmpty = 0;
+    
+    if(!lastSyncedActive) {
       for (IConduit con : conduits) {
-        con.setActive(isActive);
+        con.setActive(true);
       }
-      lastSyncedActive = isActive;
-      ticksActiveUnsynced = 0;
+      lastSyncedActive = true;
     }
+
   }
 
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -256,22 +237,22 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         return false;
       }
 
-//      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-//      if(drained == null || drained.amount <= 0) {
-//        return false;
-//      }
-//      tank.addAmount(drained.amount);     
+      //      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
+      //      if(drained == null || drained.amount <= 0) {
+      //        return false;
+      //      }
+      //      tank.addAmount(drained.amount);     
 
       //Have to use this 'double handle' approach to work around an issue with TiC
       FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, false);
-      if(drained == null || drained.amount == 0) {        
+      if(drained == null || drained.amount == 0) {
         return false;
       } else {
         if(drained.isFluidEqual(getFluidType())) {
           drained = extTank.drain(dir.getOpposite(), maxExtract, true);
-          tank.addAmount(drained.amount);          
-        } 
-      }      
+          tank.addAmount(drained.amount);
+        }
+      }
       return true;
     }
     return false;
@@ -282,16 +263,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(w == null) {
       return null;
     }
-    TileEntity te = w.getTileEntity(bc.x, bc.y, bc.z);
-    if(te instanceof IFluidHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
-          return null;
-        }
-      }
-      return (IFluidHandler) te;
-    }
-    return null;
+    return FluidUtil.getFluidHandler(w.getTileEntity(bc.x, bc.y, bc.z));
   }
 
   public IFluidHandler getTankContainer(AdvancedLiquidConduit con, ForgeDirection dir) {
@@ -323,17 +295,4 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     setConduitVolumes();
     lastSyncedVolume = tank.getFluidAmount();
   }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick();
-    }
-  }
-
 }

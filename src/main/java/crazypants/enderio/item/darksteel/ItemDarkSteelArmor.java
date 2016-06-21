@@ -1,5 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,19 +15,42 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.nodes.IRevealer;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.InterfaceList;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
+import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
+import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
+import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.core.IArmorNaturalist;
 
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem {
+@InterfaceList({
+    @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
+    @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
+    @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft"),
+    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "Forestry"),
+    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
+})
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
+    IRevealer, IVisDiscountGear, IArmorApiarist, IArmorNaturalist {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
@@ -39,21 +63,24 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
 
+  boolean gogglesUgradeActive = true;
+
   static {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
+    MinecraftForge.EVENT_BUS.register(DarkSteelController.instance);
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 
   public static ItemDarkSteelArmor forArmorType(int armorType) {
     switch (armorType) {
     case 0:
-      return EnderIO.itemDarkSteelHelmet;
+      return DarkSteelItems.itemDarkSteelHelmet;
     case 1:
-      return EnderIO.itemDarkSteelChestplate;
+      return DarkSteelItems.itemDarkSteelChestplate;
     case 2:
-      return EnderIO.itemDarkSteelLeggings;
+      return DarkSteelItems.itemDarkSteelLeggings;
     case 3:
-      return EnderIO.itemDarkSteelBoots;
+      return DarkSteelItems.itemDarkSteelBoots;
     }
     return null;
   }
@@ -77,7 +104,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return res;
   }
 
-  private int powerPerDamagePoint;
+  private final int powerPerDamagePoint;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -85,7 +112,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
     String str = "darkSteel_" + NAMES[armorType];
     setUnlocalizedName(str);
-    setTextureName("enderIO:" + str);
+    setTextureName(EnderIO.DOMAIN+ ":" + str);
 
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
@@ -94,6 +121,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     GameRegistry.registerItem(this, getUnlocalizedName());
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
@@ -103,10 +131,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
     EnergyUpgrade.setPowerFull(is);
-    if(armorType == 2) {
-      SpeedUpgrade.SPEED_THREE.writeToItem(is);
-    } else if(armorType == 3) {
-      JumpUpgrade.JUMP_THREE.writeToItem(is);
+    
+    Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.instance.recipeIterator();
+    while (iter.hasNext()) {
+      IDarkSteelUpgrade upgrade = iter.next();
+      if (!(upgrade instanceof EnergyUpgrade) && upgrade.canAddToItem(is)) {
+        upgrade.writeToItem(is);
+      }
     }
     
     par3List.add(is);
@@ -139,14 +170,20 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2")); 
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
+      if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
+      }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
@@ -190,18 +227,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
 
     } else {
-      damage = stack.getItemDamage() + damage;
-      if(damage >= getMaxDamage()) {
-        stack.stackSize = 0;
-      }
-      stack.setItemDamage(damage);
+      stack.damageItem(damage, entity);
     }
     if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
       eu.writeToItem(stack);
     }
   }
@@ -231,65 +263,58 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
-  //Idea from Mekanism
-  //  @ForgeSubscribe
-  //  public void onLivingSpecialSpawn(LivingSpawnEvent event)
-  //  {
-  //    int chance = event.world.rand.nextInt(100);
-  //    int armorType = event.world.rand.nextInt(4);
-  //
-  //    if(chance < 3)
-  //    {
-  //      if(event.entityLiving instanceof EntityZombie || event.entityLiving instanceof EntitySkeleton)
-  //      {
-  //        int sword = event.world.rand.nextInt(100);
-  //        int helmet = event.world.rand.nextInt(100);
-  //        int chestplate = event.world.rand.nextInt(100);
-  //        int leggings = event.world.rand.nextInt(100);
-  //        int boots = event.world.rand.nextInt(100);
-  //
-  //        if(armorType == 0)
-  //        {
-  //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(GlowstoneSword));
-  //          if(helmet < 50) event.entityLiving.setCurrentItemOrArmor(1, new ItemStack(GlowstoneHelmet));
-  //          if(chestplate < 50) event.entityLiving.setCurrentItemOrArmor(2, new ItemStack(GlowstoneChestplate));
-  //          if(leggings < 50) event.entityLiving.setCurrentItemOrArmor(3, new ItemStack(GlowstoneLeggings));
-  //          if(boots < 50) event.entityLiving.setCurrentItemOrArmor(4, new ItemStack(GlowstoneBoots));
-  //        }
-  //        else if(armorType == 1)
-  //        {
-  //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(LazuliSword));
-  //          if(helmet < 50) event.entityLiving.setCurrentItemOrArmor(1, new ItemStack(LazuliHelmet));
-  //          if(chestplate < 50) event.entityLiving.setCurrentItemOrArmor(2, new ItemStack(LazuliChestplate));
-  //          if(leggings < 50) event.entityLiving.setCurrentItemOrArmor(3, new ItemStack(LazuliLeggings));
-  //          if(boots < 50) event.entityLiving.setCurrentItemOrArmor(4, new ItemStack(LazuliBoots));
-  //        }
-  //        else if(armorType == 2)
-  //        {
-  //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(OsmiumSword));
-  //          if(helmet < 50) event.entityLiving.setCurrentItemOrArmor(1, new ItemStack(OsmiumHelmet));
-  //          if(chestplate < 50) event.entityLiving.setCurrentItemOrArmor(2, new ItemStack(OsmiumChestplate));
-  //          if(leggings < 50) event.entityLiving.setCurrentItemOrArmor(3, new ItemStack(OsmiumLeggings));
-  //          if(boots < 50) event.entityLiving.setCurrentItemOrArmor(4, new ItemStack(OsmiumBoots));
-  //        }
-  //        else if(armorType == 3)
-  //        {
-  //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(SteelSword));
-  //          if(helmet < 50) event.entityLiving.setCurrentItemOrArmor(1, new ItemStack(SteelHelmet));
-  //          if(chestplate < 50) event.entityLiving.setCurrentItemOrArmor(2, new ItemStack(SteelChestplate));
-  //          if(leggings < 50) event.entityLiving.setCurrentItemOrArmor(3, new ItemStack(SteelLeggings));
-  //          if(boots < 50) event.entityLiving.setCurrentItemOrArmor(4, new ItemStack(SteelBoots));
-  //        }
-  //        else if(armorType == 4)
-  //        {
-  //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(BronzeSword));
-  //          if(helmet < 50) event.entityLiving.setCurrentItemOrArmor(1, new ItemStack(BronzeHelmet));
-  //          if(chestplate < 50) event.entityLiving.setCurrentItemOrArmor(2, new ItemStack(BronzeChestplate));
-  //          if(leggings < 50) event.entityLiving.setCurrentItemOrArmor(3, new ItemStack(BronzeLeggings));
-  //          if(boots < 50) event.entityLiving.setCurrentItemOrArmor(4, new ItemStack(BronzeBoots));
-  //        }
-  //      }
-  //    }
-  //  }
+  //Thaumcraft
 
+  @Override
+  @Method(modid = "Thaumcraft")
+  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
+    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+      return false;
+    }
+    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+
+  }
+
+  @Override
+  @Method(modid = "Thaumcraft")
+  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
+    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+      return false;
+    }
+    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  }
+
+  @Override
+  @Method(modid = "Thaumcraft")
+  public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+      return 0;
+    }
+    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+  }
+
+  public boolean isGogglesUgradeActive() {
+    return gogglesUgradeActive;
+  }
+
+  public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
+    this.gogglesUgradeActive = gogglesUgradeActive;
+  }
+
+  // Forestry
+
+  @Override
+  @Method(modid = "Forestry")
+  public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
+    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
+  }
+
+  @Override
+  @Method(modid = "Forestry")
+  public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
+    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+      return false;
+    }
+    return NaturalistEyeUpgrade.isUpgradeEquipped(player);
+  }
 }

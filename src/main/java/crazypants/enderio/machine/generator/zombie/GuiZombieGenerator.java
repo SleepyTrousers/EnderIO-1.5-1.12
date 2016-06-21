@@ -8,38 +8,37 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
-public class GuiZombieGenerator extends GuiMachineBase {
+public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
-  private TileZombieGenerator gen;
-
-
-  public GuiZombieGenerator(InventoryPlayer inventory, TileZombieGenerator tileEntity) {
-    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
-    gen = tileEntity;
+  public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
+    super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
     
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("zombieGenerator.fuelTank");        
+        String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.fuelTank));
+        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
+        if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+        }
       }
-
     });
-    
+
   }
-  
+
   @Override
   protected boolean showRecipeButton() {
     return false;
@@ -54,7 +53,7 @@ public class GuiZombieGenerator extends GuiMachineBase {
       int y = 19;
       int w = 15 + 4;
       int h = 47 + 4;
-      renderSlotHighlight(PULL_COLOR,x,y,w,h);     
+      renderSlotHighlight(PULL_COLOR, x, y, w, h);
     }
 
   }
@@ -62,35 +61,36 @@ public class GuiZombieGenerator extends GuiMachineBase {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/zombieGenerator.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    int scaled;
+    TileZombieGenerator gen = getTileEntity();
 
     FontRenderer fr = getFontRenderer();
-    double output = 0;
+    int output = 0;
     if(gen.isActive()) {
       output = gen.outputPerTick;
     }
-    String txt =  Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
     int x = guiLeft + 80;
-    int y = guiTop + 21;    
+    int y = guiTop + 21;
     if(gen.fuelTank.getFluidAmount() > 0) {
-    
-      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 15, 47);
+
+      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerMbFuel + " t/Mb";
+        txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
-      }      
+      }
     }
 
-    RenderUtil.bindTexture("enderio:textures/gui/zombieGenerator.png");
+    bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 

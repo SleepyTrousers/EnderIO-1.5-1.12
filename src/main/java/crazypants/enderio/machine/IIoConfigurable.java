@@ -1,7 +1,8 @@
 package crazypants.enderio.machine;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.util.BlockCoord;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public interface IIoConfigurable {
 
@@ -12,6 +13,8 @@ public interface IIoConfigurable {
   public void setIoMode(ForgeDirection faceHit, IoMode mode);
 
   public IoMode getIoMode(ForgeDirection face) ;
+
+  public void clearAllIoModes();
 
   BlockCoord getLocation();
 

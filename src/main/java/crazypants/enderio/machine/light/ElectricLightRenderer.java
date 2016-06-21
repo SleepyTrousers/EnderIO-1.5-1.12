@@ -5,10 +5,12 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 
 public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
@@ -36,7 +38,11 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     RenderUtil.setTesselatorBrightness(world, x, y, z);
     
     IIcon[] textures = RenderUtil.getBlockTextures(world, x, y, z);
-    CubeRenderer.render(bb, textures, null, null);
+    if(renderer.hasOverrideBlockTexture()) {
+      CubeRenderer.render(bb, renderer.overrideBlockTexture);
+    } else {
+      CubeRenderer.render(bb, textures, null, null);
+    }
 
     return true;
   }

@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -36,12 +38,14 @@ public class ItemMaterial extends Item {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, Material.values().length - 1);
     return icons[damage];
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     int numParts = Material.values().length;
     for (int i = 0; i < numParts; i++) {
@@ -57,6 +61,7 @@ public class ItemMaterial extends Item {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Material.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -64,15 +69,13 @@ public class ItemMaterial extends Item {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack, int pass) {
     if(par1ItemStack == null) {
       return false;
     }
-    int damage = par1ItemStack.getItemDamage();
-    if(damage == Material.VIBRANT_CYSTAL.ordinal() || damage == Material.PULSATING_CYSTAL.ordinal()) {
-      return true;
-    }
-    return false;
+    int damage = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
+    return Material.values()[damage].hasEffect;
   }
 
 }

@@ -11,12 +11,16 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 
+@SideOnly(Side.CLIENT)
 public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private IModel model;
@@ -47,8 +51,10 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
 
     model.render(cube, x, y, z);
 
-    if(cube.getInternalPowerHandler().getEnergyStored() > 0) {
+    if(cube.getChannel() != null) {
+    //if(cube.getEnergyStored() > 0) {
       renderPower(te.getWorldObj(), x, y, z, cube.getChannel() != null);
+    //}
     }
 
     GL11.glDisable(GL12.GL_RESCALE_NORMAL);

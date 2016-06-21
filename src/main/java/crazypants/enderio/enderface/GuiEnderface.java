@@ -28,16 +28,19 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Camera;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
+import crazypants.util.RenderPassHelper;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -147,7 +150,7 @@ public class GuiEnderface extends GuiScreen {
     guiLeft = (width - gw) / 2;
     guiTop = (height - gh) / 2;
 
-    initTime = world.getTotalWorldTime();
+    initTime = EnderIO.proxy.getTickCount();
   }
 
   @Override
@@ -182,7 +185,7 @@ public class GuiEnderface extends GuiScreen {
     distance -= Mouse.getDWheel() * 0.01;
     distance = VecmathUtil.clamp(distance, 0.1, 20);
 
-    long elapsed = world.getTotalWorldTime() - initTime;
+    long elapsed = EnderIO.proxy.getTickCount() - initTime;
 
     if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
 
@@ -203,24 +206,15 @@ public class GuiEnderface extends GuiScreen {
   private void doSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
-    List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
-    for (ViewableBlocks ug : blocks) {
-      if(!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
-        MovingObjectPosition res = player.worldObj.rayTraceBlocks(Vec3.createVectorHelper(start.x, start.y, start.z),
-            Vec3.createVectorHelper(end.x, end.y, end.z), false);
+    MovingObjectPosition hit = player.worldObj.rayTraceBlocks(Vec3.createVectorHelper(start.x, start.y, start.z), Vec3.createVectorHelper(end.x, end.y, end.z),
+        false);
 
-        if(res != null) {
-          hits.add(res);
-        }
-      }
-    }
-    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
-    if(hit != null) {
+    if (hit != null) {
       Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+      if (block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
         block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
       } else {
-        openInterface(hit.blockX, hit.blockY, hit.blockZ);
+        openInterface(hit.blockX, hit.blockY, hit.blockZ, hit.sideHit, hit.hitVec);
       }
     }
 
@@ -270,6 +264,7 @@ public class GuiEnderface extends GuiScreen {
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         RenderHelper.disableStandardItemLighting();
         mc.entityRenderer.enableLightmap(0);
@@ -278,7 +273,7 @@ public class GuiEnderface extends GuiScreen {
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
         for (int pass = 0; pass < 2; pass++) {
 
-          ForgeHooksClient.setRenderPass(pass);
+          RenderPassHelper.setBlockRenderPass(pass);
           setGlStateForPass(pass);
 
           Tessellator.instance.startDrawingQuads();
@@ -292,6 +287,7 @@ public class GuiEnderface extends GuiScreen {
           }
           Tessellator.instance.draw();
           Tessellator.instance.setTranslation(0, 0, 0);
+          RenderPassHelper.clearBlockRenderPass();
         }
 
         RenderHelper.enableStandardItemLighting();
@@ -306,7 +302,7 @@ public class GuiEnderface extends GuiScreen {
 
         for (int pass = 0; pass < 2; pass++) {
 
-          ForgeHooksClient.setRenderPass(pass);
+          RenderPassHelper.setEntityRenderPass(pass);
           setGlStateForPass(pass);
 
           for (ViewableBlocks ug : blocks) {
@@ -316,11 +312,13 @@ public class GuiEnderface extends GuiScreen {
               at.x += ug.bc.x - ioX;
               at.y += ug.bc.y - ioY;
               at.z += ug.bc.z - ioZ;
+              GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
               TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+              GL11.glPopAttrib();
             }
           }
+          RenderPassHelper.clearEntityRenderPass();
         }
-        ForgeHooksClient.setRenderPass(-1);
         setGlStateForPass(0);
         TravelController.instance.setSelectionEnabled(true);
 
@@ -389,7 +387,7 @@ public class GuiEnderface extends GuiScreen {
   private float portalFade = 1;
 
   private void drawEffectOverlay(float partialTick) {
-    ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
     GL11.glMatrixMode(GL11.GL_PROJECTION);
     GL11.glLoadIdentity();
     GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
@@ -518,10 +516,10 @@ public class GuiEnderface extends GuiScreen {
 
   private void drawEnderfaceBackground() {
 
-    int w = this.gw;
-    int h = this.gh;
-    int left = this.guiLeft;
-    int top = this.guiTop;
+    int w = gw;
+    int h = gh;
+    int left = guiLeft;
+    int top = guiTop;
     int cx = left + w / 2;
     int cy = top + h / 2;
 
@@ -554,8 +552,9 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  void openInterface(int x, int y, int z) {
-    PacketOpenRemoteUi p = new PacketOpenRemoteUi(x, y, z);
+  void openInterface(int x, int y, int z, int side, Vec3 hitVec) {
+    Vec3 relativeHit = Vec3.createVectorHelper(hitVec.xCoord - x, hitVec.yCoord - y, hitVec.zCoord - z);
+    PacketOpenServerGUI p = new PacketOpenServerGUI(x, y, z, side, relativeHit);
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
@@ -565,10 +564,9 @@ public class GuiEnderface extends GuiScreen {
 
     private ViewableBlocks(int x, int y, int z, Block block) {
       super();
-      this.bc = new BlockCoord(x, y, z);
+      bc = new BlockCoord(x, y, z);
       this.block = block;
     }
 
   }
-
 }

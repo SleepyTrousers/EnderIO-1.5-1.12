@@ -3,26 +3,31 @@ package crazypants.enderio.machine;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.IPowerContainer;
 
 public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
   private int x;
   private int y;
   private int z;
-  private float storedEnergy;
+  private int storedEnergy;
 
   public PacketPowerStorage() {
   }
 
-  public PacketPowerStorage(AbstractMachineEntity ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
-    storedEnergy = ent.storedEnergy;
+  public PacketPowerStorage(IPowerContainer ent) {
+    BlockCoord bc = ent.getLocation();
+    x = bc.x;
+    y = bc.y;
+    z = bc.z;
+    storedEnergy = ent.getEnergyStored();
   }
 
   @Override
@@ -30,7 +35,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeFloat(storedEnergy);
+    buf.writeInt(storedEnergy);
 
   }
 
@@ -39,17 +44,16 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    storedEnergy = buf.readFloat();
+    storedEnergy = buf.readInt();
   }
 
   @Override
   public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-    if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;
-      me.storedEnergy = message.storedEnergy;
-      me.powerHandler.setEnergy(message.storedEnergy);
+    if(te instanceof IPowerContainer) {
+      IPowerContainer me = (IPowerContainer) te;
+      me.setEnergyStored(message.storedEnergy);
     }
     return null;
   }

@@ -9,15 +9,18 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
 
 public class TileCrusher extends AbstractPoweredTaskEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;
-  
-  protected int lastSendGbScaled = 0;
+  protected int maxGbUse = 0;
 
+  protected int lastSendGbScaled = 0;
+  private boolean useGrindingBall;
+  
   public TileCrusher() {
     super(new SlotDefinition(2, 4));
   }
@@ -30,7 +33,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   @Override
   public String getMachineName() {
     return ModObject.blockSagMill.unlocalisedName;
-  }
+  }  
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
@@ -41,37 +44,41 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   public int getBallDurationScaled(int scale) {
-    if(gb == null) {
-      return 0;
-    }
-    float res = 1 - (float)currGbUse / (float)gb.getDurationMJ();
-    return (int)(res * scale);
+    return (maxGbUse > 0) ? (int) (scale * (1 - ((float) currGbUse / (float) maxGbUse))) : 0;
   }
-
 
   @Override
   protected double usePower() {
     double res = super.usePower();
-    if(gb != null) {
+    boolean sendGB = false;
+
+    if(gb != null && useGrindingBall) {
       currGbUse += res;
-      
-      int newScaled = getBallDurationScaled(16);
-      if(newScaled != lastSendGbScaled) {
-        PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
-        lastSendGbScaled = newScaled;
-      }
-      
-      if(currGbUse > gb.getDurationMJ()) {
+
+      if(currGbUse >= gb.getDurationMJ()) {
         currGbUse = 0;
+        maxGbUse = 0;
         gb = null;
+        sendGB = true;
+      } else {
+        int newScaled = getBallDurationScaled(16);
+        if(newScaled != lastSendGbScaled) {
+          sendGB = true;
+        }
       }
     }
-    if(gb == null ) {
+    if(gb == null) {
       gb = CrusherRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
       if(gb != null) {
+        maxGbUse = gb.getDurationMJ();
         decrStackSize(1, 1);
         markDirty();
+        sendGB = false; // the tile update will also sync the grinding ball
       }
+    }
+    if(sendGB) {
+      PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
+      lastSendGbScaled = getBallDurationScaled(16);
     }
     return res;
   }
@@ -81,15 +88,17 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     IPoweredTask ct = currentTask;
     super.taskComplete();
     //run it again if the ball says so
-    if(gb != null && !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(ct.getInputs())) {
-      float chance = random.nextFloat();
-      float mul = gb.getGrindingMultiplier() - 1;
-      while(mul > 0) {
-        if(chance <= mul){
-          currentTask = ct;
-          super.taskComplete();
+    if(gb != null && useGrindingBall && ct != null) {
+      if(ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
+        float chance = random.nextFloat();
+        float mul = gb.getGrindingMultiplier() - 1;
+        while (mul > 0) {
+          if(chance <= mul) {
+            currentTask = ct;
+            super.taskComplete();
+          }
+          mul--;
         }
-        mul--;
       }
     }
   }
@@ -97,11 +106,17 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   @Override
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
+    useGrindingBall = false;
     if(gb != null) {
-      res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getInputs());
-      res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
+      useGrindingBall = !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
+      if(useGrindingBall) {
+        res = new PoweredTask(nextRecipe, chance / gb.getChanceMultiplier(), getRecipeInputs());
+        res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
+      } else {
+        res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
+      }
     } else {
-      res = new PoweredTask(nextRecipe, chance, getInputs());
+      res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
     }
     return res;
   }
@@ -111,6 +126,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     super.readCustomNBT(nbtRoot);
     gb = GrindingMultiplierNBT.readFromNBT(nbtRoot);
     currGbUse = nbtRoot.getInteger("currGbUse");
+    maxGbUse = (gb != null) ? gb.getDurationMJ() : 0;
   }
 
   @Override
@@ -120,7 +136,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
       GrindingMultiplierNBT.writeToNBT(gb, nbtRoot);
     }
     nbtRoot.setInteger("currGbUse", currGbUse);
-    
+
     lastSendGbScaled = getBallDurationScaled(16);
   }
 
@@ -129,4 +145,13 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     return false;
   }
 
+  @Override
+  public String getSoundName() {
+    return "machine.sagmill";
+  }
+  
+  @Override
+  public float getVolume() {
+    return super.getVolume() * 0.125f;
+  }
 }

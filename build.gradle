@@ -1,118 +1,240 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
 }
 
-apply plugin: 'forge' // adds the forge dependency
+apply plugin: 'forge'
+apply plugin: 'maven-publish'
+apply plugin: 'curseforge'
 
-// grab buildNumber
-ext.buildnumber = 0 // this will be referenced as simply project.buildnumber from now on.
+ext.buildnumber = 0
+if (System.getenv('BUILD_NUMBER') != null)
+    project.buildnumber = System.getenv('BUILD_NUMBER')
+else {
+    try {
+        ext.buildnumber += "_" + "git rev-parse --abbrev-ref HEAD".execute().text.trim();
+        ext.buildnumber += "_" + "git rev-parse --short HEAD".execute().text.trim();
+    } catch (all) {}
+    logger.lifecycle "No build number detected, setting to ${ext.buildnumber}"
+}
 
-if (System.getenv().BUILD_NUMBER)
-    project.buildnumber = System.getenv().BUILD_NUMBER
-else
-    logger.lifecycle "SETTING BUILDNUMBER TO 0"
+group = "com.enderio"
+archivesBaseName = "EnderIO"
+version = "${minecraft_version}-${mod_version}.${buildnumber}"
+boolean release = true
 
-version = "2.0_beta"
-group= "com.enderio"
-archivesBaseName = "enderio" // the name that all artifacts will use as a base. artifacts names follow this pattern: [baseName]-[appendix]-[version]-[classifier].[extension]
+if (project.hasProperty('mod_appendix')) {
+    version += "_${project.mod_appendix}"
+    release = false
+}
 
 minecraft {
-    version = "1.7.10-10.13.0.1152"
+    version = "${minecraft_version}-${forge_version}"
+    runDir = 'run'
 
-    //assetDir = "run/assets" // the place for ForgeGradle to download the assets. The assets that the launcher gets and stuff
-
-    // replacing stuff in the source
-    //replace '@VERSION@', project.version
-    //replace '@MC_VERSION@', version
-    //replace '@BUILD_NUMBER@', project.buildnumber
+    replace "@VERSION@", project.version
+   	replace "${toReplace}", "required-after:Forge@[${forgeDep_version},);required-after:endercore@[${endercore_version},);after:MineFactoryReloaded;after:Waila@[${waila_version},);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)"
+    replaceIn "EnderIO.java"
 }
 
 configurations {
     compile.extendsFrom exportedCompile
 }
 
-dependencies {
-    compile files('lib/cglib-nodep-2.2.3.jar')
-    compile files('lib/NotEnoughItems-1.7.2-1.0.1-universal.jar')
-    compile files('lib/CodeChickenCore-1.7.2-1.0.0-universal.jar')
-    compile files('lib/CodeChickenLib-1.7.2-1.1.0.76-dev.jar')
-    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.11:api'
+repositories {
+    mavenCentral()
+    maven { url = "http://mobiusstrip.eu/maven" }
+    maven { url = "http://chickenbones.net/maven/" }
+    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
+    maven { url = "http://maven.tterrag.com" }
+    maven { url = "http://maven.ic2.player.to" }
+    maven { url = "http://maven.cil.li/" }
+    mavenLocal()
 }
 
-// configure  the source folders
+dependencies {
+    exportedCompile 'cglib:cglib-nodep:3.1'
+
+    if (!project.hasProperty('useLocalEnderCore')) {
+        compile "com.enderio.core:EnderCore:${endercore_version}:dev"
+    }
+
+    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
+    compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
+    compile "net.sengir.forestry:${forestry_version}:api"
+    compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
+        transitive = false
+    }
+    
+    // WAILA ships really old CCC/CCL versions, so we force the new versions
+    compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
+    compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
+    
+    compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+}
+
 sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-	    exclude '**/enderio/trigger/**' 	    
-            // exclude 'some exclusion'
-            // include 'some inclusion'
+            exclude '**/enderio/trigger/**'
         }
         resources {
-            srcDir 'resources'            
-            // exclude 'some exclusion'
-            // include 'some inclusion'
+            srcDir 'resources'
         }
     }
 }
 
-processResources
-{
-    processResources{
-       from(zipTree("lib/cglib-nodep-2.2.3.jar"))
-    }
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        // ${version}   and    ${mcversion}    are the exact strings being replaced
-        expand 'version':project.version, 'mcversion':project.minecraft.version, 'buildnumber':project.buildnumber
+        include '**/*.info'
+        include '**/*.properties'
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
-    // copy everything else, that's not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
+        exclude '**/*.properties'
     }
-}
-
-// --------------------
-// extra jar section
-// -------------------
-
-// for the benefit of the jars, we will now now add the buildnumber to the jars
-project.version += '.' + project.buildnumber
-
-// add a source jar
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-// because the normal output has been made to be obfuscated
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    classifier = 'dev'
 }
 
 jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-// make sure all of these happen when we run build
-build.dependsOn sourceJar, deobfJar
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+	include 'crazypants/enderio/api/**/*'
+    classifier = 'api'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
+    classifier = 'dev'
+}
+
+task exportJavadoc(type: Javadoc) {
+    include 'crazypants/enderio/api/**/*'
+    source = sourceSets.main.allSource
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
+install.dependsOn build
+
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar
+            artifact apiJar
+            artifact deobfJar
+        }
+    }
+
+    repositories {
+        if (project.hasProperty('mavendir')) {
+            maven { url mavendir }
+        }
+    }
+}
+
+artifacts {
+    archives sourceJar
+    archives apiJar
+    archives deobfJar
+}
+
+String getChangelogText() {
+    def changelogFile = new File('ReleaseNotes.txt')
+    String str = ''
+    String separator = '---'
+    int lineCount = 0
+    boolean done = false
+    changelogFile.eachLine {
+        if (done || it == null) {
+            return
+        }
+        if (lineCount < 3) {
+            lineCount++
+            if (it.startsWith(separator)) {return}
+        }
+        if (!it.startsWith(separator)) {
+            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
+            return
+        }
+        done = true // once we go past the first version block, parse no more
+    }
+    return str
+}
+
+curse {
+    dependsOn 'reobf'
+    
+    onlyIf {
+        return project.hasProperty('curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
+    }
+
+    if (project.hasProperty('curseforge_key')) apiKey = project.curseforge_key
+    projectId = project.curse_projectId
+    changelog = System.getenv("CHANGELOG").equals("none") ? release ? getChangelogText() : project.changelog : System.getenv("CHANGELOG")
+    releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
+    additionalArtifact deobfJar
+    relatedProject 'endercore'
+}
+
+task checkTranslations << {
+    Map<String, String> mapen = new HashMap<String, String>()
+    (new File('resources/assets/enderio/lang/en_US.lang')).eachLine {
+        def (value1, value2) = it.tokenize( '=' )
+        if (value1 == null || value2 == null) {return}
+        mapen.put(value1, value2)
+    }
+    
+    new File('resources/assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
+        if (!langfile.getName().contains("en_US")) {
+	        Map<String, String> map = new HashMap<String, String>()
+	        File outfile = new File("${langfile}.txt")
+	        Writer outwriter = outfile.newWriter("UTF8")
+	        outwriter.write("\n// Additional translations:\n")
+	        outwriter << langfile.filterLine {
+	            def (value1, value2) = it.tokenize( '=' )
+	            if (value1 == null || value2 == null) {return false}
+	            map.put(value1, value2)
+	            return !mapen.containsKey(value1)
+	        }
+	        
+	        outwriter.append("\n// Missing translations:\n")
+	        for (e in mapen) {
+	            if (!map.containsKey(e.key)) {
+	                outwriter.append(e.key + "=" + e.value + "\n")
+	            }
+	        }
+        println "Created translation report ${outfile}"
+        }
+    }
+}

@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -23,13 +24,13 @@ public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<Yeta
   @Override
   public void toBytes(ByteBuf buffer) {
     buffer.writeInt(slot);
-    buffer.writeShort(mode.ordinal());
+    ByteBufUtils.writeUTF8String(buffer, mode.getName());
   }
 
   @Override
   public void fromBytes(ByteBuf buffer) {
     slot = buffer.readInt();
-    mode = ConduitDisplayMode.values()[buffer.readShort()];
+    mode = ConduitDisplayMode.fromName(ByteBufUtils.readUTF8String(buffer));
   }
 
   @Override

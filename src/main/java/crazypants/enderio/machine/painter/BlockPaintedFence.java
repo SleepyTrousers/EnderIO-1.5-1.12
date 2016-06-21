@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -11,9 +10,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -26,12 +27,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedFence extends BlockFence implements ITileEntityProvider {
+public class BlockPaintedFence extends BlockFence implements ITileEntityProvider, IPaintedBlock {
 
   public static BlockPaintedFence create() {
     BlockPaintedFence result = new BlockPaintedFence();
@@ -62,6 +61,13 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     ItemStack result = new ItemStack(EnderIO.blockPaintedFence, 1, sourceMeta);
     PainterUtil.setSourceBlock(result, source, sourceMeta);
     return result;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @SideOnly(Side.CLIENT)
@@ -97,7 +103,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -172,6 +178,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -188,7 +195,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister par1IIconRegister) {
-    this.blockIcon = par1IIconRegister.registerIcon("enderio:conduitConnector");
+    blockIcon = par1IIconRegister.registerIcon("enderio:conduitConnector");
   }
 
   @Override
@@ -258,23 +265,29 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      }
+    }
+    return super.colorMultiplier(world, x, y, z);
+  }
+
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence, Blocks.nether_brick_fence, EnderIO.blockPaintedFence);
+      super(Blocks.fence, Blocks.nether_brick_fence, BlockPaintedFence.this);
     }
 
     @Override
     public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
-    }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, new ItemStack(Blocks.fence), new ItemStack(
-          EnderIO.blockPaintedFence, 1, 0));
-      return Collections.singletonList(recipe);
     }
 
   }

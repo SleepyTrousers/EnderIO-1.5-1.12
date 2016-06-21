@@ -12,15 +12,19 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+
+@SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
@@ -42,7 +46,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
-    
+
     EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
     Matrix4d lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
 

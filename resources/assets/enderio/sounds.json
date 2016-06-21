@@ -1,0 +1,73 @@
+{
+  "generator.zombie.bubble": {
+    "category": "block",
+    "sounds": [
+      "generator/zombie/bubble"
+    ]
+  },
+  "generator.stirling": {
+    "category": "block",
+	"sounds": [
+	  "generator/stirling/burn"
+	]
+  },
+  "machine.vat": {
+    "category": "block",
+	"sounds": [
+	  "machine/vat/gurgle"
+	]
+  },
+  "machine.sagmill": {
+    "category": "block",
+	"sounds": [
+	  "machine/sagmill/tumble"
+	]
+  },
+  "ds.nightvision.on": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/nightvision/on"
+	]
+  },
+  "ds.nightvision.off": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/nightvision/off"
+	]
+  },
+  "ds.jump": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/jump/jump1",
+	  "darksteel/modules/jump/jump2",
+	  "darksteel/modules/jump/jump3",
+	  "darksteel/modules/jump/jump4",
+	  "darksteel/modules/jump/jump5"
+	]
+  },
+  "telepad.active": {
+    "category": "block",
+    "sounds" : [
+      "telepad/active"
+    ]
+  },
+  "telepad.teleport": {
+    "category": "block",
+    "sounds" : [
+        "telepad/teleport1",
+        "telepad/teleport2"
+    ]
+  },
+  "silence.dig": {
+    "category": "block",
+    "sounds": [
+      "silence"
+    ]
+  },
+  "silence.step": {
+    "category": "block",
+    "sounds": [
+      "silence"
+    ]
+  }
+}

@@ -9,16 +9,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.ICapacitorItem;
-import crazypants.util.Lang;
 
 public class ItemCapacitor extends Item implements ICapacitorItem {
 
@@ -47,12 +50,14 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, Capacitors.values().length - 1);
     return icons[damage];
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
     for (int i = 0; i < Capacitors.values().length; i++) {
       icons[i] = IIconRegister.registerIcon(Capacitors.values()[i].iconKey);
@@ -67,6 +72,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Capacitors.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -83,7 +89,12 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     if(par1ItemStack != null && par1ItemStack.getItemDamage() > 0) {
-      par3List.add(Lang.localize("machine.tooltip.upgrade"));
+      par3List.add(EnderIO.lang.localize("machine.tooltip.upgrade"));
+      if(SpecialTooltipHandler.showAdvancedTooltips()) {
+        SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
+      } else {
+        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
+      }
     }
 
   }

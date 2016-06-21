@@ -10,13 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.util.Lang;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
@@ -52,23 +55,25 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
       filter = new ItemFilter(true);
     }
     if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
-      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));      
+      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
     }
     return filter;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, 1);
     return icons[damage];
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
-    
+
     icons[0] = IIconRegister.registerIcon("enderio:filterUpgradeBasic");
     icons[1] = IIconRegister.registerIcon("enderio:filterUpgradeAdvanced");
-    
+
   }
 
   @Override
@@ -79,6 +84,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < 2; ++j) {
       par3List.add(new ItemStack(this, 1, j));
@@ -87,12 +93,18 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {    
-    par3List.add(Lang.localize("itemConduitFilterUpgrade"));  
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     if(FilterRegister.isFilterSet(par1ItemStack)) {
-      par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
+      if(!SpecialTooltipHandler.showAdvancedTooltips()) {
+        par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
+        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
+      } else {
+        par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
+        par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+      }
+    } else {
+      par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
     }
-
   }
-  
+
 }

@@ -6,167 +6,144 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
-import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
+import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.SpeedUpgrade;
+import crazypants.enderio.network.PacketHandler;
 
-public class ExternalConnectionContainer extends Container {
+public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 
-  private InventoryPlayer playerInv;
-  private IConduitBundle bundle;
-  private ForgeDirection dir;
-  private IItemConduit itemConduit;
+  private final IItemConduit itemConduit;
 
-  private IItemFilter inputFilter;
-  private IItemFilter outputFilter;
+  private int speedUpgradeSlotLimit = 15;
 
-  private int outputFilterUpgradeSlot = 36;
-  private int inputFilterUpgradeSlot = 37;
-  private int speedUpgradeSlot = 38;
-  private int startFilterSlot = 39;
+  private static final int outputFilterUpgradeSlot = 36;
+  private static final int inputFilterUpgradeSlot = 37;
+  private static final int speedUpgradeSlot = 38;
+  private static final int functionUpgradeSlot = 39;
 
-  private List<Point> slotLocations = new ArrayList<Point>();
+  private Slot slotSpeedUpgrades;
+  private Slot slotFunctionUpgrades;
+  private Slot slotInputFilterUpgrades;
+  private Slot slotOutputFilterUpgrades;
 
-  List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
+  private final List<Point> slotLocations = new ArrayList<Point>();
+
+  final List<FilterChangeListener> filterListeners = new ArrayList<FilterChangeListener>();
+  final List<GhostBackgroundItemSlot> bgSlots = new ArrayList<GhostBackgroundItemSlot>();
 
   public ExternalConnectionContainer(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
-    this.playerInv = playerInv;
-    this.bundle = bundle;
-    this.dir = dir;
+    super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
+    this.itemConduit = bundle.getConduit(IItemConduit.class);
+    slotLocations.addAll(playerSlotLocations.values());
 
     int x;
     int y;
 
-    int topY = 113;
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        x = 23 + j * 18;
-        y = topY + i * 18;
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x, y));
-        slotLocations.add(new Point(x, y));
-      }
-    }
-
-    y = 171;
-    for (int i = 0; i < 9; ++i) {
-      x = 23 + i * 18;
-      addSlotToContainer(new Slot(playerInv, i, x, y));
+    if (itemConduit != null) {
+      x = 10;
+      y = 47;
+      slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
-    }
-
-    itemConduit = bundle.getConduit(IItemConduit.class);
-    if(itemConduit != null) {
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotOutputFilterUpgrades));
 
       x = 10;
       y = 47;
-      InventoryFilterUpgrade fi = new InventoryFilterUpgrade(itemConduit, dir, false);
-      addSlotToContainer(new FilterSlot(fi, 0, x, y, false));
+      slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
-
-      x = 10;
-      y = 47;
-      fi = new InventoryFilterUpgrade(itemConduit, dir, true);
-      addSlotToContainer(new FilterSlot(fi, 0, x, y, true));
-      slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotInputFilterUpgrades));
 
       x = 28;
-      y = 47;      
-      final InventorySpeedUpgrades si = new InventorySpeedUpgrades(itemConduit, dir);
-      addSlotToContainer(new Slot(si, 0, x, y) {
-
+      y = 47;
+      slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
         @Override
         public boolean isItemValid(ItemStack par1ItemStack) {
-          return si.isItemValidForSlot(0, par1ItemStack);
+          return getInv().isItemValidForSlot(0, par1ItemStack);
         }
-        
+
+        @Override
+        public int getSlotStackLimit() {
+          return speedUpgradeSlotLimit;
+        }
       });
       slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemExtractSpeedUpgrade, slotSpeedUpgrades));
 
-      addFilterSlots(dir);
+      x = 10;
+      y = 65;
+      slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
+        @Override
+        public boolean isItemValid(ItemStack par1ItemStack) {
+          return getInv().isItemValidForSlot(1, par1ItemStack);
+        }
+
+        @Override
+        public int getSlotStackLimit() {
+          return 1;
+        }
+      });
+      slotLocations.add(new Point(x, y));
+      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemFunctionUpgrade, slotFunctionUpgrades));
     }
+  }
 
+  public void createGhostSlots(List<GhostSlot> slots) {
+    slots.addAll(bgSlots);
+  }
+
+  @Override
+  public Point getPlayerInventoryOffset() {
+    return new Point(23, 113);
   }
   
   public void addFilterListener(FilterChangeListener list) {
     filterListeners.add(list);
   }
 
-  private void addFilterSlots(ForgeDirection dir) {
-
-    List<Slot> slots;
-    inputFilter = itemConduit.getInputFilter(dir);
-    if(inputFilter != null && inputFilter.getSlotCount() > 0) {
-      slots = inputFilter.getSlots();
-      for (Slot slot : slots) {
-        addSlotToContainer(slot);
-        slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-      }
-    }
-
-    outputFilter = itemConduit.getOutputFilter(dir);
-    if(outputFilter != null && outputFilter.getSlotCount() > 0) {
-      slots = outputFilter.getSlots();
-      for (Slot slot : slots) {
-        addSlotToContainer(slot);
-        slotLocations.add(new Point(slot.xDisplayPosition, slot.yDisplayPosition));
-      }
-    }
-  }
-
   protected void filterChanged() {
-    int slotsToRemove = inventorySlots.size() - startFilterSlot;
-    for (int i = 0; i < slotsToRemove; i++) {
-      int removeIndex = inventorySlots.size() - 1;
-      inventorySlots.remove(removeIndex);
-      inventoryItemStacks.remove(removeIndex);
-      slotLocations.remove(removeIndex);
-    }
-    addFilterSlots(dir);
-
     for (FilterChangeListener list : filterListeners) {
       list.onFilterChanged();
     }
   }
 
-  public void setInputSlotsVisible(boolean visible) {
-    if(itemConduit == null) {
-      return;
-    }
-    setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
-    setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
-
-    if(inputFilter == null || inputFilter.getSlotCount() == 0) {
-      return;
-    }
-    int startIndex = startFilterSlot;
-    int endIndex = inputFilter.getSlotCount() + startIndex;
-    setSlotsVisible(visible, startIndex, endIndex);
-
+  public boolean hasSpeedUpgrades() {
+    return slotSpeedUpgrades != null && slotSpeedUpgrades.getHasStack();
   }
 
-  public void setOutputSlotsVisible(boolean visible) {
+  public boolean hasFunctionUpgrades() {
+    return slotFunctionUpgrades != null && slotFunctionUpgrades.getHasStack();
+  }
 
+  public boolean hasFilterUpgrades(boolean input) {
+    Slot slot = input ? slotInputFilterUpgrades : slotOutputFilterUpgrades;
+    return slot != null && slot.getHasStack();
+  }
+
+  public void setInoutSlotsVisible(boolean inputVisible, boolean outputVisible) {
     if(itemConduit == null) {
       return;
     }
-    
-    setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
-
-    if(outputFilter == null || outputFilter.getSlotCount() == 0) {
-      return;
+    setSlotsVisible(inputVisible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
+    setSlotsVisible(inputVisible, speedUpgradeSlot, speedUpgradeSlot + 1);
+    setSlotsVisible(outputVisible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
+    setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
+    World world = itemConduit.getBundle().getWorld();
+    if(world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
     }
-    int startIndex = startFilterSlot + (inputFilter == null ? 0 : inputFilter.getSlotCount());
-    int endIndex = startIndex + outputFilter.getSlotCount();
-    setSlotsVisible(visible, startIndex, endIndex);
-
   }
 
   public void setInventorySlotsVisible(boolean visible) {
@@ -187,18 +164,9 @@ public class ExternalConnectionContainer extends Container {
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer entityplayer) {
-    return true;
-  }
-
-  @Override
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
-    if(par4EntityPlayer.worldObj != null) {
-      if(par1 >= startFilterSlot && itemConduit != null) {
-        itemConduit.setInputFilter(dir, inputFilter);
-        itemConduit.setOutputFilter(dir, outputFilter);
-      }     
-    }
+    ItemStack st = par4EntityPlayer.inventory.getItemStack();
+    setSpeedUpgradeSlotLimit(st);
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);
     } catch (Exception e) {
@@ -208,18 +176,98 @@ public class ExternalConnectionContainer extends Container {
     }
   }
 
+  private void setSpeedUpgradeSlotLimit(ItemStack st) {
+    if(st != null && st.getItem() == EnderIO.itemExtractSpeedUpgrade) {
+      SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
+      speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
+    }
+  }
+
+  private boolean mergeItemStackSpecial(ItemStack origStack, Slot targetSlot) {
+    if (!targetSlot.isItemValid(origStack)) {
+      return false;
+    }
+
+    setSpeedUpgradeSlotLimit(origStack);
+    ItemStack curStack = targetSlot.getStack();
+    int maxStackSize =  Math.min(origStack.getMaxStackSize(), targetSlot.getSlotStackLimit());
+
+    if(curStack == null) {
+      curStack = origStack.copy();
+      curStack.stackSize = Math.min(origStack.stackSize, maxStackSize);
+      origStack.stackSize -= curStack.stackSize;
+      targetSlot.putStack(curStack);
+      targetSlot.onSlotChanged();
+      return true;
+    } else if(ItemUtil.areStackMergable(curStack, origStack)) {
+      int mergedSize = curStack.stackSize + origStack.stackSize;
+      if(mergedSize <= maxStackSize) {
+        origStack.stackSize = 0;
+        curStack.stackSize = mergedSize;
+        targetSlot.onSlotChanged();
+        return true;
+      } else if(curStack.stackSize < maxStackSize) {
+        origStack.stackSize -= maxStackSize - curStack.stackSize;
+        curStack.stackSize = maxStackSize;
+        targetSlot.onSlotChanged();
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    return null;
+    ItemStack copystack = null;
+    Slot slot = (Slot) inventorySlots.get(slotIndex);
+    if(slot != null && slot.getHasStack()) {
+      ItemStack origStack = slot.getStack();
+      copystack = origStack.copy();
+
+      boolean merged = false;
+      if (slotIndex < outputFilterUpgradeSlot) {
+        for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
+          Slot targetSlot = (Slot) inventorySlots.get(targetSlotIdx);
+          if(targetSlot.xDisplayPosition >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
+            merged = true;
+            break;
+          }
+        }
+      } else {
+        merged = mergeItemStack(origStack, 0, outputFilterUpgradeSlot, false);
+      }
+
+      if(!merged) {
+        return null;
+      }
+
+      slot.onSlotChange(origStack, copystack);
+
+      if(origStack.stackSize == 0) {
+        slot.putStack((ItemStack) null);
+      } else {
+        slot.onSlotChanged();
+      }
+
+      if(origStack.stackSize == copystack.stackSize) {
+        return null;
+      }
+
+      slot.onPickupFromSlot(entityPlayer, origStack);
+    }
+
+    return copystack;
   }
 
   private class FilterSlot extends Slot {
-
-    boolean isInput;
-    
-    public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4, boolean isInput) {
+    public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4) {
       super(par1iInventory, par2, par3, par4);
-      this.isInput = isInput;
+    }
+
+    @Override
+    public int getSlotStackLimit() {
+      return 1;
     }
 
     @Override
@@ -229,7 +277,7 @@ public class ExternalConnectionContainer extends Container {
 
     @Override
     public boolean isItemValid(ItemStack par1ItemStack) {
-      return inventory.isItemValidForSlot(0, par1ItemStack);
+      return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
     }
     
   }

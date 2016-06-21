@@ -8,21 +8,16 @@ import java.util.Map;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
-
-  private long timeAtLastApply;
 
   final List<NetworkedInventory> inventories = new ArrayList<NetworkedInventory>();
   private final Map<BlockCoord, List<NetworkedInventory>> invMap = new HashMap<BlockCoord, List<NetworkedInventory>>();
@@ -33,15 +28,12 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   private boolean doingSend = false;
 
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
+  private int changeCount;
+
+  private InventoryDatabaseServer database;
 
   public ItemConduitNetwork() {
-    super(IItemConduit.class);
-  }
-
-  @Override
-  public Class<IItemConduit> getBaseConduitType() {
-    return IItemConduit.class;
+    super(IItemConduit.class, IItemConduit.class);
   }
 
   @Override
@@ -77,6 +69,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return null;
   }
 
+  public List<NetworkedInventory> getInventoryPanelSources() {
+    ArrayList<NetworkedInventory> res = new ArrayList<NetworkedInventory>();
+    for(NetworkedInventory inv : inventories) {
+      if(inv.con.hasInventoryPanelUpgrade(inv.conDir)) {
+        res.add(inv);
+      }
+    }
+    return res;
+  }
+
   private List<NetworkedInventory> getOrCreate(BlockCoord bc) {
     List<NetworkedInventory> res = invMap.get(bc);
     if(res == null) {
@@ -106,6 +108,35 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   public void routesChanged() {
     requiresSort = true;
+  }
+
+  public void inventoryPanelSourcesChanged() {
+    changeCount++;
+  }
+
+  public int getChangeCount() {
+    return changeCount;
+  }
+
+  public InventoryDatabaseServer getDatabase() {
+    check: {
+      if(database == null) {
+        database = new InventoryDatabaseServer(this);
+      } else if(database.isCurrent()) {
+        break check;
+      }
+      database.updateNetworkSources();
+    }
+    return database;
+  }
+
+  @Override
+  public void destroyNetwork() {
+    super.destroyNetwork();
+    if(database != null) {
+      database.resetDatabase();
+      database = null;
+    }
   }
 
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
@@ -146,11 +177,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (NetworkedInventory source : invs) {
 
       if(source.con.getLocation().equals(con.getLocation())) {
-        if(source != null && source.sendPriority != null) {
+        if(source.sendPriority != null) {
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
-              String s = Lang.localize(t.inv.getInventory().getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
+              String s = t.inv.getLocalizedInventoryName() + " " + t.inv.location.chatString() + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -167,48 +198,28 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         IItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(inv, input)) {
-          result.add(Lang.localize(inv.getInventory().getInventoryName(), false) + " " + inv.location);
+          result.add(inv.getLocalizedInventoryName() + " " + inv.location.chatString());
         }
       }
     }
     return result;
   }
 
-  private boolean isRemote(ItemConduit itemConduit) {
-    World world = itemConduit.getBundle().getEntity().getWorldObj();
-    if(world != null && world.isRemote) {
-      return true;
-    }
-    return false;
-  }
-
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-    long curTime = world.getTotalWorldTime();
-    if(curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      tickHandler.tick = world.getTotalWorldTime();
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-    }
-  }
-
-  private void doTick(long tick) {
-
+  public void doNetworkTick() {
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
         ni.updateInsertOrder();
       }
-      ni.onTick(tick);
+      ni.onTick();
     }
-    requiresSort = false;
-
+    if(requiresSort) {
+      requiresSort = false;
+      changeCount++;
+    }
+    if(database != null) {
+      database.tick();
+    }
   }
 
   static int compare(int x, int y) {
@@ -216,19 +227,5 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   static int MAX_SLOT_CHECK_PER_TICK = 64;
-
-  private class InnerTickHandler implements TickListener {
-
-    long tick;
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick(tick);
-    }
-  }
 
 }

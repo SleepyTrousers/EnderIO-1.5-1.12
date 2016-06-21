@@ -5,8 +5,13 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
+import crazypants.enderio.conduit.gas.IGasConduit;
+import crazypants.enderio.conduit.gas.PacketGasLevel;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.machine.generator.combustion.PacketCombustionTank;
@@ -14,13 +19,8 @@ import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.PacketBurnTime;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 
-/**
- * To avoid integrated server crashes when calling client-only methods
- * 
- * @author Garrett Spicer-Davis
- */
 public class ClientUtil {
-  
+
   public static void doFluidLevelUpdate(int x, int y, int z, PacketFluidLevel pkt) {
     TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
     if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
@@ -28,6 +28,19 @@ public class ClientUtil {
     }
     IConduitBundle bundle = (IConduitBundle) tile;
     ILiquidConduit con = bundle.getConduit(ILiquidConduit.class);
+    if(con == null) {
+      return;
+    }
+    con.readFromNBT(pkt.tc, TileConduitBundle.NBT_VERSION);
+  }
+
+  public static void doGasLevelUpdate(int x, int y, int z, PacketGasLevel pkt) {
+    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
+    if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
+      return;
+    }
+    IConduitBundle bundle = (IConduitBundle) tile;
+    IGasConduit con = bundle.getConduit(IGasConduit.class);
     if(con == null) {
       return;
     }
@@ -42,13 +55,13 @@ public class ClientUtil {
         (rand.nextDouble() - 0.5) * 1.5);
   }
 
-  public static void setTankNBT(PacketCombustionTank message, int x, int y, int z) {    
-    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);    
+  public static void setTankNBT(PacketCombustionTank message, int x, int y, int z) {
+    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z);
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
     }
-    
+
     if(message.nbtRoot.hasKey("coolantTank")) {
       NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");
       tile.getCoolantTank().readFromNBT(tankRoot);

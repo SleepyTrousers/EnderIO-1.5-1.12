@@ -11,18 +11,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.Recipe;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.material.OreDictionaryPreferences;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   // We will use the same energy as per a standard furnace.
-  // To do the conversion between fuel burning and MJ, use the Stirling Gen
-  // which produces one MJ per tick of burn time
-  private static float MJ_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.coal, 1, 0)) / 8;
+  // To do the conversion between fuel burning and RF, use the Stirling Gen
+  // which produces ten RF per tick of burn time
+  private static int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.coal, 1, 0)) * 10 / 8 ;
 
   private boolean enabled = true;
 
@@ -42,9 +45,14 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
     int numInputs = getNumInputs(inputs);
-    return numInputs * MJ_PER_ITEM;
+    return numInputs * RF_PER_ITEM;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   private int getNumInputs(MachineRecipeInput[] inputs) {
@@ -102,17 +110,24 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if(output == null) {
       return new ResultStack[0];
     }
+    int stackSize = output.stackSize;
+    output = OreDictionaryPreferences.instance.getPreferred(output);
     ItemStack result = output.copy();
+    result.stackSize = stackSize;
     result.stackSize = result.stackSize * getNumInputs(inputs);
     return new ResultStack[] { new ResultStack(result) };
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     if(output == null) {
       return 0;
     }
     float result = FurnaceRecipes.smelting().func_151398_b(output);
+    if (result > 1.0f) {
+      // see net.minecraft.inventory.SlotFurnace.onCrafting(ItemStack)
+      result = 1.0f;
+    }
     return result * output.stackSize;
   }
 
@@ -155,16 +170,18 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     }
     return result;
   }
-
-  @Override
-  public List<IEnderIoRecipe> getAllRecipes() {
+  
+  
+  public List<IRecipe> getAllRecipes() {
     if(!enabled) {
       return Collections.emptyList();
     }
-    List<IEnderIoRecipe> result = new ArrayList<IEnderIoRecipe>();
+    List<IRecipe> result = new ArrayList<IRecipe>();
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.smelting().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
-      result.add(new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, MJ_PER_ITEM, entry.getKey(), entry.getValue()));
+      ItemStack output = entry.getValue();
+      output = OreDictionaryPreferences.instance.getPreferred(output).copy();
+      result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
     }
     return result;
   }

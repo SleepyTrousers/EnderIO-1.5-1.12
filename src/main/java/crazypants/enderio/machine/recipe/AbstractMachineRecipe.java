@@ -10,7 +10,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
     if(inputs == null || inputs.length <= 0) {
       return 0;
     }
@@ -18,19 +18,41 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return recipe == null ? 0 : recipe.getEnergyRequired();
   }
 
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    if(inputs == null || inputs.length <= 0) {
+      return RecipeBonusType.NONE;
+    }
+    IRecipe recipe = getRecipeForInputs(inputs);
+    return recipe == null ? RecipeBonusType.NONE : recipe.getBonusType();
+  }
+
   public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);
 
   @Override
   public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
-    IRecipe rec = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(inputs);
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
-    for (MachineRecipeInput input : inputs) {
-      if(input != null && (input.item != null || input.fluid != null)) {
-        for (RecipeInput ri : rec.getInputs()) {
-          if(ri.isInput(input.item)) {
-            result.add(new MachineRecipeInput(input.slotNumber, ri.getInput().copy()));
-          } else if(ri.isInput(input.fluid)) {
-            result.add(new MachineRecipeInput(input.slotNumber, ri.getFluidInput().copy()));
+
+    //Need to make copies so we can reduce their values as we go
+    MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.length];
+    int i = 0;
+    for (MachineRecipeInput available : inputs) {
+      availableInputs[i] = available.copy();
+      ++i;
+    }
+    RecipeInput[] requiredIngredients = new RecipeInput[recipe.getInputs().length];
+    i = 0;
+    for (RecipeInput ri : recipe.getInputs()) {
+      requiredIngredients[i] = ri.copy();
+      ++i;
+    }
+
+    //For each input required by the recipe got through the available machine inputs and consume them
+    for (RecipeInput required : requiredIngredients) {
+      for (MachineRecipeInput available : availableInputs) {
+        if(isValid(available)) {
+          if(consume(required, available, result)) {
+            break;
           }
         }
       }
@@ -38,8 +60,48 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return result;
   }
 
+  protected boolean consume(RecipeInput required, MachineRecipeInput available, List<MachineRecipeInput> consumedInputs) {
+
+    if(required.isInput(available.fluid)) {
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, required.getFluidInput().copy()));
+      return true;
+    }
+
+
+    if(required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
+
+      ItemStack availableStack = available.item;
+      ItemStack requiredStack = required.getInput();
+
+      ItemStack consumedStack = requiredStack.copy();
+      consumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
+
+      requiredStack.stackSize -= consumedStack.stackSize;
+      availableStack.stackSize -= consumedStack.stackSize;
+
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, consumedStack));
+
+      if(requiredStack.stackSize <= 0) {
+        //Fully met the requirement
+        return true;
+      }
+
+    }
+    return false;
+  }
+
+  protected boolean isValid(MachineRecipeInput input) {
+    if(input == null) {
+      return false;
+    }
+    if(input.item != null && input.item.stackSize > 0) {
+      return true;
+    }
+    return input.fluid != null && input.fluid.amount > 0;
+  }
+
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

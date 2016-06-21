@@ -1,5 +1,700 @@
-2.0_beta
-- Ported 1.0.6 for MC 1.6.4 to MC 1.7.2
+------------------------------------------------------
+Version 2.2.8
+------------------------------------------------------
+New
+- #1703 Forestry upgrades for DS armor (MatthiasM2)
+- #746 Add speed downgrade for item conduits. Allows conduits to pull only one item at a time (MatthiasM2)
+- #1731 All machines will now have progress tooltips on the progress animation (MatthiasM2)
+- #85 Add hardened conduit facades. Have a higher hardness and blast resistance (TNT-proof) than normal facades.
+- Add recipe to upgrade capacitors to the next tier
+
+Changes
+- All blocks now support the vanilla breaking animation properly
+- Conduit connectors combine into a single box, this fixes z-fighting issues (especially with texture packs)
+- Split internal and external conduit connector textures
+- Some more default hoes added to the config
+- Localized GUI names, WAILA configs, and the rest of the tooltips (Adaptivity)
+- Improve double chest support on the mod item filter snapshot
+- Add support for sending grinding balls via IMC
+- #1771 All Killer Joes will now have the same UUID, for server admin purposes
+- Wither skeletons will now drop Tcon necrotic bones and respect Tcon beheading
+- Improve efficiency of wireless chargers (MatthiasM2)
+- Refactor how all EIO blocks drop themselves, should resolve all™ issues with such in the future
+- It is now possible to use the yeta wrench shift+left click in creative mode (MatthiasM2)
+- Alloy smelter will now give smelting achievements (iron, fish) (MatthiasM2)
+- Wireless charger will now keep its stored energy when picked up (MatthiasM2)
+- EnderIO GUIs with tabs will move NEI items out of the way (MatthiasM2)
+
+Bugs
+- Fix crash with iguana tweaks level ups in farm
+- Fix some crashes with facades and WAILA
+- Painted slabs will no longer drop in creative mode (MatthiasM2)
+- Fix enchanter and yeta wrench tooltips (MatthiasM2)
+- Fix the alignment of the progress arrow in the slice'n'splice (MatthiasM2)
+- Fix IItemDuct methods not checking filters. This should allow machines pushing to conduits to be filtered properly
+- Fix wither skeletons not spawning and fix their equipment/rendering
+- Fix tooltips rendering underneath the IO config
+- Fix IO config changing NEI item lighting
+- #1630 Item conduits pulling and preserving invalid stacksizes (fixes issues with filing cabinets)
+- #1585 Fix blocks not dropping in explosions
+- #1821 Fix buffers ignoring redstone mode
+
+------------------------------------------------------
+Version 2.2.7
+------------------------------------------------------
+New
+- IO labels on capacitor banks can now be expanded to any square size, no longer limited to one face (MatthiasM2)
+- Add chargeable item filter, allows RF containing items to be filtered based on their fullness (MatthiasM2)
+- Add blacklist option for ender fluid conduits (MatthiasM2)
+
+Changes
+- #1549 All appropriate blocks are now mined faster with a pickaxe
+- DS Armor solar upgrade can now charge other mods' armors (configurable)
+- Clean up all button/widget textures (RandomGenius)
+- Add some more default whitelisted hoes (MatthiasM2)
+- Added some more ExN recipes for the SAG Mill (MatthiasM2)
+- Update Russian translation (Adaptivity)
+- Update Chinese translation (mymagadsl)
+- Add warning comment to all XML files
+- Killer Joe now needs line-of-sight to hit mobs (configurable) (hilburn)
+- Change default vanilla SAG Mill recipes to use oredict (LordBlackhole)
+- Conduit facades painted as fused quartz/quite clear glass will have connected textures (MatthiasM2)
+- Capacitor Banks will stack in more cases, "NONE" face mode no longer saves to NBT (MatthiasM2)
+- Allow configuration of XP juice ID, uses OpenBlocks' value by default (MatthiasM2)
+- Wither skeleton is now a unique entity, this should allow powered spawners to spawn them in the overworld, and fix a host of other similar issues in other mods. Configurable. (hilburn)
+- Added recipes for Lumium and Signalum to default XML (MatthiasM2)
+- Show mob name in soul vial tooltip (MatthiasM2)
+- Allow naming of soul vials (MatthiasM2)
+- Show moo fluid name in soul vial tooltip (MatthiasM2)
+- Show mob health in soul vial tooltips (MatthiasM2)
+- Show sheep color in soul vial tooltips (MatthiasM2)
+- Add soul bound enchantment description (MatthiasM2)
+- Implement IInventoryConnection on item conduits. Should improve compatibility with TE (hilburn)
+- #1458 Add button to merge inventory with existing snapshot in the existing item filter (MatthiasM2)
+- Right clicking while sneaking with an existing item filter will add the content to the snapshot (MatthiasM2)
+- Fluid conduits will now show their information in WAILA (MatthiasM2)
+- Add detailed tooltips to fuel items while inside the Stirling Generator GUI (MatthiasM2)
+- Process IMC from mods that send them in Post-Init (Parker8283)
+- Show upgrade information in Stirling Generator GUI (MatthiasM2)
+- Localized recipe names and keybind names (Adaptivity)
+
+Bugs
+- Fix power monitor reading int values where it saved long values
+- #1556 Fix farming station allowing 2 of the same kind of tool in the inventory
+- Fix disabled mode not being accessible when a capacitor bank was against a generator
+- #1548 Fix wireless charger redstone control not affecting wireless lights
+- Fix farming station not accepting wooden axes (hilburn)
+- Fix farming station allowing broken Tcon tools to be used (hilburn)
+- Prevent crash when XP juice could not be found (MatthiasM2)
+- #1595 Fix all buffers showing as Item Buffer in WAILA
+- #1600 Travel Anchor crashes when painted as itself
+- Fix fluid containers not being drained when the top side is configured for push (MatthiasM2)
+- #1607 Fix farm damaging some items incorrectly
+- #1433 Fix crash when Mekanism cable broken while next to capacitor bank (MatthiasM2)
+- #1627 Fix not being able to extract from an unconfigured side on buffers (MatthiasM2)
+- Fix Stirling Generator not pushing out empty buckets (MatthiasM2)
+- Fix soul binder caching IIcons and rendering incorrectly after texture restitch
+- Fixed author list in mcmod.info (Adaptivity)
+- Fixed ExU colored blocks not rendering properly in facades (MatthiasM2)
+- Fixed light calculation of painted slabs to match vanilla (MatthiasM2)
+- #1673 Fix grinding ball percentage tooltip being invalid sometimes (MatthiasM2)
+- #1655 Fix conduit probe not copying redstone mode of fluid conduits (MatthiasM2)
+- #1609 Fix buffer buttons having incorrect tooltips (MatthiasM2)
+- #1701 Bucket interaction on tanks no longer takes side configuration into account (MatthiasM2)
+- Fix fused quartz/quite clear glass sides not rendering when they are occluded by different types of the same block
+- #1640 Fix soulbound having ridiculous values for enchantability
+- #1643 Fix Ender Rail breaking instantly
+
+------------------------------------------------------
+Version 2.2.6
+------------------------------------------------------
+New
+- Add Buffer. Comes in 4 types: Item, Power, Omni, Creative. 
+	- Used to be a small inventory/power storage with a large throughput. 
+	- Can be used to "transform" between different conduit types.
+	- Creative buffer will pull/push infinite items/power.
+	- Can be painted and has connected textures with Chisel.
+- #32 Add connected photovoltaic panels. Will now form a multiblock and generate/emit power as a cohesive unit.
+- Add default recipe for the "Repair" enchant from Thaumcraft
+
+Changes
+- #1456 Wireless Charger can be deactivated with redstone
+- Add support for old and new chisel versions
+- Add farming support for cocoa (hilburn)
+- Add farming support for mana beans - disabled by default (hilburn)
+- Add farming station support for giant mushrooms (hilburn)
+- Add a percentage tooltip to the grinding ball remaining bar
+- **REMOVE AE2 rv1 SUPPORT COMPLETELY**
+- Farm axe detection should now support most modded axes
+- Add ExNihilo recipes to SAG mill default recipes (MatthiasM2)
+- Add "modes" for SAG mill bonuses, allow you to disable the main output bonus (MatthiasM2)
+- Add whitelist for hoes supported by farming station
+- #1490 Add SAG mill recipe for charged certus quartz crystals
+
+Bugs
+- Fix obelisk hovering item being stuttery
+- #1447 Capacitor bank render glitch when restitching textures
+- Fix obelisk bounds
+- Fix soulbound enchant being missing when ID set to -1
+- #1466 Fix travel anchor teleport being one block off in certain directions
+- #1436 Fix crash when painted block placed at y=0
+- #1489 Fix farming station trying to harvest certain non-bush blocks above berry bushes
+- #1500 Fix dupe bug with infernal mobs and killer joe
+- Fix small capacitor bank bug causing 2x as much power to be pulled as expected in some situations
+- #1501 Fix travel anchor dropping in creative
+- #1445 Fix cap banks refusing to be set to input mode when connected to certain blocks
+- Fix crash when tons (thousands) of cap banks edited at once.
+- #1416 Fix advanced item filter not matching some bees properly (hilburn)
+- Fix obelisk hovering item rendering being broken in fast graphics mode
+- Fix grinding ball duration bar not rendering sometimes
+- Fix fill gauge connecting on creative capacitor banks
+
+------------------------------------------------------
+Version 2.2.5
+------------------------------------------------------
+Changes
+- Killer joe can now have its sword extracted
+- Killer joe will now update its render properly when a sword is added/removed
+
+Bugs
+- Update CoFHAPIProps.java version to prevent other RF API versions loading instead of EnderIO's
+- Fix right clicking redstone color buttons not making the clicky noise
+
+------------------------------------------------------
+Version 2.2.4
+------------------------------------------------------
+
+Changes
+- #1413 Added support for Dense Ores in SAG Mill and Alloy Furnace
+- #1029 Add lock buttons to farm seed slots
+
+API
+- #1209 Add API interface to allow forced connection of redstone conduits
+- Added IMC support for defining if a block or tile entity should be connected to by insulated redstone conduits 
+
+Bugs
+- #1409 Energy conduit and capacitor interaction bug
+- #1412 Null pointer Exception in console 
+- #1421 Capacitor bank wont pull energy from a dim. transceiver
+- #1423 Crash using 'show range' button in aversion / attractor obelisk
+- Fixed infinite power bug 
+
+------------------------------------------------------
+Version 2.2.3
+------------------------------------------------------
+
+New
+- Added Dark Steel Ladder
+- Added new Capacitor Banks  
+  - 3 tiers
+  - Configurable level / io display
+  - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
+- Added preferences for Ore Dictionary outputs for the SAG Mill and Alloy Furnace. 
+    - Defaults to Thermal Foundation when available, see OreDictionaryPreferences_Core.xml
+- Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
+- Added support for increased Enderman Skull drops when using a TiC Cleaver or weapon with the beheading modifier
+    - Values adjustable in config. Default sets Cleaver = The Ender, Beheading = looting on The Ender 
+- Capacitor Banks can now be used to add the Flux upgrade to TiC tools    
+
+Changes
+- #1378 Soul Vial filled in a Powered Spawner now produce identical item stacks to enable their use in auto crafting systems
+- Ender Fluid Conduit filters and auto extract can now be used when in/out mode
+- Updated implementation of RF API to send power to IEnergyReceivers that are not IEnergyHandlers
+- SAG Mill no longer produces dusts for metals that are not available
+- Corrected Experience Obelisk tooltip
+- Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
+- Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
+- Painted glow stone hardness increased to stop instant breaking
+- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore (can be disabled in the config)
+- Halved the skull drop chance when mobs killed by a 'fake player', such as killer joe (can be changed in the config)
+- Added Soul Bound enchantment ID to the config
+- Dark Steel Pick will now apply the obsidian efficiency boost on all hard blocks (can be changed in the config)
+- Crafter can now be configured to buffer either single items or item stacks
+- Dimensional Transceiver can now be configured to buffer either single items or item stacks
+- Added 'show range' button to Attractor Obelisk
+- Update to support WAILA 1.5.6
+
+Bugs
+- #1268 Capacitor bank not honoring input redstone settings
+- #1285 Ender Rail can no longer be rotated as the forge rotation code was messing with my bits
+- #1285 Ender Rail not adjusting the direction of RC locomotives when required 
+- #1297 EnderLiquidConduit writing excessive warning messages
+- #1333 Sound locator sometimes creates thousands of entities per frame
+- Sound locator entities not being rendered in some cases
+- #1335 Dimensional Transceivers not saving channels after server restart
+- #1336 Soul Binder - Ghost Block 
+- #1339 SAG Mill grinding balls reducing return rate for bonus outputs
+- #1347 Capacitor Bank energy duplication bug 
+- #1348 Item conduits not connecting to tesseracts in receive only mode
+- #1351 Travel Anchor: Item needs to be added before text is displayed 
+- #1354 ME conduit always connected regardless of visual state
+- #1357 Power Conduits replaced by growing tree's 
+- #1361 Enlightened Fused Quartz is not blast resistant 
+- #1366 Powered Spawner doesn't remain active when chunk loaded 
+- #1371 Farming Stations don't harvest third/top block of sugar cane or cactus
+- #1373 Fluid Tank accepts fluid regardless of configuration
+- #1383 Travel Anchor crash  
+- #1384 Disabling one side of machines disables the opposite side as well.  
+- #1401 Crash when opening Vat GUI
+- RF Tools not charging in Killer Joe until he has attacked something
+- Farm and Dark Steel Axe where having non target trees with adjacent log blocks
+- Conduits not sending out TE updates properly
+
+
+------------------------------------------------------
+Version 2.2.2
+------------------------------------------------------
+
+New
+- #779 Added solar upgrade for DS helm
+- #1098 Added Soulbound enchantment. Items with this enchantment will not be dropped when the player dies
+- Added send/recieve item filters to the Dimensional Transceiver
+- Added 'Capture Mode' to powered spawners to allow automated filling of Soul Vials
+- Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
+  whitelisted by default. See PainterPaintSources_Core.xml for details.
+- Added support for transparent facades. Facades that are not opaque will not stop conduits rendering 
+
+Changes
+- #1257 Upgrading Dark Steel items with capacitors now increases the amount of damage absorbed by power as
+  well as the amount of power stored
+- #900 New texture for quite clear glass block
+- #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible
+- #1320 Charged Certus Quartz Ore now produces charged rather than normal certus quartz in the SAG Mill
+- Increased max stack size for Soul Vials and Broken Spawners to 64
+- Reduced amount of powered stored in wireless charger from 1 mil to 200k   
+
+API
+- #1254 Add method for tools to control hiding of facades
+    - For this, a new API has been added, containing ITool
+- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC
+
+Config
+- Increased range of Aversion Obelisk and lower power use to tier three upgrade
+- #1261 Add max level configs for XP obelisk, killer joe, and soul binder
+- Added Thaumcraft Warded blocks to the default teleport black list
+- #1272 Number of items required for each enchantment level in the Enchanter can now be set in the config
+- Added config option to disable Dimensional Transceiver
+
+Bugs
+- Fix outer corners on connected texture blocks not being metadata sensitive when they should be
+- Fixed coolant tooltips
+- #1266 Certain types of blocks can't be repainted
+- #1273 Farming Stations not accepting enough power to keep up 
+- #1284 Spawner not working when chunk loaded
+- #1280 The Ender Sword holds 1m RF but only shows 100k 
+- #1298 Painted Blocks for biome specific Blocks render grey 
+- #1300 Farming Station won't take MFR Rubber trees
+- #1312 Incorrect number of items used in Alloy Smelter recipe
+- #1313 Solar arrays cause an immense amount of packets to be sent 
+- #1310 Crash using existing item filter 
+
+
+
+------------------------------------------------------
+Version 2.2.1
+------------------------------------------------------
+Changes
+- Added dense ME Conduits
+- Added config to stop staff of travelling going through unbreakable blocks
+- Added underground biomes support to SAG Mill
+- #1223 Various small GUI- and NEI-related improvements and tweaks (Tonius) 
+- #1232 Painted Glowstone now implements IFacade and will have connected textures with chisel
+- #1238, #1251 Improved control and modification of grinding balls via the SAGMillRecipes_User.xml file
+- #1164 Conduit resistance increased 
+
+Bugs
+- #1226 Redstone color not showing on MFR machines / BR ports
+- #1210 ME Conduits enabling without AE2
+- #1230 ME Conduits overlap with Gas Conduits
+- #1228 Spoon upgrade still not working properly
+- #1239 Ender Rail uncraftable with Special Mobs  
+- #1248 Farming Station performance issue when large tree farm has no axe
+- #1259 shift right click on vacuum chest with a wrench causes it to disappear 
+- Power conduits will now connect to blocks implementing IEnergyConnection 
+- Fixed SAG Mill recipes for BoP bone segments
+- Fixed lights becoming wireless on place
+- Fixed some blocks showing power in WAILA when they shouldn't
+
+------------------------------------------------------
+Version 2.2.0
+------------------------------------------------------
+
+Changes
+- Updated Build Craft API compatibility to v6.1
+  - Build Craft API is no longer required and is not distributed with EIO
+  - All MJ support removed
+  - Still compatible with BC v6.0 though no MJ support or liquid fuel registration   
+- Added ME Conduits - basic, carry 8 channels. Unfinished. (tterrag)
+- Added support for IAETool for wrench compatibility with AE 
+- Added Computer Craft support to insulated redstone conduits (Vexatos)
+- Insulated Redstone Conduits can now be toggled between emitting a strong and weak signal via the GUI
+  Default output has been reverted to a weak signal. 
+- Added tool blacklist to prevent broken spawners dropping when using those tools
+- Allow dark pick to work on glass material blocks such as glowstone (tterrag)
+- Add comparator support to tanks and capacitor banks (tterrag)
+- Railcraft API no longer distributed with EIO
+- Thaumcraft API no longer distributed with EIO
+- Added support for Ender Zoo enchants to Enchanter
+- Added spawn costs for Ender Zoo mobs to powered spawner config
+- #1188 Updated zh_CN.lang (Mrkwtkr)
+- #1199 Create Korean translation (puyo061) 
+- #1218 All conduits now keep connection settings when removing/replacing adjacent blocks 
+
+Bugs
+- Fix NEI handler for vat showing fire if a recipe only has one item. (tterrag)
+- Fix spoon upgrade only working on certain blocks (tterrag)
+- Fixed ore dictionary registration of sand to include red sand
+- Fixed crash when upgrading Daek Steel Helm with Goggles of Revealing
+- #1157 Ender IO and Staff of Traveling not working in Mystcraft Ages
+- #1184 Dimensional Transceiver forgets connections  bug Code Complete
+- #1191 #1203 Fixed crash with wireless electric light
+- #1194 Fixed infinite loop created using ender fluid conduits and TE tesseracts.
+- #1197 Fixed packet size for machine progress updates.
+- #1201 Displayed Armor RF Power Values where 10x too actual (only a UI issue)  
+
+
+------------------------------------------------------
+Version 2.1.8
+------------------------------------------------------
+
+Changes
+- Added text labels to Travel Anchors and improved rendering and selection
+- Added new item 'Ender Resonator', made in Slice'N'Splice, used to make wireless chargers and dim. trans.
+  'Easy' recipe config option added to use old, cheaper recipe
+- Added wireless powered light (tterrag)
+- Old transceiver now hidden in NEI / creative tab. Will be removed soon, convert existing blocks to new version by 
+  placing in the crafting grid
+- #1167 Improved NEI handlers (Tonius)
+- #1165 Updated zh_CN.lang (Mrkwtkr)
+- Removed mobs from EnderIO, moved to new mod EnderZoo
+- Redstone conduits will now output strong signal to blocks they are connected to (tterrag)
+- Machines now only respond to strong redstone signals (tterrag)
+- #1181 Add dump buttons to vat tanks (tterrag)
+- Added the ability to set the output direction of Ender Rails
+
+Bugs
+- #1162 Infinite Broken-Spawner exploit with Twilight Forest
+- #1170 Dimensional Transceiver infinite loop with liquids
+- #1176 Stirling Gen not outputting as much power as it generates when base rate changed in config
+- Transceiver item buffers would allow multiple non-stackable items of the same type
+  
+
+------------------------------------------------------
+Version 2.1.7
+------------------------------------------------------
+
+Changes
+- Added EnderRail
+- Added Dark Steel Anvil (tterrag)
+- #1145 Added RedNet support to insulated redstone conduits (fnuecke)
+- #1133 Update zh_CN.lang (Mrkwtkr)
+- #1138 Created cs_CZ.lang (nalimleinad)
+- #1156 Updated CoFH API 
+
+Bugs
+- Fixed Transceivers losing items when single player worlds reloaded without restarting MC
+- More than one stack of quartz can now be placed in alloy smelter when making fused quartz
+- #1150 Crash when Farming Station Error trying to plant Pam's Mob Seeds (nb, they don't work, but it wont crash)
+- #1152 Fluids blocks missing names
+- #1153 Item conduits crash with invalid item stacks (one without an item assigned)
+- #1159 Painter allows you to paint glowstone with a painted block causing crash 
+
+------------------------------------------------------
+Version 2.1.6
+------------------------------------------------------
+
+Changes
+- #1147 Increased Dimensional Transceiver energy buffer from 100k to 500k
+
+Bugs
+- Using travel upgrade on tools not draining power
+- #1128 Ender IO crashes when using travel staff in SMP
+- #1139 Attractor not working with existing entities.
+- #1142 Dimension Transceiver crash, NullPointerException 
+- #1143 Soul binder has incorrect lighting in come situations
+- #1023 Displayed power not rendering the non-breaking space separator correctly (French locale)
+- #1136 Crafter energy cost on GUI tool tip wrong.
+- #1144 Wireless charger not keeping its charge when the game / chunk is unloaded
+- #1058 Can't extract buckets from stirling gen (tterrag)
+
+------------------------------------------------------
+Version 2.1.5
+------------------------------------------------------
+
+Changes
+- Experience Obelisk now stores XP internally. Can still be extracted/inserted to/from liquidXP. 
+
+Bugs
+- #1132 Fixed item duplication bug using Dimensional Transceiver
+
+
+------------------------------------------------------
+Version 2.1.4
+------------------------------------------------------
+
+- Fixed client side crash with Killer Joe when playing SMP
+
+------------------------------------------------------
+Version 2.1.3
+------------------------------------------------------
+
+Changes
+- Better bounding boxes on obelisks (tterrag)
+- Left clicking XP obelisk takes one level from player (tterrag)
+- WAILA support on all IInternalPowerReceptor and IConduitBundle (tterrag)
+- WAILA support for photovoltaic panels (efficiency %) (tterrag)
+- Allow killer joe's sword to charge from wireless chargers (tterrag)
+- Localize tile.blockConduitBundle.name to Conduit Connector (tterrag)
+- Fix WAILA tooltip for dim.trans., was showing channel types even with no channels assigned to them (tterrag)
+- Dimensional Transceiver send/receive item buffers will only accept one stack per item type
+- #1127 Implemented IEnergyContainerItem on the Capacitor Bank item so it can be charged in item form (Tonius)  
+- Added ability to add Soul Binder recipes via IMC
+
+Bugs
+- Fix tormented enderman head (and future head variants) dropping damage 0 always (tterrag)
+- Fixed attractor not working with wither skellies.
+- Dark Steel pressure plate no longer needs to be placed in the painter first when painting with quite clear glass.
+- #1106 Using 2nd mode of conduit probe causes server disconnect
+- #1107 Crash placing machine next to door
+- #1112 (new) Dimentional transceiver doesn't save the selected channels on pickup
+- #1113 Dark Pick Travel does not work correctly.
+- #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item
+- #1116 Soul Binder recipes not working with Special Mobs 
+- #1121 Killer Joe XP bar doesn't update if not active
+- #1125 Improved client side performance when pressurized fluid conduits are transferring small volumes of fluid
+- #1128 Server crashes with cauldron when teleporting
+- #1129 Server crash on placement of Painting Machine 
+ 
+
+------------------------------------------------------
+Version 2.1.2
+------------------------------------------------------
+
+- Fix for client crash when using travel anchor
+
+------------------------------------------------------
+Version 2.1.1
+------------------------------------------------------
+
+Changes
+- Dimensional Transceiver re-written. To convert existing transceivers to the new version place in the crafting grid.
+  Now supports sending to / receiving from an unlimited number of other transceivers / channels.
+- Added Enderminy Mob (Ollieedd)
+- #1040 #1059 Added key toggles for speed and step assist upgrades for DS armor
+- #1061 Reservoir can be disabled in the config
+- #1071 Added recipes to make fused quartz and enlightened glass using quartz blocks and glowstone blocks (MatthiasMann)
+- Yeta wrench works with IDismantleable (Thermal Expansion) blocks (tterrag)
+- Added config options to disable all slime and squid spawns  
+- Improved displayed names of paint sources
+- Improve power bar rendering for Dark Steel tools/armor (tterrag)
+- Added support for connected texture facades with chisel mod. This will not work until the next release of chisel.
+- Added WAILA support to capacitor bank, transceiver, and tank (tterrag)
+- When in creative mode the 'drain xp' button of the soul binder now always works.
+- Added Underground Biomes Constructs Support to SAG Mill recipes (mmatis)
+- Added config option to dump mob names in the format required by EIOs blacklists.
+- Updated Metallurgy's Ore Dictionary names for SAG Mill recipes (Glassmaker)
+- Updated ru_RU.lang (Anton)
+- Updated zh_CN.lang (Mrkwtkr)
+
+
+Bugs
+- #1068 Spiders and Zombie Pigman not working correctly with attractor.
+- #1076 Recipes for Slice'N'Splice not showing axe and shears in NEI 
+- #1070 Alloy smelter produces normal Glass with 2-3 Stacks of Sand
+- #1087 Combustion generator GUI not updated on fuel change
+- #1102 Crafter duping items
+- #1101 Missing localization for painted carpet
+- #1100 Angle Wings (ExU) flying is activate when jumping on travel anchor
+- Fixed some shaped recipe definitions to allow crafting in different sections of grid (tterrag)
+- Fixed Snowballs not being harvested with spoon upgrade.
+- Remove unneeded call causing NPE in VatRecipeManager (tterrag)
+
+
+------------------------------------------------------
+Version 2.1.0
+------------------------------------------------------
+
+Changes
+- Removed MJ support from machines
+- Power conduits can output but longer recieve MJ
+- Reduced default IO for tier 1 power conduits 
+- Added Slice'N'Splice
+- Added Soul Binder
+- Added Attractor Obelisk
+- Added Aversion Oblisk
+- Added Experience Obelisk
+- Added Experience Rod
+- Added Liquid XP (Open Blocks compatible)
+- Added Spoon upgrade for Dark Steel Pick
+- Added Travel upgrade for Dark Steel Pick and The Ender
+- Added Goggles of Revealing upgrade for Dark Steel Helmet
+- Conduit probe now has a 'copy/paste' mode to copy conduit settings.
+- Improved Staff of Travelling and Yeta Wrench rendering
+- FarmStation: crops other than trees now require a hoe to be harvested, and the hoe takes 1 damage point per harvest
+- Farm now supports fertilized dirt
+- Many changes to recipes
+- Right mouse button now goes 'back' on the color and redstone mode buttons.
+- Added TE 'Hammer' support to Yeta Wrench so it works on TE machines
+
+
+Config
+- Updated all config entries to use RF
+- Added config option for power conduit IO values
+- Added config option to stop power conduits of different tiers connecting
+- Added config option for stirling gen output
+- Added config option for painter power use
+- Added config option to disable tinker's XP bushes in farming station
+- Added black list for Soul Vial and Powered Spawners
+- Added per mob type power use config for powered spawner
+- Added block black list for teleporting using staff / travel upgrade
+
+
+------------------------------------------------------
+Version 2.0.9
+------------------------------------------------------
+Changes
+- Added config options to disable certain items from being added to loot tables (Cades)
+- Updated zh_CN.lang (Mrkwtkr, sb023612)
+
+Bugs
+- #1026 Machine dupe
+
+------------------------------------------------------
+Version 2.0.8
+------------------------------------------------------
+Changes
+- Register Enlightened Clear Glass in the Ore Dictionary as "glass" and "blockGlass" (ChatFawkes)
+- Localize the beacon base tooltip (tterrag)
+
+Bugs
+- Fix NPE when opening Ender IO via travel anchor with staff in hand (tterrag)
+- Fix server kick bug in nutrient distillation (tterrag)
+- Fix pick block on electric light (tterrag)
+- #1012 Crash with TE Texture
+- #961 #1010 Fluid and Energy conduits not behaving correctly in "without redstone signal" mode
+- Fix bug with Tcon where two broken spawners would drop from one spawner
+
+------------------------------------------------------
+Version 2.0.7
+------------------------------------------------------
+Changes
+- #815 #972 Added support for fertilized dirt to farm station
+- Ingot blocks now useable as beacon bases (tterrag)
+- Add config option for killer joe to give one level of the PLAYER'S xp, rather than 1 lvl of Joe's (tterrag)
+
+Bugs
+- #997 Cannot edit machine IO in custom Mystcraft ages
+- Staff of Travelling and Yeta Wrench now rendered correctly as tools (tterrag)
+- Fix Speed upgrade draining power while flying (tterrag)
+- Fix ds axe recipe (tterrag)
+- Fix zombie gen WAILA tooltip (tterrag)
+- Fix Dim. Trans. GUI closing when 'e' is typed (tterrag)
+- Fix infinite recursion when painting travel anchor as itself (tterrag)
+
+------------------------------------------------------
+Version 2.0.6
+------------------------------------------------------
+Bugs
+- #981 Fix FPS issues when using redstone conduits
+- #978 Farm lighting issues
+
+------------------------------------------------------
+Version 2.0.5
+------------------------------------------------------
+Changes
+- Shift+Left Click now with Yeta Wrench on conduits now opens conduit GUI (you don't need to see the 'connection plate' anymore!)
+
+Bugs
+- #967 Crash opening conduit GUI
+- Fixed update issue with wireless charger causing player inventory update issues with Mine and Blade: Battle Gear 2  
+- Fixed player inventory de-sync when opening Dim. Trans Gui
+
+
+------------------------------------------------------
+Version 2.0.4
+------------------------------------------------------
+Changes
+- Added silent dark steel pressure plates
+- Add basic WAILA plugin (tterrag)
+- Re-balanced/reduced Stirling Generator output
+- Increased default power use of powered spawner
+- Hootch can now be made with apples
+- Nutrient Distillation can be made with skulls (highest output), other sources output reduced
+- Upgraded farms now have a higher continuous power use 
+- Farmer harvesting logs now uses more power than harvesting other crops (values in config) 
+- Updated zh_TW.lang (mymagadsl)
+- Register ingot storage blocks to Ore Dictionary (Alexander Hess)
+- Added enlightened fused quartz to the oredict as hardened glass (Tonius)
+
+Bugs
+- #935 Machines can be accessed and modified regardless of cauldron world guard settings
+- #945 Fixed a bug causing massive extra output from stirling gens
+- #949 Error adding custom enchants
+- #954 Crafted Conduit Facade invisible if shift-click not used
+- #958 Farming station: wrong energy buffer size 
+- Fixed cap banks not receiving power from universal cables.
+- Non-painted dark steel pressure plates dropping without a texture.
+- Fixed hardened glass oredictionary entry names (Tonius)
+
+
+------------------------------------------------------
+Version 2.0.3
+------------------------------------------------------
+Changes
+- Added 'Gas Conduit' to transport Mekanism gases (Tonius)
+- Added new alloy 'Soularium'
+- Added 'Soul Vial' item to capture and move mobs
+- Nerfed default skull drop chances (requires Config reset)
+- Updated zh_CN.lang (sb023612)
+
+Bugs
+- #933 Removed SAG Mill bonuses from quartz blocks / stairs etc to prevent item dupes.
+- #938 Insulated Redstone Conduit with Multiple Colored Endpoints Not Working  
+- Added recipe to convert storage blocks back to ingots
+- Added optimisation to conduit rendering
+- Fixed crash when a power network is destroyed before being initialized.
+
+------------------------------------------------------
+Version 2.0.2
+------------------------------------------------------
+Changes
+- Added basic farm notifications, never wonder why your farm is stuck again! (tterrag)
+- Added storage blocks for alloys and other metals (tterrag)
+- Added ore dictionary registration for all nuggets (tterrag)
+- #926 Increased the default dim. trans. power transmit limit so it can support the top tier conduits
+- #933 Removed SAG Mill grinding ball bonuses for AE Fluix and Certus Quartz Crystals
+- Using block with a Tile Entity as a paint source can be disabled in the config
+- Updated ru_RU.lang (Anton)
+- Lowered default power use of DS boots.
+
+Bugs
+- #909 Dark Leggings Speed Upgrade cause mouse wheel issues.
+- #923 Item Filter Dupe Bug
+- #925 EnderIO Machines will not accept power from Mekanism Universal Cables 
+- #929 Reinforced Obsidian not actually wither-proof
+- #930 Crash painting facades as machines from TE/other stuff
+- Stopped sending block updates when a conduits neighbor changes
+- Register quite clear glass as "blockGlass" as well for compatability
+- Fix DS Pressure Plate not dropping with painted data
+
+
+------------------------------------------------------
+Version 2.0.1
+------------------------------------------------------
+Changes
+- Dark Steel pressure plates can be painted in the Painting Machine. Quite clear glass can be used to make them invisible.
+- Travel Anchors can be painted in the Painting Machine.
+- Updated RF API (no functional change)
+
+Bugs
+- #918 Painted Glowstone Client Side Crash  bug
+
+
+
+------------------------------------------------------
+Version  2.0.0
+------------------------------------------------------
+- Ported 1.0.6 for MC 1.6.4 to MC 1.7.10
 
 New
 - Dark Steel powered armor
@@ -21,6 +716,10 @@ New
 - Enlighted Glass and Fused Quartz
 - Blast resistent Dark Steel Bars
 - Powered Magnet
+- Wireless Charger
+- Enchanter
+- Killer Joe
+- Reinforced Obsidian
 
 Changes
 - Removed advanced item conduits and added upgrades to the basic conduits

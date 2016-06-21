@@ -10,6 +10,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
+//We're not going to use this anymore
+@Deprecated
 public class CombustionGeneratorModel extends ModelBase {
   //fields
   ModelRenderer Engine;
@@ -57,8 +59,7 @@ public class CombustionGeneratorModel extends ModelBase {
     Chamber1.mirror = true;
     setRotation(Chamber1, 0F, 0F, -1.466077F);
     Chamber1.mirror = false;
-    
-    
+
     Chamber2 = new ModelRenderer(this, 0, 52);
     Chamber2.mirror = true;
     Chamber2.addBox(0F, -8F, -8F, 9, 8, 16);
@@ -67,21 +68,21 @@ public class CombustionGeneratorModel extends ModelBase {
     Chamber2.mirror = true;
     setRotation(Chamber2, 0F, 0F, -0.122173F);
     Chamber2.mirror = false;
-    
+
     Tesla1 = new ModelRenderer(this, 34, 52);
     Tesla1.addBox(-1F, -4F, -1F, 2, 5, 2);
     Tesla1.setRotationPoint(5F, 4F, 5F);
     Tesla1.setTextureSize(256, 256);
     Tesla1.mirror = true;
     setRotation(Tesla1, 0F, 0F, 0.1570796F);
-    
+
     Tesla2 = new ModelRenderer(this, 34, 52);
     Tesla2.addBox(-1F, -4F, -1F, 2, 5, 2);
     Tesla2.setRotationPoint(5F, 4F, -5F);
     Tesla2.setTextureSize(256, 256);
     Tesla2.mirror = true;
     setRotation(Tesla2, 0F, 0F, 0.1570796F);
-    
+
     Tesla3 = new ModelRenderer(this, 34, 52);
     Tesla3.addBox(-1F, -4F, -1F, 2, 5, 2);
     Tesla3.setRotationPoint(5F, 4F, 0F);
@@ -112,7 +113,7 @@ public class CombustionGeneratorModel extends ModelBase {
     Base.setTextureSize(256, 256);
     Base.mirror = true;
     setRotation(Base, 0F, 0F, 0F);
-    
+
     Base6 = new ModelRenderer(this, 48, 4);
     Base6.mirror = true;
     Base6.addBox(-1F, -2F, -1F, 1, 2, 1);
@@ -121,8 +122,7 @@ public class CombustionGeneratorModel extends ModelBase {
     Base6.mirror = true;
     setRotation(Base6, 0F, 0F, 0F);
     Base6.mirror = false;
-    
-    
+
     Base5 = new ModelRenderer(this, 48, 4);
     Base5.mirror = true;
     Base5.addBox(-1F, -2F, -1F, 1, 2, 1);
@@ -131,14 +131,14 @@ public class CombustionGeneratorModel extends ModelBase {
     Base5.mirror = true;
     setRotation(Base5, 0F, 0F, 0F);
     Base5.mirror = false;
-    
+
     Base1 = new ModelRenderer(this, 0, 0);
     Base1.addBox(-2F, -4F, -1F, 4, 4, 1);
     Base1.setRotationPoint(-6F, 24F, -7F);
     Base1.setTextureSize(256, 256);
     Base1.mirror = true;
     setRotation(Base1, 0F, 0F, 0F);
-    
+
     Base4 = new ModelRenderer(this, 48, 0);
     Base4.mirror = true;
     Base4.addBox(-4F, -1F, -1F, 8, 1, 1);
@@ -147,14 +147,14 @@ public class CombustionGeneratorModel extends ModelBase {
     Base4.mirror = true;
     setRotation(Base4, 0F, 0F, 0F);
     Base4.mirror = false;
-    
+
     Base2 = new ModelRenderer(this, 0, 0);
     Base2.addBox(-2F, -4F, -1F, 4, 4, 1);
     Base2.setRotationPoint(6F, 24F, -7F);
     Base2.setTextureSize(256, 256);
     Base2.mirror = true;
     setRotation(Base2, 0F, 0F, 0F);
-    
+
     Base3 = new ModelRenderer(this, 48, 0);
     Base3.mirror = true;
     Base3.addBox(-4F, -1F, -1F, 8, 1, 1);
@@ -163,30 +163,30 @@ public class CombustionGeneratorModel extends ModelBase {
     Base3.mirror = true;
     setRotation(Base3, 0F, 0F, 0F);
     Base3.mirror = false;
-    
+
     Support1 = new ModelRenderer(this, 0, 5);
     Support1.addBox(-1F, -4F, -1F, 2, 4, 2);
     Support1.setRotationPoint(-7F, 20F, -7F);
     Support1.setTextureSize(256, 256);
     Support1.mirror = true;
     setRotation(Support1, 0F, 0F, 0F);
-    
+
     Chimney4 = new ModelRenderer(this, 25, 20);
     Chimney4.mirror = true;
     Chimney4.addBox(-3F, -4F, -1F, 6, 4, 1);
     Chimney4.setRotationPoint(-4F, 20F, 0F);
     Chimney4.setTextureSize(256, 256);
     Chimney4.mirror = true;
-    setRotation(Chimney4, 0F, 1.570796F, 0F);    
+    setRotation(Chimney4, 0F, 1.570796F, 0F);
     Chimney4.mirror = false;
-    
+
     Support2 = new ModelRenderer(this, 0, 5);
     Support2.addBox(-1F, -4F, -1F, 2, 4, 2);
     Support2.setRotationPoint(7F, 20F, -7F);
     Support2.setTextureSize(256, 256);
     Support2.mirror = true;
     setRotation(Support2, 0F, 0F, 0F);
-    
+
     Chimney3 = new ModelRenderer(this, 25, 20);
     Chimney3.mirror = true;
     Chimney3.addBox(-3F, -4F, 0F, 6, 4, 1);
@@ -195,35 +195,35 @@ public class CombustionGeneratorModel extends ModelBase {
     Chimney3.mirror = true;
     setRotation(Chimney3, 0F, 1.570796F, 0F);
     Chimney3.mirror = false;
-    
+
     Support3 = new ModelRenderer(this, 0, 5);
     Support3.addBox(-1F, -4F, -1F, 2, 4, 2);
     Support3.setRotationPoint(-7F, 20F, 7F);
     Support3.setTextureSize(256, 256);
     Support3.mirror = true;
     setRotation(Support3, 0F, 0F, 0F);
-    
+
     Chimney2 = new ModelRenderer(this, 25, 20);
     Chimney2.addBox(-3F, -4F, 0F, 6, 4, 1);
     Chimney2.setRotationPoint(0F, 20F, 4F);
     Chimney2.setTextureSize(256, 256);
     Chimney2.mirror = true;
     setRotation(Chimney2, 0F, 0F, 0F);
-    
+
     Support4 = new ModelRenderer(this, 0, 5);
     Support4.addBox(-1F, -4F, -1F, 2, 4, 2);
     Support4.setRotationPoint(7F, 20F, 7F);
     Support4.setTextureSize(256, 256);
     Support4.mirror = true;
     setRotation(Support4, 0F, 0F, 0F);
-    
+
     Chimney1 = new ModelRenderer(this, 25, 20);
     Chimney1.addBox(-3F, -4F, -1F, 6, 4, 1);
     Chimney1.setRotationPoint(0F, 20F, -4F);
     Chimney1.setTextureSize(256, 256);
     Chimney1.mirror = true;
     setRotation(Chimney1, 0F, 0F, 0F);
-    
+
     Chimney = new ModelRenderer(this, 0, 20);
     Chimney.addBox(-4F, -4F, -4F, 8, 4, 8);
     Chimney.setRotationPoint(0F, 20F, 0F);

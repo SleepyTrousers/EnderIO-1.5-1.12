@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -26,28 +26,32 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.enderio.core.common.util.OreDictionaryHelper;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
+import crazypants.enderio.material.OreDictionaryPreferences;
 
 public class RecipeConfigParser extends DefaultHandler {
 
-  //public static final String ELEMENT_ROOT = "SAGMillRecipes";
   public static final String ELEMENT_RECIPE_GROUP = "recipeGroup";
   public static final String ELEMENT_RECIPE = "recipe";
   public static final String ELEMENT_INPUT = "input";
   public static final String ELEMENT_OUTPUT = "output";
   public static final String ELEMENT_ITEM_STACK = "itemStack";
   public static final String ELEMENT_FLUID_STACK = "fluidStack";
-  public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery";
+  public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery"; // compat
+  public static final String ELEMENT_DUMP_REGISTRY = "dumpRegistry";
 
   public static final String AT_NAME = "name";
   public static final String AT_ENABLED = "enabled";
   public static final String AT_DUMP_ITEMS = "modObjects";
   public static final String AT_ORE_DICT = "oreDictionary";
   public static final String AT_ENERGY_COST = "energyCost";
+  public static final String AT_BONUS_TYPE = "bonusType";
   public static final String AT_ITEM_META = "itemMeta";
   public static final String AT_ITEM_NAME = "itemName";
   public static final String AT_MOD_ID = "modID";
@@ -57,6 +61,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_SLOT = "slot";
   public static final String AT_CHANCE = "chance";
   public static final String AT_EXP = "exp";
+  public static final String AT_ALLOW_MISSING = "allowMissing";
 
   // Log prefix
   private static final String LP = "RecipeParser: ";
@@ -104,6 +109,8 @@ public class RecipeConfigParser extends DefaultHandler {
   private boolean inputTagOpen = false;
 
   private boolean debug = false;
+
+  private boolean inCustomHandler = false;
 
   private CustomTagHandler customHandler = null;
 
@@ -183,6 +190,7 @@ public class RecipeConfigParser extends DefaultHandler {
     // Custom tag handling
     if(customHandler != null) {
       if(customHandler.endElement(uri, localName, qName)) {
+        inCustomHandler = false;
         return;
       }
     }
@@ -213,7 +221,7 @@ public class RecipeConfigParser extends DefaultHandler {
       root = new RecipeConfig();
     }
 
-    if(ELEMENT_DUMP_REGISTERY.equals(localName)) {
+    if (ELEMENT_DUMP_REGISTERY.equals(localName) || ELEMENT_DUMP_REGISTRY.equals(localName)) {
       root.setDumpOreDictionary(getBooleanValue(AT_ORE_DICT, attributes, false));
       root.setDumpItemRegistery(getBooleanValue(AT_DUMP_ITEMS, attributes, false));
       return;
@@ -247,18 +255,23 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
+      recipe.setBonusType(getEnumValue(AT_BONUS_TYPE, attributes, RecipeBonusType.class, RecipeBonusType.MULTIPLY_OUTPUT));
+      recipe.setAllowMissing(getBooleanValue(AT_ALLOW_MISSING, attributes, false));
       return;
     }
 
     // Custom tag handling
     if(customHandler != null) {
       if(customHandler.startElement(uri, localName, qName, attributes)) {
+        inCustomHandler = true;
         return;
       }
     }
 
     if(recipe == null) {
-      Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
+      if(!inCustomHandler) {
+        Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
+      }
       return;
     }
 
@@ -316,7 +329,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   //TODO: What a hack!
   private boolean isElementRoot(String str) {
-    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str);
+    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str) || "SliceAndSpliceRecipes".equals(str);
   }
 
   private void addOutputStack(Attributes attributes) {
@@ -330,7 +343,10 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private void addInputStack(Attributes attributes) {
     RecipeInput stack = getItemStack(attributes);
-    if(stack == null) {
+    if (stack == null) {
+      if (!recipe.allowMissing()) {
+        recipe.invalidate();
+      }
       return;
     }
     recipe.addInput(stack);
@@ -371,24 +387,29 @@ public class RecipeConfigParser extends DefaultHandler {
     int stackSize = getIntValue(AT_NUMBER, attributes, 1);
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
-      ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
-      if(ores == null || ores.isEmpty() || ores.get(0) == null) {
+      if(!OreDictionaryHelper.isRegistered(oreDict)) {
         Log.debug(LP + "Could not find an entry in the ore dictionary for " + oreDict);
         return null;
       }
-      ItemStack stack = ores.get(0).copy();
+      ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict);
+      if(stack == null) {
+        Log.debug(LP + "Could not find a prefered item  in the ore dictionary for " + oreDict);
+        return null;
+      }
+      stack = stack.copy();
       stack.stackSize = stackSize;
       return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes,
           -1));
     }
 
     boolean useMeta = true;
+    int itemMeta = 0;
     String metaString = getStringValue(AT_ITEM_META, attributes, "0");
     if("*".equals(metaString)) {
       useMeta = false;
+    } else {
+      itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
     }
-    int itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
-
     ItemStack res = null;
 
     String modId = getStringValue(AT_MOD_ID, attributes, null);
@@ -419,7 +440,7 @@ public class RecipeConfigParser extends DefaultHandler {
     if(val == null) {
       return def;
     }
-    val = val.toLowerCase().trim();
+    val = val.toLowerCase(Locale.US).trim();
     return val.equals("false") ? false : val.equals("true") ? true : def;
   }
 
@@ -451,6 +472,23 @@ public class RecipeConfigParser extends DefaultHandler {
       return null;
     }
     return val;
+  }
+
+  public static <E extends Enum<E>> E getEnumValue(String qName, Attributes attributes, Class<E> clazz, E def) {
+    String val = attributes.getValue(qName);
+    if(val == null) {
+      return def;
+    }
+    val = val.trim();
+    if(val.length() <= 0) {
+      return def;
+    }
+    val = val.toUpperCase(Locale.US);
+    try {
+      return Enum.valueOf(clazz, val);
+    } catch(IllegalArgumentException ex) {
+      return def;
+    }
   }
 
   public static boolean hasAttribute(String att, Attributes attributes) {

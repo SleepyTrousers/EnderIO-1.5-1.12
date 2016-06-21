@@ -9,21 +9,34 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.ConnectedTextureRenderer.DefaultTextureCallback;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.render.ConnectedTextureRenderer;
-import crazypants.render.ConnectedTextureRenderer.DefaultTextureCallback;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.RenderUtil;
 
 public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   static int renderPass;
 
-  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer();
+  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer() {
+    @Override
+    public boolean matchesMetadata(int meta1, int meta2) {
+      return super.matchesMetadata(meta1, meta2) || BlockFusedQuartz.Type.byMeta(meta1).connectTo(meta2);
+    }
+  };
 
+  public FusedQuartzRenderer() {
+    connectedTextureRenderer.setMatchMeta(!Config.clearGlassConnectToFusedQuartz);
+  }
+  
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
     renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getItemIcon(metadata));
@@ -51,7 +64,18 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     if(te instanceof TileEntityPaintedBlock) {
       tecb = (TileEntityPaintedBlock) te;
     }
-    renderFrame(blockAccess, x, y, z, tecb, false, meta);
+    
+    if(renderer.hasOverrideBlockTexture()) {
+      renderer.renderStandardBlock(block, x, y, z);
+    } else {
+      IBlockAccess origBa = renderer.blockAccess;
+      renderer.blockAccess = new FacadeAccessWrapper(origBa);
+      try {
+        renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
+      } finally {
+        renderer.blockAccess = origBa;
+      }
+    }
     //    }
     return true;
   }
@@ -75,7 +99,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
         if(tecb != null && tecb.getSourceBlock() != null) {
           texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
         }
-        RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges);
+        RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockFusedQuartz, x, y, z, face, texture, forceAllEdges);
       }
       return;
     }

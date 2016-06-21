@@ -4,7 +4,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import static crazypants.enderio.EnderIO.*;
+
+import static crazypants.enderio.EnderIO.MODID;
 
 public class EnderIOTab extends CreativeTabs {
 
@@ -26,9 +27,10 @@ public class EnderIOTab extends CreativeTabs {
     return MODID;
   }
 
-    @Override
-    public Item getTabIconItem() {
-        return EnderIO.itemEnderface;
-    }
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Item getTabIconItem() {
+    return EnderIO.itemEnderface;
+  }
 
 }

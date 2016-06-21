@@ -16,6 +16,8 @@ import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 
+import com.enderio.core.common.util.PlayerUtil;
+
 import crazypants.enderio.Log;
 
 public class HyperCubeConfig {
@@ -134,19 +136,21 @@ public class HyperCubeConfig {
     loadChannelList(KEY_PUBLIC_CHANNELS, null, publicChannels);
 
     userChannels.clear();
-    List<UUID> users = new ArrayList<UUID>();
+    List<String> users = new ArrayList<String>();
     String usersStr = props.getProperty(KEY_USERS, "");
     String[] usersSplit = usersStr.split(DELIM);
     for (String user : usersSplit) {
       if(user != null) {
-        users.add(UUID.fromString(user));
+        users.add(user);
       }
     }
-    for (UUID user : users) {
+
+    for (String user : users) {
       List<Channel> channels = new ArrayList<Channel>();
-      loadChannelList(user + KEY_USER_CHANNEL, user, channels);
+      UUID uuid=PlayerUtil.getPlayerUIDUnstable(user);
+      loadChannelList(user + KEY_USER_CHANNEL, uuid, channels);
       if(!channels.isEmpty()) {
-        userChannels.put(user, channels);
+        userChannels.put(uuid, channels);
       }
     }
 

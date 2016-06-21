@@ -3,7 +3,8 @@ package crazypants.enderio.machine.hypercube;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.util.ArrayInventory;
+
+import com.enderio.core.common.util.ArrayInventory;
 
 public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory {
 

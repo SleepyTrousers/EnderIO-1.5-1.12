@@ -8,38 +8,50 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.common.Optional;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.RenderUtil;
 
-public class GuiExternalConnection extends GuiContainerBase {
+public class GuiExternalConnection extends GuiContainerBaseEIO {
 
   private static final int TAB_HEIGHT = 24;
-  
+
   private static int nextButtonId = 1;
-  
+
   public static int nextButtonId() {
     return nextButtonId++;
   }
-  
+
   private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
   static {
     TAB_ORDER.put(IItemConduit.class, 0);
     TAB_ORDER.put(ILiquidConduit.class, 1);
     TAB_ORDER.put(IRedstoneConduit.class, 2);
     TAB_ORDER.put(IPowerConduit.class, 3);
+    TAB_ORDER.put(IMEConduit.class, 4);
+    TAB_ORDER.put(IGasConduit.class, 5);
+    TAB_ORDER.put(IOCConduit.class, 6);
   }
 
   final InventoryPlayer playerInv;
@@ -47,7 +59,7 @@ public class GuiExternalConnection extends GuiContainerBase {
   private final ForgeDirection dir;
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
-  private final List<ISettingsPanel> tabs = new ArrayList<ISettingsPanel>();
+  private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
 
   private int tabYOffset = 4;
@@ -55,19 +67,18 @@ public class GuiExternalConnection extends GuiContainerBase {
   private final ExternalConnectionContainer container;
 
   public GuiExternalConnection(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
-    super(new ExternalConnectionContainer(playerInv, bundle, dir));
+    super(new ExternalConnectionContainer(playerInv, bundle, dir), "externalConduitConnection", "itemFilter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;
     this.dir = dir;
-    
+
     ySize = 166 + 29;
     xSize = 206;
-    
-    getContainer().setInputSlotsVisible(false);
-    getContainer().setOutputSlotsVisible(false);
-    getContainer().setInventorySlotsVisible(false);
-    
+
+    container.setInoutSlotsVisible(false, false);
+    container.setInventorySlotsVisible(false);
+
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
 
@@ -83,26 +94,28 @@ public class GuiExternalConnection extends GuiContainerBase {
         }
         //NB: using Double.comp instead of Integer.comp as the int version is only from Java 1.7+
         return Double.compare(int1, int2);
-        
+
       }
     });
-    
+
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        ISettingsPanel tab = TabFactory.instance.createPanelForConduit(this, con);
+        @SuppressWarnings("LeakingThisInConstructor")
+        ITabPanel tab = TabFactory.instance.createPanelForConduit(this, con);
         if(tab != null) {
           conduits.add(con);
           tabs.add(tab);
         }
       }
     }
-    
+
   }
 
   @Override
   public void initGui() {
     super.initGui();
     buttonList.clear();
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
@@ -110,7 +123,6 @@ public class GuiExternalConnection extends GuiContainerBase {
         tabs.get(i).deactivate();
       }
     }
-
   }
 
   @Override
@@ -138,7 +150,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         return;
       }
     }
-    tabs.get(activeTab).mouseClicked(x,y,par3);
+    tabs.get(activeTab).mouseClicked(x, y, par3);
 
   }
 
@@ -166,30 +178,31 @@ public class GuiExternalConnection extends GuiContainerBase {
     for (int i = 0; i < tabs.size(); i++) {
       if(i != activeTab) {
         RenderUtil.bindTexture(IconEIO.TEXTURE);
-        IconEIO.INACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (i * 24));
-        IconEIO icon = tabs.get(i).getIcon();
-        icon.renderIcon(tabX + 4, sy + tabYOffset + (i * TAB_HEIGHT) + 7, 10, 10, 0, false);
+        IconEIO.map.render(IconEIO.INACTIVE_TAB, tabX, sy + tabYOffset + (i * 24));
+        IWidgetIcon icon = tabs.get(i).getIcon();
+        icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (i * TAB_HEIGHT) + 4);
       }
     }
 
     tes.draw();
 
-    RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
+    bindGuiTexture();
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     RenderUtil.bindTexture(IconEIO.TEXTURE);
     tes.startDrawingQuads();
-    IconEIO.ACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
+    IconEIO.map.render(IconEIO.ACTIVE_TAB, tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
 
     if(tabs.size() > 0) {
-      IconEIO icon = tabs.get(activeTab).getIcon();
-      icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
+      IWidgetIcon icon = tabs.get(activeTab).getIcon();
+      icon.getMap().render(icon, tabX - 1, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 4);
       tes.draw();
       tabs.get(activeTab).render(par1, par2, par3);
     } else {
       tes.draw();
     }
 
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
   public ForgeDirection getDir() {
@@ -198,6 +211,31 @@ public class GuiExternalConnection extends GuiContainerBase {
 
   public ExternalConnectionContainer getContainer() {
     return container;
+  }
+
+  @Override
+  @Optional.Method(modid = "NotEnoughItems")
+  public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
+    if(tabs.size() > 0) {
+      int sx = (width - xSize) / 2;
+      int sy = (height - ySize) / 2;
+      int tabX = sx + xSize - 3;
+      int tabY = sy + tabYOffset;
+
+      return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
+    }
+    return false;
+  }
+
+  @Override
+  protected void drawFakeItemStack(int x, int y, ItemStack stack) {
+    super.drawFakeItemStack(x, y, stack);
+    itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.renderEngine, stack, x, y, "");
+  }
+
+  public void clearGhostSlots() {
+    getGhostSlots().clear();
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
 }

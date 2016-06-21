@@ -1,0 +1,791 @@
+//***  Ender IO *****//
+
+//Power
+enderio.power.rf=RF
+enderio.power.tick=/t
+enderio.power.maxOutput=Maximální výstup
+
+//Ender IO / Enderface
+tile.blockEnderIo.name=Ender IO
+tile.blockEnderIo.tooltip.detailed.line1=Zpřístupňuje vzdálený přístup k
+tile.blockEnderIo.tooltip.detailed.line2=blokům poblíž
+tile.blockEnderIo.tooltip.detailed.line3=Použito s Cestovními kotvami nebo
+tile.blockEnderIo.tooltip.detailed.line4=Tyčí cestování
+
+item.enderio.itemEnderface.name=Enderová tvář
+
+//Conduits
+enderio.blockConduitBundle=Svazek vedení
+enderio.blockConduitFacade=Fasáda vedení
+item.enderio.itemConduitFacade.name=Fasáda vedení
+item.enderio.itemConduitFacade.tooltip.detailed.line1=Obarvený v barvícím stroji
+item.enderio.itemConduitFacade.tooltip.detailed.line2=Klikni pravým tlačítkem na vedení pro umístění
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Skryté při držení klíče nebo vedení
+item.enderio.itemConduitFacade.tooltip.detailed.line4=v ruce
+
+enderio.itemPowerConduit.name=Energetické vedení
+enderio.itemPowerConduitEnhanced.name=Vylepšené energetické vedení
+enderio.itemPowerConduitEnder.name=Enderové energetické vedení
+
+enderio.itemRedstoneConduit.name=Ruditové vedení
+enderio.itemRedstoneConduitSwitch.name=Vypínač vedení
+enderio.itemRedstoneConduitInsulated.name=Odizolované ruditové vedení
+
+enderio.itemLiquidConduit.name=Tekutinové vedení
+enderio.itemLiquidConduitAdvanced.name=Natlakované tekutinové vedení
+enderio.itemLiquidConduitEnder.name=Enderové tekutinové vedení
+enderio.itemLiquidConduit.lockedType=Typ tekutiny uzamknut na
+enderio.itemLiquidConduit.unlockedType=Typ tekutiny uzamknut na
+
+enderio.itemLiquidConduit.tooltip.maxExtract=Maximální extrakce:
+enderio.itemLiquidConduit.tooltip.maxIo=Maximální IO:
+enderio.itemLiquidConduit.tooltip.detailed.line1=Tekutina teče podle zákonů gravitace
+enderio.itemLiquidConduit.tooltip.detailed.line2=Rychlost toku závisí na viskozitě
+enderio.itemLiquidConduit.tooltip.detailed.line3=tekutiny
+
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Okamžitá tekutinová teleportace
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=umožňuje několika tekutinám aby byli
+enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transportovány ve stejné lince
+
+enderio.itemItemConduit.name=Předmětové vedení
+
+enderio.filterUpgradeBasic.name=Běžný filtr předmětů
+enderio.filterUpgradeAdvanced.name=Pokročilý filtr předmětů
+enderio.itemConduitFilterUpgrade=Vylepšení pro předmětové vedení
+
+
+enderio.itemConduitFilterUpgrade.configured=Nastavené
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Umísti do výrobního rámečku pro vymazání
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Toto vymaže všechny uložené nastavení filtrů!
+
+item.itemExistingItemFilter.name=Existující filtr předmětů
+item.itemExistingItemFilter.tooltip.basic.line1=Vylepšení pro předmětové vedení
+item.itemExistingItemFilter.tooltip.detailed.line1=Vybírá pouze předměty, které jsou
+item.itemExistingItemFilter.tooltip.detailed.line2=už v inventáři
+
+item.itemModItemFilter.name=Módový filtr předmětů
+item.itemModItemFilter.tooltip.basic.line1=Vylepšení pro předmětové vedení
+item.itemModItemFilter.tooltip.detailed.line1=Vybírá pouze předměty pro vybrané
+item.itemModItemFilter.tooltip.detailed.line2=mód/y
+
+item.itemExtractSpeedUpgrade.name=Vylepšení rychlosti předmětového vedení
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Vylepšení pro předmětové vedení
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Zvětší rychlost o 4
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=předměty za extrakci
+item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Maximální počet vylepšení je 15
+
+enderio.itemGasConduit.name=Plynové vedení
+
+enderio.itemGasConduit.tooltip.maxExtract=Maximální extrakce:
+enderio.itemGasConduit.tooltip.maxIo=Maximální IO:
+enderio.itemGasConduit.tooltip.detailed.line1=Přesouvá plyny kompatibilní s Mekanism módem
+
+//Materials
+enderio.itemMaterial.name=Materiály
+enderio.silicon.name=Křemík
+enderio.conduitBinder.name=Vazač vedení
+enderio.binderComposite.name=Složení vazače
+enderio.phasedIronNugget.name=Pulzující železná hrudka
+tile.blockDarkIronBars.name=Tmavé železné cihličky
+tile.blockEndermanSkull.name=Lebka Endermana
+tile.blockEndermanSkull.base.name=Hlava Endermana
+tile.blockEndermanSkull.reanimated.name=Oživená hlava Endermana
+tile.blockEndermanSkull.tormented.name=Umučená hlava Endermana
+enderio.blastResistant=Výbuchu odolné
+enderio.lightEmitter=Vysílá světlo
+enderio.tooltip.isBeaconBase=Může být použito jako základ majáku
+
+//Fluids
+fluid.nutrient_distillation=Destilované živity
+item.bucketNutrient_distillation.name=Kbelík destilovaných živin
+
+fluid.hootch=Driják
+item.bucketHootch.name=Kbelík drijáku
+fluid.fire_water=Ohnivá voda
+item.bucketFire_water.name=Kbelík ohnivé vody
+fluid.rocket_fuel=Raketové palivo
+item.bucketRocket_fuel.name=Kbelík raketového paliva
+fluid.eio.xpjuice=Tekuté XP
+item.bucketXpjuice.name=Kbelík tekutých XP
+
+
+enderio.fluid.millibucket.abr=mB
+
+enderio.fuel.tooltip.heading=Detaily paliva
+enderio.fuel.tooltip.burnTime=spalovací čas {0,number}
+enderio.fluid.millibucketsTick=mB/t
+enderio.gas.gasTick=Plyn/t
+
+
+//Materials
+enderio.itemMachinePart.name=Kousky stroje
+enderio.machineChassi.name=Podvozek stroje
+enderio.basicGear.name=Běžné kolečko
+enderio.pulsatingCrystal.name=Pulzující krystal
+enderio.vibrantCrystal.name=Vibrující krystal
+enderio.enderCrystal.name=Enderový krystal
+enderio.attractorCrystal.name=Lákavý krystal
+enderio.darkGrindingBall.name=Míč z tmavé oceli
+enderio.darkGrindingBall.tooltip.detailed.line1=SAG drtička
+enderio.darkGrindingBall.tooltip.detailed.line2=Hlavní výstup
+enderio.darkGrindingBall.tooltip.detailed.line3=Bonusový výstup
+enderio.darkGrindingBall.tooltip.detailed.line4=Snížení energie
+
+tile.blockReinforcedObsidian.name=Zesílený obsidian
+tile.blockReinforcedObsidian.tooltip.common.line1=Odolný Witherovi
+
+//Quartz / Glass
+tile.blockFusedQuartz.name=Tavený křemen
+enderio.blockFusedQuartz.fusedQuartz.name=Tavený křemen
+enderio.blockFusedQuartz.fusedGlass.name=Poměrně čisté sklo
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Osvícený tavený křemen
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Osvícené čisté sklo
+
+item.enderio.itemFusedQuartzFrame.name=Tavený křemenný rám
+enderio.itemPowderIngot=Prášky & Cihličky
+
+//Alloys
+enderio.itemAlloy.name=Slitina
+enderio.electricalSteel.name=Elektrická ocel
+enderio.energeticAlloy.name=Energetická slitina
+enderio.phasedGold.name=Vibrující slitina
+enderio.redstoneAlloy.name=Ruditová slitina
+enderio.conductiveIron.name=Vodivé železo
+enderio.phasedIron.name=Pulzující železo
+enderio.vibrantNugget.name=Vibrující hrudka slitiny
+enderio.darkSteel.name=Tmavá ocel
+enderio.soularium.name=Soulárium
+
+tile.blockIngotStorage.name=Úložna cihliček
+tile.enderio.electricalSteel.name=Blok z elektrické oceli
+tile.enderio.energeticAlloy.name=Blok z energetické slitiny
+tile.enderio.phasedGold.name=Blok z vibrující slitiny
+tile.enderio.redstoneAlloy.name=Blok z ruditové slitiny
+tile.enderio.conductiveIron.name=Blok z vodivého železa
+tile.enderio.phasedIron.name=Blok z pulzujícího železa
+tile.enderio.vibrantNugget.name=Blok z vibrující hrudky
+tile.enderio.darkSteel.name=Blok z tmavé oceli
+tile.enderio.soularium.name=Blok ze soulária
+
+//Powder / Ingot
+enderio.powderCoal.name=Uhelný prášek
+enderio.powderIron.name=Železný prášek
+enderio.powderGold.name=Zlatý prášek
+enderio.powderCopper.name=Měděný prášek
+enderio.powderTin.name=Cínový prášek
+enderio.powderEnder.name=Ender perlový prášek
+
+//Capacitors
+enderio.itemBasicCapacitor.name=Kondenzátor
+enderio.basicCapacitor.name=Běžný kondenzátor
+enderio.activatedCapacitor.name=Dvou-vrstvový kondenzátor
+enderio.enderCapacitor.name=Osminkový kondenzátor
+
+enderio.machine.tooltip.upgrade=Vylepšení stroje
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Zvýší úložiště energie a
+enderio.machine.tooltip.upgrade.tooltip.detailed.line2=rychlost / dosah stroje
+enderio.machine.tooltip.clearConfig=Toto promaže všechny uložené informace!
+
+//Machines
+tile.blockStirlingGenerator.name=Stirlingův generátor
+tile.blockStirlingGenerator.tooltip.detailed.line1=Spaluje pevné palivo pro výrobu energie
+tile.blockStirlingGenerator.tooltip.detailed.line2=Může být vylepšený pro zvýšení výkonu
+tile.blockStirlingGenerator.tooltip.detailed.line3=a efektivity s kondenzátorama
+
+tile.blockReservoir.name=Nádrž
+tile.blockReservoir.tooltip.detailed.line1=Složená při položení 2x2x1
+tile.blockReservoir.tooltip.detailed.line2=Přidej dva kbelíky vody pro
+tile.blockReservoir.tooltip.detailed.line3=nekonečný zdroj vody
+tile.blockReservoir.tooltip.detailed.line4=Produkuje jeden kbelík za sekundu
+tile.blockReservoir.tooltip.detailed.line5=Klikni pravým tlačítkem s klíčem
+tile.blockReservoir.tooltip.detailed.line6=pro povolení auto-výstupu
+
+tile.blockAlloySmelter.name=Slitinová pec
+tile.blockAlloySmelter.tooltip.detailed.line1=Použita pro tvorbu EnderIO slitin
+tile.blockAlloySmelter.tooltip.detailed.line2=Může být také použita jako napájená
+tile.blockAlloySmelter.tooltip.detailed.line3=pec
+tile.blockAlloySmelter.tooltip.detailed.line4=Vylepši s kondenzátory pro navýšení
+tile.blockAlloySmelter.tooltip.detailed.line5=rychlosti a úložiště energie
+
+tile.blockSolarPanel.name=Fotovoltaický článek
+tile.blockSolarPanel.advanced.name=Pokročilý fotovoltaický článek
+tile.blockSolarPanel.tooltip.detailed.line1=Přes den vyrábí energii
+tile.blockSolarPanel.tooltip.detailed.line2=Musí mít přímý přístup k
+tile.blockSolarPanel.tooltip.detailed.line3=obloze
+enderio.maxSolorProduction=Maximální výstup
+enderio.tooltip.efficiency=Efektivita
+
+item.itemElectricLight.name=Napájené světlo
+item.itemElectricLight.tooltip.detailed.line1=Osvětlí velkou oblast při zásobování
+item.itemElectricLight.tooltip.detailed.line2=energií a ruditovým signálem
+
+item.itemElectricLightInverted.name=Napájené světlo (Obrácené)
+item.itemElectricLightInverted.tooltip.detailed.line1=Osvětlí velkou oblast při zásobování
+item.itemElectricLightInverted.tooltip.detailed.line2=energií
+item.itemElectricLightInverted.tooltip.detailed.line3=Vypne se ruditovým signálem
+
+item.itemLight.name=Světlo
+item.itemLight.tooltip.detailed.line1=Vysílá světlo s
+item.itemLight.tooltip.detailed.line2=ruditovým signálem
+
+item.itemLightInverted.name=Světlo (Obrácené)
+item.itemLightInverted.tooltip.detailed.line1=Vysílá světlo, vypne se s
+item.itemLightInverted.tooltip.detailed.line2=ruditovým signálem
+
+tile.blockCapacitorBank.name=Banka kondenzátorů Bank
+tile.blockCapacitorBank.creative.name=Kreativní banka kondenzátorů
+tile.blockCapacitorBank.tooltip.detailed.line1=Multi-blokové energetické úložiště.
+tile.blockCapacitorBank.tooltip.detailed.line2=Umí nabít předměty, které využívají RF.
+tile.blockCapacitorBank.tooltipPrefix=Obsahuje
+
+enderio.capbank.maxIO=Maximální I/O
+enderio.capbank.maxIn=Maximální vstup
+enderio.capbank.maxOut=Maximální výstup
+
+tile.blockWirelessCharger.name=Bezdrátový nabíječ
+tile.blockWirelessCharger.tooltip.detailed.line1=Nabíjí předměty v inventářích
+tile.blockWirelessCharger.tooltip.detailed.line2=hráčů, kteří jsou poblíž
+
+tile.blockSagMill.name=SAG drtička
+tile.blockSagMill.tooltip.detailed.line1=Drtí rudy a jiné předměty
+tile.blockSagMill.tooltip.detailed.line2=Přidej drtící čepele pro zvýšení výkonu
+tile.blockSagMill.tooltip.detailed.line3=a efektivity
+tile.blockSagMill.tooltip.detailed.line4=Vylepši s kondenzátorama pro navýšení
+tile.blockSagMill.tooltip.detailed.line5=rychlosti a úložiště energie
+tile.blockSagMill.tooltipPrefix=Obsahuje
+
+tile.blockHyperCube.name=Dimenzionální vysílač (Zastaralý)
+tile.blockHyperCube.tooltip.detailed.line1=Převede na nový model položením
+tile.blockHyperCube.tooltip.detailed.line2=do výrobního rámečku
+
+tile.blockTransceiver.name=Dimenzionální vysílač
+tile.blockTransceiver.tooltip.detailed.line1=Přesouvá předměty, tekutiny a energii
+tile.blockTransceiver.tooltip.detailed.line2=bezdrátově na jakoukoliv vzdálenost a
+tile.blockTransceiver.tooltip.detailed.line3=mezi dimenzemi
+
+enderio.trans.showChannels=<Zmáčkni Shift pro zobrazení kanálů>
+
+enderio.trans.power=Energie
+enderio.trans.item=Předmět
+enderio.trans.fluid=Tekutina
+
+enderio.trans.receiving=Přijímám
+enderio.trans.sending=Odesílám
+
+tile.blockPowerMonitor.name=Monitor energie
+tile.blockPowerMonitor.tooltip.detailed.line1=Zobrazuje detaily využití energie a
+tile.blockPowerMonitor.tooltip.detailed.line2=úložiště
+tile.blockPowerMonitor.tooltip.detailed.line3=Může být použit pro vysílání ruditového signálu
+tile.blockPowerMonitor.tooltip.detailed.line4=založeného na úrovních uložené energi
+tile.blockPowerMonitor.tooltip.detailed.line5=Musí být připojen k EnderIO
+tile.blockPowerMonitor.tooltip.detailed.line6=vedení
+
+tile.blockVat.name=Káď
+tile.blockVat.tooltip.detailed.line1=Použita k vaření EnderIO tekutin
+
+tile.blockEnchanter.name=Očarovávač
+tile.blockEnchanter.tooltip.detailed.line1=Využívá XP pro zkombinování předmětů
+tile.blockEnchanter.tooltip.detailed.line2=a knihy s perem pro
+tile.blockEnchanter.tooltip.detailed.line2=vytvoření očarovaných knih
+
+tile.blockCombustionGenerator.name=Spalovací generátor
+tile.blockCombustionGenerator.tooltip.detailed.line1=Spaluje tekuté palivo pro generování energie
+tile.blockCombustionGenerator.tooltip.detailed.line2=Potřebuje chlazení (např. vodu)
+tile.blockCombustionGenerator.tooltip.detailed.line3=Výstup se odvíjí od typu paliva
+
+tile.blockZombieGenerator.name=Zombie generátor
+tile.blockZombieGenerator.tooltip.detailed.line1=Konzumuje Destilované živity
+tile.blockZombieGenerator.tooltip.detailed.line2=pro generování energie
+enderio.zombieGenerator.fuelTank=Nutriční nádrž
+
+tile.blockKillerJoe.name=Zabiják Joe
+tile.blockKillerJoe.tooltip.detailed.line1=Útočí na monstra poblíž když
+tile.blockKillerJoe.tooltip.detailed.line2=je zásobený mečem a 
+tile.blockKillerJoe.tooltip.detailed.line3=Destilovanými živinami
+tile.blockKillerJoe.tooltip.detailed.line4=Zkušenost může být odvedena jako
+tile.blockKillerJoe.tooltip.detailed.line5=tekuté XP s použitím tekutinových vedení
+
+enderio.killerJoe.fuelTank=Nutriční nádrž
+enderio.killerJoe.giveXp.tooltip=Vzít XP
+enderio.killerJoe.giveXp10.tooltip=Vezme 10 úrovní XP
+
+tile.blockSliceAndSplice.name=Šikovný robot
+tile.blockSliceAndSplice.tooltip.detailed.line1=Tento šikovný robot
+tile.blockSliceAndSplice.tooltip.detailed.line2=nabízí všechny typy užitečných věcí
+
+tile.blockFarmStation.name=Farmářská stanice
+tile.blockFarmStation.tooltip.detailed.line1=Sází a sklízí rostliny
+tile.blockFarmStation.tooltip.detailed.line2=Potřebuje energii a
+tile.blockFarmStation.tooltip.detailed.line3=příslušné nástroje (motyka, sekera)
+tile.blockFarmStation.tooltip.detailed.line4=Kořist / štěstí se aplikuje na
+tile.blockFarmStation.tooltip.detailed.line5=nástroje při sklízení
+tile.blockFarmStation.tooltip.detailed.line6=Vylepši s kondenzátorem pro navýšení
+tile.blockFarmStation.tooltip.detailed.line7=dosahu, vylepší také energii, kterou využívá
+
+enderio.farm.note.outputFull=Výstup plný
+enderio.farm.note.noSeeds=Chybí semínka
+enderio.farm.note.noAxe=Chybí sekera Axe
+enderio.farm.note.noHoe=Chybí motyka
+enderio.farm.note.noPower=Chybí energie
+
+tile.blockTank.name=Tekutinová nádrž
+tile.blockTank.advanced.name=Tlaková tekutinová nádrž
+tile.blockTank.tooltip.detailed.line1=Přenosná tekutinová nádrž
+tile.blockTank.tooltip.detailed.line2=Může být použito na vyprázdnění a
+tile.blockTank.tooltip.detailed.line3=naplnění tekutinových nádob
+enderio.tank.tank=Nádrž
+enderio.tooltip.none=Nic
+enderio.tooltip.fluidStored=Uložená tekutina
+
+tile.blockCrafter.name=Vyráběč
+tile.blockCrafter.tooltip.detailed.line1=Napájený auto-vyráběč
+tile.blockCrafter.tooltip.detailed.line2=Spotřebuje energii za operaci
+tile.blockCrafter.tooltip.detailed.line3=Může být vylepšen pro navýšení rychlosti
+tile.blockCrafter.tooltip.detailed.line4=a úložiště energie s kondenzátory
+
+tile.blockVacuumChest.name=Vakuová truhla
+tile.blockVacuumChest.tooltip.detailed.line1=Sbírá předměty poblíž
+tile.blockVacuumChest.tooltip.detailed.line2=do jejího inventáře
+
+tile.blockPoweredSpawner.name=Poháněný spawner
+tile.blockPoweredSpawner.tooltip.empty=Prázdný
+tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Zkombinuj se zničeným
+tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawnerem v kovadlině
+tile.blockPoweredSpawner.tooltip.detailed.line1=Zásobuj energií pro
+tile.blockPoweredSpawner.tooltip.detailed.line2=aktivaci
+tile.blockPoweredSpawner.tooltip.detailed.line3=Vylepši s kondenzátorama pro navýšení
+tile.blockPoweredSpawner.tooltip.detailed.line4=rychlosti a úložiště energie
+
+item.itemBrokenSpawner.name=Zničený spawner
+item.itemBrokenSpawner.tooltip.detailed.line1=Zkombinuj s Poháněným spawnerem
+item.itemBrokenSpawner.tooltip.detailed.line2=v kovadlině pro nastavení typu spawnování
+
+tile.blockSoulBinder.name=Vazač duší
+tile.blockSoulBinder.tooltip.detailed.line1=Zařízení pro převedení typu
+tile.blockSoulBinder.tooltip.detailed.line2=zničeného spawneru
+
+tile.blockAttractor.name=Obeliskový atraktor
+tile.blockAttractor.tooltip.detailed.line1=Přitahuje k sobě monstra
+tile.blockAttractor.tooltip.detailed.line2=Urči příšery efektem
+tile.blockAttractor.tooltip.detailed.line3=položením jejich duší
+tile.blockAttractor.tooltip.detailed.line4=k zařízení
+
+tile.blockSpawnGuard.name=Obeliskový odpor
+tile.blockSpawnGuard.tooltip.detailed.line1=Zabrání rodění monster
+tile.blockSpawnGuard.tooltip.detailed.line2=v oblasti efektu
+
+tile.blockExperienceObelisk.name=Obelisk zkušeností
+tile.blockExperienceObelisk.tooltip.detailed.line1=Při položení na tekutinovou nádrž
+tile.blockExperienceObelisk.tooltip.detailed.line2=Klikni pravým tlačítkem pro použití uložených tekutých XP
+tile.blockExperienceObelisk.tooltip.detailed.line3=Klikni se Shiftem pravým tlačítkem s prázdnou rukou
+tile.blockExperienceObelisk.tooltip.detailed.line4=pro vysátí XP hráče do nádrže
+tile.blockExperienceObelisk.tooltip.detailed.line5=Klikni levým tlačítkem pro vysátí 1 úrovně hráčských XP
+
+enderio.machine.tooltip.configured=(Nastaveno)
+
+//Blocks
+tile.blockDarkSteelPressurePlate.name=Tmavá nášlapná deska
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Aktivovatelná pouze hráči
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Může být obarvena v barvicím stroji,
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=neviditelná při celkovém obarvení
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=Čisté sklo
+tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Tiché
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Aktivovatelné pouze hráči
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Může být obarveno v barvicím stroji,
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=neviditelné při celkovém obarvení
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=Čisté sklo
+
+
+//Travel
+tile.blockTravelAnchor.name=Cestovní kotva
+tile.blockTravelAnchor.tooltip.detailed.line1=Umožňuje teleportaci mezi kotvami
+tile.blockTravelAnchor.tooltip.detailed.line2=Stůj na jedné kotvě, dívej se na
+tile.blockTravelAnchor.tooltip.detailed.line3=další a vyskoč pro cestování
+tile.blockTravelAnchor.tooltip.detailed.line4=Může být také použita s tyčí
+tile.blockTravelAnchor.tooltip.detailed.line5=cestování
+tile.blockTravelAnchor.tooltip.detailed.line6=Může být obarvena v barvicím stroji
+
+enderio.blockTravelPlatform.invalidTarget=Cíl je zatarasený
+enderio.blockTravelPlatform.outOfRange=Cíl je mimo dosah
+
+item.itemTravelStaff.name=Tyč cestování
+item.itemTravelStaff.tooltip.detailed.line1=Při držení cestovních kotev a EnderIO
+item.itemTravelStaff.tooltip.detailed.line2=bloky začnou být viditelné a mohou být
+item.itemTravelStaff.tooltip.detailed.line3=aktivovány kliknutím pravám tlačítkem
+item.itemTravelStaff.tooltip.detailed.line4=Klinutí pravám tlačítkem se Shiftem teleportuje
+item.itemTravelStaff.tooltip.detailed.line5=hráče na krátkou vzdálenost
+enderio.itemTravelStaff.notEnoughPower=Nedostatečná energie
+
+//Painter
+tile.blockPainter.name=Barvící stroj
+enderio.blockPainter.paintedWith=Obarveno s:
+tile.blockPaintedFence.name=Obarvený plot
+tile.blockPaintedFenceGate.name=Obarvená brána
+tile.blockPaintedWall.name=Obarvená zeď
+tile.blockPaintedStair.name=Obarvené schody
+tile.blockPaintedSlab.name=Obarvený půlblok
+tile.blockPaintedDoubleSlab.name=Obarvený půlblok
+tile.blockPaintedGlowstone.name=Obarvený světlit
+tile.blockPaintedCarpet.name=Obarvený koberec
+enderio.painter.tooltip.wasPainted=§oCo myslíš že by to mohlo dělat ?
+
+tile.blockPainter.tooltip.detailed.line1=Použito pro obarvení:
+tile.blockPainter.tooltip.detailed.line2=Fasád vedení, schodů, plotů,
+tile.blockPainter.tooltip.detailed.line3=bran, půlbloků, kamenných zdí,
+tile.blockPainter.tooltip.detailed.line4=skleněných rámů, světlitu, koberce,
+tile.blockPainter.tooltip.detailed.line5=nášlapných desek z tmavé oceli,
+tile.blockPainter.tooltip.detailed.line6=cestovních kotev
+
+//Items
+item.itemYetaWrench.name=Yeta klíč
+item.itemYetaWrench.tooltip.detailed.line1=Při držení skryje fasády vedení
+item.itemYetaWrench.tooltip.detailed.line2=Klikni pravým tlačítkem se Shiftem pro okamžité
+item.itemYetaWrench.tooltip.detailed.line3=odmontování strojů a vedení
+item.itemYetaWrench.tooltip.detailed.line4=Klikni levým tlačítkem se Shiftem na veení pro
+item.itemYetaWrench.tooltip.detailed.line5=otevření nastavení GUI vedení
+item.itemYetaWrench.tooltip.detailed.line6=Použij Shift + kolečko myši nebo 'Y' pro 
+item.itemYetaWrench.tooltip.detailed.line7=vykreslení jednoho typu vedení
+
+item.itemMagnet.name=Elektromagnet
+item.itemMagnet.tooltip.detailed.line1=Přitahuje k tobě předměty poblíz
+item.itemMagnet.tooltip.detailed.line2=Klikni pravým tlačítkem se Shiftem pro povolení / zakázání
+item.itemMagnet.tooltip.detailed.line3=Musí být napájen, aktivní a v
+item.itemMagnet.tooltip.detailed.line4=hot baru pro fungování
+
+item.enderio.itemConduitProbe.name=Sonda vedení
+item.enderio.itemConduitProbe.tooltip.detailed.line1=V módu sondy klikni pravým tlačítkem na vedení   
+item.enderio.itemConduitProbe.tooltip.detailed.line2=pro zobrazení informací o její síti
+item.enderio.itemConduitProbe.tooltip.detailed.line3=V módu kopírovat/vložit klikni pravým tlačítkem se Shiftem pro
+item.enderio.itemConduitProbe.tooltip.detailed.line4=zkopírování nastavení připojení svazků vedení
+item.enderio.itemConduitProbe.tooltip.detailed.line5=Poté klikni pravým tlačitkem pro jejich vložení
+item.enderio.itemConduitProbe.tooltip.detailed.line6=Použij Shift+kolečko myši nebo 'Y' pro změnu módu
+
+item.itemSoulVessel.name=Lahvička duší
+item.itemSoulVessel.tooltip.detailed.line1=Klikni pravým tlačítkem na monstrum
+item.itemSoulVessel.tooltip.detailed.line2=pro chycení její duše
+item.itemSoulVessel.tooltip.detailed.line3=Klikni pravým tlačítkem znovu pro její vypuštění
+
+item.itemXpTransfer.name=Tyč zkušeností
+item.itemXpTransfer.tooltip.detailed.line1=Klikni pravým tlačítkem na tekutinovou nádrž 
+item.itemXpTransfer.tooltip.detailed.line2=obsahující tekuté XP pro získání úrovní
+item.itemXpTransfer.tooltip.detailed.line3=Klikni pravým tlačítkem se Shiftem pro
+item.itemXpTransfer.tooltip.detailed.line4=přenesení úrovní do nádrže
+
+skullZombieElectrode.name=Zombie elektroda
+skullZombieController.name=Zombie ovladač
+skullZombieFrankenstien.name=Frankenstein
+
+item.itemSpawnEggEnderIO.name=Spawn
+
+//Dark Steel
+item.darkSteel_helmet.name=Tmavá helma
+item.darkSteel_chestplate.name=Tmavá košile
+item.darkSteel_leggings.name=Tmavé kalhoty
+item.darkSteel_boots.name=Tmavé boty
+item.darkSteel_sword.name=Tmavý meč
+item.darkSteel_pickaxe.name=Tmavý krumpáč
+item.darkSteel_axe.name=Tmavá sekera
+
+enderio.item.tooltip.showDetails=<Podrž Shift>
+enderio.item.darkSteel.tooltip.durability=Výdrž:
+
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efektivita při napájení
+enderio.item.darkSteel_pickaxe.tooltip.effObs=Efektivita ničení obsidianu
+
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Pliž se pro sklizení více polen
+
+enderio.item.darkSteel_sword.tooltip.line1=Navýšené pády lebek a perel z endu
+enderio.item.darkSteel_sword.tooltip.line2=Enderman se již nemůže po zásahu teleportovat
+enderio.item.darkSteel_sword.tooltip.line3=+2 Poškozená při napájení
+
+enderio.item.darkSteel_armor.tooltip.line1=Ochrana úrovně diamantu
+enderio.item.darkSteel_armor.tooltip.line2=při napájení
+
+enderio.item.darkSteel_boots.tooltip.line1=Poškození pádu zrušené
+enderio.item.darkSteel_boots.tooltip.line2=při napájení
+
+enderio.darksteel.upgrade.empowered_one.name=Umocněné
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=energií
+
+enderio.darksteel.upgrade.empowered_two.name=Umocněné II
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=energií
+
+enderio.darksteel.upgrade.empowered_three.name=Umocněné III
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=energií
+
+enderio.darksteel.upgrade.empowered_four.name=Umocněné IV
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Síla: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% poškození absorbováno
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=energií
+
+
+enderio.darksteel.upgrade.travel.name=Cestování
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Podrž Shift a klikni pravým tlačítkem pro teleportování
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=nebo aktivování cestovní kotvy nebo Ender IO
+
+enderio.darksteel.upgrade.spoon.name=Lžíce
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Kdo potřebuje lopatu když 
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=máš lžíci
+
+enderio.darksteel.upgrade.glider.name=Kluzák
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Povolí klouzání
+enderio.darksteel.upgrade.glider.enabled=Kluzák aktivní
+enderio.darksteel.upgrade.glider.disabled=Kluzák zakázán
+
+enderio.darksteel.upgrade.sound.name=Zvukový lokátor
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Zobrazí lokaci
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=zvuků poblíž
+enderio.darksteel.upgrade.sound.enabled=Zvukový lokátor aktivní
+enderio.darksteel.upgrade.sound.disabled=Zvukový lokátor zakázán
+
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Odhalení
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis sleva: 5%
+
+item.itemGliderWing.name=Kluzácké křídlo
+item.itemGliderWings.name=Kluzácké křídla
+item.itemGliderWings.tooltip.detailed.line1=Vylepšení pro tmavou ocel
+item.itemGliderWings.tooltip.detailed.line2=vesta
+
+enderio.darksteel.upgrade.jump_one.name=Skok
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Navýší výšku kroku a skoku
+enderio.darksteel.upgrade.stepAssist.enabled=Kroková asistence aktivní
+enderio.darksteel.upgrade.stepAssist.disabled=Kroková asistence zakázána
+
+enderio.darksteel.upgrade.jump_two.name=Skok II
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Navýší výšku kroku a skoku
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Umožňuje dvojité skoky
+
+enderio.darksteel.upgrade.jump_three.name=Skok III
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Navýší výšku kroku a skoku
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Umožňuje trojité skoky
+
+enderio.darksteel.upgrade.speed_one.name=Rychlost
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Navýší rychlost chůze
+enderio.darksteel.upgrade.speed.enabled=Rychlost aktivní
+enderio.darksteel.upgrade.speed.disabled=Rychlost zakázána
+
+enderio.darksteel.upgrade.speed_two.name=Rychlost II
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Navýší rychlost chůze
+
+enderio.darksteel.upgrade.speed_three.name=Rychlost III
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Navýší rychlost chůze
+
+enderio.darksteel.upgrade.swim.name=Ploutve
+
+enderio.darksteel.upgrade.nightVision.name=Noční vidění
+enderio.darksteel.upgrade.nightVision.enabled=Noční vidění povoleno
+enderio.darksteel.upgrade.nightVision.disabled=Noční vidění zakázáno
+
+//------GUI
+
+enderio.gui.enabled=Povoleno
+enderio.gui.disabled=Zakázáno
+enderio.gui.send=Posílat
+enderio.gui.receive=Přijímat
+enderio.gui.sendReceive=Posílat & Přijímat
+
+//Redstone controls
+enderio.gui.tooltip.redstoneControlMode=Ruditový mód
+enderio.gui.tooltip.redstoneControlMode.ignore=Vždy aktivní
+enderio.gui.tooltip.redstoneControlMode.on=Aktivní se signálem
+enderio.gui.tooltip.redstoneControlMode.off=Aktivní bez signálu
+enderio.gui.tooltip.redstoneControlMode.never=Nikdy aktivní
+
+enderio.gui.machine.ioMode.overlay.tooltip=Nastaví IO
+enderio.gui.machine.ioMode.none=Nic
+enderio.gui.machine.ioMode.pull=Táhnout
+enderio.gui.machine.ioMode.push=Tlačit
+enderio.gui.machine.ioMode.disabled=Zakázáno
+enderio.gui.machine.ioMode.pullPush=Tlačit / Táhnout
+enderio.gui.machine.ioMode.pullPush.colored=%sTlačit %s/ %sTáhnout
+enderio.gui.machine.ioMode=Mód: %s
+enderio.gui.machine.side=Strana: %s
+enderio.gui.machine.side.north=Sever
+enderio.gui.machine.side.south=Jit
+enderio.gui.machine.side.west=Západ
+enderio.gui.machine.side.east=Východ
+enderio.gui.machine.side.up=Nahoru
+enderio.gui.machine.side.down=Dolu
+
+
+//Power Monitor
+enderio.gui.powerMonitor.engineControl=Ovládání motoru
+enderio.gui.powerMonitor.emit=Vysílat
+enderio.gui.powerMonitor.engineSection1=Vyšle signál když je úložiště nižší
+enderio.gui.powerMonitor.engineSection2=než
+enderio.gui.powerMonitor.engineSection3=% z kapacity.
+enderio.gui.powerMonitor.engineSection4=Zastaví když je úložiště vyšší než
+enderio.gui.powerMonitor.engineSection5=nebo odpovídá
+enderio.gui.powerMonitor.of=
+enderio.gui.powerMonitor.monHeading1=Úložiště vedení
+enderio.gui.powerMonitor.monHeading2=Úložiště banky kondenzátorů
+enderio.gui.powerMonitor.monHeading3=Vyrovnávací paměti stroje
+enderio.gui.powerMonitor.monHeading4=Průměrný výstup za 5 sekund
+enderio.gui.powerMonitor.monHeading5=Průměrný vstup za 5 sekund
+
+//MJ Reader
+enderio.gui.mjReader.networkHeading=Síť energie
+enderio.gui.mjReader.conduitBuffer=Vnitřní vyrovnávací paměť
+enderio.gui.mjReader.requestRange=Požadovaný dosah za tik
+enderio.gui.mjReader.currentRequest=Aktuální požadavek
+enderio.gui.mjReader.itemHeading=Vedení předmětů
+enderio.gui.mjReader.itemNoConnections=nemá žádné vnější připojení
+enderio.gui.mjReader.noPowerFromSide=nemůže přijímat energii z této strany
+enderio.gui.mjReader.connectionDir=připojení na
+enderio.gui.mjReader.extractedItems=Extraktované předměty
+enderio.gui.mjReader.extractedItem=Předmět
+enderio.gui.mjReader.noOutputs=nemá žádné výstupy
+enderio.gui.mjReader.insertedInto=bude vložen do:
+enderio.gui.mjReader.noItems=Nepřijímá zádné předměty.
+enderio.gui.mjReader.noItem=Nemůže přijmout
+enderio.gui.mjReader.receiveItems=Může přijmout předměty z:
+enderio.gui.mjReader.receiveItem1=Může přijmout
+enderio.gui.mjReader.receiveItem2=z:
+
+//CapactorBank
+enderio.gui.capBank.inputRs=Vstupní ruditový mód
+enderio.gui.capBank.outputRs=Výstupní ruditový mód
+enderio.gui.capBank.maxIo=Maximální I/O
+enderio.gui.capBank.maxInput=Maximální vstup
+enderio.gui.capBank.maxOutput=Maximální výstuo
+enderio.gui.capBank.inputMode=Vstup
+enderio.gui.capBank.outputMode=Výstup
+
+//Transceiver
+enderio.gui.trans.publicChannel=Veřejný kanál
+enderio.gui.trans.privateChannel=Soukromý kanál
+enderio.gui.trans.addChannel=Přidat kanál
+enderio.gui.trans.deleteChannel=Smazat kanál
+enderio.gui.trans.activateChannel=Aktivovat kanál
+enderio.gui.trans.powerMode=Mód energie
+enderio.gui.trans.fluidMode=Mód tekutin
+enderio.gui.trans.itemMode=Mód předmětů
+enderio.gui.trans.publicHeading=Veřejný
+enderio.gui.trans.privateHeading=Soukromý
+
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Mód pece
+enderio.gui.alloy.mode.all=Pečení všeho
+enderio.gui.alloy.mode.alloy=Pouze slitiny
+enderio.gui.alloy.mode.furnace=Pouze pec
+
+//Vat
+enderio.vat.outputTank=Výstupní nádrž
+enderio.vat.inputTank=Vstupní nádrž
+
+//Combustion Gen
+enderio.combustionGenerator.coolantTank=Chladič
+enderio.combustionGenerator.fuelTank=Palivo
+enderio.combustionGenerator.output=Generuje:
+
+//Stirling Gen
+enderio.stirlingGenerator.output=Generuje:
+enderio.stirlingGenerator.burnRate=Hodnota spalování:
+
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Pouze
+enderio.gui.travelAccessable.privateBlock2=může změnit nastavení tohoto bloku.
+enderio.gui.travelAccessable.public=Veřejné
+enderio.gui.travelAccessable.private=Soukromé
+enderio.gui.travelAccessable.protected=Chráněné
+enderio.gui.travelAccessable.unauthorised=Nemáš přístup k tomuto bloku.
+enderio.gui.travelAccessable.enterCode=Potřebný přístupový kód
+enderio.gui.travelAccessable.ok=Autorizace
+
+//Spawn Gurad
+enderio.gui.spawnGurad.showRange=Zobrazit vzdálenost
+enderio.gui.spawnGurad.range=Vzdálenost:
+
+//conduits
+enderio.gui.conduit.ioMode=Mód
+enderio.gui.conduit.ioMode.inOut=Dovnitř / Ven
+enderio.gui.conduit.ioMode.input=Extrakce
+enderio.gui.conduit.ioMode.output=Vkládání
+enderio.gui.conduit.ioMode.disabled=Zakázáno
+enderio.gui.conduit.ioMode.notSet=Výchozí
+tile.blockConduitBundle.name=Konektor vedení
+
+enderio.gui.conduit.item.insertionFilter=Vložit
+enderio.gui.conduit.item.extractionFilter=Vyjmout
+enderio.gui.conduit.item.sigCol=Barva signálu
+enderio.gui.conduit.item.channel=Kanál
+enderio.gui.conduit.item.ignoreMetaData=Ignorovat Meta Data
+enderio.gui.conduit.item.matchMetaData=Shoda Meta Dat
+enderio.gui.conduit.item.whitelist=Whitelist
+enderio.gui.conduit.item.blacklist=Blacklist
+enderio.gui.conduit.item.stickyEnabled=Lepkavý mód povolen|Vybrané předměty budou pouze|odeslány do těchto, nebo jiných|lepkavých výstupů.
+enderio.gui.conduit.item.stickyDisbaled=Lepkavý mód zakázán
+enderio.gui.conduit.item.ignoreNBT=Ignorovat NBT Data
+enderio.gui.conduit.item.matchNBT=Shoda NBT Dat
+enderio.gui.conduit.item.oreDicEnabled=Slovník rud povolen
+enderio.gui.conduit.item.oreDicDisabled=Slovník rud zakázán
+enderio.gui.conduit.item.selfFeedEnabled=Sebe-krmení povoleno
+enderio.gui.conduit.item.selfFeedDisabled=Sebe-krmení zakázáno
+enderio.gui.conduit.item.roundRobinEnabled=Střídání povoleno
+enderio.gui.conduit.item.roundRobinDisabled=Střídání zakázáno
+enderio.gui.conduit.item.priority=Priorita
+
+enderio.gui.conduit.redstone.signalColor=Barva signálu
+enderio.gui.conduit.redstone.color=Barva
+
+enderio.gui.conduit.fluid.autoExtract=Automatická extrakce
+enderio.gui.conduit.fluid.filter=Filtr
+
+enderio.gui.conduit.gas.autoExtract=Automatická extrakce
+
+
+//Configuration
+enderio.config.title=Ender IO nastavení
+
+enderio.config.power=Nastavení energie
+enderio.config.power.tooltip=Příliš mnoho čísel pro změnu...
+
+enderio.config.recipe=Nastavení receptů
+enderio.config.recipe.tooltip=Nastavuje VŠECHNY věci!
+
+enderio.config.item=Povolování předmětů
+enderio.config.item.tooltip=Pokud nechceš některé mé úžasné předměty :(
+
+enderio.config.efficiency=Nastavení efektivity
+enderio.config.efficiency.tooltip=Kde tyto čísla zkončí?
+
+enderio.config.personal=Osobní nastavení
+enderio.config.personal.tooltip=Nemohu nikomu sbělit, přísahám.
+
+enderio.config.anchor=Nastavení kotev
+enderio.config.anchor.tooltip=Pryč kotvy!
+
+enderio.config.staff=Nastavení tyčí
+enderio.config.staff.tooltip=Buď opatrný s tímto nastavením, nebo teleportuješ pryč svou tvář.
+
+enderio.config.darksteel=Tmavá ocel
+enderio.config.darksteel.tooltip=Není to pouze obyčejná ocel, je to §otmavá§r§e ocel.
+
+enderio.config.farm=Nastavení farem
+enderio.config.farm.tooltip="Obec je pro život!"
+
+enderio.config.aesthetic=Estetické nastavení
+enderio.config.aesthetic.tooltip=Óoo, ááá, krásné.
+
+enderio.config.advanced=Pokročilé nastavení
+enderio.config.advanced.tooltip=Pro ty, co nemají dost konfigurací.
+
+enderio.config.magnet=Nastavení magnetů
+enderio.config.magnet.tooltip=Jak fungují?
+
+enderio.config.fluid=Nastavení tekutin
+enderio.config.fluid.tooltip=Čistá tekutá energie!
+
+enderio.config.spawner=Nastavení poháněných spawnerů
+enderio.config.spawner.tooltip=Už jsem vyčerpal všechny vtipné nápovědy.
+
+
+//Mobs
+entity.EnderIO.Enderminy.name=Endermánek
+entity.EnderIO.EnderCreeper.name=Teleportační Creeper

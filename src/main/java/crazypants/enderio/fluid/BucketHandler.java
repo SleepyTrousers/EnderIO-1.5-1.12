@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -32,10 +33,13 @@ public class BucketHandler {
 
   @SubscribeEvent
   public void onBucketFill(FillBucketEvent event) {
-    ItemStack res = getFilledBucket(event.world, event.target);
-    if(res != null) {
-      event.result = res;
-      event.setResult(Result.ALLOW);
+    // no instanceof check, someone may subclass the vanilla bucket
+    if (event.current != null && event.current.getItem() == Items.bucket && event.current.stackSize > 0) {
+      ItemStack res = getFilledBucket(event.world, event.target);
+      if (res != null) {
+        event.result = res;
+        event.setResult(Result.ALLOW);
+      }
     }
   }
 
@@ -71,9 +75,9 @@ public class BucketHandler {
   //    if(fluid != null) {
   //      Fuel fuel = IronEngineFuel.getFuelForFluid(fluid);
   //      if(fuel != null) {
-  //        list.add(Lang.localize("fuel.tooltip.heading"));
+  //        list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
   //        list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
-  //        list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + Lang.localize("fuel.tooltip.burnTime"));
+  //        list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + EnderIO.lang.localize("fuel.tooltip.burnTime"));
   //      }
   //    }
   //  }

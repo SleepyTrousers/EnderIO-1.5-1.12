@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+
+import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -22,7 +25,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   }
 
   public PacketChannelList(EntityPlayer player, boolean isPrivate) {
-    this(player.getGameProfile().getId(), isPrivate);
+    this(PlayerUtil.getPlayerUUID(player.getGameProfile().getName()), isPrivate);
   }
 
   public PacketChannelList(UUID uuid, boolean isPrivate) {
@@ -50,7 +53,8 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void toBytes(ByteBuf buffer) {
     buffer.writeBoolean(isPrivate);
     if(isPrivate) {
-      ByteBufUtils.writeUTF8String(buffer, userId.toString());
+      buffer.writeLong(userId.getMostSignificantBits());
+      buffer.writeLong(userId.getLeastSignificantBits());
     }
     buffer.writeInt(channels.size());
     for (Channel channel : channels) {
@@ -63,7 +67,10 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void fromBytes(ByteBuf buffer) {
     isPrivate = buffer.readBoolean();
     if(isPrivate) {
-      userId = UUID.fromString(ByteBufUtils.readUTF8String(buffer));
+      long long1=buffer.readLong();
+      long long2=buffer.readLong();
+
+      userId = new UUID(long1,long2);
     } else {
       userId = null;
     }

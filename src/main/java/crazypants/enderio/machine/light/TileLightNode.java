@@ -11,8 +11,6 @@ public class TileLightNode extends TileEntityEio {
   int parentY;
   int parentZ;
 
-  boolean isDiagnal = false;
-
   public TileElectricLight getParent() {
     TileEntity te = worldObj.getTileEntity(parentX, parentY, parentZ);
     if(te instanceof TileElectricLight) {
@@ -22,11 +20,12 @@ public class TileLightNode extends TileEntityEio {
   }
 
   @Override
-  public void updateEntity() {
-    if(worldObj.isRemote) {
-      return;
-    }
-    if(worldObj.getWorldTime() % 42 == 0) {
+  protected boolean shouldUpdate() {
+    return false;
+  }
+
+  public void checkParent() {
+    if(worldObj.blockExists(parentX, parentY, parentZ)) {
       if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }
@@ -52,7 +51,6 @@ public class TileLightNode extends TileEntityEio {
     parentX = root.getInteger("parentX");
     parentY = root.getInteger("parentY");
     parentZ = root.getInteger("parentZ");
-    isDiagnal = root.getBoolean("isDiagnal");
   }
 
   @Override
@@ -60,12 +58,11 @@ public class TileLightNode extends TileEntityEio {
     root.setInteger("parentX", parentX);
     root.setInteger("parentY", parentY);
     root.setInteger("parentZ", parentZ);
-    root.setBoolean("isDiagnal", isDiagnal);
   }
 
   @Override
   public String toString() {
-    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ", isDiagnal=" + isDiagnal + ", xCoord=" + xCoord
+    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  xCoord=" + xCoord
         + ", yCoord=" + yCoord + ", zCoord=" + zCoord + ", tileEntityInvalid=" + tileEntityInvalid + "]";
   }
 

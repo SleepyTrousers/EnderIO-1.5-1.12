@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,7 @@ public class RecipeConfig {
     return config;
   }
 
-  private static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
+  public static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
     if(!replaceIfExists && copyTo.exists()) {
       return readStream(new FileInputStream(copyTo));
     }
@@ -217,16 +218,16 @@ public class RecipeConfig {
 
     private final String name;
 
-    private Map<String, RecipeElement> recipes = new HashMap<String, RecipeElement>();
+    private Map<String, RecipeElement> recipes = new LinkedHashMap<String, RecipeElement>();
 
     private boolean enabled = true;
 
     public RecipeGroup(String name) {
       if(name != null) {
         name = name.trim();
-      }
-      if(name.length() <= 0) {
-        name = null;
+        if (name.length() <= 0) {
+          name = null;
+        }
       }
       this.name = name;
     }
@@ -284,7 +285,12 @@ public class RecipeConfig {
 
     private int energyRequired;
 
+    private RecipeBonusType bonusType = RecipeBonusType.MULTIPLY_OUTPUT;
+
     private String name;
+
+    private boolean allowMissing = false;
+    private boolean invalidated = false;
 
     private RecipeElement(String name) {
       this.name = name;
@@ -309,18 +315,18 @@ public class RecipeConfig {
       List<Recipe> result = new ArrayList<Recipe>();
       if(isRecipePerInput) {
         for (RecipeInput input : inputs) {
-          result.add(new Recipe(input, energyRequired, outputArr));
+          result.add(new Recipe(input, energyRequired, bonusType, outputArr));
         }
       } else {
         for (RecipeOutput output : outputs) {
-          result.add(new Recipe(output, energyRequired, inputArr));
+          result.add(new Recipe(output, energyRequired, bonusType, inputArr));
         }
       }
       return result;
     }
 
     public boolean isValid() {
-      return !inputs.isEmpty() && !outputs.isEmpty();
+      return !invalidated && !inputs.isEmpty() && !outputs.isEmpty();
     }
 
     public float getEnergyRequired() {
@@ -331,9 +337,30 @@ public class RecipeConfig {
       this.energyRequired = energyRequired;
     }
 
+    public RecipeBonusType getBonusType() {
+      return bonusType;
+    }
+
+    public void setBonusType(RecipeBonusType bonusType) {
+      this.bonusType = bonusType;
+    }
+
+    public void setAllowMissing(boolean allowMissing) {
+      this.allowMissing = allowMissing;
+    }
+
+    public boolean allowMissing() {
+      return allowMissing;
+    }
+
+    public void invalidate() {
+      invalidated = true;
+    }
+
     @Override
     public String toString() {
-      return "Recipe [input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + "]";
+      return "Recipe [" + (invalidated ? "INVALID " : "") + "input=" + inputs + ", outputs=" + outputs + ", energyRequired="
+          + energyRequired + ", bonusType=" + bonusType + "]";
     }
 
   }

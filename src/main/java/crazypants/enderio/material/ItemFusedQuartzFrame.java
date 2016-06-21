@@ -1,9 +1,9 @@
 package crazypants.enderio.material;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,8 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -40,7 +38,15 @@ public class ItemFusedQuartzFrame extends Item {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
   public void registerIcons(IIconRegister IIconRegister) {
   }
 
@@ -81,7 +87,7 @@ public class ItemFusedQuartzFrame extends Item {
     list.add(PainterUtil.getTooltTipText(item));
   }
 
-  public static final class FramePainterRecipe extends BasicPainterTemplate {
+  public final class FramePainterRecipe extends BasicPainterTemplate {
 
     private ItemFusedQuartzFrame i;
 
@@ -94,11 +100,5 @@ public class ItemFusedQuartzFrame extends Item {
       return target != null && target.getItem() == i;
     }
 
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      ItemStack is = new ItemStack(i, 1, 0);
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
-      return Collections.singletonList(recipe);
-    }
   }
 }

@@ -39,6 +39,25 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_CRAFTER = 87;
   public static final int GUI_ID_ZOMBIE_GEN = 71;
   public static final int GUI_ID_POWERED_SPAWNER = 88;
+  public static final int GUI_ID_VACUUM_CHEST = 89;
+  public static final int GUI_ID_WIRELESS_CHARGER = 90;
+  public static final int GUI_ID_ENCHANTER = 91;
+  public static final int GUI_ID_KILLER_JOE = 92;
+  public static final int GUI_ID_SOUL_BINDER = 93;
+  public static final int GUI_ID_SLICE_N_SPLICE = 94;
+  public static final int GUI_ID_ATTRACTOR = 95;
+  public static final int GUI_ID_SPAWN_GUARD = 96;
+  public static final int GUI_ID_TRANSCEIVER = 97;
+  public static final int GUI_ID_XP_OBELISK = 98;
+  public static final int GUI_ID_ANVIL = 99;
+  public static final int GUI_ID_BUFFER = 100;
+  public static final int GUI_ID_WEATHER_OBELISK = 101;
+  public static final int GUI_ID_TELEPAD = 102;
+  public static final int GUI_ID_TELEPAD_TRAVEL = 103;
+  public static final int GUI_ID_INHIBITOR = 104;
+  public static final int GUI_ID_INVENTORY_PANEL = 105;
+
+  public static final int GUI_ID_CAP_BANK = 142; // leave room for more machines
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

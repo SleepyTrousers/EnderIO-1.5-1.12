@@ -2,50 +2,46 @@ package crazypants.enderio.machine.alloy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineContainer;
-import crazypants.util.Util;
+import net.minecraft.stats.AchievementList;
 
-public class ContainerAlloySmelter extends AbstractMachineContainer {
+import com.enderio.core.common.util.Util;
 
-  private EntityPlayer thePlayer;
-  private TileAlloySmelter smelter;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+
+public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
+
+  private final EntityPlayer thePlayer;
 
   public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {
     super(playerInv, te);
     thePlayer = playerInv.player;
-    smelter = te;
   }
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(tileEntity, 0, 54, 17) {
+    addSlotToContainer(new Slot(getInv(), 0, 54, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return getInv().isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 79, 7) {
+    addSlotToContainer(new Slot(getInv(), 1, 79, 7) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(1, itemStack);
+        return getInv().isItemValidForSlot(1, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 2, 103, 17) {
+    addSlotToContainer(new Slot(getInv(), 2, 103, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(2, itemStack);
+        return getInv().isItemValidForSlot(2, itemStack);
       }
     });
-    addSlotToContainer(new SlotSmelter(tileEntity, 3, 79, 57) {
-      @Override
-      public boolean isItemValid(ItemStack par1ItemStack) {
-        return false;
-      }
-
-    });
+    addSlotToContainer(new SlotSmelter(getInv(), 3, 79, 57));
 
   }
 
@@ -85,18 +81,21 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
     @Override
     protected void onCrafting(ItemStack output) {
       output.onCrafting(thePlayer.worldObj, thePlayer, numResults);
-      if(output != null) {
-        if(!thePlayer.worldObj.isRemote) {
-          ItemStack outputSized = output.copy();
-          outputSized.stackSize = numResults;
-          float experience = smelter.getExperienceForOutput(outputSized);
-          Util.giveExperience(thePlayer, experience);
-        }
-
+      if(!thePlayer.worldObj.isRemote) {
+        ItemStack outputSized = output.copy();
+        outputSized.stackSize = numResults;
+        float experience = getInv().getExperienceForOutput(outputSized);
+        Util.giveExperience(thePlayer, experience);
       }
       numResults = 0;
-    }
 
+      if(output.getItem() == Items.iron_ingot) {
+        thePlayer.addStat(AchievementList.acquireIron, 1);
+      }
+      if(output.getItem() == Items.cooked_fished) {
+        thePlayer.addStat(AchievementList.cookFish, 1);
+      }
+    }
   }
 
 }

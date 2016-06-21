@@ -5,47 +5,49 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
-import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.RecipeReigistry;
+
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.still.GuiVat;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.vat.GuiVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 
 public class VatRecipeHandler extends TemplateRecipeHandler {
 
   private Rectangle inTankBounds = new Rectangle(25, 1, 15, 47);
   private Rectangle outTankBounds = new Rectangle(127, 1, 15, 47);
-  private Rectangle inTankBoundsLower = new Rectangle(25, 70, 15, 47);
-  private Rectangle outTankBoundsLower = new Rectangle(127, 70, 15, 47);
 
   public VatRecipeHandler() {
   }
 
   @Override
   public String getRecipeName() {
-    return "Vat";
+    return StatCollector.translateToLocal("enderio.nei.vat");
   }
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/vat.png";
+    return GuiContainerBaseEIO.getGuiTexture("vat").toString();
   }
 
   public PositionedStack getResult() {
@@ -68,39 +70,15 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void loadCraftingRecipes(final ItemStack result) {
-
-    if(result == null) {
-      return;
-    }
-
-    if(FluidContainerRegistry.isFilledContainer(result)) {
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(result);
-      if(fluid != null) {
-        List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.VAT_ID, fluid);
-        for (IEnderIoRecipe recipe : recipes) {
-          InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-          arecipes.add(res);
-        }
-
-      }
-    }
-
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.VAT_ID, result);
-    for (IEnderIoRecipe recipe : recipes) {
-      InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-      arecipes.add(res);
-    }
-  }
-
-  @Override
   public void loadCraftingRecipes(String outputId, Object... results) {
-    if(outputId.equals("EnderIOVat") && getClass() == VatRecipeHandler.class) {
-      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
-      for (IEnderIoRecipe recipe : recipes) {
-        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
+    if(outputId.equals("liquid")) {
+      loadCraftingRecipes((FluidStack) results[0]);
+    } else if(outputId.equals("EnderIOVat") && getClass() == VatRecipeHandler.class) {
+      List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+      for (IRecipe recipe : recipes) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
-
       }
     } else {
       super.loadCraftingRecipes(outputId, results);
@@ -108,23 +86,75 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void loadUsageRecipes(ItemStack ingredient) {
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
+  public void loadCraftingRecipes(ItemStack result) {
+    FluidStack fluid = FluidUtil.getFluidFromItem(result);
+    if(fluid != null) {
+      loadCraftingRecipes(fluid);
+    }
+  }
 
-    for (IEnderIoRecipe recipe : recipes) {
-      if(recipe.isInput(ingredient)) {
-        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-        res.setIngredientPermutation(res.inputs, ingredient);
+  public void loadCraftingRecipes(FluidStack result) {
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+      if(output.isFluidEqual(result)) {
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     }
   }
 
   @Override
+  public void loadUsageRecipes(String inputId, Object... ingredients) {
+    if(inputId.equals("liquid")) {
+      loadUsageRecipes((FluidStack) ingredients[0]);
+    } else {
+      super.loadUsageRecipes(inputId, ingredients);
+    }
+  }
+
+  @Override
+  public void loadUsageRecipes(ItemStack ingredient) {
+    FluidStack fluid = FluidUtil.getFluidFromItem(ingredient);
+    if(fluid != null) {
+      loadUsageRecipes(fluid);
+    }
+
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(0, ingredient) || recipe.isValidInput(1, ingredient)) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        res.setIngredientPermutation(res.inputs, ingredient);
+        arecipes.add(res);
+      }
+    }
+  }
+
+  public void loadUsageRecipes(FluidStack ingredient) {
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(ingredient)) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        arecipes.add(res);
+      }
+    }
+  }
+
+  @Override
+  public void drawBackground(int recipeIndex) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(22, 0, 27, 11, 123, 52);
+  }
+
+  @Override
   public void drawExtras(int recipeIndex) {
     InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
     if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width, inTankBounds.height);
+      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width,
+          inTankBounds.height);
     }
 
     if(rec.result != null && rec.result.getFluid() != null) {
@@ -132,19 +162,20 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
           .renderGuiTank(rec.result, rec.result.amount, rec.result.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
     }
 
-    //    drawProgressBar(98, 33, 176, 0, 22, 13, 48, 3);
-    //    drawProgressBar(50, 33, 176, 0, 22, 13, 48, 3);
-
     String energyString = PowerDisplayUtil.formatPower(rec.energy) + " " + PowerDisplayUtil.abrevation();
-    int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(energyString);
+    GuiDraw.drawStringC(energyString, 86, 54, 0x808080, false);
 
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    int col = ColorUtil.getRGBA(0.75f, 1.0f, 1.0f, 1.0f);
-    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 86 - width / 2, 55, col, true);
-    GL11.glDisable(GL11.GL_BLEND);
-    GL11.glColor4f(1, 1, 1, 1);
+    Fluid outputFluid = rec.result.getFluid();
+    List<PositionedStack> stacks = rec.getIngredients();
+    for (PositionedStack ps : stacks) {
+      float mult = VatRecipeManager.getInstance().getMultiplierForInput(rec.inFluid.getFluid(), ps.item, outputFluid);
+      String str = "x" + mult;
+      GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
+    }
 
+    int x = 149, y = 32;
+    EnderWidget.map.render(EnderWidget.BUTTON, x, y, 16, 16, 0, true);
+    IconEIO.map.render(IconEIO.RECIPE, x + 1, y + 1, 14, 14, 0, true);
   }
 
   @Override
@@ -153,88 +184,97 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public List<String> handleTooltip(GuiRecipe gui, List<String> arg1, int recipeIndex) {
-
+  public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipeIndex) {
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
     Point pos = GuiDraw.getMousePosition();
+    Point offset = gui.getRecipePosition(recipeIndex);
+    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
 
-    int[] offset = RecipeInfo.getGuiOffset(gui);
-    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset[0], pos.y - ((gui.height - 166) / 2) - offset[1]);
-
-    if(mouseInBounds(relMouse)) {
-      if(recipeIndex % 2 == 0 && inTankBounds.union(outTankBounds).contains(relMouse)) {
-        return getVatFluid(recipeIndex, arg1, inTankBounds.contains(relMouse));
-      }
-      else if(recipeIndex % 2 == 1 && inTankBoundsLower.union(outTankBoundsLower).contains(relMouse)) {
-        return getVatFluid(recipeIndex, arg1, inTankBoundsLower.contains(relMouse));
-      }
-    }
-    return super.handleTooltip(gui, arg1, recipeIndex);
-  }
-
-  private boolean mouseInBounds(Point mouse) {
-    return inTankBounds.contains(mouse) || outTankBounds.contains(mouse) || inTankBoundsLower.contains(mouse) || outTankBoundsLower.contains(mouse);
-  }
-
-  private List<String> getVatFluid(int index, List<String> list, boolean in) {
-    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(index);
-    if(in) {
-      if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-        list.add(rec.inFluid.getFluid().getLocalizedName());
-      }
-    } else {
-      if(rec.result != null && rec.result.getFluid() != null) {
-        list.add(rec.result.getFluid().getLocalizedName());
+    if(inTankBounds.contains(relMouse) || outTankBounds.contains(relMouse)) {
+      if(inTankBounds.contains(relMouse)) {
+        if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
+          currenttip.add(rec.inFluid.getFluid().getLocalizedName(rec.inFluid));
+        }
+      } else {
+        if(rec.result != null && rec.result.getFluid() != null) {
+          currenttip.add(rec.result.getFluid().getLocalizedName(rec.result));
+        }
       }
     }
-    return list;
-  }
-
-  public void renderIcon(IIcon icon, double x, double y, double width, double height, double zLevel) {
-
-    Tessellator tessellator = Tessellator.instance;
-
-    RenderUtil.bindItemTexture();
-    GL11.glColor3f(1, 1, 1);
-    tessellator.startDrawingQuads();
-
-    float minU = icon.getMinU();
-    float minV = icon.getMinV();
-    float maxU = icon.getMaxU();
-    float maxV = icon.getMaxV();
-    tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
-    tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
-    tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
-    tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
-
-    tessellator.draw();
+    return super.handleTooltip(gui, currenttip, recipeIndex);
   }
 
   @Override
-  public void drawProgressBar(int x, int y, int tx, int ty, int w, int h, float completion, int direction) {
-    super.drawProgressBar(87 - 13, 37 - 16, 200, 0, 17, 24, completion, 1);
+  public boolean mouseClicked(GuiRecipe gui, int button, int recipeIndex) {
+    if(button == 0) {
+      if(this.transferFluidTanks(gui, recipeIndex, false)) {
+        return true;
+      }
+    } else if(button == 1) {
+      if(this.transferFluidTanks(gui, recipeIndex, true)) {
+        return true;
+      }
+    }
+    return super.mouseClicked(gui, button, recipeIndex);
   }
 
-  public List<ItemStack> getInputs(IRecipeInput input) {
+  private boolean transferFluidTanks(GuiRecipe gui, int recipeIndex, boolean usage) {
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
+    Point pos = GuiDraw.getMousePosition();
+    Point offset = gui.getRecipePosition(recipeIndex);
+    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
+
+    if(inTankBounds.contains(relMouse)) {
+      transferFluidTank(rec.inFluid, usage);
+    }
+    else if(outTankBounds.contains(relMouse)) {
+      transferFluidTank(rec.result, usage);
+    }
+    return false;
+  }
+
+  private boolean transferFluidTank(FluidStack tank, boolean usage) {
+    if(tank != null && tank.amount > 0) {
+      if(usage) {
+        if(!GuiUsageRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
+          return false;
+        }
+      } else {
+        if(!GuiCraftingRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  public List<ItemStack> getInputs(RecipeInput input) {
     List<ItemStack> result = new ArrayList<ItemStack>();
-    result.add(input.getItem());
-    result.addAll(input.getEquivelentInputs());
+    result.add(input.getInput());
+    ItemStack[] eq = input.getEquivelentInputs();
+    if(eq != null) {
+      for (ItemStack st : eq) {
+        result.add(st);
+      }
+    }
     return result;
   }
 
   public class InnerVatRecipe extends TemplateRecipeHandler.CachedRecipe {
 
     private ArrayList<PositionedStack> inputs;
-    private double energy;
+    private int energy;
     private FluidStack result;
     private FluidStack inFluid;
 
-    public double getEnergy() {
+    public int getEnergy() {
       return energy;
     }
 
     @Override
     public List<PositionedStack> getIngredients() {
-      return getCycledIngredients(cycleticks / 20, inputs);
+      return getCycledIngredients(cycleticks / 30, inputs);
     }
 
     @Override
@@ -242,29 +282,33 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       return null;
     }
 
-    public InnerVatRecipe(float energy, List<IRecipeInput> ingredients, FluidStack result) {
+    public InnerVatRecipe(int energy, RecipeInput[] ingredients, FluidStack result) {
       ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
       ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
-      for (IRecipeInput input : ingredients) {
-        if(input.getItem() != null) {
+      for (RecipeInput input : ingredients) {
+        if(input.getInput() != null) {
           List<ItemStack> equivs = getInputs(input);
-          if(input.getSlot() == 0) {
+          if(input.getSlotNumber() == 0) {
             inputsOne.addAll(equivs);
-          } else if(input.getSlot() == 1) {
+          } else if(input.getSlotNumber() == 1) {
             inputsTwo.addAll(equivs);
           }
-        } else if(input.getFluid() != null) {
-          inFluid = input.getFluid();
+        } else if(input.getFluidInput() != null) {
+          inFluid = input.getFluidInput();
         }
       }
 
       inputs = new ArrayList<PositionedStack>();
-      inputs.add(new PositionedStack(inputsOne, 51, 1));
-      inputs.add(new PositionedStack(inputsTwo, 100, 1));
+
+      if (!inputsOne.isEmpty()) {
+        inputs.add(new PositionedStack(inputsOne, 51, 1));
+      }
+      if (!inputsTwo.isEmpty()) {
+        inputs.add(new PositionedStack(inputsTwo, 100, 1));
+      }
 
       this.energy = energy;
       this.result = result;
     }
   }
-
 }

@@ -15,15 +15,17 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   private int z;
 
   int currGbUse;
+  int maxGbUse;
 
-  public PacketGrindingBall() {    
+  public PacketGrindingBall() {
   }
-  
+
   public PacketGrindingBall(TileCrusher ent) {
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
     currGbUse = ent.currGbUse;
+    maxGbUse = ent.gb == null ? 0 : ent.gb.getDurationMJ();
   }
 
   @Override
@@ -32,7 +34,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
     buf.writeInt(y);
     buf.writeInt(z);
     buf.writeInt(currGbUse);
-
+    buf.writeInt(maxGbUse);
   }
 
   @Override
@@ -41,6 +43,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
     y = buf.readInt();
     z = buf.readInt();
     currGbUse = buf.readInt();
+    maxGbUse = buf.readInt();
   }
 
   @Override
@@ -50,6 +53,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
     if(te instanceof TileCrusher) {
       TileCrusher me = (TileCrusher) te;
       me.currGbUse = message.currGbUse;
+      me.maxGbUse = message.maxGbUse;
     }
     return null;
   }

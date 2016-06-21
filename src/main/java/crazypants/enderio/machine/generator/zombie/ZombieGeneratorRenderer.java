@@ -9,17 +9,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.util.RenderPassHelper;
+
+@SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final String TEXTURE = "enderio:models/ZombieJar.png";
@@ -37,12 +43,15 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     int l1 = l % 65536;
     int l2 = l / 65536;
     Tessellator.instance.setColorOpaque_F(f, f, f);
-    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    renderModel(gen.facing);
-    renderFluid(gen);
+    if (RenderPassHelper.getEntityRenderPass() == 0) {
+      renderModel(gen.facing);
+    } else if (RenderPassHelper.getEntityRenderPass() == 1) {
+      renderFluid(gen);
+    }
     GL11.glPopMatrix();
   }
 
@@ -57,22 +66,42 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
       Tessellator tes = Tessellator.instance;
       tes.startDrawingQuads();
 
-      float fullness = (float) (tank.getFluidAmount()) / (tank.getCapacity());
+      ForgeDirection facingDir = ForgeDirection.values()[gen.facing];
+      double facingOffset = 0.075;
+
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.85, 0.96, 0.85);
-      bb = bb.scale(1, 0.85 * fullness, 1);
-      float ty = -(0.85f - (bb.maxY - bb.minY)) / 2;      
-      
-      
-      Vector3d offset = ForgeDirectionOffsets.offsetScaled(ForgeDirection.values()[gen.facing], -0.075);
-      bb = bb.translate((float)offset.x, ty, (float)offset.z);
-      
+      float fullness = (float) (tank.getFluidAmount()) / (tank.getCapacity());
+      Vector3d absFac = ForgeDirectionOffsets.absolueOffset(facingDir);
+
+      double scaleX = absFac.x == 0 ? 0.95 : 1 - facingOffset / 2;
+      double scaleY = 0.85 * fullness;
+      double scaleZ = absFac.z == 0 ? 0.95 : 1 - facingOffset / 2;
+
+      bb = bb.scale(scaleX, 0.85 * fullness, scaleZ);
+
+      float ty = -(0.85f - (bb.maxY - bb.minY)) / 2;
+      Vector3d transOffset = ForgeDirectionOffsets.offsetScaled(facingDir, -facingOffset);
+      bb = bb.translate((float) transOffset.x, ty, (float) transOffset.z);
+
+      int brightness;
+      if(gen.getWorldObj() == null) {
+        brightness = 15 << 20 | 15 << 4;
+      } else {
+        brightness = gen.getWorldObj().getLightBrightnessForSkyBlocks(gen.xCoord, gen.yCoord, gen.zCoord, 0);
+      }
+      tes.setBrightness(brightness);
+
       CubeRenderer.render(bb, icon);
 
+      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GL11.glDisable(GL11.GL_LIGHTING);
+      GL11.glDisable(GL11.GL_CULL_FACE);
       GL11.glDepthMask(false);
       tes.draw();
       GL11.glDepthMask(true);
-      GL11.glDisable(GL11.GL_BLEND);
+      GL11.glPopAttrib();
 
     }
   }
@@ -120,7 +149,10 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
   private void renderItem(float x, float y, float z) {
     GL11.glPushMatrix();
     GL11.glTranslatef(x, y, z);
-    renderModel(ForgeDirection.NORTH.ordinal());
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    renderModel(ForgeDirection.SOUTH.ordinal());
+    GL11.glDisable(GL11.GL_BLEND);
     GL11.glPopMatrix();
   }
 

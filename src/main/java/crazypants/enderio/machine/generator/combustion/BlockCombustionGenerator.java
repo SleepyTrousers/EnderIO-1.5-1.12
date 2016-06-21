@@ -2,29 +2,30 @@ package crazypants.enderio.machine.generator.combustion;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
   public static int renderId = -1;
 
+  private IIcon overlayPullSides, overlayPullTopBottom, overlayDisabledNoCenter;
+
   public static BlockCombustionGenerator create() {
     PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
     return gen;
@@ -40,40 +41,10 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCombustionGenerator)) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    TileCombustionGenerator gen = (TileCombustionGenerator) te;
-    ItemStack item = entityPlayer.inventory.getCurrentItem();
-    if(item == null) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    //check for filled fluid containers and see if we can empty them into our tanks
-    FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(fluid != null) {
-      int filled = gen.fill(ForgeDirection.UP, fluid, false);
-      if(filled >= fluid.amount) {
-        gen.fill(ForgeDirection.UP, fluid, true);
-        if(!entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-        }
-        return true;
-      }
-    }
-
-    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-  }
-
-  @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCombustionGenerator) {
-      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator)te);
+      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator) te);
     }
     return null;
   }
@@ -107,24 +78,35 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     return false;
   }
 
-  public IIcon getBackIcon() {
-    return iconBuffer[0][2];
+  @SideOnly(Side.CLIENT)
+  @Override
+  protected void registerOverlayIcons(IIconRegister iIconRegister) {
+    super.registerOverlayIcons(iIconRegister);
+    overlayPullSides = iIconRegister.registerIcon("enderio:overlays/pullSides");
+    overlayPullTopBottom = iIconRegister.registerIcon("enderio:overlays/pullTopBottom");
+    overlayDisabledNoCenter = iIconRegister.registerIcon("enderio:overlays/disabledNoCenter");
   }
 
   @Override
-  public String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:combustionGenFrontOn";
+  public IIcon getOverlayIconForMode(TileCombustionGenerator tile, ForgeDirection face, IoMode mode) {
+    if(face.offsetY == 0 || mode == IoMode.NONE) {
+      return super.getOverlayIconForMode(tile, face, mode);
     }
-    return "enderio:combustionGenFront";
+    return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom : overlayDisabledNoCenter;
   }
 
   @Override
-  public String getBackIconKey(boolean active) {
-    return "enderio:blankMachinePanel";
+  protected String getMachineFrontIconKey(boolean active) {
+    return getBackIconKey(active);
   }
 
   @Override
+  protected String getModelIconKey(boolean active) {
+    return "enderio:combustionGenModel";
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     // If active, randomly throw some smoke around
     if(isActive(world, x, y, z)) {
@@ -142,7 +124,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
       if(dir.offsetX == 1) {
         startX++;
-      } else if (dir.offsetZ == 1) {
+      } else if(dir.offsetZ == 1) {
         startZ++;
       }
 
@@ -154,5 +136,4 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
       }
     }
   }
-
 }

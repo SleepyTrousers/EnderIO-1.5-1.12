@@ -15,17 +15,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.enderio.core.common.vecmath.Vertex;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector4d;
-import crazypants.vecmath.Vertex;
 
+@SideOnly(Side.CLIENT)
 public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
@@ -69,7 +73,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
   }
 
-  private void renderBlock(TileCapacitorBank te, float filledRatio, int meta) {
+  private void renderBlock(TileCapacitorBank te, double filledRatio, int meta) {
     RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
 
@@ -90,7 +94,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     if(te != null) {
       brightness = new float[6];
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(te.getWorld(), te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord
+        brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(te.getWorldObj(), te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord
             + dir.offsetZ);
         maxBrightness = Math.max(brightness[dir.ordinal()], maxBrightness);
       }
@@ -100,11 +104,6 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
 
     tes.startDrawingQuads();
-    //tes.setColorRGBA_F(brightness, brightness, brightness, 1);
-    //    tes.setColorRGBA_F(1, 1, 1, 1);
-    //    if(te != null) {      
-    //      RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-    //    }
     CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0), null, brightness, true);
     tes.draw();
 
@@ -112,11 +111,9 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPolygonOffset(-1.0f, -1.0f);
 
     tes.startDrawingQuads();
-    //tes.setColorRGBA_F(1, 1, 1, 1);
     tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
     if(te != null) {
-      //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-      renderBorder(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, meta);
+      renderBorder(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, meta);
     } else {
       renderBorder(null, 0, 0, 0, meta);
     }
@@ -127,11 +124,8 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     GL11.glPolygonOffset(-3.0F, -3.0F);
     tes.startDrawingQuads();
-    //tes.setColorRGBA_F(1, 1, 1, 1);
     tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
-    //if (te != null) {      
-    //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-    //} 
+
     for (GaugeBounds gb : gaugeBounds) {
       renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
     }
@@ -148,7 +142,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       texture = IconUtil.whiteTexture;
     }
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
+      RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockCapacitorBank, x, y, z, face, texture,
           blockAccess == null, false, false);
     }
   }
@@ -181,7 +175,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-  private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, float filledRatio) {
+  private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, double filledRatio) {
 
     int totalPixels;
     if(gb.vInfo.verticalHeight == 1) {
@@ -190,7 +184,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
     }
 
-    int targetPixelCount = Math.max(0, Math.round(totalPixels * filledRatio));
+    int targetPixelCount = (int)Math.max(0, Math.round(totalPixels * filledRatio));
     int pixelsBellowFace;
     if(gb.vInfo.index < 2) {
       // either none or a bottom section
@@ -214,7 +208,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
-    List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+    List<com.enderio.core.common.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
     for (Vertex coord : corners) {
       if(coord.uv != null) {
         tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
