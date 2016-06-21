@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.Collection;
 import java.util.Set;
 
 import com.enderio.core.common.util.DyeColor;
@@ -25,7 +26,7 @@ public interface IRedstoneConduit extends IConduit {
 
   Set<Signal> getNetworkInputs(EnumFacing side);
 
-  Set<Signal> getNetworkOutputs(EnumFacing side);
+  Collection<Signal> getNetworkOutputs(EnumFacing side);
 
   DyeColor getSignalColor(EnumFacing dir);
 

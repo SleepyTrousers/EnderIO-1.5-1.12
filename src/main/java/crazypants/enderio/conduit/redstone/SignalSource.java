@@ -1,19 +1,29 @@
 package crazypants.enderio.conduit.redstone;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public class SignalSource {
 
-  public final Signal signal;
+  public final BlockPos pos;
 
   public final EnumFacing fromDirection;
 
-  public SignalSource(Signal signal, EnumFacing fromDirection) {
-    this.signal = signal;
-    this.fromDirection = fromDirection;
+  public SignalSource(Signal signal) {
+    this(new BlockPos(signal.x, signal.y, signal.z), signal.dir);    
+  }
+
+  public SignalSource(BlockPos blockPos, EnumFacing side) {
+    pos = blockPos;
+    fromDirection = side;
+  }
+  
+  public BlockPos getPos() {
+    return pos;
+  }
+
+  public EnumFacing getFromDirection() {
+    return fromDirection;
   }
 
   @Override
@@ -21,7 +31,7 @@ public class SignalSource {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((fromDirection == null) ? 0 : fromDirection.hashCode());
-    result = prime * result + ((signal == null) ? 0 : signal.hashCode());
+    result = prime * result + ((pos == null) ? 0 : pos.hashCode());
     return result;
   }
 
@@ -40,11 +50,11 @@ public class SignalSource {
     if(fromDirection != other.fromDirection) {
       return false;
     }
-    if(signal == null) {
-      if(other.signal != null) {
+    if(pos == null) {
+      if(other.pos != null) {
         return false;
       }
-    } else if(!signal.equals(other.signal)) {
+    } else if(!pos.equals(other.pos)) {
       return false;
     }
     return true;
@@ -52,37 +62,9 @@ public class SignalSource {
 
   @Override
   public String toString() {
-    return "SignalSource [signal=" + signal + ", fromDirection=" + fromDirection + "]";
+    return "SignalSource [pos=" + pos + ", fromDirection=" + fromDirection + "]";
   }
 
-  public static int[] toIntArray(Set<SignalSource> sources) {
-    // Each source is 5 ints
-    int[] result = new int[sources.size() * 5];
-    int i = 0;
-    for (SignalSource ss : sources) {
-      result[i] = ss.signal.x;
-      i++;
-      result[i] = ss.signal.y;
-      i++;
-      result[i] = ss.signal.z;
-      i++;
-      result[i] = ss.signal.strength;
-      i++;
-      result[i] = ss.signal.color.ordinal();
-      i++;
-      result[i] = ss.fromDirection.ordinal();
-      i++;
-    }
-    return result;
-  }
-
-  public static Set<SignalSource> fromIntArray(int[] enc) {
-    Set<SignalSource> result = new HashSet<SignalSource>();
-    for (int i = 0; i < enc.length; i += 5) {
-      //      Signal sig = new Signal(enc[i], enc[i + 1], enc[i + 2], enc[i + 3], EnumFacing.UNKNOWN,14, SignalColor.values()[enc[i + 4]]);
-      //      result.add(new SignalSource(sig, EnumFacing.values()[enc[i + 4]]));
-    }
-    return result;
-  }
+  
 
 }

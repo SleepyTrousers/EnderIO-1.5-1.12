@@ -330,7 +330,7 @@ public class ConduitUtil {
     }
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
     if (rsCon != null) {
-      Set<Signal> signals = rsCon.getNetworkOutputs(null);
+      Collection<Signal> signals = rsCon.getNetworkOutputs(null);
       for (Signal sig : signals) {
         if (sig.color == col) {
           if (sig.strength > signalStrength) {

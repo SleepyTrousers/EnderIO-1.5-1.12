@@ -14,8 +14,9 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Multimap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
@@ -189,7 +190,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void onChunkUnload(World worldObj) {
     RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
     if (network != null) {
-      Set<Signal> oldSignals = Sets.newHashSet(network.getSignals());
+      Multimap<SignalSource, Signal> oldSignals  = ArrayListMultimap.create(network.getSignals());      
       List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
       super.onChunkUnload(worldObj);
       network.afterChunkUnload(conduits, oldSignals);
@@ -284,22 +285,19 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
       setConnectionMode(dir, mode);
       forcedConnections.put(dir, mode);
-      onAddedToBundle();
-      Set<Signal> newSignals = getNetworkInputs(dir);
+      onAddedToBundle();      
       if(network != null) {
-        network.addSignals(newSignals);
-        network.notifyNeigborsOfSignals();
+        network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
+        network.notifyNeigborsOfSignalUpdate();
       }
 
     } else {
-
-      Set<Signal> signals = getNetworkInputs(dir);
       setConnectionMode(dir, mode);
       forcedConnections.put(dir, mode);
       onAddedToBundle();
       if(network != null) {
-        network.removeSignals(signals);
-        network.notifyNeigborsOfSignals();
+        network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
+        network.notifyNeigborsOfSignalUpdate();
       }
 
     }
@@ -344,14 +342,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public void setSignalColor(EnumFacing dir, DyeColor col) {
-    Set<Signal> toRemove = getNetworkInputs(dir);
-    signalColors.put(dir, col);
-    Set<Signal> toAdd = getNetworkInputs(dir);
-    if(network != null) {
-      network.removeSignals(toRemove);
-      network.addSignals(toAdd);
-      network.notifyNeigborsOfSignals();
+  public void setSignalColor(EnumFacing dir, DyeColor col) {    
+    signalColors.put(dir, col);   
+    if(network != null) {      
+      network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
+      network.notifyNeigborsOfSignalUpdate();
     }
     setClientStateDirty();
   }
@@ -373,7 +368,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         signalStrengths.remove(dir);
       }
       if(network != null) {
-        network.notifyNeigborsOfSignals();
+        network.notifyNeigborsOfSignalUpdate();
       }
     }
   }
@@ -443,18 +438,25 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public int isProvidingWeakPower(EnumFacing toDirection) {
+  public int isProvidingWeakPower(EnumFacing toDirection) {    
     if(getConnectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
       return 0;
-    }
+    }    
     if(network == null || !network.isNetworkEnabled()) {
       return 0;
     }
     int result = 0;
     for (Signal signal : getNetworkOutputs(toDirection.getOpposite())) {
-      result = Math.max(result, signal.strength);
+      //don't return signals back to where they came from
+      if(!signal.getPos().equals(getPos().offset(toDirection))) {
+        result = Math.max(result, signal.strength);
+      }
     }
     return result;       
+  }
+
+  private BlockPos getPos() {
+    return bundle.getEntity().getPos();
   }
 
   @Override
@@ -479,19 +481,19 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public Set<Signal> getNetworkOutputs(EnumFacing side) {
+  public Collection<Signal> getNetworkOutputs(EnumFacing side) {
     if (side == null) {
       if(network == null) {
         return Collections.emptySet();
       }
-      return network.getSignals();      
+      return network.getSignals().values();      
     }
 
     ConnectionMode mode = getConnectionMode(side);
     if(network == null || mode != ConnectionMode.IN_OUT) {
       return Collections.emptySet();
     }
-    Set<Signal> allSigs = network.getSignals();
+    Collection<Signal> allSigs = network.getSignals().values();
     if(allSigs.isEmpty()) {
       return allSigs;
     }
@@ -533,7 +535,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return res;
   }
   
-  //returns 16 for string power inputs
+
   protected int getExternalPowerLevel(EnumFacing dir) {
     World world = getBundle().getEntity().getWorld();
     BlockCoord loc = getLocation();
@@ -542,7 +544,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     //int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
     int strong = world.getStrongPower(loc.getBlockPos(), dir);
     if(strong > 0) {
-      return 16;
+      return strong;
+//      return 16;
     }
 
     //int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
@@ -569,7 +572,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   
   
   @Override
-  public boolean onNeighborBlockChange(Block blockId) {    
+  public boolean onNeighborBlockChange(Block blockId) {        
     World world = getBundle().getEntity().getWorld();
     if(world.isRemote) {
       return false;
@@ -578,12 +581,14 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    neighbourDirty |= blockId != EnderIO.blockConduitBundle;
+    if(blockId != EnderIO.blockConduitBundle) {
+      network.updateInputsFromConduit(this);
+    }
     return res;
   }
   
   @Override
-  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {    
     return false;
   }
   
@@ -591,8 +596,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void updateEntity(World world) {
     super.updateEntity(world);
     if(!world.isRemote && neighbourDirty) {
-      network.destroyNetwork();
-      updateNetwork(world);
       neighbourDirty = false;
     }
   }

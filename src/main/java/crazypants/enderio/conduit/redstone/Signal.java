@@ -13,11 +13,13 @@ public class Signal {
   public final EnumFacing dir;
   public final int strength;
   public final DyeColor color;
+  public final BlockPos pos;
 
   public Signal(int x, int y, int z, EnumFacing dir, int strength, DyeColor color) {
     this.x = x;
     this.y = y;
     this.z = z;
+    pos = new BlockPos(x,y,z);
     this.dir = dir;
     this.strength = strength;
     this.color = color;
@@ -25,6 +27,10 @@ public class Signal {
 
   public Signal(BlockPos pos, EnumFacing dir, int strength, DyeColor color) {
     this(pos.getX(),pos.getY(),pos.getZ(), dir, strength, color);
+  }
+  
+  public BlockPos getPos() {
+    return pos;
   }
 
   @Override

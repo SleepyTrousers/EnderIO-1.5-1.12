@@ -145,9 +145,7 @@ public abstract class AbstractConduit implements IConduit {
     ConnectionMode oldVal = conectionModes.get(dir);
     if (oldVal == mode) {
       return;
-    }
-    System.out.println("AbstractConduit.setConnectionMode: Set connection mode from " + oldVal + " to " + mode);
-
+    }    
     if (mode == null) {
       conectionModes.remove(dir);
     } else {
@@ -248,9 +246,6 @@ public abstract class AbstractConduit implements IConduit {
     if (conduit == null) {
       return false;
     }
-//    if (MicroblocksUtil.supportMicroblocks() && isBlockedByMicroblocks(direction, conduit)) {
-//      return false;
-//    }
     return getConnectionMode(direction) != ConnectionMode.DISABLED
         && conduit.getConnectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
