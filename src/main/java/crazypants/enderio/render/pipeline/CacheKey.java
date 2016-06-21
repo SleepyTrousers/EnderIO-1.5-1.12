@@ -3,8 +3,8 @@ package crazypants.enderio.render.pipeline;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.state.IBlockState;
 import crazypants.enderio.render.ICacheKey;
+import net.minecraft.block.state.IBlockState;
 
 public class CacheKey implements ICacheKey {
 
@@ -29,6 +29,10 @@ public class CacheKey implements ICacheKey {
   @Override
   public long getCacheKey() {
     return cacheKey;
+  }
+
+  protected void resetCacheKeyInternal() {
+    cacheKey = 0;
   }
 
 }
