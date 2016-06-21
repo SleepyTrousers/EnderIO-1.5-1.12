@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
 
+<!-- 
+
+These are the build-in aliases. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the aliases, copy the aliases you want to change to
+the matching _user.xml.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:".
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
   <alias name="ZOMBIE_ELECTRODE" item="enderio:itemFrankenSkull:0" />
   <alias name="ZOMBIE_CONTROLLER" item="enderio:itemFrankenSkull:1" />
   <alias name="FRANKEN_ZOMBIE" item="enderio:itemFrankenSkull:2" />
