@@ -36,7 +36,6 @@ import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
-import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -133,7 +132,6 @@ import crazypants.util.CapturedMob;
 import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -497,11 +495,7 @@ public class EnderIO {
   
   private void addModIntegration() {
     // ThaumcraftCompat.load();
-    BuildcraftIntegration.init();
-    
-    if (Loader.isModLoaded("ComputerCraft")) {
-      ConduitBundledRedstoneProvider.register();
-    }
+    BuildcraftIntegration.init();    
   }
 
   private void processImc(ImmutableList<IMCMessage> messages) {

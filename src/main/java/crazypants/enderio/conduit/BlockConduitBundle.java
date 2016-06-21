@@ -852,20 +852,20 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return null;
   }
 
+  @Deprecated
   @Override
-
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
-    TileEntity tile = world.getTileEntity(pos);
-    if ((tile instanceof IConduitBundle)) {
-      ((IConduitBundle) tile).onNeighborBlockChange(neighborBlock);
+    TileConduitBundle conduit = getTileEntity(world, pos);    
+    if (conduit != null) {
+      conduit.onNeighborBlockChange(neighborBlock);
     }
   }
 
   @Override
   public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-    TileEntity conduit = world.getTileEntity(pos);
-    if (conduit instanceof IConduitBundle) {
-      ((IConduitBundle) conduit).onNeighborChange(world, null, null);
+    TileConduitBundle conduit = getTileEntity(world, pos);    
+    if (conduit != null) {
+      conduit.onNeighborChange(world, pos, neighbor);
     }
   }
 
@@ -874,11 +874,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB axisalignedbb, List<AxisAlignedBB> arraylist,
       @Nullable Entity par7Entity) {
 
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof IConduitBundle)) {
+    IConduitBundle con = getTileEntity(world, pos);
+    if(con == null) {
       return;
-    }
-    IConduitBundle con = (IConduitBundle) te;
+    }    
     if (con.hasFacade()) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);

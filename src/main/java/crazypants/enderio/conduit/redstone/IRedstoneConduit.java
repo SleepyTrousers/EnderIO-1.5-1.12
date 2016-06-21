@@ -21,9 +21,7 @@ public interface IRedstoneConduit extends IConduit {
 
   int isProvidingStrongPower(EnumFacing toDirection);
 
-  int isProvidingWeakPower(EnumFacing toDirection);
-
-  Set<Signal> getNetworkInputs();
+  int isProvidingWeakPower(EnumFacing toDirection);  
 
   Set<Signal> getNetworkInputs(EnumFacing side);
 

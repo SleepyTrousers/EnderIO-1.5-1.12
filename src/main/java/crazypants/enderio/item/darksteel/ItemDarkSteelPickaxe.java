@@ -123,14 +123,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       float hitY, float hitZ) {   
     if(isTravelUpgradeActive(player, item, hand)) {
       return EnumActionResult.SUCCESS;
-    }   
-        
-    if(!Config.darkSteelRightClickPlaceEnabled || world.isRemote) {
+    }          
+    if(world.isRemote) {
       return EnumActionResult.PASS;
-    }
-    
+    }    
     EnumActionResult res = doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
-    if(!world.isRemote && Math.random() < 0.001 ) {      
+    if(Math.random() < 0.001 ) {      
       Entity cow = EntityList.createEntityByIDFromName("Pig", world);
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);

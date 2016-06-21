@@ -59,8 +59,12 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   public void addConduit(IRedstoneConduit con) {
     updatingNetwork = true;
     super.addConduit(con);
-    Set<Signal> newInputs = con.getNetworkInputs();
+    Set<Signal> newInputs = new HashSet<Signal>();
+    for(EnumFacing side : EnumFacing.values()) {
+      newInputs.addAll(con.getNetworkInputs(side));      
+    }
     signals.addAll(newInputs);
+    
     // Notify existing nodes of new signals
     for (Signal signal : newInputs) {
       notifyNeigborsOfSignalUpdate(signal);

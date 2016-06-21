@@ -14,7 +14,6 @@ import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
-import crazypants.enderio.conduit.redstone.RedstoneConduit;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -36,8 +35,7 @@ public class ConduitBundleRenderManager {
   public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wireFrame");
 
   public void registerRenderers() {
-
-    RedstoneConduit.initIcons();
+    
     InsulatedRedstoneConduit.initIcons();    
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
