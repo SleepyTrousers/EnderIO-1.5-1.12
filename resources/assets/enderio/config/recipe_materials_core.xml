@@ -256,7 +256,7 @@
       <level minlevel="3"/>
       <grid>
         <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
-        <item name="oredict:cobblestone"/><item name="CHASIS_METAL"/><item name="oredict:cobblestone"/>
+        <item name="oredict:cobblestone"/><item name="ingotIron"/><item name="oredict:cobblestone"/>
         <item name="stickWood"/><item name="oredict:cobblestone"/><item name="stickWood"/>
       </grid>
       <output name="GEAR"/>
