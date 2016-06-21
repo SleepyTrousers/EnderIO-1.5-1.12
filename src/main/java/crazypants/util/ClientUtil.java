@@ -128,5 +128,32 @@ public class ClientUtil {
   public static void registerRenderer(Item item, String name) {
     regRenderer(item, 0, name);
   }
+
+  private static final Random rand = new Random();
+
+  public static void spawnParcticles(double posX, double posY, double posZ, int count, EnumParticleTypes particle) {
+    for (int i = 0; i < count; ++i) {
+      double xOff, yOff, zOff, d0, d1, d2;
+      if (particle == EnumParticleTypes.PORTAL) {
+        xOff = (rand.nextDouble() - 0.5) * 1.1;
+        yOff = (rand.nextDouble() - 0.5) * 1.1;
+        zOff = (rand.nextDouble() - 0.5) * 1.1;
+        d0 = (rand.nextDouble() - 0.5) * 1.5;
+        d1 = -rand.nextDouble();
+        d2 = (rand.nextDouble() - 0.5) * 1.5;
+      } else if (particle == EnumParticleTypes.DAMAGE_INDICATOR) {
+        xOff = 0.1D;
+        yOff = 0.0D;
+        zOff = 0.1D;
+        d0 = d1 = d2 = 0.2D;
+      } else {
+        xOff = yOff = zOff = 0;
+        d0 = rand.nextGaussian() * 0.02D;
+        d1 = rand.nextGaussian() * 0.02D;
+        d2 = rand.nextGaussian() * 0.02D;
+      }
+      Minecraft.getMinecraft().theWorld.spawnParticle(particle, posX + xOff, posY + yOff, posZ + zOff, d0, d1, d2);
+    }
+  }
   
 }
