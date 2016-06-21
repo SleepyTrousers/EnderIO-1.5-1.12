@@ -120,6 +120,8 @@ public final class Config {
   public static int     yetaWrenchOverlayMode = 0;
   
   public static boolean itemConduitUsePhyscialDistance = false;
+  
+  public static boolean redstoneConduitsShowState = true;
 
   public static int enderFluidConduitExtractRate = 200;
   public static int enderFluidConduitMaxIoRate = 800;
@@ -620,6 +622,10 @@ public final class Config {
         "Allows machines to run faster if another mod speeds up the tickrate. Running at higher tickrates is "
             + "unsupported. Disable this if you run into any kind of problem.")
         .getBoolean(allowExternalTickSpeedup);
+    
+    redstoneConduitsShowState = config.get(sectionMisc.name, "redstoneConduitsShowState", redstoneConduitsShowState,
+        "If set to false redstone conduits will look the same whether they are recieving a signal or not. This can help with performance.")
+        .getBoolean(redstoneConduitsShowState);
 
     enchanterBaseLevelCost = config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
         "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);
