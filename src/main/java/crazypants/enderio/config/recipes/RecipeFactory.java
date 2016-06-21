@@ -39,7 +39,7 @@ public class RecipeFactory {
       if (defaultFileStream == null) {
         throw new IOException("Could not get resource /assets/" + EnderIO.DOMAIN + "/config/" + fileName + "_core.xml from classpath. ");
       }
-      defaultConfig = readStax(target, rootElement, defaultFileStream);
+      defaultConfig = readStax(target.copy(target), rootElement, defaultFileStream);
 
       File configFile = new File(Config.configDirectory, fileName + "_user.xml");
       if (configFile.exists()) {

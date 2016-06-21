@@ -51,8 +51,10 @@ public class Recipes implements RecipeRoot {
 
   @Override
   public void addRecipes(RecipeRoot other) {
-    if (other instanceof Recipes && ((Recipes) other).recipes != null) {
-      if (recipes != null) {
+    if (other instanceof Recipes) {
+      if (((Recipes) other).recipes == null) {
+        // NOP
+      } else if (recipes != null) {
         Set<String> recipeNames = new HashSet<String>();
         for (Recipe recipe : recipes) {
           recipeNames.add(recipe.getName());
@@ -65,6 +67,23 @@ public class Recipes implements RecipeRoot {
         }
       } else {
         recipes = ((Recipes) other).recipes;
+      }
+
+      if (((Recipes) other).aliases == null) {
+        // NOP
+      } else if (aliases != null) {
+        Set<String> aliasNames = new HashSet<String>();
+        for (Alias alias : aliases) {
+          aliasNames.add(alias.getName());
+        }
+
+        for (Alias alias : ((Recipes) other).aliases) {
+          if (!aliasNames.contains(alias.getName())) {
+            aliases.add(alias);
+          }
+        }
+      } else {
+        aliases = ((Recipes) other).aliases;
       }
     }
   }
@@ -110,6 +129,23 @@ public class Recipes implements RecipeRoot {
       for (Recipe recipe : recipes) {
         recipe.enforceValidity();
       }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T extends RecipeRoot> T copy(T in) {
+    if (in instanceof Recipes) {
+      Recipes result = new Recipes();
+      if (this.aliases != null) {
+        result.aliases = new ArrayList<Alias>(this.aliases);
+      }
+      if (this.recipes != null) {
+        result.recipes = new ArrayList<Recipe>(this.recipes);
+      }
+      return (T) result;
+    } else {
+      return null;
     }
   }
 

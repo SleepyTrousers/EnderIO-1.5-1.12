@@ -13,6 +13,10 @@ public class Alias extends AbstractConditional {
 
   private String item;
 
+  public String getName() {
+    return name;
+  }
+
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {

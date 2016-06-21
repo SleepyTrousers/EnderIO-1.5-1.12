@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.EnderIOAPIProps;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.API;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -11,8 +13,6 @@ import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.api.EnderIOAPIProps;
 
 public class EnderIOCrashCallable implements ICrashCallable {
 
@@ -27,19 +27,23 @@ public class EnderIOCrashCallable implements ICrashCallable {
     }
 
     for (ModContainer modContainer : ModAPIManager.INSTANCE.getAPIList()) {
+      String apiVersionString = modContainer.getVersion();
+      if (apiVersionString == null) {
+        apiVersionString = "";
+      }
       if ("appliedenergistics2|API".equals(modContainer.getModId())) {
-        if ("rv1".equals(modContainer.getVersion())) {
-          result.add(" * An unsupportted old AE2 API is installed (" + modContainer.getVersion() + " from "
+        if ("rv1".equals(apiVersionString)) {
+          result.add(" * An unsupportted old AE2 API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
           result.add("   Ender IO was build against API version rv2 and will NOT work with older versions.");
-        } else if (!"rv2".equals(modContainer.getVersion())) {
-          result.add(" * An unknown AE2 API is installed (" + modContainer.getVersion() + " from "
+        } else if (!"rv2".equals(apiVersionString)) {
+          result.add(" * An unknown AE2 API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
           result.add("   Ender IO was build against API version rv2 and may or may not work with a newer version.");
         }
       } else if ("CoFHAPI|energy".equals(modContainer.getModId())) {
-        if ("1.7.10R1.0.0".equals(modContainer.getVersion()) || "1.7.10R1.0.1".equals(modContainer.getVersion())) {
-          result.add(" * An unsupportted old RF API is installed (" + modContainer.getVersion() + " from "
+        if ("1.8-BuildCraft-Testing".equals(apiVersionString) || apiVersionString.contains("1.7")) {
+          result.add(" * An unsupportted RF API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
           result.add("   Ender IO needs at least 1.8.9R1.2.0B1 and will NOT work with older versions.");
         } else {
@@ -49,14 +53,14 @@ public class EnderIOCrashCallable implements ICrashCallable {
             if (api != null) {
               String apiVersion = api.apiVersion();
               if (apiVersion != null) {
-                if (!apiVersion.equals(modContainer.getVersion())) {
-                  if ("1.7.10R1.0.0".equals(apiVersion) || "1.7.10R1.0.1".equals(apiVersion)) {
-                    result.add(" * An unsupportted old RF API is installed (" + apiVersion + " from (guessing) " + whereFrom(cofh.api.CoFHAPIProps.class)
+                if (!apiVersion.equals(apiVersionString)) {
+                  if ("1.8-BuildCraft-Testing".equals(apiVersion) || apiVersion.contains("1.7")) {
+                    result.add(" * An unsupportted RF API is installed (" + apiVersion + " from (guessing) " + whereFrom(cofh.api.CoFHAPIProps.class)
                         + ").");
                     result.add("   Ender IO needs at least 1.8.9R1.2.0B1 and will NOT work with older versions.");
                   } else {
                     result.add(" * The RF API that is being used (" + apiVersion + " from (guessing) " + whereFrom(cofh.api.CoFHAPIProps.class)
-                        + ") differes from that that is reported as being loaded (" + modContainer.getVersion() + " from " + modContainer.getSource().getName()
+                        + ") differes from that that is reported as being loaded (" + apiVersionString + " from " + modContainer.getSource().getName()
                         + ").");
                     result.add("   It is a supported version, but that difference may lead to problems.");
                   }
@@ -72,8 +76,8 @@ public class EnderIOCrashCallable implements ICrashCallable {
           }
         }
       } else if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
-        if (!EnderIOAPIProps.VERSION.equals(modContainer.getVersion())) {
-          result.add(" * Another mod is shipping a version of our API that doesn't match our version (" + modContainer.getVersion()
+        if (!EnderIOAPIProps.VERSION.equals(apiVersionString)) {
+          result.add(" * Another mod is shipping a version of our API that doesn't match our version (" + apiVersionString
               + " from " + modContainer.getSource().getName() + "). That may not actually work.");
         } else if (modContainer.getSource().getName() != null
             && (!modContainer.getSource().getName().startsWith("EnderIO") && !modContainer.getSource().getName().startsWith("enderio") && !modContainer
