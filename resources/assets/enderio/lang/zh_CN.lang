@@ -152,12 +152,27 @@ item.bucketNutrient_distillation.name=桶装营养精华液
 fluid.hootch=烈酒
 tile.fluid.hootch.name=烈酒
 item.bucketHootch.name=桶装烈酒
+
 fluid.fire_water=火焰水
 tile.fluid.fire_water.name=火焰水
 item.bucketFire_water.name=桶装火焰水
+
 fluid.rocket_fuel=火箭燃料
 tile.fluid.rocket_fuel.name=火箭燃料
 item.bucketRocket_fuel.name=桶装火箭燃料
+
+fluid.liquid_sunshine=液态阳光
+tile.fluid.liquid_sunshine.name=液态阳光
+item.bucketLiquid_sunshine.name=桶装液态阳光
+
+fluid.cloud_seed=云之精华
+tile.fluid.cloud_seed.name=云之精华
+item.bucketCloud_seed.name=桶装云之精华
+
+fluid.cloud_seed_concentrated=浓缩云之精华
+tile.fluid.cloud_seed_concentrated.name=浓缩云之精华
+item.bucketCloud_seed_concentrated.name=桶装浓缩云之精华
+
 fluid.eio.xpjuice=液态XP
 tile.fluid.eio.xpjuice.name=液态XP
 item.bucketXpjuice.name=桶装液态XP
@@ -449,8 +464,8 @@ enderio.gui.void.mode.if_not_container.desc=空白物品栏接受所有物品除
 enderio.gui.void.mode.never=从不
 enderio.gui.void.mode.never.desc=空白物品栏不接受任何物品
 
-tile.blockCrafter.name=合成器
-tile.blockCrafter.tooltip.detailed.line1=靠能量工作的自动合成器
+tile.blockCrafter.name=装配器
+tile.blockCrafter.tooltip.detailed.line1=自动制作物品的机器
 tile.blockCrafter.tooltip.detailed.line2=每次合成都会消耗能量
 tile.blockCrafter.tooltip.detailed.line3=使用电容器升级可以
 tile.blockCrafter.tooltip.detailed.line4=增加速度与能量存储
@@ -576,7 +591,7 @@ tile.blockDarkSteelAnvil.slightlyDamaged.name=轻微破损的玄铁砧
 tile.blockDarkSteelAnvil.veryDamaged.name=严重破损的玄铁砧
 tile.blockDarkSteelAnvil.tooltip.common.line1=经久耐用
 tile.blockDarkSteelAnvil.tooltip.detailed.line1=比原版的铁砧
-tile.blockDarkSteelAnvil.tooltip.detailed.line2=更加结实耐用
+tile.blockDarkSteelAnvil.tooltip.detailed.line2=更加结实
 
 tile.blockDarkSteelLadder.name=玄铁梯子
 tile.blockDarkSteelLadder.tooltip.common.line1=比普通的梯子更易攀爬
@@ -704,37 +719,37 @@ enderio.item.darkSteel_pickaxe.tooltip.cost=消耗
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=潜行时一次采集多个原木
 
-enderio.item.darkSteel_shears.tooltip.multiHarvest=授权时修剪多个方块/羊
+enderio.item.darkSteel_shears.tooltip.multiHarvest=激活后修剪多个方块/羊
 
 enderio.item.darkSteel_sword.tooltip.line1=增加头颅与末影珍珠的掉落
-enderio.item.darkSteel_sword.tooltip.line2=一旦被打,末影人无法传送
-enderio.item.darkSteel_sword.tooltip.line3=充能后伤害+1
+enderio.item.darkSteel_sword.tooltip.line2=击中后将阻止末影人传送
+enderio.item.darkSteel_sword.tooltip.line3=充能后伤害+2
 
 enderio.item.darkSteel_armor.tooltip.line1=充能后
 enderio.item.darkSteel_armor.tooltip.line2=钻石级别保护 
 
 enderio.item.darkSteel_boots.tooltip.line1=充能后
-enderio.item.darkSteel_boots.tooltip.line2=掉落伤害免疫
+enderio.item.darkSteel_boots.tooltip.line2=免疫跌落伤害
 
 enderio.darksteel.upgrade.empowered_one.name=注能
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=能量: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=能量吸收抵消一半的
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=耐久损伤
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=$D%耐久损耗
 
-enderio.darksteel.upgrade.empowered_two.name=注能II
+enderio.darksteel.upgrade.empowered_two.name=注能 II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=能量: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=能量吸收抵消一半的
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=耐久损伤
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=$D%耐久损耗
 
-enderio.darksteel.upgrade.empowered_three.name=注能III
+enderio.darksteel.upgrade.empowered_three.name=注能 III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=能量: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=能量吸收抵消一半的
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=耐久损伤
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=$D%耐久损耗
 
-enderio.darksteel.upgrade.empowered_four.name=注能IV
+enderio.darksteel.upgrade.empowered_four.name=注能 IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=能量: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=能量吸收抵消一半的
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=耐久损伤
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=$D%耐久损耗
 
 enderio.darksteel.upgrade.travel.name=旅行
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=按住shift右击来传送或
@@ -847,10 +862,11 @@ enderio.gui.machine.tooltip.storelevels=玩家XP
 enderio.gui.machine.button.storeall=储存玩家
 enderio.gui.machine.tooltip.storeall=全部XP
 enderio.gui.machine.button.retrievelevel=取出1级
-enderio.gui.machine.tooltip.retrievelevel=玩家XP级数
+enderio.gui.machine.tooltip.retrievelevel=玩家XP等级
 enderio.gui.machine.button.retrievelevels=取出10级
-enderio.gui.machine.tooltip.retrievelevels=玩家XP级数
+enderio.gui.machine.tooltip.retrievelevels=玩家XP等级
 enderio.gui.machine.button.retrieveall=取出全部
+enderio.gui.machine.tooltip.retrieveall=玩家XP等级
 enderio.gui.machine.ioMode.overlay.tooltip=配置IO
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift点击会重置各面
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=至默认设置
@@ -894,6 +910,7 @@ enderio.gui.powerMonitor.monHeading2=储能库储量
 enderio.gui.powerMonitor.monHeading3=机器缓冲
 enderio.gui.powerMonitor.monHeading4=5秒平均输出
 enderio.gui.powerMonitor.monHeading5=5秒平均输入
+enderio.gui.powerMonitor.noNetworkError=无管道网络连接. 能量监控器需连接于一个管道网路以读取数据.
 
 //MJ Reader
 enderio.gui.mjReader.networkHeading=能量网
@@ -1048,6 +1065,7 @@ enderio.gui.weather.task.clear=清除天气
 enderio.gui.weather.task.rain=雨天
 enderio.gui.weather.task.storm=雷暴天气
 enderio.gui.weather.requireditem=需要物品: %s
+enderio.weatherObelisk.fuelTank=大气通量仓
 
 //Enchants
 enchantment.enderio.soulBound=灵魂绑定
