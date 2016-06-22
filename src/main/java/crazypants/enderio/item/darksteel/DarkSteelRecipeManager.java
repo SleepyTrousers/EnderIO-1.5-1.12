@@ -21,6 +21,7 @@ import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
 import net.minecraft.enchantment.Enchantment;
@@ -69,6 +70,9 @@ public class DarkSteelRecipeManager {
       upgrades.add(ApiaristArmorUpgrade.CHEST);
       upgrades.add(ApiaristArmorUpgrade.LEGS);
       upgrades.add(ApiaristArmorUpgrade.BOOTS);
+    }
+    if (TheOneProbeUpgrade.INSTANCE.isAvailable()) {
+      upgrades.add(TheOneProbeUpgrade.INSTANCE);
     }
   }
 

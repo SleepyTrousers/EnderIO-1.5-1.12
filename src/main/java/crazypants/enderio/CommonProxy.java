@@ -11,6 +11,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeFactory;
 import crazypants.enderio.config.recipes.xml.Recipes;
+import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -61,6 +62,7 @@ public class CommonProxy {
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
+    MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
 
     if (Config.registerRecipes) {
       for (String filename : RECIPE_FILES) {

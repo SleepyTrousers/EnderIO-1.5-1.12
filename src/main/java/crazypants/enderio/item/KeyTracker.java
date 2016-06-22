@@ -4,8 +4,6 @@ import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.common.util.ChatUtil;
 
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -35,6 +33,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
+import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+
 public class KeyTracker {
 
   public static final KeyTracker instance = new KeyTracker();
@@ -57,6 +57,8 @@ public class KeyTracker {
   
   private final KeyBinding magnetKey;
   
+  private final KeyBinding topKey;
+
   public KeyTracker() {
     glideKey = new KeyBinding(EnderIO.lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(glideKey);
@@ -81,6 +83,9 @@ public class KeyTracker {
 
     magnetKey = new KeyBinding(EnderIO.lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(magnetKey);
+
+    topKey = new KeyBinding(EnderIO.lang.localize("keybind.top"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+    ClientRegistry.registerKeyBinding(topKey);
   }
   
   @SubscribeEvent
@@ -94,6 +99,7 @@ public class KeyTracker {
     handleSpeed();
     handleJump();
     handleMagnet();
+    handleTop();
   }
 
   private void sendEnabledChatMessage(String messageBase, boolean isActive) {
@@ -253,4 +259,13 @@ public class KeyTracker {
   public KeyBinding getYetaWrenchMode() {
     return yetaWrenchMode;
   }
+
+  private void handleTop() {
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    if (topKey.isPressed() && DarkSteelController.instance.isTopUpgradeEquipped(player)) {
+      boolean isActive = !DarkSteelController.instance.isTopActive(player);
+      DarkSteelController.instance.setTopActive(player, isActive);
+    }
+  }
+
 }

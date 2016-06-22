@@ -68,7 +68,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   static {    
     MinecraftForge.EVENT_BUS.register(DarkSteelController.instance);
-    MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 
   //TODO: 1.9 I think this is borked

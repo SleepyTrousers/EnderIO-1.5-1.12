@@ -252,6 +252,8 @@ public final class Config {
 
   public static int darkSteelNightVisionCost = 4;
 
+  public static int darkSteelTOPCost = 4;
+
   public static int darkSteelSoundLocatorCost = 4;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
@@ -898,6 +900,9 @@ public final class Config {
 
     darkSteelNightVisionCost = config.get(sectionDarkSteel.name, "darkSteelNightVisionCost", darkSteelNightVisionCost,
         "Number of levels required for the 'Night Vision' upgrade.").getInt(darkSteelNightVisionCost);
+
+    darkSteelTOPCost = config.get(sectionDarkSteel.name, "darkSteelTOPCost", darkSteelTOPCost, "Number of levels required for the 'The One Probe' upgrade.")
+        .getInt(darkSteelTOPCost);
 
     darkSteelGliderCost = config.get(sectionDarkSteel.name, "darkSteelGliderCost", darkSteelGliderCost,
         "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);

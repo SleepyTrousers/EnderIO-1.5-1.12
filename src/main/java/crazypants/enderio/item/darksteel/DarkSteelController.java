@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -25,6 +26,7 @@ import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.sound.SoundHelper;
@@ -453,5 +455,24 @@ public class DarkSteelController {
 
   public boolean isNightVisionActive() {
     return nightVisionActive;
+  }
+
+  public boolean isTopUpgradeEquipped(EntityPlayer player) {
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+    return TheOneProbeUpgrade.loadFromItem(helmet) != null;
+  }
+
+  public void setTopActive(EntityPlayer player, boolean active) {
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+    if (active) {
+      ItemUtil.getOrCreateNBT(helmet).setInteger(TheOneProbeUpgrade.PROBETAG, 1);
+    } else {
+      ItemUtil.getOrCreateNBT(helmet).removeTag(TheOneProbeUpgrade.PROBETAG);
+    }
+  }
+
+  public boolean isTopActive(EntityPlayer player) {
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+    return ItemUtil.getOrCreateNBT(helmet).hasKey(TheOneProbeUpgrade.PROBETAG);
   }
 }
