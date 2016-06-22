@@ -12,10 +12,12 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -52,20 +54,20 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
     return false;
   }
- 
+
   @Override
   protected void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
-    //Handled in dynamic render
+    // Handled in dynamic render
   }
-  
+
   @Override
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {    
+  protected void renderConduitDynamic(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float brightness) {
     if (isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if (fluid != null) {
         renderFluidOutline(component, fluid);
-      } 
+      }
     }
   }
 
@@ -77,26 +79,26 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {  
+  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
 
     if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
       return;
     }
-    
-    if (isNSEWUD(component.dir)) {          
+
+    if (isNSEWUD(component.dir)) {
       BoundingBox[] cubes = toCubes(component.bound);
-      for (BoundingBox cube : cubes) {        
+      for (BoundingBox cube : cubes) {
         drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
       }
 
     } else {
       drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
-    }    
+    }
   }
-  
+
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
-    renderFluidOutline(component, fluid, 1, 13f / 16f);
+    renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.HEIGHT, 1f / 16f);
   }
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
@@ -109,65 +111,44 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
   public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
 
-    Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);    
+     Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
     
-    if (cache0 == null) {
-      cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
-      cache.put(component, cache0);
-    }
-    List<CachableRenderStatement> data = cache0.get(fluid);
-    if (data != null) {
-      return data;
-    }
-    data = new ArrayList<CachableRenderStatement>();
-    cache0.put(fluid, data);
+     if (cache0 == null) {
+     cache0 = new HashMap<Fluid, List<CachableRenderStatement>>();
+     cache.put(component, cache0);
+     }
+     List<CachableRenderStatement> data = cache0.get(fluid);
+     if (data != null) {
+     return data;
+     }
+     data = new ArrayList<CachableRenderStatement>();
+     cache0.put(fluid, data);
 
     TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
-    if (texture == null) {      
-      return data;      
+    if (texture == null) {
+      return data;
     }
-
     BoundingBox bbb;
-    if (scaleFactor == 1) {
-      bbb = component.bound;
-    } else {
-      double xScale = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-      double yScale = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-      double zScale = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
-      bbb = component.bound.scale(xScale, yScale, zScale);            
-    }
+
+    double width = outlineWidth;
+    scaleFactor = scaleFactor - 0.05;
+    double xScale = Math.abs(component.dir.getFrontOffsetX()) == 1 ? width : scaleFactor;
+    double yScale = Math.abs(component.dir.getFrontOffsetY()) == 1 ? width : scaleFactor;
+    double zScale = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? width : scaleFactor;
+
+    double offSize = (0.5 - width) / 2 - width / 2;
+    double xOff = component.dir.getFrontOffsetX() * offSize;
+    double yOff = component.dir.getFrontOffsetY() * offSize;
+    double zOff = component.dir.getFrontOffsetZ() * offSize;
+
+    bbb = component.bound.scale(xScale, yScale, zScale);
+    bbb = bbb.translate(new Vector3d(xOff, yOff, zOff));
 
     for (EnumFacing face : EnumFacing.VALUES) {
       if (face != component.dir && face != component.dir.getOpposite()) {
-
-        Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
-        Vector2f uv = new Vector2f();
-        List<EnumFacing> edges = RenderUtil.getEdgesForFace(face);
-        for (EnumFacing edge : edges) {
-          if (edge != component.dir && edge != component.dir.getOpposite()) {
-            float xLen = 1 - Math.abs(edge.getFrontOffsetX()) * outlineWidth;
-            float yLen = 1 - Math.abs(edge.getFrontOffsetY()) * outlineWidth;
-            float zLen = 1 - Math.abs(edge.getFrontOffsetZ()) * outlineWidth;
-            BoundingBox bb = bbb.scale(xLen, yLen, zLen);
-
-            List<Vector3f> corners = bb.getCornersForFace(face);
-
-            for (Vector3f unitCorn : corners) {
-              Vector3d corner = new Vector3d(unitCorn);
-              corner.add(offset);
-
-              corner.x += (float) (edge.getFrontOffsetX() * 0.5 * bbb.sizeX()) - (Math.signum(edge.getFrontOffsetX()) * xLen / 2f * bbb.sizeX()) * 2f;
-              corner.y += (float) (edge.getFrontOffsetY() * 0.5 * bbb.sizeY()) - (Math.signum(edge.getFrontOffsetY()) * yLen / 2f * bbb.sizeY()) * 2f;
-              corner.z += (float) (edge.getFrontOffsetZ() * 0.5 * bbb.sizeZ()) - (Math.signum(edge.getFrontOffsetZ()) * zLen / 2f * bbb.sizeZ()) * 2f;
-
-              //polyOffset
-
-              RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
-
-              data.add(new CachableRenderStatement.AddVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y));
-            }
-          }
-
+        List<Vertex> corners = bbb.getCornersWithUvForFace(face, texture.getMinU(), texture.getMaxU(), texture.getMinV(), texture.getMaxV());
+        for (Vertex corner : corners) {
+          data.add(new CachableRenderStatement.AddVertexWithUV(corner.x(), corner.y(), corner.z(), corner.uv.x, corner.uv.y));
         }
       }
     }

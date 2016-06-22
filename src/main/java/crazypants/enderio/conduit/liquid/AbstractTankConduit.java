@@ -123,7 +123,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
               && (network.getFluidType() == null || network.getTotalVolume() < 500 || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
             network.setFluidType(fluid);
             network.setFluidTypeLocked(true);
-            ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, "itemLiquidConduit.lockedType", " " + FluidRegistry.getFluidName(fluid));
+            
+            ChatUtil.sendNoSpam(player,  EnderIO.lang.localize("itemLiquidConduit.lockedType"), fluid.getLocalizedName());
           }
         }
         return true;

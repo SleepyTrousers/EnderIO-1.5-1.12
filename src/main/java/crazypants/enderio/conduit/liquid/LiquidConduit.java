@@ -384,6 +384,7 @@ public class LiquidConduit extends AbstractTankConduit {
     return LiquidConduitNetwork.areFluidsCompatable(getFluidType(), ((LiquidConduit) con).getFluidType());
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if(component.dir == null) {
@@ -395,9 +396,6 @@ public class LiquidConduit extends AbstractTankConduit {
     if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
-    //    if(getFluidType() == null) {
-    //      return ICONS.get(ICON_EMPTY_KEY);
-    //    }
     return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
   }
 
