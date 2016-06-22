@@ -5,11 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -33,10 +28,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
+import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
@@ -199,8 +199,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return spaceClear;
   }
 
-  Entity createEntity(boolean forceAlive) {
-    Entity ent = capturedMob.getEntity(worldObj, false);
+  Entity createEntity(DifficultyInstance difficulty, boolean forceAlive) {
+    Entity ent = capturedMob.getEntity(worldObj, difficulty, false);
     if (forceAlive && Config.poweredSpawnerMaxPlayerDistance <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
       ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
@@ -209,34 +209,29 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   protected boolean trySpawnEntity() {
-    Entity entity = createEntity(true);
+    Entity entity = createEntity(worldObj.getDifficultyForLocation(getPos()), true);
     if (!(entity instanceof EntityLiving)) {
       return false;
     }
     EntityLiving entityliving = (EntityLiving) entity;
+
     int spawnRange = getRange();
 
-    int xCoord = getPos().getX();
-    int yCoord = getPos().getY();
-    int zCoord = getPos().getZ();
     if (Config.poweredSpawnerMaxNearbyEntities > 0) {
-      int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(),
-          new AxisAlignedBB(xCoord - spawnRange * 2, yCoord - 4, zCoord - spawnRange * 2, xCoord + spawnRange * 2, yCoord + 4, zCoord + spawnRange * 2)).size();
-
+      int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange)).size();
       if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
         return false;
       }
     }
 
     while (remainingSpawnTries-- > 0) {
-      double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
-      double y = yCoord + worldObj.rand.nextInt(3) - 1;
-      double z = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double x = getPos().getX() + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double y = getPos().getY() + worldObj.rand.nextInt(3) - 1;
+      double z = getPos().getZ() + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+
       entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
       if (canSpawnEntity(entityliving)) {
-        entityliving.onInitialSpawn(worldObj.getDifficultyForLocation(new BlockPos(x, y, z)), null);
-        // TODO 1.9 move wither skeleton enforcing code here
         worldObj.spawnEntityInWorld(entityliving);
         worldObj.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();

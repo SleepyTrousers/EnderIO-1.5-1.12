@@ -2,6 +2,11 @@ package crazypants.enderio.machine.spawner;
 
 import java.util.List;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.util.CapturedMob;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -9,12 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.util.CapturedMob;
 
 public class ItemBrokenSpawner extends Item {
 
@@ -49,6 +48,9 @@ public class ItemBrokenSpawner extends Item {
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (String mobType : CREATIVE_TYPES) {
       par3List.add(CapturedMob.create(mobType, false).toStack(par1, 0, 1));
+      if (mobType.equals("Skeleton")) {
+        par3List.add(CapturedMob.create(mobType, true).toStack(par1, 0, 1));
+      }
     }
   }
 
