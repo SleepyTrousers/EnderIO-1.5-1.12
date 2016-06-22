@@ -35,6 +35,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class CapturedMob {
@@ -236,6 +237,10 @@ public class CapturedMob {
   }
 
   public @Nullable Entity getEntity(@Nullable World world, boolean clone) {
+    return getEntity(world, null, clone);
+  }
+
+  public @Nullable Entity getEntity(@Nullable World world, DifficultyInstance difficulty, boolean clone) {
     Entity entity = null;
     if (world != null) {
       if ((isStub || !clone) && entityId != null) {
@@ -247,33 +252,34 @@ public class CapturedMob {
           entity = EntityList.createEntityByName(entityNbt.getString("id"), world);
         }
       }
-    }
-    if (isVariant && entity instanceof EntitySkeleton) {
-      // TODO 1.9 move this after onInitialSpawn() in TileSpawner
-      EntitySkeleton skel = (EntitySkeleton) entity;
-      skel.setSkeletonType(1);
-      skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
-      skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
-      skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
-      skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
-      skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
-      skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
-            
-      skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-      skel.setCombatTask();
-
-      Calendar calendar = world.getCurrentDate();
-
-      if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
-        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));        
-        skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-      } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
-        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
-      } else if (Math.random() < 0.1) {
-        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));        
-        skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
+      if (difficulty != null && entity instanceof EntityLiving) {
+        ((EntityLiving) entity).onInitialSpawn(difficulty, null);
       }
+      if (isVariant && entity instanceof EntitySkeleton) {
+        EntitySkeleton skel = (EntitySkeleton) entity;
+        skel.setSkeletonType(1);
+        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+        skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+        skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
+        skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
+        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
+        skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
 
+        skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+        skel.setCombatTask();
+
+        Calendar calendar = world.getCurrentDate();
+
+        if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
+          skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
+          skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
+        } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
+          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
+        } else if (Math.random() < 0.1) {
+          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
+          skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
+        }
+      }
     }
     return entity;
   }
