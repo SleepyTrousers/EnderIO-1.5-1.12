@@ -20,9 +20,6 @@ public interface IPowerConduit extends IInternalPowerHandler, IExtractor {
 
   int getMaxEnergyExtracted(EnumFacing dir);
 
-  @Override
-  int getMaxEnergyRecieved(EnumFacing dir);
-
   TextureAtlasSprite getTextureForInputMode();
 
   TextureAtlasSprite getTextureForOutputMode();

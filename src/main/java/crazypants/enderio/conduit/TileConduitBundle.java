@@ -108,11 +108,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       nbtRoot.setString("facadeType", facadeType.name());
     }
     
-    nbtRoot.setShort("nbtVersion", NBT_VERSION);
-    
-//    if (MicroblocksUtil.supportMicroblocks()) {
-//      writeMicroblocksToNBT(nbtRoot);
-//    }
+    nbtRoot.setShort("nbtVersion", NBT_VERSION);    
   }
 
   @Override
@@ -147,21 +143,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(worldObj != null && worldObj.isRemote) {
       clientUpdated = true;
     }
-
-//    if (MicroblocksUtil.supportMicroblocks()) {
-//      readMicroblocksFromNBT(nbtRoot);
-//    }
   }
 
   @Override
   public boolean hasFacade() {
     return facade != null;
   }
-
-  public void setFacadeNoUpdate(IBlockState paintSource) { // TODO: check if needed
-    facade = paintSource;
-  }
-
+  
   @Override
   public void setPaintSource(@Nullable IBlockState paintSource) {
     facade = paintSource;
@@ -769,117 +757,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return null;
   }
 
-  // ---- TE Item Conduits
-
-//  @Override
-//  public ItemStack insertItem(EnumFacing from, ItemStack item) {
-//    IItemConduit ic = getConduit(IItemConduit.class);
-//    if(ic != null) {
-//      return ic.insertItem(from, item);
-//    }
-//    return item;
-//  }
-
-  // ---- Mekanism Gas Tubes
-
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public int receiveGas(EnumFacing side, GasStack stack) {
-//    return receiveGas(side, stack, true);
-//  }
-//
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer) {
-//    IGasConduit gc = getConduit(IGasConduit.class);
-//    if(gc != null) {
-//      return gc.receiveGas(side, stack, doTransfer);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public GasStack drawGas(EnumFacing side, int amount) {
-//    return drawGas(side, amount, true);
-//  }
-//
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer) {
-//    IGasConduit gc = getConduit(IGasConduit.class);
-//    if(gc != null) {
-//      return gc.drawGas(side, amount, doTransfer);
-//    }
-//    return null;
-//  }
-//
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public boolean canReceiveGas(EnumFacing side, Gas type) {
-//    IGasConduit gc = getConduit(IGasConduit.class);
-//    if(gc != null) {
-//      return gc.canReceiveGas(side, type);
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  @Method(modid = "MekanismAPI|gas")
-//  public boolean canDrawGas(EnumFacing side, Gas type) {
-//    IGasConduit gc = getConduit(IGasConduit.class);
-//    if(gc != null) {
-//      return gc.canDrawGas(side, type);
-//    }
-//    return false;
-//  }
- 
-//  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
-//  
-//  @Override
-//  @Method(modid = "appliedenergistics2")
-//  public IGridNode getGridNode(EnumFacing dir) {
-//    if (dir == null || dir == EnumFacing.UNKNOWN) {
-//      return (IGridNode) node;
-//    } else {
-//      IMEConduit cond = getConduit(IMEConduit.class);
-//      if (cond != null) {
-//        if (cond.getConnectionMode(dir.getOpposite()) == ConnectionMode.IN_OUT) {
-//          return (IGridNode) node;
-//        } else {
-//          return null;
-//        }
-//      }
-//    }
-//    return (IGridNode) node;
-//  }
-//  
-//  @SuppressWarnings("cast")
-//  @Override
-//  @Method(modid = "appliedenergistics2")
-//  public void setGridNode(Object node) {
-//    this.node = node;
-//  }
-//
-//  @Override
-//  @Method(modid = "appliedenergistics2")
-//  public AECableType getCableConnectionType(EnumFacing dir) {
-//    IMEConduit cond = getConduit(IMEConduit.class);
-//    if (cond == null) {
-//      return AECableType.NONE;
-//    } else {
-//      return cond.isConnectedTo(dir) ? AECableType.SMART : AECableType.NONE;
-//    }
-//  }
-//  
-//  @Override
-//  @Method(modid = "appliedenergistics2")
-//  public void securityBreak() {
-//  }
-
   @Override
   public boolean displayPower() {
-    return true;
+    return false;
   }
 
   @Override
@@ -900,153 +780,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public int getSerial() {
     return serial;
   }
-
-  // Immibis Microblocks
-
-//  private void initMicroblocks() {
-//    if (MicroblocksUtil.supportMicroblocks()) {
-//      createCovers();
-//    }
-//  }
-
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void createCovers() {
-//    IMicroblockSystem ims = MicroblockAPIUtils.getMicroblockSystem();
-//    if (ims != null) {
-//      covers = ims.createMicroblockCoverSystem(this);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "ImmibisMicroblocks")
-//  public boolean isPlacementBlocked(PartType<?> part, EnumPosition pos) {
-//    EnumPartClass type = part.getPartClass();
-//    // Let's do some cheaper checks first
-//    if (type == EnumPartClass.Strip) {
-//      // No pillars
-//      if (pos == EnumPosition.PostX || pos == EnumPosition.PostY || pos == EnumPosition.PostZ) {
-//        return true;
-//      }
-//    } else if (part.getSize() < 0.25) {
-//      // Anything this small can never intersect conduits
-//      return false;
-//    }
-//    // Finally just check core BB intersections
-//    // Ignore anything that is not a core to allow blocking of connections
-//    else if (type == EnumPartClass.Panel) {
-//      List<CollidableComponent> boxes = getCollidableComponents();
-//      BoundingBox bb = new BoundingBox(Part.getBoundingBoxFromPool(pos, part.getSize()));
-//      for (CollidableComponent c : boxes) {
-//        if (c.dir == EnumFacing.UNKNOWN && c.bound.intersects(bb)) {
-//          return true;
-//        }
-//      }
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  @Method(modid = "ImmibisMicroblocks")
-//  public IMicroblockCoverSystem getCoverSystem() {
-//    return (IMicroblockCoverSystem) covers;
-//  }
-//
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void writeMicroblocksToNBT(NBTTagCompound tag) {
-//    if (covers != null) {
-//      ((IMicroblockCoverSystem) covers).writeToNBT(tag);
-//    }
-//  }
-//
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void readMicroblocksFromNBT(NBTTagCompound tag) {
-//    if (covers != null) {
-//      ((IMicroblockCoverSystem) covers).readFromNBT(tag);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "ImmibisMicroblocks")
-//  public Packet getDescriptionPacket() {
-//    if (covers == null) {
-//      return super.getDescriptionPacket();
-//    }
-//
-//    NBTTagCompound tag = new NBTTagCompound();
-//    tag.setByteArray("C", ((IMicroblockCoverSystem) covers).writeDescriptionBytes());
-//    writeCustomNBT(tag);
-//    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
-//  }
-//
-//  @Override
-//  @Method(modid = "ImmibisMicroblocks")
-//  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-//    super.onDataPacket(net, pkt);
-//    if (covers != null) {
-//      ((IMicroblockCoverSystem) covers).readDescriptionBytes(pkt.func_148857_g().getByteArray("C"), 0);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "ImmibisMicroblocks")
-//  public void onMicroblocksChanged() {
-//    Set<EnumFacing> needUpdates = EnumSet.allOf(EnumFacing.class);
-//    needUpdates.remove(EnumFacing.UNKNOWN);
-//    for (Part p : getCoverSystem().getAllParts()) {
-//      if (p.type.getPartClass() == EnumPartClass.Panel) {
-//        EnumFacing dir = MicroblocksUtil.posToDir(p.pos);
-//        updateConnections(dir, true);
-//        needUpdates.remove(dir);
-//      }
-//    }
-//    for (EnumFacing dir : needUpdates) {
-//      updateConnections(dir, false);
-//    }
-//    
-//    worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-//    updateBlock();
-//  }
-//  
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void updateConnections(EnumFacing dir, boolean remove) {
-//    TileEntity neighbor = getLocation().getLocation(dir).getTileEntity(worldObj);
-//    IConduitBundle neighborBundle = (IConduitBundle) (neighbor instanceof IConduitBundle ? neighbor : null);
-//    for (IConduit c : getConduits()) {
-//      if (remove) {
-//        removeConnection(dir, c);
-//      } else if (neighborBundle != null) {
-//        addConnection(dir, c, neighborBundle.getConduit(c.getBaseConduitType()));
-//      }
-//      c.connectionsChanged();
-//    }
-//    dir = dir.getOpposite();
-//    if (neighbor instanceof IConduitBundle) {
-//      for (IConduit c : ((TileConduitBundle) neighbor).getConduits()) {
-//        if (remove) {
-//          removeConnection(dir, c);
-//        } else if (neighborBundle != null) {
-//          addConnection(dir, c, getConduit(c.getBaseConduitType()));
-//        }
-//        c.connectionsChanged();
-//      }
-//    }
-//  }
-//
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void removeConnection(EnumFacing dir, IConduit c) {
-//    if (c.getConduitConnections().contains(dir)) {
-//      c.conduitConnectionRemoved(dir);
-//    }
-//  }
-//
-//  @Method(modid = "ImmibisMicroblocks")
-//  private void addConnection(EnumFacing dir, IConduit c, IConduit connectingTo) {
-//    if (connectingTo != null) {
-//      if (!c.getConduitConnections().contains(dir) && connectingTo.canConnectToConduit(dir, c)) {
-//        c.conduitConnectionAdded(dir);
-//      }
-//    }
-//  }
 
   // OpenComputers
 

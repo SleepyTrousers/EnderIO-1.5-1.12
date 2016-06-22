@@ -19,6 +19,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
@@ -261,6 +262,10 @@ public class WailaCompat implements IWailaDataProvider {
         currenttip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
             TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
       }
+      if(nbtRoot.hasKey("maxStoredRF")) {
+        int max = nbtRoot.getInteger("maxStoredRF");
+        currenttip.add(String.format("%s %s %s", "Max", PowerDisplayUtil.formatPower(max), PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr()));
+      }
 
     } else if(itemStack.getItem() == EnderIO.itemLiquidConduit) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
@@ -270,7 +275,7 @@ public class WailaCompat implements IWailaDataProvider {
         String lockedStr = fluidTypeLocked ? EnderIO.lang.localize("itemLiquidConduit.lockedWaila") : "";
         String fluidName = fluid.getLocalizedName();
         int fluidAmount = fluid.amount;
-        if(fluidAmount > 0) {
+        if(fluidAmount > 0) {       
           // NOTE: using PowerDisplayUtil.formatPower here to handle the non breaking space issue
           currenttip.add(String.format("%s%s%s%s %s%s%s %s", lockedStr,
               TextFormatting.WHITE, fluidName, TextFormatting.RESET,
@@ -281,15 +286,6 @@ public class WailaCompat implements IWailaDataProvider {
               TextFormatting.WHITE, fluidName, TextFormatting.RESET));
         }
       }
-
-//    } else if(itemStack.getItem() == EnderIO.itemMEConduit) {
-//      NBTTagCompound nbtRoot = _accessor.getNBTData();
-//      if(nbtRoot.hasKey("isDense")) {
-//        boolean isDense = nbtRoot.getBoolean("isDense");
-//        int channelsInUse = nbtRoot.getInteger("channelsInUse");
-//        currenttip.add(MessageFormat.format(EnderIO.lang.localize("itemMEConduit.channelsUsed"),
-//                channelsInUse, isDense ? 32 : 8));
-//      }
     }
   }
 
@@ -306,10 +302,14 @@ public class WailaCompat implements IWailaDataProvider {
     if(te instanceof IConduitBundle) {
       IConduitBundle icb = (IConduitBundle) te;
       IPowerConduit pc = icb.getConduit(IPowerConduit.class);
-      if(pc != null) {
-        tag.setInteger("storedEnergyRF", pc.getEnergyStored());
+      if(pc != null ) {        
         tag.setInteger("maxStoredRF", pc.getMaxEnergyStored());
+        if(icb.displayPower()) {
+          tag.setInteger("storedEnergyRF", pc.getEnergyStored());          
+        }
       }
+      
+
       AbstractTankConduit atc = icb.getConduit(AbstractTankConduit.class);
       if(atc != null) {
         FluidStack fluid = atc.getTank().getFluid();
@@ -318,11 +318,6 @@ public class WailaCompat implements IWailaDataProvider {
           fluid.writeToNBT(tag);
         }
       }
-//      IMEConduit mec = icb.getConduit(IMEConduit.class);
-//      if(mec != null) {
-//        tag.setInteger("channelsInUse", mec.getChannelsInUse());
-//        tag.setBoolean("isDense", mec.isDense());
-//      }
     } else if(te instanceof IInternalPoweredTile) {
       IInternalPoweredTile ipte = (IInternalPoweredTile) te;
       tag.setInteger("storedEnergyRF", ipte.getEnergyStored());
