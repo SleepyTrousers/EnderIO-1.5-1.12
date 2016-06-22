@@ -13,6 +13,7 @@ import com.google.common.collect.Multimap;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.config.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -72,11 +73,28 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }        
     
     //then tell the whole network about the change
-    notifyNeigborsOfSignalUpdate();    
+    notifyNeigborsOfSignalUpdate();   
+    
+    if(Config.redstoneConduitsShowState) {
+      updateActiveState();
+    }
   }
   
-  public void updateInputsForSource(IRedstoneConduit con, SignalSource source) {
-    
+  
+  private void updateActiveState() {
+    boolean isActive = false;
+    for (Signal s : getSignals().values()) {
+      if (s.strength > 0) {
+        isActive = true;
+        break;
+      }
+    }    
+    for (IRedstoneConduit con : conduits) {
+      con.setActive(isActive);      
+    }
+  }
+  
+  private void updateInputsForSource(IRedstoneConduit con, SignalSource source) {    
     updatingNetwork = true;
     signals.removeAll(source);
     Set<Signal> sigs = con.getNetworkInputs(source.fromDirection);
@@ -105,20 +123,6 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   public boolean isNetworkEnabled() {
     return networkEnabled;
-  }
-
-  @Override
-  public void notifyNetworkOfUpdate() {
-    for (IRedstoneConduit con : conduits) {
-      con.setActive(false);
-      for (Signal s : getSignals().values()) {
-        if (s.strength > 0) {
-          con.setActive(true);
-          break;
-        }
-      }
-    }
-    super.notifyNetworkOfUpdate();
   }
 
   @Override

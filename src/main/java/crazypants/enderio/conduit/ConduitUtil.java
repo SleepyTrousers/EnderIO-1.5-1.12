@@ -71,7 +71,7 @@ public class ConduitUtil {
     }
     if (con.setNetwork(network)) {
       network.addConduit(con);
-      network.notifyNetworkOfUpdate();
+      network.sendBlockUpdatesForEntireNetwork();
       return true;
     }
     return false;

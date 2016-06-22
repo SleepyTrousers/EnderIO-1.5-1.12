@@ -30,6 +30,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -53,8 +54,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
-  
-  private boolean neighbourDirty = true;
 
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
@@ -67,27 +66,25 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         ICONS.put(KEY_INS_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_INS_CONDUIT_ICON)));
         ICONS.put(KEY_CONDUIT_ICON, register.registerSprite(new ResourceLocation(KEY_CONDUIT_ICON)));
         ICONS.put(KEY_TRANSMISSION_ICON, register.registerSprite(new ResourceLocation(KEY_TRANSMISSION_ICON)));
-      }      
+      }
 
     });
-  }  
+  }
 
   private static final List<Block> CONECTABLE_BLOCKS = Arrays.asList(Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP, Blocks.REDSTONE_TORCH,
       Blocks.REDSTONE_WIRE, Blocks.REDSTONE_BLOCK, Blocks.DISPENSER, Blocks.LEVER, Blocks.WOODEN_BUTTON, Blocks.STONE_BUTTON, Blocks.WOODEN_PRESSURE_PLATE,
-      Blocks.STONE_PRESSURE_PLATE, Blocks.DROPPER, Blocks.DAYLIGHT_DETECTOR, Blocks.DAYLIGHT_DETECTOR_INVERTED, Blocks.COMMAND_BLOCK, Blocks.GOLDEN_RAIL, Blocks.TRAPPED_CHEST, Blocks.PISTON,
-      Blocks.STICKY_PISTON, Blocks.NOTEBLOCK);
+      Blocks.STONE_PRESSURE_PLATE, Blocks.DROPPER, Blocks.DAYLIGHT_DETECTOR, Blocks.DAYLIGHT_DETECTOR_INVERTED, Blocks.COMMAND_BLOCK, Blocks.GOLDEN_RAIL,
+      Blocks.TRAPPED_CHEST, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.NOTEBLOCK);
 
-  
-  
   private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
 
   public static void addConnectableBlock(NBTTagCompound nbt) {
-    if(nbt == null) {
+    if (nbt == null) {
       Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null NBT");
       return;
     }
     boolean connectable = true;
-    if(nbt.hasKey("isConnectable")) {
+    if (nbt.hasKey("isConnectable")) {
       connectable = nbt.getBoolean("isConnectable");
     }
     String className = nbt.getString("className");
@@ -95,7 +92,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   public static void addConnectableBlock(Block block) {
-    if(block == null) {
+    if (block == null) {
       Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null Block");
       return;
     }
@@ -112,7 +109,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   public static void addConnectableInterface(Class<?> clazz, boolean connectable) {
-    if(clazz == null) {
+    if (clazz == null) {
       Log.warn("InsulatedRedstoneConduit: An attempt was made to register a null class as a connectable");
       return;
     }
@@ -120,47 +117,49 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private static Map<Class<?>, Boolean> getConnectableInterfaces() {
-    if(CONNECTABLE_CLASSES == null) {
+    if (CONNECTABLE_CLASSES == null) {
       CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
-      //CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
+      // CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
       try {
         Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
         CONNECTABLE_CLASSES.put(conInterface, false);
       } catch (Throwable e) {
-        //NO-OP
+        // NO-OP
       }
       try {
         Class<?> ccInterface = Class.forName("dan200.computercraft.shared.computer.blocks.IComputerTile");
         CONNECTABLE_CLASSES.put(ccInterface, true);
       } catch (Throwable e) {
-        //NO-OP
+        // NO-OP
       }
     }
     return CONNECTABLE_CLASSES;
   }
 
-  
-  //--------------------------------- Class Start -------------------------------------------
-  
+  // --------------------------------- Class Start
+  // -------------------------------------------
+
   private Map<EnumFacing, ConnectionMode> forcedConnections = new HashMap<EnumFacing, ConnectionMode>();
 
   private Map<EnumFacing, DyeColor> signalColors = new HashMap<EnumFacing, DyeColor>();
-  
-  private Map<EnumFacing, Boolean> signalStrengths = new HashMap<EnumFacing, Boolean>();
-  
-  private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
-  
-  private RedstoneConduitNetwork network;
 
+  private Map<EnumFacing, Boolean> signalStrengths = new HashMap<EnumFacing, Boolean>();
+
+  private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
+
+  private RedstoneConduitNetwork network;
   
+  private int activeUpdateCooldown = 0;
+  
+  private boolean activeDirty = false;
+
   @SuppressWarnings("unused")
-  public InsulatedRedstoneConduit() {   
+  public InsulatedRedstoneConduit() {
     for (EnumFacing ignored : EnumFacing.VALUES) {
       externalSignals.add(new HashSet<Signal>());
     }
   }
-  
-  
+
   @Override
   public AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> getNetwork() {
     return network;
@@ -171,7 +170,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     this.network = (RedstoneConduitNetwork) network;
     return true;
   }
-  
 
   @Override
   public Class<? extends IConduit> getBaseConduitType() {
@@ -181,59 +179,89 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public void updateNetwork() {
     World world = getBundle().getEntity().getWorld();
-    if(world != null) {
+    if (world != null) {
       updateNetwork(world);
     }
   }
   
   @Override
+  public void updateEntity(World world) {
+    super.updateEntity(world);
+
+    if (!world.isRemote) {     
+      if (activeUpdateCooldown > 0) {
+        --activeUpdateCooldown;
+        updateActiveState();
+      }
+
+    }
+  }
+
+  @Override
+  public void setActive(boolean active) {
+    if (active != this.active) {
+      activeDirty = true;
+    }
+    this.active = active;
+
+    updateActiveState();
+  }
+
+  private void updateActiveState() {
+    if (Config.redstoneConduitsShowState && activeDirty && activeUpdateCooldown == 0) {      
+      setClientStateDirty();
+      activeDirty = false;
+      activeUpdateCooldown = 4;
+    }
+  }
+
+  @Override
   public void onChunkUnload(World worldObj) {
     RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
     if (network != null) {
-      Multimap<SignalSource, Signal> oldSignals  = ArrayListMultimap.create(network.getSignals());      
+      Multimap<SignalSource, Signal> oldSignals = ArrayListMultimap.create(network.getSignals());
       List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
       super.onChunkUnload(worldObj);
       network.afterChunkUnload(conduits, oldSignals);
     }
   }
-  
-  
+
   @Override
   public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
 
     World world = getBundle().getEntity().getWorld();
-    if(!world.isRemote) {
+    if (!world.isRemote) {
 
       DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
-      if(col != null && res.component != null) {
+      if (col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
         return true;
-      } else if(ToolUtil.isToolEquipped(player, hand)) {
+      } else if (ToolUtil.isToolEquipped(player, hand)) {
 
-        if(res != null && res.component != null) {
+        if (res != null && res.component != null) {
           EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
           boolean colorHit = false;
-          if(all != null && containsExternalConnection(connDir)) {
+          if (all != null && containsExternalConnection(connDir)) {
             for (RaytraceResult rtr : all) {
-              if(rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
+              if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
                 colorHit = true;
               }
             }
           }
 
-          if(colorHit) {
+          if (colorHit) {
             setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
             return true;
 
-          } else if(connDir == null || connDir == faceHit) {
+          } else if (connDir == null || connDir == faceHit) {
 
             BlockCoord loc = getLocation().getLocation(faceHit);
             Block id = world.getBlockState(loc.getBlockPos()).getBlock();
-            if(id == EnderIO.blockConduitBundle) {
+            if (id == EnderIO.blockConduitBundle) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
-              if(neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
+              if (neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
               }
               setConnectionMode(faceHit, ConnectionMode.NOT_SET);
@@ -242,22 +270,22 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
             forceConnectionMode(faceHit, ConnectionMode.IN_OUT);
             return true;
 
-          } else if(externalConnections.contains(connDir)) {
-            if(network != null) {
+          } else if (externalConnections.contains(connDir)) {
+            if (network != null) {
               network.destroyNetwork();
             }
             externalConnectionRemoved(connDir);
             forceConnectionMode(connDir, ConnectionMode.DISABLED);
             return true;
 
-          } else if(containsConduitConnection(connDir)) {
+          } else if (containsConduitConnection(connDir)) {
             BlockCoord loc = getLocation().getLocation(connDir);
             IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, IRedstoneConduit.class);
-            if(neighbour != null) {
-              if(network != null) {
+            if (neighbour != null) {
+              if (network != null) {
                 network.destroyNetwork();
               }
-              if(neighbour.getNetwork() != null) {
+              if (neighbour.getNetwork() != null) {
                 neighbour.getNetwork().destroyNetwork();
               }
               neighbour.conduitConnectionRemoved(connDir.getOpposite());
@@ -276,28 +304,24 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
     return false;
   }
-  
- 
 
   @Override
   public void forceConnectionMode(EnumFacing dir, ConnectionMode mode) {
-    if(mode == ConnectionMode.IN_OUT) {
+    if (mode == ConnectionMode.IN_OUT) {
 
       setConnectionMode(dir, mode);
       forcedConnections.put(dir, mode);
-      onAddedToBundle();      
-      if(network != null) {
-        network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
-        network.notifyNeigborsOfSignalUpdate();
+      onAddedToBundle();
+      if (network != null) {
+        network.updateInputsFromConduit(this);
       }
 
     } else {
       setConnectionMode(dir, mode);
       forcedConnections.put(dir, mode);
       onAddedToBundle();
-      if(network != null) {
-        network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
-        network.notifyNeigborsOfSignalUpdate();
+      if (network != null) {
+        network.updateInputsFromConduit(this);
       }
 
     }
@@ -305,7 +329,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public ConnectionMode getNextConnectionMode(EnumFacing dir) {
-    if(getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+    if (getConnectionMode(dir) == ConnectionMode.IN_OUT) {
       return ConnectionMode.DISABLED;
     }
     return ConnectionMode.IN_OUT;
@@ -313,7 +337,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public ConnectionMode getPreviousConnectionMode(EnumFacing dir) {
-    if(getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+    if (getConnectionMode(dir) == ConnectionMode.IN_OUT) {
       return ConnectionMode.DISABLED;
     }
     return ConnectionMode.IN_OUT;
@@ -323,7 +347,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public ItemStack createItem() {
     return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
   }
- 
+
   @Override
   public void onInputsChanged(EnumFacing side, int[] inputValues) {
   }
@@ -335,25 +359,24 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public DyeColor getSignalColor(EnumFacing dir) {
     DyeColor res = signalColors.get(dir);
-    if(res == null) {
+    if (res == null) {
       return DyeColor.RED;
     }
     return res;
   }
 
   @Override
-  public void setSignalColor(EnumFacing dir, DyeColor col) {    
-    signalColors.put(dir, col);   
-    if(network != null) {      
-      network.updateInputsForSource(this, new SignalSource(getLocation().getBlockPos(), dir));
-      network.notifyNeigborsOfSignalUpdate();
+  public void setSignalColor(EnumFacing dir, DyeColor col) {
+    signalColors.put(dir, col);
+    if (network != null) {
+      network.updateInputsFromConduit(this);
     }
     setClientStateDirty();
   }
 
   @Override
   public boolean isOutputStrong(EnumFacing dir) {
-    if(signalStrengths.containsKey(dir)) {
+    if (signalStrengths.containsKey(dir)) {
       return signalStrengths.get(dir);
     }
     return false;
@@ -361,13 +384,13 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void setOutputStrength(EnumFacing dir, boolean isStrong) {
-    if(isOutputStrong(dir) != isStrong) {
-      if(isStrong) {
+    if (isOutputStrong(dir) != isStrong) {
+      if (isStrong) {
         signalStrengths.put(dir, isStrong);
       } else {
         signalStrengths.remove(dir);
       }
-      if(network != null) {
+      if (network != null) {
         network.notifyNeigborsOfSignalUpdate();
       }
     }
@@ -375,29 +398,29 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionState) {
-    if(ignoreConnectionState) { //you can always force an external connection
+    if (ignoreConnectionState) { // you can always force an external connection
       return true;
     }
-    if(forcedConnections.get(direction) == ConnectionMode.DISABLED) {
+    if (forcedConnections.get(direction) == ConnectionMode.DISABLED) {
       return false;
-    } else if(forcedConnections.get(direction) == ConnectionMode.IN_OUT) {
+    } else if (forcedConnections.get(direction) == ConnectionMode.IN_OUT) {
       return true;
     }
-    //Not set so figure it out
+    // Not set so figure it out
     BlockCoord loc = getLocation().getLocation(direction);
     World world = getBundle().getEntity().getWorld();
     IBlockState bs = world.getBlockState(loc.getBlockPos());
     Block block = bs.getBlock();
     TileEntity te = world.getTileEntity(loc.getBlockPos());
 
-    if(block == null || block == EnderIO.blockConduitBundle) {
+    if (block == null || block == EnderIO.blockConduitBundle) {
       return false;
     }
-        
+
     if (block instanceof IRedstoneConnectable) {
       return ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
-    
+
     if (te instanceof IRedstoneConnectable) {
       return ((IRedstoneConnectable) te).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
@@ -411,17 +434,17 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
-    for(Class<?> connectable : connectableInterfaces.keySet()) {
-      if((te != null && connectable.isAssignableFrom(te.getClass())) || (connectable.isAssignableFrom(block.getClass()))) {
+    for (Class<?> connectable : connectableInterfaces.keySet()) {
+      if ((te != null && connectable.isAssignableFrom(te.getClass())) || (connectable.isAssignableFrom(block.getClass()))) {
         return true;
       }
-    }    
+    }
 
     return false;
   }
 
   @Override
-  public boolean isSpecialConnection(EnumFacing dir){
+  public boolean isSpecialConnection(EnumFacing dir) {
     BlockCoord loc = getLocation().getLocation(dir);
     Block block = getBundle().getEntity().getWorld().getBlockState(loc.getBlockPos()).getBlock();
     World world = getBundle().getEntity().getWorld();
@@ -429,7 +452,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
     for (Class<?> connectable : connectableInterfaces.keySet()) {
-      if((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
+      if ((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
         return connectableInterfaces.get(connectable);
       }
     }
@@ -438,21 +461,21 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public int isProvidingWeakPower(EnumFacing toDirection) {    
-    if(getConnectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
+  public int isProvidingWeakPower(EnumFacing toDirection) {
+    if (getConnectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
       return 0;
-    }    
-    if(network == null || !network.isNetworkEnabled()) {
+    }
+    if (network == null || !network.isNetworkEnabled()) {
       return 0;
     }
     int result = 0;
     for (Signal signal : getNetworkOutputs(toDirection.getOpposite())) {
-      //don't return signals back to where they came from
-      if(!signal.getPos().equals(getPos().offset(toDirection))) {
+      // don't return signals back to where they came from
+      if (!signal.getPos().equals(getPos().offset(toDirection))) {
         result = Math.max(result, signal.strength);
       }
     }
-    return result;       
+    return result;
   }
 
   private BlockPos getPos() {
@@ -461,7 +484,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public int isProvidingStrongPower(EnumFacing toDirection) {
-    if(isOutputStrong(toDirection.getOpposite())) {
+    if (isOutputStrong(toDirection.getOpposite())) {
       return isProvidingWeakPower(toDirection);
     } else {
       return 0;
@@ -483,79 +506,75 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public Collection<Signal> getNetworkOutputs(EnumFacing side) {
     if (side == null) {
-      if(network == null) {
+      if (network == null) {
         return Collections.emptySet();
       }
-      return network.getSignals().values();      
+      return network.getSignals().values();
     }
 
     ConnectionMode mode = getConnectionMode(side);
-    if(network == null || mode != ConnectionMode.IN_OUT) {
+    if (network == null || mode != ConnectionMode.IN_OUT) {
       return Collections.emptySet();
     }
     Collection<Signal> allSigs = network.getSignals().values();
-    if(allSigs.isEmpty()) {
+    if (allSigs.isEmpty()) {
       return allSigs;
     }
 
     DyeColor col = getSignalColor(side);
     Set<Signal> result = new HashSet<Signal>();
     for (Signal signal : allSigs) {
-      if(signal.color == col) {
+      if (signal.color == col) {
         result.add(signal);
       }
     }
 
     return result;
   }
-  
+
   @Override
   public Set<Signal> getNetworkInputs(EnumFacing side) {
-    if(network != null) {
+    if (network != null) {
       network.setNetworkEnabled(false);
     }
 
     Set<Signal> res = new HashSet<Signal>();
     for (EnumFacing dir : EnumFacing.VALUES) {
-      if((side == null || dir == side) && acceptSignalsForDir(dir)) {
+      if ((side == null || dir == side) && acceptSignalsForDir(dir)) {
         int input = getExternalPowerLevel(dir);
-        if(input > 1) { // need to degrade external signals by one as they
-                        // enter
+        if (input > 1) { // need to degrade external signals by one as they
+                         // enter
           BlockCoord loc = getLocation().getLocation(dir);
           Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, getSignalColor(dir));
           res.add(signal);
-        }        
+        }
       }
     }
 
-    if(network != null) {
+    if (network != null) {
       network.setNetworkEnabled(true);
     }
 
     return res;
   }
-  
 
   protected int getExternalPowerLevel(EnumFacing dir) {
     World world = getBundle().getEntity().getWorld();
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
 
-    //int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
     int strong = world.getStrongPower(loc.getBlockPos(), dir);
-    if(strong > 0) {
+    if (strong > 0) {
       return strong;
-//      return 16;
     }
 
-    //int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
     int res = world.getRedstonePower(loc.getBlockPos(), dir);
     IBlockState bs = world.getBlockState(loc.getBlockPos());
     Block block = bs.getBlock();
-    if(res < 15 && block == Blocks.REDSTONE_WIRE) {
+    if (res < 15 && block == Blocks.REDSTONE_WIRE) {
       int wireIn = bs.getValue(BlockRedstoneWire.POWER);
       res = Math.max(res, wireIn);
-      
+
       
     }
     return res;
@@ -564,55 +583,46 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public ConnectionMode getConnectionMode(EnumFacing dir) {
     ConnectionMode res = conectionModes.get(dir);
-    if(res == null) {
+    if (res == null) {
       return ConnectionMode.NOT_SET;
     }
     return res;
   }
-  
+
   
   @Override
-  public boolean onNeighborBlockChange(Block blockId) {        
+  public boolean onNeighborBlockChange(Block blockId) {
     World world = getBundle().getEntity().getWorld();
-    if(world.isRemote) {
+    if (world.isRemote) {
       return false;
     }
     boolean res = super.onNeighborBlockChange(blockId);
-    if(network == null || network.updatingNetwork) {
+    if (network == null || network.updatingNetwork) {
       return false;
     }
-    if(blockId != EnderIO.blockConduitBundle) {
+    if (blockId != EnderIO.blockConduitBundle) {
       network.updateInputsFromConduit(this);
     }
     return res;
   }
-  
+
   @Override
-  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {    
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
     return false;
   }
-  
-  @Override
-  public void updateEntity(World world) {
-    super.updateEntity(world);
-    if(!world.isRemote && neighbourDirty) {
-      neighbourDirty = false;
-    }
-  }
-  
-  
+
   private boolean acceptSignalsForDir(EnumFacing dir) {
-    if(getConnectionMode(dir) != ConnectionMode.IN_OUT) {
+    if (getConnectionMode(dir) != ConnectionMode.IN_OUT) {
       return false;
     }
     BlockCoord loc = getLocation().getLocation(dir);
-    return ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;        
+    return ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;
   }
-    
+
   @Override
   public Collection<CollidableComponent> createCollidables(CacheKey key) {
     Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
-    if(key.dir == null) {
+    if (key.dir == null) {
       return baseCollidables;
     }
 
@@ -628,10 +638,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
-    if(component.dir == null) {
-      return isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
+    if (component.dir == null) {
+      return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
     }
-    if(COLOR_CONTROLLER_ID.equals(component.data)) {
+    if (COLOR_CONTROLLER_ID.equals(component.data)) {
       return IconUtil.instance.whiteTexture;
     }
     return ICONS.get(KEY_INS_CONDUIT_ICON);
@@ -639,16 +649,16 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
-    return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);    
+    return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
   }
 
   @Override
   protected boolean renderStub(EnumFacing dir) {
     return false;
-  } 
-  
+  }
+
   @Override
-  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {    
+  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
     setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
     setOutputStrength(dir, dataRoot.getBoolean("signalStrong"));
   }
@@ -663,12 +673,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    if(forcedConnections.size() >= 0) {
+    if (forcedConnections.size() >= 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         ConnectionMode mode = forcedConnections.get(dir);
-        if(mode != null) {
+        if (mode != null) {
           modes[i] = (byte) mode.ordinal();
         } else {
           modes[i] = -1;
@@ -678,12 +688,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("forcedConnections", modes);
     }
 
-    if(signalColors.size() >= 0) {
+    if (signalColors.size() >= 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         DyeColor col = signalColors.get(dir);
-        if(col != null) {
+        if (col != null) {
           modes[i] = (byte) col.ordinal();
         } else {
           modes[i] = -1;
@@ -693,12 +703,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("signalColors", modes);
     }
 
-    if(signalStrengths.size() >= 0) {
+    if (signalStrengths.size() >= 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         boolean isStrong = isOutputStrong(dir);
-        if(isStrong) {
+        if (isStrong) {
           modes[i] = 1;
         } else {
           modes[i] = 0;
@@ -716,10 +726,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     forcedConnections.clear();
     byte[] modes = nbtRoot.getByteArray("forcedConnections");
-    if(modes != null && modes.length == 6) {
+    if (modes != null && modes.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if(modes[i] >= 0) {
+        if (modes[i] >= 0) {
           forcedConnections.put(dir, ConnectionMode.values()[modes[i]]);
         }
         i++;
@@ -728,10 +738,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     signalColors.clear();
     byte[] cols = nbtRoot.getByteArray("signalColors");
-    if(cols != null && cols.length == 6) {
+    if (cols != null && cols.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if(cols[i] >= 0) {
+        if (cols[i] >= 0) {
           signalColors.put(dir, DyeColor.values()[cols[i]]);
         }
         i++;
@@ -740,10 +750,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     signalStrengths.clear();
     byte[] strengths = nbtRoot.getByteArray("signalStrengths");
-    if(strengths != null && strengths.length == 6) {
+    if (strengths != null && strengths.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if(strengths[i] > 0) {
+        if (strengths[i] > 0) {
           signalStrengths.put(dir, true);
         }
         i++;
@@ -751,7 +761,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
   }
-  
+
   @Override
   public String toString() {
     return "RedstoneConduit [network=" + network + " connections=" + conduitConnections + " active=" + active + "]";

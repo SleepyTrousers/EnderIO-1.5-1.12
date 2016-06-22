@@ -35,7 +35,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       }
     }
     setNetwork(world, tile);
-    notifyNetworkOfUpdate();
+    sendBlockUpdatesForEntireNetwork();
   }
 
   public final Class<T> getBaseConduitType() {
@@ -82,7 +82,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     return conduits;
   }
 
-  public void notifyNetworkOfUpdate() {
+  public void sendBlockUpdatesForEntireNetwork() {
     for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
       IBlockState bs = te.getWorld().getBlockState(te.getPos());
