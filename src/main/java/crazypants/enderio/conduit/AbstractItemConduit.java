@@ -58,11 +58,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   
   @Override
   public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
- 
-//    if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, pos, side)) {
-//      return true;
-//    }
-            
+   
     BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle.getDefaultState(), player, world, pos, side);
     if(placeAt != null) {
       if(!world.isRemote) {

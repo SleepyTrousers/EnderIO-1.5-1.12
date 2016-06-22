@@ -73,7 +73,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   
   public TileConduitBundle() {
     this.blockType = EnderIO.blockConduitBundle;
-//    initMicroblocks();    
   }
 
   @Override
@@ -245,7 +244,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   private void doConduitsDirty() {
     if(!worldObj.isRemote) {
       IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);      
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());      
       markDirty();
     } else {
       geometryChanged(); // Q&D
