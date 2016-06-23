@@ -38,10 +38,12 @@ import crazypants.enderio.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
@@ -329,12 +331,30 @@ public class TileKillerJoe extends AbstractMachineEntity
   private void hooverXP(EntityXPOrb entity) {
     if (!worldObj.isRemote) {
       if (!entity.isDead) {
-        xpCon.addExperience(entity.getXpValue());
+        int xpValue = entity.getXpValue();
+        if (Config.killerMending && inventory[0] != null && inventory[0].isItemDamaged()
+            && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0) {
+          int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
+          xpValue -= durabilityToXp(i);
+          inventory[0].setItemDamage(inventory[0].getItemDamage() - i);
+          markDirty();
+        }
+        if (xpValue > 0) {
+          xpCon.addExperience(xpValue);
+        }
         entity.setDead();
       }
     }
   }
   
+  private int durabilityToXp(int durability) {
+    return durability / 2;
+  }
+
+  private int xpToDurability(int xp) {
+    return xp * 2;
+  }
+
   @Override
   public boolean apply(@Nullable EntityXPOrb input) {
     return input != null && !input.isDead;
