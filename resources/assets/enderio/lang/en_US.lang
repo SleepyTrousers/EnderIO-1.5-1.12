@@ -22,12 +22,16 @@ enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
 item.enderio.itemConduitFacade.hardened.name=Hardened Conduit Facade
+item.enderio.itemConduitFacade.transparent.name=Transparent Conduit Facade
+item.enderio.itemConduitFacade.transparent.hardened.name=Transparent Hardened Conduit Facade
 enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=R-Click on a conduit to place
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
 item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 item.enderio.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
+item.enderio.itemConduitFacade.transparent.tooltip=Transparent: Hides the conduits when painted with a non-solid block
+item.enderio.itemConduitFacade.transparent.hardened.tooltip=Transparent: Hides the conduits when painted with a non-solid block;Hardened: Resists breaking and explosions
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit

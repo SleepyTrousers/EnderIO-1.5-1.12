@@ -3,19 +3,19 @@ package crazypants.enderio.conduit.render;
 import java.util.EnumMap;
 import java.util.List;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.IBlockAccess;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.pipeline.QuadCollector;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware {
 
@@ -29,7 +29,8 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
 
     if (tileEntity instanceof TileConduitBundle) {
       IBlockState paintSource = ((TileConduitBundle) tileEntity).getPaintSource();
-      if (paintSource != null && paintSource.isOpaqueCube() && !YetaUtil.shouldHeldItemHideFacades()) {
+      if (paintSource != null && (paintSource.isOpaqueCube() || ((TileConduitBundle) tileEntity).getFacadeType().isTransparent())
+          && !YetaUtil.shouldHeldItemHideFacades()) {
         return null;
       }
       List<BakedQuad> quads = ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state, blockLayer);

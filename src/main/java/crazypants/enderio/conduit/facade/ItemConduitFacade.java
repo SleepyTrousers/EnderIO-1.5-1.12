@@ -117,9 +117,11 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
-    if (EnumFacadeType.getTypeFromMeta(itemstack.getMetadata()) == EnumFacadeType.HARDENED) {
+    if (EnumFacadeType.getTypeFromMeta(itemstack.getMetadata()) != EnumFacadeType.BASIC) {
       list.add("");
-      list.add(EnderIO.lang.localizeExact(getUnlocalizedName(itemstack) + ".tooltip"));
+      for (String line : EnderIO.lang.localizeExact(getUnlocalizedName(itemstack) + ".tooltip").split(";")) {
+        list.add(line);
+      }
     }
   }
  

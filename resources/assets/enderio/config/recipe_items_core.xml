@@ -277,6 +277,46 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Conduit Facade, transparent" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item name="FUSED_GLASS" /><item name="CONDUIT_BINDER" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:blockConduitFacade:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, upgrade" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockConduitFacade:0"/><item name="FUSED_GLASS" />
+      </shapeless>
+      <output name="enderio:blockConduitFacade:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, hardened" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="dustObsidian" /><item />
+        <item name="dustObsidian" /><item name="enderio:blockConduitFacade:2" /><item name="dustObsidian" />
+        <item /><item name="dustObsidian" /><item />
+      </grid>
+      <output name="enderio:blockConduitFacade:3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit Facade, transparent, hardened, upgrade" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockConduitFacade:1"/><item name="FUSED_GLASS" />
+      </shapeless>
+      <output name="enderio:blockConduitFacade:3" />
+    </crafting>
+  </recipe>
+
   <recipe name="Conduit, Liquid, Basic" required="true">
     <crafting>
       <grid>

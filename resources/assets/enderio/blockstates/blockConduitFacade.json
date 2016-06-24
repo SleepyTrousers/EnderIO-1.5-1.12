@@ -25,6 +25,16 @@
                 "textures":{ 
                     "all":"enderio:items/conduitFacadeHardened"
                 }
+            },
+            "transparent":{
+                "textures":{ 
+                    "all":"enderio:items/conduitFacadeTransparent"
+                }
+            },
+            "transparent_hardened":{
+                "textures":{ 
+                    "all":"enderio:items/conduitFacadeTransparentHardened"
+                }
             }
         }
     }

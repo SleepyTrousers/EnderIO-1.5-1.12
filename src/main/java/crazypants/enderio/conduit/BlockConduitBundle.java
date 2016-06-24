@@ -462,14 +462,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (te == null) {
       return super.getBlockHardness(bs, world, pos);
     }
-    return te.getFacadeType() == EnumFacadeType.HARDENED ? blockHardness * 10 : blockHardness;
+    return te.getFacadeType().isHardened() ? blockHardness * 10 : blockHardness;
   }
 
   @Override
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
     float resist = getExplosionResistance(par1Entity);
     IConduitBundle te = (IConduitBundle) world.getTileEntity(pos);
-    return te != null && te.getFacadeType() == EnumFacadeType.HARDENED ? resist * 10 : resist;
+    return te != null && te.getFacadeType().isHardened() ? resist * 10 : resist;
   }
 
   @SubscribeEvent
@@ -480,7 +480,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         event.setNewSpeed(event.getNewSpeed() + 2);
       }
       IConduitBundle te = (IConduitBundle) event.getEntity().worldObj.getTileEntity(event.getPos());
-      if (te != null && te.getFacadeType() == EnumFacadeType.HARDENED) {
+      if (te != null && te.getFacadeType().isHardened()) {
         if (!ConduitUtil.isSolidFacadeRendered(te, event.getEntityPlayer())) {
           event.setNewSpeed(event.getNewSpeed() * 6);
         } else {
