@@ -80,7 +80,7 @@ public enum RedstoneControlMode {
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
-    return isConditionMet(redstoneControlMode, te.getWorld().getStrongPower(te.getPos()));
+    return isConditionMet(redstoneControlMode, te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()));
   }
 
   public RedstoneControlMode next() {
