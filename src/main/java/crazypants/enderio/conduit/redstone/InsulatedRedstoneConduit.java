@@ -462,18 +462,19 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public int isProvidingWeakPower(EnumFacing toDirection) {
-    if (getConnectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
+    toDirection = toDirection.getOpposite();
+    if (getConnectionMode(toDirection) != ConnectionMode.IN_OUT) {
       return 0;
     }
     if (network == null || !network.isNetworkEnabled()) {
       return 0;
     }
-    int result = 0;
-    for (Signal signal : getNetworkOutputs(toDirection.getOpposite())) {
+    int result = 0;    
+    for (Signal signal : getNetworkOutputs(toDirection)) {
       // don't return signals back to where they came from
       if (!signal.getPos().equals(getPos().offset(toDirection))) {
         result = Math.max(result, signal.strength);
-      }
+      } 
     }
     return result;
   }
