@@ -184,9 +184,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {
     if (world.isRemote) {
-      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hitX, hitY, hitZ);
+      return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hand, hitX, hitY, hitZ);
     }
-    return EnumActionResult.SUCCESS;
+    return EnumActionResult.PASS;
   }
 
   @Override

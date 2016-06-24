@@ -125,22 +125,22 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       return EnumActionResult.SUCCESS;
     }          
     if(world.isRemote) {
-      return EnumActionResult.PASS;
-    }    
-    EnumActionResult res = doRightClickItemPlace(player, world, pos, side, hitX, hitX, hitX);
+      return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);      
+    }          
     if(Math.random() < 0.001 ) {      
       Entity cow = EntityList.createEntityByIDFromName("Pig", world);
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
       world.spawnEntityInWorld(cow);
     }
-    return res;    
+    return EnumActionResult.PASS;
+        
   }
 
   @SideOnly(Side.CLIENT)
-  static EnumActionResult doRightClickItemPlace(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
+  static EnumActionResult doRightClickItemPlace(EntityPlayer player, World world, BlockPos pos, EnumFacing side, EnumHand hand, float par8, float par9, float par10) {
     
-    if(!Config.darkSteelRightClickPlaceEnabled) {
+    if(!Config.darkSteelRightClickPlaceEnabled || hand != EnumHand.MAIN_HAND) {
       return EnumActionResult.PASS;
     }
     
@@ -153,8 +153,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
        */
       player.inventory.currentItem = slot;
       Minecraft mc = Minecraft.getMinecraft();
- 
-      EnumHand hand = EnumHand.MAIN_HAND;
+       
       EnumActionResult result = mc.playerController.processRightClickBlock(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);      
       player.inventory.currentItem = current;
       return result;

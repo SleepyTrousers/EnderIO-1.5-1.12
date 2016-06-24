@@ -166,7 +166,7 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
-  public static boolean darkSteelRightClickPlaceEnabled = false;
+  public static boolean darkSteelRightClickPlaceEnabled = true;
   
   public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.75, 0.95};
   public static int darkSteelPowerStorageBase = 100000;
