@@ -198,7 +198,12 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   protected void bakeBlockLayer(QuadCollector quads) {
-    if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware) {
+    if (renderMapper == nullRenderMapper) {
+      IBakedModel missingModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+      for (BlockRenderLayer layer : quads.getBlockLayers()) {
+        quads.addUnfriendlybakedModel(layer, missingModel, state, 0);
+      }
+    } else if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware) {
       for (BlockRenderLayer layer : quads.getBlockLayers()) {
         quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
       }
