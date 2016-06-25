@@ -9,7 +9,7 @@ language: java
 # Tell Travis this is a Java 7+8 project.
 matrix:
   include:
-    - jdk: oraclejdk7
+    - jdk: openjdk7
     - jdk: oraclejdk8
 
 # Tell Travis we want container-based builds.
