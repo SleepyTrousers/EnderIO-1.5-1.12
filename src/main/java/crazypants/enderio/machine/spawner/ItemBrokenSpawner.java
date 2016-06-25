@@ -8,6 +8,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.CapturedMob;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,9 +48,12 @@ public class ItemBrokenSpawner extends Item {
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     for (String mobType : CREATIVE_TYPES) {
-      par3List.add(CapturedMob.create(mobType, false).toStack(par1, 0, 1));
-      if (mobType.equals("Skeleton")) {
-        par3List.add(CapturedMob.create(mobType, true).toStack(par1, 0, 1));
+      if (mobType.equals(CapturedMob.SKELETON_ENTITY_NAME)) {
+        for (SkeletonType type : SkeletonType.values()) {
+          par3List.add(CapturedMob.create(mobType, type).toStack(par1, 0, 1));
+        }
+      } else {
+        par3List.add(CapturedMob.create(mobType, null).toStack(par1, 0, 1));
       }
     }
   }

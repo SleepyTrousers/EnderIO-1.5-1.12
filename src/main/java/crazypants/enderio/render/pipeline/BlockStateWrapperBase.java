@@ -455,4 +455,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     state.neighborChanged(worldIn, pos, p_189546_3_);    
   }
 
+  @Override
+  public boolean func_189884_a(Entity p_189884_1_) {
+    return state.func_189884_a(p_189884_1_);
+  }
+
 }

@@ -35,4 +35,9 @@ public class BaseRecipeHandler<T extends IRecipeWrapper> implements IRecipeHandl
     return true;
   }
 
+  @Override
+  public String getRecipeCategoryUid(T recipe) {
+    return uid;
+  }
+
 }

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import static crazypants.util.CapturedMob.CUSTOM_NAME_KEY;
 import static crazypants.util.CapturedMob.ENTITY_KEY;
 import static crazypants.util.CapturedMob.IS_STUB_KEY;
-import static crazypants.util.CapturedMob.IS_VARIANT_KEY;
+import static crazypants.util.CapturedMob.VARIANT_KEY;
 import static crazypants.util.NbtValue.SOURCE_BLOCK;
 import static crazypants.util.NbtValue.SOURCE_META;
 
@@ -38,7 +38,7 @@ public class JeiPlugin extends BlankModPlugin {
     INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
     final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
     if (ppplate != null) {
-      nbtIgnoreList.ignoreNbtTagNames(ppplate, ENTITY_KEY, CUSTOM_NAME_KEY, IS_STUB_KEY, IS_VARIANT_KEY, SOURCE_BLOCK.getKey(), SOURCE_META.getKey());
+      nbtIgnoreList.ignoreNbtTagNames(ppplate, ENTITY_KEY, CUSTOM_NAME_KEY, IS_STUB_KEY, VARIANT_KEY, SOURCE_BLOCK.getKey(), SOURCE_META.getKey());
     }
 
     CrafterRecipeTransferHandler.register(registry);

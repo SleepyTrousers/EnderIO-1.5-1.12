@@ -1,20 +1,16 @@
 package crazypants.enderio.enderface;
 
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
-
 import java.util.UUID;
 
+import com.enderio.core.common.Handlers.Handler;
+
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerPlayer;
-import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-
-import com.enderio.core.common.Handlers.Handler;
 
 @Handler
 public enum EnderIOController {
@@ -37,13 +33,14 @@ public enum EnderIOController {
     locked = false;
   }
 
-  @SubscribeEvent
-  public void onContainerTick(PlayerOpenContainerEvent event) {
-    Container c = event.getEntityPlayer().openContainer;
-    if (c != null && !(c instanceof ContainerPlayer) && (c.windowId == clientWindowId || openedContainers.containsValue(c.windowId))) {
-      event.setResult(Result.ALLOW);
-    }
-  }
+  //TODO: 1.10 Removed as part of liscence change. Something will be added back 'soon'
+//  @SubscribeEvent
+//  public void onContainerTick(PlayerOpenContainerEvent event) {
+//    Container c = event.getEntityPlayer().openContainer;
+//    if (c != null && !(c instanceof ContainerPlayer) && (c.windowId == clientWindowId || openedContainers.containsValue(c.windowId))) {
+//      event.setResult(Result.ALLOW);
+//    }
+//  }
 
   @SubscribeEvent
   public void onPlayerTick(PlayerTickEvent event) {

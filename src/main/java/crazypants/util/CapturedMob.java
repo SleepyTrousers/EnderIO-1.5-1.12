@@ -23,6 +23,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -40,18 +41,20 @@ import net.minecraft.world.World;
 
 public class CapturedMob {
 
+  public static final String SKELETON_ENTITY_NAME = "Skeleton";
   public static final String ENTITY_KEY = "entity";
   public static final String ENTITY_ID_KEY = "entityId";
   public static final String CUSTOM_NAME_KEY = "customName";
   public static final String IS_STUB_KEY = "isStub";
-  public static final String IS_VARIANT_KEY = "isVariant";
+  public static final String VARIANT_KEY = "isVariant";
 
   private final static List<String> blacklist = new ArrayList<String>();
 
   private final NBTTagCompound entityNbt;
   private final String entityId;
   private final String customName;
-  private final boolean isStub, isVariant;
+  private final boolean isStub;
+  private SkeletonType variant;
 
   private CapturedMob(@Nonnull EntityLivingBase entity) {
 
@@ -72,9 +75,9 @@ public class CapturedMob {
       customName = null;
     }
     if (entity instanceof EntitySkeleton) {
-      isVariant = ((EntitySkeleton) entity).getSkeletonType() == 1;
+      variant = ((EntitySkeleton) entity).func_189771_df();
     } else {
-      isVariant = false;
+      variant = null;
     }
 
     isStub = false;
@@ -97,15 +100,20 @@ public class CapturedMob {
       customName = null;
     }
     isStub = nbt.getBoolean(IS_STUB_KEY);
-    isVariant = nbt.getBoolean(IS_VARIANT_KEY);
+    if(nbt.hasKey(VARIANT_KEY)) {
+      short ord = nbt.getShort(VARIANT_KEY);
+      variant = SkeletonType.values()[ord];
+    } else {
+      variant = null;
+    }    
   }
 
-  private CapturedMob(String entityId, boolean isVariant) {
+  private CapturedMob(String entityId, SkeletonType variant) {
     this.entityNbt = null;
     this.entityId = entityId;
     this.customName = null;
     this.isStub = true;
-    this.isVariant = isVariant;
+    this.variant = variant;
   }
 
   public static @Nullable CapturedMob create(@Nullable Entity entity) {
@@ -115,11 +123,11 @@ public class CapturedMob {
     return new CapturedMob((EntityLivingBase) entity);
   }
 
-  public static @Nullable CapturedMob create(@Nullable String entityId, boolean isVariant) {
+  public static @Nullable CapturedMob create(@Nullable String entityId, SkeletonType variant) {
     if (entityId == null || !EntityList.isStringValidEntityName(entityId)) {
       return null;
     }
-    return new CapturedMob(entityId, isVariant);
+    return new CapturedMob(entityId, variant);
   }
 
   public @Nonnull ItemStack toStack(Item item, int meta, int amount) {
@@ -145,8 +153,8 @@ public class CapturedMob {
     if (isStub) {
       data.setBoolean(IS_STUB_KEY, isStub);
     }
-    if (isVariant) {
-      data.setBoolean(IS_VARIANT_KEY, isVariant);
+    if (variant != null) {
+      data.setShort(VARIANT_KEY, (short)variant.ordinal());      
     }
     return data;
   }
@@ -255,9 +263,9 @@ public class CapturedMob {
       if (difficulty != null && entity instanceof EntityLiving) {
         ((EntityLiving) entity).onInitialSpawn(difficulty, null);
       }
-      if (isVariant && entity instanceof EntitySkeleton) {
+      if (variant != null && entity instanceof EntitySkeleton) {
         EntitySkeleton skel = (EntitySkeleton) entity;
-        skel.setSkeletonType(1);
+        skel.func_189768_a(variant);
         skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
         skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
         skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
@@ -286,8 +294,10 @@ public class CapturedMob {
 
   public @Nonnull String getDisplayName() {
     String baseName = null;
-    if (isVariant && "Skeleton".equals(entityId)) {
-      baseName = I18n.translateToLocal("entity.witherSkeleton.name");
+    if (variant != null && SKELETON_ENTITY_NAME.equals(entityId)) {
+      //TODO: The value is the variant but not exposed, need to fix this
+      String typeName = variant == SkeletonType.NORMAL ? SKELETON_ENTITY_NAME : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray" ; 
+      baseName = I18n.translateToLocal("entity." + typeName + ".name");
     } else if (entityId != null) {
       baseName = EntityUtil.getDisplayNameForEntity(entityId);
     } else if (entityNbt != null) {
@@ -367,13 +377,13 @@ public class CapturedMob {
 
   public boolean isSameType(Entity entity) {
     return entity != null && EntityList.getEntityString(entity) != null && EntityList.getEntityString(entity).equals(getEntityName())
-        && (!(entity instanceof EntitySkeleton) || ((EntitySkeleton) entity).getSkeletonType() == (isVariant ? 1 : 0));
+        && (!(entity instanceof EntitySkeleton) || ((EntitySkeleton) entity).func_189771_df() == variant);
   }
 
   @Override
   public String toString() {
     return "CapturedMob [" + (entityId != null ? "entityId=" + entityId + ", " : "") + (customName != null ? "customName=" + customName + ", " : "")
-        + "isStub=" + isStub + ", isVariant=" + isVariant + ", " + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
+        + "isStub=" + isStub + ", isVariant=" + variant + ", " + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
         + getDisplayName() + ", getHealth()=" + getHealth() + ", getMaxHealth()=" + getMaxHealth() + ", "
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
   }
@@ -385,11 +395,13 @@ public class CapturedMob {
   public static @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
     List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
     for (String mobName : mobs) {
-      CapturedMob soul = create(mobName, false);
-      if (soul != null && !"EnderDragon".equals(mobName)) {
-        result.add(soul);
-        if ("Skeleton".equals(mobName)) {
-          result.add(create(mobName, true));
+      CapturedMob soul = create(mobName, null);
+      if (soul != null && !"EnderDragon".equals(mobName)) {        
+        if (SKELETON_ENTITY_NAME.equals(mobName)) {
+          for(SkeletonType type : SkeletonType.values())
+          result.add(create(mobName, type));
+        } else {
+          result.add(soul);
         }
       }
     }

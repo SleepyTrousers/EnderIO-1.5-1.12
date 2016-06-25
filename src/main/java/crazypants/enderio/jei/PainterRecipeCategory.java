@@ -35,9 +35,9 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.Focus;
-import mezz.jei.gui.Focus.Mode;
 import mezz.jei.gui.ingredients.GuiIngredientGroup;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -221,10 +221,10 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
           Field focusField = GuiIngredientGroup.class.getDeclaredField("focus");
           focusField.setAccessible(true);
-          Focus focus = (Focus) focusField.get(guiItemStacks);
-          if (focus != null && !focus.isBlank() && focus.getMode() != Mode.NONE) {
-            ItemStack focused = focus.getStack();
-            if (focus.getMode() == Mode.OUTPUT) {
+          Focus<ItemStack > focus = (Focus<ItemStack>) focusField.get(guiItemStacks);          
+          if (focus != null && focus.getMode() != IFocus.Mode.NONE) { //&& !focus.isBlank() 
+            ItemStack focused = focus.getValue();
+            if (focus.getMode() == IFocus.Mode.OUTPUT) {
               // JEI is focusing on the output item. Limit the recipe to only the paints that actually give this output item. Needs some extra comparison
               // because we told JEI to ignore paint information, which is ok for crafting and soul binding, but not here.
               for (int i = 0; i < currentRecipe.paints.size(); i++) {

@@ -33,6 +33,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,7 +45,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProviderHell;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -133,7 +136,19 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           if(logic != null) {
             String entityName = getEntityName(logic);
             if(entityName != null && !isBlackListed(entityName)) {
-              ItemStack drop = CapturedMob.create(entityName, tile.getWorld().provider instanceof WorldProviderHell).toStack(EnderIO.itemBrokenSpawner, 0, 1);
+              SkeletonType type = null;
+              if(CapturedMob.SKELETON_ENTITY_NAME.equals(entityName)) {
+                type = SkeletonType.NORMAL;                
+                Biome biome = tile.getWorld().getBiomeForCoordsBody(tile.getPos());
+                if(BiomeDictionary.isBiomeOfType(biome, Type.NETHER)) {
+                  type = SkeletonType.WITHER;
+                } else if(BiomeDictionary.isBiomeOfType(biome, Type.SNOWY)) {
+                  if(Math.random() > 0.2) {
+                    type = SkeletonType.STRAY;
+                  }                  
+                }              
+              }
+              ItemStack drop = CapturedMob.create(entityName, type).toStack(EnderIO.itemBrokenSpawner, 0, 1);
               dropCache.put(new BlockCoord(evt.getPos()), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
@@ -173,7 +188,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                 if (logic != null) {
                   String entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    evt.getDrops().add(CapturedMob.create(entityName, false).toStack(EnderIO.itemBrokenSpawner, 0, 1));
+                    evt.getDrops().add(CapturedMob.create(entityName, null).toStack(EnderIO.itemBrokenSpawner, 0, 1));
                   }
                 }
               }
@@ -338,10 +353,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
-    list.add(CapturedMob.create("Enderman", false).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Chicken", false).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Skeleton", false).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Skeleton", true).toStack(item, 0, 1));
+    list.add(CapturedMob.create("Enderman", null).toStack(item, 0, 1));
+    list.add(CapturedMob.create("Chicken", null).toStack(item, 0, 1));
+    list.add(CapturedMob.create("Skeleton", SkeletonType.NORMAL).toStack(item, 0, 1));
+    list.add(CapturedMob.create("Skeleton", SkeletonType.WITHER).toStack(item, 0, 1));
+    list.add(CapturedMob.create("Skeleton", SkeletonType.STRAY).toStack(item, 0, 1));
   }
 
   @Override

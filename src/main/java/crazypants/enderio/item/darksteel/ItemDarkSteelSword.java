@@ -31,6 +31,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -256,7 +257,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   protected boolean isWitherSkeleton(LivingDropsEvent evt) {
-    return evt.getEntityLiving() instanceof EntitySkeleton && ((EntitySkeleton) evt.getEntityLiving()).getSkeletonType() == 1;
+    return evt.getEntityLiving() instanceof EntitySkeleton && ((EntitySkeleton) evt.getEntityLiving()).func_189771_df() == SkeletonType.WITHER;
   }
 
   private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
@@ -269,9 +270,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private ItemStack getSkullForEntity(EntityLivingBase entityLiving) {
-    if (entityLiving instanceof EntitySkeleton) {
-      int type = ((EntitySkeleton) entityLiving).getSkeletonType();
-      if (type == 1) {
+    if (entityLiving instanceof EntitySkeleton) {      
+      if (((EntitySkeleton) entityLiving).func_189771_df() == SkeletonType.WITHER) {
         return new ItemStack(Items.SKULL, 1, 1);
       } else {
         return new ItemStack(Items.SKULL, 1, 0);

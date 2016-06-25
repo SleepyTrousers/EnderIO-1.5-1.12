@@ -158,7 +158,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
   }
 
   public ItemStack createVesselWithEntityStub(String entityId) {
-    CapturedMob capturedMob = CapturedMob.create(entityId, false);
+    CapturedMob capturedMob = CapturedMob.create(entityId, null);
     if (capturedMob == null) {
       return null;
     }
