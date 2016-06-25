@@ -2,13 +2,6 @@ package crazypants.enderio.jei;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.util.CapturedMob.CUSTOM_NAME_KEY;
-import static crazypants.util.CapturedMob.ENTITY_KEY;
-import static crazypants.util.CapturedMob.IS_STUB_KEY;
-import static crazypants.util.CapturedMob.VARIANT_KEY;
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
-
 import crazypants.enderio.EnderIO;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
@@ -17,6 +10,13 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.INbtIgnoreList;
 import mezz.jei.api.JEIPlugin;
 import net.minecraft.item.Item;
+
+import static crazypants.util.CapturedMob.CUSTOM_NAME_KEY;
+import static crazypants.util.CapturedMob.ENTITY_KEY;
+import static crazypants.util.CapturedMob.IS_STUB_KEY;
+import static crazypants.util.CapturedMob.VARIANT_KEY;
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
 
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {
@@ -34,7 +34,8 @@ public class JeiPlugin extends BlankModPlugin {
     SoulBinderRecipeCategory.register(registry, guiHelper);
     PainterRecipeCategory.register(registry, guiHelper);
     VatRecipeCategory.register(registry, guiHelper);
-           
+    DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
+
     INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
     final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
     if (ppplate != null) {
@@ -46,6 +47,5 @@ public class JeiPlugin extends BlankModPlugin {
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
   }
-
 
 }
