@@ -21,9 +21,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.monster.ZombieType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -35,13 +38,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 public class CapturedMob {
 
   public static final String SKELETON_ENTITY_NAME = "Skeleton";
+  public static final String ZOMBIE_ENTITY_NAME = "Zombie";
   public static final String ENTITY_KEY = "entity";
   public static final String ENTITY_ID_KEY = "entityId";
   public static final String CUSTOM_NAME_KEY = "customName";
@@ -54,7 +57,7 @@ public class CapturedMob {
   private final String entityId;
   private final String customName;
   private final boolean isStub;
-  private SkeletonType variant;
+  private Enum<?> variant;
 
   private CapturedMob(@Nonnull EntityLivingBase entity) {
 
@@ -76,6 +79,8 @@ public class CapturedMob {
     }
     if (entity instanceof EntitySkeleton) {
       variant = ((EntitySkeleton) entity).func_189771_df();
+    } else if (entity instanceof EntityZombie) {
+      variant = ((EntityZombie) entity).func_189777_di();
     } else {
       variant = null;
     }
@@ -102,13 +107,13 @@ public class CapturedMob {
     isStub = nbt.getBoolean(IS_STUB_KEY);
     if(nbt.hasKey(VARIANT_KEY)) {
       short ord = nbt.getShort(VARIANT_KEY);
-      variant = SkeletonType.values()[ord];
+      variant = mkEnumForType(ord);
     } else {
       variant = null;
     }    
   }
 
-  private CapturedMob(String entityId, SkeletonType variant) {
+  private CapturedMob(String entityId, Enum<?> variant) {
     this.entityNbt = null;
     this.entityId = entityId;
     this.customName = null;
@@ -123,7 +128,7 @@ public class CapturedMob {
     return new CapturedMob((EntityLivingBase) entity);
   }
 
-  public static @Nullable CapturedMob create(@Nullable String entityId, SkeletonType variant) {
+  public static @Nullable CapturedMob create(@Nullable String entityId, Enum<?> variant) {
     if (entityId == null || !EntityList.isStringValidEntityName(entityId)) {
       return null;
     }
@@ -261,31 +266,49 @@ public class CapturedMob {
         }
       }
       if (difficulty != null && entity instanceof EntityLiving) {
-        ((EntityLiving) entity).onInitialSpawn(difficulty, null);
+        IEntityLivingData livingData = null;
+        if (variant != null && entity instanceof EntityZombie) {
+          livingData = new IEntityLivingData() {
+          };
+        }
+        ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
       }
-      if (variant != null && entity instanceof EntitySkeleton) {
-        EntitySkeleton skel = (EntitySkeleton) entity;
-        skel.func_189768_a(variant);
-        skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
-        skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
-        skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
-        skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
-        skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
-        skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
+      if (variant != null) {
+        if (entity instanceof EntitySkeleton) {
+          EntitySkeleton skel = (EntitySkeleton) entity;
+          skel.func_189768_a((SkeletonType) variant);
+          if (variant == SkeletonType.WITHER) {
+            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+            skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+            skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
+            skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
+            skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
+            skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
 
-        skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-        skel.setCombatTask();
+            skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+            skel.setCombatTask();
 
-        Calendar calendar = world.getCurrentDate();
+            Calendar calendar = world.getCurrentDate();
 
-        if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
-          skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
-          skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-        } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
-          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
-        } else if (Math.random() < 0.1) {
-          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
-          skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
+            if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
+              skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
+              skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
+            } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
+              skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
+            } else if (Math.random() < 0.1) {
+              skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
+              skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
+            }
+          }
+        } else if (entity instanceof EntityZombie) {
+          boolean isChild = world.rand.nextFloat() < net.minecraftforge.common.ForgeModContainer.zombieBabyChance;
+          ((EntityZombie)entity).func_189778_a((ZombieType)variant);
+          if (variant != ZombieType.NORMAL && variant != ZombieType.HUSK) {
+            net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession((EntityZombie)entity, world.rand);
+          }
+          if (isChild) {
+            ((EntityZombie) entity).setChild(true);
+          }
         }
       }
     }
@@ -295,9 +318,11 @@ public class CapturedMob {
   public @Nonnull String getDisplayName() {
     String baseName = null;
     if (variant != null && SKELETON_ENTITY_NAME.equals(entityId)) {
-      //TODO: The value is the variant but not exposed, need to fix this
-      String typeName = variant == SkeletonType.NORMAL ? SKELETON_ENTITY_NAME : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray" ; 
-      baseName = I18n.translateToLocal("entity." + typeName + ".name");
+      // TODO: The value is in the enum but not exposed, need to fix this
+      String typeName = variant == SkeletonType.NORMAL ? entityId : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray";
+      baseName = EntityUtil.getDisplayNameForEntity(typeName);
+    } else if (variant != null && ZOMBIE_ENTITY_NAME.equals(entityId)) {
+      baseName = ((ZombieType) variant).func_190145_d().getUnformattedText();
     } else if (entityId != null) {
       baseName = EntityUtil.getDisplayNameForEntity(entityId);
     } else if (entityNbt != null) {
@@ -396,10 +421,15 @@ public class CapturedMob {
     List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
     for (String mobName : mobs) {
       CapturedMob soul = create(mobName, null);
-      if (soul != null && !"EnderDragon".equals(mobName)) {        
+      if (soul != null && !"EnderDragon".equals(mobName)) {
         if (SKELETON_ENTITY_NAME.equals(mobName)) {
-          for(SkeletonType type : SkeletonType.values())
-          result.add(create(mobName, type));
+          for (SkeletonType type : SkeletonType.values()) {
+            result.add(create(mobName, type));
+          }
+        } else if (ZOMBIE_ENTITY_NAME.equals(mobName)) {
+          result.add(create(mobName, ZombieType.NORMAL));
+          result.add(create(mobName, ZombieType.VILLAGER_BUTCHER)); // Forge will randomize these
+          result.add(create(mobName, ZombieType.HUSK));
         } else {
           result.add(soul);
         }
@@ -410,5 +440,22 @@ public class CapturedMob {
 
   public static @Nonnull List<CapturedMob> getAllSouls() {
     return getSouls(EntityUtil.getAllRegisteredMobNames());
+  }
+
+  private Enum<?> mkEnumForType(int ordinal) {
+    String type = entityId;
+    if (entityId == null && entityNbt != null) {
+      type = entityNbt.getString("id");
+    }
+    if (entityId == null) {
+      return null;
+    }
+    if (SKELETON_ENTITY_NAME.equals(type)) {
+      return SkeletonType.values()[ordinal];
+    }
+    if (ZOMBIE_ENTITY_NAME.equals(type)) {
+      return ZombieType.values()[ordinal];
+  }
+    return null;
   }
 }
