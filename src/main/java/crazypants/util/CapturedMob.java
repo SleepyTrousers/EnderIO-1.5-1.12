@@ -38,6 +38,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -225,7 +226,10 @@ public class CapturedMob {
     }
 
     if (!world.spawnEntityInWorld(entity)) {
-      return false;
+      entity.setUniqueId(MathHelper.getRandomUuid(world.rand));
+      if (!world.spawnEntityInWorld(entity)) {
+        return false;
+      }
     }
 
     if (entity instanceof EntityLiving) {
@@ -261,6 +265,7 @@ public class CapturedMob {
       } else if (entityNbt != null) {
         if (clone) {
           entity = EntityList.createEntityFromNBT(entityNbt, world);
+          return entity;
         } else {
           entity = EntityList.createEntityByName(entityNbt.getString("id"), world);
         }
