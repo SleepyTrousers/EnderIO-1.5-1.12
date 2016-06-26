@@ -3,10 +3,6 @@ package crazypants.enderio.machine.tank;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CycleButton;
@@ -18,6 +14,9 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
@@ -48,7 +47,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       }
     });
     
-    voidBut = new CycleButton<VoidMode.IconHolder>(this, 123, 155, 43, VoidMode.IconHolder.class);
+    voidBut = new CycleButton<VoidMode.IconHolder>(this, 123, 155, 43 + (showRecipeButton() ? 18 : 0), VoidMode.IconHolder.class);
   }
 
   @Override
@@ -80,11 +79,6 @@ public class GuiTank extends GuiMachineBase<TileTank> {
       getTileEntity().setVoidMode(voidBut.getMode().getMode());
       PacketHandler.INSTANCE.sendToServer(new PacketTankVoidMode(getTileEntity()));
     }
-  }
-
-  @Override
-  protected boolean showRecipeButton() {
-    return false;
   }
 
   @Override
