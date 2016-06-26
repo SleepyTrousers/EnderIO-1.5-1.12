@@ -79,7 +79,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Crafter" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="craftingTableWood" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="workbench" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="ZOMBIE_CONTROLLER" /><item name="ingotIron" />
       </grid>
