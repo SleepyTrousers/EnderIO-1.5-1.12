@@ -4,6 +4,7 @@ import crazypants.enderio.EnderIO;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public enum SoundRegistry implements IModSound {
   ZOMBIE_BUBBLE(SoundCategory.BLOCKS, "generator.zombie.bubble"),
@@ -31,7 +32,12 @@ public enum SoundRegistry implements IModSound {
 
   public static void init() {    
     for (SoundRegistry soundRegistry : values()) {
-      soundRegistry.soundEvent = new SoundEvent(soundRegistry.resourceLocation); 
+      if (SoundEvent.REGISTRY.containsKey(soundRegistry.resourceLocation)) {
+        soundRegistry.soundEvent = SoundEvent.REGISTRY.getObject(soundRegistry.resourceLocation);
+      } else {
+        soundRegistry.soundEvent = new SoundEvent(soundRegistry.resourceLocation);
+        GameRegistry.register(soundRegistry.soundEvent.setRegistryName(soundRegistry.resourceLocation));
+      }
     }
   }
 
