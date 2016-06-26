@@ -26,6 +26,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -102,8 +103,11 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
       if (b != null && b != EnderIO.blockConduitBundle) {
-        try {          
-          stacks.put(direction, new ItemStack(b, 1, b.damageDropped(bs)));
+        try {               
+          Item item = b.getItemDropped(bs, world.rand, 0);
+          if(item != null) {            
+            stacks.put(direction, new ItemStack(item, 1, b.damageDropped(bs)));
+          }
         } catch (Throwable t) {
         }
       }
@@ -184,7 +188,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (stacks.containsKey(dir)) {
         ItemStack stack = stacks.get(dir);
-        Point p = stackPositions.get(dir);
+        Point p = stackPositions.get(dir);        
         itemRender.renderItemAndEffectIntoGUI(stack, p.x, p.y);
       }
     }
