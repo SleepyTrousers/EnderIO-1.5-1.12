@@ -1,5 +1,7 @@
 package crazypants.enderio.fluid;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIOTab;
@@ -10,7 +12,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -58,4 +63,21 @@ public class ItemBucketEio extends ItemBucket {
     ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
     ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    
   }  
+
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, net.minecraft.nbt.NBTTagCompound nbt) {
+    return new ICapabilityProvider() {
+
+      @Override
+      public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return false;
+      }
+
+      @Override
+      public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        return null;
+      }
+    };
+  }
+
 }
