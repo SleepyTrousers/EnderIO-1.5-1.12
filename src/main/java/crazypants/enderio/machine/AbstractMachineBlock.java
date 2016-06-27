@@ -145,12 +145,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {   
     if(!world.isRemote) {
-      final EnderIO instance2 = EnderIO.instance;
-      if (instance2 != null) {
-        entityPlayer.openGui(instance2, getGuiId(), world, pos.getX(), pos.getY(), pos.getZ());
-      } else {
-        // TODO handle null value
-      }
+      entityPlayer.openGui(EnderIO.instance, getGuiId(), world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
   }

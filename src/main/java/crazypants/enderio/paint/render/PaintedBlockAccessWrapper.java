@@ -2,16 +2,16 @@ package crazypants.enderio.paint.render;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import crazypants.enderio.paint.IPaintable;
+import crazypants.util.IFacade;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
@@ -56,7 +56,9 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
     if (state.getBlock() instanceof IPaintable.IBlockPaintableBlock) {
       return ((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos);
     }
-    // TODO: Foreign painted blocks
+    if (state.getBlock() instanceof IFacade) {
+      return ((IFacade) state.getBlock()).getFacade(wrapped, pos, null);
+    }
     return null;
   }
 
