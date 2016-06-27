@@ -318,7 +318,7 @@ public class ConduitUtil {
     int signalStrength = getInternalSignalForColor(bundle, col);
     if (signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
-      signalStrength = Math.max(signalStrength, te.getWorld().getStrongPower(te.getPos()));
+      signalStrength = Math.max(signalStrength, te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()));
     }
     return RedstoneControlMode.isConditionMet(mode, signalStrength);
   }

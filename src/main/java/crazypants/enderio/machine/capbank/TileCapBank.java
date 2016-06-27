@@ -203,7 +203,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if (redstoneStateDirty) {
-      int sig = worldObj.getStrongPower(getPos());
+      int sig = worldObj.isBlockIndirectlyGettingPowered(getPos());
       boolean recievingSignal = sig > 0;
       network.updateRedstoneSignal(this, recievingSignal);
       redstoneStateDirty = false;

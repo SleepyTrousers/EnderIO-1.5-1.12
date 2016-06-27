@@ -159,7 +159,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
-        externalSignal = te.getWorld().getStrongPower(te.getPos());
+        externalSignal = te.getWorld().isBlockIndirectlyGettingPowered(te.getPos());
         externalRedstoneSignals.put(dir, externalSignal);
       } else {
         externalSignal = val;
