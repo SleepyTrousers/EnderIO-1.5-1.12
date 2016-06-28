@@ -321,7 +321,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   @Override
   @Nullable
-  public FluidStack contents() {
+  public FluidStack getAvailableFluid() {
     return new FluidStack(Fluids.fluidXpJuice, Math.min(XpUtil.experienceToLiquid(getExcessXP()), xpCont.getFluidAmount()));
   }
 
