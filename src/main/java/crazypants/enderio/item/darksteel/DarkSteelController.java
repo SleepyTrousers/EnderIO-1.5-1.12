@@ -35,6 +35,7 @@ import crazypants.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -261,7 +262,7 @@ public class DarkSteelController {
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
     if (moveInst.getModifier(walkModifiers[0].getID()) != null) {
       moveInst.removeModifier(walkModifiers[0].getID()); // any will so as they all have
-                                                 // the same UID
+      // the same UID
     } else if (moveInst.getModifier(sprintModifiers[0].getID()) != null) {
       moveInst.removeModifier(sprintModifiers[0].getID());
     }
@@ -306,7 +307,7 @@ public class DarkSteelController {
     if (jumpUpgrade != null && boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
-      player.stepHeight = 0.5001F;
+      player.stepHeight = 0.6F;
     }
   }
 
@@ -327,7 +328,7 @@ public class DarkSteelController {
         }
       }
     }
-    if (armor != null && remaining > 0) {      
+    if (armor != null && remaining > 0) {
       ItemStack stack = player.getItemStackFromSlot(armor.armorType);
       if (stack != null) {
         armor.extractEnergy(stack, remaining, false);
@@ -366,37 +367,36 @@ public class DarkSteelController {
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
-    if (event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-      if (player == null) {
-        return;
-      }
-      updateNightvision(player);
-      if (player.capabilities.isFlying) {
-        return;
-      }
-      MovementInput input = player.movementInput;
-      if (input != null) {
-      if (input.jump && !wasJumping) {
-        doJump(player);
-      } else if (input.jump && jumpCount < 3 && ticksSinceLastJump > 5) {
-        doJump(player);
-      }
-      }
-
-      wasJumping = !player.onGround;
-      if (!wasJumping) {
-        jumpCount = 0;
-      }
-      ticksSinceLastJump++;
+    if (event.phase != TickEvent.Phase.END) {
+      return;
     }
+    
+    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+    if (player == null) {
+      return;
+    }
+    updateNightvision(player);
+    if (player.capabilities.isFlying) {
+      return;
+    }
+    
+    MovementInput input = player.movementInput;    
+    if (input != null && input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
+      doJump(player);
+    }
+    wasJumping = !player.onGround;
+    if (!wasJumping) {
+      jumpCount = 0;
+    }
+    ticksSinceLastJump++;
+
   }
 
   @SideOnly(Side.CLIENT)
-  private void doJump(EntityPlayerSP player) {
+  private void doJump(EntityPlayerSP player) {    
     if (!isJumpActive(player)) {
       return;
-    }
+    }    
 
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
@@ -404,22 +404,30 @@ public class DarkSteelController {
     if (jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
       return;
     }
-
-    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
-    int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
-    if (availablePower > 0 && requiredPower <= availablePower && jumpCount < jumpUpgrade.getLevel()) {
+       
+    boolean autoJump = Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
+    if(autoJump && jumpCount <= 0) {
       jumpCount++;
-      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
+      return;
+    }
+    
+    int autoJumpOffset = autoJump ? 1 : 0;
+    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);    
+    int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
+    int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
+    if (availablePower > 0 && requiredPower <= availablePower && jumpCount < maxJumps) {
+      jumpCount++;
+      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
       SoundHelper.playSound(player.worldObj, player, SoundRegistry.JUMP, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f);
-     
+
       Random rand = player.worldObj.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
             player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
         ClientUtil.setParticleVelocity(fx, player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
-             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+            player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
         Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
