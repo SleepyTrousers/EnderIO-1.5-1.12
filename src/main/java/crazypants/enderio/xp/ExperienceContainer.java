@@ -264,6 +264,11 @@ public class ExperienceContainer extends FluidTank {
   }
 
   @Override
+  public FluidStack drain(FluidStack resource, boolean doDrain) {
+    return drain(null, resource, doDrain);
+  }
+
+  @Override
   public void setFluid(FluidStack fluid) {
     experience = 0;
     experienceLevel = 0;

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
@@ -59,77 +59,21 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-
-    if (dir == null || isSideDisabled(dir)) {
-      return false;
-    }
-
     boolean res = super.doPush(dir);
-    if(tank.getFluidAmount() > 0) {
-
-      BlockCoord loc = getLocation().getLocation(dir);
-      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if(target != null) {
-        if(target.canFill(dir.getOpposite(), tank.getFluid().getFluid())) {
-          FluidStack push = tank.getFluid().copy();
-          push.amount = Math.min(push.amount, IO_MB_TICK);
-          int filled = target.fill(dir.getOpposite(), push, true);
-          if(filled > 0) {
-            tank.drain(filled, true);
-            setTanksDirty();
-            return res;
-          }
-        }
+    if (dir != null && tank.getFluidAmount() > 0) {
+      if (FluidWrapper.transfer(tank, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+        setTanksDirty();
       }
-
     }
     return res;
   }
 
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
-
-    if (dir == null || isSideDisabled(dir)) {
-      return false;
-    }
-
     boolean res = super.doPull(dir);
-    if(tank.getFluidAmount() < tank.getCapacity()) {
-      BlockCoord loc = getLocation().getLocation(dir);
-      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if(target != null) {
-
-        if(tank.getFluidAmount() > 0) {
-          FluidStack canPull = tank.getFluid().copy();
-          canPull.amount = tank.getCapacity() - tank.getFluidAmount();
-          canPull.amount = Math.min(canPull.amount, IO_MB_TICK);
-          FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-          if(drained != null && drained.amount > 0) {
-            tank.fill(drained, true);
-            setTanksDirty();
-            return res;
-          }
-        } else {
-
-          FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-          if(infos != null) {
-            for (FluidTankInfo info : infos) {
-              if(info.fluid != null && info.fluid.amount > 0) {
-                if(canFill(dir, info.fluid.getFluid())) {
-                  FluidStack canPull = info.fluid.copy();
-                  canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-                  FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-                  if(drained != null && drained.amount > 0) {
-                    tank.fill(drained, true);
-                    setTanksDirty();
-                    return res;
-                  }
-                }
-              }
-            }
-          }
-        }
-
+    if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
+      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+        setTanksDirty();
       }
     }
     return res;

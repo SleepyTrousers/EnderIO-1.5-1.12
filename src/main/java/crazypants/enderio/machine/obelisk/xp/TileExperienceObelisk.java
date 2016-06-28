@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.fluid.FluidWrapper;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -62,14 +62,22 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
-    FluidUtil.doPull(this, dir, Config.fluidConduitMaxIoRate);
+    if (dir != null && xpCont.getFluidAmount() < xpCont.getCapacity()) {
+      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), xpCont, Config.fluidConduitMaxIoRate) > 0) {
+        setTanksDirty();
+      }
+    }
     return res;
   }
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
-    FluidUtil.doPush(this, dir, Config.fluidConduitMaxIoRate);
+    if (dir != null && xpCont.getFluidAmount() > 0) {
+      if (FluidWrapper.transfer(xpCont, worldObj, getPos().offset(dir), dir.getOpposite(), Config.fluidConduitMaxIoRate) > 0) {
+        setTanksDirty();
+      }
+    }
     return res;
   }
 

@@ -9,8 +9,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -488,24 +487,20 @@ public class TileKillerJoe extends AbstractMachineEntity
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
-    FluidUtil.doPull(this, dir, IO_MB_TICK);
+    if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
+      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+        setTanksDirty();
+      }
+    }
     return res;
   }
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
-    if (dir != null) {
-      BlockCoord loc = getLocation().getLocation(dir);
-      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if (target != null) {
-        FluidStack canDrain = drain(dir, IO_MB_TICK, false);
-        if (canDrain != null && canDrain.amount > 0) {
-          int drained = target.fill(dir.getOpposite(), canDrain, true);
-          if (drained > 0) {
-            drain(dir, drained, true);
-          }
-        }
+    if (dir != null && xpCon.getFluidAmount() > 0) {
+      if (FluidWrapper.transfer(xpCon, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+        setTanksDirty();
       }
     }
     return res;

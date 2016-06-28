@@ -6,14 +6,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-
-import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
+import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -35,8 +33,13 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
+
 @Storable
-public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
+public class TileSoulBinder extends AbstractPoweredTaskEntity
+    implements IHaveExperience, IFluidHandler, ITankAccess, IFluidWrapper, IPaintable.IPaintableTileEntity {
 
   @Store
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
@@ -160,8 +163,11 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     int req = getXPRequired();
-    if(req > 0) {
-      FluidUtil.doPull(this, dir, Math.min(XpUtil.experienceToLiquid(req), Config.fluidConduitExtractRate));
+    if (dir != null && req > 0) {
+      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), xpCont,
+          Math.min(XpUtil.experienceToLiquid(req), Config.fluidConduitExtractRate)) > 0) {
+        setTanksDirty();
+      }
     }
     return res;
   }
@@ -170,8 +176,10 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
-    if (maxAmount > 0) {
-      FluidUtil.doPush(this, dir, maxAmount);
+    if (dir != null && maxAmount > 0) {
+      if (FluidWrapper.transfer(xpCont, worldObj, getPos().offset(dir), dir.getOpposite(), maxAmount) > 0) {
+        setTanksDirty();
+      }
     }
     return res;
   }
@@ -291,6 +299,30 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       break;
     }
     return pitch + random.nextFloat() * 0.08f - 0.04f;
+  }
+
+  @Override
+  public int offer(FluidStack resource) {
+    return fill(null, resource, false);
+  }
+
+  @Override
+  public int fill(FluidStack resource) {
+    setTanksDirty();
+    return fill(null, resource, true);
+  }
+
+  @Override
+  @Nullable
+  public FluidStack drain(FluidStack resource) {
+    setTanksDirty();
+    return drain(null, resource, true);
+  }
+
+  @Override
+  @Nullable
+  public FluidStack contents() {
+    return new FluidStack(Fluids.fluidXpJuice, Math.min(XpUtil.experienceToLiquid(getExcessXP()), xpCont.getFluidAmount()));
   }
 
 }
