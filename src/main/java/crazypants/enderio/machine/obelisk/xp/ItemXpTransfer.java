@@ -1,25 +1,8 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -28,6 +11,22 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.XpUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
@@ -82,29 +81,24 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   public static boolean tranferFromBlockToPlayer(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof IFluidHandler)) {
-      return false;
+    IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
+    if (wrapper != null) {
+      FluidStack availableFluid = wrapper.getAvailableFluid();
+      if (availableFluid != null && availableFluid.getFluid() == Fluids.fluidXpJuice && availableFluid.amount > 0) {
+        int currentXP = XpUtil.getPlayerXP(player);
+        int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
+        int requiredXP = nextLevelXP - currentXP;
+        int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
+        FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
+        FluidStack res = wrapper.drain(fs);
+        if (res != null && res.amount > 0) {
+          int xpToGive = XpUtil.liquidToExperience(res.amount);
+          player.addExperience(xpToGive);
+          return true;
+        }
+      }
     }
-    IFluidHandler fh = (IFluidHandler) te;
-    if (!fh.canDrain(side, Fluids.fluidXpJuice)) {
-      return false;
-    }
-    int currentXP = XpUtil.getPlayerXP(player);
-    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
-    int requiredXP = nextLevelXP - currentXP;
-
-    int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
-    FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
-    FluidStack res = fh.drain(side, fs, true);
-    if (res == null || res.amount <= 0) {
-      return false;
-    }
-
-    int xpToGive = XpUtil.liquidToExperience(res.amount);
-    player.addExperience(xpToGive);
-
-    return true;
+    return false;
   }
 
   public static boolean tranferFromPlayerToBlock(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
@@ -112,25 +106,19 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     if (player.experienceTotal <= 0) {
       return false;
     }
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof IFluidHandler)) {
-      return false;
-    }
-    IFluidHandler fh = (IFluidHandler) te;
 
-    if (!fh.canFill(side, Fluids.fluidXpJuice)) {
-      return false;
+    IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
+    if (wrapper != null) {
+      int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
+      FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
+      int takenVolume = wrapper.fill(fs);
+      if (takenVolume > 0) {
+        int xpToTake = XpUtil.liquidToExperience(takenVolume);
+        XpUtil.addPlayerXP(player, -xpToTake);
+        return true;
+      }
     }
-
-    int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
-    FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
-    int takenVolume = fh.fill(side, fs, true);
-    if (takenVolume <= 0) {
-      return false;
-    }
-    int xpToTake = XpUtil.liquidToExperience(takenVolume);
-    XpUtil.addPlayerXP(player, -xpToTake);
-    return true;
+    return false;
   }
 
   protected void init() {

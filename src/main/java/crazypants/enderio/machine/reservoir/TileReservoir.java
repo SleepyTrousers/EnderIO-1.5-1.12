@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.fluid.FluidWrapper;
 
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
@@ -69,20 +69,9 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   protected void doPush() {
     if (tank.getFluidAmount() > 0) {
       for (EnumFacing dir : EnumFacing.VALUES) {
-        BlockPos loc = getPos().offset(dir);
-        IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc.getX(), loc.getY(), loc.getZ());
-        if (target != null && !(target instanceof TileReservoir)) {
-          if (target.canFill(dir.getOpposite(), tank.getFluid().getFluid())) {
-            FluidStack push = tank.getFluid().copy();
-            push.amount = Math.min(push.amount, IO_MB_TICK);
-            int filled = target.fill(dir.getOpposite(), push, true);
-            if (filled > 0) {
-              tank.drain(filled, true);
-              setTanksDirty();
-              if (tank.getFluidAmount() == 0) {
-                return;
-              }
-            }
+        if (dir != null && tank.getFluidAmount() > 0) {
+          if (FluidWrapper.transfer(tank, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+            setTanksDirty();
           }
         }
       }

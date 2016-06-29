@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -66,30 +66,9 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   @Override
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
-    if (dir != null) {
-      BlockCoord loc = getLocation().getLocation(dir);
-      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if (target != null) {
-        FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-        if (infos != null) {
-          for (FluidTankInfo info : infos) {
-            if (info.fluid != null && info.fluid.amount > 0) {
-              if (canFill(dir, info.fluid.getFluid())) {
-                FluidStack canPull = info.fluid.copy();
-                canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-                FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-                if (drained != null && drained.amount > 0) {
-                  int filled = fill(dir, drained, false);
-                  if (filled > 0) {
-                    drained = target.drain(dir.getOpposite(), filled, true);
-                    fill(dir, drained, true);
-                    return res;
-                  }
-                }
-              }
-            }
-          }
-        }
+    if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
+      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+        setTanksDirty();
       }
     }
     return res;

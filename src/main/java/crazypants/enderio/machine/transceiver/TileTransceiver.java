@@ -10,16 +10,8 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
+import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Multimap;
@@ -39,6 +31,15 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
@@ -391,9 +392,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     if (!hasRecieveChannel(channels, ChannelType.FLUID)) {
       return false;
     }
-    Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
-    for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
-      if (entry.getValue().canFill(entry.getKey().getOpposite(), fluid)) {
+    FluidStack offer = new FluidStack(fluid, 1);
+    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(worldObj, pos);
+    for (Entry<EnumFacing, IFluidWrapper> entry : neighbours.entrySet()) {
+      IoMode mode = getIoMode(entry.getKey());
+      if (mode.canOutput() && entry.getValue().offer(offer) > 0) {
         return true;
       }
     }
@@ -423,11 +426,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     if (!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
-    Map<EnumFacing, IFluidHandler> handlers = getNeighbouringFluidHandlers();
-    for (Entry<EnumFacing, IFluidHandler> entry : handlers.entrySet()) {
+    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(worldObj, pos);
+    for (Entry<EnumFacing, IFluidWrapper> entry : neighbours.entrySet()) {
       IoMode mode = getIoMode(entry.getKey());
       if (mode.canOutput()) {
-        int res = entry.getValue().fill(entry.getKey().getOpposite(), resource, doFill);
+        int res = doFill ? entry.getValue().fill(resource) : entry.getValue().offer(resource);
         if (res > 0) {
           return res;
         }
