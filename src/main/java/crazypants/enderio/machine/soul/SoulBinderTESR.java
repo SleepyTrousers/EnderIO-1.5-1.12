@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.soul;
 
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.render.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -10,17 +16,10 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.render.RenderUtil;
-
-import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.EnumRenderMode;
 
 public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
 
@@ -66,6 +65,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
       ForgeHooksClient.setRenderLayer(layer);
       blockrendererdispatcher.getBlockModelRenderer().renderModel(world, ibakedmodel, state, pos, Tessellator.getInstance().getBuffer(), false);
     }
+    ForgeHooksClient.setRenderLayer(null);
     if (translateToOrigin) {
       wr.setTranslation(0, 0, 0);
     }

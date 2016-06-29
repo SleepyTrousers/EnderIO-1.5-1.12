@@ -177,6 +177,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
         blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, tes, false);
       }
     }
+    ForgeHooksClient.setRenderLayer(null);
     Tessellator.getInstance().draw();
 
     GL14.glBlendColor(1, 1, 1, 1);
