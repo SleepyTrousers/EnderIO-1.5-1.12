@@ -82,6 +82,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
 
     RenderUtil.bindBlockTexture();
     GlStateManager.enableRescaleNormal();
+    GlStateManager.enableDepth(); // fight corrupted GlStateManager state
     GlStateManager.disableDepth();
     GlStateManager.disableLighting();
     GlStateManager.enableBlend();
