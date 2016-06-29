@@ -4,15 +4,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.conduit.IConduit;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -114,10 +113,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       }
       LiquidOutput output = outputIterator.next();
       if(output != null) {
-        IFluidHandler cont = getTankContainer(output.location);
+        IFluidWrapper cont = getTankContainer(output);
         if(cont != null) {
           FluidStack offer = tank.getFluid().copy();
-          int filled = cont.fill(output.dir, offer, true);
+          int filled = cont.fill(offer);
           if(filled > 0) {
             tank.addAmount(-filled);
 
@@ -201,73 +200,44 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   public boolean extractFrom(AdvancedLiquidConduit advancedLiquidConduit, EnumFacing dir, int maxExtractPerTick) {
-
-    if(tank.isFull()) {
+    if (tank.isFull()) {
       return false;
     }
 
-    IFluidHandler extTank = getTankContainer(advancedLiquidConduit, dir);
-    if(extTank != null) {
+    IFluidWrapper extTank = getTankContainer(advancedLiquidConduit, dir);
+    if (extTank != null) {
       int maxExtract = Math.min(maxExtractPerTick, tank.getAvailableSpace());
 
-      if(liquidType == null || !tank.containsValidLiquid()) {
-        FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, true);
-        if(drained == null || drained.amount <= 0) {
+      if (liquidType == null || !tank.containsValidLiquid()) {
+        FluidStack available = extTank.getAvailableFluid();
+        if (available == null || available.amount <= 0) {
           return false;
         }
-        setFluidType(drained);
-        tank.setLiquid(drained.copy());
-        return true;
+        setFluidType(available);
       }
 
       FluidStack couldDrain = liquidType.copy();
       couldDrain.amount = maxExtract;
 
-      boolean foundFluid = false;
-      FluidTankInfo[] info = extTank.getTankInfo(dir.getOpposite());
-      if(info != null) {
-        for (FluidTankInfo inf : info) {
-          if(inf != null && inf.fluid != null && inf.fluid.amount > 0) {
-            foundFluid = true;
-          }
-        }
-      }
-      if(!foundFluid) {
+      FluidStack drained = extTank.drain(couldDrain);
+      if (drained == null || drained.amount == 0) {
         return false;
-      }
-
-      //      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-      //      if(drained == null || drained.amount <= 0) {
-      //        return false;
-      //      }
-      //      tank.addAmount(drained.amount);     
-
-      //Have to use this 'double handle' approach to work around an issue with TiC
-      FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, false);
-      if(drained == null || drained.amount == 0) {
-        return false;
+      } else if (drained.isFluidEqual(getFluidType())) {
+        tank.addAmount(drained.amount);
       } else {
-        if(drained.isFluidEqual(getFluidType())) {
-          drained = extTank.drain(dir.getOpposite(), maxExtract, true);
-          tank.addAmount(drained.amount);
-        }
+        extTank.fill(drained);
       }
       return true;
     }
     return false;
   }
 
-  public IFluidHandler getTankContainer(BlockCoord bc) {
-    World w = getWorld();
-    if(w == null) {
-      return null;
-    }
-    return FluidUtil.getFluidHandler(w.getTileEntity(bc.getBlockPos()));
+  public IFluidWrapper getTankContainer(LiquidOutput output) {
+    return FluidWrapper.wrap(getWorld(), output.location.getBlockPos(), output.dir);
   }
 
-  public IFluidHandler getTankContainer(AdvancedLiquidConduit con, EnumFacing dir) {
-    BlockCoord bc = con.getLocation().getLocation(dir);
-    return getTankContainer(bc);
+  public IFluidWrapper getTankContainer(AdvancedLiquidConduit con, EnumFacing dir) {
+    return FluidWrapper.wrap(getWorld(), con.getLocation().getBlockPos().offset(dir), dir.getOpposite());
   }
 
   World getWorld() {
