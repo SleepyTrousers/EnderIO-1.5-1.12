@@ -46,6 +46,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
 import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
+import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
 
 @Storable
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -520,7 +521,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private boolean isOutputFull() {
     for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
       ItemStack curStack = inventory[i];
-      if(curStack == null || curStack.stackSize < curStack.getMaxStackSize()) {
+      if (curStack == null || (!farmStopOnNoOutputSlots && curStack.stackSize < curStack.getMaxStackSize())) {
         return false;
       }
     }
@@ -584,6 +585,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   public ItemStack getSeedTypeInSuppliesFor(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc.getBlockPos());
+    return getSeedTypeInSuppliesFor(slot);
+  }
+
+  public ItemStack getSeedTypeInSuppliesFor(int slot) {
     ItemStack inv = inventory[slot];
     if(inv != null && (inv.stackSize > 1 || !isSlotLocked(slot))) {
       return inv.copy();
@@ -591,7 +596,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return null;
   }
 
-  protected int getSupplySlotForCoord(BlockPos forBlock) {
+  public int getSupplySlotForCoord(BlockPos forBlock) {
 
     int xCoord = getPos().getX();
     int zCoord = getPos().getZ();

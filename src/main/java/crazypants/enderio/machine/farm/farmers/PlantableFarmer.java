@@ -43,9 +43,12 @@ public class PlantableFarmer implements IFarmerJoe {
       return false;
     }
 
-    ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
+    int slot = farm.getSupplySlotForCoord(bc.getBlockPos());
+    ItemStack seedStack = farm.getSeedTypeInSuppliesFor(slot);
     if(seedStack == null) {
-      farm.setNotification(TileFarmStation.NOTIFICATION_NO_SEEDS);
+      if (!farm.isSlotLocked(slot)) {
+        farm.setNotification(TileFarmStation.NOTIFICATION_NO_SEEDS);
+      }
       return false;
     }
 
