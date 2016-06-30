@@ -24,6 +24,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.jei.JeiAccessor;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;
@@ -36,6 +37,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
@@ -64,6 +66,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final DatabaseView view;
 
   private final TextFieldEnder tfFilter;
+  private String tfFilterExternalValue = null;
   private final IconButton btnSort;
   private final ToggleButton btnSync;
   private final GuiToolTip ttRefill;
@@ -111,19 +114,38 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
+    tfFilter = new TextFieldEnder(fr, 24 + 108, 11, 106, 10);
+    tfFilter.setEnableBackgroundDrawing(false);
+    tfFilter.setText(te.getGuiFilterString());
+
     btnSync = new ToggleButton(this, ID_SYNC, 24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
-    btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync"));
+    btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
-    btnSync.setSelected(getTileEntity().getGuiSync());
-    if (!Loader.isModLoaded("NotEnoughItems")) {
+    if (Loader.isModLoaded("NotEnoughItems")) {
+      btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.nei"));
+      if (getTileEntity().getGuiSync()) {
+        updateNEI(tfFilter.getText());
+      }
+    } else if (JeiAccessor.isJeiRuntimeAvailable()) {
+      btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei"));
+      btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"), EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line1"),
+          EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line2"));
+      btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
+      if (getTileEntity().getGuiSync()) {
+        if (te.getGuiFilterString() != null && !te.getGuiFilterString().isEmpty()) {
+          updateToJEI(te.getGuiFilterString());
+        } else {
+          updateFromJEI();
+        }
+      }
+    } else {
+      btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync"));
+      btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
+      btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
       btnSync.enabled = false;
     }
 
-    tfFilter = new TextFieldEnder(fr, 24+108, 11, 106, 10);
-    tfFilter.setEnableBackgroundDrawing(false);
-
-    setText(tfFilter, te.getGuiFilterString());
     btnSort = new IconButton(this, ID_SORT, 24+233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(Minecraft mc1, int x, int y) {
@@ -223,7 +245,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(view.isSortOrderInverted()) {
       sortMode |= 1;
     }
-    getTileEntity().setGuiParameter(sortMode, tfFilter.getText(), btnSync.isSelected());
+    if (!btnSync.isSelected() || tfFilterExternalValue == null || !tfFilterExternalValue.equals(tfFilter.getText())) {
+      getTileEntity().setGuiParameter(sortMode, tfFilter.getText(), btnSync.isSelected());
+    } else {
+      getTileEntity().setGuiParameter(sortMode, "", btnSync.isSelected());
+    }
     super.onGuiClosed();
   }
 
@@ -327,19 +353,29 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (!Config.inventoryPanelFree) {
       drawTexturedModalRect(sx + 35, sy + 132, 232, 163, 18, 49);
       if (fuelTank.getFluidAmount() > 0) {
-        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 132, zLevel, 16, 47);
+        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 133, zLevel, 16, 47);
       }
     }
     
+    final EnderWidget returnButton = te.isExtractionDisabled()
+        ? btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.STOP_BUT_HOVER : EnderWidget.STOP_BUT
+        : btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.RETURN_BUT_HOVER : EnderWidget.RETURN_BUT;
+    GlStateManager.color(1, 1, 1, 1);
+    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx + 24 + 7, sy + 72, true);
+
     int headerColor = 0x404040;
     int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
     fr.drawString(headerCrafting, sx + 24 + 7, sy + 6, headerColor);
-    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7, sy + 72,
+    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7 + 10, sy + 72,
             btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
     fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
+
+    if (JeiAccessor.isJeiRuntimeAvailable() && btnSync.isEnabled()) {
+      updateFromJEI();
+    }
 
     view.setDatabase(getDatabase());
     view.setItemFilter(te.getItemFilter());
@@ -365,13 +401,47 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void onTextFieldChanged(TextFieldEnder tf, String old) {
-    if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused() && Loader.isModLoaded("NotEnoughItems")) {
-      updateNEI(tfFilter.getText());
+    if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused()) {
+      if (Loader.isModLoaded("NotEnoughItems")) {
+        updateNEI(tfFilter.getText());
+      } else if (JeiAccessor.isJeiRuntimeAvailable()) {
+        updateToJEI(tfFilter.getText());
+      }
     }
   }
 
   private void updateNEI(String text) {
 //    LayoutManager.searchField.setText(text);
+  }
+
+  private void updateToJEI(String text) {
+    if (text != null && !text.isEmpty()) {
+      JeiAccessor.setFilterText(text);
+    } else {
+      JeiAccessor.setFilterText("");
+    }
+  }
+
+  /*
+   * A note on the JEI sync:
+   * 
+   * When the GUI is opened, any text stored in the invPanel will take precedence. If there's no stored text, the text from the JEI field will be used.
+   * 
+   * When text is entered into the search field, it is synced to JEI. When the field is cleared, that is synced, too.
+   * 
+   * When text is entered into the JEI field, it is synced to the search field. But when it is cleared, that is not synced. This in on purpose, to give the user
+   * a way to quickly look up (or cheat in) something without having to disable syncing.
+   * 
+   * When the GUI is closed, text will be remembered if it was entered into the search field. If it was entered into the JEI field, it is not remembered. This
+   * is important because it allows "locking" an invPanel to a search text and still have JEI sync.
+   */
+
+  private void updateFromJEI() {
+    final String filterText = JeiAccessor.getFilterText();
+    if (!filterText.isEmpty() && !filterText.equals(tfFilter.getText())) {
+      tfFilter.setText(filterText);
+      tfFilterExternalValue = filterText;
+    }
   }
 
   @Override
