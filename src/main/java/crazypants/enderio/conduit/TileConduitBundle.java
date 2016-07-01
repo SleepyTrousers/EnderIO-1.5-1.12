@@ -41,6 +41,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.config.Config.transparentFacesLetThroughBeaconBeam;
+
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   public static final short NBT_VERSION = 1;
@@ -192,7 +194,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return facade != null ? facade.getLightOpacity() : 0;
+      if (facade != null) {
+        if (getFacadeType().isTransparent() && transparentFacesLetThroughBeaconBeam) {
+          return Math.min(facade.getLightOpacity(), 14);
+        } else {
+          return facade.getLightOpacity();
+        }
+      } else {
+        return 0;
+      }
     }
     return lightOpacity;
   }

@@ -134,6 +134,7 @@ public final class Config {
   public static int gasConduitMaxIoRate = 800;
 
   public static boolean updateLightingWhenHidingFacades = false;
+  public static boolean transparentFacesLetThroughBeaconBeam = true;
 
   public static boolean travelAnchorEnabled = true;
   public static int travelAnchorMaxDistance = 48;
@@ -823,6 +824,10 @@ public final class Config {
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
 
+    transparentFacesLetThroughBeaconBeam = config
+        .get(sectionAdvanced.name, "transparentFacesLetThroughBeaconBeam", transparentFacesLetThroughBeaconBeam,
+            "If true, transparent facades will not block the Beacon's beam. As side effect they will also let through a tiny amount of light.")
+        .getBoolean(transparentFacesLetThroughBeaconBeam);
     
     darkSteelRightClickPlaceEnabled = config.get(sectionDarkSteel.name, "darkSteelRightClickPlaceEnabled", darkSteelRightClickPlaceEnabled,
         "Enable / disable right click to place block using dark steel tools.").getBoolean(darkSteelRightClickPlaceEnabled);
