@@ -49,7 +49,7 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
 
   @Override
   public boolean isActive() {
-    return hasPower();
+    return redstoneCheckPassed && hasPower();
   }
 
   protected double usePower() {

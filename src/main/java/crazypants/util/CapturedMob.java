@@ -407,7 +407,8 @@ public class CapturedMob {
 
   public boolean isSameType(Entity entity) {
     return entity != null && EntityList.getEntityString(entity) != null && EntityList.getEntityString(entity).equals(getEntityName())
-        && (!(entity instanceof EntitySkeleton) || ((EntitySkeleton) entity).func_189771_df() == variant);
+        && (!(entity instanceof EntitySkeleton) || ((EntitySkeleton) entity).func_189771_df() == variant)
+        && (!(entity instanceof EntityZombie) || isSameZombie(((EntityZombie) entity).func_189777_di(), variant));
   }
 
   @Override
@@ -416,6 +417,11 @@ public class CapturedMob {
         + "isStub=" + isStub + ", isVariant=" + variant + ", " + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
         + getDisplayName() + ", getHealth()=" + getHealth() + ", getMaxHealth()=" + getMaxHealth() + ", "
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
+  }
+
+  // we treat normal zombies and all villager zombies as the same kind of zombie for the pressure plate and the obelisks
+  private static boolean isSameZombie(ZombieType a, Enum<?> b) {
+    return a == b || (a != ZombieType.HUSK && b != ZombieType.HUSK);
   }
 
   /*
