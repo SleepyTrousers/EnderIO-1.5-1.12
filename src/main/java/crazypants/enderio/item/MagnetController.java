@@ -3,9 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
-import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
-
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
@@ -27,6 +24,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
+
 public class MagnetController {
 
   public MagnetController() {
@@ -39,7 +39,7 @@ public class MagnetController {
     if (event.phase != TickEvent.Phase.END) {
       return;
     }
-    ActiveMagnet mag = getActiveMagnet(event.player);
+    ActiveMagnet mag = getMagnet(event.player, true);
     if (mag != null && event.player.getHealth() > 0f) {
       doHoover(event.player);
       if(event.side == Side.SERVER && event.player.worldObj.getTotalWorldTime() % 20 == 0) {
@@ -50,13 +50,17 @@ public class MagnetController {
     }
   }
 
-  private ActiveMagnet getActiveMagnet(EntityPlayer player) {
+  static ActiveMagnet getMagnet(EntityPlayer player, boolean activeOnly) {
     ItemStack[] inv = player.inventory.mainInventory;
     int maxSlot = Config.magnetAllowInMainInventory ? 4 * 9 : 9;
     for (int i = 0; i < maxSlot;i++) {
-      if(ItemMagnet.isActive(inv[i]) && ItemMagnet.hasPower(inv[i])) {
+      if (ItemMagnet.isMagnet(inv[i]) && (!activeOnly || (ItemMagnet.isActive(inv[i]) && ItemMagnet.hasPower(inv[i])))) {
         return new ActiveMagnet(inv[i], i);
       }
+    }
+    if (ItemMagnet.isMagnet(player.inventory.offHandInventory[0])
+        && (!activeOnly || (ItemMagnet.isActive(player.inventory.offHandInventory[0]) && ItemMagnet.hasPower(player.inventory.offHandInventory[0])))) {
+      return new ActiveMagnet(player.inventory.offHandInventory[0], player.inventory.mainInventory.length + player.inventory.armorInventory.length);
     }
     return null;
   }
@@ -171,7 +175,7 @@ public class MagnetController {
     return arraylist;
   }
 
-  private static class ActiveMagnet {
+  static class ActiveMagnet {
     ItemStack item;
     int slot;
     

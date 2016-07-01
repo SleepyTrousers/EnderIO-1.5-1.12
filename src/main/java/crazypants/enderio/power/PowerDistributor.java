@@ -65,8 +65,8 @@ public class PowerDistributor {
       return;
     }
     receptors.clear();
+    TileEntity transmitter = worldObj.getTileEntity(bc.getBlockPos());
     for (EnumFacing dir : EnumFacing.VALUES) {
-      TileEntity transmitter = worldObj.getTileEntity(bc.getBlockPos());
       if(!(transmitter instanceof AbstractMachineEntity) || ((AbstractMachineEntity) transmitter).getIoMode(dir).canOutput()) {
         BlockCoord checkLoc = bc.getLocation(dir);
         TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());

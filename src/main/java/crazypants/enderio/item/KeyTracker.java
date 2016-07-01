@@ -8,6 +8,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.MagnetController.ActiveMagnet;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
@@ -32,8 +33,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
-
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 
 public class KeyTracker {
 
@@ -117,20 +116,18 @@ public class KeyTracker {
   private void handleMagnet() {
     if(magnetKey.isPressed()) {
       EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-      ItemStack[] inv = player.inventory.mainInventory;
-      for (int i = 0; i < 9; i++) {
-        if(inv[i] != null && inv[i].getItem() != null && inv[i].getItem() == itemMagnet) {
-          boolean isActive = !ItemMagnet.isActive(inv[i]);
-          PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, i, isActive));
-          return;
-        }
+      ActiveMagnet magnet = MagnetController.getMagnet(player, false);
+      if (magnet != null) {
+        boolean isActive = !ItemMagnet.isActive(magnet.item);
+        PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, magnet.slot, isActive));
+        return;
       }
 
       IInventory baubles = BaublesUtil.instance().getBaubles(player);
       if(baubles != null) {
         for (int i = 0; i < baubles.getSizeInventory(); i++) {
           ItemStack stack = baubles.getStackInSlot(i);
-          if(stack != null && stack.getItem() != null && stack.getItem() == itemMagnet) {
+          if (ItemMagnet.isMagnet(stack)) {
             boolean isActive = !ItemMagnet.isActive(stack);
             PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.BAUBLES, i, isActive));
             return;

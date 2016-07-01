@@ -49,8 +49,12 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     nbt.setBoolean(ACTIVE_KEY, active);
   }
 
+  public static boolean isMagnet(ItemStack item) {
+    return item != null && item.getItem() instanceof ItemMagnet;
+  }
+
   public static boolean isActive(ItemStack item) {
-    if (item == null) {
+    if (!isMagnet(item)) {
       return false;
     }
     if (item.getTagCompound() == null) {
@@ -220,6 +224,12 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
     return MagnetLayer.instance;
+  }
+
+  @Override
+  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    return slotChanged ? super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged)
+        : (oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem() || isActive(oldStack) != isActive(newStack));
   }
 
 }
