@@ -3,8 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
@@ -174,7 +172,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     ArrayList<String> tmp = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
-    String keyName = Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode());
+    String keyName = KeyTracker.instance.getYetaWrenchMode().getDisplayName();
     for (String line : tmp) {
       list.add(String.format(line, keyName));
     }
