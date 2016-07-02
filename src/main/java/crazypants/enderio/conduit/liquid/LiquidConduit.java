@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 
@@ -29,7 +30,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -124,30 +124,22 @@ public class LiquidConduit extends AbstractTankConduit {
     for (EnumFacing dir : externalConnections) {
       if(autoExtractForDir(dir)) {
 
-        IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
+        IFluidWrapper extTank = getExternalHandler(dir);
         if(extTank != null) {
 
-          boolean foundFluid = false;
-          FluidTankInfo[] info = extTank.getTankInfo(dir.getOpposite());
-          if(info != null) {
-            for (FluidTankInfo inf : info) {
-              if(inf != null && inf.fluid != null && inf.fluid.amount > 0) {
-                foundFluid = true;
-              }
+          FluidStack couldDrain = extTank.getAvailableFluid();
+          if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
+            if (couldDrain.amount > MAX_EXTRACT_PER_TICK) {
+              couldDrain = couldDrain.copy();
+              couldDrain.amount = MAX_EXTRACT_PER_TICK;
             }
-          }
-          if(!foundFluid) {
-            return;
-          }
-
-          FluidStack couldDrain = extTank.drain(dir.getOpposite(), MAX_EXTRACT_PER_TICK, false);
-          if(couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
             int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
-            extTank.drain(dir.getOpposite(), used, true);
-            if(used > 0 && network != null && network.getFluidType() == null) {
-              network.setFluidType(couldDrain);
-            }
             if(used > 0) {
+              couldDrain.amount = used;
+              extTank.drain(couldDrain);
+              if (network != null && network.getFluidType() == null) {
+                network.setFluidType(couldDrain);
+              }
               ticksSinceFailedExtract = 0;
             }
           }
@@ -264,9 +256,9 @@ public class LiquidConduit extends AbstractTankConduit {
             pushed += toCon;
           }
         } else if(getExternalConnections().contains(dir)) {
-          IFluidHandler con = getTankContainer(getLocation().getLocation(dir));
+          IFluidWrapper con = getExternalHandler(dir);
           if(con != null) {
-            int toExt = con.fill(dir.getOpposite(), toPush, doPush);
+            int toExt = doPush ? con.fill(toPush) : con.offer(toPush);
             toPush.amount -= toExt;
             pushed += toExt;
             if(doPush) {

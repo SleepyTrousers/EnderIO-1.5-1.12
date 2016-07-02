@@ -5,13 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitUtil;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -127,7 +127,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
       for (EnumFacing dir : extCons) {
         if(con.canOutputToDir(dir)) {
-          IFluidHandler externalTank = con.getExternalHandler(dir);
+          IFluidWrapper externalTank = con.getExternalHandler(dir);
           if(externalTank != null) {
             externals.add(new LocatedFluidHandler(externalTank, con.getLocation().getLocation(dir), dir.getOpposite()));
           }
@@ -173,7 +173,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     for (LocatedFluidHandler lh : externals) {
       int distance = lh.bc.getDistSq(conLoc);
       if(distance < closestDistance && con.canOutputToDir(lh.dir.getOpposite())) {
-        int couldFill = lh.tank.fill(lh.dir, toDrain.copy(), false);
+        int couldFill = lh.tank.offer(toDrain.copy());
         if(couldFill > 0) {
           closestTank = lh;
           closestDistance = distance;
@@ -182,7 +182,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
 
     if(closestTank != null) {
-      int filled = closestTank.tank.fill(closestTank.dir, toDrain.copy(), true);
+      int filled = closestTank.tank.fill(toDrain.copy());
       con.getTank().addAmount(-filled);
     }
 
@@ -223,9 +223,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     // Then to external connections
     for (EnumFacing dir : con.getExternalConnections()) {
       if(con.canOutputToDir(dir)) {
-        IFluidHandler extCon = con.getExternalHandler(dir);
+        IFluidWrapper extCon = con.getExternalHandler(dir);
         if(extCon != null) {
-          int amount = extCon.fill(dir.getOpposite(), available.copy(), false);
+          int amount = extCon.offer(available.copy());
           if(amount > 0) {
             totalRequested += amount;
             numRequests++;
@@ -242,9 +242,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       requestSource.amount = amountPerRequest;
       for (EnumFacing dir : con.getExternalConnections()) {
         if(con.canOutputToDir(dir)) {
-          IFluidHandler extCon = con.getExternalHandler(dir);
+          IFluidWrapper extCon = con.getExternalHandler(dir);
           if(extCon != null) {
-            int amount = extCon.fill(dir.getOpposite(), requestSource.copy(), true);
+            int amount = extCon.fill(requestSource.copy());
             if(amount > 0) {
               outputedToExternal(amount);
               tank.addAmount(-amount);
@@ -345,11 +345,11 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   static class LocatedFluidHandler {
-    final IFluidHandler tank;
+    final IFluidWrapper tank;
     final BlockCoord bc;
     final EnumFacing dir;
 
-    LocatedFluidHandler(IFluidHandler tank, BlockCoord bc, EnumFacing dir) {
+    LocatedFluidHandler(IFluidWrapper tank, BlockCoord bc, EnumFacing dir) {
       this.tank = tank;
       this.bc = bc;
       this.dir = dir;

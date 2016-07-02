@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -15,13 +15,12 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.reservoir.TileReservoir;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -31,35 +30,23 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final Map<EnumFacing, Integer> externalRedstoneSignals = new HashMap<EnumFacing, Integer>();
   protected boolean redstoneStateDirty = true;
 
-  public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
-    IFluidHandler con = FluidUtil.getFluidHandler(world, bc);
-    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
+  public static IFluidWrapper getExternalFluidHandler(IBlockAccess world, BlockPos pos, EnumFacing side) {
+    if (world.getTileEntity(pos) instanceof IConduitBundle) {
+      return null;
+    }
+    return FluidWrapper.wrap(world, pos, side);
   }
 
-  public IFluidHandler getExternalHandler(EnumFacing direction) {
-    IFluidHandler con = getExternalFluidHandler(getBundle().getBundleWorldObj(), getLocation().getLocation(direction));
-    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
-  }
-
-  public IFluidHandler getTankContainer(BlockCoord bc) {
-    return FluidUtil.getFluidHandler(getBundle().getBundleWorldObj(), bc);
+  public IFluidWrapper getExternalHandler(EnumFacing direction) {
+    return getExternalFluidHandler(getBundle().getBundleWorldObj(), getLocation().getLocation(direction).getBlockPos(), direction);
   }
 
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
-    IFluidHandler h = getExternalHandler(direction);
+    IFluidWrapper h = getExternalHandler(direction);
     if(h == null) {
       return false;
     }
-    //TODO: This check was added to work around a bug in dynamic tanks, but
-    //it causes issues with not conecting to empty tanks such as dim. trans +
-    //BC fluid pipes, so I am removing it for now.
-
-    //    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
-    //    if(info == null) {
-    //      return false;
-    //    }
-    //    return  info.length > 0;
     return true;
   }
 
@@ -114,12 +101,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     if(!externalConnections.contains(dir)) {
       return false;
     }
-    IFluidHandler ext = getExternalHandler(dir);
-    if(ext instanceof TileReservoir) { // dont push to an auto ejecting
-      // resevoir or we loop
-      TileReservoir tr = (TileReservoir) ext;
-      return !tr.isAutoEject();
-    }
+    IFluidWrapper ext = getExternalHandler(dir);
+    // if(ext instanceof TileReservoir) { // dont push to an auto ejecting
+    // // resevoir or we loop
+    // TileReservoir tr = (TileReservoir) ext;
+    // return !tr.isAutoEject();
+    // }
     return true;
   }
 

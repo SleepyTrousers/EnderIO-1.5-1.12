@@ -178,7 +178,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     }
 
     if (face != EnumFacing.DOWN) {
-      if (fullness2 > 0) {
+      if (fullness2 > 0 && face != EnumFacing.UP) {
         minY = maxY * fullness2;
       }
       maxY *= fullness;

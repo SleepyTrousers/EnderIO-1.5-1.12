@@ -269,12 +269,11 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   }
   
   public int getComparatorOutput() {
-    FluidTankInfo info = getTankInfo(null)[0];
-    if (info == null || info.fluid == null) {
+    if (tank.isEmpty()) {
       return 0;
     }
 
-    return info.fluid.amount == 0 ? 0 : (int) (1 + ((double) info.fluid.amount / (double) info.capacity) * 14);
+    return (int) (1 + ((double) tank.getFluidAmount() / (double) tank.getCapacity()) * 14);
   }
 
   private boolean processItems(boolean redstoneCheck) {
