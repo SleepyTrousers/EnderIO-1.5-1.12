@@ -21,6 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
@@ -28,7 +29,7 @@ public class NetworkedInventory {
 
   IItemConduit con;
   EnumFacing conDir;
-  BlockCoord location;
+  BlockPos location;
   EnumFacing inventorySide;
 
   List<Target> sendPriority = new ArrayList<Target>();
@@ -49,7 +50,7 @@ public class NetworkedInventory {
     inventorySide = conDir.getOpposite();
     this.con = con;
     this.conDir = conDir;
-    this.location = location;
+    this.location = location.getBlockPos();
     world = con.getBundle().getBundleWorldObj();
 
     IBlockState bs = world.getBlockState(location.getBlockPos());
@@ -339,7 +340,7 @@ public class NetworkedInventory {
   }
 
   public @Nullable IItemHandler getInventory() {
-    return ItemTools.getExternalInventory(world, location.getBlockPos(), inventorySide);
+    return ItemTools.getExternalInventory(world, location, inventorySide);
   }
 
   public EnumFacing getInventorySide() {
@@ -383,4 +384,7 @@ public class NetworkedInventory {
     return invName;
   }
 
+  public boolean isAt(BlockPos pos) {
+    return location != null && pos != null && location.equals(pos);
+  }
 }

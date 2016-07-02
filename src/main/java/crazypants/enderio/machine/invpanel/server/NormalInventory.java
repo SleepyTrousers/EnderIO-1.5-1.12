@@ -2,6 +2,7 @@ package crazypants.enderio.machine.invpanel.server;
 
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 
 class NormalInventory extends AbstractInventory {
@@ -81,6 +82,13 @@ class NormalInventory extends AbstractInventory {
     remaining -= count;
     updateCount(db, slot, entry, remaining);
     return count;
+  }
+
+  @Override
+  protected void markForScanning(BlockPos pos) {
+    if (ni.isAt(pos)) {
+      markForScanning();
+    }
   }
 
 }

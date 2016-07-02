@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.enderio.core.common.network.CompressedDataInput;
 import com.enderio.core.common.network.CompressedDataOutput;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.config.Config;
@@ -20,6 +21,7 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
@@ -230,12 +232,21 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
       return;
     }
 
-    AbstractInventory inv = inventories[currentInventory];
-    int slots = inv.scanInventory(this);
+    int currentInventoryIn = currentInventory;
+    long now = EnderIO.proxy.getTickCount();
 
-    currentInventory = (currentInventory+1) % inventories.length;
-    tickPause += 1 + (slots + 8) / 9;
-    power -= slots * Config.inventoryPanelScanCostPerSlot;
+    do {
+      AbstractInventory inv = inventories[currentInventory];
+      currentInventory = (currentInventory + 1) % inventories.length;
+      if (inv.shouldBeScannedNow(now)) {
+        int slots = inv.scanInventory(this);
+        inv.markScanned();
+        tickPause += Math.min(1 + (slots + 8) / 9, 20);
+        power -= slots * Config.inventoryPanelScanCostPerSlot;
+        return;
+      }
+    } while (currentInventoryIn != currentInventory);
+    tickPause += 10;
   }
 
   public void tick() {
@@ -263,6 +274,19 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
   AbstractInventory getInventory(int aiIndex) {
     return inventories[aiIndex];
+  }
+
+  /**
+   * Called when a conduit that has an awareness upgrade is notified by one of its neighbors about a TE change. This will try to find a matching inventory and
+   * mark it to be scanned for changes.
+   * 
+   * @param neighborPos
+   *          The BlockPos of the neighbor
+   */
+  public void onNeighborChange(BlockPos neighborPos) {
+    for (AbstractInventory abstractInventory : inventories) {
+      abstractInventory.markForScanning(neighborPos);
+    }
   }
 
 }

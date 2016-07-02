@@ -35,6 +35,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
@@ -829,6 +830,14 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         conectionModes.put(dir, ConnectionMode.OUTPUT);
       }
     }
+  }
+
+  @Override
+  public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
+    if (neighbourPos != null && network != null && network.hasDatabase() && !functionUpgrades.isEmpty()) {
+      network.getDatabase().onNeighborChange(neighbourPos);
+    }
+    return super.onNeighborChange(world, pos, neighbourPos);
   }
 
 }
