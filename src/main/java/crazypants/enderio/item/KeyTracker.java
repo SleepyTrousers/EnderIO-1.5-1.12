@@ -11,7 +11,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.MagnetController.ActiveMagnet;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.SoundDetector;
@@ -66,7 +65,7 @@ public class KeyTracker {
     nightVisionKey = new KeyBinding(EnderIO.lang.localize("keybind.nightvision"), Keyboard.KEY_P, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(nightVisionKey);
     gogglesKey = new KeyBinding(EnderIO.lang.localize("keybind.gogglesofrevealing"), Keyboard.KEY_R, EnderIO.lang.localize("category.darksteelarmor"));
-    ClientRegistry.registerKeyBinding(gogglesKey);
+    // ClientRegistry.registerKeyBinding(gogglesKey);
     
     stepAssistKey = new KeyBinding(EnderIO.lang.localize("keybind.stepassist"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(stepAssistKey);
@@ -170,11 +169,11 @@ public class KeyTracker {
 //    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
 //      return;
 //    }
-    if(gogglesKey.isPressed()) {
-      boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
-      sendEnabledChatMessage("darksteel.upgrade.goggles", isActive);
-      DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
-    }
+    // if(gogglesKey.isPressed()) {
+    // boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
+    // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
+    // DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
+    // }
   }
 
   private void handleYetaWrench() {
