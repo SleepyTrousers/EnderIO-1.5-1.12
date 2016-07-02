@@ -74,8 +74,8 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, 38, 34));
-    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBrokenSpawner, 59, 34));
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, getSlotFromInventory(getInv(), 0)));
+    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBrokenSpawner, getSlotFromInventory(getInv(), 1)));
   }
 
 }
