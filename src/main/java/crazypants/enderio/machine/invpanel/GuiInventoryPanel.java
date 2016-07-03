@@ -373,7 +373,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
-    if (JeiAccessor.isJeiRuntimeAvailable() && btnSync.isEnabled()) {
+    if (JeiAccessor.isJeiRuntimeAvailable() && btnSync.isSelected()) {
       updateFromJEI();
     }
 
