@@ -2,12 +2,14 @@ package crazypants.enderio.machine.solar;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.power.IInternalPowerProvider;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -90,7 +92,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   static int getEnergyPerTick(World world, BlockPos pos) {
-    return world.getBlockState(pos).getValue(SolarType.KIND).getRfperTick();
+    final IBlockState blockState = world.getBlockState(pos);
+    if (blockState.getBlock() == EnderIO.blockSolarPanel) {
+      return blockState.getValue(SolarType.KIND).getRfperTick();
+    } else {
+      return -1;
+    }
   }
 
   float calculateLightRatio() {

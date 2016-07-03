@@ -160,7 +160,14 @@ public class SolarPanelNetwork {
         for (BlockPos panel : panels) {
           if (world.isBlockLoaded(panel)) {
             if (rfMax < 0 || Config.photovoltaicCanTypesJoins) {
-              rfMax = TileEntitySolarPanel.getEnergyPerTick(world, panel);
+              final int energyPerTick = TileEntitySolarPanel.getEnergyPerTick(world, panel);
+              if (energyPerTick < 0) {
+                // a panel was removed without its TE being invalidated. Force rebuilding the network.
+                destroyNetwork();
+                energyAvailableThisTick = energyAvailablePerTick = 0;
+                return;
+              }
+              rfMax = energyPerTick;
             }
             energyMaxPerTick += rfMax;
             if (TileEntitySolarPanel.canSeeSun(world, panel)) {
