@@ -105,20 +105,25 @@ public class EnderIOCrashCallable implements ICrashCallable {
 
   @Override
   public String call() throws Exception {
+    String msg = "";
     List<String> data = collectData();
     if (data.isEmpty()) {
-      return "No known problems detected.";
+      msg += "No known problems detected.\n";
     } else {
-      String msg = "Found the following problem(s) with your installation (That does NOT mean that Ender IO caused the crash or was involved in it in "
+      msg += "Found the following problem(s) with your installation (That does NOT mean that Ender IO caused the crash or was involved in it in "
           + "any way. We add this information to help finding common problems, not as an invitation to post any crash you encounter to "
           + "Ender IO's issue tracker.):\n";
       for (String string : data) {
         msg += "                 " + string + "\n";
       }
       msg += "                 This may (look up the meaning of 'may' in the dictionary if you're not sure what it means) have caused the error. "
-          + "Try reproducing the crash WITHOUT this/these mod(s) before reporting it.";
-      return msg;
+          + "Try reproducing the crash WITHOUT this/these mod(s) before reporting it.\n";
     }
+    msg += "\tDetailed RF API diagnostics:\n";
+    for (String string : rfDiagnostics()) {
+      msg += "                 " + string + "\n";
+    }
+    return msg;
   }
 
   @Override
@@ -150,6 +155,23 @@ public class EnderIOCrashCallable implements ICrashCallable {
     } catch (Throwable t) {
     }
     return "<unknown>";
+  }
+
+  private final static String[] rfclasses = new String[] { "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler",
+      "IEnergyProvider.class", "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler" };
+
+  public static List<String> rfDiagnostics() {
+    List<String> result = new ArrayList<String>();
+    for (String rfclass : rfclasses) {
+      try {
+        Class<?> forName = Class.forName("cofh.api.energy." + rfclass);
+        result.add(" * RF API class '" + rfclass + "' is loaded from: " + whereFrom(forName));
+      } catch (ClassNotFoundException e) {
+        result.add(" * RF API class '" + rfclass + "' could not be loaded (see strack trace above)");
+        e.printStackTrace();
+      }
+    }
+    return result;
   }
 
 }
