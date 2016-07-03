@@ -129,7 +129,7 @@ public class ItemQuadCollector {
 
   public void addItemModel(ItemStack stack) {
     if (stack != null) {
-      addItemBakedModel(Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack));
+      addItemBakedModel(Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null));
     }
   }
 
