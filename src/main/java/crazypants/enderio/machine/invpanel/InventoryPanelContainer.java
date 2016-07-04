@@ -14,6 +14,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
@@ -379,6 +380,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         int extracted = db.extractItems(entry, count, te);
         if(extracted > 0) {
           targetStack.stackSize += extracted;
+
+          if (DebugCommand.SERVER.isEnabled(player)) {
+            DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+          }
 
           sendChangeLog();
 

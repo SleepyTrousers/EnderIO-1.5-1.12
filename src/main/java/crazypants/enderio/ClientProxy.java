@@ -5,6 +5,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.fluid.Buckets;
@@ -60,6 +61,7 @@ import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -295,6 +297,11 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
     Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(worldObj, pos, color));
+  }
+
+  @Override
+  protected void registerCommands() {
+    ClientCommandHandler.instance.registerCommand(DebugCommand.CLIENT);
   }
 
 }

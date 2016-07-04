@@ -22,6 +22,7 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.jei.JeiAccessor;
@@ -675,6 +676,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           }
         } else {
           return;
+        }
+
+        if (DebugCommand.CLIENT.isEnabled()) {
+          DebugCommand.CLIENT.debug("extracting " + count + " of " + invSlot.stack + " for dbid=" + invSlot.entry.dbID + " " + invSlot.entry);
         }
 
         PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));

@@ -11,8 +11,10 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeFactory;
 import crazypants.enderio.config.recipes.xml.Recipes;
+import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.sound.SoundRegistry;
+import net.minecraft.command.CommandHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -20,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -101,6 +104,12 @@ public class CommonProxy {
         }
       }
     }
+
+    registerCommands();
+  }
+
+  protected void registerCommands() {
+    ((CommandHandler) FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()).registerCommand(DebugCommand.SERVER);
   }
 
   public long getTickCount() {
