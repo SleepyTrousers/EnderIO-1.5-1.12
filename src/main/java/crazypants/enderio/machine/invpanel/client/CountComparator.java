@@ -10,7 +10,7 @@ class CountComparator extends NameComparator {
 
   @Override
   public int compare(ItemEntry a, ItemEntry b) {
-    int res = b.count - a.count;
+    int res = b.getCount() - a.getCount();
     if(res == 0) {
       res = super.compare(a, b);
     }

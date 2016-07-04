@@ -556,10 +556,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       InvSlot slot = (InvSlot) getGhostSlots().get(i);
       if(index < count) {
         slot.entry = view.getItemEntry(index);
-        slot.stack = slot.entry.makeItemStack();
       } else {
         slot.entry = null;
-        slot.stack = null;
       }
     }
   }
@@ -634,9 +632,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         } else if(hoverGhostSlot instanceof InvSlot) {
           InvSlot invSlot = (InvSlot) hoverGhostSlot;
           InventoryDatabaseClient db = getDatabase();
-          if(invSlot.stack != null && invSlot.entry != null && db != null) {
+          if (invSlot.getStack() != null && invSlot.entry != null && db != null) {
             ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
-            if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.stack)) {
+            if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
           }
@@ -650,9 +648,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(slot instanceof InvSlot) {
       InvSlot invSlot = (InvSlot) slot;
       InventoryDatabaseClient db = getDatabase();
-      if(invSlot.entry != null && invSlot.stack != null && db != null) {
+      if (invSlot.entry != null && invSlot.getStack() != null && db != null) {
         int targetSlot;
-        int count = Math.min(invSlot.stack.stackSize, invSlot.stack.getMaxStackSize());
+        int count = Math.min(invSlot.getStack().stackSize, invSlot.getStack().getMaxStackSize());
 
         if(button == 0) {
           if(isShiftKeyDown()) {
@@ -679,7 +677,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         }
 
         if (DebugCommand.CLIENT.isEnabled()) {
-          DebugCommand.CLIENT.debug("extracting " + count + " of " + invSlot.stack + " for dbid=" + invSlot.entry.dbID + " " + invSlot.entry);
+          DebugCommand.CLIENT.debug("extracting " + count + " of " + invSlot.getStack() + " for dbid=" + invSlot.entry.dbID + " " + invSlot.entry);
         }
 
         PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
@@ -698,7 +696,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   class InvSlot extends GhostSlot {
     ItemEntry entry;
-    ItemStack stack;
 
     InvSlot(int x, int y) {
       this.x = x;
@@ -709,7 +706,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     @Override
     public ItemStack getStack() {
-      return stack;
+      return entry == null ? null : entry.makeItemStack();
     }
   }
 

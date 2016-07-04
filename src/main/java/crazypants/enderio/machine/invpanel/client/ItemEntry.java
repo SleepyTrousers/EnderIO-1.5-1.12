@@ -13,7 +13,8 @@ public class ItemEntry extends ItemEntryBase {
   String name;
   String modId;
   String lowerCaseLocName;
-  int count;
+  private int count;
+  private ItemStack stack;
 
   public ItemEntry(int dbID, int hash, int itemID, int meta, NBTTagCompound nbt) {
     super(dbID, hash, itemID, meta, nbt);
@@ -23,9 +24,16 @@ public class ItemEntry extends ItemEntryBase {
     return count;
   }
 
+  public void setCount(int count) {
+    this.count = count;
+    stack = null;
+  }
+
   public ItemStack makeItemStack() {
-    ItemStack stack = new ItemStack(getItem(), count, meta);
-    stack.setTagCompound(nbt);
+    if (stack == null) {
+      stack = new ItemStack(getItem(), getCount(), meta);
+      stack.setTagCompound(nbt);
+    }
     return stack;
   }
 

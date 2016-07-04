@@ -95,7 +95,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
         countChangeCount++;
       } else {
         for(ItemEntry entry : clientItems) {
-          entry.count = 0;
+          entry.setCount(0);
         }
         clientItems.clear();
         requestedItems.clear();
@@ -104,7 +104,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
         while(count > 0) {
           int dbID = cdi.readUnsignedShort();
           ItemEntry entry = getSimpleItem(dbID);
-          entry.count = count;
+          entry.setCount(count);
           clientItems.add(entry);
           count = cdi.readVariable();
         }
@@ -115,7 +115,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
           dbID += cdi.readVariable();
           ItemEntry entry = getItem(dbID);
           if(entry != null) {
-            entry.count = count;
+            entry.setCount(count);
             clientItems.add(entry);
           } else {
             missingItems = addMissingItems(missingItems, dbID);
@@ -133,14 +133,14 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
   }
 
   private void setItemCount(ItemEntry entry, int count) {
-    if(entry.count == 0 && count > 0) {
+    if(entry.getCount() == 0 && count > 0) {
       clientItems.add(entry);
       itemsChangeCount++;
-    } else if(entry.count > 0 && count == 0) {
+    } else if(entry.getCount() > 0 && count == 0) {
       clientItems.remove(entry);
       itemsChangeCount++;
     }
-    entry.count = count;
+    entry.setCount(count);
   }
 
   private List<Integer> addMissingItems(List<Integer> list, Integer dbId) {
