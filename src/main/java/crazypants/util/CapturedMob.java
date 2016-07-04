@@ -27,6 +27,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.monster.ZombieType;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -254,10 +255,10 @@ public class CapturedMob {
   }
 
   public @Nullable Entity getEntity(@Nullable World world, boolean clone) {
-    return getEntity(world, null, clone);
+    return getEntity(world, null, null, clone);
   }
 
-  public @Nullable Entity getEntity(@Nullable World world, DifficultyInstance difficulty, boolean clone) {
+  public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, DifficultyInstance difficulty, boolean clone) {
     Entity entity = null;
     if (world != null) {
       if ((isStub || !clone) && entityId != null) {
@@ -269,6 +270,9 @@ public class CapturedMob {
         } else {
           entity = EntityList.createEntityByName(entityNbt.getString("id"), world);
         }
+      }
+      if (pos != null && entity != null) {
+        entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
       }
       if (difficulty != null && entity instanceof EntityLiving) {
         IEntityLivingData livingData = null;
@@ -313,6 +317,14 @@ public class CapturedMob {
           }
           if (isChild) {
             ((EntityZombie) entity).setChild(true);
+            if (world.rand.nextFloat() < 0.05D) {
+              EntityChicken entitychicken1 = new EntityChicken(world);
+              entitychicken1.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+              entitychicken1.onInitialSpawn(difficulty, (IEntityLivingData) null);
+              entitychicken1.setChickenJockey(true);
+              world.spawnEntityInWorld(entitychicken1);
+              entity.startRiding(entitychicken1);
+            }
           }
         }
       }

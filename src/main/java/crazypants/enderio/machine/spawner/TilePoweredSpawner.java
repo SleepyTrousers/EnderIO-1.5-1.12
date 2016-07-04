@@ -200,7 +200,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   Entity createEntity(DifficultyInstance difficulty, boolean forceAlive) {
-    Entity ent = capturedMob.getEntity(worldObj, difficulty, false);
+    Entity ent = capturedMob.getEntity(worldObj, pos, difficulty, false);
     if (forceAlive && Config.poweredSpawnerMaxPlayerDistance <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
       ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
@@ -235,10 +235,24 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         worldObj.spawnEntityInWorld(entityliving);
         worldObj.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
+        final Entity ridingEntity = entity.getRidingEntity();
+        if (ridingEntity != null) {
+          ridingEntity.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+        }
+        for (Entity passenger : entity.getPassengers()) {
+          passenger.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+        }
         return true;
       }
     }
 
+    final Entity ridingEntity = entity.getRidingEntity();
+    if (ridingEntity != null) {
+      ridingEntity.setDead();
+    }
+    for (Entity passenger : entity.getPassengers()) {
+      passenger.setDead();
+    }
     return false;
   }
 
