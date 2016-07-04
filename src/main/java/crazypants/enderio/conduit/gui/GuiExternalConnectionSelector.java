@@ -103,9 +103,9 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
       if (b != null && b != EnderIO.blockConduitBundle) {
-        try {               
+        try {
           Item item = b.getItemDropped(bs, world.rand, 0);
-          if(item != null) {            
+          if (item != null) {
             stacks.put(direction, new ItemStack(item, 1, b.damageDropped(bs)));
           }
         } catch (Throwable t) {
@@ -145,7 +145,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (stacks.containsKey(dir)) {
         ItemStack stack = stacks.get(dir);
-        String blockName = stack.getUnlocalizedName();
+        String blockName = null;
         if (stack.hasDisplayName()) {
           blockName = stack.getDisplayName();
         } else {
@@ -188,7 +188,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (stacks.containsKey(dir)) {
         ItemStack stack = stacks.get(dir);
-        Point p = stackPositions.get(dir);        
+        Point p = stackPositions.get(dir);
         itemRender.renderItemAndEffectIntoGUI(stack, p.x, p.y);
       }
     }
