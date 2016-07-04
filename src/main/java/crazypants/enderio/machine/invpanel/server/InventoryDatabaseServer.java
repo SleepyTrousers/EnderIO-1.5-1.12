@@ -19,6 +19,7 @@ import crazypants.enderio.machine.invpanel.InventoryDatabase;
 import crazypants.enderio.machine.invpanel.PacketDatabaseReset;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.pipeline.CompositeList;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -27,8 +28,8 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
   private static final AtomicInteger nextGeneration = new AtomicInteger();
 
-  private final ItemConduitNetwork network;
-  private int networkChangeCount;
+  private final ItemConduitNetwork[] networks;
+  private final int[] networkChangeCounts;
 
   private AbstractInventory[] inventories;
   private int currentInventory;
@@ -37,16 +38,18 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   private int tickPause;
   private float power;
 
-  public InventoryDatabaseServer(ItemConduitNetwork network) {
-    this.network = network;
-  }
-
-  public ItemConduitNetwork getNetwork() {
-    return network;
+  public InventoryDatabaseServer(ItemConduitNetwork... networks) {
+    this.networks = networks;
+    this.networkChangeCounts = new int[networks.length];
   }
 
   public boolean isCurrent() {
-    return networkChangeCount == network.getChangeCount();
+    for (int i = 0; i < networks.length; i++) {
+      if (networkChangeCounts[i] != networks[i].getChangeCount()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public void addChangeLog(ChangeLog cl) {
@@ -173,9 +176,12 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
   public void updateNetworkSources() {
     resetDatabase();
     generation = nextGeneration.incrementAndGet();
-    networkChangeCount = network.getChangeCount();
+    List<NetworkedInventory> sources = null;
+    for (int i = 0; i < networks.length; i++) {
+      networkChangeCounts[i] = networks[i].getChangeCount();
+      sources = CompositeList.create(sources, networks[i].getInventoryPanelSources());
+    }
 
-    List<NetworkedInventory> sources = network.getInventoryPanelSources();
     if(sources == null || sources.isEmpty()) {
       this.inventories = null;
     } else {
