@@ -15,8 +15,6 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
 
-import static crazypants.enderio.machine.gui.GuiMachineBase.BUTTON_SIZE;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
@@ -28,6 +26,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
 public class GuiVacuumChest extends GuiContainerBaseEIO {
 
@@ -80,7 +80,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     rsB = new RedstoneModeButton(this, ID_REDSTONE, x, y, te, new BlockCoord(te));
 
     x -= BUTTON_SIZE + 2;
-    showRangeB = new ToggleButton(this, -1, x, y, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, -1, x, y, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override

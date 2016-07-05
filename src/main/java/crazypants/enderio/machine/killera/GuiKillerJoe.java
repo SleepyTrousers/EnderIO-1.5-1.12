@@ -72,7 +72,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     mmm.setToolTip(EnderIO.lang.localize("gui.machine.button.retrieveall"), EnderIO.lang.localize("gui.machine.tooltip.retrieveall"));
 
     x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButton(this, -1, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, -1, x, 44, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override

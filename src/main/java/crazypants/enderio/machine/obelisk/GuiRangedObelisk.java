@@ -32,7 +32,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     super(te, container, texture);
 
     int x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override

@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -17,6 +14,8 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
 
@@ -28,7 +27,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     super(te, new ContainerAttractor(par1InventoryPlayer, te), "attractor");
 
     int x = getXSize() - 5 - BUTTON_SIZE;
-    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
+    showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
