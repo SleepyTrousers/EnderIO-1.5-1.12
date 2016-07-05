@@ -9,6 +9,7 @@ import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.button.TooltipButton;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -48,7 +49,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   
   private final IconButton whiteListB;
 
-  private GuiButton snapshotB;
+  private TooltipButton snapshotB;
   private GuiButton clearB;
   private GuiButton showB;
   private GuiButton mergeB;
@@ -100,10 +101,12 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
+    snapshotB = new TooltipButton(gui, ID_SNAPSHOT, 80, 65, 60, 20, EnderIO.lang.localize("gui.conduit.button.snap"));
     mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.merge"));
     clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, EnderIO.lang.localize("gui.conduit.button.clear"));
     showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, EnderIO.lang.localize("gui.conduit.button.show"));
+
+    snapshotB.setToolTip(EnderIO.lang.localizeList("gui.conduit.button.snap.tooltip"));
 
     x -= 20;
     whiteListB = new IconButton(gui, -1, x, y, IconEIO.FILTER_WHITELIST);
@@ -152,8 +155,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     int x1 = x0 + 65;
     int y1 = y0 + 22;
 
-    snapshotB.xPosition = x0;
-    snapshotB.yPosition = y0;
+    snapshotB.onGuiInit();
 
     mergeB.xPosition = x1;
     mergeB.yPosition = y0;
@@ -168,7 +170,6 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     showB.enabled = clearB.enabled;
     mergeB.enabled = filter.getSnapshot() != null;
 
-    gui.addButton(snapshotB);
     gui.addButton(clearB);
     gui.addButton(showB);
     gui.addButton(mergeB);
@@ -223,7 +224,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.detach();    
     stickyB.detach();
     whiteListB.detach();
-    gui.removeButton(snapshotB);
+    snapshotB.detach();
     gui.removeButton(clearB);
     gui.removeButton(showB);
     gui.removeButton(mergeB);

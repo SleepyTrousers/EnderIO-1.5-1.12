@@ -1137,6 +1137,7 @@ enderio.gui.conduit.button.clear=Clear
 enderio.gui.conduit.button.merge=Merge
 enderio.gui.conduit.button.show=Show
 enderio.gui.conduit.button.snap=Snapshot
+enderio.gui.conduit.button.snap.tooltip=Optional|If no snapshot is set,|the inventory content will|be used as filter
 enderio.gui.conduit.item.insertionFilter=Insert
 enderio.gui.conduit.item.extractionFilter=Extract
 enderio.gui.conduit.item.sigCol=Signal Color
