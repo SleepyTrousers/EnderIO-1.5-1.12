@@ -3,18 +3,20 @@ package crazypants.enderio.machine.farm.farmers;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TreeHarvestUtil {
   
+  private final static Things LEAVES = new Things("treeLeaves");
  
   private int horizontalRange;
   private int verticalRange;
@@ -53,7 +55,7 @@ public class TreeHarvestUtil {
       return;
     }
     IBlockState bs = world.getBlockState(bc);    
-    boolean isLeaves = bs.getMaterial() == Material.LEAVES;
+    boolean isLeaves = isLeaves(bs);
     if (target.isTarget(bs) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -70,12 +72,16 @@ public class TreeHarvestUtil {
       for(EnumFacing dir : EnumFacing.HORIZONTALS) {
         BlockPos loc = bc.offset(dir);
         IBlockState locBS = world.getBlockState(loc);        
-        if (locBS.getMaterial() == Material.LEAVES) {
+        if (isLeaves(locBS)) {
           harvestAdjacentWood(world, loc, res, target);
         }
       }
     }
 
+  }
+
+  private boolean isLeaves(IBlockState bs) {
+    return bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock());
   }
 
   private void harvestAdjacentWood(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {    

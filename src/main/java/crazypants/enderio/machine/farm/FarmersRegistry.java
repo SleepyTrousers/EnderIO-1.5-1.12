@@ -6,11 +6,13 @@ import crazypants.enderio.machine.farm.farmers.FlowerPicker;
 import crazypants.enderio.machine.farm.farmers.MelonFarmer;
 import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
 import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
+import crazypants.enderio.machine.farm.farmers.OredictTreeFarmer;
 import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,6 +22,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public final class FarmersRegistry {
+
+  private static final Things SAPLINGS = new Things("treeSapling");
+  private static final Things WOODS = new Things("logWood", "blockSlimeCongealed");
 
   public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
   
@@ -35,8 +40,7 @@ public final class FarmersRegistry {
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
-    FarmersCommune.joinCommune(new TreeFarmer(Blocks.SAPLING, Blocks.LOG));
-    FarmersCommune.joinCommune(new TreeFarmer(Blocks.SAPLING, Blocks.LOG2));
+    FarmersCommune.joinCommune(new OredictTreeFarmer(SAPLINGS, WOODS));
     FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK));
     FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK));
     //special case of plantables to get spacing correct

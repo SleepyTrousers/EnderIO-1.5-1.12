@@ -427,7 +427,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     BlockPos bc = null;
     int infiniteLoop = 20;
-    while (bc == null || bc.equals(getLocation()) || !worldObj.isBlockLoaded(bc)) {
+    while (bc == null || bc.equals(getPos()) || !worldObj.isBlockLoaded(bc)) {
       if (infiniteLoop-- <= 0) {
         return;
       }
