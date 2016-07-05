@@ -165,23 +165,23 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
     World worldObj = te.getWorld();
 
-    BlockCoord bc1 = new BlockCoord(te);
+    BlockPos bc1 = te.getPos();
 
-    if (!worldObj.isBlockLoaded(te.getPos())) {
+    if (!worldObj.isBlockLoaded(bc1)) {
       return;
     }
 
     // Done manually to avoid orphaning chunks
     for (EnumFacing dir : EnumFacing.VALUES) {
-      BlockCoord bc2 = bc1.getLocation(dir);
-      if (worldObj.isBlockLoaded(bc2.getBlockPos())) {
-        worldObj.notifyNeighborsOfStateChange(bc2.getBlockPos(), EnderIO.blockConduitBundle);
-        IBlockState bs = bc2.getBlockState(worldObj);
+      BlockPos bc2 = bc1.offset(dir);
+      if (worldObj.isBlockLoaded(bc2)) {
+        worldObj.notifyBlockOfStateChange(bc2, EnderIO.blockConduitBundle);
+        IBlockState bs = worldObj.getBlockState(bc2);
         if (bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
-            BlockCoord bc3 = bc2.getLocation(dir2);
-            if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3.getBlockPos())) {
-              worldObj.notifyNeighborsOfStateChange(bc3.getBlockPos(), EnderIO.blockConduitBundle);
+            BlockPos bc3 = bc2.offset(dir2);
+            if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3)) {
+              worldObj.notifyBlockOfStateChange(bc3, EnderIO.blockConduitBundle);
             }
           }
         }
