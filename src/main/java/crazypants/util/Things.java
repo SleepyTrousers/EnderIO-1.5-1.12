@@ -52,38 +52,51 @@ public class Things {
 
   private final List<IThing> things = new ArrayList<IThing>();
 
-  public void add(Item item) {
+  public Things add(Item item) {
     if (item != null) {
       add(new ItemThing(item));
     }
+    return this;
   }
 
-  public void add(ItemStack itemStack) {
+  public Things add(ItemStack itemStack) {
     if (itemStack != null && itemStack.getItem() != null) {
       add(new ItemStackThing(itemStack));
     }
+    return this;
   }
 
-  public void add(Block block) {
+  public Things add(Block block) {
     if (block != null) {
       add(new BlockThing(block));
     }
+    return this;
   }
 
-  public void add(String name) {
+  public Things add(String name) {
     add(new StringThing(name));
+    return this;
   }
 
   public static void addAlias(String name, String value) {
     aliases.put(name, new StringThing(value));
   }
 
-  public void add(ResourceLocation resourceLocation) {
+  public Things add(ResourceLocation resourceLocation) {
     add(new ResourceThing(resourceLocation));
+    return this;
   }
 
-  public void addOredict(String name) {
+  public Things addOredict(String name) {
     add(new OreThing(name));
+    return this;
+  }
+
+  public Things add(Things otherThings) {
+    for (IThing thing : otherThings.things) {
+      add(thing);
+    }
+    return this;
   }
 
   private void add(IThing thing) {

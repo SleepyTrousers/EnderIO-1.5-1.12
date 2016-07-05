@@ -23,12 +23,8 @@ public class OredictTreeFarmer extends TreeFarmer {
     super(null);
     this.saplings = saplings;
     this.woodBlocks = woods;
-    for (ItemStack sapling : saplings.getItemStacks()) {
-      FarmStationContainer.slotItemsSeeds.add(sapling);
-    }
-    for (ItemStack wood : woods.getItemStacks()) {
-      FarmStationContainer.slotItemsProduce.add(wood);
-    }
+    FarmStationContainer.slotItemsSeeds.addAll(saplings.getItemStacks());
+    FarmStationContainer.slotItemsProduce.addAll(woods.getItemStacks());
   }
 
   @Override

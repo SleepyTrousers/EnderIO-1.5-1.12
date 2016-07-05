@@ -12,8 +12,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class StemFarmer extends CustomSeedFarmer {
@@ -86,7 +86,7 @@ public class StemFarmer extends CustomSeedFarmer {
   @Override
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorld();
-    if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(seeds, bc) != null) {
+    if (canPlant(farm, worldObj, bc) && farm.takeSeedFromSupplies(seeds, bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;

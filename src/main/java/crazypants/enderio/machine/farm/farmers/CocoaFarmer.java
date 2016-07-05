@@ -9,8 +9,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class CocoaFarmer extends CustomSeedFarmer {
@@ -44,7 +44,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(World worldObj, BlockCoord bc) {
+  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockCoord bc) {
     return getPlantDirection(worldObj, bc) != null;
   }
 

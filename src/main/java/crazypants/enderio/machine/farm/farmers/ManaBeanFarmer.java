@@ -2,6 +2,7 @@ package crazypants.enderio.machine.farm.farmers;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -15,7 +16,7 @@ public class ManaBeanFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(World worldObj, BlockCoord bc) {
+  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockCoord bc) {
     return getPlantedBlock().canPlaceBlockOnSide(worldObj, bc.getBlockPos(), EnumFacing.DOWN);
   }
 }

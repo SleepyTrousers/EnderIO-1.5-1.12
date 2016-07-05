@@ -7,6 +7,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -25,8 +26,9 @@ public class CustomSeedFarmer implements IFarmerJoe {
   protected int grownBlockMeta;
   protected ItemStack seeds;
   protected boolean requiresFarmland = true;
-  protected List<Block> tilledBlocks = new ArrayList<Block>();
+  protected Things tilledBlocks = new Things();
   protected boolean ignoreSustainCheck = false;
+  protected boolean checkGroundForFarmland = false;
   protected boolean disableTreeFarm;
 
   public CustomSeedFarmer(Block plantedBlock, ItemStack seeds) {
@@ -46,6 +48,14 @@ public class CustomSeedFarmer implements IFarmerJoe {
     addTilledBlock(Blocks.FARMLAND);   
   }
   
+  public void clearTilledBlocks() {
+    tilledBlocks = new Things();
+  }
+
+  public void addTilledBlock(Things block) {
+    tilledBlocks.add(block);
+  }
+
   public void addTilledBlock(Block block) {
     tilledBlocks.add(block);
   }
@@ -56,6 +66,14 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   public void setIgnoreGroundCanSustainCheck(boolean ignoreSustainCheck) {
     this.ignoreSustainCheck = ignoreSustainCheck;
+  }
+
+  public boolean isCheckGroundForFarmland() {
+    return checkGroundForFarmland;
+  }
+
+  public void setCheckGroundForFarmland(boolean checkGroundForFarmland) {
+    this.checkGroundForFarmland = checkGroundForFarmland;
   }
 
   public int getPlantedBlockMeta() {
@@ -117,7 +135,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorld();
-    if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(getSeeds(), bc) != null) {
+    if (canPlant(farm, worldObj, bc) && farm.takeSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;
@@ -183,23 +201,18 @@ public class CustomSeedFarmer implements IFarmerJoe {
   }
 
   protected boolean isGroundTilled(TileFarmStation farm, BlockCoord plantingLocation) {
-    Block target = farm.getBlock(plantingLocation.getLocation(EnumFacing.DOWN));    
-    for(Block tst : tilledBlocks) {      
-      if(tst == target) {
-        return true;
-      }
-    }
-    return false;
+    return tilledBlocks.contains(farm.getBlock(plantingLocation.getLocation(EnumFacing.DOWN)));
   }
 
-  protected boolean canPlant(World worldObj, BlockCoord bc) {
+  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockCoord bc) {
     Block target = getPlantedBlock();
     BlockPos groundPos = bc.getBlockPos().down();
     IBlockState bs = worldObj.getBlockState(groundPos);
     Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) getPlantedBlock();
     if(target.canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
-        (ground.canSustainPlant(bs, worldObj, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)) {
+        (ground.canSustainPlant(bs, worldObj, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)
+        && (!checkGroundForFarmland || isGroundTilled(farm, bc))) {
       return true;
     }
     return false;
@@ -207,7 +220,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc) {
     worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);
-    if(canPlant(worldObj, bc)) {
+    if (canPlant(farm, worldObj, bc)) {
       worldObj.setBlockState(bc.getBlockPos(), getPlantedBlock().getStateFromMeta(getPlantedBlockMeta()), 1 | 2);
       farm.actionPerformed(false);
       return true;

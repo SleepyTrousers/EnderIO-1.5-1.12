@@ -25,6 +25,8 @@ public final class FarmersRegistry {
 
   private static final Things SAPLINGS = new Things("treeSapling");
   private static final Things WOODS = new Things("logWood", "blockSlimeCongealed");
+  private static final Things FLOWERS = new Things("block:BiomesOPlenty:flowers", "block:BiomesOPlenty:flowers2", "block:Botany:flower", "block:Botania:flower")
+      .add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
   public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
   
@@ -148,25 +150,30 @@ public final class FarmersRegistry {
 
 
   private static void addExtraUtilities2() {
-    String mod = "extrautils2";
-    String name = "EnderLilly";
-
-    CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.END_STONE, Block.REGISTRY.getObject(new ResourceLocation(mod, "decorativeBlock1")));
+    CustomSeedFarmer farmer = addSeed("extrautils2", "EnderLilly", "EnderLilly");
+    if (farmer != null) {
+      farmer.setIgnoreGroundCanSustainCheck(true);
+      farmer.setRequiresFarmland(false); // disables tilling
+      farmer.setCheckGroundForFarmland(true); // extra check needed when not tilling
+      farmer.clearTilledBlocks(); // remove farmland
+      farmer.addTilledBlock(Blocks.DIRT);
+      farmer.addTilledBlock(Blocks.GRASS);
+      farmer.addTilledBlock(Blocks.END_STONE);
+    }
+    farmer = addSeed("extrautils2", "RedOrchid", "RedOrchid");
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
+      farmer.setRequiresFarmland(false); // disables tilling
+      farmer.setCheckGroundForFarmland(true); // extra check needed when not tilling
+      farmer.clearTilledBlocks(); // remove farmland
+      farmer.addTilledBlock(Blocks.REDSTONE_ORE);
+      farmer.addTilledBlock(Blocks.LIT_REDSTONE_ORE);
     }
   }
 
 
   private static void addFlowers() {
-    
-    FarmersCommune.joinCommune(new FlowerPicker().add(
-        Block.REGISTRY.getObject(new ResourceLocation("minecraft", "yellow_flower")), 
-        Block.REGISTRY.getObject(new ResourceLocation("minecraft", "red_flower")), 
-        Block.REGISTRY.getObject(new ResourceLocation("BiomesOPlenty", "flowers")), 
-        Block.REGISTRY.getObject(new ResourceLocation("BiomesOPlenty", "flowers2")), 
-        Block.REGISTRY.getObject(new ResourceLocation("Botany", "flower")), 
-        Block.REGISTRY.getObject(new ResourceLocation("Botania", "flower")) ) );
+    FarmersCommune.joinCommune(new FlowerPicker(FLOWERS));
   }
   
 

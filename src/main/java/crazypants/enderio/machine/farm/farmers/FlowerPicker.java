@@ -7,6 +7,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -15,18 +16,15 @@ import net.minecraft.world.World;
 
 public class FlowerPicker implements IFarmerJoe {
 
-  protected List<Block> flowers = new ArrayList<Block>();
+  protected Things flowers = new Things();
   
-  public FlowerPicker() {
+  public FlowerPicker(Things flowers) {
+    add(flowers);
   }
 
-  public FlowerPicker add(Block... flowers) {
-    for (Block block : flowers) {
-      if (block != null) {
-        this.flowers.add(block);
-        FarmStationContainer.slotItemsProduce.add(new ItemStack(block));
-      }
-    }
+  public FlowerPicker add(Things flowers) {
+    this.flowers.add(flowers);
+    FarmStationContainer.slotItemsProduce.addAll(flowers.getItemStacks());
     return this;
   }
 
@@ -37,12 +35,7 @@ public class FlowerPicker implements IFarmerJoe {
 
   @Override
   public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-    for (Block flower : flowers) {
-      if (block == flower) {
-        return true;
-      }
-    }
-    return false;
+    return flowers.contains(block);
   }
 
   @Override
