@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.farm;
 
+import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.FlowerPicker;
@@ -51,7 +52,7 @@ public final class FarmersRegistry {
     //'BlockNetherWart' is not an IGrowable
     FarmersCommune.joinCommune(new NetherWartFarmer());
     //Cocoa is odd
-//    FarmersCommune.joinCommune(new CocoaFarmer());
+    FarmersCommune.joinCommune(new CocoaFarmer());
     //Handles all 'vanilla' style crops
     FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
