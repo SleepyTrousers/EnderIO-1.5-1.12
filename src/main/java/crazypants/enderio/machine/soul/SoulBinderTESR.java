@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
@@ -34,6 +35,14 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
 
   @Override
   public void renderTileEntityAt(TileSoulBinder te, double x, double y, double z, float partialTicks, int destroyStage) {
+    if (te == null || te.isInvalid() || !te.hasWorldObj()) {
+      return;
+    }
+    final IBlockState blockState = te.getWorld().getBlockState(te.getPos());
+    if (blockState.getBlock() != EnderIO.blockSoulFuser) {
+      return;
+    }
+
     if (te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacades())) {
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
       GL11.glPushMatrix();
@@ -49,8 +58,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
       RenderUtil.bindBlockTexture();
 
       EnumRenderMode renderMode = te.isActive() ? EnumRenderMode.FRONT_ON : EnumRenderMode.FRONT;
-      renderBlockModel(te.getWorld(), te.getPos(),
-          te.getWorld().getBlockState(te.getPos()).withProperty(EnumRenderMode.RENDER, renderMode.rotate(te.getFacing())), true,
+      renderBlockModel(te.getWorld(), te.getPos(), blockState.withProperty(EnumRenderMode.RENDER, renderMode.rotate(te.getFacing())), true,
           te.getProgress() > 0.005 && te.getProgress() < 0.995);
 
       GL11.glEnable(GL11.GL_LIGHTING);
