@@ -1,13 +1,14 @@
 package crazypants.enderio.capacitor;
 
-import net.minecraft.util.ResourceLocation;
 import crazypants.enderio.EnderIO;
+import net.minecraft.util.ResourceLocation;
 
 public enum DefaultCapacitorData implements ICapacitorData {
 
   BASIC_CAPACITOR("basicCapacitor", 1),
   ACTIVATED_CAPACITOR("activatedCapacitor", 2),
-  ENDER_CAPACITOR("enderCapacitor", 3);
+  ENDER_CAPACITOR("enderCapacitor", 3),
+  SPECIAL_CAPACITOR("specialCapacitor", 1);
 
   private final String unlocalizedName;
   private final int baselevel;

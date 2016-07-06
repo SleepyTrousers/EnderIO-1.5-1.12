@@ -169,7 +169,7 @@ public class LootManager {
   private static class CapItem extends LootItem {
 
     public CapItem(double chance) {
-      super(new ItemStack(EnderIO.itemBasicCapacitor), chance);
+      super(new ItemStack(EnderIO.itemBasicCapacitor, 1, 3), chance);
     }
 
     public ItemStack createStack(Random rnd) {

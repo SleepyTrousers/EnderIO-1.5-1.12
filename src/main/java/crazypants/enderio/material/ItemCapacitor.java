@@ -72,7 +72,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
   @Override  
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-    for (int j = 0; j < DefaultCapacitorData.values().length; ++j) {
+    for (int j = 0; j < DefaultCapacitorData.values().length - 1; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
