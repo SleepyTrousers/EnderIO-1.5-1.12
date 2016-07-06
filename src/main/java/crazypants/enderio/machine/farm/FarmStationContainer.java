@@ -20,7 +20,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -37,13 +36,14 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     for (Item item : new Item[] { Items.WOODEN_HOE, Items.STONE_HOE, Items.IRON_HOE, Items.GOLDEN_HOE, Items.DIAMOND_HOE }) {
       slotItemsStacks1.add(new ItemStack(item));
     }
-    slotItemsStacks1.addAll(Config.farmHoes);
+    slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
     for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
     }    
-    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears, Item.REGISTRY.getObject(new ResourceLocation("IC2", "itemTreetap")) }) {
+    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
+    slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());
     slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));
     slotItemsSeeds.add(new ItemStack(Items.CARROT));
     slotItemsSeeds.add(new ItemStack(Items.POTATO));

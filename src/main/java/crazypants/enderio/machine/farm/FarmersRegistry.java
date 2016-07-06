@@ -10,7 +10,9 @@ import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
 import crazypants.enderio.machine.farm.farmers.OredictTreeFarmer;
 import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmer;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerTechReborn;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
 import crazypants.util.Things;
@@ -20,7 +22,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 public final class FarmersRegistry {
 
@@ -192,17 +193,11 @@ public final class FarmersRegistry {
   private FarmersRegistry() {
   }
 
-  @ItemStackHolder("techreborn:techreborn.rubberlog")
-  public static final ItemStack techreborn_rubberlog = null;
-
-  @ItemStackHolder("techreborn:techreborn.rubbersapling")
-  public static final ItemStack techreborn_rubbersapling = null;
-
-  private static void addTechreborn() { // untested
-    if (techreborn_rubberlog != null && techreborn_rubbersapling != null) {
-      FarmersCommune.joinCommune(new TreeFarmer(techreborn_rubbersapling, techreborn_rubberlog));
+  private static void addTechreborn() {
+    RubberTreeFarmer farmer = RubberTreeFarmerTechReborn.create();
+    if (farmer != null) {
+      FarmersCommune.joinCommune(farmer);
     }
-
   }
 
 }

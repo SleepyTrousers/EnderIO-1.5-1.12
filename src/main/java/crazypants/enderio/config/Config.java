@@ -14,6 +14,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.Things;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -324,9 +325,9 @@ public final class Config {
       "ThermalFoundation:tool.hoeElectrum", "ThermalFoundation:tool.hoeTin", "ThermalFoundation:tool.hoeLead", "ThermalFoundation:tool.hoeNickel",
       "ThermalFoundation:tool.hoePlatinum",
       "TwilightForest:item.steeleafHoe", "TwilightForest:item.ironwoodHoe",
-      "IC2:itemToolBronzeHoe"
+      "IC2:itemToolBronzeHoe", "techreborn:bronzeHoe", "techreborn:rubyHoe", "techreborn:sapphireHoe", "techreborn:peridotHoe"
   };
-  public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
+  public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
   public static boolean farmStopOnNoOutputSlots = true;
 
@@ -1367,11 +1368,9 @@ public final class Config {
   }
 
   public static void postInit() {
-    for (String s : hoeStrings) {
-      ItemStack hoe = getStackForString(s);
-      if(hoe != null) {
-        farmHoes.add(hoe);
-      }
+    farmHoes = new Things();
+    for (String hoe : hoeStrings) {
+      farmHoes.add(hoe);
     }
   }
 

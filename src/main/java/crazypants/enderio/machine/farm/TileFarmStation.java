@@ -15,9 +15,9 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.util.Things;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -53,16 +53,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   private static final int TICKS_PER_WORK = 20;
 
+  public static Things TREETAPS = new Things();
+
   public enum ToolType {
     HOE {
       @Override
       boolean match(ItemStack item) {
-        for (ItemStack stack : Config.farmHoes) {
-          if (stack.getItem() == item.getItem()) {
-            return true;
-          }
-        }
-        return false;
+        return Config.farmHoes.contains(item);
       }
     },
 
@@ -75,7 +72,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     TREETAP {
       @Override
       boolean match(ItemStack item) {
-        return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;
+        return TREETAPS.contains(item);
       }
     },
     SHEARS  {
@@ -98,9 +95,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return match(item) && !isBrokenTinkerTool(item);
     }
 
-    private boolean isBrokenTinkerTool(ItemStack item)
-    {
-      return item.hasTagCompound() && item.getTagCompound().hasKey("InfiTool") && item.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+    private static boolean isBrokenTinkerTool(ItemStack item) {
+      return item != null && item.hasTagCompound() && item.getTagCompound().hasKey("Stats") && item.getTagCompound().getCompoundTag("Stats").getBoolean("Broken");
     }
 
     abstract boolean match(ItemStack item);
@@ -246,7 +242,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   private ItemStack getTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(type.itemMatches(inventory[i]) && inventory[i].stackSize>0) {
+      if (ToolType.isBrokenTinkerTool(inventory[i])) {
+        for (int j = slotDefinition.minOutputSlot; j <= slotDefinition.maxOutputSlot; j++) {
+          if (inventory[j] == null) {
+            inventory[j] = inventory[i];
+            inventory[i] = null;
+            markDirty();
+            break;
+          }
+        }
+      } else if (type.itemMatches(inventory[i]) && inventory[i].stackSize > 0) {
         return inventory[i];
       }
     }

@@ -80,7 +80,7 @@ public class TreeHarvestUtil {
 
   }
 
-  private boolean isLeaves(IBlockState bs) {
+  static boolean isLeaves(IBlockState bs) {
     return bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock());
   }
 
