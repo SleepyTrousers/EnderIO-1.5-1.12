@@ -49,6 +49,7 @@ import crazypants.enderio.item.ItemEnderFood;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
+import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
@@ -405,6 +406,7 @@ public class EnderIO {
     blockGauge = BlockGauge.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
+    DarkSteelController.instance.register();
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 

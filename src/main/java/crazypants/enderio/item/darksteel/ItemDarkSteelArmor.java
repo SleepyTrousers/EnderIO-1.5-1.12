@@ -31,7 +31,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
@@ -66,11 +65,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   boolean gogglesUgradeActive = true;
 
-  static {    
-    MinecraftForge.EVENT_BUS.register(DarkSteelController.instance);
-  }
-
-  //TODO: 1.9 I think this is borked
   public static ItemDarkSteelArmor forArmorType(int armorType) {
     switch (armorType) {
     case 0:

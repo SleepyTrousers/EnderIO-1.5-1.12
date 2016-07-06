@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
@@ -24,7 +22,7 @@ import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpeedController;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
@@ -36,9 +34,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -49,6 +44,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -58,23 +54,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DarkSteelController {
 
+  private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
+  
   public static final DarkSteelController instance = new DarkSteelController();
-
-  private final @Nonnull AttributeModifier[] walkModifiers = new AttributeModifier[] {
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[0], 1),
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[1], 1),
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[2], 1), };
-
-  private final @Nonnull AttributeModifier[] sprintModifiers = new AttributeModifier[] {
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
-      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1), };
-
+ 
   private boolean wasJumping;
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
+  private final SpeedController speedController;
 
   private final Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
 
@@ -85,6 +73,12 @@ public class DarkSteelController {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
+    speedController = new SpeedController();
+  }
+  
+  public void register() {        
+    MinecraftForge.EVENT_BUS.register(this);
+    MinecraftForge.EVENT_BUS.register(speedController);
   }
 
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
@@ -139,7 +133,7 @@ public class DarkSteelController {
       updateStepHeightAndFallDistance(player);
 
       // leggings
-      updateSpeed(player);
+      speedController.updateSpeed(player);
 
       updateGlide(player);
 
@@ -254,40 +248,6 @@ public class DarkSteelController {
     return true;
   }
 
-  private void updateSpeed(EntityPlayer player) {
-    if (player.worldObj.isRemote || !player.onGround) {
-      return;
-    }
-
-    IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
-    if (moveInst.getModifier(walkModifiers[0].getID()) != null) {
-      moveInst.removeModifier(walkModifiers[0].getID()); // any will so as they all have
-      // the same UID
-    } else if (moveInst.getModifier(sprintModifiers[0].getID()) != null) {
-      moveInst.removeModifier(sprintModifiers[0].getID());
-    }
-
-    ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-    SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
-    if (leggings != null && leggings.getItem() == DarkSteelItems.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
-
-      double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
-      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
-      costModifier = costModifier + (costModifier * speedUpgrade.getWalkMultiplier());
-      int cost = (int) (horzMovement * costModifier);
-      int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings);
-
-      if (totalEnergy > 0) {
-        usePlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings, cost);
-        if (player.isSprinting()) {
-          moveInst.applyModifier(sprintModifiers[speedUpgrade.getLevel() - 1]);
-        } else {
-          moveInst.applyModifier(walkModifiers[speedUpgrade.getLevel() - 1]);
-        }
-      }
-    }
-  }
-
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
@@ -311,7 +271,7 @@ public class DarkSteelController {
     }
   }
 
-  void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
+  public void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
     if (cost == 0) {
       return;
     }
@@ -336,7 +296,7 @@ public class DarkSteelController {
     }
   }
 
-  private int getPlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor) {
+  public int getPlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor) {
     int res = 0;
 
     if (Config.darkSteelDrainPowerFromInventory) {
@@ -370,7 +330,7 @@ public class DarkSteelController {
     if (event.phase != TickEvent.Phase.END) {
       return;
     }
-    
+
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     if (player == null) {
       return;
@@ -379,8 +339,8 @@ public class DarkSteelController {
     if (player.capabilities.isFlying) {
       return;
     }
-    
-    MovementInput input = player.movementInput;    
+
+    MovementInput input = player.movementInput;
     if (input != null && input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
       doJump(player);
     }
@@ -393,10 +353,10 @@ public class DarkSteelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void doJump(EntityPlayerSP player) {    
+  private void doJump(EntityPlayerSP player) {
     if (!isJumpActive(player)) {
       return;
-    }    
+    }
 
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
@@ -404,15 +364,15 @@ public class DarkSteelController {
     if (jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
       return;
     }
-       
+
     boolean autoJump = Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
-    if(autoJump && jumpCount <= 0) {
+    if (autoJump && jumpCount <= 0) {
       jumpCount++;
       return;
     }
-    
+
     int autoJumpOffset = autoJump ? 1 : 0;
-    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);    
+    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);
     int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
     int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
     if (availablePower > 0 && requiredPower <= availablePower && jumpCount < maxJumps) {

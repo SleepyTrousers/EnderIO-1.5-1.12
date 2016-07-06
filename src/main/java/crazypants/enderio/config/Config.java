@@ -187,7 +187,9 @@ public final class Config {
   public static int darkSteelSpeedOneCost = 4;
   public static int darkSteelSpeedTwoCost = 6;
   public static int darkSteelSpeedThreeCost = 8;
-
+  
+  public static boolean darkSteelSpeedLimitFovChanges = true;
+  public static boolean darkSteelSpeedDisableFovChanges = false;
 
   public static double darkSteelBootsJumpModifier = 1.5;
   public static int darkSteelJumpOneCost = 4;
@@ -869,6 +871,11 @@ public final class Config {
     darkSteelSpeedThreeCost = config.get(sectionDarkSteel.name, "darkSteelSpeedThreeCost", darkSteelSpeedThreeCost,
         "Number of levels required for the 'Speed 3' upgrade.").getInt(darkSteelSpeedThreeCost);
 
+    darkSteelSpeedLimitFovChanges = config.get(sectionDarkSteel.name, "darkSteelSpeedLimitFovChanges", darkSteelSpeedLimitFovChanges,
+        "When true FOV changes will not be effected by speed upgrades. Vanilla FOV changes will still occur.").getBoolean(darkSteelSpeedLimitFovChanges);
+    darkSteelSpeedDisableFovChanges = config.get(sectionDarkSteel.name, "darkSteelSpeedDisableFovChanges", darkSteelSpeedDisableFovChanges,
+        "When true the FOV will be constant when the upgrade is in effect. For example, it will not vary at all when sprinting or flying").getBoolean(darkSteelSpeedDisableFovChanges);
+    
     slotZeroPlacesEight = config.get(sectionDarkSteel.name, "shouldSlotZeroWrap", slotZeroPlacesEight, "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.").getBoolean();
 
     darkSteelSpeedOneWalkModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
