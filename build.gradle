@@ -229,5 +229,12 @@ curseforge {
         mainArtifact(jar) {
             displayName = "${archivesBaseName} - ${version}"
         }
+        relations {
+          requiredLibrary 'endercore'
+          optionalLibrary 'waila'
+          optionalLibrary 'just-enough-items-jei'
+          optionalLibrary 'the-one-probe'
+          optionalLibrary 'baubles'
+        }
     }
 }
