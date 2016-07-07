@@ -29,14 +29,17 @@ else {
 group = "com.enderio"
 archivesBaseName = "EnderIO"
 version = "${minecraft_version}-${mod_version}.${buildnumber}"
-boolean release = true
+
+boolean dev = System.getenv("RELEASE") == null || System.getenv("RELEASE").equalsIgnoreCase("false")
+
 
 // dependency string for the @Mod annotation
 ext.dependencies = "required-after:Forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},)"
 
+def type = 'release'
 if (project.hasProperty('mod_appendix')) {
     version += "_${project.mod_appendix}"
-    release = false
+       type = project.mod_appendix
 }
 
 minecraft {
@@ -57,7 +60,8 @@ repositories {
     maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }        
-    maven { url = "http://dvs1.progwml6.com/files/maven" }         
+    maven { url = "http://dvs1.progwml6.com/files/maven" }  
+    maven { url = "http://files.minecraftforge.net/maven" }      
     mavenLocal()
 }
 
@@ -206,6 +210,25 @@ task checkTranslations << {
 	            }
 	        }
         println "Created translation report ${outfile}"
+        }
+    }
+}
+
+
+tasks.curseforge.enabled = !dev && project.hasProperty('curseforge_key')
+    
+curseforge {
+    if (project.hasProperty('curseforge_key')) {
+        apiKey = project.curseforge_key
+    }
+
+    project {
+        id = project.curse_projectId
+        changelog = System.getenv('CHANGELOG') == null || System.getenv('CHANGELOG').equals('none') ? "NA" : System.getenv('CHANGELOG')
+        changelogType = 'html'
+        releaseType = type
+        mainArtifact(jar) {
+            displayName = "${archivesBaseName} - ${version}"
         }
     }
 }
