@@ -53,7 +53,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     return result;
   }
 
-  public BlockPowerMonitor(IModObject mo) {
+  public BlockPowerMonitor(@Nonnull IModObject mo) {
     super(mo, TilePowerMonitor.class);
   }
 

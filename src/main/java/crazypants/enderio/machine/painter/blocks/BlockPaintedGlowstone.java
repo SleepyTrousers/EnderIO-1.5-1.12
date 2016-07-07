@@ -107,6 +107,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
+  @Override
   public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {    
      return world != null && pos != null && world.getTileEntity(pos) instanceof IPaintable.IPaintableTileEntity;
   }
@@ -137,6 +138,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     return new ItemStack(Blocks.GLOWSTONE);        
   }
   
+  @Override
   public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
         
     if(Config.paintedGlowstoneRequireSilkTouch && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) <= 0 ) {

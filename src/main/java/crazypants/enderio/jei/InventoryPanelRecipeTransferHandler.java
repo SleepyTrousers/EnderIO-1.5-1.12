@@ -54,7 +54,7 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
   
   private final IRecipeTransferHandler recipeTransferHelper;
   private final IModRegistry registry;
-  private final BasicRecipeTransferInfo transferInfo; 
+  private final @Nonnull BasicRecipeTransferInfo transferInfo;
 
   private InventoryPanelRecipeTransferHandler(IModRegistry registry) {
     this.registry = registry;

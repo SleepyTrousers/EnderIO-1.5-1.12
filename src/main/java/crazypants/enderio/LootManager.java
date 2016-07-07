@@ -172,6 +172,7 @@ public class LootManager {
       super(new ItemStack(EnderIO.itemBasicCapacitor, 1, 3), chance);
     }
 
+    @Override
     public ItemStack createStack(Random rnd) {
       ItemStack res = item.copy();
       ls.apply(res, rnd, null);
@@ -228,6 +229,7 @@ public class LootManager {
 
     }
 
+    @Override
     public void generateLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {      
       for (LootItem entry : items) {
         if (rand.nextDouble() < entry.chance) {

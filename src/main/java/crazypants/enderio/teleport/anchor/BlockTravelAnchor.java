@@ -84,7 +84,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
   }
 
-  public BlockTravelAnchor(String unlocalisedName, Class<T> teClass) {
+  public BlockTravelAnchor(@Nonnull String unlocalisedName, Class<T> teClass) {
     super(unlocalisedName, teClass);
     initDefaultState();
   }

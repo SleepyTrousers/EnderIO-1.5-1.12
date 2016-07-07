@@ -2,6 +2,8 @@ package crazypants.enderio.xp;
 
 import java.security.InvalidParameterException;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.fluid.Fluids;
@@ -269,7 +271,7 @@ public class ExperienceContainer extends FluidTank {
   }
 
   @Override
-  public void setFluid(FluidStack fluid) {
+  public void setFluid(@Nullable FluidStack fluid) {
     experience = 0;
     experienceLevel = 0;
     experienceTotal = 0;

@@ -7,11 +7,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -31,14 +26,18 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class SoulBinderRecipeCategory extends BlankRecipeCategory {
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
+
+public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderRecipeCategory.SoulBinderRecipeWrapper> {
 
   public static final @Nonnull String UID = "SoulBinder";
 
@@ -148,13 +147,9 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory {
   }  
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
-    if(recipeWrapper instanceof SoulBinderRecipeWrapper) {
-      currentRecipe = (SoulBinderRecipeWrapper)recipeWrapper;
-    } else {
-      currentRecipe = null;
-    }
-    
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SoulBinderRecipeCategory.SoulBinderRecipeWrapper recipeWrapper) {
+    currentRecipe = recipeWrapper;
+
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     guiItemStacks.init(0, true, 37 - xOff, 33 - yOff);
     guiItemStacks.init(1, true, 58 - xOff, 33 - yOff);

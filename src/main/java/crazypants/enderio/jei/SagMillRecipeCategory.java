@@ -6,11 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -29,7 +24,6 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -37,7 +31,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
-public class SagMillRecipeCategory extends BlankRecipeCategory implements ITooltipCallback<ItemStack> {
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
+
+public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCategory.SagRecipe> implements ITooltipCallback<ItemStack> {
 
   public static final @Nonnull String UID = "SagMill";
 
@@ -123,14 +122,9 @@ public class SagMillRecipeCategory extends BlankRecipeCategory implements IToolt
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SagMillRecipeCategory.SagRecipe recipeWrapper) {
 
-    if (recipeWrapper instanceof SagRecipe) {
-      currentRecipe = (SagRecipe) recipeWrapper;
-    } else {
-      currentRecipe = null;
-      return;
-    }
+    currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();    
     guiItemStacks.addTooltipCallback(this);

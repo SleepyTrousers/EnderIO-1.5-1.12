@@ -38,6 +38,7 @@ public class FakePlayerEIO extends FakePlayer {
   protected void onFinishedPotionEffect(PotionEffect p_70688_1_) {
   }
   
+  @Override
   protected void playEquipSound(@Nullable ItemStack stack) {  
   }
 

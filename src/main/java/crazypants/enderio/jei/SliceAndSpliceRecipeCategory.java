@@ -5,11 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -25,14 +20,18 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
+
+public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe> {
 
   public static final @Nonnull String UID = "SliceNSPlice";
 
@@ -115,13 +114,9 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory {
   }
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
-    if(recipeWrapper instanceof SliceAndSpliceRecipe) {
-      currentRecipe = (SliceAndSpliceRecipe)recipeWrapper;
-    } else {
-      currentRecipe = null;
-    }
-    
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper) {
+    currentRecipe = recipeWrapper;
+
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
     guiItemStacks.init(0, false, 53 - xOff, 15 - yOff);

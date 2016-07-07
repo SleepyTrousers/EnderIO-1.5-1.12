@@ -7,13 +7,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
@@ -36,7 +29,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.Focus;
 import mezz.jei.gui.ingredients.GuiIngredientGroup;
 import net.minecraft.block.Block;
@@ -49,7 +41,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameData;
 
-public class PainterRecipeCategory extends BlankRecipeCategory {
+import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.painter.ContainerPainter.NUM_RECIPE_SLOT;
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
+
+public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCategory.PainterRecipeWrapper> {
 
   public static final @Nonnull String UID = "Painter";
 
@@ -202,10 +201,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
   }  
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
-    if(recipeWrapper instanceof PainterRecipeWrapper) {
-      PainterRecipeWrapper currentRecipe = (PainterRecipeWrapper) recipeWrapper;
-
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull PainterRecipeCategory.PainterRecipeWrapper currentRecipe) {
       IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
       guiItemStacks.init(0, true, 67 - xOff - 1, 34 - yOff - 1);
       guiItemStacks.init(1, true, 38 - xOff - 1, 34 - yOff - 1);
@@ -214,6 +210,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
       guiItemStacks.set(0, currentRecipe.target);
 
       // Not very nice, but the only way to get correct painting recipes into JEI, it seems.
+    // TODO: focus is now exposed, change this to use the exposed focus
       if (guiItemStacks instanceof GuiIngredientGroup) {
         try {
           List<ItemStack> paints = new ArrayList<ItemStack>();
@@ -273,7 +270,6 @@ public class PainterRecipeCategory extends BlankRecipeCategory {
 
       guiItemStacks.set(1, currentRecipe.paints);
       guiItemStacks.set(2, currentRecipe.results);
-    }
   }
   
   private static @Nonnull List<ItemStack> getValidItems() {

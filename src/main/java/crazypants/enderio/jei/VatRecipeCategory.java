@@ -10,11 +10,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.RenderUtil;
 
-import static crazypants.enderio.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -29,14 +24,18 @@ import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.ingredients.GuiIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-public class VatRecipeCategory extends BlankRecipeCategory {
+import static crazypants.enderio.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
+
+public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.VatRecipeWrapper> {
 
   public static final @Nonnull String UID = "Vat";
 
@@ -185,14 +184,9 @@ public class VatRecipeCategory extends BlankRecipeCategory {
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VatRecipeCategory.VatRecipeWrapper recipeWrapper) {
 
-    if (recipeWrapper instanceof VatRecipeWrapper) {
-      currentRecipe = (VatRecipeWrapper) recipeWrapper;
-    } else {
-      currentRecipe = null;
-      return;
-    }
+    currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 

@@ -6,11 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
@@ -24,7 +19,6 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.gui.ingredients.GuiIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -33,7 +27,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class EnchanterRecipeCategory extends BlankRecipeCategory {
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
+
+public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipeCategory.EnchanterRecipeWrapper> {
 
   public static final @Nonnull String UID = "Enchanter";
 
@@ -148,6 +147,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
     return UID;
   }
 
+  @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
     return EnderIO.blockEnchanter.getLocalizedName();
@@ -159,14 +159,9 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory {
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper) {
 
-    if (recipeWrapper instanceof EnchanterRecipeWrapper) {
-      currentRecipe = (EnchanterRecipeWrapper) recipeWrapper;
-    } else {
-      currentRecipe = null;
-      return;
-    }
+    currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
