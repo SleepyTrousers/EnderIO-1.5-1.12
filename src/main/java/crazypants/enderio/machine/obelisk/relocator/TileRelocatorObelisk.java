@@ -9,10 +9,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.PacketFarmAction;
@@ -24,6 +20,10 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
 
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
@@ -57,7 +57,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
       Iterator<EntityLivingBase> iterator = relocationQueue.keySet().iterator();
       while (iterator.hasNext()) {
         EntityLivingBase mob = iterator.next();
-        if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 60 * 20 || relocationQueue.size() > 35) {
+        if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 2 * 60 * 20 || relocationQueue.size() > 100) {
           iterator.remove();
         } else if (hasPower() && rand.nextFloat() < .025f) {
           AxisAlignedBB mobbb = mob.getEntityBoundingBox();
