@@ -1,19 +1,17 @@
 package crazypants.enderio.jei;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_RECIPE_SLOT;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
+import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
+import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -24,31 +22,44 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.transfer.BasicRecipeTransferHandler;
 import mezz.jei.transfer.BasicRecipeTransferInfo;
+import mezz.jei.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_RECIPE_SLOT;
 
 /**
  * Notes:
  * <p>
- * This doesn't quite follow JEI's mechanics, we also do partial transfers here. Then we cannot check beforehand if a recipe can be transfered. And we don't mix
- * inventory and remote inventories. We also don't report failures, or if we could transfer something at all.
+ * This doesn't quite follow JEI's mechanics, we also do partial transfers here.
+ * Then we cannot check beforehand if a recipe can be transfered. And we don't
+ * mix inventory and remote inventories. We also don't report failures, or if we
+ * could transfer something at all.
  *
  */
 public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandler {
-
-  private final IRecipeTransferHandler recipeTransferHelper;
+  
 
   public static void register(IModRegistry registry) {
     IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
-    recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler());
-    // registry.addRecipeClickArea(GuiInventoryPanel.class, 219 - 21, 43 + 19, 16, 16, VanillaRecipeCategoryUid.CRAFTING);
+    recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler(registry));
     registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockInventoryPanel), VanillaRecipeCategoryUid.CRAFTING);
   }
 
-  private InventoryPanelRecipeTransferHandler() {
-    recipeTransferHelper = new BasicRecipeTransferHandler(new BasicRecipeTransferInfo(InventoryPanelContainer.class, VanillaRecipeCategoryUid.CRAFTING,
-        FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT));
+  
+  private final IRecipeTransferHandler recipeTransferHelper;
+  private final IModRegistry registry;
+  private final BasicRecipeTransferInfo transferInfo; 
+
+  private InventoryPanelRecipeTransferHandler(IModRegistry registry) {
+    this.registry = registry;
+    transferInfo = new BasicRecipeTransferInfo(InventoryPanelContainer.class, VanillaRecipeCategoryUid.CRAFTING, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+    recipeTransferHelper = new BasicRecipeTransferHandler(transferInfo);
 
   }
 
@@ -67,44 +78,78 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
   public IRecipeTransferError transferRecipe(@Nonnull Container container, @Nonnull IRecipeLayout recipeLayout, @Nonnull EntityPlayer player,
       boolean maxTransfer, boolean doTransfer) {
 
-    if (!doTransfer) {
-      return null;
+    if (! (container instanceof InventoryPanelContainer)) {
+      return registry.getJeiHelpers().recipeTransferHandlerHelper().createInternalError();
+    }
+        
+    
+    InventoryPanelContainer invPanelContainer = (InventoryPanelContainer) container;
+    if(doTransfer) {
+      if (!invPanelContainer.clearCraftingGrid()) {
+        return registry.getJeiHelpers().recipeTransferHandlerHelper().createUserErrorWithTooltip("Could not clear crafting grid");
+      }
     }
 
-    if (container instanceof InventoryPanelContainer) {
-      InventoryPanelContainer invPanelContainer = (InventoryPanelContainer) container;
+    //First try and craft from the local inventory
+    IRecipeTransferError transferResult = recipeTransferHelper.transferRecipe(invPanelContainer, recipeLayout, player, maxTransfer, doTransfer);
+    if(transferResult == null) {
+      return transferResult;
+    }
+    
+    //do we have what we need?
+    InventoryDatabaseClient db = invPanelContainer.getInv().getDatabaseClient();
+   
+    List<Integer> missingItemSlots = new ArrayList<Integer>();
+    ItemStack[][] ingredients = new ItemStack[9][];
 
-      IRecipeTransferError transferResult = recipeTransferHelper.transferRecipe(invPanelContainer, recipeLayout, player, maxTransfer, doTransfer);
-      if (transferResult == null) {
-        return null;
-      }
-
-      if (invPanelContainer.clearCraftingGrid()) {
-        ItemStack[][] ingredients = new ItemStack[9][];
-
-        IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
-
-        Map<Integer, ? extends IGuiIngredient<ItemStack>> guiIngredients = itemStacks.getGuiIngredients();
-
-        for (int i = 0; i < 9; i++) {
-          if (guiIngredients.containsKey(i + 1)) {
-            IGuiIngredient<ItemStack> guiIngredient = guiIngredients.get(i + 1);
-            List<ItemStack> allIngredients = guiIngredient.getAllIngredients();
-            if (!allIngredients.isEmpty()) {
-              ingredients[i] = allIngredients.toArray(new ItemStack[0]);
-            } else {
-              ingredients[i] = null;
-            }
+    IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
+    Map<Integer, ? extends IGuiIngredient<ItemStack>> guiIngredients = itemStacks.getGuiIngredients();
+    for (int i = 0; i < 9; i++) {
+      if (guiIngredients.containsKey(i + 1)) {
+        List<ItemStack> allIng = guiIngredients.get(i + 1).getAllIngredients();
+        if (!allIng.isEmpty()) {
+          if (containerContainsIngredient(invPanelContainer, allIng) || dbContainsIngredient(db, allIng)) {
+            ingredients[i] = allIng.toArray(new ItemStack[allIng.size()]);          
           } else {
-            ingredients[i] = null;
+            missingItemSlots.add(i + 1);
           }
         }
+      }
 
+    }
+    
+    if(missingItemSlots.isEmpty()) {
+      if(doTransfer) {
         new CraftingHelper(ingredients).refill(invPanelContainer, maxTransfer ? 64 : 1);
+      }      
+      return null;
+    }
+            
+    return registry.getJeiHelpers().recipeTransferHandlerHelper().createUserErrorForSlots(EnderIO.lang.localizeExact("jei.tooltip.error.recipe.transfer.missing"), missingItemSlots);
+  }
+
+  private boolean containerContainsIngredient(InventoryPanelContainer invPanelContainer, List<ItemStack> allIng) {
+    
+    List<Slot> slots = transferInfo.getInventorySlots(invPanelContainer);
+    List<ItemStack> available = new ArrayList<ItemStack>();
+    for (Slot slot : slots) {
+      if (slot.getHasStack()) {
+        available.add(slot.getStack());
+      } 
+    }
+    
+    StackHelper sh = (StackHelper)registry.getJeiHelpers().getStackHelper();
+    return sh.containsStack(available, allIng) != null;    
+  }
+
+  private boolean dbContainsIngredient(InventoryDatabaseClient db, List<ItemStack> allIng) {         
+    for (ItemStack ing : allIng) {
+      ItemEntry lookup = db.lookupItem(ing, null, false);
+      if (lookup != null && lookup.getCount() >= ing.stackSize) {
+        return true;
       }
     }
-
-    return null;
+    return false;
   }
 
 }
