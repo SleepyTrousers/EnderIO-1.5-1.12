@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
+import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
@@ -141,11 +142,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     NetworkTank tank = getTank(con, conDir);
     for (NetworkTank target : tanks) {
       if(!target.equals(tank) && target.isValid()) {
-        FluidTankInfo[] tTanks = null;
-        if(tTanks != null) {
-          for (FluidTankInfo info : tTanks) {
-            res.add(info);
-          }
+        for (ITankInfoWrapper info : target.externalTank.getTankInfoWrappers()) {
+          res.add(info.getFluidTankInfo());
         }
       }
     }

@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -323,6 +324,13 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   @Nullable
   public FluidStack getAvailableFluid() {
     return new FluidStack(Fluids.fluidXpJuice, Math.min(XpUtil.experienceToLiquid(getExcessXP()), xpCont.getFluidAmount()));
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankInfoWrapper> getTankInfoWrappers() {
+    return Collections.<ITankInfoWrapper> emptyList();
   }
 
 }
