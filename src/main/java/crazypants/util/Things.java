@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -186,15 +187,23 @@ public class Things {
   }
 
   private List<ItemStack> itemStackList = null;
+
+  /**
+   * Returns a list of item stacks for this Thing. Please note that items that are defined using the wildcard value for the item damage may not return the
+   * complete list on standalone servers
+   */
   public List<ItemStack> getItemStacks() {
     if (itemStackList == null) {
       itemStackList = new ArrayList<ItemStack>();
       for (ItemStack stack : getItemStacksRaw()) {
         if (stack == null || stack.getItem() == null) {
           // NOP
-//        } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-          //TODO: Broken
-//          stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
+        } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+          if (EnderIO.proxy.isDedicatedServer()) {
+            stack.getItem().getSubItems(stack.getItem(), null, itemStackList);
+          } else {
+            stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
+          }
         } else {
           itemStackList.add(stack);
         }

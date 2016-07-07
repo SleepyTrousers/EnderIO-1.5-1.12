@@ -304,4 +304,9 @@ public class ClientProxy extends CommonProxy {
     ClientCommandHandler.instance.registerCommand(DebugCommand.CLIENT);
   }
 
+  @Override
+  public boolean isDedicatedServer() {
+    return false;
+  }
+
 }

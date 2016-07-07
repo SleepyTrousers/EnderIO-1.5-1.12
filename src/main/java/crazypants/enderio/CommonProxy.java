@@ -158,4 +158,8 @@ public class CommonProxy {
   public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
   }
 
+  public boolean isDedicatedServer() {
+    return true;
+  }
+
 }
