@@ -192,8 +192,9 @@ public class Things {
       for (ItemStack stack : getItemStacksRaw()) {
         if (stack == null || stack.getItem() == null) {
           // NOP
-        } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-          stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
+//        } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+          //TODO: Broken
+//          stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
         } else {
           itemStackList.add(stack);
         }
