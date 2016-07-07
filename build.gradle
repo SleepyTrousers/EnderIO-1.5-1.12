@@ -72,8 +72,7 @@ dependencies {
     }
 
     deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
-    deobfCompile "mezz.jei:jei_${minecraft_version}.2:${jei_version}"
-     // TODO: 1.10.2 remove ".2" after updating
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     
     compile fileTree(dir: 'lib', include: '*.jar') 

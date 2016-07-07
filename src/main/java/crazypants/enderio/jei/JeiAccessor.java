@@ -12,19 +12,13 @@ public class JeiAccessor {
 
   public static void setFilterText(@Nonnull String filterText) {
     if (jeiRuntimeAvailable) {
-      try { // TODO: 1.10.2 remove tray/catch after updating and setting the required JEI version to 3.7.3.221 or higher
-        JeiPlugin.setFilterText(filterText);
-      } catch (Exception e) {
-      }
+      JeiPlugin.setFilterText(filterText);
     }
   }
 
   public static @Nonnull String getFilterText() {
     if (jeiRuntimeAvailable) {
-      try { // TODO: 1.10.2 remove tray/catch after updating and setting the required JEI version to 3.7.3.221 or higher
-        return JeiPlugin.getFilterText();
-      } catch (Exception e) {
-      }
+      return JeiPlugin.getFilterText();
     }
     return "";
   }
