@@ -242,7 +242,7 @@ public class ClientProxy extends CommonProxy {
 
     // Item Models
     ItemModelRegistry.create();
-    ItemModelRegistry.registerRotating("enderCrystal", 2);
+    // ItemModelRegistry.registerRotating("enderCrystal", 2);
 
     // Listeners
     if (Config.useSneakMouseWheelYetaWrench) {
