@@ -158,7 +158,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
   }
 
   private final static String[] rfclasses = new String[] { "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler",
-      "IEnergyProvider.class", "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler" };
+      "IEnergyProvider", "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler" };
 
   public static List<String> rfDiagnostics() {
     List<String> result = new ArrayList<String>();
