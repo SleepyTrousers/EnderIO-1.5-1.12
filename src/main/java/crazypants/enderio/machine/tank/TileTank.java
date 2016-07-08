@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.tank;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,7 +33,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
-public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
+public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   private static int IO_MB_TICK = 100;
 
@@ -366,5 +369,30 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
   public boolean shouldRenderInPass(int pass) {
     return pass == 1 && tank.getFluidAmount() > 0;
   }
-  
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.STORAGE;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return tank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return tank.getCapacity();
+      }
+    });
+  }
+
 }

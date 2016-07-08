@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -70,7 +71,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileKillerJoe extends AbstractMachineEntity
-    implements IFluidHandler, IHaveExperience, ITankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
+    implements IFluidHandler, IHaveExperience, ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
 
   public static class ZombieCache {
 
@@ -641,6 +642,31 @@ public class TileKillerJoe extends AbstractMachineEntity
   @Override
   public BoundingBox getBounds() {
     return getKillBounds();
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return tank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return tank.getCapacity();
+      }
+    });
   }
 
 }

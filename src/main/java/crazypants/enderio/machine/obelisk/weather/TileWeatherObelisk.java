@@ -1,6 +1,11 @@
 package crazypants.enderio.machine.obelisk.weather;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
@@ -36,7 +41,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 @Storable
-public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess {
+public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess.IExtendedTankAccess {
 
   public enum WeatherTask {
     CLEAR(Color.YELLOW) {
@@ -334,4 +339,30 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
     return new FluidTankInfo[] { inputTank.getInfo() };
   }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return inputTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return inputTank.getCapacity();
+      }
+    });
+  }
+
 }

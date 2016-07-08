@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.invpanel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,7 +44,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
-public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
+public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;
@@ -414,6 +416,31 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   @Override
   public SmartTank getNutrientTank() {
     return fuelTank;
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return fuelTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return fuelTank.getCapacity();
+      }
+    });
   }
 
 }

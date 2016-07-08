@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,7 +33,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
-public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   private static int IO_MB_TICK = 250;
 
@@ -234,6 +237,31 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   @Override
   public SmartTank getNutrientTank() {
     return tank;
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return tank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return tank.getCapacity();
+      }
+    });
   }
 
 }

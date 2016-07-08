@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.reservoir;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
@@ -24,7 +29,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 @Storable
-public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
+public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess.IExtendedTankAccess {
 
   @Store
   SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
@@ -236,6 +241,31 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   @Override
   public boolean shouldRenderInPass(int pass) {
     return pass == 1 && !tank.isEmpty();
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.OUTPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return tank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return tank.getCapacity();
+      }
+    });
   }
 
 }

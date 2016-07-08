@@ -3,17 +3,23 @@ package crazypants.enderio.machine.tank;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.TankRenderHelper;
 import crazypants.enderio.render.pipeline.ItemQuadCollector;
 import crazypants.enderio.render.pipeline.QuadCollector;
 import crazypants.enderio.tool.SmartTank;
+import crazypants.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -61,8 +67,28 @@ public class TankItemRenderMapper extends MachineRenderMapper implements IItemRe
         result.addQuads(null, quads);
       }
     }
-    result.addBlockState(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON), stack, true);
+    if (!NbtValue.FAKE.hasTag(stack)) {
+      result.addBlockState(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON), stack, true);
+    }
     return result;
+  }
+
+  @Override
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+    if (!NbtValue.FAKE.hasTag(stack)) {
+      return super.mapItemRender(block, stack, itemQuadCollector);
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public @Nonnull ICacheKey getCacheKey(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ICacheKey cacheKey) {
+    if (NbtValue.FAKE.hasTag(stack)) {
+      cacheKey.addCacheKey(0x7FF71337);
+    }
+    return cacheKey;
   }
 
 }

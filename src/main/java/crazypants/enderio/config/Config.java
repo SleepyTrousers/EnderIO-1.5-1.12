@@ -498,6 +498,7 @@ public final class Config {
   public static boolean topShowSideConfigByDefault = false;
   public static boolean topShowRangeByDefault = false;
   public static boolean topShowMobsByDefault = true;
+  public static boolean topShowTanksByDefault = true;
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
@@ -1363,6 +1364,8 @@ public final class Config {
         "If true, the range will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
     topShowMobsByDefault = config.getBoolean("topShowMobsByDefault", sectionTOP.name, topShowMobsByDefault,
         "If true, the mob list will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowTanksByDefault = config.getBoolean("topShowTanksByDefault", sectionTOP.name, topShowTanksByDefault,
+        "If true, the tank content will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     CapacitorKey.processConfig(config);
   }

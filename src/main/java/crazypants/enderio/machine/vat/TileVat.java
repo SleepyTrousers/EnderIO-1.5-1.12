@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.vat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -28,7 +31,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
-public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
+public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   public static final int BUCKET_VOLUME = 1000;
   
@@ -264,6 +267,51 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
       tanksDirty = true;
       markDirty();
     }
+  }
+
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    List<ITankData> result = new ArrayList<ITankData>();
+    result.add(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return inputTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return inputTank.getCapacity();
+      }
+    });
+    result.add(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.OUTPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return outputTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return outputTank.getCapacity();
+      }
+    });
+    return result;
   }
 
 }

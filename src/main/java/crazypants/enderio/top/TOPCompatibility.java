@@ -7,7 +7,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.google.common.base.Function;
 
 import crazypants.enderio.BlockEio;
@@ -27,6 +31,7 @@ import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.CapturedMob;
+import crazypants.util.NbtValue;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
@@ -40,13 +45,13 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.enderio.config.Config.topEnabled;
 import static crazypants.enderio.config.Config.topShowMobsByDefault;
@@ -55,6 +60,7 @@ import static crazypants.enderio.config.Config.topShowProgressByDefault;
 import static crazypants.enderio.config.Config.topShowRangeByDefault;
 import static crazypants.enderio.config.Config.topShowRedstoneByDefault;
 import static crazypants.enderio.config.Config.topShowSideConfigByDefault;
+import static crazypants.enderio.config.Config.topShowTanksByDefault;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
@@ -97,6 +103,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mkSideConfigLine(mode, eiobox, data);
 
         mkRangeLine(mode, eiobox, data);
+
+        mkTankLines(mode, eiobox, data);
 
         eiobox.finish();
 
@@ -185,7 +193,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         int sizeY = (int) data.bounds.sizeY();
         int sizeZ = (int) data.bounds.sizeZ();
 
-        eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.STONE)).text(
+        addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.SHOW_RANGE).text(
             TextFormatting.YELLOW + EnderIO.lang.localize("top.range.header", TextFormatting.WHITE + EnderIO.lang.localize("top.range", sizeX, sizeY, sizeZ)));
       } else {
         eiobox.addMore();
@@ -234,6 +242,49 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
+  private void mkTankLines(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.tankData != null && !data.tankData.isEmpty()) {
+      if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
+        for (ITankData tank : data.tankData) {
+          ItemStack stack = new ItemStack(EnderIO.blockTank);
+          String content1 = null;
+          String content2 = null;
+          final FluidStack fluid = tank.getContent();
+          if (fluid != null) {
+            FluidStack fluid2 = fluid.copy();
+            fluid2.amount = fluid.amount * 16000 / tank.getCapacity();
+            FluidAndStackResult fillContainer = FluidUtil.tryFillContainer(stack, fluid2);
+            if (fillContainer.result.itemStack != null) {
+              stack = fillContainer.result.itemStack;
+              NbtValue.FAKE.setInt(stack, 1);
+            }
+            content1 = fluid.getLocalizedName();
+            content2 = EnderIO.lang.localize("top.tank.content", fluid.amount, tank.getCapacity());
+          } else {
+            content1 = EnderIO.lang.localize("top.tank.content.empty");
+            content2 = EnderIO.lang.localize("top.tank.content", 0, tank.getCapacity());
+          }
+          switch (tank.getTankType()) {
+          case INPUT:
+            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.input", TextFormatting.WHITE + content1);
+            break;
+          case OUTPUT:
+            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.output", TextFormatting.WHITE + content1);
+            break;
+          case STORAGE:
+            content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.storage", TextFormatting.WHITE + content1);
+            break;
+          }
+
+          eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(content1).text(content2);
+
+        }
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
 
   private static class Data {
     static enum ProgressResult {
@@ -256,6 +307,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     BoundingBox bounds;
     List<CapturedMob> mobs;
     Data.ProgressResult progressResult = Data.ProgressResult.NONE;
+    List<ITankData> tankData = null;
 
     public Data(TileEntity tileEntity, IProbeHitData hitData) {
 
@@ -317,6 +369,10 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mobs = te.getMobsInFilter();
         mobAction = te.getSpawnObeliskAction().getActionString();
         hasMobs = true;
+      }
+
+      if (tileEntity instanceof ITankAccess.IExtendedTankAccess) {
+        tankData = ((ITankAccess.IExtendedTankAccess) tileEntity).getTankDisplayData();
       }
 
       calculateProgress();

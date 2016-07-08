@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -32,7 +35,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 @Storable
-public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IPaintable.IPaintableTileEntity {
+public class TileCombustionGenerator extends AbstractGeneratorEntity
+    implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
   private final SmartTank coolantTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
@@ -376,6 +380,51 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   @Override
   public void setTanksDirty() {
     tanksDirty = true;
+  }
+
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    List<ITankData> result = new ArrayList<ITankData>();
+    result.add(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return fuelTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return fuelTank.getCapacity();
+      }
+    });
+    result.add(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return coolantTank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return coolantTank.getCapacity();
+      }
+    });
+    return result;
   }
 
 }

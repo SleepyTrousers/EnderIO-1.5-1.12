@@ -9,6 +9,11 @@ public enum NbtValue {
   GLINT("glinted"),
   CAPNAME("capname"),
   CAPNO("capno"),
+  /**
+   * Used on item stacks to signal the renderer that the stack is not real but is used as a GUI element. The effects are specific to the item, e.g. the tank
+   * only renders the fluid.
+   */
+  FAKE("fake"),
 
   ;
 
