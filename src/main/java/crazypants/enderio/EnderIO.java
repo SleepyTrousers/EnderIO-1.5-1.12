@@ -356,7 +356,7 @@ public class EnderIO {
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
-    BlockColoredFusedQuartz.create();
+    // BlockColoredFusedQuartz.create();
     BlockPaintedFusedQuartz.create();
 
     // blockEnderRail = BlockEnderRail.create();
