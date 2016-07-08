@@ -116,7 +116,7 @@ public class SmartModelAttacher {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
-      if (block instanceof IPaintable) {
+      if (block instanceof IPaintable || block instanceof ITintedBlock) {
         blocklist.add(block);
         if (item != null) {
           itemlist.add(item);

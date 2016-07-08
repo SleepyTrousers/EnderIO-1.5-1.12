@@ -199,11 +199,7 @@ public class Things {
         if (stack == null || stack.getItem() == null) {
           // NOP
         } else if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-          if (EnderIO.proxy.isDedicatedServer()) {
-            stack.getItem().getSubItems(stack.getItem(), null, itemStackList);
-          } else {
-            stack.getItem().getSubItems(stack.getItem(), stack.getItem().getCreativeTab(), itemStackList);
-          }
+          EnderIO.proxy.getSubItems(stack.getItem(), EnderIO.proxy.getCreativeTab(stack), itemStackList);
         } else {
           itemStackList.add(stack);
         }

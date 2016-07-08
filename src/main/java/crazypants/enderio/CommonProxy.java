@@ -1,6 +1,7 @@
 package crazypants.enderio;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
@@ -15,8 +16,11 @@ import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.command.CommandHandler;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -160,6 +164,14 @@ public class CommonProxy {
 
   public boolean isDedicatedServer() {
     return true;
+  }
+
+  public CreativeTabs getCreativeTab(ItemStack stack) {
+    return null;
+  }
+
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    subItems.add(new ItemStack(itemIn));
   }
 
 }

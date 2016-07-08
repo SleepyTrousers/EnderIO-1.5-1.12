@@ -57,6 +57,9 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
         paintSource = null;
       }
     }
+    if (block instanceof ITintedBlock) {
+      return ((ITintedBlock) block).getBlockTint(state, world, pos, tintIndex);
+    }
     if (block instanceof IBlockColor) {
       return ((IBlockColor) block).colorMultiplier(state, world, pos, tintIndex);
     }

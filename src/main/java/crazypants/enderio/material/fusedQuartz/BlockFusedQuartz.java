@@ -8,6 +8,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.ITintedBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.util.IFacade;
@@ -16,7 +17,6 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.config.Config.glassConnectToTheirColorVariants;
 
-public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements IBlockColor {
+public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements ITintedBlock {
   
   protected static final EnumDyeColor DEFAULT_COLOR = EnumDyeColor.WHITE;
 
@@ -114,7 +114,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   }
 
   @Override
-  public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+  public int getBlockTint(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
     return state.getValue(BlockColored.COLOR).getMapColor().colorValue;
   }
 

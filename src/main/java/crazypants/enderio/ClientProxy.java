@@ -1,5 +1,7 @@
 package crazypants.enderio;
 
+import java.util.List;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -54,10 +56,12 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -307,6 +311,16 @@ public class ClientProxy extends CommonProxy {
   @Override
   public boolean isDedicatedServer() {
     return false;
+  }
+
+  @Override
+  public CreativeTabs getCreativeTab(ItemStack stack) {
+    return stack == null || stack.getItem() == null ? null : stack.getItem().getCreativeTab();
+  }
+
+  @Override
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    itemIn.getSubItems(itemIn, tab, subItems);
   }
 
 }
