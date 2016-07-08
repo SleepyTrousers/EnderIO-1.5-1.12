@@ -47,7 +47,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
   }
 
   protected boolean isSameKind(IBlockState state, IBlockAccess world, BlockPos pos, BlockPos other) {
-    IBlockState otherState = world.getBlockState(other).getActualState(world, pos);
+    IBlockState otherState = world.getBlockState(other).getActualState(world, other);
     if (isSameKind(state, otherState)) {
       return true;
     }
