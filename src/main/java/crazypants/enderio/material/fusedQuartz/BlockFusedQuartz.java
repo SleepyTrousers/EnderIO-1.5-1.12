@@ -1,5 +1,8 @@
 package crazypants.enderio.material.fusedQuartz;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
@@ -9,9 +12,12 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.util.IFacade;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -19,8 +25,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
+import static crazypants.enderio.config.Config.glassConnectToTheirColorVariants;
+
+public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements IBlockColor {
   
+  protected static final EnumDyeColor DEFAULT_COLOR = EnumDyeColor.WHITE;
+
   @SideOnly(Side.CLIENT)
   private static FusedQuartzItemRenderMapper RENDER_MAPPER;
 
@@ -33,7 +43,11 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   private BlockFusedQuartz() {
     super(ModObject.blockFusedQuartz.getUnlocalisedName(), null);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
-        .withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
+        .withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ).withProperty(BlockColored.COLOR, DEFAULT_COLOR));
+  }
+
+  protected BlockFusedQuartz(@Nonnull String mo) {
+    super(mo, null);
   }
 
   @Override
@@ -44,12 +58,12 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
 
   @Override
   protected BlockStateContainer createBlockState() {
-    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, FusedQuartzType.KIND });
+    return new BlockStateContainer(this, new IProperty[] { EnumMergingBlockRenderMode.RENDER, FusedQuartzType.KIND, BlockColored.COLOR });
   }
 
   @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-    return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO);
+    return state.withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO).withProperty(BlockColored.COLOR, DEFAULT_COLOR);
   }
 
   @Override
@@ -82,19 +96,26 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockState blockStateIn, IBlockAccess world, BlockPos pos, EnumFacing side) {
-    IBlockState otherState = world.getBlockState(pos.offset(side));
+    IBlockState otherState = world.getBlockState(pos.offset(side)).getActualState(world, pos.offset(side));
     Block otherBlock = otherState.getBlock();
     if (otherBlock == this) {
-      IBlockState ourState = world.getBlockState(pos);
-      return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND));
+      IBlockState ourState = world.getBlockState(pos).getActualState(world, pos);
+      return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND))
+          || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
     } else if (otherBlock instanceof IFacade) {
       IBlockState facade = ((IFacade) otherBlock).getFacade(world, pos.offset(side), side);
       if (facade != null && facade.getBlock() == this) {
         IBlockState ourState = world.getBlockState(pos);
-        return !ourState.getValue(FusedQuartzType.KIND).connectTo(facade.getValue(FusedQuartzType.KIND));
+        return !ourState.getValue(FusedQuartzType.KIND).connectTo(facade.getValue(FusedQuartzType.KIND))
+            || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != facade.getValue(BlockColored.COLOR));
       }
     }
     return true;
+  }
+
+  @Override
+  public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
+    return state.getValue(BlockColored.COLOR).getMapColor().colorValue;
   }
 
 }

@@ -5,8 +5,8 @@
 		    "from": [ 1, 1, 0 ],
 		    "to": [ 15, 15, 16 ],
 		    "faces": {
-		        "north": { "texture": "#side", "cullface": "north" },
-		        "south": { "texture": "#side", "cullface": "south" }
+		        "north": { "texture": "#side", "cullface": "north", "tintindex":0 },
+		        "south": { "texture": "#side", "cullface": "south", "tintindex":0 }
 		    }
 		}
   ]

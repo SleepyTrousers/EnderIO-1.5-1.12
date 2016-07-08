@@ -46,7 +46,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   private BlockPaintedFusedQuartz() {
     super(ModObject.blockPaintedFusedQuartz.getUnlocalisedName(), TileEntityPaintedBlock.class);
     setCreativeTab(null);
-    setDefaultState(this.blockState.getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
+    setDefaultState(
+        this.blockState.getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
   }
 
   @Override

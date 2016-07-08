@@ -470,6 +470,7 @@ public final class Config {
 
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
+  public static boolean glassConnectToTheirColorVariants = true;
   
   public static Rarity enchantmentSoulBoundWeight = Rarity.UNCOMMON;
   public static boolean enchantmentSoulBoundEnabled = true;
@@ -1308,6 +1309,8 @@ public final class Config {
     glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
     clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
+    glassConnectToTheirColorVariants = config.getBoolean("glassConnectToTheirColorVariants", sectionMisc.name, glassConnectToTheirColorVariants,
+        "If true, quite clear glass and fused quartz of different colors will connect textures.");
 
     paintedGlowstoneRequireSilkTouch = config.getBoolean("paintedGlowstoneRequireSilkTouch", sectionMisc.name, paintedGlowstoneRequireSilkTouch, "If true, painted glowstone will drop dust unless broken with silk touch");
     
