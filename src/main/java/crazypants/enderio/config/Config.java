@@ -327,7 +327,13 @@ public final class Config {
       "ThermalFoundation:tool.hoeElectrum", "ThermalFoundation:tool.hoeTin", "ThermalFoundation:tool.hoeLead", "ThermalFoundation:tool.hoeNickel",
       "ThermalFoundation:tool.hoePlatinum",
       "TwilightForest:item.steeleafHoe", "TwilightForest:item.ironwoodHoe",
-      "IC2:itemToolBronzeHoe", "techreborn:bronzeHoe", "techreborn:rubyHoe", "techreborn:sapphireHoe", "techreborn:peridotHoe"
+      "IC2:itemToolBronzeHoe", "techreborn:bronzeHoe", "techreborn:rubyHoe", "techreborn:sapphireHoe", "techreborn:peridotHoe", "basemetals:adamantine_hoe",
+      "basemetals:aquarium_hoe", "basemetals:brass_hoe", "basemetals:bronze_hoe", "basemetals:coldiron_hoe", "basemetals:copper_hoe",
+      "basemetals:cupronickel_hoe", "basemetals:electrum_hoe", "basemetals:invar_hoe", "basemetals:lead_hoe", "basemetals:mithril_hoe", "basemetals:nickel_hoe",
+      "basemetals:platinum_hoe", "basemetals:silver_hoe", "basemetals:starsteel_hoe", "basemetals:steel_hoe", "basemetals:tin_hoe",
+      "actuallyadditions:itemHoeQuartz", "actuallyadditions:itemHoeEmerald", "actuallyadditions:itemHoeObsidian",
+      "actuallyadditions:itemHoeCrystalRed", "actuallyadditions:itemHoeCrystalBlue", "actuallyadditions:itemHoeCrystalLightBlue",
+      "actuallyadditions:itemHoeCrystalBlack", "actuallyadditions:itemHoeCrystalGreen", "actuallyadditions:itemHoeCrystalWhite", "silentgems:Hoe"
   };
   public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
