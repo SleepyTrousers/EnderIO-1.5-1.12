@@ -204,7 +204,7 @@ public class CapturedMob {
     }
     @Nonnull
     EnumFacing theSide = side != null ? side : EnumFacing.UP;
-    Entity entity = getEntity(world, clone);
+    Entity entity = getEntity(world, pos, null, clone);
     if (entity == null) {
       return false;
     }
@@ -274,14 +274,19 @@ public class CapturedMob {
       if (pos != null && entity != null) {
         entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
       }
-      if (difficulty != null && entity instanceof EntityLiving) {
-        IEntityLivingData livingData = null;
-        if (variant != null && entity instanceof EntityZombie) {
-          livingData = new IEntityLivingData() {
-          };
+      if (entity instanceof EntityLiving) {
+        if (pos != null && difficulty == null) {
+          difficulty = world.getDifficultyForLocation(pos);
         }
-        ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
-      }
+        if (difficulty != null) {
+          IEntityLivingData livingData = null;
+          if (variant != null && entity instanceof EntityZombie) {
+            livingData = new IEntityLivingData() {
+            };
+          }
+          ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
+        }
+        }
       if (variant != null) {
         if (entity instanceof EntitySkeleton) {
           EntitySkeleton skel = (EntitySkeleton) entity;
