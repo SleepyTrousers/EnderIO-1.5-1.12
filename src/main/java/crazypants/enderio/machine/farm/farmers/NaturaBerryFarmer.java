@@ -5,6 +5,7 @@ import java.util.List;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +26,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
       return null;
     }
     if(!farm.hasHoe()) {
-      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
+      farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
 

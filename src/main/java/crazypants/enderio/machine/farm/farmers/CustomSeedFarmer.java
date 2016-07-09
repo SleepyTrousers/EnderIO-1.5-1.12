@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.Things;
@@ -148,7 +149,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
       return null;
     }
     if(!farm.hasHoe()) {
-      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
+      farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
 

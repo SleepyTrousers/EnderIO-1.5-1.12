@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -66,7 +67,7 @@ public class StemFarmer extends CustomSeedFarmer {
         farm.actionPerformed(false);
       } else {
         if (!hasHoe) {
-          farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
+          farm.setNotification(FarmNotification.NO_HOE);
         } else {
           farm.clearNotification();
         }

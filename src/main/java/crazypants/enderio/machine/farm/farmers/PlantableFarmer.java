@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
@@ -15,8 +16,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -47,7 +48,7 @@ public class PlantableFarmer implements IFarmerJoe {
     ItemStack seedStack = farm.getSeedTypeInSuppliesFor(slot);
     if(seedStack == null) {
       if (!farm.isSlotLocked(slot)) {
-        farm.setNotification(TileFarmStation.NOTIFICATION_NO_SEEDS);
+        farm.setNotification(FarmNotification.NO_SEEDS);
       }
       return false;
     }
@@ -145,7 +146,7 @@ public class PlantableFarmer implements IFarmerJoe {
       return null;
     }
     if(!farm.hasHoe()) {
-      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
+      farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
 

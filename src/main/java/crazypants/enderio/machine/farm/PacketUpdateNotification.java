@@ -1,23 +1,24 @@
 package crazypants.enderio.machine.farm;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import java.util.EnumSet;
+import java.util.Set;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketUpdateNotification, IMessage> {
 
-  private String notification;
+  private Set<FarmNotification> notification;
 
   public PacketUpdateNotification() {
   }
 
-  public PacketUpdateNotification(TileFarmStation tile, String notification) {
+  public PacketUpdateNotification(TileFarmStation tile, Set<FarmNotification> notification) {
     super(tile);
     this.notification = notification;
   }
@@ -25,13 +26,20 @@ public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation>
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    notification = ByteBufUtils.readUTF8String(buf);
+    notification = EnumSet.noneOf(FarmNotification.class);
+    int count = buf.readByte();
+    for (int i = 0; i < count; i++) {
+      notification.add(FarmNotification.values()[buf.readByte()]);
+    }
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    ByteBufUtils.writeUTF8String(buf, notification);
+    buf.writeByte(notification.size());
+    for (FarmNotification farmNotification : notification) {
+      buf.writeByte(farmNotification.ordinal());
+    }
   }
 
   @Override

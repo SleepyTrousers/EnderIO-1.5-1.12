@@ -8,6 +8,7 @@ import java.util.List;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
@@ -118,6 +119,7 @@ public class TreeFarmer implements IFarmerJoe {
     boolean hasAxe = farm.hasAxe();
 
     if(!hasAxe) {
+      farm.setNotification(FarmNotification.NO_AXE);
       return null;
     }
 
@@ -174,7 +176,7 @@ public class TreeFarmer implements IFarmerJoe {
     }
     
     if (!hasAxe) {
-      farm.setNotification(TileFarmStation.NOTIFICATION_NO_AXE);
+      farm.setNotification(FarmNotification.NO_AXE);
     }
     
     res.harvestedBlocks.clear();

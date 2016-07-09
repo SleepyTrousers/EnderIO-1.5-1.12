@@ -1,29 +1,29 @@
 package crazypants.enderio.machine.farm;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
 import crazypants.enderio.config.Config;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer<TileFarmStation> {
 
   @Override
   public void renderTileEntityAt(TileFarmStation tile, double x, double y, double z, float partialTickTime, int destroyStage) {
-    String toRender = tile.notification;
-    if ("".equals(toRender) || Config.disableFarmNotification) {
-      return;
-    }
-
+    if (!tile.notification.isEmpty() || Config.disableFarmNotification) {
     GlStateManager.enableLighting();
     GlStateManager.disableLighting();
-    RenderUtil.drawBillboardedText(new Vector3f(x + 0.5, y + 1.5, z + 0.5), toRender, 0.25f);
+      float offset = 0;
+      for (FarmNotification note : tile.notification) {
+        RenderUtil.drawBillboardedText(new Vector3f(x + 0.5, y + 1.5 + offset, z + 0.5), note.getDisplayString(), 0.25f);
+        offset += 0.375f;
+      }
     GlStateManager.enableLighting();
+    }
   }
 
 }
