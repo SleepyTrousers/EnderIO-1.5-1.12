@@ -244,6 +244,7 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.getUnlocalisedName());
     DarkSteelItems.registerItemRenderers();
     Buckets.registerRenderers();
+    EnderIO.itemRemoteInvAccess.registerRenderers();
 
     // Item Models
     ItemModelRegistry.create();

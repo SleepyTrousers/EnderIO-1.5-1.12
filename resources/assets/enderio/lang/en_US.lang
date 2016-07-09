@@ -1377,3 +1377,23 @@ enderio.color.magenta=Magenta
 enderio.color.orange=Orange
 enderio.color.white=White
 
+enderio.remoteinv.chat.set=Target set
+enderio.remoteinv.chat.notarget=ERROR: No target
+enderio.remoteinv.chat.outofrange=ERROR: Out of range
+enderio.remoteinv.chat.invalidtargetworld=ERROR: Target in unaccessible dimension
+enderio.remoteinv.chat.notloaded=ERROR: Target is not loaded
+enderio.remoteinv.chat.invalidtarget=ERROR: Target does not exist
+enderio.remoteinv.chat.outofpower=ERROR: Out of power
+enderio.remoteinv.chat.outoffluid=ERROR: Out of nutrient distillation
+
+item.itemRemoteInvAccessbasic.name=Inventory Panel Remote
+item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 10 chunks away.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+
+item.itemRemoteInvAccessadvanced.name=Advanced Inventory Panel Remote
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+
+item.itemRemoteInvAccessender.name=Not yet implemented

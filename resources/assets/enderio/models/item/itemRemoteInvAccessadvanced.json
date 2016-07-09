@@ -1,0 +1,6 @@
+{
+"textures": {
+    "south": "enderio:blocks/invPanelRemote2"
+},
+"parent":"enderio:item/itemRemoteInvAccessbasic"
+}

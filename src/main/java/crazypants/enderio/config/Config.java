@@ -495,6 +495,11 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
   public static boolean inventoryPanelScaleText = true;
 
+  public static int remoteInventoryMBPerOpen = 100;
+  public static int remoteInventoryRFPerTick = 4;
+  public static int remoteInventoryMBCapacity = 2000;
+  public static int remoteInventoryRFCapacity = 60000;
+
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
 

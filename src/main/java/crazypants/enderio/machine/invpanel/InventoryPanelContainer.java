@@ -16,6 +16,7 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
@@ -431,6 +432,28 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           src.stackSize = remaining;
           srcSlot.onSlotChanged();
         }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @SuppressWarnings("null")
+  @Override
+  public boolean canInteractWith(EntityPlayer player) {
+    if (super.canInteractWith(player)) {
+      return true;
+    }
+    if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
+      if (!player.getEntityWorld().isRemote) {
+        return ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
+      } else {
+        return true;
+      }
+    } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
+      if (!player.getEntityWorld().isRemote) {
+        return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemMainhand(), player);
+      } else {
         return true;
       }
     }

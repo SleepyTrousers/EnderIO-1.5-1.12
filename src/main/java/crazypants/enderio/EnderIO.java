@@ -64,6 +64,7 @@ import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
@@ -274,6 +275,7 @@ public class EnderIO {
   public static ItemFrankenSkull itemFrankenSkull;
 
   public static BlockVacuumChest blockVacuumChest;
+  public static ItemRemoteInvAccess itemRemoteInvAccess;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -409,6 +411,8 @@ public class EnderIO {
     itemEnderFood = ItemEnderFood.create();
 
     blockGauge = BlockGauge.create();
+
+    itemRemoteInvAccess = ItemRemoteInvAccess.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();

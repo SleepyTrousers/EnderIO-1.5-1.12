@@ -14,6 +14,12 @@ public enum NbtValue {
    * only renders the fluid.
    */
   FAKE("fake"),
+  REMOTE_X("eiox"),
+  REMOTE_Y("eioy"),
+  REMOTE_Z("eioz"),
+  REMOTE_D("eiod"),
+  ENERGY("Energy"),
+  FLUIDAMOUNT("famount"),
 
   ;
 
