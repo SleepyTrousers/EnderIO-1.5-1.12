@@ -3,9 +3,6 @@ package crazypants.enderio.machine.generator.combustion;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -17,6 +14,8 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
@@ -53,11 +52,6 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
 
     });
 
-  }
-
-  @Override
-  protected boolean showRecipeButton() {
-    return false;
   }
 
   @Override

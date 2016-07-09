@@ -291,7 +291,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     return getNumTicksPerMbCoolant(curCoolant, curFuel);
   }
 
-  static int getNumTicksPerMbFuel(IFluidFuel fuel) {
+  public static int getNumTicksPerMbFuel(IFluidFuel fuel) {
     if (fuel == null) {
       return 0;
     }
@@ -300,7 +300,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   public static float HEAT_PER_RF = 0.00023F;
 
-  static int getNumTicksPerMbCoolant(IFluidCoolant coolant, IFluidFuel fuel) {
+  public static int getNumTicksPerMbCoolant(IFluidCoolant coolant, IFluidFuel fuel) {
     if (coolant == null || fuel == null) {
       return 0;
     }

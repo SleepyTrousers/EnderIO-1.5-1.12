@@ -39,6 +39,7 @@ public class JeiPlugin extends BlankModPlugin {
     VatRecipeCategory.register(registry, guiHelper);
     DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
     TankRecipeCategory.register(registry, guiHelper);
+    CombustionRecipeCategory.register(registry, guiHelper);
 
     INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
     final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
