@@ -6,6 +6,7 @@ import java.util.Map;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.util.EnumFacing;
@@ -44,11 +45,11 @@ public class Offsets {
 //    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
 //    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
 //    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
-//
-//    OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
-//    OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);
-//    OFFSETS.put(key(IOCConduit.class, Axis.Y), Offset.SOUTH_WEST);
-//    OFFSETS.put(key(IOCConduit.class, Axis.Z), Offset.WEST_DOWN);
+
+    OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
+    OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);
+    OFFSETS.put(key(IOCConduit.class, Axis.Y), Offset.SOUTH_WEST);
+    OFFSETS.put(key(IOCConduit.class, Axis.Z), Offset.WEST_DOWN);
 
     // OFFSETS.put(key(IxConduit.class, Axis.NONE), Offset.SOUTH_DOWN);
     // OFFSETS.put(key(IxConduit.class, Axis.X), Offset.SOUTH_DOWN);

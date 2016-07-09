@@ -233,6 +233,7 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.itemLiquidConduit);
     registerRenderers(EnderIO.itemItemConduit);
     registerRenderers(EnderIO.itemRedstoneConduit);
+    registerRenderers(EnderIO.itemOCConduit);
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.getUnlocalisedName());

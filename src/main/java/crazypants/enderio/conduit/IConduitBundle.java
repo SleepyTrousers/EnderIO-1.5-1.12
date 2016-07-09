@@ -4,10 +4,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.facade.EnumFacadeType;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.power.IInternalPowerHandler;
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -16,14 +25,6 @@ import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.conduit.facade.EnumFacadeType;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.IInternalPowerHandler;
-
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
     @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),
@@ -31,7 +32,7 @@ import crazypants.enderio.power.IInternalPowerHandler;
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network")
 })
-public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IPaintable.IPaintableTileEntity {
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment {
 
   TileEntity getEntity();
 

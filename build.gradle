@@ -59,9 +59,10 @@ repositories {
     mavenCentral()
     maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
-    maven { url = "http://maven.tterrag.com" }        
-    maven { url = "http://dvs1.progwml6.com/files/maven" }  
-    maven { url = "http://files.minecraftforge.net/maven" }      
+    maven { url = "http://maven.tterrag.com" }
+    maven { url = "http://dvs1.progwml6.com/files/maven" } 
+    maven { url = "http://files.minecraftforge.net/maven" }
+    maven { url = "http://maven.cil.li/" }
     mavenLocal()
 }
 
@@ -71,10 +72,11 @@ dependencies {
         deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
     }
 
-    deobfCompile "mcp.mobius.waila:Waila:${waila_version}"   
+    deobfCompile "mcp.mobius.waila:Waila:${waila_version}"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
-    
+    deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
+
     compile fileTree(dir: 'lib', include: '*.jar') 
 }
 

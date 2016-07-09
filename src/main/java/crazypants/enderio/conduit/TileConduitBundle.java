@@ -23,10 +23,13 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.PainterUtil2;
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -793,74 +797,74 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   // OpenComputers
 
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  public Node node() {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      return cond.node();
-//    } else {
-//      return null;
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  public void onConnect(Node node) {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      cond.onConnect(node);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  public void onDisconnect(Node node) {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      cond.onDisconnect(node);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  public void onMessage(Message message) {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      cond.onMessage(message);
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  public Node sidedNode(EnumFacing side) {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      return cond.sidedNode(side);
-//    } else {
-//      return null;
-//    }
-//  }
-//
-//  @Override
-//  @Method(modid = "OpenComputersAPI|Network")
-//  @SideOnly(Side.CLIENT)
-//  public boolean canConnect(EnumFacing side) {
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      return cond.canConnect(side);
-//    } else {
-//      return false;
-//    }
-//  }
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public Node node() {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.node();
+    } else {
+      return null;
+    }
+  }
 
-//  @Override
-//  public void invalidate() {
-//    super.invalidate();
-//    IOCConduit cond = getConduit(IOCConduit.class);
-//    if (cond != null) {
-//      cond.invalidate();
-//    }
-//  }
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onConnect(Node node) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onConnect(node);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onDisconnect(Node node) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onDisconnect(node);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public void onMessage(Message message) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.onMessage(message);
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  public Node sidedNode(EnumFacing side) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.sidedNode(side);
+    } else {
+      return null;
+    }
+  }
+
+  @Override
+  @Method(modid = "OpenComputersAPI|Network")
+  @SideOnly(Side.CLIENT)
+  public boolean canConnect(EnumFacing side) {
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      return cond.canConnect(side);
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    IOCConduit cond = getConduit(IOCConduit.class);
+    if (cond != null) {
+      cond.invalidate();
+    }
+  }
 
 }

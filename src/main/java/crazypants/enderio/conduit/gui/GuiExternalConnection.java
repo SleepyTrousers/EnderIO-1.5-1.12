@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
@@ -39,7 +40,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     TAB_ORDER.put(IPowerConduit.class, 3);
 //    TAB_ORDER.put(IMEConduit.class, 4);
 //    TAB_ORDER.put(IGasConduit.class, 5);
-//    TAB_ORDER.put(IOCConduit.class, 6);
+    TAB_ORDER.put(IOCConduit.class, 4);
   }
 
   final InventoryPlayer playerInv;

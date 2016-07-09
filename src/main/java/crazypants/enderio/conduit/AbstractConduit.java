@@ -9,17 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -35,10 +24,22 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.oc.IOCConduit;
+import crazypants.enderio.conduit.oc.OCConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -613,8 +614,8 @@ public abstract class AbstractConduit implements IConduit {
 //      return new GasConduitNetwork();
 //    } else if (IMEConduit.class.isAssignableFrom(type)) {
 //      return new MEConduitNetwork();
-//    } else if (IOCConduit.class.isAssignableFrom(type)) {
-//      return new OCConduitNetwork();
+    } else if (IOCConduit.class.isAssignableFrom(type)) {
+      return new OCConduitNetwork();
     } else {
       return null;
     }

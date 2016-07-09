@@ -552,6 +552,9 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <alias name="OC_CONDUIT" item="enderio:itemOCConduit:0">
+    <dependency item="enderio:itemOCConduit:0" reverse="false"/>
+  </alias>
   <alias name="OC_CONDUIT" item="minecraft:stone:0">
     <!-- prevent log messages from the output tags using this -->
     <dependency item="enderio:itemOCConduit:0" reverse="true"/>
