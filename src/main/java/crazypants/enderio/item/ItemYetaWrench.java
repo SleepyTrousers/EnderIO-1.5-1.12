@@ -95,8 +95,6 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     }
     return ret ? EnumActionResult.SUCCESS: EnumActionResult.PASS;
   }
-
-  
   
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
@@ -124,6 +122,11 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       return true;
     }
     return false;
+  }
+
+  @Override
+  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    return !ItemStack.areItemsEqual(oldStack, newStack); // Ignore NBT
   }
 
   @Override
