@@ -1,13 +1,14 @@
 package crazypants.enderio.material;
 
-import static crazypants.util.RecipeUtil.addShaped;
-import static crazypants.util.RecipeUtil.addShapeless;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import static crazypants.util.RecipeUtil.addShaped;
+import static crazypants.util.RecipeUtil.addShapeless;
 
 public class MaterialRecipes {
 
@@ -47,6 +48,24 @@ public class MaterialRecipes {
     OreDictionary.registerOre("blockGlassColorless", pureGlass);
     OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, FusedQuartzType.FUSED_QUARTZ.ordinal()));
 
+    OreDictionary.registerOre("blockGlass", new ItemStack(FusedQuartzType.FUSED_GLASS.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("blockGlassHardened", new ItemStack(FusedQuartzType.FUSED_QUARTZ.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
+
+    // Forge names. Slightly different from vanilla names...
+    String[] dyes = { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "LightGray", "Gray", "Pink", "Lime", "Yellow", "LightBlue", "Magenta",
+        "Orange", "White" };
+
+    for (int i = 0; i < 16; i++) {
+      OreDictionary.registerOre("blockGlass" + dyes[i], new ItemStack(FusedQuartzType.FUSED_GLASS.getBlock(), 1, EnumDyeColor.byDyeDamage(i).getMetadata()));
+      OreDictionary.registerOre("blockGlassHardened" + dyes[i],
+          new ItemStack(FusedQuartzType.FUSED_QUARTZ.getBlock(), 1, EnumDyeColor.byDyeDamage(i).getMetadata()));
+    }
+
+    for (FusedQuartzType type : FusedQuartzType.values()) {
+      OreDictionary.registerOre(type.getUnlocalisedName(), new ItemStack(EnderIO.blockFusedQuartz, 1, type.ordinal()));
+      OreDictionary.registerOre(type.getUnlocalisedName(), new ItemStack(type.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
+    }
+
     //Skulls
     ItemStack skull = new ItemStack(Items.SKULL, 1, OreDictionary.WILDCARD_VALUE);
     OreDictionary.registerOre("itemSkull", skull);
@@ -63,6 +82,17 @@ public class MaterialRecipes {
       addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
     }
 
+    for (EnumDyeColor color : EnumDyeColor.values()) {
+      for (FusedQuartzType type : FusedQuartzType.values()) {
+        if (color == EnumDyeColor.WHITE) {
+          addShaped(new ItemStack(EnderIO.blockFusedQuartz, 8, type.ordinal()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
+              new ItemStack(Items.DYE, 1, color.getDyeDamage()));
+        } else {
+          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
+              new ItemStack(Items.DYE, 1, color.getDyeDamage()));
+        }
+      }
+    }
 
   }
 }

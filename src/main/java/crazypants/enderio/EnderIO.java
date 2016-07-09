@@ -112,6 +112,7 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
@@ -357,7 +358,7 @@ public class EnderIO {
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
-    // BlockColoredFusedQuartz.create();
+    BlockColoredFusedQuartz.create();
     BlockPaintedFusedQuartz.create();
 
     // blockEnderRail = BlockEnderRail.create();

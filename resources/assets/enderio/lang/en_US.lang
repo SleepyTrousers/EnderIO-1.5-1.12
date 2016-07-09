@@ -1359,4 +1359,20 @@ enderio.loot.capacitor.title.12=A Capacitor. Maybe
 enderio.loot.capacitor.title.13=Heaven Cent
 enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
 
+enderio.color.black=Black
+enderio.color.red=Red
+enderio.color.green=Green
+enderio.color.brown=Brown
+enderio.color.blue=Blue
+enderio.color.purple=Purple
+enderio.color.cyan=Cyan
+enderio.color.silver=Light Gray
+enderio.color.gray=Gray
+enderio.color.pink=Pink
+enderio.color.lime=Lime
+enderio.color.yellow=Yellow
+enderio.color.lightBlue=Light Blue
+enderio.color.magenta=Magenta
+enderio.color.orange=Orange
+enderio.color.white=White
 

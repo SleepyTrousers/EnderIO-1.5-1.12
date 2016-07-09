@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.config.Config;
 import crazypants.util.NullHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 
@@ -35,6 +36,7 @@ public enum FusedQuartzType implements IStringSerializable {
   private final @Nonnull String unlocalisedName;
   private final @Nonnull BaseMaterial baseMaterial;
   private final @Nonnull Upgrade upgrade;
+  private Block block;
 
   private FusedQuartzType(@Nonnull String unlocalisedName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade) {
     this.unlocalisedName = unlocalisedName;
@@ -75,5 +77,13 @@ public enum FusedQuartzType implements IStringSerializable {
 
   public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
+  }
+
+  public Block getBlock() {
+    return block;
+  }
+
+  public void setBlock(Block block) {
+    this.block = block;
   }
 }

@@ -31,12 +31,12 @@ XML editor will display that as tooltips when editing this file.
   <alias name="GEAR" item="gearStone" />
   <alias name="CHASSIS" item="itemMachineChassi" />
   
-  <alias name="FUSED_QUARTZ" item="enderio:blockFusedQuartz:0" />
-  <alias name="FUSED_GLASS" item="enderio:blockFusedQuartz:1" />
-  <alias name="ENLIGHTED_QUARTZ" item="enderio:blockFusedQuartz:2" />
-  <alias name="ENLIGHTED_GLASS" item="enderio:blockFusedQuartz:3" />
-  <alias name="DARK_QUARTZ" item="enderio:blockFusedQuartz:4" />
-  <alias name="DARK_GLASS" item="enderio:blockFusedQuartz:5" />
+  <alias name="FUSED_QUARTZ" item="oredict:fusedQuartz" />
+  <alias name="FUSED_GLASS" item="oredict:fusedGlass" />
+  <alias name="ENLIGHTED_QUARTZ" item="oredict:enlightenedFusedQuartz" />
+  <alias name="ENLIGHTED_GLASS" item="oredict:enlightenedFusedGlass" />
+  <alias name="DARK_QUARTZ" item="oredict:darkFusedQuartz" />
+  <alias name="DARK_GLASS" item="oredict:darkFusedGlass" />
 
   <alias name="ELECTRICAL_STEEL" item="ingotElectricalSteel" />
   <alias name="ENERGETIC_ALLOY" item="ingotEnergeticAlloy" />

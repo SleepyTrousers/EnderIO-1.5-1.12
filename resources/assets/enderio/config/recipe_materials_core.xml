@@ -24,7 +24,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Compatibility: Glass 2 Glass" required="false">
     <crafting>
       <shapeless>
-        <item name="FUSED_GLASS"/>
+        <item name="enderio:blockFusedQuartz:1"/>
       </shapeless>
       <output name="minecraft:glass"/>
     </crafting>
@@ -455,6 +455,5 @@ XML editor will display that as tooltips when editing this file.
       <output name="ingotTin"/>
     </smelting>
   </recipe>
-
 
 </enderio:recipes>

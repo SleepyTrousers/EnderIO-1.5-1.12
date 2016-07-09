@@ -5,9 +5,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.FluidUtil;
 import com.google.common.base.Strings;
 
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
-
 import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -22,6 +19,9 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
+import static crazypants.util.NbtValue.SOURCE_BLOCK;
+import static crazypants.util.NbtValue.SOURCE_META;
 
 public class PainterUtil2 {
 
@@ -135,18 +135,26 @@ public class PainterUtil2 {
 
   public static String getTooltTipText(ItemStack itemStack) {
     String sourceName = "";
-    IBlockState state = getSourceBlock(itemStack);
-    if (state != null) {
-      Block block = state.getBlock();
-      Item itemFromBlock = Item.getItemFromBlock(block);
-      if (itemFromBlock != null) {
-        ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
-        sourceName = is.getDisplayName();
-      }
+    if (itemStack.getItem() instanceof IWithPaintName) {
+      sourceName = ((IWithPaintName) itemStack.getItem()).getPaintName(itemStack);
     } else {
-      return EnderIO.lang.localize("blockPainter.unpainted");
+      IBlockState state = getSourceBlock(itemStack);
+      if (state != null) {
+        Block block = state.getBlock();
+        Item itemFromBlock = Item.getItemFromBlock(block);
+        if (itemFromBlock != null) {
+          ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
+          sourceName = is.getDisplayName();
+        }
+      } else {
+        return EnderIO.lang.localize("blockPainter.unpainted");
+      }
     }
     return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
+  }
+
+  public interface IWithPaintName {
+    String getPaintName(ItemStack stack);
   }
 
   // Note: Config-based white-/blacklisting is done by PaintSourceValidator and checked as part of the input slot validation of the Painter

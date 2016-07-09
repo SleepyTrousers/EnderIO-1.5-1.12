@@ -103,7 +103,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
       if (b != null && b != EnderIO.blockConduitBundle) {
-        try {
+        try {// TODO: This seems wrong. pickBlock?
           Item item = b.getItemDropped(bs, world.rand, 0);
           if (item != null) {
             stacks.put(direction, new ItemStack(item, 1, b.damageDropped(bs)));
