@@ -35,7 +35,7 @@ public class YetaWrenchOverlayRenderer {
   }
 
   @SubscribeEvent
-  public void renderOverlay(RenderGameOverlayEvent event) {
+  public void renderOverlay(RenderGameOverlayEvent.Post event) {
     ItemStack equippedWrench = getEquippedWrench();
     if(equippedWrench != null && event.getType() == ElementType.ALL) {
       doRenderOverlay(event, equippedWrench);
