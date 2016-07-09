@@ -121,6 +121,7 @@ enderio.itemOCConduit.name=Network Conduit (OC)
 
 //display string for Skeleton(type==1)
 entity.witherSkeleton.name=Wither Skeleton
+entity.ZombieVillager.name=Zombie Villager
 
 //Materials
 enderio.itemMaterial.name=Materials
