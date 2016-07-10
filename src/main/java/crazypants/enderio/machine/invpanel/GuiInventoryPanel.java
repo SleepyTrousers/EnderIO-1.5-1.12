@@ -451,14 +451,27 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(font == null) {
       font = fontRendererObj;
     }
+    
+    boolean smallText = Config.inventoryPanelScaleText;    
     String str = null;
     if(stack.stackSize >= 1000) {
-      int value = stack.stackSize / 1000;
       String unit = "k";
-      if(value >= 1000) {
-        value /= 1000;
-        unit = "m";
+      int units = 1000;
+      int value = stack.stackSize / units;      
+      
+      if (smallText) {
+        if (value >= units) {
+          units *= 1000;
+          value /= 1000;
+          unit = "m";
+        }
+        double val = (stack.stackSize % units) / (double) units;
+        int bit = (int) Math.floor(val * 10);
+        if (bit > 0) {
+          unit = "." + bit + unit;
+        }
       }
+            
       str = value + unit;
     } else if(stack.stackSize > 1) {
       str = Integer.toString(stack.stackSize);
@@ -470,7 +483,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glPushMatrix();
       GL11.glTranslatef(x + 16, y + 16, 0);
-      font.drawStringWithShadow(str, 1 - font.getStringWidth(str), -8, 0xFFFFFF);
+      
+      if (smallText) {        
+        float scale = 0.666666f;
+        GL11.glPushMatrix();
+        GL11.glScalef(scale, scale, scale);
+        font.drawStringWithShadow(str, - font.getStringWidth(str) - 1, -8, 0xFFFFFF);
+        GL11.glPopMatrix();
+      } else {
+        font.drawStringWithShadow(str, -font.getStringWidth(str), -8, 0xFFFFFF);
+      }
+      
       GL11.glPopMatrix();
       GL11.glEnable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_DEPTH_TEST);
