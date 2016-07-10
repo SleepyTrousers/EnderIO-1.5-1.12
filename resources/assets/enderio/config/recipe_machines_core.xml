@@ -293,7 +293,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Solar Panel 1" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
@@ -315,7 +314,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Solar Panel 2" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
@@ -337,7 +335,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Solar Panel 3" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
