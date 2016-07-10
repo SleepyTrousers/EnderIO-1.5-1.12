@@ -11,7 +11,6 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
 import crazypants.util.GalacticraftUtil;
-import crazypants.util.NullHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -202,7 +201,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   /*
-   * Do a second (late) pass and try to preserve any remaining items by spawning them into the world. They might end up nowhere, but if we do nothing the will
+   * Do a second (late) pass and try to preserve any remaining items by spawning them into the world. They might end up nowhere, but if we do nothing they will
    * be deleted. Note the dropping at the old location, because the new player object's location has not yet been set.
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -243,7 +242,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, @Nonnull ItemStack item) {
-    if (entityPlayer != null && NullHelper.untrust(entityPlayer.worldObj) != null) {
+    if (entityPlayer != null && entityPlayer.worldObj != null) {
       EntityItem entityitem = new EntityItem(entityPlayer.worldObj, entityPlayer.posX, entityPlayer.posY + 0.5, entityPlayer.posZ, item);
       entityitem.setPickupDelay(40);
       entityitem.lifespan *= 2;
