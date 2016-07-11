@@ -456,6 +456,7 @@ enderio.farm.note.outputFull=Output Full
 enderio.farm.note.noSeeds=No Seeds
 enderio.farm.note.noAxe=No Axe
 enderio.farm.note.noHoe=No Hoe
+enderio.farm.note.noShears=No Shears
 enderio.farm.note.noTreetap=No Treetap
 enderio.farm.note.noPower=No Power
 enderio.farm.gui.baseUse=Base Use:

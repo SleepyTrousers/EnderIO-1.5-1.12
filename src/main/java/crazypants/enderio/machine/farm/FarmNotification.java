@@ -9,7 +9,8 @@ public enum FarmNotification {
   NO_AXE("noAxe"),
   NO_HOE("noHoe"),
   NO_TREETAP("noTreetap"),
-  NO_POWER("noPower");
+  NO_POWER("noPower"),
+  NO_SHEARS("noShears");
 
   private final String langStr;
 

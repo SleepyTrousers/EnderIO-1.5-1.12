@@ -27,7 +27,8 @@ public final class FarmersRegistry {
 
   private static final Things SAPLINGS = new Things("treeSapling");
   private static final Things WOODS = new Things("logWood", "blockSlimeCongealed");
-  private static final Things FLOWERS = new Things("block:BiomesOPlenty:flowers", "block:BiomesOPlenty:flowers2", "block:Botany:flower", "block:Botania:flower")
+  private static final Things FLOWERS = new Things("block:BiomesOPlenty:flowers", "block:BiomesOPlenty:flowers2", "block:Botany:flower", "block:botania:flower",
+      "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower", "block:botania:mushroom")
       .add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
   public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();

@@ -18,6 +18,7 @@ public class BotaniaUtil {
       try {
         Class<?> solegnolia = Class.forName(SOLEGNOLIA);
         hasSolegnoliaAround = solegnolia.getMethod(HAS_SOLEGNOLIA_AROUND, Entity.class);
+        Log.debug("Found Botania's Solegnolia class. Magnet will not be greedy.");
       } catch (Throwable t) {
         Log.debug("Didn't find Botania's Solegnolia class. Magnet will be greedy.");
       }

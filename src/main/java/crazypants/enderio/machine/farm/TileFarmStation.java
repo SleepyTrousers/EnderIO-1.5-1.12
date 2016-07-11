@@ -239,7 +239,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return getTool(type) != null;
   }
 
-  private ItemStack getTool(ToolType type) {
+  public ItemStack getTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if (ToolType.isBrokenTinkerTool(inventory[i])) {
         for (int j = slotDefinition.minOutputSlot; j <= slotDefinition.maxOutputSlot; j++) {
