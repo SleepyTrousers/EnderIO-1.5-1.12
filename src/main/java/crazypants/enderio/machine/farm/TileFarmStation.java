@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -49,6 +50,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
 import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
+import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
 import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
 
 @Storable
@@ -239,9 +241,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return getTool(type) != null;
   }
 
+  private boolean isDryRfTool(ItemStack stack) {
+    return farmEvictEmptyRFTools && stack != null && stack.getItem() instanceof IEnergyContainerItem
+        && ((IEnergyContainerItem) stack.getItem()).getEnergyStored(stack) <= 0
+        && ((IEnergyContainerItem) stack.getItem()).getMaxEnergyStored(stack) > 0;
+  }
+
   public ItemStack getTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if (ToolType.isBrokenTinkerTool(inventory[i])) {
+      if (ToolType.isBrokenTinkerTool(inventory[i]) || isDryRfTool(inventory[i])) {
         for (int j = slotDefinition.minOutputSlot; j <= slotDefinition.maxOutputSlot; j++) {
           if (inventory[j] == null) {
             inventory[j] = inventory[i];

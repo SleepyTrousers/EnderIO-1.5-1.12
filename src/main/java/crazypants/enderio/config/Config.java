@@ -339,6 +339,7 @@ public final class Config {
   public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
   public static boolean farmStopOnNoOutputSlots = true;
+  public static boolean farmEvictEmptyRFTools = true;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -1141,6 +1142,9 @@ public final class Config {
     farmStopOnNoOutputSlots = config.get(sectionFarm.name, "farmStopOnNoOutputSlots", farmStopOnNoOutputSlots,
         "If this is enabled the farm will stop if there is not at least one empty output slot. Otherwise it will only stop if all output slots are full.")
         .getBoolean();
+
+    farmEvictEmptyRFTools = config.get(sectionFarm.name, "farmEvictEmptyRFTools", farmEvictEmptyRFTools,
+        "If this is enabled the farm will move tools that can store RF and are empty to the output slots instead of using them.").getBoolean();
 
     magnetPowerUsePerSecondRF = config.get(sectionMagnet.name, "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF,
         "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerSecondRF);
