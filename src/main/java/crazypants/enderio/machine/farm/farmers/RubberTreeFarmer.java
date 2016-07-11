@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.farm.farmers;
 
 import java.util.List;
+import java.util.Random;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -20,7 +21,7 @@ import net.minecraftforge.common.IShearable;
 
 public abstract class RubberTreeFarmer extends TreeFarmer {
 
-  private ItemStack stickyResin;
+  protected ItemStack stickyResin;
 
   public RubberTreeFarmer(Block sapling, Block wood, Item treetap, ItemStack resin) {
     super(sapling, wood);
@@ -125,10 +126,14 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   private void harvest(HarvestResult res, World world, BlockPos pos) {
     world.setBlockState(pos, removeResin(world.getBlockState(pos)), 3);
-    ItemStack drop = stickyResin.copy();
+    ItemStack drop = makeResin(world.rand);
     EntityItem dropEnt = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, drop);
     res.getDrops().add(dropEnt);
     res.getHarvestedBlocks().add(pos);
+  }
+
+  protected ItemStack makeResin(Random rand) {
+    return stickyResin.copy();
   }
 
   protected abstract boolean hasResin(IBlockState state);

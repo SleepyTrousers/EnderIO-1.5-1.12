@@ -333,7 +333,8 @@ public final class Config {
       "basemetals:platinum_hoe", "basemetals:silver_hoe", "basemetals:starsteel_hoe", "basemetals:steel_hoe", "basemetals:tin_hoe",
       "actuallyadditions:itemHoeQuartz", "actuallyadditions:itemHoeEmerald", "actuallyadditions:itemHoeObsidian",
       "actuallyadditions:itemHoeCrystalRed", "actuallyadditions:itemHoeCrystalBlue", "actuallyadditions:itemHoeCrystalLightBlue",
-      "actuallyadditions:itemHoeCrystalBlack", "actuallyadditions:itemHoeCrystalGreen", "actuallyadditions:itemHoeCrystalWhite", "silentgems:Hoe"
+      "actuallyadditions:itemHoeCrystalBlack", "actuallyadditions:itemHoeCrystalGreen", "actuallyadditions:itemHoeCrystalWhite", "silentgems:Hoe",
+      "ic2:bronze_hoe" // IC2exp
   };
   public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
