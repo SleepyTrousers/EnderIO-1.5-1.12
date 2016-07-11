@@ -109,9 +109,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int sortMode = te.getGuiSortMode();
     int sortOrderIdx = sortMode >> 1;
     SortOrder[] orders = SortOrder.values();
-    if(sortOrderIdx >= 0 && te.getGuiSortMode() < orders.length) {
+    if(sortOrderIdx >= 0 && sortOrderIdx < orders.length) {
       view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
-    }
+    } 
 
     FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
