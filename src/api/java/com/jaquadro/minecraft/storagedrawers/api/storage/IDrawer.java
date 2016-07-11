@@ -22,8 +22,19 @@ public interface IDrawer
      *
      * @param itemPrototype An ItemStack representing the type, metadata, and tags of the item to store.
      * @param amount The amount to initialize the stored item count to.
+     * @deprecated setStoredItem may redirect its set to another IDrawer, so use setStoredItemRedir instead.
      */
+    @Deprecated
     void setStoredItem (ItemStack itemPrototype, int amount);
+
+    /**
+     * Sets the type of the stored item and initializes it to the given amount.  Any existing item will be replaced.
+     *
+     * @param itemPrototype An ItemStack representing the type, metadata, and tags of the item to store.
+     * @param amount The amount to initialize the stored item count to.
+     * @return The IDrawer actually set with the prototype.  Some drawer groups can redirect a set operation to another member.
+     */
+    IDrawer setStoredItemRedir (ItemStack itemPrototype, int amount);
 
     /**
      * Gets the number of items stored in this drawer.
