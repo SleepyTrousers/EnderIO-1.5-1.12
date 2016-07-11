@@ -8,9 +8,9 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
 import crazypants.enderio.render.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.ITintedItem;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
@@ -79,14 +79,14 @@ public class BlockColoredFusedQuartz extends BlockFusedQuartz {
     return new BlockItemFusedQuartzColored(this, getName());
   }
 
-  public static class BlockItemFusedQuartzColored extends BlockItemPaintedBlock implements IItemColor, IWithPaintName {
+  public static class BlockItemFusedQuartzColored extends BlockItemPaintedBlock implements ITintedItem, IWithPaintName {
 
     public BlockItemFusedQuartzColored(BlockColoredFusedQuartz block, String name) {
       super(block, name);
     }
 
     @Override
-    public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+    public int getItemTint(ItemStack stack, int tintIndex) {
       return stack == null ? -1 : EnumDyeColor.byMetadata(stack.getMetadata()).getMapColor().colorValue;
     }
 
