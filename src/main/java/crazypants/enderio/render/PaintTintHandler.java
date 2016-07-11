@@ -34,8 +34,14 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
     if (item instanceof IItemColor) {
       return ((IItemColor) item).getColorFromItemstack(stack, tintIndex);
     }
+    if (item instanceof ITintedItem) {
+      return ((ITintedItem) item).getItemTint(stack, tintIndex);
+    }
     if (block instanceof IItemColor) {
       return ((IItemColor) block).getColorFromItemstack(stack, tintIndex);
+    }
+    if (block instanceof ITintedItem) {
+      return ((ITintedItem) block).getItemTint(stack, tintIndex);
     }
     return -1;
   }
