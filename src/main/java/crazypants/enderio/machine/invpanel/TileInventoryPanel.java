@@ -17,6 +17,8 @@ import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -37,14 +39,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
+public class TileInventoryPanel extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;
@@ -82,6 +83,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
     this.fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
     this.fuelTank.setTileEntity(this);
+    this.fuelTank.setCanDrain(false);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
@@ -355,43 +357,6 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(from != getIODirection()) {
-      return 0;
-    }
-    return fuelTank.fill(resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return from == getIODirection() && fuelTank.canFill(fluid);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return false;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if(from == getIODirection()) {
-      return new FluidTankInfo[] { fuelTank.getInfo() };
-    } else {
-      return new FluidTankInfo[0];
-    }
-  }
-
-  @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     if(forFluidType != null && fuelTank.canFill(forFluidType.getFluid())) {
       return fuelTank;
@@ -437,6 +402,25 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
         return fuelTank.getCapacity();
       }
     });
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, fuelTank);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

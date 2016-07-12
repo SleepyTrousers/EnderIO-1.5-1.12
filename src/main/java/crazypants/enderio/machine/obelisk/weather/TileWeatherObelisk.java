@@ -24,15 +24,12 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,7 +38,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.WEATHER_POWER_USE;
 
 @Storable
-public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, IFluidHandler, ITankAccess.IExtendedTankAccess {
+public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, ITankAccess.IExtendedTankAccess {
 
   public enum WeatherTask {
     CLEAR(Color.YELLOW) {
@@ -108,7 +105,14 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean tanksDirty;
 
   @Store
-  private SmartTank inputTank = new SmartTank(8000);
+  private SmartTank inputTank = new SmartTank(8000) {
+
+    @Override
+    public boolean canFillFluidType(FluidStack resource) {
+      return super.canFillFluidType(resource) && resource != null && isValidFluid(resource.getFluid());
+    }
+
+  };
   
   /* client fields */
   private float progress = 0; // client only
@@ -117,6 +121,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
     inputTank.setTileEntity(this);
+    inputTank.setCanDrain(false);
   }
 
   @Override
@@ -124,7 +129,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockWeatherObelisk.getUnlocalisedName();
   }
 
@@ -302,39 +307,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   @Override
   public void setTanksDirty() {
     tanksDirty = true;
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if (resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
-      return 0;
-    }
-    return inputTank.fill(resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return isValidFluid(fluid);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return false;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { inputTank.getInfo() };
   }
 
   @SuppressWarnings("null")

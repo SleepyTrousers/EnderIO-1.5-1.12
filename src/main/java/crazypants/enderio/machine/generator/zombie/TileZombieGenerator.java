@@ -28,16 +28,13 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   private static int IO_MB_TICK = 250;
 
@@ -176,36 +173,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    return tank.fill(resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return tank.canFill(fluid);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return false;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { tank.getInfo() };
   }
 
   public int getFluidStored(EnumFacing from) {

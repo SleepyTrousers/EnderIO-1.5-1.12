@@ -156,7 +156,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockTransceiver.getUnlocalisedName();
   }
 

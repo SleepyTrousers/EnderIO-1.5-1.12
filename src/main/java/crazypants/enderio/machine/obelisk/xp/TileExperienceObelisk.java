@@ -22,21 +22,19 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileExperienceObelisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience, ITankAccess {
+public class TileExperienceObelisk extends AbstractMachineEntity implements IHaveExperience, ITankAccess {
 
   @Store
   private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
   public TileExperienceObelisk() {
     super(new SlotDefinition(0, 0, 0));
+    xpCont.setTileEntity(this);
   }
 
   @Override
@@ -83,36 +81,6 @@ public class TileExperienceObelisk extends AbstractMachineEntity implements IFlu
       }
     }
     return res;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return xpCont.canFill(from, fluid);
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    return xpCont.fill(from, resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return xpCont.drain(from, resource, doDrain);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return xpCont.drain(from, maxDrain, doDrain);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return xpCont.canDrain(from, fluid);
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return xpCont.getTankInfo(from);
   }
 
   @Override

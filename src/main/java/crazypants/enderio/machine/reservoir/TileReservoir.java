@@ -22,18 +22,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 @Storable
-public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess.IExtendedTankAccess {
+public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
   @Store
   SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
@@ -167,44 +164,6 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
       updateBlock();
       tankDirty = false;
     }
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    return tank.fill(resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    if (canRefill) {
-      return tank.drain(maxDrain, doDrain);
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if (canRefill) {
-      return tank.drain(resource, doDrain);
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return fluid == FluidRegistry.WATER;
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return fluid == FluidRegistry.WATER;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { tank.getInfo() };
   }
 
   public void setAutoEject(boolean autoEject) {

@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.fluid.Fluids;
@@ -63,6 +64,7 @@ public class ExperienceContainer extends FluidTank {
     experienceTotal = xpCon.experienceTotal;
     experienceLevel = xpCon.experienceLevel;
     experience = xpCon.experience;    
+    onContentsChanged();
   }
 
   public int addExperience(int xpToAdd) {
@@ -75,6 +77,7 @@ public class ExperienceContainer extends FluidTank {
     experienceLevel = XpUtil.getLevelForExperience(experienceTotal);    
     experience = (experienceTotal - XpUtil.getExperienceForLevel(experienceLevel)) / (float)getXpBarCapacity();
     xpDirty = true;
+    onContentsChanged();
     return xpToAdd;
   }
 
@@ -146,8 +149,8 @@ public class ExperienceContainer extends FluidTank {
       return null;
     }
     int available = getFluidAmount();
-    int canDrain = Math.min(available, maxDrain);
-    final int xpAskedToExtract = XpUtil.liquidToExperience(canDrain);
+    int toDrain = Math.min(available, maxDrain);
+    final int xpAskedToExtract = XpUtil.liquidToExperience(toDrain);
     // only return multiples of 1 XP (20mB) to avoid duping XP when being asked
     // for low values (like 10mB/t)
     final int fluidToExtract = XpUtil.experienceToLiquid(xpAskedToExtract);
@@ -288,6 +291,16 @@ public class ExperienceContainer extends FluidTank {
   @Override
   public void setCapacity(int capacity) {
     throw new InvalidParameterException();
+  }
+
+  @Override
+  protected void onContentsChanged() {
+    super.onContentsChanged();
+    if (tile instanceof ITankAccess) {
+      ((ITankAccess) tile).setTanksDirty();
+    } else if (tile != null) {
+      tile.markDirty();
+    }
   }
 
 }

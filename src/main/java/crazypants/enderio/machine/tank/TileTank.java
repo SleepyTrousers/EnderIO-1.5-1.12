@@ -16,7 +16,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -27,17 +26,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
+public class TileTank extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   private static int IO_MB_TICK = 100;
 
@@ -85,57 +81,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
       }
     }
     return res;
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if(!canFill(from)) {
-      return 0;
-    }
-    return tank.fill(resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if(!canDrain(from)) {
-      return null;
-    }
-    return tank.drain(resource, doDrain);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    if(!canDrain(from)) {
-      return null;
-    }
-    return tank.drain(maxDrain, doDrain);
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    
-    return canFill(from) && fluid != null
-        && (tank.getFluidAmount() > 0 && FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid) || tank.getFluidAmount() == 0);
-  }
-
-  private boolean canFill(EnumFacing from) {
-    IoMode mode = getIoMode(from);
-    return mode != IoMode.PUSH && mode != IoMode.DISABLED;
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return canDrain(from) && tank.canDrain(fluid);
-  }
-
-  private boolean canDrain(EnumFacing from) {
-    IoMode mode = getIoMode(from);
-    return mode != IoMode.PULL && mode != IoMode.DISABLED;
-  }
-  
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { new FluidTankInfo(tank) };
   }
 
   private int getFilledLevel() {

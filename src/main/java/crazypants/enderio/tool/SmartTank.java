@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -56,7 +57,7 @@ public class SmartTank extends FluidTank {
    * Used by: te.canDrain()
    */
   public boolean canDrain(Fluid fl) {
-    if (fl == null || fluid == null || !canDrain()) {
+    if (fluid == null || fl == null || !canDrain()) {
       return false;
     }
 
@@ -127,6 +128,7 @@ public class SmartTank extends FluidTank {
     } else {
       setFluid(null);
     }
+    onContentsChanged();
   }
 
   @Override
@@ -166,19 +168,26 @@ public class SmartTank extends FluidTank {
 
   public void addFluidAmount(int amount) {
     setFluidAmount(getFluidAmount() + amount);
+    if (tile != null) {
+      FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorld(), tile.getPos(), this, amount));
+    }
   }
 
   public int removeFluidAmount(int amount) {
+    int drained = 0;
     if (getFluidAmount() > amount) {
       setFluidAmount(getFluidAmount() - amount);
-      return amount;
+      drained = amount;
     } else if (!isEmpty()) {
-      int result = getFluidAmount();
+      drained = getFluidAmount();
       setFluidAmount(0);
-      return result;
     } else {
       return 0;
     }
+    if (tile != null) {
+      FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, tile.getWorld(), tile.getPos(), this, drained));
+    }
+    return drained;
   }
 
   @Override

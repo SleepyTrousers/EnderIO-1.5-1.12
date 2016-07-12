@@ -60,12 +60,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -75,7 +72,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileKillerJoe extends AbstractMachineEntity
-    implements IFluidHandler, IHaveExperience, ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
+    implements IHaveExperience, ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
 
   public static class ZombieCache {
 
@@ -133,6 +130,7 @@ public class TileKillerJoe extends AbstractMachineEntity
       maxXP = XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel);
     }
     xpCon = new ExperienceContainer(maxXP);
+    xpCon.setTileEntity(this);
     xpCon.setCanFill(false);
     if (zCache == null) {
       zCache = new ZombieCache();
@@ -511,36 +509,6 @@ public class TileKillerJoe extends AbstractMachineEntity
       }
     }
     return res;
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    return tank.fill(resource, doFill);
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    return tank.canFill(fluid);
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { tank.getInfo() };
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return xpCon.drain(from, resource, doDrain);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return xpCon.drain(from, maxDrain, doDrain);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return xpCon.canDrain(from, fluid);
   }
 
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");

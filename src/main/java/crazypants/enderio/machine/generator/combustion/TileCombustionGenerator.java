@@ -30,17 +30,14 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity
-    implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
+    implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
   private final SmartTank coolantTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5) {
@@ -127,35 +124,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   @Override
   public boolean isActive() {
     return active;
-  }
-
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    if (resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
-      return 0;
-    }
-    int res = 0;
-
-    IFluidCoolant cool = FluidFuelRegister.instance.getCoolant(resource.getFluid());
-    if (cool != null) {
-      res = getCoolantTank().fill(resource, doFill);
-    } else {
-      IFluidFuel f = FluidFuelRegister.instance.getFuel(resource.getFluid());
-      if (f != null) {
-        res = getFuelTank().fill(resource, doFill);
-      }
-    }
-    return res;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
   }
 
   @Override
@@ -326,27 +294,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     double toCool = 1d / (HEAT_PER_RF * power);
     int numTicks = (int) Math.round(toCool / (cooling * 1000));
     return numTicks;
-  }
-
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    if (isSideDisabled(from) || fluid == null) {
-      return false;
-    }
-    return FluidFuelRegister.instance.getCoolant(fluid) != null || FluidFuelRegister.instance.getFuel(fluid) != null;
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return false;
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if (isSideDisabled(from)) {
-      return new FluidTankInfo[0];
-    }
-    return new FluidTankInfo[] { getCoolantTank().getInfo(), getFuelTank().getInfo() };
   }
 
   public int getGeneratedLastTick() {

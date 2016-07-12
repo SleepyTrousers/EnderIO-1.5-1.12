@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.soul;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -8,11 +7,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
-import com.enderio.core.common.fluid.IFluidWrapper;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -31,11 +28,8 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
@@ -44,7 +38,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
 
 @Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity
-    implements IHaveExperience, IFluidHandler, ITankAccess, IFluidWrapper, IPaintable.IPaintableTileEntity {
+    implements IHaveExperience, ITankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel)) {
@@ -61,15 +55,16 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
       } else if (max < resource.amount) {
         FluidStack copy = resource.copy();
         copy.amount = max;
-        return xpCont.fill(from, copy, doFill);
+        return super.fill(from, copy, doFill);
       } else {
-        return xpCont.fill(from, resource, doFill);
+        return super.fill(from, resource, doFill);
       }
     }
   };
 
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
+    xpCont.setTileEntity(this);
   }
 
   @Override
@@ -225,40 +220,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {    
-    return xpCont.canFill(from, fluid);
-  }
-  
-  @Override
-  public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    return xpCont.fill(from, resource, doFill);
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if (resource != null) {
-      return xpCont.drain(from, resource.amount, doDrain);
-    } else {
-      return null;
-    }
-  }
-
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {    
-    return xpCont.drain(from, maxDrain, doDrain);
-  }
-
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {    
-    return xpCont.canDrain(from, fluid);
-  }
-
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {    
-    return xpCont.getTankInfo(from);
-  }
-
-  @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     return xpCont;
   }
@@ -311,37 +272,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
       break;
     }
     return pitch + random.nextFloat() * 0.08f - 0.04f;
-  }
-
-  @Override
-  public int offer(FluidStack resource) {
-    return fill(null, resource, false);
-  }
-
-  @Override
-  public int fill(FluidStack resource) {
-    setTanksDirty();
-    return fill(null, resource, true);
-  }
-
-  @Override
-  @Nullable
-  public FluidStack drain(FluidStack resource) {
-    setTanksDirty();
-    return drain(null, resource, true);
-  }
-
-  @Override
-  @Nullable
-  public FluidStack getAvailableFluid() {
-    return new FluidStack(Fluids.fluidXpJuice, Math.min(XpUtil.experienceToLiquid(getExcessXP()), xpCont.getFluidAmount()));
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  @Nonnull
-  public List<ITankInfoWrapper> getTankInfoWrappers() {
-    return Collections.<ITankInfoWrapper> emptyList();
   }
 
   private SmartTankFluidHandler smartTankFluidHandler;
