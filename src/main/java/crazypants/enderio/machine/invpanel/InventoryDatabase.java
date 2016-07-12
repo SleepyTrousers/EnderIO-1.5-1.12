@@ -55,7 +55,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     if(nbt == null && itemID < SIMPLE_MAX_ITEMID && meta < SIMPLE_MAX_META) {
       return getSimpleItem(itemID, meta, create);
     } else {
-      return getComplexItem(itemID, meta, nbt);
+      return getComplexItem(itemID, meta, nbt, create);
     }
   }
 
@@ -66,11 +66,11 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     return createItemEntry(dbId, hash, itemID, meta, nbt);
   }
 
-  private ItemEntry getComplexItem(int itemID, int meta, NBTTagCompound nbt) {
+  private ItemEntry getComplexItem(int itemID, int meta, NBTTagCompound nbt, boolean create) {
     int hash = computeComplexHash(itemID, meta, nbt);
     ItemEntryKey key = new ItemEntryKey(hash, itemID, meta, nbt);
     ItemEntry entry = complexRegistry.get(key);
-    if(entry == null) {
+    if(entry == null && create) {
       if(nbt != null) {
         nbt = (NBTTagCompound) nbt.copy();
       }
