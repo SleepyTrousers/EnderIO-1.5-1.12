@@ -10,6 +10,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
@@ -20,6 +21,7 @@ import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +34,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -162,6 +165,17 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
       if (targetWorld.getBlockState(pos).getBlock() != EnderIO.blockInventoryPanel) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")));
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
+      }
+
+      if (!(world instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
+        Log.warn("Unexpected world or player: " + world + " " + player);
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.error")));
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
+      }
+
+      if (!((WorldServer) world).getPlayerChunkMap().isPlayerWatchingChunk((EntityPlayerMP) player, pos.getX() >> 4, pos.getZ() >> 4)) {
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded.client")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 

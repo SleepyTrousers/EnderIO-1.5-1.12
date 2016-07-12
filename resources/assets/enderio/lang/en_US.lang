@@ -1385,6 +1385,8 @@ enderio.remoteinv.chat.notloaded=ERROR: Target is not loaded
 enderio.remoteinv.chat.invalidtarget=ERROR: Target does not exist
 enderio.remoteinv.chat.outofpower=ERROR: Out of power
 enderio.remoteinv.chat.outoffluid=ERROR: Out of nutrient distillation
+enderio.remoteinv.chat.notloaded.client=ERROR: Target is not loaded client-side (not yet implemented)
+enderio.remoteinv.chat.error=ERROR: Technical error, see log
 
 item.itemRemoteInvAccessbasic.name=Inventory Panel Remote
 item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 10 chunks away.
