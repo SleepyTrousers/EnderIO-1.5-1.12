@@ -72,7 +72,7 @@ public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
     ItemEntry entry = complexRegistry.get(key);
     if(entry == null && create) {
       if(nbt != null) {
-        nbt = nbt.copy();
+        nbt = (NBTTagCompound) nbt.copy();
       }
       entry = createItemEntry(COMPLEX_DBINDEX_START + complexItems.size(), hash, itemID, meta, nbt);
       complexItems.add(entry);
