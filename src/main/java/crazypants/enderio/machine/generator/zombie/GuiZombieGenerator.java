@@ -13,6 +13,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -70,7 +71,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     FontRenderer fr = getFontRenderer();
     int output = 0;
     if(gen.isActive()) {
-      output = gen.outputPerTick;
+      output = gen.getPowerUsePerTick();
     }
     String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
@@ -84,7 +85,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
+        txt = Config.zombieGeneratorTicksPerBucketFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }
