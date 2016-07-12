@@ -21,6 +21,8 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
@@ -56,6 +58,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -63,6 +66,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -129,10 +133,13 @@ public class TileKillerJoe extends AbstractMachineEntity
       maxXP = XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel);
     }
     xpCon = new ExperienceContainer(maxXP);
+    xpCon.setCanFill(false);
     if (zCache == null) {
       zCache = new ZombieCache();
       MinecraftForge.EVENT_BUS.register(zCache);
     }
+    tank.setTileEntity(this);
+    tank.setCanDrain(false);
   }
 
   @Override
@@ -481,8 +488,7 @@ public class TileKillerJoe extends AbstractMachineEntity
   // ------------------------------- Fluid Stuff
 
   private void useNutrient() {
-    tank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
-    tanksDirty = true;
+    tank.removeFluidAmount(Config.killerJoeNutrientUsePerAttackMb);
   }
 
   @Override
@@ -509,11 +515,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int res = tank.fill(resource, doFill);
-    if (res > 0 && doFill) {
-      tanksDirty = true;
-    }
-    return res;
+    return tank.fill(resource, doFill);
   }
 
   @Override
@@ -667,6 +669,25 @@ public class TileKillerJoe extends AbstractMachineEntity
         return tank.getCapacity();
       }
     });
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank, xpCon);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

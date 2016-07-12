@@ -13,6 +13,8 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -28,11 +30,13 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
@@ -43,7 +47,26 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
     implements IHaveExperience, IFluidHandler, ITankAccess, IFluidWrapper, IPaintable.IPaintableTileEntity {
 
   @Store
-  private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
+  private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel)) {
+    @Override
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+      return super.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
+    }
+
+    @Override
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+      int max = XpUtil.experienceToLiquid(getXPRequired());
+      if (resource == null || max <= 0) {
+        return 0;
+      } else if (max < resource.amount) {
+        FluidStack copy = resource.copy();
+        copy.amount = max;
+        return xpCont.fill(from, copy, doFill);
+      } else {
+        return xpCont.fill(from, resource, doFill);
+      }
+    }
+  };
 
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
@@ -208,33 +231,21 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int max = XpUtil.experienceToLiquid(getXPRequired());
-    if (resource == null || max <= 0) {
-      return 0;
-    } else if (max < resource.amount) {
-      FluidStack copy = resource.copy();
-      copy.amount = max;
-      return xpCont.fill(from, copy, doFill);
-    } else {
-      return xpCont.fill(from, resource, doFill);
-    }
+    return xpCont.fill(from, resource, doFill);
   }
 
   @Override
   public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    int max = XpUtil.experienceToLiquid(getExcessXP());
-    if (resource != null && max < resource.amount) {
-      FluidStack copy = resource.copy();
-      copy.amount = max;
-      return xpCont.drain(from, copy, doDrain);
+    if (resource != null) {
+      return xpCont.drain(from, resource.amount, doDrain);
     } else {
-      return xpCont.drain(from, resource, doDrain);
+      return null;
     }
   }
 
   @Override
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {    
-    return xpCont.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
+    return xpCont.drain(from, maxDrain, doDrain);
   }
 
   @Override
@@ -331,6 +342,25 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   @Nonnull
   public List<ITankInfoWrapper> getTankInfoWrappers() {
     return Collections.<ITankInfoWrapper> emptyList();
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

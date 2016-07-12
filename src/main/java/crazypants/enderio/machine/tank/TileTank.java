@@ -13,6 +13,8 @@ import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -24,6 +26,7 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,6 +34,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -54,6 +58,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     } else {
       tank = new SmartTank(16000);
     }
+    tank.setTileEntity(this);
   }
 
   public TileTank() {
@@ -87,15 +92,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     if(!canFill(from)) {
       return 0;
     }
-    return fillInternal(resource, doFill);
-  }
-
-  int fillInternal(FluidStack resource, boolean doFill) {
-    int res = tank.fill(resource, doFill);
-    if(res > 0 && doFill) {
-      setTanksDirty();
-    }
-    return res;
+    return tank.fill(resource, doFill);
   }
 
   @Override
@@ -103,15 +100,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     if(!canDrain(from)) {
       return null;
     }
-    return drainInternal(resource, doDrain);
-  }
-
-  FluidStack drainInternal(FluidStack resource, boolean doDrain) {
-    FluidStack res = tank.drain(resource, doDrain);
-    if(res != null && res.amount > 0 && doDrain) {
-      setTanksDirty();
-    }
-    return res;
+    return tank.drain(resource, doDrain);
   }
 
   @Override
@@ -119,15 +108,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     if(!canDrain(from)) {
       return null;
     }
-    return drainInternal(maxDrain, doDrain);
-  }
-
-  FluidStack drainInternal(int maxDrain, boolean doDrain) {
-    FluidStack res = tank.drain(maxDrain, doDrain);
-    if(res != null && res.amount > 0 && doDrain) {
-      setTanksDirty();
-    }
-    return res;
+    return tank.drain(maxDrain, doDrain);
   }
 
   @Override
@@ -144,7 +125,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
   @Override
   public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return canDrain(from) && tank.canDrainFluidType(fluid);
+    return canDrain(from) && tank.canDrain(fluid);
   }
 
   private boolean canDrain(EnumFacing from) {
@@ -393,6 +374,25 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
         return tank.getCapacity();
       }
     });
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

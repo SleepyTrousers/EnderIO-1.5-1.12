@@ -13,18 +13,22 @@ import com.enderio.core.common.fluid.FluidWrapper;
 
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidReservoirHandler;
 import crazypants.enderio.tool.SmartTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
@@ -33,12 +37,17 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Store
   SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
-  private boolean canRefill = false;
+  public boolean canRefill = false;
 
   @Store
   boolean autoEject = false;
 
   private boolean tankDirty = false;
+
+  public TileReservoir() {
+    super();
+    tank.setTileEntity(this);
+  }
 
   private boolean hasEnoughLiquid() {
     Set<TileReservoir> seen = new HashSet<TileReservoir>();
@@ -99,10 +108,10 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
   protected void doLeak(BlockPos pos1, int maxAmount) {
     TileEntity tileEntity = worldObj.getTileEntity(pos1);
     if (tileEntity instanceof TileReservoir && !((TileReservoir) tileEntity).tank.isFull()) {
-      FluidStack canDrain = tank.drain(maxAmount, false);
+      FluidStack canDrain = tank.drainInternal(maxAmount, false);
       if (canDrain != null && canDrain.amount > 0) {
         int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
-        tank.drain(fill, true);
+        tank.drainInternal(fill, true);
         ((TileReservoir) tileEntity).setTanksDirty();
         setTanksDirty();
       }
@@ -117,10 +126,10 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
         TileReservoir other = (TileReservoir) tileEntity;
         int toMove = (tank.getFluidAmount() - other.tank.getFluidAmount()) / 2;
         if (toMove > 0) {
-          FluidStack canDrain = tank.drain(Math.min(toMove, IO_MB_TICK / 4), false);
+          FluidStack canDrain = tank.drainInternal(Math.min(toMove, IO_MB_TICK / 4), false);
           if (canDrain != null && canDrain.amount > 0) {
             int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
-            tank.drain(fill, true);
+            tank.drainInternal(fill, true);
             ((TileReservoir) tileEntity).setTanksDirty();
             setTanksDirty();
           }
@@ -162,21 +171,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int ret = tank.fill(resource, doFill);
-    if (doFill && ret != 0) {
-      setTanksDirty();
-    }
-    return ret;
+    return tank.fill(resource, doFill);
   }
 
   @Override
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
     if (canRefill) {
-      FluidStack ret = tank.drain(maxDrain, doDrain);
-      if (doDrain && ret != null && ret.amount != 0) {
-        setTanksDirty();
-      }
-      return ret;
+      return tank.drain(maxDrain, doDrain);
     } else {
       return null;
     }
@@ -184,10 +185,11 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
   @Override
   public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+    if (canRefill) {
+      return tank.drain(resource, doDrain);
+    } else {
       return null;
     }
-    return drain(from, resource.amount, doDrain);
   }
 
   @Override
@@ -266,6 +268,25 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
         return tank.getCapacity();
       }
     });
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidReservoirHandler(this, tank);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

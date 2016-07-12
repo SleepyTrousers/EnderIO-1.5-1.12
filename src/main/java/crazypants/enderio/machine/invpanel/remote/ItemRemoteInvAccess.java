@@ -2,6 +2,8 @@ package crazypants.enderio.machine.invpanel.remote;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
@@ -20,6 +22,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -30,8 +33,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -309,5 +317,83 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
   @Override
   public int getEnergyStored(ItemStack container) {
     return ENERGY.getInt(container, 0);
+  }
+
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new CapabilityProvider(stack);
+  }
+
+  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
+    protected final ItemStack container;
+
+    private CapabilityProvider(ItemStack container) {
+      this.container = container;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      return new IFluidTankProperties[] { new IFluidTankProperties() {
+
+        @Override
+        @Nullable
+        public FluidStack getContents() {
+          return ItemRemoteInvAccess.this.getFluid(container);
+        }
+
+        @Override
+        public int getCapacity() {
+          return ItemRemoteInvAccess.this.getCapacity(container);
+        }
+
+        @Override
+        public boolean canFill() {
+          return true;
+        }
+
+        @Override
+        public boolean canDrain() {
+          return false;
+        }
+
+        @Override
+        public boolean canFillFluidType(FluidStack fluidStack) {
+          return fluidStack != null && fluidStack.getFluid() == Fluids.fluidNutrientDistillation;
+        }
+
+        @Override
+        public boolean canDrainFluidType(FluidStack fluidStack) {
+          return false;
+        }
+      } };
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      return ItemRemoteInvAccess.this.fill(container, resource, doFill);
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+      return null;
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+      return null;
+    }
   }
 }

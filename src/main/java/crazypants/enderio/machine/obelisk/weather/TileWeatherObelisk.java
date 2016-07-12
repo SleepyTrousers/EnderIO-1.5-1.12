@@ -116,6 +116,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   public TileWeatherObelisk() {
     super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
+    inputTank.setTileEntity(this);
   }
 
   @Override
@@ -216,7 +217,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
           setEnergyStored(getEnergyStored() - getPowerUsePerTick());
 
           int toUse = 4;
-          inputTank.drain(toUse, true);
+          inputTank.removeFluidAmount(toUse);
           fluidUsed += toUse;
           tanksDirty = true;
         }
@@ -308,11 +309,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     if (resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    int res = inputTank.fill(resource, doFill);
-    if(res > 0 && doFill) {
-      tanksDirty = true;
-    }
-    return res;
+    return inputTank.fill(resource, doFill);
   }
 
   @Override

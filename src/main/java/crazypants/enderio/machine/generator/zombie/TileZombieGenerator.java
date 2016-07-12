@@ -13,6 +13,8 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.fluid.SmartTankFluidHandler;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
@@ -25,12 +27,14 @@ import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -53,6 +57,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   public TileZombieGenerator() {
     super(new SlotDefinition(0, 0, 0), ModObject.blockZombieGenerator);
+    tank.setTileEntity(this);
+    tank.setCanDrain(false);
   }
 
   @Override
@@ -149,9 +155,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     
     ticksRemaingFuel--;    
     if(ticksRemaingFuel <= 0) {
-      tank.drain(1, true);
+      tank.removeFluidAmount(1);
       ticksRemaingFuel = tickPerBucketOfFuel/1000;    
-      tanksDirty = true;
     }    
     setEnergyStored(getEnergyStored() + outputPerTick);     
     return true;
@@ -175,11 +180,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-    int res = tank.fill(resource, doFill);
-    if(res > 0 && doFill) {
-      tanksDirty = true;
-    }
-    return res;
+    return tank.fill(resource, doFill);
   }
 
   @Override
@@ -262,6 +263,25 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
         return tank.getCapacity();
       }
     });
+  }
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
+      }
+      return (T) smartTankFluidHandler.get(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

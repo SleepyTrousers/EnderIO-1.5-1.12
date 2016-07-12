@@ -81,6 +81,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 20, 21, 20));
     this.fuelTank = new SmartTank(Fluids.fluidNutrientDistillation, Config.inventoryPanelFree ? 0 : 2000);
+    this.fuelTank.setTileEntity(this);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
   }
 
@@ -231,8 +232,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
   }
 
   public void useNutrient(int amount) {
-    fuelTank.drain(amount, true);
-    tanksDirty = true;
+    fuelTank.removeFluidAmount(amount);
   }
   
   private int getPower() {
@@ -359,11 +359,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     if(from != getIODirection()) {
       return 0;
     }
-    int res = fuelTank.fill(resource, doFill);
-    if(res > 0 && doFill) {
-      tanksDirty = true;
-    }
-    return res;
+    return fuelTank.fill(resource, doFill);
   }
 
   @Override

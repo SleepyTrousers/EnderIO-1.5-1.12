@@ -49,7 +49,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
           te.outputTank.setFluid(te.inputTank.getFluid());
           te.inputTank.setFluid(null);
         } else if (te.outputTank.getFluid().isFluidEqual(te.inputTank.getFluid()) && te.outputTank.getAvailableSpace() > 0) {
-          FluidStack drain = te.inputTank.drain(te.outputTank.getAvailableSpace(), true);
+          FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
           te.outputTank.fill(drain, true);
         } else {
           ctx.getServerHandler().playerEntity.addChatMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.fail"));
