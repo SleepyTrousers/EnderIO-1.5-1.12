@@ -82,6 +82,7 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedFence;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedGlowstone;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
+import crazypants.enderio.machine.painter.blocks.BlockPaintedRedstone;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
@@ -310,6 +311,7 @@ public class EnderIO {
     blockPaintedStair = BlockPaintedStairs.create();
     blockPaintedSlab = BlockPaintedSlab.create();
     blockPaintedGlowstone = BlockPaintedGlowstone.create();
+    BlockPaintedRedstone.create();
     blockPaintedCarpet = BlockPaintedCarpet.create();
     blockPaintedPressurePlate = BlockPaintedPressurePlate.create();
 

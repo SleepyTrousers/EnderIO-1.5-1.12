@@ -760,6 +760,8 @@ tile.blockPaintedDoubleSlab.name=Painted Slab
 tile.blockPaintedStoneDoubleSlab.name=Painted Stone Slab
 tile.blockPaintedGlowstone.name=Painted Glowstone
 tile.blockPaintedGlowstoneSolid.name=Painted Glowstone
+tile.blockPaintedRedstone.name=Painted Redstone
+tile.blockPaintedRedstoneSolid.name=Painted Redstone
 tile.blockPaintedCarpet.name=Painted Carpet
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 
