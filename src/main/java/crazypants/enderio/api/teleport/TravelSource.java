@@ -9,13 +9,13 @@ public enum TravelSource {
   BLOCK(SoundRegistry.TRAVEL_SOURCE_BLOCK) {
     @Override
     public int getMaxDistanceTravelled() {
-      return Config.travelAnchorMaxDistance;
+      return Config.travelAnchorMaximumDistance;
     }
   },
   STAFF(SoundRegistry.TRAVEL_SOURCE_ITEM) {
     @Override
     public int getMaxDistanceTravelled() {
-      return Config.travelStaffMaxDistance;
+      return Config.travelStaffMaximumDistance;
     }
 
     @Override

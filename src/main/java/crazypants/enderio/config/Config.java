@@ -138,12 +138,12 @@ public final class Config {
   public static boolean transparentFacesLetThroughBeaconBeam = true;
 
   public static boolean travelAnchorEnabled = true;
-  public static int travelAnchorMaxDistance = 48;
+  public static int travelAnchorMaximumDistance = 96;
   public static int travelAnchorCooldown = 0;
   public static boolean travelAnchorSneak = true;
   public static boolean travelAnchorSkipWarning = true;
 
-  public static int travelStaffMaxDistance = 128;
+  public static int travelStaffMaximumDistance = 256;
   public static float travelStaffPowerPerBlockRF = 250;
 
   public static int travelStaffMaxBlinkDistance = 16;
@@ -772,8 +772,8 @@ public final class Config {
     travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
         "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
-    travelAnchorMaxDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaxDistance,
-        "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaxDistance);
+    travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
+        "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
 
     travelAnchorCooldown = config.get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown,
         "Number of ticks cooldown between activations (1 sec = 20 ticks)").getInt(travelAnchorCooldown);
@@ -784,8 +784,8 @@ public final class Config {
     travelAnchorSkipWarning = config.get(sectionAnchor.name, "travelAnchorSkipWarning", travelAnchorSkipWarning,
         "Travel Anchors send a chat warning when skipping inaccessible anchors").getBoolean(travelAnchorSkipWarning);
 
-    travelStaffMaxDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaxDistance,
-        "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaxDistance);
+    travelStaffMaximumDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaximumDistance,
+        "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaximumDistance);
     travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
         "Number of RF required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
 

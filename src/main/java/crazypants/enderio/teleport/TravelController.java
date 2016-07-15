@@ -558,7 +558,7 @@ public class TravelController {
 
     BlockCoord currentBlock = getActiveTravelBlock(player);
     World world = Minecraft.getMinecraft().theWorld;
-    for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaxDistance && y >= 0 && y <= 255; i++, y += direction) {
+    for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
 
       //Circumvents the raytracing used to find candidates on the y axis
       TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.x, y, currentBlock.z));
