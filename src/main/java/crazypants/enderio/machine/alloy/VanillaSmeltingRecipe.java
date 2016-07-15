@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -19,6 +15,10 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
@@ -178,7 +178,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.instance().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
+      int stackSize = output.stackSize;
       output = OreDictionaryPreferences.instance.getPreferred(output).copy();
+      output.stackSize = stackSize;
       result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
     }
     return result;

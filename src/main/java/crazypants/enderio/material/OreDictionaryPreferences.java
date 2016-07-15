@@ -34,8 +34,10 @@ public final class OreDictionaryPreferences {
       result = preferences.get(oreDictName);
     } else {
       List<ItemStack> ores = OreDictionaryHelper.getOres(oreDictName);
-      if(!ores.isEmpty() && ores.get(0) != null) {
-        result = ores.get(0).copy();
+      for (ItemStack ore : ores) {
+        if (result == null || (result.getMetadata() == OreDictionary.WILDCARD_VALUE && ore.getMetadata() != OreDictionary.WILDCARD_VALUE)) {
+          result = ore.copy();
+        }
       }
       preferences.put(oreDictName, result);
     }
@@ -47,7 +49,7 @@ public final class OreDictionaryPreferences {
       return stack;
     }
     StackKey key = new StackKey(stack);
-    if(stackCache.containsKey(key)) {
+    if (stackCache.containsKey(key)) {
       return stackCache.get(key);
     }
     ItemStack result = null;
@@ -55,13 +57,11 @@ public final class OreDictionaryPreferences {
     if(ids != null) {
       for (int i = 0; i < ids.length && result == null; i++) {
         String oreDict = OreDictionary.getOreName(ids[i]);
-        if(preferences.containsKey(oreDict)) {
-          result = preferences.get(oreDict);
-        }
+        result = getPreferred(oreDict);
       }
     }
 
-    if(result == null) {
+    if (result == null || result.getMetadata() == OreDictionary.WILDCARD_VALUE) {
       result = stack.copy();
     }
     stackCache.put(key, result);
