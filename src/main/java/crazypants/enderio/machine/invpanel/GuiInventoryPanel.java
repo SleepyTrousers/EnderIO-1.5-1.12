@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -526,7 +528,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     return (InventoryPanelContainer) inventorySlots;
   }
 
-  public InventoryDatabaseClient getDatabase() {
+  public @Nullable InventoryDatabaseClient getDatabase() {
     return getTileEntity().getDatabaseClient();
   }
 

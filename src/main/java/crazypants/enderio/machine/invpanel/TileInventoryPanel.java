@@ -102,7 +102,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements ITankAc
     return dbClient;
   }
 
-  public InventoryDatabaseClient getDatabaseClient() {
+  public @Nullable InventoryDatabaseClient getDatabaseClient() {
     return dbClient;
   }
 

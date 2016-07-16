@@ -67,6 +67,9 @@ public class CraftingHelper {
 
   public void refill(InventoryPanelContainer container, int amount) {
     InventoryDatabaseClient db = container.getInv().getDatabaseClient();
+    if (db == null) {
+      return;
+    }
     List<Slot> craftingGrid = container.getCraftingGridSlots();
     int slotsToProcess = (1 << 9) - 1;
     boolean madeProgress;

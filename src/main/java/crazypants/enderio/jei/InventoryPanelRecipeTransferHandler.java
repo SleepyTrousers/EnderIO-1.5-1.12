@@ -98,6 +98,9 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
     
     //do we have what we need?
     InventoryDatabaseClient db = invPanelContainer.getInv().getDatabaseClient();
+    if (db == null) {
+      return registry.getJeiHelpers().recipeTransferHandlerHelper().createInternalError();
+    }
    
     List<Integer> missingItemSlots = new ArrayList<Integer>();
     ItemStack[][] ingredients = new ItemStack[9][];
