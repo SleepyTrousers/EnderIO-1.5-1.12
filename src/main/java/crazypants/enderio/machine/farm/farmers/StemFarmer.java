@@ -12,10 +12,12 @@ import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class StemFarmer extends CustomSeedFarmer {
 
@@ -49,22 +51,38 @@ public class StemFarmer extends CustomSeedFarmer {
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
 
     
-    HarvestResult res = new HarvestResult();
+    World worldObj = farm.getWorld();
+    final EntityPlayerMP fakePlayer = farm.getFakePlayer();
+    final int fortune = farm.getMaxLootingValue();
+    HarvestResult result = new HarvestResult();
     BlockPos harvestCoord = bc.getBlockPos();
     boolean done = false;
     do{
       harvestCoord = harvestCoord.offset(EnumFacing.UP);
       boolean hasHoe = farm.hasHoe();
       if(plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
-        res.harvestedBlocks.add(harvestCoord);
-        List<ItemStack> drops = plantedBlock.getDrops(farm.getWorld(), harvestCoord, meta, farm.getMaxLootingValue());
+        result.harvestedBlocks.add(harvestCoord);
+        List<ItemStack> drops = plantedBlock.getDrops(worldObj, harvestCoord, meta, fortune);
+        float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, harvestCoord, meta, fortune, 1.0F, false, fakePlayer);
         if(drops != null) {
           for(ItemStack drop : drops) {
-            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+            if (worldObj.rand.nextFloat() <= chance) {
+              result.drops.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+            }
           }
         }
         farm.damageHoe(1, new BlockCoord(harvestCoord));
         farm.actionPerformed(false);
+
+        ItemStack[] inv = fakePlayer.inventory.mainInventory;
+        for (int slot = 0; slot < inv.length; slot++) {
+          ItemStack stack = inv[slot];
+          if (stack != null) {
+            inv[slot] = null;
+            EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+            result.drops.add(entityitem);
+          }
+        }
       } else {
         if (!hasHoe) {
           farm.setNotification(FarmNotification.NO_HOE);
@@ -75,13 +93,13 @@ public class StemFarmer extends CustomSeedFarmer {
       }
     } while(!done);
 
-    List<BlockPos> toClear = new ArrayList<BlockPos>(res.getHarvestedBlocks());
+    List<BlockPos> toClear = new ArrayList<BlockPos>(result.getHarvestedBlocks());
     Collections.sort(toClear, COMP);
     for (BlockPos coord : toClear) {
       farm.getWorld().setBlockToAir(coord);
     }
 
-    return res;
+    return result;
   }
 
   @Override

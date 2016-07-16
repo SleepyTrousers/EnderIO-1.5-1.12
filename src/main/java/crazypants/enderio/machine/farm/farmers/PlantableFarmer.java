@@ -14,6 +14,7 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class PlantableFarmer implements IFarmerJoe {
 
@@ -152,16 +154,19 @@ public class PlantableFarmer implements IFarmerJoe {
 
     World worldObj = farm.getWorld();
     List<EntityItem> result = new ArrayList<EntityItem>();
+    final EntityPlayerMP fakePlayer = farm.getFakePlayer();
+    final int fortune = farm.getMaxLootingValue();
 
     ItemStack removedPlantable = null;
 
-    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, farm.getMaxLootingValue());
+    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, fortune);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, bc.getBlockPos(), meta, fortune, 1.0F, false, fakePlayer);
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
-        if (stack != null && stack.stackSize > 0) {
+        if (stack != null && stack.stackSize > 0 && worldObj.rand.nextFloat() <= chance) {
           if (!removed && isPlantableForBlock(stack, block)) {
             removed = true;
             removedPlantable = stack.copy();
@@ -174,6 +179,16 @@ public class PlantableFarmer implements IFarmerJoe {
             result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
           }
         }
+      }
+    }
+
+    ItemStack[] inv = fakePlayer.inventory.mainInventory;
+    for (int slot = 0; slot < inv.length; slot++) {
+      ItemStack stack = inv[slot];
+      if (stack != null) {
+        inv[slot] = null;
+        EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+        result.add(entityitem);
       }
     }
 

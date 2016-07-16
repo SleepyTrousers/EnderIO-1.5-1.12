@@ -14,12 +14,14 @@ import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class TreeFarmer implements IFarmerJoe {
 
@@ -123,6 +125,9 @@ public class TreeFarmer implements IFarmerJoe {
       return null;
     }
 
+    World worldObj = farm.getWorld();
+    final EntityPlayerMP fakePlayer = farm.getFakePlayer();
+    final int fortune = farm.getMaxLootingValue();
     HarvestResult res = new HarvestResult();
     harvester.harvest(farm, this, bc.getBlockPos(), res);
     Collections.sort(res.harvestedBlocks, comp);
@@ -142,26 +147,30 @@ public class TreeFarmer implements IFarmerJoe {
       boolean wasSheared = false;
       boolean wasAxed = false;
       boolean wasWood = isWood(blk);
-      
+      float chance = 1.0F;
+
       if (blk instanceof IShearable && hasShears && ((shearCount / res.harvestedBlocks.size() + noShearingPercentage) < 100)) {
-        drops = ((IShearable)blk).onSheared(null, farm.getWorld(), coord, 0);
+        drops = ((IShearable) blk).onSheared(null, worldObj, coord, 0);
         wasSheared = true;
         shearCount += 100;
       } else {
-        drops = blk.getDrops(farm.getWorld(), coord, farm.getBlockState(coord), farm.getAxeLootingValue());
+        drops = blk.getDrops(worldObj, coord, farm.getBlockState(coord), fortune);
+        chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, coord, farm.getBlockState(coord), fortune, chance, false, fakePlayer);
         wasAxed = true;
       }
-      
+
       if(drops != null) {
         for (ItemStack drop : drops) {
-          res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+          if (worldObj.rand.nextFloat() <= chance) {
+            res.drops.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+          }
         }
       }
 
       if (wasAxed && !wasWood) {
         wasAxed = Config.farmAxeDamageOnLeafBreak;
       }
-      
+
       farm.actionPerformed(wasWood || wasSheared);
       if(wasAxed) {
         farm.damageAxe(blk, new BlockCoord(coord));
@@ -175,6 +184,16 @@ public class TreeFarmer implements IFarmerJoe {
       actualHarvests.add(coord);
     }
     
+    ItemStack[] inv = fakePlayer.inventory.mainInventory;
+    for (int slot = 0; slot < inv.length; slot++) {
+      ItemStack stack = inv[slot];
+      if (stack != null) {
+        inv[slot] = null;
+        EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+        res.drops.add(entityitem);
+      }
+    }
+
     if (!hasAxe) {
       farm.setNotification(FarmNotification.NO_AXE);
     }

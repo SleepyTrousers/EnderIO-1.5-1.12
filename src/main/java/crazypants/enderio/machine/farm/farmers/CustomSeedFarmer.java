@@ -12,6 +12,7 @@ import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +20,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class CustomSeedFarmer implements IFarmerJoe {
 
@@ -154,23 +156,38 @@ public class CustomSeedFarmer implements IFarmerJoe {
     }
 
     World worldObj = farm.getWorld();
+    final EntityPlayerMP fakePlayer = farm.getFakePlayer();
+    final int fortune = farm.getMaxLootingValue();
     List<EntityItem> result = new ArrayList<EntityItem>();
 
-    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, farm.getMaxLootingValue());
+    List<ItemStack> drops = block.getDrops(worldObj, bc.getBlockPos(), meta, fortune);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, bc.getBlockPos(), meta, fortune, 1.0F, false, fakePlayer);
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
-        if(!removed && stack.isItemEqual(getSeeds())) {
-          stack.stackSize--;
-          removed = true;
-          if(stack.stackSize > 0) {
+        if (worldObj.rand.nextFloat() <= chance) {
+          if (!removed && stack.isItemEqual(getSeeds())) {
+            stack.stackSize--;
+            removed = true;
+            if (stack.stackSize > 0) {
+              result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
+            }
+          } else {
             result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
           }
-        } else {
-          result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
         }
+      }
+    }
+
+    ItemStack[] inv = fakePlayer.inventory.mainInventory;
+    for (int slot = 0; slot < inv.length; slot++) {
+      ItemStack stack = inv[slot];
+      if (stack != null) {
+        inv[slot] = null;
+        EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+        result.add(entityitem);
       }
     }
 
