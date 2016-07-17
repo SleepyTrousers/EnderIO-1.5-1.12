@@ -1,17 +1,15 @@
 package crazypants.enderio.machine.invpanel;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketGuiSettings, IMessage> {
+public class PacketGuiSettings implements IMessage, IMessageHandler<PacketGuiSettings, IMessage> {
 
+  private int windowId;
   private int sortMode;
   private String filterString;
   private boolean sync;
@@ -20,8 +18,8 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
     filterString = "";
   }
 
-  public PacketGuiSettings(TileInventoryPanel tile, int sortMode, String filterString, boolean sync) {
-    super(tile);
+  public PacketGuiSettings(int windowId, int sortMode, String filterString, boolean sync) {
+    this.windowId = windowId;
     this.sortMode = sortMode;
     this.filterString = filterString;
     this.sync = sync;
@@ -29,7 +27,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+    windowId = buf.readInt();
     sortMode = buf.readInt();
     filterString = ByteBufUtils.readUTF8String(buf);
     sync = buf.readBoolean();
@@ -37,7 +35,7 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+    buf.writeInt(windowId);
     buf.writeInt(sortMode);
     ByteBufUtils.writeUTF8String(buf, filterString);
     buf.writeBoolean(sync);
@@ -46,9 +44,9 @@ public class PacketGuiSettings extends MessageTileEntity<TileInventoryPanel> imp
   @Override
   public IMessage onMessage(PacketGuiSettings message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.getPos());
-    if(te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+      TileInventoryPanel teInvPanel = ipc.getInv();
       teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);
     }
     return null;

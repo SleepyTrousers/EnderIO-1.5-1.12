@@ -262,9 +262,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements ITankAc
     this.guiSortMode = sortMode;
     this.guiFilterString = filterString;
     this.guiSync = sync;
-    if(worldObj != null && worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(this, sortMode, filterString, sync));
-    } else {
+    if (worldObj != null && !worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToDimension(new PacketGuiSettingsUpdated(this), worldObj.provider.getDimension());
       markDirty();
     }
   }
@@ -281,22 +280,24 @@ public class TileInventoryPanel extends AbstractMachineEntity implements ITankAc
   }
 
   public void addStoredCraftingRecipe(StoredCraftingRecipe recipe) {
-    if(worldObj != null && worldObj.isRemote) {
+    storedCraftingRecipes.add(recipe);
+    if (worldObj == null || worldObj.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
     } else {
-      storedCraftingRecipes.add(recipe);
       markDirty();
       updateBlock();
     }
   }
 
   public void removeStoredCraftingRecipe(int index) {
-    if(worldObj != null && worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
-    } else if(index >= 0 && index < storedCraftingRecipes.size()) {
+    if (index >= 0 && index < storedCraftingRecipes.size()) {
       storedCraftingRecipes.remove(index);
-      markDirty();
-      updateBlock();
+      if (worldObj == null || worldObj.isRemote) {
+        PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
+      } else {
+        markDirty();
+        updateBlock();
+      }
     }
   }
 
@@ -305,11 +306,9 @@ public class TileInventoryPanel extends AbstractMachineEntity implements ITankAc
   }
 
   public void setExtractionDisabled(boolean extractionDisabled) {
+    this.extractionDisabled = extractionDisabled;
     if(worldObj != null) {
-      if(worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(this, extractionDisabled));
-      } else if(this.extractionDisabled != extractionDisabled) {
-        this.extractionDisabled = extractionDisabled;
+      if (!worldObj.isRemote) {
         PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.getDimension());
       }
     }

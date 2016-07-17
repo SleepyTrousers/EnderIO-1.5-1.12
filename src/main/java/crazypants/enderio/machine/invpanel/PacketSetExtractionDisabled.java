@@ -1,44 +1,42 @@
 package crazypants.enderio.machine.invpanel;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSetExtractionDisabled extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketSetExtractionDisabled, IMessage> {
+public class PacketSetExtractionDisabled implements IMessage, IMessageHandler<PacketSetExtractionDisabled, IMessage> {
 
+  private int windowId;
   private boolean extractionDisabled;
 
   public PacketSetExtractionDisabled() {
   }
 
-  public PacketSetExtractionDisabled(TileInventoryPanel tile, boolean extractionDisabled) {
-    super(tile);
+  public PacketSetExtractionDisabled(int windowId, boolean extractionDisabled) {
+    this.windowId = windowId;
     this.extractionDisabled = extractionDisabled;
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+    windowId = buf.readInt();
     extractionDisabled = buf.readBoolean();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+    buf.writeInt(windowId);
     buf.writeBoolean(extractionDisabled);
   }
 
   @Override
   public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.getPos());
-    if(te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+      TileInventoryPanel teInvPanel = ipc.getInv();
       teInvPanel.setExtractionDisabled(message.extractionDisabled);
     }
     return null;

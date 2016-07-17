@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.EnumRenderMode6;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -42,6 +43,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     PacketHandler.INSTANCE.registerMessage(PacketStoredCraftingRecipe.class, PacketStoredCraftingRecipe.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketSetExtractionDisabled.class, PacketSetExtractionDisabled.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpdateExtractionDisabled.class, PacketUpdateExtractionDisabled.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketPrimeInventoryPanelRemote.class, PacketPrimeInventoryPanelRemote.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketGuiSettingsUpdated.class, PacketGuiSettingsUpdated.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockInventoryPanel panel = new BlockInventoryPanel();
     panel.init();

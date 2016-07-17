@@ -6,28 +6,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.enderio.core.common.network.CompressedDataOutput;
-import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPanel> implements IMessageHandler<PacketRequestMissingItems, IMessage> {
+public class PacketRequestMissingItems implements IMessage, IMessageHandler<PacketRequestMissingItems, IMessage> {
 
+  private int windowId;
   private byte[] compressed;
 
   public PacketRequestMissingItems() {
   }
 
-  public PacketRequestMissingItems(TileInventoryPanel tile, int generation, List<Integer> missingIDs) {
-    super(tile);
+  public PacketRequestMissingItems(int windowId, int generation, List<Integer> missingIDs) {
+    this.windowId = windowId;
     try {
       CompressedDataOutput cdo = new CompressedDataOutput();
       try {
@@ -47,28 +45,28 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+    windowId = buf.readInt();
     compressed = NetworkUtil.readByteArray(buf);
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+    buf.writeInt(windowId);
     NetworkUtil.writeByteArray(buf, compressed);
   }
 
   @Override
   public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
     EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(message.getPos());
-    if(te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+    if (player.openContainer.windowId == message.windowId && player.openContainer instanceof InventoryPanelContainer) {
+      InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
+      TileInventoryPanel teInvPanel = ipc.getInv();
       InventoryDatabaseServer db = teInvPanel.getDatabaseServer();
       if(db != null) {
         try {
           List<ItemEntry> items = db.decompressMissingItems(message.compressed);
           if(!items.isEmpty()) {
-            PacketHandler.sendTo(new PacketItemInfo(teInvPanel, db, items), player);
+            return new PacketItemInfo(message.windowId, db, items);
           }
         } catch (IOException ex) {
           Logger.getLogger(PacketItemInfo.class.getName()).log(Level.SEVERE, "Exception while reading missing item IDs", ex);

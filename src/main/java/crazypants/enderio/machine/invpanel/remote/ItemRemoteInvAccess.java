@@ -61,6 +61,7 @@ import static crazypants.util.NbtValue.REMOTE_Z;
 public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IEnergyContainerItem {
 
   public static ItemRemoteInvAccess create() {
+    ClientRemoteGuiManager.create();
     ItemRemoteInvAccess result = new ItemRemoteInvAccess();
     result.init();
     return result;
@@ -174,11 +175,6 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (!((WorldServer) world).getPlayerChunkMap().isPlayerWatchingChunk((EntityPlayerMP) player, pos.getX() >> 4, pos.getZ() >> 4)) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notloaded.client")));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
-      }
-
       if (getEnergyStored(equipped) < remoteInventoryRFPerTick * 10) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
@@ -189,7 +185,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      EnderIO.blockInventoryPanel.openGui(targetWorld, pos, player, EnumFacing.UP);
+      ServerRemoteGuiManager.openGui((EntityPlayerMP) player, targetWorld, pos);
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
     return super.onItemRightClick(equipped, world, player, hand);
@@ -200,14 +196,18 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     return getUnlocalizedName(itemStack);
   }
 
-  // actually called twice per tick
-  public boolean tick(ItemStack stack, EntityPlayer player) {
-    if (EnderIO.proxy.getTickCount() % 10 != 0
-        || extractInternal(stack, remoteInventoryRFPerTick / ItemRemoteInvAccessType.fromStack(stack).getCapacity() * 5)) {
+  public boolean canInteractWith(ItemStack stack, EntityPlayer player) {
+    if (getEnergyStored(stack) > 0) {
       return true;
     } else {
       player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")));
       return false;
+    }
+  }
+
+  public void tick(ItemStack stack, EntityPlayer player) {
+    if (EnderIO.proxy.getTickCount() % 10 == 0) {
+      extractInternal(stack, remoteInventoryRFPerTick / ItemRemoteInvAccessType.fromStack(stack).getCapacity() * 10);
     }
   }
 
@@ -216,9 +216,10 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     if (stored >= powerUse) {
       setEnergy(item, stored - powerUse);
       return true;
-    } else {
-      return false;
+    } else if (stored > 0) {
+      setEnergy(item, 0);
     }
+    return false;
   }
 
   private void setEnergy(ItemStack container, int energy) {
@@ -227,6 +228,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
   public ItemStack setFull(ItemStack container) {
     setEnergy(container, getMaxEnergyStored(container));
+    FLUIDAMOUNT.setInt(container, getCapacity(container));
     return container;
   }
 

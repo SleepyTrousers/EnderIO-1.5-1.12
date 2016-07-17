@@ -1,6 +1,10 @@
 {
 "textures": {
-    "south": "enderio:blocks/invPanelRemote2"
+    "down": "enderio:blocks/invPanelTop2",
+    "up": "enderio:blocks/invPanelTop2",
+    "south": "enderio:blocks/invPanelRemote2",
+    "west": "enderio:blocks/invPanelSide2",
+    "east": "enderio:blocks/invPanelSide2"
 },
 "parent":"enderio:item/itemRemoteInvAccessbasic"
 }

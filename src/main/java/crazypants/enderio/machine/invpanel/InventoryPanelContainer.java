@@ -32,6 +32,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.world.World;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -68,11 +69,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private boolean updateReturnAreaSlots;
   private boolean storedRecipeExists;
 
+  private World playerWorld;
+
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
+    playerWorld = playerInv.player.worldObj;
 
-    if(te.getWorld().isRemote) {
+    if (!te.hasWorldObj() || te.getWorld().isRemote) {
       changedItems = null;
     } else {
       changedItems = new HashSet<ItemEntry>();
@@ -122,7 +126,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if(!getInv().getWorld().isRemote) {
+    if (getInv().hasWorldObj() && !getInv().getWorld().isRemote) {
       getInv().eventHandler = null;
     }
     removeChangeLog();
@@ -182,7 +186,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         if(crafting instanceof EntityPlayerMP) {
           try {
             byte[] compressed = db.compressItemList();
-            PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
+            PacketItemList pil = new PacketItemList(windowId, db.getGeneration(), compressed);
             PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
           } catch (IOException ex) {
             Logger.getLogger(InventoryPanelContainer.class.getName()).log(Level.SEVERE, "Exception while compressing item list", ex);
@@ -205,7 +209,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       tmp.setInventorySlotContents(i, getInv().getStackInSlot(i));
     }
 
-    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorld()));
+    getInv().setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(tmp, playerWorld));
 
     checkCraftingRecipes();
   }
@@ -318,7 +322,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       if(db != null) {
         try {
           byte[] compressed = db.compressChangedItems(changedItems);
-          PacketItemList pil = new PacketItemList(getInventoryPanel(), db.getGeneration(), compressed);
+          PacketItemList pil = new PacketItemList(windowId, db.getGeneration(), compressed);
           for (Object crafting : listeners) {
             if(crafting instanceof EntityPlayerMP) {
               PacketHandler.sendTo(pil, (EntityPlayerMP) crafting);
@@ -407,7 +411,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if(getInv().getWorld().isRemote) {
+    if (!getInv().hasWorldObj() || getInv().getWorld().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;
@@ -446,17 +450,28 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     }
     if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
       if (!player.getEntityWorld().isRemote) {
-        return ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
+        return ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).canInteractWith(player.getHeldItemMainhand(), player);
       } else {
         return true;
       }
     } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
       if (!player.getEntityWorld().isRemote) {
-        return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemMainhand(), player);
+        return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).canInteractWith(player.getHeldItemMainhand(), player);
       } else {
         return true;
       }
     }
     return false;
+  }
+
+  @SuppressWarnings("null")
+  public void tick(EntityPlayer player) {
+    if (!super.canInteractWith(player)) {
+      if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
+        ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
+      } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
+        ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemMainhand(), player);
+      }
+    }
   }
 }

@@ -27,6 +27,9 @@ import net.minecraft.util.math.BlockPos;
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
   private static final AtomicInteger nextGeneration = new AtomicInteger();
+  static {
+    nextGeneration.addAndGet((int) (Math.random() * 1000));
+  }
 
   private final ItemConduitNetwork[] networks;
   private final int[] networkChangeCounts;

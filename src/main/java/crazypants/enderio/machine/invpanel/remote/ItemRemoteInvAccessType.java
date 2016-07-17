@@ -3,9 +3,9 @@ package crazypants.enderio.machine.invpanel.remote;
 import net.minecraft.item.ItemStack;
 
 public enum ItemRemoteInvAccessType {
-  BASIC("basic", 160, false, 1, true),
+  BASIC("basic", 5 * 16, false, 1, true),
   ADVANCED("advanced", -1, false, 2, true),
-  ENDER("ender", -1, true, 4, false);
+  ENDER("ender", -1, true, 4, true);
 
   private final String nameSuffix;
   private final int range;

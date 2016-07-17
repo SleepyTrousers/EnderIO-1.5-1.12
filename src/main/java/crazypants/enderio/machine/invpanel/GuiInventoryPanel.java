@@ -242,18 +242,22 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     addToolTip(new GuiToolTip(btnAddStoredRecipe, list));
   }
 
-  @Override
-  public void onGuiClosed() {
+  public void syncSettingsChange() {
     int sortMode = (view.getSortOrder().ordinal() << 1);
     if(view.isSortOrderInverted()) {
       sortMode |= 1;
     }
+    String filterText;
     if (!btnSync.isSelected() || tfFilterExternalValue == null || !tfFilterExternalValue.equals(tfFilter.getText())) {
-      getTileEntity().setGuiParameter(sortMode, tfFilter.getText(), btnSync.isSelected());
+      filterText = tfFilter.getText();
     } else {
-      getTileEntity().setGuiParameter(sortMode, "", btnSync.isSelected());
+      filterText = "";
     }
-    super.onGuiClosed();
+    if (getTileEntity().getGuiSortMode() != sortMode || getTileEntity().getGuiSync() != btnSync.isSelected()
+        || !org.apache.commons.lang3.StringUtils.equals(getTileEntity().getGuiFilterString(), filterText)) {
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiSettings(getContainer().windowId, sortMode, filterText, btnSync.isSelected()));
+      getTileEntity().setGuiParameter(sortMode, tfFilter.getText(), btnSync.isSelected());
+    }
   }
 
   public void setCraftingHelper(CraftingHelper craftingHelper) {
@@ -307,6 +311,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
+    syncSettingsChange();
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = guiLeft;
@@ -633,6 +638,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if(btnReturnArea.contains(x, y)) {
       TileInventoryPanel te = getTileEntity();
       playClickSound();
+      PacketHandler.INSTANCE.sendToServer(new PacketSetExtractionDisabled(getContainer().windowId, !te.isExtractionDisabled()));
       te.setExtractionDisabled(!te.isExtractionDisabled());
     }
   }
