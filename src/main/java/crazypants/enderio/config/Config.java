@@ -111,7 +111,6 @@ public final class Config {
 
   public static int recipeLevel = 2;
   public static boolean addPeacefulRecipes = false;
-  public static boolean allowExternalTickSpeedup = true;
   public static boolean createSyntheticRecipes = true;
 
   public static boolean detailedPowerTrackingEnabled = false;
@@ -644,11 +643,6 @@ public final class Config {
             "Automatically create alloy smelter recipes with double and tripple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
         .getBoolean(createSyntheticRecipes);
 
-    allowExternalTickSpeedup = config.get(sectionMisc.name, "allowExternalTickSpeedup", allowExternalTickSpeedup,
-        "Allows machines to run faster if another mod speeds up the tickrate. Running at higher tickrates is "
-            + "unsupported. Disable this if you run into any kind of problem.")
-        .getBoolean(allowExternalTickSpeedup);
-    
     redstoneConduitsShowState = config.get(sectionMisc.name, "redstoneConduitsShowState", redstoneConduitsShowState,
         "If set to false redstone conduits will look the same whether they are recieving a signal or not. This can help with performance.")
         .getBoolean(redstoneConduitsShowState);
