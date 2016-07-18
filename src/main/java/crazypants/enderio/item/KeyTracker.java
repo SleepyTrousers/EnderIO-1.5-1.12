@@ -61,7 +61,7 @@ public class KeyTracker {
   
   private final KeyBinding topKey;
 
-  private final KeyBinding fovPlusKey, fovMinusKey, fovResetKey;
+  private final KeyBinding fovPlusKey, fovMinusKey, fovPlusKeyFast, fovMinusKeyFast, fovResetKey;
 
   public KeyTracker() {
     glideKey = new KeyBinding(EnderIO.lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, EnderIO.lang.localize("category.darksteelarmor"));
@@ -96,6 +96,12 @@ public class KeyTracker {
 
     fovMinusKey = new KeyBinding(EnderIO.lang.localize("keybind.fovminus"), Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovMinusKey);
+
+    fovPlusKeyFast = new KeyBinding(EnderIO.lang.localize("keybind.fovplusfast"), Keyboard.CHAR_NONE, "key.categories.misc");
+    ClientRegistry.registerKeyBinding(fovPlusKeyFast);
+
+    fovMinusKeyFast = new KeyBinding(EnderIO.lang.localize("keybind.fovminusfast"), Keyboard.CHAR_NONE, "key.categories.misc");
+    ClientRegistry.registerKeyBinding(fovMinusKeyFast);
 
     fovResetKey = new KeyBinding(EnderIO.lang.localize("keybind.fovreset"), Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovResetKey);
@@ -298,11 +304,14 @@ public class KeyTracker {
         lastWorldTime++;
       }
       fovLevelLast = fovLevelNext;
-      double factor = event.getEntity().isSneaking() ? 1.05 : 1.01;
-      if (fovPlus) {
-        fovLevelNext *= factor;
-      } else if (fovMinus) {
-        fovLevelNext /= factor;
+      if (fovPlusKeyFast.isKeyDown()) {
+        fovLevelNext *= 1.05;
+      } else if (fovMinusKeyFast.isKeyDown()) {
+        fovLevelNext /= 1.05;
+      } else if (fovPlusKey.isKeyDown()) {
+        fovLevelNext *= 1.01;
+      } else if (fovMinusKey.isKeyDown()) {
+        fovLevelNext /= 1.01;
       }
       if (fovLevelNext > 1.3) {
         fovLevelNext = 1.3;
@@ -314,12 +323,7 @@ public class KeyTracker {
     event.setFOV((float) (event.getFOV() * val));
   }
 
-  private boolean fovPlus = false;
-  private boolean fovMinus = false;
-
   private void handleFov() {
-    fovPlus = fovPlusKey.isKeyDown();
-    fovMinus = fovMinusKey.isKeyDown();
     if (fovResetKey.isPressed()) {
       fovLevelLast = fovLevelNext = 1;
     }
