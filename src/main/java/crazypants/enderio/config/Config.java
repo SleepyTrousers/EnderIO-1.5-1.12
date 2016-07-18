@@ -91,6 +91,8 @@ public final class Config {
 
   public static boolean registerRecipes = true;
 
+  public static boolean allowFovControlsInSurvivalMode = false;
+
   public static boolean jeiUseShortenedPainterRecipes = true;
 
   public static boolean reinforcedObsidianEnabled = true;
@@ -1381,6 +1383,9 @@ public final class Config {
         "If true, the mob list will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
     topShowTanksByDefault = config.getBoolean("topShowTanksByDefault", sectionTOP.name, topShowTanksByDefault,
         "If true, the tank content will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+
+    allowFovControlsInSurvivalMode = config.getBoolean("allowFovControlsInSurvivalMode", sectionMisc.name, allowFovControlsInSurvivalMode,
+        "If true, the FOV keyboard controls can be used in survival and advanture mode. Otherwise they are limited to create and spectator modes.");
 
     CapacitorKey.processConfig(config);
   }

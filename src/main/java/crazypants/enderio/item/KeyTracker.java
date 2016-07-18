@@ -23,15 +23,19 @@ import crazypants.enderio.sound.SoundRegistry;
 import crazypants.util.BaublesUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.client.event.EntityViewRenderEvent.FOVModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+
+import static crazypants.enderio.config.Config.allowFovControlsInSurvivalMode;
 
 public class KeyTracker {
 
@@ -56,6 +60,8 @@ public class KeyTracker {
   private final KeyBinding magnetKey;
   
   private final KeyBinding topKey;
+
+  private final KeyBinding fovPlusKey, fovMinusKey, fovResetKey;
 
   public KeyTracker() {
     glideKey = new KeyBinding(EnderIO.lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, EnderIO.lang.localize("category.darksteelarmor"));
@@ -84,6 +90,15 @@ public class KeyTracker {
 
     topKey = new KeyBinding(EnderIO.lang.localize("keybind.top"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(topKey);
+
+    fovPlusKey = new KeyBinding(EnderIO.lang.localize("keybind.fovplus"), Keyboard.CHAR_NONE, "key.categories.misc");
+    ClientRegistry.registerKeyBinding(fovPlusKey);
+
+    fovMinusKey = new KeyBinding(EnderIO.lang.localize("keybind.fovminus"), Keyboard.CHAR_NONE, "key.categories.misc");
+    ClientRegistry.registerKeyBinding(fovMinusKey);
+
+    fovResetKey = new KeyBinding(EnderIO.lang.localize("keybind.fovreset"), Keyboard.CHAR_NONE, "key.categories.misc");
+    ClientRegistry.registerKeyBinding(fovResetKey);
   }
   
   @SubscribeEvent
@@ -98,6 +113,7 @@ public class KeyTracker {
     handleJump();
     handleMagnet();
     handleTop();
+    handleFov();
   }
 
   private void sendEnabledChatMessage(String messageBase, boolean isActive) {
@@ -261,6 +277,51 @@ public class KeyTracker {
     if (topKey.isPressed() && DarkSteelController.instance.isTopUpgradeEquipped(player)) {
       boolean isActive = !DarkSteelController.instance.isTopActive(player);
       DarkSteelController.instance.setTopActive(player, isActive);
+    }
+  }
+
+  private double fovLevelLast = 1;
+  private double fovLevelNext = 1;
+  private long lastWorldTime = 0;
+
+  @SubscribeEvent
+  public void onFov(FOVModifier event) {
+    final PlayerControllerMP playerController = Minecraft.getMinecraft().playerController;
+    if (!allowFovControlsInSurvivalMode && (playerController == null || playerController.gameIsSurvivalOrAdventure())) {
+      return;
+    }
+    long worldTime = EnderIO.proxy.getTickCount();
+    while (worldTime > lastWorldTime) {
+      if (worldTime - lastWorldTime > 10) {
+        lastWorldTime = worldTime;
+      } else {
+        lastWorldTime++;
+      }
+      fovLevelLast = fovLevelNext;
+      double factor = event.getEntity().isSneaking() ? 1.05 : 1.01;
+      if (fovPlus) {
+        fovLevelNext *= factor;
+      } else if (fovMinus) {
+        fovLevelNext /= factor;
+      }
+      if (fovLevelNext > 1.3) {
+        fovLevelNext = 1.3;
+      } else if (fovLevelNext < .05) {
+        fovLevelNext = .05;
+      }
+    }
+    double val = fovLevelNext * event.getRenderPartialTicks() + fovLevelLast * (1 - event.getRenderPartialTicks());
+    event.setFOV((float) (event.getFOV() * val));
+  }
+
+  private boolean fovPlus = false;
+  private boolean fovMinus = false;
+
+  private void handleFov() {
+    fovPlus = fovPlusKey.isKeyDown();
+    fovMinus = fovMinusKey.isKeyDown();
+    if (fovResetKey.isPressed()) {
+      fovLevelLast = fovLevelNext = 1;
     }
   }
 
