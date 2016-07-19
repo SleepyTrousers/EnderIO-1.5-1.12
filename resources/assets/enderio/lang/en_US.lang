@@ -787,6 +787,10 @@ item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
 item.itemMagnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
+item.itemMagnet.everywhere.tooltip.detailed.line1=Pulls nearby item towards you
+item.itemMagnet.everywhere.tooltip.detailed.line2=Shift-R-Click to enable / disable
+item.itemMagnet.everywhere.tooltip.detailed.line3=Must be powered, active and in the
+item.itemMagnet.everywhere.tooltip.detailed.line4=inventory (or a Baubles slot) to function
 
 item.enderio.itemConduitProbe.name=Conduit Probe
 item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit

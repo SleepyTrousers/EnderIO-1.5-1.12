@@ -36,6 +36,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.config.Config.magnetAllowInMainInventory;
+
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
@@ -163,7 +165,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
+    return getUnlocalizedName() + (magnetAllowInMainInventory ? ".everywhere" : "");
   }
 
   @Override
