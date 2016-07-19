@@ -17,7 +17,6 @@ import net.minecraft.inventory.EntityEquipmentSlot.Type;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -65,10 +64,8 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
       addSlotToContainer(new SlotImpl(inv, i, 59 + armorOffset + i * 20, 59));
     }
 
-    int armorPiece=0;
     for(final EntityEquipmentSlot slt : EntityEquipmentSlot.values()) {
       if(slt.getSlotType() == Type.ARMOR) {
-        armorPiece++;
         addSlotToContainer(new Slot(playerInv, 36 + slt.getIndex(), -15 + armorOffset, sideSlotY(3 - slt.getIndex())) {
 
           @Override
@@ -80,8 +77,8 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             if (par1ItemStack == null) {
               return false;
-            }            
-            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player) || par1ItemStack.getItem() instanceof ItemBlock;
+            }
+            return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
           }
 
           @Override
