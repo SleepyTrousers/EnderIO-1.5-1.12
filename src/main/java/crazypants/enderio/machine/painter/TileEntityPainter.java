@@ -1,10 +1,6 @@
 package crazypants.enderio.machine.painter;
 
-import info.loenwind.autosave.annotations.Storable;
-
 import java.util.Map;
-
-import net.minecraft.item.ItemStack;
 
 import com.enderio.core.common.util.ItemUtil;
 
@@ -13,9 +9,11 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintSourceValidator;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.item.ItemStack;
 
 @Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -49,8 +47,8 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {
-      if (rec instanceof BasicPainterTemplate) {
-        BasicPainterTemplate<?> temp = (BasicPainterTemplate<?>) rec;
+      if (rec instanceof AbstractPainterTemplate<?>) {
+        AbstractPainterTemplate<?> temp = (AbstractPainterTemplate<?>) rec;
         if (temp.isPartialRecipe(paint, targt)) {
           return true;
         }

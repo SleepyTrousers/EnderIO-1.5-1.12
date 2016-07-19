@@ -2,6 +2,8 @@ package crazypants.enderio.item.darksteel;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.item.ItemMagnet;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.HelmetPainterTemplate;
 import crazypants.util.ClientUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,6 +34,8 @@ public class DarkSteelItems {
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(EntityEquipmentSlot.CHEST);
     itemDarkSteelLeggings = ItemDarkSteelArmor.create(EntityEquipmentSlot.LEGS);
     itemDarkSteelBoots = ItemDarkSteelArmor.create(EntityEquipmentSlot.FEET);
+
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new HelmetPainterTemplate());
 
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();

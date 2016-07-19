@@ -1,17 +1,8 @@
 package crazypants.enderio.machine.painter.recipe;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import net.minecraft.block.Block;
@@ -20,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class BasicPainterTemplate<T extends Block & IPaintable> implements IMachineRecipe {
+public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
 
   protected final T resultBlock;
   protected final Block[] validTargets;
@@ -37,24 +28,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
   }
 
   @Override
-  public int getEnergyRequired(MachineRecipeInput... inputs) {
-    return Config.painterEnergyPerTaskRF;
-  }
-
-  @Override
-  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
-    return RecipeBonusType.NONE;
-  }
-
-  @Override
-  public final boolean isRecipe(MachineRecipeInput... inputs) {
-    return isRecipe(getPaintSource(inputs), getTarget(inputs));
-  }
-
   public boolean isRecipe(ItemStack paintSource, ItemStack target) {
     return paintSource != null && isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
   }
 
+  @Override
   public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
     if (paintSource == null) {
       return isValidTarget(target);
@@ -66,10 +44,6 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
   }
 
   @Override
-  public final ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
-  }
-
   public ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target) {
     Block targetBlock = getTargetBlock(target);
     if (target == null || paintSource == null || targetBlock == null) {
@@ -111,14 +85,6 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     }
   }
 
-  public ItemStack getTarget(MachineRecipeInput... inputs) {
-    return getInputForSlot(0, inputs);
-  }
-
-  public ItemStack getPaintSource(MachineRecipeInput... inputs) {
-    return getInputForSlot(1, inputs);
-  }
-
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
     if(input == null) {
@@ -131,11 +97,6 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
       return PainterUtil2.isValid(input.item, resultBlock);
     }
     return false;
-  }
-
-  @Override
-  public String getMachineName() {
-    return ModObject.blockPainter.getUnlocalisedName();
   }
 
   protected T getTargetBlock(ItemStack target) {
@@ -178,6 +139,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     return null;
   }
 
+  @Override
   public boolean isValidTarget(ItemStack target) {
     // first check for exact matches, then check for item blocks
     if(target == null) {
@@ -197,40 +159,6 @@ public class BasicPainterTemplate<T extends Block & IPaintable> implements IMach
     }
     
     return false;
-  }
-
-  @Override
-  public String getUid() {
-    return getClass().getCanonicalName() + "@" + Integer.toHexString(hashCode());
-  }
-
-  protected Item getResultId(ItemStack target) {
-    return target.getItem();
-  }
-
-  public int getQuantityConsumed(MachineRecipeInput input) {
-    return input.slotNumber == 0 ? 1 : 0;
-  }
-
-  @Override
-  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
-    MachineRecipeInput consume = null;
-    for (MachineRecipeInput input : inputs) {
-      if(input != null && input.slotNumber == 0 && input.item != null) {
-        ItemStack consumed = input.item.copy();
-        consumed.stackSize = 1;
-        consume = new MachineRecipeInput(input.slotNumber, consumed);
-      }
-    }
-    if(consume != null) {
-      return Collections.singletonList(consume);
-    }
-    return null;
-  }
-
-  @Override
-  public float getExperienceForOutput(ItemStack output) {
-    return 0;
   }
 
 }

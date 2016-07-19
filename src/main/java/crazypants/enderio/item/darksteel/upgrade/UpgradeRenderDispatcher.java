@@ -3,6 +3,10 @@ package crazypants.enderio.item.darksteel.upgrade;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import crazypants.enderio.item.IHasPlayerRenderer;
+import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.item.darksteel.IDarkSteelItem;
+import crazypants.util.BaublesUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -12,10 +16,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.item.IHasPlayerRenderer;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.item.darksteel.IDarkSteelItem;
-import crazypants.util.BaublesUtil;
 
 @SideOnly(Side.CLIENT)
 public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlayer> {
@@ -55,7 +55,8 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
             }
           }
         }
-      } else if (piece != null && piece.getItem() instanceof IHasPlayerRenderer) {
+      }
+      if (piece != null && piece.getItem() instanceof IHasPlayerRenderer) {
         IRenderUpgrade render = ((IHasPlayerRenderer) piece.getItem()).getRender();
         if (render != null) {
           render.doRenderLayer(renderPlayer, piece, entitylivingbaseIn, p_177141_2_, p_177141_3_, partialTicks, p_177141_5_, p_177141_6_, p_177141_7_, scale);

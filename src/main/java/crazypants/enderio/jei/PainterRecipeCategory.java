@@ -16,7 +16,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.ContainerPainter;
 import crazypants.enderio.machine.painter.GuiPainter;
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import mezz.jei.Internal;
 import mezz.jei.api.IGuiHelper;
@@ -57,16 +57,16 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
   @SuppressWarnings("null")
   private static List<PainterRecipeWrapper> splitRecipes(@Nonnull Collection<IMachineRecipe> recipes, List<ItemStack> validItems) {
     long start = System.nanoTime();
-    List<BasicPainterTemplate<?>> basicPainterTemplates = new ArrayList<BasicPainterTemplate<?>>();
+    List<AbstractPainterTemplate<?>> basicPainterTemplates = new ArrayList<AbstractPainterTemplate<?>>();
     for (IMachineRecipe recipe : recipes) {
-      if (recipe instanceof BasicPainterTemplate) {
-        basicPainterTemplates.add((BasicPainterTemplate<?>) recipe);
+      if (recipe instanceof AbstractPainterTemplate<?>) {
+        basicPainterTemplates.add((AbstractPainterTemplate<?>) recipe);
       }
     }
 
     List<PainterRecipeWrapper> recipesWrappers = new ArrayList<PainterRecipeWrapper>();
     for (ItemStack target : validItems) {
-      for (BasicPainterTemplate<?> basicPainterTemplate : basicPainterTemplates) {
+      for (AbstractPainterTemplate<?> basicPainterTemplate : basicPainterTemplates) {
         if (basicPainterTemplate.isValidTarget(target)) {
           recipesWrappers.add(new PainterRecipeWrapper(basicPainterTemplate, target, new ArrayList<ItemStack>(), new ArrayList<ItemStack>()));
         }
@@ -107,13 +107,13 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
 
   public static class PainterRecipeWrapper extends BlankRecipeWrapper {
 
-    final BasicPainterTemplate<?> recipe;
+    final AbstractPainterTemplate<?> recipe;
     final int energyRequired;
     final @Nonnull ItemStack target;
     final @Nonnull List<ItemStack> paints;
     final @Nonnull List<ItemStack> results;
 
-    public PainterRecipeWrapper(@Nonnull BasicPainterTemplate<?> recipe, @Nonnull ItemStack target, @Nonnull List<ItemStack> paints,
+    public PainterRecipeWrapper(@Nonnull AbstractPainterTemplate<?> recipe, @Nonnull ItemStack target, @Nonnull List<ItemStack> paints,
         @Nonnull List<ItemStack> results) {
       this.recipe = recipe;
       this.energyRequired = recipe.getEnergyRequired();

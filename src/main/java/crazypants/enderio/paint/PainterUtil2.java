@@ -134,7 +134,7 @@ public class PainterUtil2 {
   }
 
   public static String getTooltTipText(ItemStack itemStack) {
-    String sourceName = "";
+    String sourceName = null;
     if (itemStack.getItem() instanceof IWithPaintName) {
       sourceName = ((IWithPaintName) itemStack.getItem()).getPaintName(itemStack);
     } else {
@@ -146,11 +146,13 @@ public class PainterUtil2 {
           ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
           sourceName = is.getDisplayName();
         }
-      } else {
-        return EnderIO.lang.localize("blockPainter.unpainted");
       }
     }
-    return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
+    if (sourceName == null || sourceName.isEmpty()) {
+      return EnderIO.lang.localize("blockPainter.unpainted");
+    } else {
+      return EnderIO.lang.localize("blockPainter.paintedWith", sourceName);
+    }
   }
 
   public interface IWithPaintName {
