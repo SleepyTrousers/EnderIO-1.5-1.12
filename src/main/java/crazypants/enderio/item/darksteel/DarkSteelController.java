@@ -253,7 +253,7 @@ public class DarkSteelController {
 
     if (boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
-      if (costedDistance > 0) {
+      if (costedDistance > 1) { // Elytra flight will limit fall distance to 1.0F in normal flight
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
         int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
         if (totalEnergy > 0 && totalEnergy >= energyCost) {
