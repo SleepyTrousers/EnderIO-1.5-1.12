@@ -21,7 +21,7 @@ public class ConduitProbeOverlayRenderer {
   }
 
   @SubscribeEvent
-  public void renderOverlay(RenderGameOverlayEvent event) {
+  public void renderOverlay(RenderGameOverlayEvent.Post event) {
     ItemStack equippedProbe = getEquippedProbe();
     if(equippedProbe != null && event.getType() == ElementType.ALL) {
       doRenderOverlay(event, equippedProbe);
