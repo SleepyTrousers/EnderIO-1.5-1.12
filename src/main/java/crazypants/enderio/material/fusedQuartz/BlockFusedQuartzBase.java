@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock, INamedSubBlocks {
 
+  @SuppressWarnings("null")
   public BlockFusedQuartzBase(@Nonnull String name, Class<T> teClass) {
     super(name, teClass, Material.GLASS);
     setSoundType(SoundType.GLASS);
@@ -46,6 +47,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     return getDefaultState().withProperty(FusedQuartzType.KIND, FusedQuartzType.getTypeFromMeta(meta));
   }
 
+  @SuppressWarnings("null")
   @Override
   public int getMetaFromState(IBlockState state) {
     return FusedQuartzType.getMetaFromType(state.getValue(FusedQuartzType.KIND));
@@ -66,17 +68,13 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-    IBlockState bs = world.getBlockState(pos);
-    if(bs.getBlock() != this) {
-      return super.getLightOpacity(state, world, pos);
-    }
-    return bs.getValue(FusedQuartzType.KIND).getLightOpacity();
+  public int getLightOpacity(IBlockState state) {
+    return state.getValue(FusedQuartzType.KIND).getLightOpacity();
   }
 
   @Override
-  public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return state.getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(state, world, pos);
+  public int getLightValue(IBlockState state) {
+    return state.getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(state);
   }
 
   @Override
