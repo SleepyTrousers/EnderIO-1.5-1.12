@@ -61,27 +61,23 @@ class NormalInventory extends AbstractInventory {
       return 0;
     }
     ItemStack stack = inv.getStackInSlot(slot);
-    if (stack == null || stack.stackSize == 0) {
+    if (stack == null || stack.stackSize == 0 || db.lookupItem(stack, entry, false) != entry) {
       return 0;
-    } else if (stack.stackSize > stack.getMaxStackSize()) {
-      stack = stack.copy();
-      stack.stackSize = stack.getMaxStackSize();
     }
-    ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
-    if(extracted == null || extracted.stackSize != stack.stackSize) {
+    ItemStack extracted = inv.extractItem(slot, count, false);
+    if (extracted == null || extracted.stackSize == 0) {
       return 0;
     }    
-    if (db.lookupItem(stack, entry, false) != entry) {
-      return 0;
+    ni.onItemExtracted(slot, extracted.stackSize);
+
+    stack = inv.getStackInSlot(slot);
+    if (stack != null) {
+      updateCount(db, slot, entry, stack.stackSize);
+    } else {
+      updateCount(db, slot, entry, 0);
     }
-    int remaining = stack.stackSize;
-    if (count > remaining) {
-      count = remaining;
-    }
-    ni.itemExtracted(slot, count);
-    remaining -= count;
-    updateCount(db, slot, entry, remaining);
-    return count;
+
+    return extracted.stackSize;
   }
 
   @Override

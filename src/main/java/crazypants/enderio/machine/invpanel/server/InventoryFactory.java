@@ -2,11 +2,7 @@ package crazypants.enderio.machine.invpanel.server;
 
 import java.util.ArrayList;
 
-import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
-
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.items.IItemHandler;
 
 public abstract class InventoryFactory {
 
@@ -15,9 +11,6 @@ public abstract class InventoryFactory {
   static {
     factories = new ArrayList<InventoryFactory>();
 //    factories.add(new DSUFactory());
-    if (Loader.isModLoaded("StorageDrawers")) {
-      factories.add(new DrawerFactory());
-    }
   }
 
   static AbstractInventory createInventory(NetworkedInventory ni) {
@@ -43,14 +36,4 @@ public abstract class InventoryFactory {
 //    }
 //  }
 
-  static class DrawerFactory extends InventoryFactory {
-    @Override
-    AbstractInventory create(NetworkedInventory ni) {
-      IItemHandler inv = ni.getInventory();
-      if (inv instanceof IDrawerGroup) {
-        return new DrawerGroupInventory((IDrawerGroup) inv);
-      }
-      return null;
-    }
-  }
 }

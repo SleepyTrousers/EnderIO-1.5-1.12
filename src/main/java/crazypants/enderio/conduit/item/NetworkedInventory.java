@@ -197,6 +197,11 @@ public class NetworkedInventory {
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
   }
 
+  public void onItemExtracted(int slot, int numInserted) {
+    con.itemsExtracted(numInserted, slot);
+    tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
+  }
+
   int insertIntoTargets(ItemStack toExtract) {
     if(toExtract == null) {
       return 0;

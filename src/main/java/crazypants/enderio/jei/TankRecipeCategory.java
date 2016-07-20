@@ -116,7 +116,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       IFluidHandler fluidHandler = FluidUtil.getFluidHandler(drainedStack);
       if (fluidHandler != null) {
         FluidStack drain = fluidHandler.drain(16000, true);
-        Log.debug("Draining a " + stack + " gives " + fluidString(drain) + " and " + drainedStack);
+        // Log.debug("Draining a " + stack + " gives " + fluidString(drain) + " and " + drainedStack);
         if (drain != null && drain.amount > 0) {
           // filled container
           if (drainedStack.stackSize <= 0) {
@@ -131,7 +131,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
             if (fluidHandler != null) {
               int filled = fluidHandler.fill(new FluidStack(fluid, 16000), true);
               if (filled > 0) {
-                Log.debug("Filling a " + stack + " with " + fluidString(new FluidStack(fluid, filled)) + " gives " + filledStack);
+                // Log.debug("Filling a " + stack + " with " + fluidString(new FluidStack(fluid, filled)) + " gives " + filledStack);
                 result.add(new TankRecipeWrapper(new FluidStack(fluid, filled), null, stack.copy(), filledStack));
               }
             }
