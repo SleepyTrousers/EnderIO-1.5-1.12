@@ -6,26 +6,29 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.ClientUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
+public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades, IHaveRenderers {
 
   public static ItemConduitProbe create() {
 
@@ -73,7 +76,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
 
   protected ItemConduitProbe() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName("enderio." + ModObject.itemConduitProbe.name());
+    setUnlocalizedName("enderio." + ModObject.itemConduitProbe.getUnlocalisedName());
     setRegistryName(ModObject.itemConduitProbe.name());
     setMaxStackSize(1);
     setHasSubtypes(true);
@@ -119,4 +122,12 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
     return true;
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.regRenderer(this, 0, ModObject.itemConduitProbe.getUnlocalisedName());
+    ClientUtil.regRenderer(this, 1, ModObject.itemConduitProbe.getUnlocalisedName() + "Variant");
+  }
+
 }

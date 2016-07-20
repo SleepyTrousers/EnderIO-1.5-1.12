@@ -229,6 +229,7 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.itemFunctionUpgrade);
     registerRenderers(EnderIO.itemFunctionUpgrade);
     registerRenderers(EnderIO.itemSoulVessel);
+    registerRenderers(EnderIO.itemConduitProbe);
     registerRenderers(EnderIO.itemPowerConduit);
     registerRenderers(EnderIO.itemLiquidConduit);
     registerRenderers(EnderIO.itemItemConduit);
