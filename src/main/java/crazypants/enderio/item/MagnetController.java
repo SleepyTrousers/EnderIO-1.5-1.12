@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -156,6 +157,12 @@ public class MagnetController {
                 }
               } else if (entity instanceof EntityXPOrb && entity.getEntityBoundingBox().intersectsWith(bb)) {
                 gotOne = true;
+              }
+              if (gotOne) {
+                NBTTagCompound data = entity.getEntityData();
+                if (data.hasKey("EIOpuller")) {
+                  gotOne = false;
+                }
               }
               if (gotOne) {
                 if (arraylist == null) {
