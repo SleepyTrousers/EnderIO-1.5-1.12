@@ -20,7 +20,6 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
-import mezz.jei.transfer.BasicRecipeTransferHandler;
 import mezz.jei.transfer.BasicRecipeTransferInfo;
 import mezz.jei.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,16 +49,13 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
     recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler(registry));
     registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockInventoryPanel), VanillaRecipeCategoryUid.CRAFTING);
   }
-
-  
-  private final IRecipeTransferHandler recipeTransferHelper;
+ 
   private final IModRegistry registry;
   private final @Nonnull BasicRecipeTransferInfo transferInfo;
 
   private InventoryPanelRecipeTransferHandler(IModRegistry registry) {
     this.registry = registry;
     transferInfo = new BasicRecipeTransferInfo(InventoryPanelContainer.class, VanillaRecipeCategoryUid.CRAFTING, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-    recipeTransferHelper = new BasicRecipeTransferHandler(transferInfo);
 
   }
 
@@ -89,19 +85,13 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
         return registry.getJeiHelpers().recipeTransferHandlerHelper().createUserErrorWithTooltip("Could not clear crafting grid");
       }
     }
-
-    //First try and craft from the local inventory
-    IRecipeTransferError transferResult = recipeTransferHelper.transferRecipe(invPanelContainer, recipeLayout, player, maxTransfer, doTransfer);
-    if(transferResult == null) {
-      return transferResult;
-    }
     
     //do we have what we need?
-    InventoryDatabaseClient db = invPanelContainer.getInv().getDatabaseClient();
+    InventoryDatabaseClient db = invPanelContainer.getInv().getDatabaseClient();  
     if (db == null) {
       return registry.getJeiHelpers().recipeTransferHandlerHelper().createInternalError();
     }
-   
+    
     List<Integer> missingItemSlots = new ArrayList<Integer>();
     ItemStack[][] ingredients = new ItemStack[9][];
 

@@ -74,8 +74,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final ToggleButton btnSync;
   private final GuiToolTip ttRefill;
   private final VScrollbar scrollbar;
-  private final MultiIconButton btnClear;
-  private final GuiToolTip ttSetReceipe;
+  private final MultiIconButton btnClear;  
 
   private int scrollPos;
   private int ghostSlotTooltipStacksize;
@@ -212,17 +211,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     addToolTip(ttRefill);
 
     list.clear();
-
-    SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.setrecipe.line");
-    ttSetReceipe = new GuiToolTip(btnRefill, list) {
-      @Override
-      public boolean shouldDraw() {
-        return super.shouldDraw() && getContainer().hasCraftingRecipe();
-      }
-    };
-    addToolTip(ttSetReceipe);
-
-    list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.clear.line");
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
@@ -266,7 +254,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
     this.craftingHelper = craftingHelper;
     ttRefill.setIsVisible(craftingHelper != null);
-    ttSetReceipe.setIsVisible(craftingHelper == null);
     if(craftingHelper != null) {
       craftingHelper.install();
     }
@@ -320,15 +307,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     drawTexturedModalRect(sx + 24, sy, 0, 0, 232, ySize);
     drawTexturedModalRect(sx + 24 + 232, sy, 232, 0, 24, 68);
 
-    if(craftingHelper != null) {
+    if(craftingHelper != null || getContainer().hasCraftingRecipe()) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
       int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
-    } else if(getContainer().hasCraftingRecipe()) {
-      boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
-      int iconX = hover ? 96 : 72;
-      drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
-    }
+    } 
 
     TileInventoryPanel te = getTileEntity();
 
@@ -615,13 +598,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     y -= guiTop;
 
     if(btnRefill.contains(x, y)) {
-      if(craftingHelper != null) {
-        playClickSound();
-        craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
-      } else if(getContainer().hasCraftingRecipe()) {
+      if(getContainer().hasCraftingRecipe()) {
         playClickSound();
         setCraftingHelper(CraftingHelper.createFromSlots(getContainer().getCraftingGridSlots()));
-      }
+        craftingHelper.refill(this, isShiftKeyDown() ? 64 : 1);
+      } 
     }
 
     if(btnAddStoredRecipe.contains(x, y)) {
