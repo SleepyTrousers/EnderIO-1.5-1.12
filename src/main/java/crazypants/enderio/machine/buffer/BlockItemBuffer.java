@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
@@ -24,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
 public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
 
@@ -57,6 +57,7 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
         buffer.setHasInventory(t.hasInventory);
         buffer.setHasPower(t.hasPower);
         buffer.setCreative(t.isCreative);
+        buffer.markDirty();
       }
     }
     return true;

@@ -5,9 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
-
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
@@ -20,6 +17,9 @@ import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
@@ -196,6 +196,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   public void setIO(int in, int out) {
     this.maxIn = in;
     this.maxOut = out;
+    markDirty();
   }
 
   public int getMaxInput() {
