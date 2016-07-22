@@ -51,6 +51,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -362,7 +363,17 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   @Override
   public boolean apply(@Nullable EntityXPOrb input) {
-    return input != null && !input.isDead;
+    if (input != null && !input.isDead) {
+      NBTTagCompound data = input.getEntityData();
+      if (data.hasKey("EIOpuller")) {
+        return data.getLong("EIOpuller") == getPos().toLong();
+      } else {
+        data.setLong("EIOpuller", getPos().toLong());
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 
   // ------------------------------- Weapon stuffs

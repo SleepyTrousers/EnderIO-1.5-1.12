@@ -38,7 +38,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   public IFluidWrapper getExternalHandler(EnumFacing direction) {
-    return getExternalFluidHandler(getBundle().getBundleWorldObj(), getLocation().getLocation(direction).getBlockPos(), direction);
+    return getExternalFluidHandler(getBundle().getBundleWorldObj(), getLocation().getLocation(direction).getBlockPos(), direction.getOpposite());
   }
 
   @Override

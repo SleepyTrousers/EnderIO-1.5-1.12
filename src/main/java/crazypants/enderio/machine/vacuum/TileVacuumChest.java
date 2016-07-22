@@ -96,7 +96,13 @@ public class TileVacuumChest extends TileEntityEio
     if (entity instanceof IProjectile) {
       return entity.motionY < 0.01;
     }
-    return true;
+    NBTTagCompound data = entity.getEntityData();
+    if (data.hasKey("EIOpuller")) {
+      return data.getLong("EIOpuller") == getPos().toLong();
+    } else {
+      data.setLong("EIOpuller", getPos().toLong());
+      return true;
+    }
   }
 
   private void doHoover() {
