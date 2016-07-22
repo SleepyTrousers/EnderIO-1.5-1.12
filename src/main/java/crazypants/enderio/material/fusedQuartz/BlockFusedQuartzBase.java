@@ -72,6 +72,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     return state.getValue(FusedQuartzType.KIND).getLightOpacity();
   }
 
+  @Deprecated
   @Override
   public int getLightValue(IBlockState state) {
     return state.getValue(FusedQuartzType.KIND).isEnlightened() ? 15 : super.getLightValue(state);
@@ -111,7 +112,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return false;
   }
 
