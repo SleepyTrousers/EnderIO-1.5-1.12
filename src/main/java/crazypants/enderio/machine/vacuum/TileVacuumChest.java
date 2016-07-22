@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
@@ -181,22 +182,8 @@ public class TileVacuumChest extends TileEntityEio
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack fromStack = inv[fromSlot];
-    if (fromStack == null) {
-      return null;
-    }
-    if (fromStack.stackSize <= amount) {
-      inv[fromSlot] = null;
-      return fromStack;
-    }
-    ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    NBTTagCompound tagCompound = fromStack.getTagCompound();
-    if (tagCompound != null) {
-      result.setTagCompound((NBTTagCompound) tagCompound.copy());
-    }
-    fromStack.stackSize -= amount;
-    return result;
+  public ItemStack decrStackSize(int slot, int amount) {
+    return Util.decrStackSize(this, slot, amount);
   }
 
   @Override

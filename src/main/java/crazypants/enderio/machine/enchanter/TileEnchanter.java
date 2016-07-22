@@ -2,6 +2,8 @@ package crazypants.enderio.machine.enchanter;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
@@ -11,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -53,23 +54,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   @Override
   public ItemStack decrStackSize(int slot, int amount) {
-    if (amount <= 0 || slot < 0 || slot >= inv.length || inv[slot] == null) {
-      return null;
-    }
-    ItemStack fromStack = inv[slot];
-    if (fromStack == null) {
-      return null;
-    }
-    if (fromStack.stackSize <= amount) {
-      inv[slot] = null;
-      return fromStack;
-    }
-    ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    if (fromStack.getTagCompound() != null) {
-      result.setTagCompound((NBTTagCompound) fromStack.getTagCompound().copy());
-    }
-    fromStack.stackSize -= amount;
-    return result;
+    return Util.decrStackSize(this, slot, amount);
   }
 
   @Override

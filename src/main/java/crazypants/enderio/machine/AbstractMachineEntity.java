@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.InventoryWrapper;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -560,24 +561,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack fromStack = inventory[fromSlot];
-    if (fromStack == null) {
-      return null;
-    }
-    if (fromStack.stackSize <= amount) {
-      inventory[fromSlot] = null;
-      markDirty();
-      return fromStack;
-    }
-    ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
-    NBTTagCompound tagCompound = fromStack.getTagCompound();
-    if (tagCompound != null) {
-      result.setTagCompound((NBTTagCompound) tagCompound.copy());
-    }
-    fromStack.stackSize -= amount;
-    markDirty();
-    return result;
+  public ItemStack decrStackSize(int slot, int amount) {
+    return Util.decrStackSize(this, slot, amount);
   }
 
   @Override

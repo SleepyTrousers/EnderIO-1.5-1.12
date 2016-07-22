@@ -2,6 +2,8 @@ package crazypants.enderio.machine.capbank.network;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.Util;
+
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -75,25 +77,8 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
-    if(inventory == null) {
-      return null;
-    }
-
-    if(fromSlot < 0 || fromSlot >= inventory.length) {
-      return null;
-    }
-    ItemStack item = inventory[fromSlot];
-    if(item == null) {
-      return null;
-    }
-    if(item.stackSize <= amount) {
-      ItemStack result = item.copy();
-      inventory[fromSlot] = null;
-      return result;
-    }
-    item.stackSize -= amount;
-    return item.copy();
+  public ItemStack decrStackSize(int slot, int amount) {
+    return Util.decrStackSize(this, slot, amount);
   }
 
   @Override
