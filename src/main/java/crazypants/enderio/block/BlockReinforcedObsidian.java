@@ -109,7 +109,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   @Override
-  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return false;
   }
 

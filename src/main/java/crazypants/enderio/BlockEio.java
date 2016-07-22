@@ -52,7 +52,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
     return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
   }
 
-  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return true;
   }
 }

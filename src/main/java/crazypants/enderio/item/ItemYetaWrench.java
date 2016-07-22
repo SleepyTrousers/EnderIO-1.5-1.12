@@ -7,6 +7,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import buildcraft.api.tools.IToolWrench;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -90,6 +91,16 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
         }
       }
     }
+    
+    //Need to catch 'shift-clicks' here and pass them on manually or an item in the off hand can eat the right click
+    //so 'onBlockActivated' is never called
+    if(!ret && player.isSneaking() && block instanceof BlockEio<?>) {
+      BlockEio<?> beio = (BlockEio<?>)block;
+      if(beio.shouldWrench(world, pos, player, side)) {
+        beio.onBlockActivated(world, pos, bs, player, hand, player.getHeldItem(hand), side, hitX, hitY, hitZ);       
+        ret = true;
+      }
+    }    
     if (ret) {
       player.swingArm(hand);
     }
@@ -137,7 +148,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
-    return true;
+    return false;
   }
 
   

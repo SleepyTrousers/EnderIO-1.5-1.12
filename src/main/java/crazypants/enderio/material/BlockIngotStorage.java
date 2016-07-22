@@ -96,7 +96,7 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   }
   
   @Override
-  protected boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {  
+  public boolean shouldWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {  
     return false;
   }
 
