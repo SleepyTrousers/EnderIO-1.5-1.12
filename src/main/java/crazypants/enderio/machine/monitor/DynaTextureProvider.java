@@ -33,13 +33,14 @@ public class DynaTextureProvider {
 
   protected static final int TEXSIZE = 32;
 
-  protected static final Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
-  protected static final List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
+  protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
+  protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
 
   protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonScreen.png");
-  protected static final int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
+  protected static final @Nonnull int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
   protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
-  protected static final int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
+  protected static final @Nonnull int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
+  protected static final ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMon.png");
 
   protected final @Nonnull TilePowerMonitor owner;
   protected final @Nonnull String id;
@@ -50,6 +51,7 @@ public class DynaTextureProvider {
   protected final @Nonnull TextureManager textureManager;
   protected final @Nonnull IResourceManager resourceManager;
 
+  @SuppressWarnings("null")
   public DynaTextureProvider(@Nonnull TilePowerMonitor owner) {
     this.owner = owner;
     this.textureManager = Minecraft.getMinecraft().getTextureManager();
@@ -132,7 +134,7 @@ public class DynaTextureProvider {
     if (resourceLocation != null) {
       textureManager.bindTexture(resourceLocation);
     } else {
-      textureManager.bindTexture(new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMon.png"));
+      textureManager.bindTexture(pmon_fallback);
     }
   }
 

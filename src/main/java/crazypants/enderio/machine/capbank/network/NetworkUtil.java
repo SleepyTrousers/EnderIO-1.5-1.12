@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class NetworkUtil {
 
-  private static AtomicInteger nextID = new AtomicInteger(0);
+  private static AtomicInteger nextID = new AtomicInteger((int) (Math.random() * 1000));
 
   public static void ensureValidNetwork(TileCapBank cap) {
     World world = cap.getWorld();

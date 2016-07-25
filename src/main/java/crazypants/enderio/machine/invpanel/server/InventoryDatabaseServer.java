@@ -26,10 +26,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
 
-  private static final AtomicInteger nextGeneration = new AtomicInteger();
-  static {
-    nextGeneration.addAndGet((int) (Math.random() * 1000));
-  }
+  private static final AtomicInteger nextGeneration = new AtomicInteger((int) (Math.random() * 1000));
 
   private final ItemConduitNetwork[] networks;
   private final int[] networkChangeCounts;
@@ -208,7 +205,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     return power;
   }
 
-  public void addPower(float power) {
+  public void addPower(@SuppressWarnings("hiding") float power) {
     this.power += power;
   }
 
