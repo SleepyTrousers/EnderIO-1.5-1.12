@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.obelisk.weather;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFirework;
@@ -13,11 +15,12 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityWeatherRocket extends EntityFireworkRocket {
 
-//  private static final int DATA_ID = 24;
-  private static final DataParameter<Integer> DATA_ID = EntityDataManager.<Integer>createKey(EntityWeatherRocket.class, DataSerializers.VARINT);
+  private static final @Nonnull DataParameter<Integer> DATA_ID = EntityDataManager.<Integer>createKey(EntityWeatherRocket.class, DataSerializers.VARINT);
   
   private static final int MAX_AGE = 70;
 
@@ -61,6 +64,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   public void handleStatusUpdate(byte id) {
   }
   
+  @SideOnly(Side.CLIENT)
   private void doEffect() {
     SoundEvent se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST;    
     if (ticksExisted > 40) {    
@@ -89,7 +93,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
           entityfireworksparkfx.setTrail(true);
           entityfireworksparkfx.setTwinkle(false);
           
-          entityfireworksparkfx.setColorFade(WeatherTask.values()[dataManager.get(DATA_ID)].color.getRGB());
+          entityfireworksparkfx.setColor(WeatherTask.values()[dataManager.get(DATA_ID)].color.getRGB());
 
           Minecraft.getMinecraft().effectRenderer.addEffect(entityfireworksparkfx);
           if (j != -size && j != size && k != -size && k != size) {
