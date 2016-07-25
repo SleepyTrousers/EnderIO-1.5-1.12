@@ -19,7 +19,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   private ItemStack stickyResin;
 
   public RubberTreeFarmerIC2() {
-    super(GameRegistry.findBlock("IC2", "blockRubSapling"), GameRegistry.findBlock("IC2", "blockRubWood"));    
+    super(true, GameRegistry.findBlock("IC2", "blockRubSapling"), GameRegistry.findBlock("IC2", "blockRubWood"));
     Item item = GameRegistry.findItem("IC2", "itemTreetap");
     if(item != null) {
       treeTap = item.getClass();
@@ -37,19 +37,24 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    for(int x=-1;x<2;x++) {
-      for(int z=-1;z<2;z++) {
-       Block blk = farm.getBlock(bc.x + x, bc.y, bc.z + z);
-       if(isWood(blk) || sapling == blk) {
-         return false;
-       }
-      }      
+    if(!farm.hasAxe()) {
+      for(int x=-1;x<2;x++) {
+        for(int z=-1;z<2;z++) {
+         Block blk = farm.getBlock(bc.x + x, bc.y, bc.z + z);
+         if(isWood(blk) || sapling == blk) {
+           return false;
+         }
+        }
+      }
     }
     return super.prepareBlock(farm, bc, block, meta);
   }
   
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+    if(farm.hasAxe()) {
+      return super.harvestBlock(farm, bc, block, meta);
+    }
     HarvestResult res = new HarvestResult();
     int y = bc.y;
     boolean done = false;
