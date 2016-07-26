@@ -249,6 +249,8 @@ public final class Config {
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
 
+  public static int darkSteelElytraCost = 10;
+
   public static int darkSteelGogglesOfRevealingCost = 4;
 
   public static int darkSteelApiaristArmorCost = 4;
@@ -941,6 +943,9 @@ public final class Config {
         "Rate of altitude loss when gliding.").getDouble(darkSteelGliderVerticalSpeed);
     darkSteelGliderVerticalSpeedSprinting = config.get(sectionDarkSteel.name, "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
         "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);
+
+    darkSteelElytraCost = config.get(sectionDarkSteel.name, "darkSteelElytraCost", darkSteelElytraCost, "Number of levels required for the 'Elytra' upgrade.")
+        .getInt(darkSteelElytraCost);
 
     darkSteelSoundLocatorCost = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorCost", darkSteelSoundLocatorCost,
         "Number of levels required for the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorCost);

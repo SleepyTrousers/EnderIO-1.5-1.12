@@ -2,18 +2,19 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GliderUpgrade extends AbstractUpgrade {
+public class ElytraUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "glide";
+  private static String UPGRADE_NAME = "elytra";
   
-  public static final GliderUpgrade INSTANCE = new GliderUpgrade();
+  public static final ElytraUpgrade INSTANCE = new ElytraUpgrade();
   
-  public static GliderUpgrade loadFromItem(ItemStack stack) {
+  public static ElytraUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
     }
@@ -23,16 +24,16 @@ public class GliderUpgrade extends AbstractUpgrade {
     if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    return new GliderUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new ElytraUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
   
   
-  public GliderUpgrade(NBTTagCompound tag) {
+  public ElytraUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);    
   }
 
-  public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(DarkSteelItems.itemGliderWing,1,1), Config.darkSteelGliderCost);
+  public ElytraUpgrade() {
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.elytra", new ItemStack(Items.ELYTRA), Config.darkSteelElytraCost);
   }  
   
   @Override
@@ -51,7 +52,7 @@ public class GliderUpgrade extends AbstractUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderUpgrade getRender() {
-    return GliderUpgradeLayer.instance;
+    return ElytraUpgradeLayer.instance;
   }
 
   @Override

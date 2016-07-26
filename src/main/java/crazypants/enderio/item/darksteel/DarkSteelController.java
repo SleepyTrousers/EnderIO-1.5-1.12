@@ -17,6 +17,7 @@ import com.mojang.authlib.GameProfile;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
@@ -122,6 +123,10 @@ public class DarkSteelController {
 
   public boolean isJumpActive(EntityPlayer player) {
     return isActive(player, Type.JUMP);
+  }
+
+  public boolean isElytraActive(EntityPlayer player) {
+    return isActive(player, Type.ELYTRA);
   }
 
   @SubscribeEvent
@@ -248,6 +253,19 @@ public class DarkSteelController {
     return true;
   }
 
+  public boolean isElytraUpgradeEquipped(EntityPlayer player) {
+    ItemStack chestPlate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+    return isElytraUpgradeEquipped(chestPlate);
+  }
+
+  public boolean isElytraUpgradeEquipped(ItemStack chestPlate) {
+    ElytraUpgrade glideUpgrade = ElytraUpgrade.loadFromItem(chestPlate);
+    if (glideUpgrade == null) {
+      return false;
+    }
+    return true;
+  }
+
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
@@ -324,26 +342,38 @@ public class DarkSteelController {
     }
   }
 
+  private boolean jumpPre;
+
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
-    if (event.phase != TickEvent.Phase.END) {
-      return;
-    }
-
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
     if (player == null) {
       return;
     }
+
+    if (event.phase != TickEvent.Phase.END) {
+      jumpPre = player.movementInput == null ? false : player.movementInput.jump;
+      return;
+    }
+
     updateNightvision(player);
     if (player.capabilities.isFlying) {
       return;
     }
 
     MovementInput input = player.movementInput;
+    boolean jumpHandled = false;
     if (input != null && input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
-      doJump(player);
+      jumpHandled = doJump(player);
     }
+
+    if (!jumpHandled && input != null && input.jump && !jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
+        && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
+      DarkSteelController.instance.setActive(player, Type.ELYTRA, true);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(Type.ELYTRA, true));
+    }
+
     wasJumping = !player.onGround;
     if (!wasJumping) {
       jumpCount = 0;
@@ -353,22 +383,22 @@ public class DarkSteelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void doJump(EntityPlayerSP player) {
+  private boolean doJump(EntityPlayerSP player) {
     if (!isJumpActive(player)) {
-      return;
+      return false;
     }
 
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
     if (jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
-      return;
+      return false;
     }
 
     boolean autoJump = Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
     if (autoJump && jumpCount <= 0) {
       jumpCount++;
-      return;
+      return false;
     }
 
     int autoJumpOffset = autoJump ? 1 : 0;
@@ -391,8 +421,9 @@ public class DarkSteelController {
         Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
+      return true;
     }
-
+    return false;
   }
 
   private void updateNightvision(EntityPlayer player) {

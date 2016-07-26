@@ -110,6 +110,7 @@ public class KeyTracker {
   @SubscribeEvent
   public void onKeyInput(KeyInputEvent event) {   
     handleGlide();
+    handleElytra();
     handleSoundDetector();
     handleNightVision();
     handleYetaWrench();
@@ -249,6 +250,15 @@ public class KeyTracker {
     }
   }
   
+  private void handleElytra() {
+    if (!DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      return;
+    }
+    if (glideKey.isPressed()) {
+      toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
+    }
+  }
+
   private void handleNightVision() {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
     if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){

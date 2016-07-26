@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
@@ -61,6 +62,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpeedUpgrade.SPEED_TWO);
     upgrades.add(SpeedUpgrade.SPEED_THREE);
     upgrades.add(GliderUpgrade.INSTANCE);
+    upgrades.add(ElytraUpgrade.INSTANCE);
     upgrades.add(SoundDetectorUpgrade.INSTANCE);
     upgrades.add(SwimUpgrade.INSTANCE);
     upgrades.add(NightVisionUpgrade.INSTANCE);
