@@ -31,6 +31,7 @@ public class ItemHelper {
             list.add(stack);
           }
         }
+        sublist.clear();
       }
     }
     return list;
