@@ -356,23 +356,45 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     IBlockState blockState2 = worldIn.getBlockState(there);
     Block block2 = blockState2.getBlock();
     if (block2 instanceof BlockPaintedSlab) {
-      BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;      
-      if (isDouble()) {
-        if (!otherBlock.isDouble()) {
+      BlockPaintedSlab otherBlock = (BlockPaintedSlab) block2;
+      if (side == EnumFacing.UP) {
+        if (!isDouble() && ourBlockState.getValue(HALF) == EnumBlockHalf.BOTTOM) {
           return true;
-        } else {
-          return getPaintSource(ourBlockState, worldIn, here) != getPaintSource(blockState2, worldIn, there)
-              || getPaintSource2(ourBlockState, worldIn, here) != getPaintSource2(blockState2, worldIn, there);
         }
+        if (!otherBlock.isDouble() && blockState2.getValue(HALF) == EnumBlockHalf.TOP) {
+          return true;
+        }
+        IBlockState ourPaint = isDouble() ? getPaintSource2(ourBlockState, worldIn, here) : getPaintSource(ourBlockState, worldIn, here);
+        IBlockState otherPaint = getPaintSource(blockState2, worldIn, there);
+        return ourPaint != otherPaint;
+      } else if (side == EnumFacing.DOWN) {
+        if (!isDouble() && ourBlockState.getValue(HALF) == EnumBlockHalf.TOP) {
+          return true;
+        }
+        if (!otherBlock.isDouble() && blockState2.getValue(HALF) == EnumBlockHalf.BOTTOM) {
+          return true;
+        }
+        IBlockState ourPaint = getPaintSource(ourBlockState, worldIn, here);
+        IBlockState otherPaint = otherBlock.isDouble() ? getPaintSource2(blockState2, worldIn, there) : getPaintSource(blockState2, worldIn, there);
+        return ourPaint != otherPaint;
       } else {
-        if (!otherBlock.isDouble() && blockState2.getValue(HALF) != ourBlockState.getValue(HALF)) {
-          return true;
+        if (isDouble()) {
+          if (!otherBlock.isDouble()) {
+            return true;
+          } else {
+            return getPaintSource(ourBlockState, worldIn, here) != getPaintSource(blockState2, worldIn, there)
+                || getPaintSource2(ourBlockState, worldIn, here) != getPaintSource2(blockState2, worldIn, there);
+          }
+        } else {
+          if (!otherBlock.isDouble() && blockState2.getValue(HALF) != ourBlockState.getValue(HALF)) {
+            return true;
+          }
+          IBlockState paintSource = getPaintSource(ourBlockState, worldIn, here);
+          if (otherBlock.isDouble() && ourBlockState.getValue(HALF) == EnumBlockHalf.TOP) {
+            return paintSource != getPaintSource2(blockState2, worldIn, there);
+          }
+          return paintSource != getPaintSource(blockState2, worldIn, there);
         }
-        IBlockState paintSource = getPaintSource(ourBlockState, worldIn, here);
-        if (otherBlock.isDouble() && ourBlockState.getValue(HALF) == EnumBlockHalf.TOP) {
-          return paintSource != getPaintSource2(blockState2, worldIn, there);
-        }
-        return paintSource != getPaintSource(blockState2, worldIn, there);
       }
     }
     return super.shouldSideBeRendered(ourBlockState, worldIn, here, side);
