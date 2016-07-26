@@ -2,9 +2,6 @@ package crazypants.enderio.machine.buffer;
 
 import java.io.IOException;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.TextFieldEnder;
@@ -15,6 +12,8 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
@@ -26,12 +25,17 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   private int lastInput, lastOutput;
 
+  private boolean hasInventory, hasPower; // needed because the GUI can be opened before the TE is in sync with the server
+
   public GuiBuffer(InventoryPlayer par1InventoryPlayer, TileBuffer te) {
     super(te, new ContainerBuffer(par1InventoryPlayer, te), TEXTURE_SIMPLE, TEXTURE_FULL);
+    hasInventory = te.hasInventory();
+    hasPower = te.hasPower();
+
     redstoneButton.setPosition(isFull() ? 153 : 120, 24);
     configB.setPosition(isFull() ? 153 : 120, 42);
 
-    if (te.hasPower()) {
+    if (hasPower) {
       int x = (isFull() ? 20 : 58);
       int y = guiTop + 27;
 
@@ -48,7 +52,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   public void initGui() {
     super.initGui();
 
-    if (getTileEntity().hasPower()) {
+    if (hasPower) {
       maxInput.setMaxStringLength(10);
       maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
       maxOutput.setMaxStringLength(10);
@@ -63,7 +67,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
       super.keyTyped(par1, 1);
     }
 
-    if (getTileEntity().hasPower()) {
+    if (hasPower) {
       updateInputOutput();
     }
   }
@@ -102,7 +106,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
   @Override
   protected boolean renderPowerBar() {
-    return getTileEntity().hasPower();
+    return hasPower;
   }
 
   @Override
@@ -143,11 +147,11 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     bindGuiTexture();
 
-    if (getTileEntity().hasPower()) {
+    if (hasPower) {
       drawPowerBg(sx, sy);
     }
 
-    if (getTileEntity().hasInventory()) {
+    if (hasInventory) {
       drawSlotBg(sx, sy);
     }
 
@@ -156,7 +160,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     String invName = EnderIO.lang.localizeExact(getTileEntity().getName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
-    if (getTileEntity().hasPower()) {
+    if (hasPower) {
       sx += isFull() ? 19 : 57;
       sy += 17;
 
@@ -166,12 +170,12 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
   }
 
   boolean isFull() {
-    return getTileEntity().hasInventory() && getTileEntity().hasPower();
+    return hasInventory && hasPower;
   }
 
   @Override
   public void renderSlotHighlights(IoMode mode) {
-    if (!getTileEntity().hasInventory()) {
+    if (!hasInventory) {
       return;
     }
 
