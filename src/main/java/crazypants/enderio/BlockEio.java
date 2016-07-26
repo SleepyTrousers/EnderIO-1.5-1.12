@@ -38,7 +38,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
       return true;
     }
 
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntity(world, pos);
     if (te instanceof AbstractMachineEntity) {
       ITool tool = ToolUtil.getToolFromStack(heldItem);
       if (tool != null && !entityPlayer.isSneaking() && tool.canUse(heldItem, entityPlayer, pos)) {

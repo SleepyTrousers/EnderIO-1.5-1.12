@@ -88,7 +88,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      TileWirelessCharger tileEntity = getTileEntity(world, pos);
+      TileWirelessCharger tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
         setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
       }
@@ -177,7 +177,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileWirelessCharger te = getTileEntity(world, pos);
+    TileWirelessCharger te = getTileEntitySafe(world, pos);
     if (te != null) {
       return te.getPaintSource();
     }

@@ -165,7 +165,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
-      TileConduitBundle bundle = getTileEntity(world, pos);
+      TileConduitBundle bundle = getTileEntitySafe(world, pos);
       if (bundle != null) {
         // not the best caching in the world, but good enough. A bit on the
         // memory-intensive side...
@@ -352,7 +352,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public boolean isSideSolid(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing side) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntitySafe(world, pos);
     if (!(te instanceof IConduitBundle)) {
       return false;
     }
@@ -387,7 +387,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public int getLightOpacity(IBlockState bs, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntitySafe(world, pos);
     if (!(te instanceof IConduitBundle)) {
       return super.getLightOpacity(bs, world, pos);
     }
@@ -397,7 +397,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntitySafe(world, pos);
     if (!(te instanceof IConduitBundle)) {
       return super.getLightValue(bs, world, pos);
     }
@@ -421,7 +421,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   @SideOnly(Side.CLIENT)
   public int getPackedLightmapCoords(IBlockState bs, IBlockAccess worldIn, BlockPos pos) {
-    IConduitBundle te = getTileEntity(worldIn, pos);
+    IConduitBundle te = getTileEntitySafe(worldIn, pos);
     if (te != null && te.hasFacade()) {
       if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
         return 255;
@@ -1081,7 +1081,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
     }

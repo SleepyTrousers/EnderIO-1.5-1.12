@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.BlockEnder;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -160,7 +162,7 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered implem
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
     }

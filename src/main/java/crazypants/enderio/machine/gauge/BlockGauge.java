@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.BlockEnder;
 
 import cofh.api.energy.IEnergyHandler;
 import crazypants.enderio.BlockEio;
@@ -116,7 +117,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     Map<EnumFacing, IEnergyHandler> sides = new EnumMap<EnumFacing, IEnergyHandler>(EnumFacing.class);
     for (EnumFacing face : EnumFacing.Plane.HORIZONTAL) {
       BlockPos neighbor = pos.offset(face);
-      TileEntity tile = world.getTileEntity(neighbor);
+      TileEntity tile = BlockEnder.getAnyTileEntitySafe(world, neighbor);
       if (tile instanceof IEnergyHandler && !(tile instanceof TileCapBank) && !(tile instanceof IConduitBundle)) {
         IEnergyHandler eh = (IEnergyHandler) tile;
         if (eh.canConnectEnergy(face.getOpposite())) {

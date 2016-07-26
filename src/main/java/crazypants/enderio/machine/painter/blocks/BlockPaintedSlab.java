@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.enderio.core.common.BlockEnder;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -262,7 +264,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
     }
@@ -271,7 +273,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   public IBlockState getPaintSource2(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (isDouble()) {
-      TileEntity te = world.getTileEntity(pos);
+      TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
       if (te instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
         return ((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) te).getPaintSource2();
       }

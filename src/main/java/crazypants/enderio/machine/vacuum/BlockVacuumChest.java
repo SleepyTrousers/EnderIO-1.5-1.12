@@ -110,7 +110,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      TileVacuumChest tileEntity = getTileEntity(world, pos);
+      TileVacuumChest tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
         setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
       }
@@ -234,7 +234,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileVacuumChest te = getTileEntity(world, pos);
+    TileVacuumChest te = getTileEntitySafe(world, pos);
     if (te != null) {
       return te.getPaintSource();
     }

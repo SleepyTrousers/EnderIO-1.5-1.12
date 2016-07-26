@@ -36,7 +36,6 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -118,7 +117,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      T tileEntity = getTileEntity(world, pos);
+      T tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
         setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
       }
@@ -208,12 +207,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
-    TileEntity ent = world.getTileEntity(pos);
-    if(ent instanceof AbstractMachineEntity) {
-      AbstractMachineEntity te = (AbstractMachineEntity) ent;
+    AbstractMachineEntity te = getTileEntity(world, pos);
+    if (te != null) {
       te.onNeighborBlockChange(neighborBlock);
-//      randomDisplayTick(worldIn, pos, state, rand);
-    }    
+    }
   }
 
   
@@ -244,7 +241,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected abstract int getGuiId();
 
   protected boolean isActive(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos) {
-    AbstractMachineEntity te = getTileEntity(blockAccess, pos);
+    AbstractMachineEntity te = getTileEntitySafe(blockAccess, pos);
     if (te != null) {
       return te.isActive();
     }
@@ -327,7 +324,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   public @Nullable IBlockState getPaintSource(@Nullable IBlockState state, IBlockAccess world, BlockPos pos) {
     if (this instanceof IPaintable && world != null && pos != null) {
-      T te = getTileEntity(world, pos);
+      T te = getTileEntitySafe(world, pos);
       if (te instanceof IPaintable.IPaintableTileEntity) {
         return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
       }

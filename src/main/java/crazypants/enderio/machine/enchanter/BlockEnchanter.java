@@ -47,13 +47,14 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    TileEnchanter te = (TileEnchanter) world.getTileEntity(pos);
-    te.setFacing(getFacingForHeading(heading));
+    TileEnchanter te = getTileEntity(world, pos);
+    if (te != null) {
+      te.setFacing(getFacingForHeading(heading));
+    }
     if (world.isRemote) {
       return;
     }
     world.notifyBlockUpdate(pos, state, state, 3);
-        
   }
 
   @Override

@@ -151,7 +151,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-    TilePowerMonitor te = getTileEntity(world, pos);
+    TilePowerMonitor te = getTileEntitySafe(world, pos);
     if (te != null) {
       return te.isEngineControlEnabled();
     }
@@ -168,7 +168,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
       return true;
     }
     BlockPos myPos = pos;
-    TilePowerMonitor tileEntity = getTileEntity(worldIn, myPos);
+    TilePowerMonitor tileEntity = getTileEntitySafe(worldIn, myPos);
     if (tileEntity == null) {
       return true;
     }

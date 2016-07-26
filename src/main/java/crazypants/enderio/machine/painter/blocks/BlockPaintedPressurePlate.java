@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -195,7 +196,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   protected int computeRedstoneStrength(World worldIn, BlockPos pos) {
-    TileEntity te = worldIn.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(worldIn, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       EnumPressurePlateType type = ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType();
       return type.getCountingMode()
@@ -224,7 +225,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   protected int getMetaForStack(IBlockAccess worldIn, BlockPos pos) {
-    TileEntity te = worldIn.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(worldIn, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return EnumPressurePlateType.getMetaFromType(((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType(),
           ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).isSilent());
@@ -233,7 +234,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   protected EnumPressurePlateType getType(IBlockAccess worldIn, BlockPos pos) {
-    TileEntity te = worldIn.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(worldIn, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType();
     }
@@ -241,7 +242,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   protected boolean isSilent(IBlockAccess worldIn, BlockPos pos) {
-    TileEntity te = worldIn.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(worldIn, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).isSilent();
     }
@@ -249,7 +250,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   protected CapturedMob getMobType(IBlockAccess worldIn, BlockPos pos) {
-    TileEntity te = worldIn.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(worldIn, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getMobType();
     }
@@ -340,7 +341,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       IBlockState paintSource = ((IPaintableTileEntity) te).getPaintSource();
       if (paintSource != null) {
@@ -404,7 +405,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   protected EnumFacing getRotation(IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof TilePaintedPressurePlate) {
       return ((TilePaintedPressurePlate) te).getRotation();
     }
@@ -446,7 +447,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return EnumPressurePlateType.WOOD == ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType() ? 20 : 0;
     }
@@ -455,7 +456,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof BlockPaintedPressurePlate.TilePaintedPressurePlate) {
       return EnumPressurePlateType.WOOD == ((BlockPaintedPressurePlate.TilePaintedPressurePlate) te).getType() ? 5 : 0;
     }

@@ -125,7 +125,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   private EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
-    TileEntity te = world.getTileEntity(pos);
+    TileEntity te = getTileEntitySafe(world, pos);
     if(te instanceof TileInventoryPanel) {
       return ((TileInventoryPanel) te).getFacing();
     }

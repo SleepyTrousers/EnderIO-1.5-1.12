@@ -40,8 +40,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
@@ -131,6 +133,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
   @Override
   public @Nullable TileEntity getTileEntity() {
+    if (world instanceof ChunkCache) {
+      return ((ChunkCache) world).func_190300_a(pos, EnumCreateEntityType.CHECK);
+    }
     return world.getTileEntity(pos);
   }
 

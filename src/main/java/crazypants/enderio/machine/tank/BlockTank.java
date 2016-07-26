@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -132,7 +133,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
 
   @Override
   public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
-    TileEntity tank = world.getTileEntity(pos);
+    TileEntity tank = BlockEnder.getAnyTileEntitySafe(world, pos);
     if(tank instanceof TileTank) {
       FluidStack stack = ((TileTank) tank).tank.getFluid();
       return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);

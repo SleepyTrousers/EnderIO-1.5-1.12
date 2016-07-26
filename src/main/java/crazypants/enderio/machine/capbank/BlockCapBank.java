@@ -143,7 +143,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, renderMapper);
       blockStateWrapper.addCacheKey(state.getValue(CapBankType.KIND));
       blockStateWrapper.addCacheKey(renderMapper);
-      TileCapBank tileEntity = getTileEntity(world, pos);
+      TileCapBank tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
         for (EnumFacing face : EnumFacing.values()) {
           blockStateWrapper.addCacheKey(tileEntity.getIoMode(NullHelper.notnullJ(face, "Enum.values()")));

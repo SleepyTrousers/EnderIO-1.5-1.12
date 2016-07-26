@@ -10,6 +10,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.google.common.base.Function;
@@ -88,7 +89,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   @Override
   public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData hitData) {
     if (probeInfo != null && world != null && blockState != null && hitData != null && blockState.getBlock() instanceof BlockEio) {
-      TileEntity tileEntity = world.getTileEntity(hitData.getPos());
+      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, hitData.getPos());
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
 

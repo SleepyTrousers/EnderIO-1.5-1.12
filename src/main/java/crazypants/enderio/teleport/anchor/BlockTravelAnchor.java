@@ -130,7 +130,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
     if (state != null && world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      T tileEntity = getTileEntity(world, pos);
+      T tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
         setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
       }
@@ -272,7 +272,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
-    T te = getTileEntity(world, pos);
+    T te = getTileEntitySafe(world, pos);
     if (te != null) {
       return ((IPaintable.IPaintableTileEntity) te).getPaintSource();
     }

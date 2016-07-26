@@ -2,24 +2,12 @@ package crazypants.enderio.machine.capbank.render;
 
 import java.util.List;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.machine.capbank.BlockCapBank;
@@ -29,6 +17,18 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 public class FillGaugeBakery {
 
@@ -148,7 +148,7 @@ public class FillGaugeBakery {
   }
 
   private void calculateFillLevel() {
-    TileEntity tileEntity = this.world.getTileEntity(this.pos);
+    TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (!(tileEntity instanceof TileCapBank)) {
       localFillLevel = 0;
       return;
@@ -178,7 +178,7 @@ public class FillGaugeBakery {
       if(isCovered) {
         break;
       }
-      TileEntity tileEntity = world.getTileEntity(other);
+      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
       if (!(tileEntity instanceof TileCapBank) || ((TileCapBank)tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
         break;
       }
@@ -198,7 +198,7 @@ public class FillGaugeBakery {
       if(isCovered) {
         break;
       }      
-      TileEntity tileEntity = world.getTileEntity(other);
+      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, other);
       if (!(tileEntity instanceof TileCapBank) || ((TileCapBank) tileEntity).getDisplayType(face) != InfoDisplayType.LEVEL_BAR) {
         break;
       }
