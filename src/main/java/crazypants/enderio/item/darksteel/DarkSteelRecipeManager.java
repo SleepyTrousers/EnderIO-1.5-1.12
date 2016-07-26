@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.util.OreDictionaryHelper;
@@ -30,19 +28,17 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.jei.ItemHelper;
 import crazypants.enderio.material.Alloy;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameData;
 
 public class DarkSteelRecipeManager {
 
@@ -229,7 +225,7 @@ public class DarkSteelRecipeManager {
   public List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes() {
     List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
     Set<String> seen = new HashSet<String>();
-    List<ItemStack> items = getRecipes(seen, list, getValidItems());
+    List<ItemStack> items = getRecipes(seen, list, ItemHelper.getValidItems());
     while (!items.isEmpty()) {
       items = getRecipes(seen, list, items);
     }
@@ -253,18 +249,6 @@ public class DarkSteelRecipeManager {
       }
     }
     return output;
-  }
-
-  private static @Nonnull List<ItemStack> getValidItems() {
-    List<ItemStack> list = new ArrayList<ItemStack>();
-    for (Item item : GameData.getItemRegistry()) {
-      if (item instanceof IDarkSteelItem) {
-        for (CreativeTabs tab : item.getCreativeTabs()) {
-          item.getSubItems(item, tab, list);
-        }
-      }
-    }
-    return list;
   }
 
 }

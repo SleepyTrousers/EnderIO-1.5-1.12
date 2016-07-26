@@ -23,8 +23,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -32,7 +30,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.registry.GameData;
 
 public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.TankRecipeWrapper> {
 
@@ -111,7 +108,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
     Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
 
     List<TankRecipeWrapper> result = new ArrayList<TankRecipeWrapper>();
-    for (ItemStack stack : getValidItems()) {
+    for (ItemStack stack : ItemHelper.getValidItems()) {
       ItemStack drainedStack = stack.copy();
       IFluidHandler fluidHandler = FluidUtil.getFluidHandler(drainedStack);
       if (fluidHandler != null) {
@@ -216,16 +213,6 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       return DarkSteelRecipeManager.instance.getUpgradesAsString(itemStack);
     }
 
-  }
-
-  private static @Nonnull List<ItemStack> getValidItems() {
-    List<ItemStack> list = new ArrayList<ItemStack>();
-    for (Item item : GameData.getItemRegistry()) {
-      for (CreativeTabs tab : item.getCreativeTabs()) {
-        item.getSubItems(item, tab, list);
-      }
-    }
-    return list;
   }
 
 }
