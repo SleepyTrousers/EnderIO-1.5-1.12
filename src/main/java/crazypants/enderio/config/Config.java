@@ -414,7 +414,7 @@ public final class Config {
   public static boolean killerJoeMustSee = false;
   public static boolean killerPvPoffDisablesSwing = false;
   public static boolean killerPvPoffIsIgnored = false;
-  public static boolean killerMending = false;
+  public static boolean killerMendingEnabled = true;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -1234,8 +1234,8 @@ public final class Config {
         .get(sectionKiller.name, "killerPvPoffIsIgnored", killerPvPoffIsIgnored,
             "Set whether the Killer Joe ignores PvP settings and always hits players (killerPvPoffDisablesSwing must be off for this to work).")
         .getBoolean();
-    killerMending = config
-        .get(sectionKiller.name, "killerMending", killerMending, "If enabled, picked up XP will be used for the enchantement 'Mending' on the weapon.")
+    killerMendingEnabled = config
+        .get(sectionKiller.name, "killerMending", killerMendingEnabled, "If enabled, picked up XP will be used for the enchantement 'Mending' on the weapon.")
         .getBoolean();
 
     // Add deprecated comment

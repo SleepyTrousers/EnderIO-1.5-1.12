@@ -7,6 +7,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BaublesUtil;
+import crazypants.util.MagnetUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -15,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -119,6 +119,15 @@ public class MagnetController {
       }
     }
   }
+  
+  private static boolean isBlackListed(EntityItem entity) {
+    for (Item blacklisted : blacklist) {
+      if (blacklisted == entity.getEntityItem().getItem()) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   private List<Entity> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
     List<Entity> arraylist = null;
@@ -143,28 +152,16 @@ public class MagnetController {
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : chunk.getEntityLists()[chunkY]) {
             if (!entity.isDead) {
-              boolean gotOne = false;
-              if (entity instanceof EntityItem && entity.getEntityBoundingBox().intersectsWith(bb)) {
-                gotOne = !hasSolegnoliaAround(entity);
-                if (gotOne && !blacklist.isEmpty()) {
-                  final Item item = ((EntityItem) entity).getEntityItem().getItem();
-                  for (Item blacklisted : blacklist) {
-                    if (blacklisted == item) {
-                      gotOne = false;
-                      break;
-                    }
-                  }
-                }
-              } else if (entity instanceof EntityXPOrb && entity.getEntityBoundingBox().intersectsWith(bb)) {
-                gotOne = true;
-              }
-              if (gotOne) {
-                NBTTagCompound data = entity.getEntityData();
-                if (data.hasKey("EIOpuller")) {
-                  gotOne = false;
+              boolean isValidTarget = false;
+              if(entity.getEntityBoundingBox().intersectsWith(bb)) {
+                if (entity instanceof EntityItem) {
+                  isValidTarget = !hasSolegnoliaAround(entity) && !isBlackListed((EntityItem)entity);
+                } else if(entity instanceof EntityXPOrb) {
+                  isValidTarget = true;
                 }
               }
-              if (gotOne) {
+              isValidTarget = isValidTarget && !entity.getEntityData().hasKey(MagnetUtil.EIO_PULLER_TAG);               
+              if (isValidTarget) {
                 if (arraylist == null) {
                   arraylist = new ArrayList<Entity>(Config.magnetMaxItems > 0 ? Config.magnetMaxItems : 20);
                 }
@@ -232,13 +229,15 @@ public class MagnetController {
     case ARMOR:
       return;
     case BAUBLES:
-      if (dropOff < 0) {
-        baubles.setInventorySlotContents(slot, stack);
-      } else {
-        baubles.setInventorySlotContents(slot, null);
-        player.inventory.setInventorySlotContents(dropOff, stack);
+      if (baubles != null) {
+        if (dropOff < 0) {
+          baubles.setInventorySlotContents(slot, stack);
+        } else {
+          baubles.setInventorySlotContents(slot, null);
+          player.inventory.setInventorySlotContents(dropOff, stack);
+        }
+        player.inventory.markDirty();
       }
-      player.inventory.markDirty();
       break;
     }
   }

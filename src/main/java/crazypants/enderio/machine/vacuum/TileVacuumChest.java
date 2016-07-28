@@ -23,6 +23,7 @@ import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -30,7 +31,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -91,19 +91,7 @@ public class TileVacuumChest extends TileEntityEio
 
   @Override
   public boolean apply(@Nullable EntityItem entity) {
-    if (entity == null || entity.isDead) {
-      return false;
-    }
-    if (entity instanceof IProjectile) {
-      return entity.motionY < 0.01;
-    }
-    NBTTagCompound data = entity.getEntityData();
-    if (data.hasKey("EIOpuller")) {
-      return data.getLong("EIOpuller") == getPos().toLong();
-    } else {
-      data.setLong("EIOpuller", getPos().toLong());
-      return true;
-    }
+    return MagnetUtil.shouldAttract(getPos(), entity);
   }
 
   private void doHoover() {

@@ -37,6 +37,7 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -338,7 +338,7 @@ public class TileKillerJoe extends AbstractMachineEntity
     if (!worldObj.isRemote) {
       if (!entity.isDead) {
         int xpValue = entity.getXpValue();
-        if (Config.killerMending && inventory[0] != null && inventory[0].isItemDamaged()
+        if (Config.killerMendingEnabled && inventory[0] != null && inventory[0].isItemDamaged()
             && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0) {
           int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
           xpValue -= durabilityToXp(i);
@@ -362,18 +362,8 @@ public class TileKillerJoe extends AbstractMachineEntity
   }
 
   @Override
-  public boolean apply(@Nullable EntityXPOrb input) {
-    if (input != null && !input.isDead) {
-      NBTTagCompound data = input.getEntityData();
-      if (data.hasKey("EIOpuller")) {
-        return data.getLong("EIOpuller") == getPos().toLong();
-      } else {
-        data.setLong("EIOpuller", getPos().toLong());
-        return true;
-      }
-    } else {
-      return false;
-    }
+  public boolean apply(@Nullable EntityXPOrb input) {  
+    return MagnetUtil.shouldAttract(getPos(), input);        
   }
 
   // ------------------------------- Weapon stuffs
