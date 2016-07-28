@@ -40,70 +40,70 @@ import static crazypants.enderio.config.Config.allowFovControlsInSurvivalMode;
 public class KeyTracker {
 
   public static final KeyTracker instance = new KeyTracker();
-  
-  private final KeyBinding glideKey;
-  
-  private final KeyBinding soundDetectorKey;
-  
-  private final KeyBinding nightVisionKey;
-  
-  private final KeyBinding stepAssistKey;
-  
-  private final KeyBinding speedKey;
-  
-  private final KeyBinding jumpKey;
-  
-  private final KeyBinding gogglesKey;
-  
-  private final KeyBinding yetaWrenchMode;
-  
-  private final KeyBinding magnetKey;
-  
-  private final KeyBinding topKey;
 
+  private final KeyBinding glideKey;
+
+  private final KeyBinding soundDetectorKey;
+
+  private final KeyBinding nightVisionKey;
+
+  private final KeyBinding stepAssistKey;
+
+  private final KeyBinding speedKey;
+
+  private final KeyBinding jumpKey;
+
+  private final KeyBinding gogglesKey;
+
+  private final KeyBinding yetaWrenchMode;
+
+  private final KeyBinding magnetKey;
+
+  private final KeyBinding topKey;
+  
   private final KeyBinding fovPlusKey, fovMinusKey, fovPlusKeyFast, fovMinusKeyFast, fovResetKey;
 
   public KeyTracker() {
-    glideKey = new KeyBinding(EnderIO.lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, EnderIO.lang.localize("category.darksteelarmor"));
+    glideKey = new KeyBinding("enderio.keybind.glidertoggle", Keyboard.KEY_G, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(glideKey);
-    soundDetectorKey = new KeyBinding(EnderIO.lang.localize("keybind.soundlocator"), Keyboard.KEY_L, EnderIO.lang.localize("category.darksteelarmor"));
-    ClientRegistry.registerKeyBinding(soundDetectorKey);        
-    nightVisionKey = new KeyBinding(EnderIO.lang.localize("keybind.nightvision"), Keyboard.KEY_P, EnderIO.lang.localize("category.darksteelarmor"));
+    soundDetectorKey = new KeyBinding("enderio.keybind.soundlocator", Keyboard.KEY_L, "enderio.category.darksteelarmor");
+    ClientRegistry.registerKeyBinding(soundDetectorKey);
+    nightVisionKey = new KeyBinding("enderio.keybind.nightvision", Keyboard.KEY_P, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(nightVisionKey);
-    gogglesKey = new KeyBinding(EnderIO.lang.localize("keybind.gogglesofrevealing"), Keyboard.KEY_R, EnderIO.lang.localize("category.darksteelarmor"));
+    gogglesKey = new KeyBinding("enderio.keybind.gogglesofrevealing", Keyboard.KEY_R, "enderio.category.darksteelarmor");
     // ClientRegistry.registerKeyBinding(gogglesKey);
-    
-    stepAssistKey = new KeyBinding(EnderIO.lang.localize("keybind.stepassist"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+
+    stepAssistKey = new KeyBinding("enderio.keybind.stepassist", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(stepAssistKey);
-    
-    speedKey = new KeyBinding(EnderIO.lang.localize("keybind.speed"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+
+    speedKey = new KeyBinding("enderio.keybind.speed", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(speedKey);
-    
-    jumpKey = new KeyBinding(EnderIO.lang.localize("keybind.jump"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+
+    jumpKey = new KeyBinding("enderio.keybind.jump", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(jumpKey);
-    
-    yetaWrenchMode = new KeyBinding(EnderIO.lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, EnderIO.lang.localize("category.tools"));
+
+    yetaWrenchMode = new KeyBinding("enderio.keybind.yetawrenchmode", Keyboard.KEY_Y, "enderio.category.tools");
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
 
-    magnetKey = new KeyBinding(EnderIO.lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.tools"));
+    magnetKey = new KeyBinding("enderio.keybind.magnet", Keyboard.CHAR_NONE, "enderio.category.tools");
     ClientRegistry.registerKeyBinding(magnetKey);
 
-    topKey = new KeyBinding(EnderIO.lang.localize("keybind.top"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.darksteelarmor"));
+    topKey = new KeyBinding("enderio.keybind.top", Keyboard.CHAR_NONE, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(topKey);
 
-    fovPlusKey = new KeyBinding(EnderIO.lang.localize("keybind.fovplus"), Keyboard.CHAR_NONE, "key.categories.misc");
+    fovPlusKey = new KeyBinding("enderio.keybind.fovplus", Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovPlusKey);
 
-    fovMinusKey = new KeyBinding(EnderIO.lang.localize("keybind.fovminus"), Keyboard.CHAR_NONE, "key.categories.misc");
+    fovMinusKey = new KeyBinding("enderio.keybind.fovminus", Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovMinusKey);
 
-    fovPlusKeyFast = new KeyBinding(EnderIO.lang.localize("keybind.fovplusfast"), Keyboard.CHAR_NONE, "key.categories.misc");
+    fovPlusKeyFast = new KeyBinding("enderio.keybind.fovplusfast", Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovPlusKeyFast);
 
-    fovMinusKeyFast = new KeyBinding(EnderIO.lang.localize("keybind.fovminusfast"), Keyboard.CHAR_NONE, "key.categories.misc");
+    fovMinusKeyFast = new KeyBinding("enderio.keybind.fovminusfast", Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovMinusKeyFast);
 
-    fovResetKey = new KeyBinding(EnderIO.lang.localize("keybind.fovreset"), Keyboard.CHAR_NONE, "key.categories.misc");
+    fovResetKey = new KeyBinding("enderio.keybind.fovreset", Keyboard.CHAR_NONE, "key.categories.misc");
     ClientRegistry.registerKeyBinding(fovResetKey);
   }
   
