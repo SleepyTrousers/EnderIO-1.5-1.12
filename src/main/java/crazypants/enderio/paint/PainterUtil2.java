@@ -181,7 +181,7 @@ public class PainterUtil2 {
       return ((ItemBlock) itemIn).getBlock();
     }
     if (itemIn != null) {
-      FluidStack fluidStack = FluidUtil.getFluidFromItem(new ItemStack(itemIn));
+      FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(new ItemStack(itemIn));
       if (fluidStack != null) {
         return fluidStack.getFluid().getBlock();
       }
@@ -194,7 +194,7 @@ public class PainterUtil2 {
       if (itemStack.getItem() instanceof ItemBlock) {
         return ((ItemBlock) itemStack.getItem()).getBlock();
       }
-      FluidStack fluidStack = FluidUtil.getFluidFromItem(itemStack);
+      FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(itemStack);
       if (fluidStack != null && fluidStack.getFluid() != null) {
         return fluidStack.getFluid().getBlock();
       }

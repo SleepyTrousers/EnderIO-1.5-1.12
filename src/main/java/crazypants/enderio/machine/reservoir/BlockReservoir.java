@@ -37,12 +37,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
@@ -145,7 +144,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
         world.notifyBlockUpdate(pos, state, state, 3); 
         return true;
       }
-      if (tank.tank.getAvailableSpace() >= BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
+      if (tank.tank.getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
         return true;
       } else if (!tank.tank.isFull() && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new TankWrapper(tank, world, pos))) {
         return true;
@@ -187,8 +186,8 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
           }
         }
       }
-      if (free < BUCKET_VOLUME) {
-        free = BUCKET_VOLUME;
+      if (free < Fluid.BUCKET_VOLUME) {
+        free = Fluid.BUCKET_VOLUME;
       }
       tank = new SmartTank(parentTank.getFluid(), free);
       return tank;

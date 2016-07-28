@@ -20,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit {
 
-  public static final int CONDUIT_VOLUME = FluidContainerRegistry.BUCKET_VOLUME;
+  public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
   public static final String ICON_KEY = "enderio:blocks/liquidConduitAdvanced";
   public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitAdvancedLocked";

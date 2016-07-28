@@ -55,7 +55,7 @@ public class FluidFilter {
     if(stack == null) {
       return setFluid(index, (FluidStack) null);
     }
-    FluidStack f = FluidUtil.getFluidFromItem(stack);
+    FluidStack f = FluidUtil.getFluidTypeFromItem(stack);
     if (f == null || f.getFluid() == null) {
       return false;
     }

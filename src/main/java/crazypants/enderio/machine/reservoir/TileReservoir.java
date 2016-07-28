@@ -22,18 +22,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
-
 @Storable
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
   @Store
-  SmartTank tank = new SmartTank(FluidRegistry.WATER, BUCKET_VOLUME);
+  SmartTank tank = new SmartTank(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
   public boolean canRefill = false;
 
   @Store
@@ -56,7 +55,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
       if (tileEntity instanceof TileReservoir && ((TileReservoir) tileEntity).tank != null && !seen.contains(tileEntity)) {
         seen.add((TileReservoir) tileEntity);
         got += ((TileReservoir) tileEntity).tank.getFluidAmount();
-        if (got >= BUCKET_VOLUME * 2) {
+        if (got >= Fluid.BUCKET_VOLUME * 2) {
           return true;
         }
         for (EnumFacing neighbor2 : EnumFacing.VALUES) {
@@ -65,7 +64,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
           if (tileEntity2 instanceof TileReservoir && ((TileReservoir) tileEntity2).tank != null && !seen.contains(tileEntity2)) {
             seen.add((TileReservoir) tileEntity2);
             got += ((TileReservoir) tileEntity2).tank.getFluidAmount();
-            if (got >= BUCKET_VOLUME * 2) {
+            if (got >= Fluid.BUCKET_VOLUME * 2) {
               return true;
             }
           }
@@ -146,7 +145,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
         canRefill = hasEnoughLiquid();
       }
     } else if (Config.reservoirEnabled && shouldDoWorkThisTick(10, -1) && canRefill && !tank.isFull()) {
-      tank.addFluidAmount(BUCKET_VOLUME / 2);
+      tank.addFluidAmount(Fluid.BUCKET_VOLUME / 2);
       setTanksDirty();
     }
 

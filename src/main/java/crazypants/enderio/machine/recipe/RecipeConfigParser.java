@@ -29,7 +29,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -368,7 +367,7 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   private RecipeInput getFluidStack(Attributes attributes) {
-    int amount = getIntValue(AT_AMOUNT, attributes, FluidContainerRegistry.BUCKET_VOLUME);
+    int amount = getIntValue(AT_AMOUNT, attributes, Fluid.BUCKET_VOLUME);
     String name = getStringValue(AT_NAME, attributes, null);
     if(name == null) {
       return null;

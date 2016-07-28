@@ -14,7 +14,7 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -65,8 +65,8 @@ public class VatRecipe implements IRecipe {
                   if (r2.isFluid()) {
                     float im = r0.getMulitplier() * r1.getMulitplier();
                     inputFluidStack = r2.getFluidInput().copy();
-                    inputFluidStack.amount = Math.round(FluidContainerRegistry.BUCKET_VOLUME * im);
-                    outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
+                    inputFluidStack.amount = Math.round(Fluid.BUCKET_VOLUME * im);
+                    outputFluidStack.amount = Math.round(im * r2.getMulitplier() * Fluid.BUCKET_VOLUME);
                     inputFluidStacks.put(r0, r1, inputFluidStack.copy());
                     outputFluidStacks.put(r0, r1, outputFluidStack.copy());
                     // TODO: 1.8 ee3
@@ -84,8 +84,8 @@ public class VatRecipe implements IRecipe {
               if (r2.isFluid()) {
                 float im = r0.getMulitplier();
                 inputFluidStack = r2.getFluidInput().copy();
-                inputFluidStack.amount = Math.round(FluidContainerRegistry.BUCKET_VOLUME * im);
-                outputFluidStack.amount = Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
+                inputFluidStack.amount = Math.round(Fluid.BUCKET_VOLUME * im);
+                outputFluidStack.amount = Math.round(im * r2.getMulitplier() * Fluid.BUCKET_VOLUME);
                 inputFluidStacks.put(r0, r0, inputFluidStack.copy());
                 outputFluidStacks.put(r0, r0, outputFluidStack.copy());
                 // TODO: 1.8 ee3
@@ -234,7 +234,7 @@ public class VatRecipe implements IRecipe {
       return m.in;
     } else {
       // inputs are no valid recipe.
-      return new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME * 999);
+      return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 999);
     }
   }
 

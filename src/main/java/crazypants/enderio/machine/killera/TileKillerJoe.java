@@ -61,7 +61,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -102,7 +102,7 @@ public class TileKillerJoe extends AbstractMachineEntity
   protected WirelessChargedLocation chargedLocation;
 
   @Store
-  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, Fluid.BUCKET_VOLUME * 2);
 
   int lastFluidLevelUpdate;
 

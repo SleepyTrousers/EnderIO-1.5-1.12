@@ -30,7 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -40,7 +40,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   @Store
-  private final SmartTank coolantTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5) {
+  private final SmartTank coolantTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
 
     @Override
     public boolean canFillFluidType(FluidStack resource) {
@@ -49,7 +49,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   };
   @Store
-  private final SmartTank fuelTank = new SmartTank(FluidContainerRegistry.BUCKET_VOLUME * 5) {
+  private final SmartTank fuelTank = new SmartTank(Fluid.BUCKET_VOLUME * 5) {
 
     @Override
     public boolean canFillFluidType(FluidStack resource) {

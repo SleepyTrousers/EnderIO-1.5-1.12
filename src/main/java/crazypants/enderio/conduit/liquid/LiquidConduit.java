@@ -27,7 +27,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -36,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LiquidConduit extends AbstractTankConduit {
 
-  static final int VOLUME_PER_CONNECTION = FluidContainerRegistry.BUCKET_VOLUME / 4;
+  static final int VOLUME_PER_CONNECTION = Fluid.BUCKET_VOLUME / 4;
 
   public static final String ICON_KEY = "enderio:blocks/liquidConduit";
   public static final String ICON_KEY_LOCKED = "enderio:blocks/liquidConduitLocked";
