@@ -22,14 +22,11 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.tool.SmartTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
@@ -113,30 +110,12 @@ public class TileTank extends AbstractMachineEntity implements ITankAccess.IExte
     if (canVoidItems() && voidMode == VoidMode.ALWAYS && i < getSlotDefinition().getMaxInputSlot()) {
       return false;
     }
-    if (i == 0) {
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-      if (fluid != null) {
-        return true;
-      }
-      if (item.getItem() == Items.WATER_BUCKET) {
-        return true;
-      }
-      if (item.getItem() == Items.LAVA_BUCKET) {
-        return true;
-      }
-      if (item.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) item.getItem()).getFluid(item) != null) {
-        return true;
-      }
-      return false;
+    if (i == 0) {      
+      return FluidUtil.getFluidTypeFromItem(item) != null;      
     } else if (i == 1) {
-      if (item.getItem() instanceof IFluidContainerItem
-          && (((IFluidContainerItem) item.getItem()).getFluid(item) == null || ((IFluidContainerItem) item.getItem()).getFluid(item).amount < ((IFluidContainerItem) item
-              .getItem()).getCapacity(item))) {
-        return true;
-      }
-      return FluidContainerRegistry.isEmptyContainer(item) || item.getItem() == Items.BUCKET;
+      return FluidUtil.hasEmptyCapacity(item);
     } else if (i == 2 && canVoidItems()) {
-      return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidContainerRegistry.isContainer(item));
+      return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidUtil.isFluidContainer(item));
     }
     return false;
   }
