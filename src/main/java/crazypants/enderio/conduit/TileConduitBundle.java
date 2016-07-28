@@ -768,7 +768,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(lc != null) {
       return lc.getTankInfo(from);
     }
-    return null;
+    return new FluidTankInfo[0];
   }
 
   @Override

@@ -275,7 +275,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   @Override
   public FluidTankInfo[] getTankInfo(EnumFacing from) {
     if(network == null) {
-      return null;
+      return new FluidTankInfo[0];
     }
     return new FluidTankInfo[] { new FluidTankInfo(tank) };
   }
