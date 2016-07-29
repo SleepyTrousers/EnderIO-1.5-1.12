@@ -15,12 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
 import org.apache.commons.io.FileUtils;
 
 import com.enderio.core.common.util.ItemUtil;
@@ -34,6 +28,11 @@ import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.UserIdent;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -257,14 +256,14 @@ public class ServerChannelRegister extends ChannelRegister {
 
   // Fluid
 
-  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channelsIn) {
-    List<FluidTankInfo> infos = new ArrayList<FluidTankInfo>();
+  public IFluidTankProperties[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channelsIn) {
+    List<IFluidTankProperties> infos = new ArrayList<IFluidTankProperties>();
     for (TileTransceiver tran : transceivers) {
       if (tran != tileTransceiver) {
         tran.getRecieveTankInfo(infos, channelsIn);
       }
     }
-    return infos.toArray(new FluidTankInfo[infos.size()]);
+    return infos.toArray(new IFluidTankProperties[infos.size()]);
   }
 
   public boolean canFill(TileTransceiver tileTransceiver, Set<Channel> set, Fluid fluid) {

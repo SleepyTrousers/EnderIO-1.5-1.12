@@ -2,7 +2,6 @@ package crazypants.enderio.buildcraft;
 
 import com.enderio.core.api.common.util.IFluidReceptor;
 import com.enderio.core.api.common.util.IItemReceptor;
-import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 
 import buildcraft.api.transport.IPipeTile;
@@ -19,7 +18,8 @@ public class BuildcraftUtil implements IItemReceptor, IFluidReceptor {
       Class.forName("buildcraft.api.transport.IPipeTile");
       BuildcraftUtil instance = new BuildcraftUtil();
       ItemUtil.receptors.add(instance);
-      FluidUtil.fluidReceptors.add(instance);
+      //TODO: 1.10 might not be needed if BC supports capabilities in 1.10
+//      FluidUtil.fluidReceptors.add(instance);
     } catch (Exception e) {
 
     }

@@ -36,16 +36,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler, IPaintable.IPaintableTileEntity {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemBuffer, IInternalPowerHandler, IPaintable.IPaintableTileEntity {
 
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
@@ -79,6 +81,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     sendItemFilter = new ItemFilter(true);
     recieveItemFilter = new ItemFilter(true);
+    
+    
   }
 
   public EnderRailController getRailController() {
@@ -368,22 +372,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   // ---------------- Fluid Handling
 
-  @Override
-  public boolean canFill(EnumFacing from, Fluid fluid) {
-    if (inFluidFill) {
-      return false;
-    }
-    try {
-      inFluidFill = true;
-      if (getSendChannels(ChannelType.FLUID).isEmpty()) {
-        return false;
-      }
-      return ServerChannelRegister.instance.canFill(this, getSendChannels(ChannelType.FLUID), fluid);
-    } finally {
-      inFluidFill = false;
-    }
-  }
-
   public boolean canReceive(Set<Channel> channels, Fluid fluid) {
     if (inFluidFill) {
       return false;
@@ -402,8 +390,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
     return false;
   }
-
-  @Override
+  
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
     if (inFluidFill) {
       return 0;
@@ -439,20 +426,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return 0;
   }
 
-  @Override
-  public FluidTankInfo[] getTankInfo(EnumFacing from) {
-    if (inGetTankInfo) {
-      return new FluidTankInfo[0];
-    }
-    try {
-      inGetTankInfo = true;
-      return ServerChannelRegister.instance.getTankInfoForChannels(this, getSendChannels(ChannelType.FLUID));
-    } finally {
-      inGetTankInfo = false;
-    }
-  }
-
-  public void getRecieveTankInfo(List<FluidTankInfo> infos, Set<Channel> channels) {
+  public void getRecieveTankInfo(List<IFluidTankProperties> infos, Set<Channel> channels) {
     if (inGetTankInfo) {
       return;
     }
@@ -463,9 +437,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       }
       Map<EnumFacing, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
       for (Entry<EnumFacing, IFluidHandler> entry : fluidHandlers.entrySet()) {
-        FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
+        IFluidTankProperties[] tanks = entry.getValue().getTankProperties();
         if (tanks != null) {
-          for (FluidTankInfo info : tanks) {
+          for (IFluidTankProperties info : tanks) {
             infos.add(info);
           }
         }
@@ -477,26 +451,67 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   Map<EnumFacing, IFluidHandler> getNeighbouringFluidHandlers() {
     if (neighbourFluidHandlers == null) {
-      neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(worldObj, getLocation());
+      neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(worldObj, getPos());
     }
     return neighbourFluidHandlers;
   }
 
-  // Pulling liquids not supported
+  
   @Override
-  public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-    return null;
+  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return true;
+    }
+    return super.hasCapability(capability, facing);
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return (T)new FluidCap(facing);
+    }
+    return super.getCapability(capability, facing);
   }
 
-  @Override
-  public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    return null;
-  }
+  private class FluidCap implements IFluidHandler {
+    
+    final EnumFacing facing;
+    
+    FluidCap(EnumFacing facing) {    
+      this.facing = facing;
+    }
 
-  @Override
-  public boolean canDrain(EnumFacing from, Fluid fluid) {
-    return false;
-  }
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      return TileTransceiver.this.fill(facing, resource, doFill);
+    }
+
+    // Pulling liquids not supported
+
+    @Override
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+      return null;
+    }
+
+    @Override
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+      return null;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      if (inGetTankInfo) {
+        return new IFluidTankProperties[0];
+      }
+      try {
+        inGetTankInfo = true;
+        return ServerChannelRegister.instance.getTankInfoForChannels(TileTransceiver.this, getSendChannels(ChannelType.FLUID));
+      } finally {
+        inGetTankInfo = false;
+      }
+    }
+  }  
 
   // ---------------- item handling
 

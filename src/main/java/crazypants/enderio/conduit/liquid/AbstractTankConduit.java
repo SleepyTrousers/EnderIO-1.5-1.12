@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ChatUtil;
+import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -19,8 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
@@ -116,7 +115,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return true;
     } else {
 
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(heldItem);
+      FluidStack fluid = FluidUtil.getFluidTypeFromItem(heldItem);
       if (fluid != null) {
         if (!getBundle().getEntity().getWorld().isRemote) {
           if (network != null
@@ -138,12 +137,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     if(fluidTypeLocked == this.fluidTypeLocked) {
       return;
     }
-
     this.fluidTypeLocked = fluidTypeLocked;
     stateDirty = true;
-
-    //    BlockCoord l = getLocation();
-    //    getBundle().getEntity().worldObj.markTileEntityChunkModified(l.x, l.y, l.z, getBundle().getEntity());
   }
 
   private void setFluidTypeOnNetwork(AbstractTankConduit con, FluidStack type) {
