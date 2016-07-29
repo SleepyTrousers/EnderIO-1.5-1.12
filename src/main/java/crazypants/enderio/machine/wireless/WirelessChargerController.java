@@ -104,7 +104,8 @@ public class WirelessChargerController {
 
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
     boolean res = capBank.chargeItems(player.inventory.armorInventory);
-    res |= capBank.chargeItems(player.inventory.mainInventory);    
+    res |= capBank.chargeItems(player.inventory.mainInventory);
+    res |= capBank.chargeItems(player.inventory.offHandInventory);
     IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
       ItemStack[] item = new ItemStack[1];
