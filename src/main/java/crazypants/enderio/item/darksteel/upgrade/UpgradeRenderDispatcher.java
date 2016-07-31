@@ -1,19 +1,27 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.item.IHasPlayerRenderer;
+import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
 import crazypants.util.BaublesUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,11 +43,58 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
   @SubscribeEvent
   public void onPlayerRenderPre(RenderPlayerEvent.Pre event) {
     if (!injected.containsKey(event.getRenderer())) {
+      replaceCapeLayer(event.getRenderer());
       event.getRenderer().addLayer(new UpgradeRenderDispatcher(event.getRenderer()));
       injected.put(event.getRenderer(), null);
     }
   }
 
+  private void replaceCapeLayer(RenderPlayer renderLivingBase) {
+    try {
+      List<LayerRenderer<AbstractClientPlayer>> value = ReflectionHelper.getPrivateValue(RenderLivingBase.class, renderLivingBase, "layerRenderers",
+          "field_177097_h");
+      if (value != null) {
+        LayerRenderer<AbstractClientPlayer> capeLayer = null;
+        for (LayerRenderer<AbstractClientPlayer> layerRenderer : value) {
+          if (layerRenderer instanceof LayerCape && !(layerRenderer instanceof LayerCapeFilter)) {
+            capeLayer = layerRenderer;
+            break;
+          }
+        }
+        if (capeLayer != null) {
+          renderLivingBase.addLayer(new LayerCapeFilter(capeLayer));
+          renderLivingBase.removeLayer(capeLayer);
+        }
+      }
+    } catch (UnableToAccessFieldException e) {
+      Log.warn("Unable to access RenderLivingBase.layerRenderers, reason: " + e);
+    }
+  }
+
+  private static class LayerCapeFilter extends LayerCape {
+
+    private final LayerRenderer<AbstractClientPlayer> parent;
+
+    private LayerCapeFilter(LayerRenderer<AbstractClientPlayer> parent) {
+      super(null);
+      this.parent = parent;
+    }
+
+    @Override
+    public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+        float netHeadYaw, float headPitch, float scale) {
+
+      if (!DarkSteelController.instance.isElytraUpgradeEquipped(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST))) {
+        parent.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
+      }
+    }
+
+    @Override
+    public boolean shouldCombineTextures() {
+      return parent.shouldCombineTextures();
+    }
+
+  }
 
   @Override
   public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
