@@ -42,7 +42,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private EnchantmentSoulBound() {
-    super(Config.enchantmentSoulBoundWeight, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());    
+    super(Config.enchantmentSoulBoundRarity, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());    
     setName(NAME);
     setRegistryName(NAME);
   }

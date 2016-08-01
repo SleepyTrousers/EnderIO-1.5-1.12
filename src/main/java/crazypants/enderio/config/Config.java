@@ -483,7 +483,7 @@ public final class Config {
   public static boolean glassConnectToTheirVariants = true;
   public static boolean glassConnectToTheirColorVariants = true;
   
-  public static Rarity enchantmentSoulBoundWeight = Rarity.UNCOMMON;
+  public static Rarity enchantmentSoulBoundRarity = Rarity.VERY_RARE;
   public static boolean enchantmentSoulBoundEnabled = true;
 
   public static boolean telepadLockDimension = true;
@@ -1339,10 +1339,10 @@ public final class Config {
         "If false the soul bound enchantment will not be available");
     
     
-    String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundWeight.toString(),
+    String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundRarity.toString(),
         "The rarity of the enchantment. COMMON, UNCOMMON, RARE, VERY_RARE ").getString();
     try {
-      enchantmentSoulBoundWeight = Rarity.valueOf(rareStr);
+      enchantmentSoulBoundRarity = Rarity.valueOf(rareStr);
     } catch (Exception e) {
       Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
       e.printStackTrace();
