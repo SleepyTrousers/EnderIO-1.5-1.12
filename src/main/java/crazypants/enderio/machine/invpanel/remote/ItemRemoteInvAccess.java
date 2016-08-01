@@ -131,7 +131,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
-    if (!world.isRemote && !player.isSneaking()) {
+    if (!world.isRemote) {
       if (!REMOTE_X.hasTag(equipped) || !REMOTE_Y.hasTag(equipped) || !REMOTE_Z.hasTag(equipped) || !REMOTE_D.hasTag(equipped)) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.notarget")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
