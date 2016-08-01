@@ -3,17 +3,20 @@ package crazypants.enderio.block;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.event.AnvilMaxCostEvent;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiRepair;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAnvilBlock;
 import net.minecraft.item.ItemStack;
@@ -21,6 +24,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +36,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
   public static BlockDarkSteelAnvil create() {
     BlockDarkSteelAnvil res = new BlockDarkSteelAnvil();
+    MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
   }
@@ -43,9 +50,9 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
     setUnlocalizedName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
     setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIO);      
   }
-
+  
   protected void init() {
     GameRegistry.register(this);
     ItemAnvilBlock item = new ItemAnvilBlock(this);
@@ -61,9 +68,24 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
       @Override
       public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new GuiRepair(player.inventory, world);
+        return new GuiDarkSteelAnvil(player.inventory, player.worldObj);
       }
     });
+  }
+
+  @SubscribeEvent
+  public void onMaxAnvilCost(AnvilMaxCostEvent evt) {    
+    if(evt.getSource() instanceof ContainerDarkSteelAnvil) {      
+      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);  
+    } else if (FMLCommonHandler.instance().getSide() == Side.CLIENT && isClientShowingOurGui()) {             
+      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);      
+    } 
+  }
+    
+  @SideOnly(Side.CLIENT)
+  private static boolean isClientShowingOurGui() {
+    GuiScreen gui = Minecraft.getMinecraft().currentScreen;
+    return gui != null && GuiDarkSteelAnvil.class == gui.getClass();      
   }
 
   @Override

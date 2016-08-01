@@ -26,6 +26,7 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     buf.writeBoolean(Config.telepadLockCoords);
     buf.writeBoolean(Config.telepadLockDimension);
     buf.writeBoolean(Config.killerMendingEnabled);
+    buf.writeInt(Config.darkSteelAnvilMaxLevel);   
   }
 
   @Override
@@ -43,6 +44,7 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
     Config.telepadLockCoords = data.readBoolean();
     Config.telepadLockDimension = data.readBoolean();
     Config.killerMendingEnabled = data.readBoolean();
+    Config.darkSteelAnvilMaxLevel = data.readInt();
   }
 
   @Override
