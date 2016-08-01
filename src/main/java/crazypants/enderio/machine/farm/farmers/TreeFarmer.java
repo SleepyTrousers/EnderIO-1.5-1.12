@@ -200,7 +200,14 @@ public class TreeFarmer implements IFarmerJoe {
     
     res.harvestedBlocks.clear();
     res.harvestedBlocks.addAll(actualHarvests);
-
+    
+    //try replant    
+    for(EntityItem drop : res.drops) {
+      if(canPlant(drop.getEntityItem()) && plant(farm, worldObj, bc, drop.getEntityItem())) {     
+        res.drops.remove(drop);
+        break;
+      }
+    }    
     return res;
   }
 
