@@ -209,7 +209,8 @@ public class PlantableFarmer implements IFarmerJoe {
       return false;
     }
     IPlantable plantable = (IPlantable) stack.getItem();
-    return plantable.getPlant(null, new BlockPos(0, 0, 0)) == block;
+    IBlockState b = plantable.getPlant(null, new BlockPos(0, 0, 0));
+    return b != null && b.getBlock() == block;
   }
 
 }
