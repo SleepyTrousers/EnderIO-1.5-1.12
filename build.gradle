@@ -63,6 +63,7 @@ repositories {
     maven { url = "http://dvs1.progwml6.com/files/maven" } 
     maven { url = "http://files.minecraftforge.net/maven" }
     maven { url = "http://maven.cil.li/" }
+    maven { url = "http://maven.ic2.player.to" }
     mavenLocal()
 }
 
@@ -76,6 +77,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
+    deobfCompile "net.sengir.forestry:${forestry_version}:api"
 
     compile fileTree(dir: 'lib', include: '*.jar') 
 }

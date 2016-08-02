@@ -19,15 +19,19 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.IHasPlayerRenderer;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.PaintedHelmetLayer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
+import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.core.IArmorNaturalist;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -47,6 +51,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,10 +59,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @InterfaceList({
     @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft")
+    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
+    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
+    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, 
-    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
+    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
 
 
   public static final ArmorMaterial MATERIAL = createMaterial();
@@ -420,6 +427,21 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     } else {
       return false;
     }
+  }
+
+  @Override
+  @Method(modid = "forestry")
+  public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
+    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+      return false;
+    }    
+    return NaturalistEyeUpgrade.isUpgradeEquipped(player);    
+  }
+
+  @Override
+  @Method(modid = "forestry")
+  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {    
+    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
   }
 
 }

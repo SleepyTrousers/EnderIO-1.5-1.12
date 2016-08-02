@@ -2,7 +2,7 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
     return new NaturalistEyeUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
-  public static boolean isUpgradeEquipped(EntityPlayer player) {
+  public static boolean isUpgradeEquipped(EntityLivingBase player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return NaturalistEyeUpgrade.loadFromItem(helmet) != null;
   }

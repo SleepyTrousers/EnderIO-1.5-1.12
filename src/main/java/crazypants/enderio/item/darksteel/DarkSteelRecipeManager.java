@@ -34,7 +34,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -67,11 +66,12 @@ public class DarkSteelRecipeManager {
     upgrades.add(SolarUpgrade.SOLAR_ONE);
     upgrades.add(SolarUpgrade.SOLAR_TWO);
     upgrades.add(SolarUpgrade.SOLAR_THREE);
+    
     //TODO: 1.9 Thaumcraft
 //    if(Loader.isModLoaded("Thaumcraft")) {
 //      ThaumcraftCompat.loadUpgrades(upgrades);
 //    }
-    if(Loader.isModLoaded("Forestry")) {
+    if(Loader.isModLoaded("forestry")) {
       upgrades.add(NaturalistEyeUpgrade.INSTANCE);
       upgrades.add(ApiaristArmorUpgrade.HELMET);
       upgrades.add(ApiaristArmorUpgrade.CHEST);
@@ -125,7 +125,7 @@ public class DarkSteelRecipeManager {
       if(upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft())) {
         ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
         if(evt.getLeft().getTagCompound() != null) {
-          res.setTagCompound((NBTTagCompound) evt.getLeft().getTagCompound().copy());
+          res.setTagCompound(evt.getLeft().getTagCompound().copy());
         }
         upgrade.writeToItem(res);
         evt.setOutput(res);
