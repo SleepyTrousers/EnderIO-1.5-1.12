@@ -54,7 +54,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
       return RelayingBakedModel.wrapModelForTESRRendering(originalModel);
     }
 
-    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
+    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacadesClient())) {
       IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(block, stack);
       if (paintSource != null) {
         Pair<Block, Long> cacheKey = NullHelper.notnull(Pair.of((Block) null, new CacheKey().addCacheKey(paintSource).getCacheKey()), "no way");

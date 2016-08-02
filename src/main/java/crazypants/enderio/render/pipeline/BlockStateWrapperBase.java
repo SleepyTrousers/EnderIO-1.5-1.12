@@ -164,10 +164,10 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     IBlockState paintSource = null;
     String cacheResult;
 
-    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacades())) {
+    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacadesClient())) {
       rawPaintSource = PaintWrangler.getActualBlockState(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos));
       paintSource = PaintWrangler.getDynamicBlockState(world, pos, rawPaintSource);
-      if (doCaching && paintSource != null && paintSource.isOpaqueCube() && !YetaUtil.shouldHeldItemHideFacades()) {
+      if (doCaching && paintSource != null && paintSource.isOpaqueCube() && !YetaUtil.shouldHeldItemHideFacadesClient()) {
         // assume that a solid paint makes it so the Blocks/TEs state doesn't matter for rendering
         resetCacheKeyInternal();
       }

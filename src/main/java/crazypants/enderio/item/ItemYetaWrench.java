@@ -80,7 +80,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
         ret = true;
-      } else if (block instanceof IBlockPaintableBlock && !player.isSneaking() && !YetaUtil.shouldHeldItemHideFacades()) {
+      } else if (block instanceof IBlockPaintableBlock && !player.isSneaking() && !YetaUtil.shouldHeldItemHideFacades(player)) {
         IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(blockState, world, pos);
         if (paintSource != null) {
           final IBlockState rotatedPaintSource = PainterUtil2.rotate(paintSource);

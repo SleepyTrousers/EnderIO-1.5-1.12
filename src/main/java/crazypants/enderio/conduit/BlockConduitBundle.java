@@ -641,7 +641,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (bundle == null) {
       return false;
     }
-
+    
     ItemStack stack = player.getHeldItem(hand);
     if (stack != null && Block.getBlockFromItem(stack.getItem()) == EnderIO.blockConduitFacade) {
       // add or replace facade
@@ -695,8 +695,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       } else {
         if (!world.isRemote) {
           player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
-        }
-        return true;
+        }        
+        return false;
       }
     }
 
@@ -1022,7 +1022,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (player == null) {
       player = EnderIO.proxy.getClientPlayer();
     }
-
+    
     if (ConduitUtil.isSolidFacadeRendered(bundle, player)) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       RayTraceResult hitPos = super.collisionRayTrace(bs, world, pos, origin, direction);

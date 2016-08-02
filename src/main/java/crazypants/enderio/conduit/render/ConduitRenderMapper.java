@@ -30,7 +30,7 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
     if (tileEntity instanceof TileConduitBundle) {
       IBlockState paintSource = ((TileConduitBundle) tileEntity).getPaintSource();
       if (paintSource != null && (paintSource.isOpaqueCube() || ((TileConduitBundle) tileEntity).getFacadeType().isTransparent())
-          && !YetaUtil.shouldHeldItemHideFacades()) {
+          && !YetaUtil.shouldHeldItemHideFacadesClient()) {
         return null;
       }
       List<BakedQuad> quads = ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state, blockLayer);

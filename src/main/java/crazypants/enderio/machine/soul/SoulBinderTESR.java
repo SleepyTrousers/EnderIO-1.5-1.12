@@ -43,7 +43,7 @@ public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
       return;
     }
 
-    if (te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacades())) {
+    if (te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacadesClient())) {
       RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
       GL11.glPushMatrix();
       GL11.glTranslatef((float) x, (float) y, (float) z);

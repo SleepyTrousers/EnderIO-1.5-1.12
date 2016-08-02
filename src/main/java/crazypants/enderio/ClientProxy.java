@@ -299,7 +299,7 @@ public class ClientProxy extends CommonProxy {
   protected void onClientTick() {
     if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
       ++clientTickCount;
-      YetaUtil.onTick();
+      YetaUtil.onClientTick();
     }
   }
 

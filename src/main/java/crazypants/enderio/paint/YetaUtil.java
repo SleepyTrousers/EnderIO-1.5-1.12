@@ -15,11 +15,7 @@ public class YetaUtil {
   private static volatile boolean lastCheckResult = false;
   private static boolean toggled = false;
 
-  public static void onTick() {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player == null) {
-      return;
-    }
+  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
     ItemStack held = player.getHeldItemMainhand();
     boolean checkResult;
     if (held != null && held.getItem() instanceof IHideFacades) {
@@ -27,16 +23,21 @@ public class YetaUtil {
     } else {
       checkResult = ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND);
     }
+    return checkResult;
+  }
+  
+  public static void onClientTick() {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    if (player == null) {
+      return;
+    }
+    boolean checkResult = shouldHeldItemHideFacades(player);
     toggled = lastCheckResult != checkResult;
     lastCheckResult = checkResult;
   }
 
-  public static boolean shouldHeldItemHideFacades() {
+  public static boolean shouldHeldItemHideFacadesClient() {
     return lastCheckResult;
-  }
-
-  public static boolean refresh() {
-    return toggled;
   }
 
   public static void refresh(TileEntity te) {
