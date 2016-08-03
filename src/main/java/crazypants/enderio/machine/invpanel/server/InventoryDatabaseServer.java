@@ -290,6 +290,9 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
    *          The BlockPos of the neighbor
    */
   public void onNeighborChange(BlockPos neighborPos) {
+    if(inventories == null) {
+      return;
+    }
     for (AbstractInventory abstractInventory : inventories) {
       abstractInventory.markForScanning(neighborPos);
     }
