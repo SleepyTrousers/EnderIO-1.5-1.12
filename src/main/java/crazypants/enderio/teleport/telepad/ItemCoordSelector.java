@@ -92,9 +92,9 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     TileEntity te = world.getTileEntity(pos);
     if(te instanceof ITelePad) {
       ITelePad tp = (ITelePad) te;
-      TileTelePad tile = null;
-      if (te instanceof TileTelePad) {
-        tile = (TileTelePad) te;
+      ITileTelePad tile = null;
+      if (te instanceof ITileTelePad) {
+        tile = (ITileTelePad) te;
       }
       if(tp.canBlockBeAccessed(player)) {
         BlockCoord bc = getCoords(stack);

@@ -1,9 +1,11 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.oldimpl;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
@@ -27,7 +29,13 @@ import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.PacketTeleport;
+import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
+import crazypants.enderio.teleport.telepad.PacketUpdateCoords;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +56,11 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
+@Storable
+public class TileTelePadOld extends TileTravelAnchor implements ITileTelePad {
+
+  private boolean inNetwork;
+  private boolean isMaster;
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 1000);
@@ -58,7 +70,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Store
   private int storedEnergyRF;
 
-  private TileTelePad masterTile = null;
+  private TileTelePadOld master = null;
+
+  private boolean autoUpdate = false;
 
   private boolean coordsChanged = false;
 
@@ -90,50 +104,36 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   public float spinSpeed = 0;
   public float speedMult = 2.5f;
 
-  
   @Override
   public boolean wasBlocked() {
     return wasBlocked;
   }
-
+  
   public void setBlocked(boolean blocked) {
     wasBlocked = blocked;    
   }
   
   @Override
-  public boolean isMaster() {    
-    return BlockType.getType(getBlockMetadata()) == BlockType.MASTER;
-  }
-
-  @Override
-  public TileTelePad getMaster() {    
-    if(BlockType.getType(getBlockMetadata()) == BlockType.MASTER) {
-      return this;
-    }    
-    BlockPos offset = BlockType.getType(getBlockMetadata()).getOffsetToMaster();
-    if(offset == null) {
-      return null;
-    }
-    BlockPos materPos = getPos().add(offset.getX(), offset.getY(), offset.getZ());
-    if(!worldObj.isBlockLoaded(materPos)) {
-      return null;
-    }
-    TileEntity res = worldObj.getTileEntity(materPos);
-    if(res instanceof TileTelePad) {
-      return (TileTelePad)res;
-    }
-    return null;
-  }
-
-  @Override
-  public boolean inNetwork() {
-    return getMaster() != null;
-  }
-  
-  @Override
   public void doUpdate() {
     super.doUpdate();
-    
+
+    // my master is gone!
+    if (master != null && (master.isInvalid() || master.master != master)) {
+      TileTelePadOld master1 = master.master, master0 = master;
+      breakNetwork();
+      if (master0 != this) {
+        master0.breakNetwork();
+      }
+      if (master1 != null && master1 != master0 && master1 != this) {
+        master1.breakNetwork();
+      }
+    }
+
+    if (autoUpdate) {
+      updateConnectedState(true);
+      autoUpdate = false;
+    }
+
     if (!isMaster()) {
       return;
     }
@@ -166,9 +166,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
       lastSyncPowerStored = getEnergyStored();
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
-    if (coordsChanged ) {
+    if (coordsChanged && inNetwork() && master != null && isMaster()) {
       coordsChanged = false;
-      PacketHandler.sendToAllAround(new PacketUpdateCoords(this, getX(), getY(), getZ(), getTargetDim()), this);
+      PacketHandler.sendToAllAround(new PacketUpdateCoords(master, master.getX(), master.getY(), master.getZ(), master.getTargetDim()), master);
     }
   }
 
@@ -215,20 +215,136 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     }
   }
 
+  public void updateConnectedState(boolean fromBlock) {
+    if (!hasWorldObj()) {
+      return;
+    }
+
+    EnumSet<EnumFacing> connections = EnumSet.noneOf(EnumFacing.class);
+    for (BlockCoord bc : getSurroundingCoords()) {
+      if (worldObj.isBlockLoaded(bc.getBlockPos())) {
+        TileEntity te = bc.getTileEntity(worldObj); 
+        EnumFacing con = Util.getDirFromOffset(bc.x - getPos().getX(), 0, bc.z - getPos().getZ());
+        if (te instanceof TileTelePadOld && te.hasWorldObj() && isPainted() == ((TileTelePadOld) te).isPainted()) {
+          // let's find the master and let him do the work
+          if (fromBlock) {
+            // Recurse to all adjacent (diagonal and axis-aligned) telepads, but only 1 deep.
+            ((TileTelePadOld) te).updateConnectedState(false);
+            // If that telepad turned into a master, we can stop our search, as
+            // we were added to its network
+            if (((TileTelePadOld) te).inNetwork() && !inNetwork) {
+              return;
+            }
+          }
+          // otherwise we either are the master or this is a secondary call, so update connections
+          if (con != null && !((TileTelePadOld) te).inNetwork()) {
+            connections.add(con);
+          }
+        } else {
+          connections.remove(con);
+          if (master == this) {
+            breakNetwork();
+            updateBlock();
+          } else if (con != null) {
+            if (inNetwork() && master != null && fromBlock) {
+              master.updateConnectedState(false);
+            }
+          }
+        }
+      }
+      if (connections.size() == 4 && !inNetwork()) {
+        inNetwork = formNetwork();
+        updateBlock();
+        if (inNetwork()) {
+          if (target.equals(new BlockCoord())) {
+            target = new BlockCoord(this);
+          }
+        }
+      }
+    }
+  }
+
   public void updateRedstoneState() {
     if (!inNetwork()) {
       return;
     }
 
     boolean redstone = isPoweredRedstone();
-    if (!getMasterTile().redstoneActivePrev && redstone) {
+    if (!master.redstoneActivePrev && redstone) {
       teleportAll();
     }
-    getMasterTile().redstoneActivePrev = redstone;
+    master.redstoneActivePrev = redstone;
   }
 
   public boolean isPainted() {
     return sourceBlock != null;
+  }
+
+  private boolean formNetwork() {
+    List<TileTelePadOld> temp = Lists.newArrayList();
+
+    for (BlockCoord c : getSurroundingCoords()) {
+      TileEntity te = c.getTileEntity(worldObj);
+      if (!(te instanceof TileTelePadOld) || ((TileTelePadOld) te).inNetwork() || isPainted() != ((TileTelePadOld) te).isPainted()) {
+        return false;
+      }
+      temp.add((TileTelePadOld) te);
+    }
+
+    for (TileTelePadOld te : temp) {
+      te.master = this;
+      te.inNetwork = true;
+      te.updateBlock();
+      te.updateNeighborTEs();
+    }
+    this.master = this;
+    this.isMaster = true;
+    return true;
+  }
+
+  private void breakNetwork() {
+    master = null;
+    inNetwork = false;
+    isMaster = false;
+    for (BlockCoord c : getSurroundingCoords()) {
+      TileEntity te = c.getTileEntity(worldObj);
+      if (te instanceof TileTelePadOld) {
+        TileTelePadOld telepad = (TileTelePadOld) te;
+        telepad.master = null;
+        telepad.inNetwork = false;
+        telepad.updateBlock();
+        telepad.updateNeighborTEs();
+      }
+    }
+  }
+
+  private List<BlockCoord> getSurroundingCoords() {
+    List<BlockCoord> ret = Lists.newArrayList();
+    for (int x = -1; x <= 1; x++) {
+      for (int z = -1; z <= 1; z++) {
+        if (x != 0 || z != 0) {
+          ret.add(new BlockCoord(getPos().getX() + x, getPos().getY(), getPos().getZ() + z));
+        }
+      }
+    }
+    return ret;
+  }
+
+  private void updateNeighborTEs() {
+    BlockCoord bc = new BlockCoord(this);
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      BlockCoord neighbor = bc.getLocation(dir);
+      Block block = neighbor.getBlock(worldObj);
+      if (!(block instanceof BlockTelePadOld)) {
+        block.onNeighborChange(worldObj, neighbor.getBlockPos(), getPos());
+      }
+    }
+  }
+
+  @Override
+  protected void readCustomNBT(NBTTagCompound root) {
+    super.readCustomNBT(root);
+    autoUpdate = true;
   }
 
   @Override
@@ -288,7 +404,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     if (!inNetwork()) {
       return new AxisAlignedBB(p, p.offset(EnumFacing.UP).offset(EnumFacing.SOUTH).offset(EnumFacing.EAST));
     }
-    p = getMaster().getLocation().getBlockPos();
+    p = getMaster().getPos();
     return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 1, p.getZ() + 2);
   }
 
@@ -332,10 +448,27 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     return this;
   }
 
+  /* ITelePad */
+
+  @Override
+  public boolean isMaster() {
+    return isMaster;
+  }
+
+  @Override
+  public TileTelePadOld getMaster() {
+    return master;
+  }
+
+  @Override
+  public boolean inNetwork() {
+    return inNetwork;
+  }
+
   @Override
   public int getX() {
     if (inNetwork()) {
-      return getMasterTile().target.x;
+      return master.target.x;
     }
     return target.x;
   }
@@ -343,7 +476,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Override
   public int getY() {
     if (inNetwork()) {
-      return getMasterTile().target.y;
+      return master.target.y;
     }
     return target.y;
   }
@@ -351,7 +484,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Override
   public int getZ() {
     if (inNetwork()) {
-      return getMasterTile().target.z;
+      return master.target.z;
     }
     return target.z;
   }
@@ -359,7 +492,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Override
   public int getTargetDim() {
     if (inNetwork()) {
-      return getMasterTile().targetDim;
+      return master.targetDim;
     }
     return targetDim;
   }
@@ -394,7 +527,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   ITelePad setX_internal(int x) {
     if (inNetwork()) {
       setCoords(new BlockCoord(x, target.y, target.z));
-      return getMasterTile();
+      return master;
     }
     return null;
   }
@@ -402,7 +535,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   ITelePad setY_internal(int y) {
     if (inNetwork()) {
       setCoords(new BlockCoord(target.x, y, target.z));
-      return getMasterTile();
+      return master;
     }
     return null;
   }
@@ -410,7 +543,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   ITelePad setZ_internal(int z) {
     if (inNetwork()) {
       setCoords(new BlockCoord(target.x, target.y, z));
-      return getMasterTile();
+      return master;
     }
     return null;
   }
@@ -418,9 +551,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Override
   public ITelePad setTargetDim_internal(int dimID) {
     if (inNetwork()) {
-      getMasterTile().targetDim = dimID;
+      master.targetDim = dimID;
       coordsChanged = true;
-      return getMasterTile();
+      return master;
     }
     return null;
   }
@@ -432,7 +565,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
         this.target = coords;
         this.coordsChanged = true;
       } else {
-        this.getMasterTile().setCoords_internal(coords);
+        this.master.setCoords_internal(coords);
       }
     }
   }
@@ -447,7 +580,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
         enqueueTeleport(entity, true);
       }
     } else {
-      getMasterTile().teleportSpecific(entity);
+      master.teleportSpecific(entity);
     }
   }
 
@@ -461,7 +594,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
         enqueueTeleport(e, true);
       }
     } else {
-      getMasterTile().teleportAll();
+      master.teleportAll();
     }
   }
 
@@ -489,9 +622,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     toTeleport.add(entity);
     if (sendUpdate) {
       if (entity.worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
       } else {
-        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.BEGIN, this, entity.getEntityId()));
       }
     }
   }
@@ -505,9 +638,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     if (sendUpdate) {
       if (worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.END, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(Type.END, this, entity.getEntityId()));
       } else {
-        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.END, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.END, this, entity.getEntityId()));
       }
     }
     if (!active()) {
@@ -519,7 +652,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     if (maxPower > 0) {
       entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
       wasBlocked = !(entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity));
-      PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.TELEPORT, this, wasBlocked));
+      PacketHandler.INSTANCE.sendToAll(new PacketTeleport(Type.TELEPORT, this, wasBlocked));
       return !wasBlocked;
     }
     return false;
@@ -583,38 +716,38 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyRecieved.get(capacitorData) : getMasterTile().getMaxEnergyRecieved(dir) : 0;
+    return inNetwork() && master != null ? master == this ? maxEnergyRecieved.get(capacitorData) : master.getMaxEnergyRecieved(dir) : 0;
   }
 
   @Override
   public int getMaxEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyStored.get(capacitorData) : getMasterTile().getMaxEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? maxEnergyStored.get(capacitorData) : master.getMaxEnergyStored() : 0;
   }
 
   @Override
   public boolean displayPower() {
-    return inNetwork() && getMasterTile() != null;
+    return inNetwork() && master != null;
   }
 
   @Override
   public int getEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? storedEnergyRF : getMasterTile().getEnergyStored() : 0;
+    return inNetwork() && master != null ? master == this ? storedEnergyRF : master.getEnergyStored() : 0;
   }
 
   @Override
   public void setEnergyStored(int storedEnergy) {
-    if (inNetwork() && getMasterTile() != null) {
-      if (getMasterTile() == this) {
+    if (inNetwork() && master != null) {
+      if (master == this) {
         storedEnergyRF = Math.min(getMaxEnergyStored(), storedEnergy);
       } else {
-        getMasterTile().setEnergyStored(storedEnergy);
+        master.setEnergyStored(storedEnergy);
       }
     }
   }
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
-    return inNetwork() && getMasterTile() != null;
+    return inNetwork() && master != null;
   }
 
   @Override
@@ -644,13 +777,5 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     return maxEnergyUsed.get(capacitorData);
   }
 
-  private TileTelePad getMasterTile() {
-    if(masterTile != null) {
-      return masterTile;
-    }
-    
-    masterTile = getMaster();    
-    return masterTile;
-  }
   
 }

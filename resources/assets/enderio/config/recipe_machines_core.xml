@@ -733,7 +733,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
 <!-- Disabled until it is fixed  --> 
-  <recipe name="TelePad" required="true" disabled="true">
+  <recipe name="TelePad" required="true" disabled="false">
     <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
     <config section="Staff Settings" name="travelStaffEnabled" value="true" />
     <crafting>

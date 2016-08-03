@@ -25,6 +25,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
@@ -36,7 +37,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   GuiButton teleportButton;
 
   private World world;
-  private TileTelePad te;
+  private ITileTelePad te;
 
   private TextFieldEnder xTF, yTF, zTF, dimTF;
   
@@ -50,7 +51,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
-  public GuiTelePad(InventoryPlayer playerInv, TileTelePad te, World world) {
+  public GuiTelePad(InventoryPlayer playerInv, ITileTelePad te, World world) {
     super(new ContainerTelePad(playerInv), "telePad");
     this.world = world;
     this.te = te;
@@ -186,7 +187,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     if(e != null) {
       String name = e.getName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
-    } else if(te.wasBlocked) {
+    } else if(te.wasBlocked()) {
       String s = EnderIO.lang.localize("gui.telepad.blocked");
       fnt.drawString(s, sx + xSize / 2 - fnt.getStringWidth(s) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0xAA0000);
     }
@@ -196,7 +197,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   @Override
   public void switchGui() {
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
+    BlockPos pos = te.getLocation().getBlockPos();
+    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, world, pos.getX(), pos.getY(), pos.getZ());
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD_TRAVEL));
   }
   

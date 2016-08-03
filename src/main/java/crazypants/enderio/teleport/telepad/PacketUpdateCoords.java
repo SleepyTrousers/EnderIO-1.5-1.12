@@ -5,11 +5,12 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implements IMessageHandler<PacketUpdateCoords, IMessage>{
+public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketUpdateCoords, IMessage>{
 
   public PacketUpdateCoords() {
     super();
@@ -17,15 +18,15 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
   
   private int targetX, targetY, targetZ, targetDim;
   
-  public PacketUpdateCoords(TileTelePad te, int x, int y, int z, int targetDim) {
-    super(te);
+  public PacketUpdateCoords(ITileTelePad te, int x, int y, int z, int targetDim) {
+    super(te.getTileEntity());
     this.targetX = x;
     this.targetY = y;
     this.targetZ = z;
     this.targetDim = targetDim;
   }
   
-  public PacketUpdateCoords(TileTelePad te, BlockCoord bc, int targetDim) {
+  public PacketUpdateCoords(ITileTelePad te, BlockCoord bc, int targetDim) {
     this(te, bc.x, bc.y, bc.z, targetDim);
   }
 
@@ -49,12 +50,13 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad> implement
   
   @Override
   public IMessage onMessage(PacketUpdateCoords message, MessageContext ctx) {
-    TileTelePad te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
-    if(te != null) {
-      te.setX(message.targetX);
-      te.setY(message.targetY);
-      te.setZ(message.targetZ);
-      te.setTargetDim(message.targetDim);
+    TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+    if(te instanceof ITileTelePad) {
+      ITileTelePad tp = (ITileTelePad)te;
+      tp.setX(message.targetX);
+      tp.setY(message.targetY);
+      tp.setZ(message.targetZ);
+      tp.setTargetDim(message.targetDim);
     }
     return null;
   }

@@ -23,6 +23,19 @@
             "front_on_east":{  "submodel":{ "front":{ "model":"enderio:null" } } },
             "front_on_south":{ "submodel":{ "front":{ "model":"enderio:null" } } },
             "front_on_west":{  "submodel":{ "front":{ "model":"enderio:null" } } }
+        },
+        "blocktype":{
+            "single":{},
+            "master":{},
+            "single":{},
+            "n":{},
+            "ne":{},
+            "e":{},
+            "se":{},
+            "s":{},
+            "sw":{},
+            "w":{},
+            "nw":{}                        
         }
     }
 }

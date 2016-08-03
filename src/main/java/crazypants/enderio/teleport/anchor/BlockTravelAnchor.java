@@ -33,7 +33,7 @@ import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
-import crazypants.enderio.teleport.telepad.TelepadRenderMapper;
+import crazypants.enderio.teleport.telepad.oldimpl.TelepadRenderMapperOld;
 import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -153,12 +153,12 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {
-    return TelepadRenderMapper.instance;
+    return TelepadRenderMapperOld.instance;
   }
 
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return TelepadRenderMapper.instance;
+    return TelepadRenderMapperOld.instance;
   }
 
   @Override

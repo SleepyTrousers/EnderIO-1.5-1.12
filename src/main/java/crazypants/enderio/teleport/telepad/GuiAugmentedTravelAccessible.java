@@ -15,9 +15,9 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   ToggleTravelButton switchButton;
 
-  private TileTelePad te;
+  private ITileTelePad te;
   
-  public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, TileTelePad te, World world) {
+  public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, ITileTelePad te, World world) {
     super(playerInv, te, world);
     this.te = te;
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);
@@ -36,7 +36,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   @Override
   public void switchGui() {
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
+    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, te.getTileEntity().getPos().getX(), te.getTileEntity().getPos().getY(), te.getTileEntity().getPos().getZ());
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD));
   }
 }
