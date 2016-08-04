@@ -70,7 +70,7 @@ public class KeyTracker {
     ClientRegistry.registerKeyBinding(soundDetectorKey);
     nightVisionKey = new KeyBinding("enderio.keybind.nightvision", Keyboard.KEY_P, "enderio.category.darksteelarmor");
     ClientRegistry.registerKeyBinding(nightVisionKey);
-    gogglesKey = new KeyBinding("enderio.keybind.gogglesofrevealing", Keyboard.KEY_R, "enderio.category.darksteelarmor");
+    gogglesKey = new KeyBinding("enderio.keybind.gogglesofrevealing", Keyboard./* KEY_R */KEY_NONE, "enderio.category.darksteelarmor");
     // ClientRegistry.registerKeyBinding(gogglesKey);
 
     stepAssistKey = new KeyBinding("enderio.keybind.stepassist", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
