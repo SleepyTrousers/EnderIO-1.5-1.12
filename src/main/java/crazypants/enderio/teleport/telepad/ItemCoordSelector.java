@@ -12,13 +12,11 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -30,7 +28,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
@@ -130,13 +127,11 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
         }
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getOwner());
-      }
-      sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);      
+      }      
       return EnumActionResult.SUCCESS;
     }
     
     if (rayTraceCoords(stack, world, player)) {
-      sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);        
       return EnumActionResult.SUCCESS;  
     }    
     return EnumActionResult.PASS;        
@@ -185,15 +180,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     
     return changed;
   }
-
-  private void sendItemUsePacket(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-    NetHandlerPlayClient netClientHandler = (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
-//    netClientHandler.addToSendQueue(new CPacketPlayerBlockPlacement(new BlockPos(x, y, z), side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
-    //TODO: 1.9, I doubt this will still work
-    CPacketPlayerTryUseItem packet = new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND);    
-    netClientHandler.sendPacket(packet);
-  }
-
+  
   private void onCoordsChanged(EntityPlayer player, BlockCoord bc) {
     if(!player.worldObj.isRemote) {
       player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.newCoords", bc.chatString())));
