@@ -23,7 +23,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
     this.targetX = x;
     this.targetY = y;
     this.targetZ = z;
-    this.targetDim = targetDim;
+    this.targetDim = targetDim;    
   }
   
   public PacketUpdateCoords(ITileTelePad te, BlockCoord bc, int targetDim) {
@@ -53,10 +53,8 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
     TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
     if(te instanceof ITileTelePad) {
       ITileTelePad tp = (ITileTelePad)te;
-      tp.setX(message.targetX);
-      tp.setY(message.targetY);
-      tp.setZ(message.targetZ);
-      tp.setTargetDim(message.targetDim);
+      tp.setCoords_internal(new BlockCoord(message.targetX, message.targetY, message.targetZ));      
+      tp.setTargetDim_internal(message.targetDim);     
     }
     return null;
   }

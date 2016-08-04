@@ -740,6 +740,7 @@ enderio.itemCoordSelector.chat.newCoords=New Coords: %s
 enderio.itemCoordSelector.chat.setCoords=Set Coords: %s
 enderio.itemCoordSelector.chat.newDimension=New Dimension: %s%s
 enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
+enderio.itemCoordSelector.chat.alreadySet=Location already set
 
 //Painter
 tile.blockPainter.name=Painting Machine

@@ -96,6 +96,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     return wasBlocked;
   }
 
+  @Override
   public void setBlocked(boolean blocked) {
     wasBlocked = blocked;    
   }
@@ -429,8 +430,10 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   public void setCoords_internal(BlockCoord coords) {
     if (inNetwork()) {
       if (isMaster()) {
+        System.out.println("TileTelePad.setCoords_internal: Set target to " + coords);
         this.target = coords;
         this.coordsChanged = true;
+        markDirty();
       } else {
         this.getMasterTile().setCoords_internal(coords);
       }

@@ -44,6 +44,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   private ItemCoordSelector() {
     setCreativeTab(EnderIOTab.tabEnderIO);    
     setRegistryName(ModObject.itemCoordSelector.name());
+    setUnlocalizedName(ModObject.itemCoordSelector.getUnlocalisedName());
     setMaxStackSize(1);
   }
 
@@ -56,14 +57,16 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   }
 
   public static void init(ItemStack stack) {
-    stack.setTagCompound(new NBTTagCompound());
-    new BlockCoord().writeToNBT(stack.getTagCompound());
-    stack.getTagCompound().setBoolean("default", true);
+    if (!stack.hasTagCompound()) {
+      stack.setTagCompound(new NBTTagCompound());
+      new BlockCoord().writeToNBT(stack.getTagCompound());
+      stack.getTagCompound().setBoolean("default", true);
+    }
   }
   
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
+  public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {    
     if(stack != null && stack.getTagCompound() != null && !stack.getTagCompound().getBoolean("default")) {
       list.add(getCoords(stack).chatString(TextFormatting.GRAY));
     }
@@ -72,25 +75,27 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    init(stack);
     if (rayTraceCoords(stack, world, player)) {
       player.swingArm(hand);
     }
     return super.onItemRightClick(stack, world, player, hand);
   }
   
-  
-  
 
   @Override
   public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
       EnumHand hand) {
+    init(stack);
     
-      if (!rayTraceCoords(stack, world, player)) {
+
+    if(world.isRemote) {
+      //If we dont return pass on the client this wont get called on the server
       return EnumActionResult.PASS;
     }
-
+    
     TileEntity te = world.getTileEntity(pos);
-    if(te instanceof ITelePad) {
+    if(te instanceof ITelePad && player.isSneaking()) {
       ITelePad tp = (ITelePad) te;
       ITileTelePad tile = null;
       if (te instanceof ITileTelePad) {
@@ -107,10 +112,8 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tile.setCoords_internal(bc);
           } else {
             tp.setCoords(bc);
-          }
-          if(!world.isRemote) {
-            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
-          }
+          }          
+          player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));          
         }
 
         if(dim != curDim) {
@@ -118,26 +121,25 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
             tile.setTargetDim_internal(dim);
           } else {
             tp.setTargetDim(dim);
-          }
-          if(!world.isRemote) {
-            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setDimension", TextFormatting.GREEN.toString(),
-                Integer.toString(dim))));
-          }
+          }          
+          player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setDimension", TextFormatting.GREEN.toString(), Integer.toString(dim))));          
         }
 
         if(bc.equals(cur) && dim == curDim) {
-          return EnumActionResult.PASS;
+          player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.alreadySet")));
         }
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(player, tp.getOwner());
       }
+      sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);      
+      return EnumActionResult.SUCCESS;
     }
     
-    if(world.isRemote) {
-      sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);
-    }
-    
-    return EnumActionResult.SUCCESS;
+    if (rayTraceCoords(stack, world, player)) {
+      sendItemUsePacket(stack, player, world, pos.getX(), pos.getY(), pos.getZ(), side.ordinal(), hitX, hitY, hitZ);        
+      return EnumActionResult.SUCCESS;  
+    }    
+    return EnumActionResult.PASS;        
   }
 
   // returns false if the raytrace provided no new information
@@ -213,7 +215,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     stack.getTagCompound().setInteger("dimension", world.provider.getDimension());
   }
 
-  public BlockCoord getCoords(ItemStack stack) {
+  public BlockCoord getCoords(ItemStack stack) {    
     return BlockCoord.readFromNBT(stack.getTagCompound());
   }
   
