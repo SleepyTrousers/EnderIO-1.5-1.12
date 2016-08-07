@@ -416,6 +416,7 @@ public final class Config {
   public static boolean killerPvPoffDisablesSwing = false;
   public static boolean killerPvPoffIsIgnored = false;
   public static boolean killerMendingEnabled = true;
+  public static boolean killerProvokesCreeperExpolosions = false;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -1240,6 +1241,9 @@ public final class Config {
     killerMendingEnabled = config
         .get(sectionKiller.name, "killerMending", killerMendingEnabled, "If enabled, picked up XP will be used for the enchantement 'Mending' on the weapon.")
         .getBoolean();
+
+    killerProvokesCreeperExpolosions = config.get(sectionKiller.name, "killerProvokesCreeperExpolosions", killerProvokesCreeperExpolosions,
+        "If enabled, Creepers will explode for the Killer Joe just like for any player.").getBoolean();
 
     // Add deprecated comment
     config.getString("isGasConduitEnabled", sectionItems.name, "auto", "Deprecated option. Use boolean \"gasConduitsEnabled\" below.");

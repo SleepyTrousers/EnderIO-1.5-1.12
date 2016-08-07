@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.transform.EnderCoreMethods.ICreeperTarget;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -44,6 +45,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
@@ -70,6 +72,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
 public class TileKillerJoe extends AbstractMachineEntity
@@ -515,7 +519,7 @@ public class TileKillerJoe extends AbstractMachineEntity
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
 
-  private class Attackera extends FakePlayerEIO {
+  private class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
     ItemStack prevWeapon;
 
@@ -549,7 +553,12 @@ public class TileKillerJoe extends AbstractMachineEntity
     public int getTicksSinceLastSwing() {
       return ticksSinceLastSwing;
     }
-       
+
+    @Override
+    public boolean isCreeperTarget(EntityCreeper swellingCreeper) {
+      return killerProvokesCreeperExpolosions;
+    }
+
   }
 
   @Override
