@@ -12,12 +12,12 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   private static String UPGRADE_NAME = "apiaristArmor";
 
   private static final String forestryItemNames[] = {
-    "apiaristHelmet", "apiaristChest", "apiaristLegs", "apiaristBoots"};
+      "apiaristBoots", "apiaristLegs", "apiaristChest", "apiaristHelmet"};
 
-  public static final ApiaristArmorUpgrade HELMET = new ApiaristArmorUpgrade(0);
-  public static final ApiaristArmorUpgrade CHEST = new ApiaristArmorUpgrade(1);
-  public static final ApiaristArmorUpgrade LEGS = new ApiaristArmorUpgrade(2);
-  public static final ApiaristArmorUpgrade BOOTS = new ApiaristArmorUpgrade(3);
+  public static final ApiaristArmorUpgrade HELMET = new ApiaristArmorUpgrade(3);
+  public static final ApiaristArmorUpgrade CHEST = new ApiaristArmorUpgrade(2);
+  public static final ApiaristArmorUpgrade LEGS = new ApiaristArmorUpgrade(1);
+  public static final ApiaristArmorUpgrade BOOTS = new ApiaristArmorUpgrade(0);
 
   public static ItemStack getApiaristArmor(int slot) {
     Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", forestryItemNames[slot]));         
