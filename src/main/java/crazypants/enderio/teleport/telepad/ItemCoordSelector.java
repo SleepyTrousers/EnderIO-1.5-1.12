@@ -61,6 +61,11 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     }
   }
   
+  @Override
+  public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+    init(itemStack);
+  }
+  
   @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {    

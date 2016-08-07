@@ -24,7 +24,7 @@ public class TeleportEntityEvent extends EntityEvent {
   /**
    * The target coords. These can be edited by event handlers.
    */
-  public int targetX, targetY, targetZ;
+  public int targetX, targetY, targetZ, dimension;
 
   public final TravelSource source;
 
@@ -40,11 +40,12 @@ public class TeleportEntityEvent extends EntityEvent {
    * @param z
    *          The target Z coord
    */
-  public TeleportEntityEvent(Entity entity, TravelSource source, int x, int y, int z) {
+  public TeleportEntityEvent(Entity entity, TravelSource source, int x, int y, int z, int dimension) {
     super(entity);
     this.targetX = x;
     this.targetY = y;
     this.targetZ = z;
     this.source = source;
+    this.dimension = dimension;
   }
 }

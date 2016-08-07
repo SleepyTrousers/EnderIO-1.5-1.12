@@ -60,6 +60,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
     return GuiHandler.GUI_ID_INHIBITOR;
   }
 
+
   public Map<BlockCoord, Float> activeInhibitors = Maps.newHashMap();
 
   @SubscribeEvent
@@ -69,7 +70,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
       int dist = bc.getDist(new BlockCoord(event.targetX, event.targetY, event.targetZ));
       if (dist < e.getValue()) {
         TileEntity te = bc.getTileEntity(event.getEntity().worldObj);
-        if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive()) {
+        if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && te.getWorld().provider.getDimension() == event.dimension) {          
           event.setCanceled(true);
         }
       }

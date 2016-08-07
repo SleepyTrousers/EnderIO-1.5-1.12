@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Queue;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
@@ -22,17 +21,11 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.rail.TeleporterEIO;
-import crazypants.enderio.sound.SoundHelper;
-import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -40,11 +33,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Teleporter;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -527,52 +516,15 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     }
     return false;
   }
-
+  
   private boolean clientTeleport(Entity entity) {
-    if (entity.worldObj.provider.getDimension() == targetDim) {
-      return TravelController.instance.doClientTeleport(entity, null, target, TravelSource.TELEPAD, 0, false);
-    }
-    return true;
+    return TeleportUtil.clientTeleport(entity, target.getBlockPos(), targetDim, TravelSource.TELEPAD);
+        
   }
 
-  private boolean serverTeleport(Entity entity) {
-    dequeueTeleport(entity, true);
-    int from = entity.dimension;
-    if (from != targetDim) {
-      MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-      WorldServer fromDim = server.worldServerForDimension(from);
-      WorldServer toDim = server.worldServerForDimension(targetDim);
-      Teleporter teleporter = new TeleporterEIO(toDim);
-      SoundHelper.playSound(server.worldServerForDimension(entity.dimension), entity, TravelSource.TELEPAD.sound, 1.0F, 1.0F);
-      if (entity instanceof EntityPlayer) {
-        EntityPlayerMP player = (EntityPlayerMP) entity;
-        server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);        
-        if (from == 1 && entity.isEntityAlive()) { // get around vanilla End
-                                                   // hacks
-          toDim.spawnEntityInWorld(entity);
-          toDim.updateEntityWithOptionalForce(entity, false);
-        }
-      } else {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        float rotationYaw = entity.rotationYaw;
-        float rotationPitch = entity.rotationPitch;
-        entity.writeToNBT(tagCompound);
-        Class<? extends Entity> entityClass = entity.getClass();
-        fromDim.removeEntity(entity);
-
-        try {
-          Entity newEntity = entityClass.getConstructor(World.class).newInstance(toDim);
-          newEntity.readFromNBT(tagCompound);
-          newEntity.setLocationAndAngles(target.x, target.y, target.z, rotationYaw, rotationPitch);
-          newEntity.forceSpawn = true;
-          toDim.spawnEntityInWorld(newEntity);
-          newEntity.forceSpawn = false; // necessary?
-        } catch (Exception e) {
-          Throwables.propagate(e);
-        }
-      }
-    }
-    return PacketTravelEvent.doServerTeleport(entity, target.x, target.y, target.z, 0, false, TravelSource.TELEPAD, null);
+  private boolean serverTeleport(Entity entity) {    
+    dequeueTeleport(entity, true);        
+    return TeleportUtil.serverTeleport(entity, target.getBlockPos(), targetDim, false, TravelSource.TELEPAD);    
   }
 
   /* ITravelAccessable overrides */

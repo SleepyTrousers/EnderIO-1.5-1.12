@@ -127,6 +127,7 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
+import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
@@ -193,6 +194,8 @@ public class EnderIO {
   public static BlockTelePad blockTelePad;
   public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
+  public static ItemRodOfReturn itemRodOfReturn;
+  
   //
   // // Painter
   public static BlockPainter blockPainter;
@@ -401,6 +404,7 @@ public class EnderIO {
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
+    itemRodOfReturn = ItemRodOfReturn.create();
     itemConduitProbe = ItemConduitProbe.create();
 
     itemXpTransfer = ItemXpTransfer.create();

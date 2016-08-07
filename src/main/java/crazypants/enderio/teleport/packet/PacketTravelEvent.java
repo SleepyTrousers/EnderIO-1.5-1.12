@@ -85,7 +85,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
   public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
     EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
     
-    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z);
+    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z, toTp.dimension);
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }

@@ -115,6 +115,7 @@ public enum ModObject implements IModObject {
   blockTelePad,
   itemCoordSelector,
   itemTravelStaff,
+  itemRodOfReturn,
   itemMagnet,
   itemGliderWing,
   blockEndermanSkull, 

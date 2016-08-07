@@ -715,7 +715,7 @@ public class TravelController {
 
   public boolean doClientTeleport(Entity entity, EnumHand hand, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
-    TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z);
+    TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z, entity.dimension);
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }
