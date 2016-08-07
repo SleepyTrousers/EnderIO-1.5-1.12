@@ -84,6 +84,11 @@ public class BlockFluidEio extends BlockFluidClassic {
       }
     } else if (this == Fluids.blockHootch && entity instanceof EntityLivingBase) {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 150, 0, true, true));
+    } else if (this == Fluids.blockLiquidSunshine && entity instanceof EntityLivingBase) {
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 50, 0, true, true));
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 1200, 0, true, true));
+    } else if (this == Fluids.blockCloudSeedConcentrated && entity instanceof EntityLivingBase) {
+      ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 40, 0, true, true));
     }
 
     super.onEntityCollidedWithBlock(world,pos, state, entity);
