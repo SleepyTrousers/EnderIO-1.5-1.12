@@ -55,6 +55,7 @@ public class HalfBakedQuad {
 
     UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM); // this one has normals
     builder.setQuadOrientation(face);
+    builder.setTexture(tex);
     putVertexData(builder, corners.get(0), w01);
     putVertexData(builder, corners.get(1), w01);
     putVertexData(builder, corners.get(2), w23);
