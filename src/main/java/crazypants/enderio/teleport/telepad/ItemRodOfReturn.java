@@ -13,6 +13,7 @@ import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TeleportUtil;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,10 +29,12 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,6 +55,9 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   private static final int RF_PER_TICK = 19000;
 
   private static final String KEY_LAST_USED_TICK = "lastUsedAt";
+  
+  @SideOnly(Side.CLIENT)
+  private MachineSound activeSound;
 
   protected ItemRodOfReturn() {
     super(POWER_BUFFER, RF_MAX_INPUT, 0);
@@ -100,7 +106,11 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-    int used = (60 - count) * 1000;
+    if(player.worldObj.isRemote) {
+      onUsingClient(stack, player, count);
+    }
+    
+    int used = (TICKS_TO_ACTIVATE - count) * 1000;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) { 
       if (player.worldObj.isRemote) {
@@ -112,13 +122,15 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
-    updateStackNBT(stack, world, timeLeft);      
+    updateStackNBT(stack, world, timeLeft);
+    if(world.isRemote) {
+      stopPlayingSound();
+    }
   }
 
   @Override
   public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
     if (updateStackNBT(stack, worldIn, 0)) {
-      System.out.println("ItemRodOfReturn.onItemUseFinish: Do teleport ");
       BlockPos pos = getTargetPos(stack);
       if (pos == null) {        
         if (worldIn.isRemote) {
@@ -130,7 +142,12 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       TeleportUtil.doTeleport(entityLiving, pos, dim, false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
-    }    
+    } 
+    
+    if(worldIn.isRemote) {
+      stopPlayingSound();
+    }
+    
     return stack;
   }
 
@@ -200,6 +217,38 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
   }
 
+  @SideOnly(Side.CLIENT)
+  private void onUsingClient(ItemStack stack, EntityLivingBase player, int timeLeft) {
+    
+    if (timeLeft > (TICKS_TO_ACTIVATE - 2)) {       
+      return;
+    }
+    
+    float progress = 1 - ((float)timeLeft/TICKS_TO_ACTIVATE);
+    float spinSpeed = progress * 2;
+    if (activeSound != null) {
+      activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
+    }    
+    if (activeSound == null) {
+      BlockPos p = player.getPosition();
+      activeSound = new MachineSound(TileTelePad.ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
+      playSound();
+    }           
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void playSound() {
+    FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
+  }
+  
+  @SideOnly(Side.CLIENT)
+  private void stopPlayingSound() {
+    if (activeSound != null) {
+      activeSound.endPlaying();
+      activeSound = null;
+    }
+  }
+  
   // --------------------- NBT Handling for stacks
 
   private boolean updateStackNBT(ItemStack stack, World world, int timeLeft) {

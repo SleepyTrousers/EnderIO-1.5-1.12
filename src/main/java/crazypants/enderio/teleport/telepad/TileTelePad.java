@@ -62,13 +62,15 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   private int powerUsed;
   private int maxPower;
 
-  private static final ResourceLocation activeRes = AbstractMachineEntity.getSoundFor("telepad.active");
+  public static final ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
 
   @Store
   private boolean redstoneActivePrev;
 
+  
+  //Used on non-ported TESR
   public static final String TELEPORTING_KEY = "eio:teleporting";
   public static final String PROGRESS_KEY = "teleportprogress";
 
@@ -163,7 +165,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   }
 
   @SideOnly(Side.CLIENT)
-  protected void updateEntityClient() {
+  protected void updateEntityClient() {    
     updateRotations();
     if (activeSound != null) {
       activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
@@ -171,7 +173,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     if (active()) {
       if (activeSound == null) {
         BlockPos p = getPos();
-        activeSound = new MachineSound(activeRes, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
+        activeSound = new MachineSound(ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
         playSound();
       }
       updateQueuedEntities();
@@ -419,7 +421,6 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   public void setCoords_internal(BlockCoord coords) {
     if (inNetwork()) {
       if (isMaster()) {
-        System.out.println("TileTelePad.setCoords_internal: Set target to " + coords);
         this.target = coords;
         this.coordsChanged = true;
         markDirty();
@@ -471,7 +472,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   }
 
   @Override
-  public void enqueueTeleport(Entity entity, boolean sendUpdate) {
+  public void enqueueTeleport(Entity entity, boolean sendUpdate) {    
     if (entity == null || toTeleport.contains(entity)) {
       return;
     }
