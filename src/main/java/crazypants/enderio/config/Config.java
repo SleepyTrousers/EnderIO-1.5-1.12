@@ -64,6 +64,7 @@ public final class Config {
   public static final Section sectionPersonal = new Section("Personal Settings", "personal");
   public static final Section sectionAnchor = new Section("Anchor Settings", "anchor");
   public static final Section sectionStaff = new Section("Staff Settings", "staff");
+  public static final Section sectionRod = new Section("Rod of Return Settings", "rod");
   public static final Section sectionDarkSteel = new Section("Dark Steel", "darksteel");
   public static final Section sectionFarm = new Section("Farm Settings", "farm");
   public static final Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
@@ -166,6 +167,12 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
+  public static boolean rodOfReturnEnabled = true;
+  public static int rodOfReturnTicksToActivate = 50;
+  public static int rodOfReturnPowerStorage = 2000000;
+  public static int rodOfReturnMinTicksToRecharge = 100;  
+  public static int rodOfReturnRfPerTick = 50000;
+  
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
@@ -832,6 +839,21 @@ public final class Config {
         .get(sectionStaff.name, "travelStaffOffhandShowsTravelTargets", travelStaffOffhandShowsTravelTargets,
             "If set to false: Teleportation targets will not be highlighted for travel items held in the off-hand.")
         .getBoolean(travelStaffOffhandShowsTravelTargets);
+    
+    
+    rodOfReturnEnabled = config.get(sectionRod.name, "rodOfReturnEnabled", rodOfReturnEnabled,
+        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);
+    
+    
+    rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
+        "Number of ticks the rob must be used before teleporting").getInt(rodOfReturnTicksToActivate);
+    rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage,
+        "Internal RF buffer for rob").getInt(rodOfReturnPowerStorage);
+    rodOfReturnRfPerTick = config.get(sectionRod.name, "rodOfReturnRfPerTick", rodOfReturnRfPerTick,
+        "RF used per tick").getInt(rodOfReturnRfPerTick);
+    rodOfReturnMinTicksToRecharge = config.get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge,
+        "Min number of ticks required to recharge the internal RF buffer").getInt(rodOfReturnMinTicksToRecharge);
+    
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
         "Range accessible (in blocks) when using the Ender IO.").getInt(enderIoRange);

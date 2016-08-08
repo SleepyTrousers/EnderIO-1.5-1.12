@@ -78,6 +78,18 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:itemTravelStaff" />
     </crafting>
   </recipe>
+  
+  <recipe name="Rod of Return" required="true">
+    <config section="Rod of Return Settings" name="rodOfReturnEnabled" value="true" />
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="PULSATING_CRYSTAL"/><item name="ENDER_CRYSTAL" />
+        <item /><item name="ELECTRICAL_STEEL" /><item name="PULSATING_CRYSTAL"/>
+        <item name="ELECTRICAL_STEEL" /><item /><item />
+      </grid>
+      <output name="enderio:itemRodOfReturn" />
+    </crafting>
+  </recipe>
 
   <recipe name="Coordinate Selector (endercore)" required="true">
     <config section="Item Enabling" name="travelAnchorEnabled" value="true" />

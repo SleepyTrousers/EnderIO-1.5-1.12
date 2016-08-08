@@ -730,7 +730,7 @@ item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 item.itemRodOfReturn.name=Rod of Return
-item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to sync Telepad
+item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad
 item.itemRodOfReturn.tooltip.detailed.line2=Sync with a Telepad using Shift-R-Click
 enderio.itemRodOfReturn.chat.notEnoughPower=Not enough power
 enderio.itemRodOfReturn.chat.targetNotSet=No destination set

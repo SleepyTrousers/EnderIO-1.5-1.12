@@ -1,9 +1,12 @@
 package crazypants.enderio.teleport.telepad;
 
 import java.util.List;
+import java.util.Random;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.vecmath.Vector3d;
 
 import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
@@ -16,6 +19,8 @@ import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TeleportUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +33,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -46,13 +52,8 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     result.init();
     return result;
   }
-
-  private static final int TICKS_TO_ACTIVATE = 50;
-
-  private static final int POWER_BUFFER = Config.darkSteelPowerStorageLevelThree;
-  private static final int TICKS_TO_CHARGE = 100;
-  private static final int RF_MAX_INPUT = (int) Math.ceil(POWER_BUFFER / (double) TICKS_TO_CHARGE);
-  private static final int RF_PER_TICK = 19000;
+  
+  private static final int RF_MAX_INPUT = (int) Math.ceil(Config.rodOfReturnPowerStorage / (double) Config.rodOfReturnMinTicksToRecharge);
 
   private static final String KEY_LAST_USED_TICK = "lastUsedAt";
   
@@ -60,7 +61,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   private MachineSound activeSound;
 
   protected ItemRodOfReturn() {
-    super(POWER_BUFFER, RF_MAX_INPUT, 0);
+    super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemRodOfReturn.getUnlocalisedName());
     setRegistryName(ModObject.itemRodOfReturn.getUnlocalisedName());
@@ -110,7 +111,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       onUsingClient(stack, player, count);
     }
     
-    int used = (TICKS_TO_ACTIVATE - count) * 1000;
+    int used = (Config.rodOfReturnTicksToActivate - count) * 1000;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) { 
       if (player.worldObj.isRemote) {
@@ -178,7 +179,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public int getMaxItemUseDuration(ItemStack stack) {
-    return TICKS_TO_ACTIVATE;
+    return Config.rodOfReturnTicksToActivate;
   }
 
   @Override
@@ -220,11 +221,11 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   @SideOnly(Side.CLIENT)
   private void onUsingClient(ItemStack stack, EntityLivingBase player, int timeLeft) {
     
-    if (timeLeft > (TICKS_TO_ACTIVATE - 2)) {       
+    if (timeLeft > (Config.rodOfReturnTicksToActivate - 2)) {       
       return;
     }
     
-    float progress = 1 - ((float)timeLeft/TICKS_TO_ACTIVATE);
+    float progress = 1 - ((float)timeLeft/Config.rodOfReturnTicksToActivate);
     float spinSpeed = progress * 2;
     if (activeSound != null) {
       activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
@@ -233,7 +234,37 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       BlockPos p = player.getPosition();
       activeSound = new MachineSound(TileTelePad.ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
       playSound();
-    }           
+    } 
+    
+    double dist = 2 - (progress * 1.5);
+    Random rand = player.worldObj.rand;
+    for(int i=0;i<6;i++) {
+      double xo = randomOffset(rand, dist);
+      double yo = randomOffset(rand, dist) ;
+      double zo = randomOffset(rand, dist);
+      
+      double x = player.posX + xo;
+      double y = player.posY + yo + player.height/2;
+      double z = player.posZ + zo;
+
+      Vector3d velocity = new Vector3d(xo,yo,zo);
+      velocity.normalize();
+
+      Particle fx = Minecraft.getMinecraft().effectRenderer
+          .spawnEffectParticle(EnumParticleTypes.PORTAL.getParticleID(), x, y,z, 0, 0, 0, 0);
+      if (fx != null) {
+//        if(rand.nextInt(8) == 0) {
+//          fx.setRBGColorF((rand.nextFloat() * 0.1f), 0.6f + (rand.nextFloat() * 0.15f), 0.75f + (rand.nextFloat() * 0.2f));
+//        }
+        ClientUtil.setParticleVelocity(fx, velocity.x, velocity.y, velocity.z);
+        fx.setMaxAge(timeLeft + 2);
+      }            
+    }
+    
+  }
+
+  private double randomOffset(Random rand, double magnitude) {
+    return (rand.nextDouble() - 0.5) * magnitude;
   }
 
   @SideOnly(Side.CLIENT)
@@ -254,7 +285,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   private boolean updateStackNBT(ItemStack stack, World world, int timeLeft) {
     setLastUsedTick(stack, world.getTotalWorldTime());
      // half a second before it costs you
-    if (timeLeft > (TICKS_TO_ACTIVATE - 10)) {       
+    if (timeLeft > (Config.rodOfReturnTicksToActivate - 10)) {       
       return false;
     }
     return useEnergy(stack, timeLeft);
@@ -275,7 +306,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   }
 
   private boolean useEnergy(ItemStack stack, int timeLeft) {
-    int used = (TICKS_TO_ACTIVATE - timeLeft) * RF_PER_TICK;
+    int used = (Config.rodOfReturnTicksToActivate - timeLeft) * Config.rodOfReturnRfPerTick;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
       setEnergy(stack, 0);
@@ -293,7 +324,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   }
 
   private void setFull(ItemStack container) {
-    setEnergy(container, POWER_BUFFER);
+    setEnergy(container, Config.rodOfReturnPowerStorage);
   }
 
   private void setTarget(ItemStack container, BlockPos pos, int dimension) {
