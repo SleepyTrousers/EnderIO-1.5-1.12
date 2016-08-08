@@ -28,6 +28,10 @@
         "cloud_seed_concentrated": {
             "model": "forge:fluid",
             "custom": { "fluid": "cloud_seed_concentrated" }            
+        },
+        "ender_distillation": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "ender_distillation" }            
         }
     }
 }

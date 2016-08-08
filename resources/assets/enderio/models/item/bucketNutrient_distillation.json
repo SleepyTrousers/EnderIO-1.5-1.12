@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "enderio:items/bucketNutrient_distillation"
+        "layer0": "enderio:items/bucketEnder_distillation"
     }
 }

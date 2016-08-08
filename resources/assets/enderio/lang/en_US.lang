@@ -152,6 +152,10 @@ fluid.nutrient_distillation=Nutrient Distillation
 tile.fluid.nutrient_distillation.name=Nutrient Distillation
 item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 
+fluid.ender_distillation=Ender Distillation
+tile.fluid.ender_distillation.name=Ender Distillation
+item.bucketEnder_distillation.name=Ender Distillation Bucket
+
 fluid.hootch=Hootch
 tile.fluid.hootch.name=Hootch
 item.bucketHootch.name=Hootch Bucket

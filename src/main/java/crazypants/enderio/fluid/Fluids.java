@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Fluids {
 
   public static final String NUTRIENT_DISTILLATION_NAME = "nutrient_distillation";
+  public static final String ENDER_DISTILLATION_NAME = "ender_distillation";
   public static final String HOOTCH_NAME = "hootch";
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
   public static final String FIRE_WATER_NAME = "fire_water";
@@ -39,6 +40,8 @@ public class Fluids {
   public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
   public static final String CLOUD_SEED_NAME = "cloud_seed";
   public static final String CLOUD_SEED_CONCENTRATED_NAME = "cloud_seed_concentrated";
+  
+  
 
   public static Fluid fluidNutrientDistillation;
   public static BlockFluidEio blockNutrientDistillation;
@@ -59,6 +62,9 @@ public class Fluids {
   public static BlockFluidEio blockLiquidSunshine;
   public static BlockFluidEio blockCloudSeed;
   public static BlockFluidEio blockCloudSeedConcentrated;
+  
+  public static Fluid fluidEnderDistillation;
+  public static BlockFluidEio blockEnderDistillation;
 
   // Open block compatable liquid XP
   public static Fluid fluidXpJuice;
@@ -92,8 +98,14 @@ public class Fluids {
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.WATER);
-
+    
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
+    
+    f = new Fluid(Fluids.ENDER_DISTILLATION_NAME, getStill(Fluids.ENDER_DISTILLATION_NAME), getFlowing(Fluids.ENDER_DISTILLATION_NAME))
+        .setDensity(1500).setViscosity(3000);
+    FluidRegistry.registerFluid(f);
+    fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
+    blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.WATER);
 
     f = new Fluid(Fluids.HOOTCH_NAME, Fluids.getStill(Fluids.HOOTCH_NAME), Fluids.getFlowing(Fluids.HOOTCH_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
@@ -161,12 +173,13 @@ public class Fluids {
   public void registerRenderers() {
     MinecraftForge.EVENT_BUS.register(this);
     registerFluidBlockRendering(fluidNutrientDistillation, NUTRIENT_DISTILLATION_NAME);
+    registerFluidBlockRendering(fluidEnderDistillation, ENDER_DISTILLATION_NAME);
     registerFluidBlockRendering(fluidHootch, HOOTCH_NAME);
     registerFluidBlockRendering(fluidFireWater, FIRE_WATER_NAME);
     registerFluidBlockRendering(fluidRocketFuel, ROCKET_FUEL_NAME);
     registerFluidBlockRendering(fluidLiquidSunshine, LIQUID_SUNSHINE_NAME);
     registerFluidBlockRendering(fluidCloudSeed, CLOUD_SEED_NAME);
-    registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);
+    registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);    
   }
 
   @SideOnly(Side.CLIENT)
