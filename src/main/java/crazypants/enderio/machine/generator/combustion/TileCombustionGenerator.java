@@ -202,7 +202,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     // flickering on and off constantly when powering a machine that draws less than this produces
     if (inPause) {
       int powerPerCycle = getPowerPerCycle();
-      if (getEnergyStored() >= (getMaxEnergyStored() - (powerPerCycle * 200))) {
+      if (getEnergyStored() >= (getMaxEnergyStored() - (powerPerCycle * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
         return false;
       }
     }
