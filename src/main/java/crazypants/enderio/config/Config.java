@@ -171,7 +171,7 @@ public final class Config {
   public static int rodOfReturnTicksToActivate = 50;
   public static int rodOfReturnPowerStorage = 2000000;
   public static int rodOfReturnMinTicksToRecharge = 100;  
-  public static int rodOfReturnRfPerTick = 50000;
+  public static int rodOfReturnRfPerTick = 35000;
   
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
