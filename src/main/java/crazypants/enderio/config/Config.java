@@ -846,9 +846,9 @@ public final class Config {
     
     
     rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
-        "Number of ticks the rob must be used before teleporting").getInt(rodOfReturnTicksToActivate);
+        "Number of ticks the rod must be used before teleporting").getInt(rodOfReturnTicksToActivate);
     rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage,
-        "Internal RF buffer for rob").getInt(rodOfReturnPowerStorage);
+        "Internal RF buffer for rod").getInt(rodOfReturnPowerStorage);
     rodOfReturnRfPerTick = config.get(sectionRod.name, "rodOfReturnRfPerTick", rodOfReturnRfPerTick,
         "RF used per tick").getInt(rodOfReturnRfPerTick);
     rodOfReturnMinTicksToRecharge = config.get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge,
