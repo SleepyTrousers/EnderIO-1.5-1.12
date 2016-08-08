@@ -236,7 +236,32 @@
       <output>
         <itemStack oreDictionary="nuggetEnderpearl" number="9" />
       </output>
+    </recipe>        
+    <recipe name="VibrantPowder" energyCost="1600" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="6"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="11"/>
+      </output>
     </recipe>
+    <recipe name="PulsatingPowder" energyCost="1600" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="5"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12"/>
+      </output>
+    </recipe>
+    <recipe name="EnderCrystalPowder" energyCost="1600" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="8"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13"/>
+      </output>
+    </recipe>
+    
   </recipeGroup>
 
   <recipeGroup name="Vanilla" >

@@ -25,7 +25,10 @@ public enum Material {
   DARK_GRINDING_BALL("darkGrindingBall"),
   ENDER_CRYSTAL("enderCrystal", true),
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
-  WEATHER_CRYSTAL("weatherCrystal", true);
+  WEATHER_CRYSTAL("weatherCrystal", true),
+  VIBRANT_POWDER("vibrantPowder", true),
+  PULSATING_POWDER("pulsatingPowder", true),
+  ENDER_CYSTAL_POWDER("enderCrystalPowder", true);
 
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
