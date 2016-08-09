@@ -56,6 +56,7 @@ import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
+import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
@@ -266,6 +267,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
     MinecraftForge.EVENT_BUS.register(UpgradeRenderDispatcher.instance);
+    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
   @Override
