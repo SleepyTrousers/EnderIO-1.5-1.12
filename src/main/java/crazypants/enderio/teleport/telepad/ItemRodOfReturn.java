@@ -3,6 +3,8 @@ package crazypants.enderio.teleport.telepad;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -15,6 +17,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -40,10 +43,18 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.util.NbtValue.FLUIDAMOUNT;
 
 public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceTooltipProvider, IOverlayRenderAware {
 
@@ -131,7 +142,9 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-    if (updateStackNBT(stack, worldIn, 0)) {
+    boolean hasPower = updateStackNBT(stack, worldIn, 0);
+    boolean hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power    
+    if (hasPower && hasFluid) {
       BlockPos pos = getTargetPos(stack);
       if (pos == null) {        
         if (worldIn.isRemote) {
@@ -142,7 +155,11 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       int dim = getTargetDimension(stack);
       TeleportUtil.doTeleport(entityLiving, pos, dim, false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
-      entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+      if(!hasPower) {
+        entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+      } else {
+        entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughFluid", TextFormatting.RED.toString())));
+      }
     } 
     
     if(worldIn.isRemote) {
@@ -186,7 +203,12 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
+    String str;
+        
+    str = PowerDisplayUtil.formatPower(FLUIDAMOUNT.getInt(itemStack, 0)) + "/" + PowerDisplayUtil.formatPower(Config.rodOfReturnFluidStorage) + " MB";
+    list.add(str);
+    
+    str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
         + PowerDisplayUtil.abrevation();
     list.add(str);
   }
@@ -214,8 +236,9 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {        
+    PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition, true);
+    PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 1, true);
   }
 
   @SideOnly(Side.CLIENT)
@@ -325,6 +348,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   private void setFull(ItemStack container) {
     setEnergy(container, Config.rodOfReturnPowerStorage);
+    FLUIDAMOUNT.setInt(container, Config.rodOfReturnFluidStorage);
   }
 
   private void setTarget(ItemStack container, BlockPos pos, int dimension) {
@@ -347,6 +371,125 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       return -1;
     }
     return stack.getTagCompound().getInteger("targetDim");
+  }
+  
+  // Fluid handeling
+    
+  private boolean useFluid(ItemStack container) {    
+    int amount = FLUIDAMOUNT.getInt(container, 0);
+    if (Config.rodOfReturnFluidUsePerTeleport > amount) {
+      FLUIDAMOUNT.setInt(container, 0);
+      return false;
+    } else {
+      FLUIDAMOUNT.setInt(container, amount - Config.rodOfReturnFluidUsePerTeleport);
+      return true;
+    }
+  }  
+  
+  public FluidStack getFluid(ItemStack container) {
+    int amount = FLUIDAMOUNT.getInt(container, 0);
+    if (amount > 0) {
+      return new FluidStack(Fluids.fluidEnderDistillation, amount);
+    } else {
+      return null;
+    }
+  }
+ 
+  public int getCapacity(ItemStack container) {
+    return Config.rodOfReturnFluidStorage;
+  }
+
+  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
+        || resource.getFluid() != Fluids.fluidEnderDistillation) {
+      return 0;
+    }
+    int amount = FLUIDAMOUNT.getInt(container, 0);
+    int capacity = getCapacity(container);
+    int free = capacity - amount;
+    int toFill = Math.min(resource.amount, free);
+    if (toFill > 0 && doFill) {
+      FLUIDAMOUNT.setInt(container, amount + toFill);
+    }
+    return toFill;
+  }
+  
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new CapabilityProvider(stack);
+  }
+
+  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
+    protected final ItemStack container;
+
+    private CapabilityProvider(ItemStack container) {
+      this.container = container;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      return new IFluidTankProperties[] { new IFluidTankProperties() {
+
+        @Override
+        @Nullable
+        public FluidStack getContents() {
+          return getFluid(container);
+        }
+
+        @Override
+        public int getCapacity() {
+          return ItemRodOfReturn.this.getCapacity(container);
+        }
+
+        @Override
+        public boolean canFill() {
+          return true;
+        }
+
+        @Override
+        public boolean canDrain() {
+          return false;
+        }
+
+        @Override
+        public boolean canFillFluidType(FluidStack fluidStack) {
+          return fluidStack != null && fluidStack.getFluid() == Fluids.fluidEnderDistillation;
+        }
+
+        @Override
+        public boolean canDrainFluidType(FluidStack fluidStack) {
+          return false;
+        }
+      } };
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      return ItemRodOfReturn.this.fill(container, resource, doFill);
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+      return null;
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+      return null;
+    }
   }
 
 }

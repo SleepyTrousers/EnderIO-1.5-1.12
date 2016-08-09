@@ -172,6 +172,8 @@ public final class Config {
   public static int rodOfReturnPowerStorage = 2000000;
   public static int rodOfReturnMinTicksToRecharge = 100;  
   public static int rodOfReturnRfPerTick = 35000;
+  public static int rodOfReturnFluidUsePerTeleport = 200;
+  public static int rodOfReturnFluidStorage = 200;
   
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -842,9 +844,7 @@ public final class Config {
     
     
     rodOfReturnEnabled = config.get(sectionRod.name, "rodOfReturnEnabled", rodOfReturnEnabled,
-        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);
-    
-    
+        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);        
     rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
         "Number of ticks the rod must be used before teleporting").getInt(rodOfReturnTicksToActivate);
     rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage,
@@ -853,6 +853,10 @@ public final class Config {
         "RF used per tick").getInt(rodOfReturnRfPerTick);
     rodOfReturnMinTicksToRecharge = config.get(sectionRod.name, "rodOfReturnMinTicksToRecharge", rodOfReturnMinTicksToRecharge,
         "Min number of ticks required to recharge the internal RF buffer").getInt(rodOfReturnMinTicksToRecharge);
+    rodOfReturnFluidStorage = config.get(sectionRod.name, "rodOfReturnFluidStorage", rodOfReturnFluidStorage,
+        "How much fluid the rod can store").getInt(rodOfReturnFluidStorage);
+    rodOfReturnFluidUsePerTeleport = config.get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport,
+        "How much fluid is used per teleport").getInt(rodOfReturnFluidUsePerTeleport);    
     
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,

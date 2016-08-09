@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4i;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -12,23 +13,30 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class PowerBarOverlayRenderHelper {
 
   /*
-   * These flags are not suited for the config file, but we might decide later to use different values.
+   * These flags are not suited for the config file, but we might decide later
+   * to use different values.
    * 
-   * MIMIC_VANILLA_RENDERBUG: Vanilla renders the bars 1 pixel too wide. If set to true, we'll do also.
+   * MIMIC_VANILLA_RENDERBUG: Vanilla renders the bars 1 pixel too wide. If set
+   * to true, we'll do also.
    * 
-   * HIDE_VANILLA_RENDERBUG: Overpaint vanilla's mistake instead. Don't use together with MIMIC_VANILLA_RENDERBUG.
+   * HIDE_VANILLA_RENDERBUG: Overpaint vanilla's mistake instead. Don't use
+   * together with MIMIC_VANILLA_RENDERBUG.
    * 
-   * SHOW_ON_FULL: Show power bar when energy storage is full. (Vanilla damage bar is hidden when full)
+   * SHOW_ON_FULL: Show power bar when energy storage is full. (Vanilla damage
+   * bar is hidden when full)
    * 
-   * SHOW_ON_FULL_UPGRADEABLE: Same but for items that can be upgraded to have an energy storage. This will give a visual difference between unupgraded and full
-   * items.
+   * SHOW_ON_FULL_UPGRADEABLE: Same but for items that can be upgraded to have
+   * an energy storage. This will give a visual difference between unupgraded
+   * and full items.
    * 
-   * SHOW_ON_EMPTY: Show power bar when energy storage is empty. Should not be false if SHOW_ON_FULL is false, too.
+   * SHOW_ON_EMPTY: Show power bar when energy storage is empty. Should not be
+   * false if SHOW_ON_FULL is false, too.
    * 
    * SHOW_ON_EMPTY_UPGRADEABLE: Same for upgradable items.
    */
@@ -64,12 +72,16 @@ public class PowerBarOverlayRenderHelper {
   }
 
   public boolean render(ItemStack stack, int xPosition, int yPosition) {
+    return render(stack, xPosition, yPosition, false);
+  }
+  
+  public boolean render(ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
     if (hasEnergyStore(stack) && stack.getItem() instanceof IEnergyContainerItem) {
       IEnergyContainerItem energyItem = (IEnergyContainerItem) stack.getItem();
       int maxEnergy = energyItem.getMaxEnergyStored(stack);
       if (maxEnergy > 0) {
         int energy = energyItem.getEnergyStored(stack);
-        if (shouldShowBar(maxEnergy, energy)) {
+        if (alwaysShow || shouldShowBar(maxEnergy, energy)) {
           double level = (double) energy / (double) maxEnergy;
           boolean up = stack.getItem().showDurabilityBar(stack);
           boolean top = stack.stackSize != 1;
@@ -178,26 +190,34 @@ public class PowerBarOverlayRenderHelper {
       colorBG = new Vector4i(0x00, 0x30, 0x00, 255);
     }
 
+    public boolean render(ItemStack stack, int xPosition, int yPosition, int barOffset) {
+      return render(stack, xPosition, yPosition, barOffset, false);
+    }
+    
     @Override
-    public boolean render(ItemStack stack, int xPosition, int yPosition) {
-      return render(stack, xPosition, yPosition, 0);
+    public boolean render(ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
+      return render(stack, xPosition, yPosition, 0, alwaysShow);
     }
 
-    public boolean render(ItemStack stack, int xPosition, int yPosition, int barOffset) {
-      if (stack.getItem() instanceof IFluidContainerItem) {
-        IFluidContainerItem fluidItem = (IFluidContainerItem) stack.getItem();
-        int maxFluid = fluidItem.getCapacity(stack);
-        if (maxFluid > 0) {
-          FluidStack fluidStack = fluidItem.getFluid(stack);
-          int fluid = fluidStack == null ? 0 : fluidStack.amount;
-          if (shouldShowBar(maxFluid, fluid)) {
-            double level = (double) fluid / (double) maxFluid;
-            boolean up = stack.getItem().showDurabilityBar(stack);
-            boolean top = stack.stackSize != 1;
-            render(level, xPosition, yPosition, top ? 12 - barOffset : up ? 2 + barOffset : barOffset, (barOffset & 1) == 0);
-            return true;
-          }
-        }
+    public boolean render(ItemStack stack, int xPosition, int yPosition, int barOffset, boolean alwaysShow) {
+      
+      IFluidHandler cap = FluidUtil.getFluidHandlerCapability(stack);
+      if (cap == null || cap.getTankProperties() == null || cap.getTankProperties().length <= 0) {
+        return false;
+      }
+      IFluidTankProperties tank = cap.getTankProperties()[0];
+      if (tank == null || tank.getCapacity() <= 0) {
+        return false;
+      }
+      int maxFluid = tank.getCapacity();
+      FluidStack fluidStack = tank.getContents();
+      int fluidAmount = fluidStack == null ? 0 : fluidStack.amount;
+      if (alwaysShow || shouldShowBar(maxFluid, fluidAmount)) {
+        double level = (double) fluidAmount / (double) maxFluid;
+        boolean up = stack.getItem().showDurabilityBar(stack);
+        boolean top = stack.stackSize != 1;
+        render(level, xPosition, yPosition, top ? 12 - barOffset : up ? 2 + barOffset : barOffset, (barOffset & 1) == 0);
+        return true;
       }
       return false;
     }
