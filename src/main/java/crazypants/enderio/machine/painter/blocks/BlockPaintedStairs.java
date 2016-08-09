@@ -188,20 +188,20 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
     final boolean top = state.getValue(HALF) == EnumHalf.TOP;
     int xRot = top ? 180 : 0;
+    int yRot = top ? 90 : 0;
 
-    int yRot;
     switch (state.getValue(FACING)) {
     case EAST:
-      yRot = 0;
-      break;
-    case NORTH:
-      yRot = 270;
+      yRot += 0;
       break;
     case SOUTH:
-      yRot = 90;
+      yRot += 90;
       break;
     case WEST:
-      yRot = 180;
+      yRot += 180;
+      break;
+    case NORTH:
+      yRot += 270;
       break;
     default:
       return null;
@@ -209,22 +209,23 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
     String model;
     switch (state.getValue(SHAPE)) {
-    case INNER_LEFT:
-      model = "inner_stairs";
-      yRot += top ? +90 : -90;
-      break;
-    case INNER_RIGHT:
-      model = "inner_stairs";
-      break;
-    case OUTER_LEFT:
-      model = "outer_stairs";
-      yRot += top ? +90 : -90;
+    case STRAIGHT:
+      model = "stairs";
+      yRot += top ? -90 : 0;
       break;
     case OUTER_RIGHT:
       model = "outer_stairs";
       break;
-    case STRAIGHT:
-      model = "stairs";
+    case OUTER_LEFT:
+      model = "outer_stairs";
+      yRot += -90;
+      break;
+    case INNER_RIGHT:
+      model = "inner_stairs";
+      break;
+    case INNER_LEFT:
+      model = "inner_stairs";
+      yRot += -90;
       break;
     default:
       return null;
@@ -277,10 +278,11 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @Deprecated
   @Override
   public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-    if (worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockPaintedStairs
-        && getPaintSource(null, worldIn, pos) == getPaintSource(null, worldIn, pos)) {
-      return false;
-    }
+    // disabled because it fails once the player uses a wrench to rotate the block
+    // if (worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockPaintedStairs
+    // && getPaintSource(null, worldIn, pos) == getPaintSource(null, worldIn, pos)) {
+    // return false;
+    // }
     return super.shouldSideBeRendered(bs, worldIn, pos, side);
   }
 
