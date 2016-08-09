@@ -152,9 +152,9 @@ fluid.nutrient_distillation=Nutrient Distillation
 tile.fluid.nutrient_distillation.name=Nutrient Distillation
 item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 
-fluid.ender_distillation=Ender Distillation
-tile.fluid.ender_distillation.name=Ender Distillation
-item.bucketEnder_distillation.name=Ender Distillation Bucket
+fluid.ender_distillation=Dew of the Void
+tile.fluid.ender_distillation.name=Dew of the Void
+item.bucketEnder_distillation.name=Dew of the Void Bucket
 
 fluid.hootch=Hootch
 tile.fluid.hootch.name=Hootch
@@ -198,11 +198,11 @@ enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassis
 enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
-enderio.pulsatingPowder.name=Pulsating Powder
+enderio.pulsatingPowder.name=Grains of Piezallity
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.vibrantPowder.name=Vibrant Powder
 enderio.enderCrystal.name=Ender Crystal
-enderio.enderCrystalPowder.name=Ender Crystal Powder
+enderio.enderCrystalPowder.name=Grains of the End
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.weatherCrystal.name=Weather Crystal
 enderio.darkGrindingBall.name=Dark Steel Ball

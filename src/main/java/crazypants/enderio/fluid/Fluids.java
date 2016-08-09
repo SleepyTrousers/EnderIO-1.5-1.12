@@ -102,7 +102,7 @@ public class Fluids {
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
     
     f = new Fluid(Fluids.ENDER_DISTILLATION_NAME, getStill(Fluids.ENDER_DISTILLATION_NAME), getFlowing(Fluids.ENDER_DISTILLATION_NAME))
-        .setDensity(1500).setViscosity(3000);
+        .setDensity(200).setViscosity(1000).setTemperature(175);
     FluidRegistry.registerFluid(f);
     fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
     blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.WATER);
