@@ -10,11 +10,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Timer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static crazypants.enderio.config.Config.telepadShrinkEffect;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_ZERO;
@@ -31,12 +33,16 @@ public class TeleportEntityRenderHandler {
   @SubscribeEvent
   public void onEntityRender(RenderLivingEvent.Post<EntityLivingBase> event) {
     EntityLivingBase e = event.getEntity();
+    if (e.getEntityData().getBoolean("eio_needs_pop")) {
+      GlStateManager.popMatrix();
+      e.getEntityData().removeTag("eio_needs_pop");
+    }
     if (e.getEntityData().getBoolean(TileTelePad.TELEPORTING_KEY)) {
       final Timer timer = RenderUtil.getTimer();
       final float progress = e.getEntityData().getFloat(TileTelePad.PROGRESS_KEY);
       final float speed = progress * 1.2f;
-      final float rot = (e.getEntityData().getFloat("teleportrotation")) + speed;
-      e.getEntityData().setFloat("teleportrotation", rot);
+      final float rot = (e.getEntityData().getFloat("eio_teleportrotation")) + speed;
+      e.getEntityData().setFloat("eio_teleportrotation", rot);
 
       AxisAlignedBB bb = e.getRenderBoundingBox();
       if (bb == null || bb.getAverageEdgeLength() < .2) {
@@ -90,4 +96,34 @@ public class TeleportEntityRenderHandler {
     }
   }
 
+  @SubscribeEvent
+  public void onEntityRender(RenderLivingEvent.Pre<EntityLivingBase> event) {
+    if (telepadShrinkEffect) {
+      final NBTTagCompound entityData = event.getEntity().getEntityData();
+      boolean isTarget = false;
+      if (entityData.getBoolean(TileTelePad.TELEPORTING_KEY)) {
+        isTarget = true;
+        // shrink the entity for longer than the teleport lasts so it doesn't pop big again at the source location
+        entityData.setInteger("eio_delay", 7);
+      } else if (entityData.hasKey("eio_delay")) {
+        int delay = entityData.getInteger("eio_delay") - 1;
+        if (delay > 0) {
+          entityData.setInteger("eio_delay", delay);
+        } else {
+          entityData.removeTag("eio_delay");
+          entityData.removeTag("eio_teleportrotation");
+        }
+        isTarget = true;
+      }
+      if (isTarget) {
+        final float progress = entityData.hasKey(TileTelePad.PROGRESS_KEY) ? entityData.getFloat(TileTelePad.PROGRESS_KEY) : 1;
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(event.getX(), event.getY(), event.getZ());
+        final float scale = 1 - progress * 0.75f;
+        GlStateManager.scale(scale, scale, scale);
+        GlStateManager.translate(-event.getX(), -event.getY(), -event.getZ());
+        entityData.setBoolean("eio_needs_pop", true);
+      }
+    }
+  }
 }
