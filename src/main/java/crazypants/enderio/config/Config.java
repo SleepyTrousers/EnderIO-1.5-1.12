@@ -405,6 +405,7 @@ public final class Config {
   public static int wirelessChargerRange = 24;
 
   public static long nutrientFoodBoostDelay = 400;
+  public static boolean rocketFuelIsExplosive = false;
 
   public static int enchanterBaseLevelCost = 2;  
   public static double enchanterLevelCostFactor = 0.75;
@@ -1240,6 +1241,8 @@ public final class Config {
 
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
+    rocketFuelIsExplosive = config
+        .get(sectionFluid.name, "rocketFuelIsExplosive", rocketFuelIsExplosive, "If enabled, Rocket Fuel will explode when in contact with fire.").getBoolean();
 
     killerJoeNutrientUsePerAttackMb = config.get(sectionKiller.name, "killerJoeNutrientUsePerAttackMb", killerJoeNutrientUsePerAttackMb,
         "The number of millibuckets of nutrient fluid used per attack.").getInt(killerJoeNutrientUsePerAttackMb);
