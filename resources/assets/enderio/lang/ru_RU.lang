@@ -152,27 +152,31 @@ fluid.nutrient_distillation.name=Питательный дистиллят
 tile.fluid.nutrient_distillation.name=Питательный дистиллят
 item.bucketNutrient_distillation.name=Ведро питательного дистиллята
 
-fluid.hootch.name=Самогон
+fluid.ender_distillation=Роса пустоты
+tile.fluid.ender_distillation.name=Роса пустоты
+item.bucketEnder_distillation.name=Ведро росы пустоты
+
+fluid.hootch=Самогон
 tile.fluid.hootch.name=Самогон
 item.bucketHootch.name=Ведро самогона
 
-fluid.fire_water.name=Огненная вода
+fluid.fire_water=Огненная вода
 tile.fluid.fire_water.name=Огненная вода
 item.bucketFire_water.name=Ведро огненной воды
 
-fluid.rocket_fuel.name=Ракетное топливо
+fluid.rocket_fuel=Ракетное топливо
 tile.fluid.rocket_fuel.name=Ракетное топливо
 item.bucketRocket_fuel.name=Ведро ракетного топлива
 
-fluid.liquid_sunshine.name=Жидкий солнечный свет
+fluid.liquid_sunshine=Жидкий солнечный свет
 tile.fluid.liquid_sunshine.name=Жидкий солнечный свет
 item.bucketLiquid_sunshine.name=Ведро жидкого солнечного света
 
-fluid.cloud_seed.name=Облако семян
+fluid.cloud_seed=Облако семян
 tile.fluid.cloud_seed.name=Облако семян
 item.bucketCloud_seed.name=Ведро облака семян
 
-fluid.cloud_seed_concentrated.name=Концентрированное облако семян
+fluid.cloud_seed_concentrated=Концентрированное облако семян
 tile.fluid.cloud_seed_concentrated.name=Концентрированное облако семян
 item.bucketCloud_seed_concentrated.name=Ведро концентрированного облака семян
 
@@ -194,8 +198,11 @@ enderio.itemMachinePart.name=Детали механизма
 enderio.machineChassi.name=Корпус механизма
 enderio.basicGear.name=Основная шестерня
 enderio.pulsatingCrystal.name=Пульсирующий кристалл
+enderio.pulsatingPowder.name=Крупинки пьезолита
 enderio.vibrantCrystal.name=Вибрирующий кристалл
+enderio.vibrantPowder.name=Вибрирующий порошок
 enderio.enderCrystal.name=Эндер-кристалл
+enderio.enderCrystalPowder.name=Крупинки Энда
 enderio.attractorCrystal.name=Привлекающий кристалл
 enderio.weatherCrystal.name=Погодный кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
@@ -729,6 +736,14 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-ПКМ телепортиру�
 item.itemTravelStaff.tooltip.detailed.line5=игрока на короткую дистанцию
 enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 
+item.itemRodOfReturn.name=Стержень возвращения
+item.itemRodOfReturn.tooltip.detailed.line1=Возвращает игрока на телепорт
+item.itemRodOfReturn.tooltip.detailed.line2=Shift-ПКМ для синхронизации с телепортом
+enderio.itemRodOfReturn.chat.notEnoughPower=Недостаточно энергии
+enderio.itemRodOfReturn.chat.notEnoughFluid=Недостаточно жидкости
+enderio.itemRodOfReturn.chat.targetNotSet=Место назначения не установлено
+enderio.itemRodOfReturn.chat.sync=Синхронизирован с телепортом
+
 item.itemCoordSelector.name=Настройщик координат
 item.itemCoordSelector.tooltip.detailed.line1=Сохраняет координаты блока.
 item.itemCoordSelector.tooltip.detailed.line2=ПКМ по блоку, чтобы выбрать
@@ -740,6 +755,7 @@ enderio.itemCoordSelector.chat.newCoords=Новые координаты: %s
 enderio.itemCoordSelector.chat.setCoords=Выбранные координаты: %s
 enderio.itemCoordSelector.chat.newDimension=Новое измерение: %s%s
 enderio.itemCoordSelector.chat.setDimension=Выбранное измерение: %s%s
+enderio.itemCoordSelector.chat.alreadySet=Расположение уже установлено
 
 //Painter
 tile.blockPainter.name=Покрасочный механизм
@@ -832,7 +848,7 @@ item.darkSteel_shears.name=Тёмные ножницы
 
 enderio.item.darkSteel.tooltip.lvs=уровней
 
-enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при заряде энергии
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность, когда заряжена
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
 enderio.item.darkSteel_pickaxe.tooltip.cost=стоит
 
@@ -842,13 +858,13 @@ enderio.item.darkSteel_shears.tooltip.multiHarvest=Стригут несколь
 
 enderio.item.darkSteel_sword.tooltip.line1=Увеличено выпадение черепов и Эндер-жемчугов.
 enderio.item.darkSteel_sword.tooltip.line2=Эндермен не может телепортироваться после удара.
-enderio.item.darkSteel_sword.tooltip.line3=+2 Урона при заряде энергии
+enderio.item.darkSteel_sword.tooltip.line3=Дополнительный урон и скорость, когда заряжен
 
-enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты
-enderio.item.darkSteel_armor.tooltip.line2=при заряде энергии
+enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты,
+enderio.item.darkSteel_armor.tooltip.line2=когда заряжен
 
-enderio.item.darkSteel_boots.tooltip.line1=Урон от падения поглощается
-enderio.item.darkSteel_boots.tooltip.line2=при заряде энергии
+enderio.item.darkSteel_boots.tooltip.line1=Урон от падения поглощается,
+enderio.item.darkSteel_boots.tooltip.line2=когда заряжен
 
 enderio.darksteel.upgrade.empowered_one.name=Усиление
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
