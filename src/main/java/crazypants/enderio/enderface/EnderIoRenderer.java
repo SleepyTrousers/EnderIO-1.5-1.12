@@ -11,19 +11,18 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEntity> {
+public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEnderIO> {
 
-  private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
+  private TravelEntitySpecialRenderer<TileEnderIO> selectionRenderer = new TravelEntitySpecialRenderer<TileEnderIO>() {
 
   };
 
   @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f, int breakingStage) {
+  public void renderTileEntityAt(TileEnderIO te, double x, double y, double z, float f, int breakingStage) {
     
     if (net.minecraftforge.client.MinecraftForgeClient.getRenderPass() == 1) {
       if (te != null) {

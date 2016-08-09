@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -38,7 +37,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileEntity> {
+public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends TileEntitySpecialRenderer<T> {
 
   private final Vector4f selectedColor = new Vector4f(1, 0.25f, 0, 0.5f);
   private final Vector4f itemBlend = new Vector4f(0.3f, 0.3f, 0.3f, 0.3f);
@@ -49,13 +48,13 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer<TileE
   }
 
   @Override
-  public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f, int destroyStage) {
+  public void renderTileEntityAt(T tileentity, double x, double y, double z, float f, int destroyStage) {
 
     if(!TravelController.instance.showTargets()) {
       return;
     }
 
-    ITravelAccessable ta = (ITravelAccessable) tileentity;
+    ITravelAccessable ta = tileentity;
 
     BlockCoord onBlock = TravelController.instance.onBlockCoord;
     if(onBlock != null && onBlock.equals(ta.getLocation())) {

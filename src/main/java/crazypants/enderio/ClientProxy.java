@@ -55,6 +55,8 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -202,6 +204,8 @@ public class ClientProxy extends CommonProxy {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, new TransceiverRenderer());
     }
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
+
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TilePowerMonitor.class, new TESRPowerMonitor());
 

@@ -18,11 +18,11 @@
             "front":{          "submodel":{ "front":{ "model":"enderio:telepad_single" } } },
             "front_east":{     "submodel":{ "front":{ "model":"enderio:telepad" } } },
             "front_south":{    "submodel":{ "front":{ "model":"enderio:telepad_single" } }, "textures": { "singletop": "enderio:blocks/telepad/center" } },
-            "front_west":{     "submodel":{ "front":{ "model":"enderio:null" } } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:telepad_blade" } } },
             "front_on":{       "submodel":{ "front":{ "model":"enderio:telepad_glass" } } },
             "front_on_east":{  "submodel":{ "front":{ "model":"enderio:null" } } },
             "front_on_south":{ "submodel":{ "front":{ "model":"enderio:null" } } },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:null" } } }
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:telepad_lights" } } }
         },
         "blocktype":{
             "single":{},

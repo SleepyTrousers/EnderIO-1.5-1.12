@@ -1,98 +1,102 @@
 package crazypants.enderio.teleport.telepad;
-//
-//import java.util.List;
-//import java.util.Map;
-//import java.util.Random;
-//
-//import org.lwjgl.opengl.GL11;
-//
-//import com.enderio.core.client.render.BoundingBox;
-//import com.enderio.core.client.render.IconUtil;
-//import com.google.common.collect.Lists;
-//
-//import crazypants.enderio.EnderIO;
-//import crazypants.enderio.teleport.TravelController;
-//import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
-//import net.minecraft.client.renderer.Tessellator;
-//import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-//import net.minecraft.tileentity.TileEntity;
-//import net.minecraft.world.IBlockAccess;
-//
-//public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
-//
-//  private final Map<String, GroupObject> fullModel;
-//
-//  private final GroupObject blade1;
-//  private final GroupObject blade2;
-//  private final GroupObject blade3;
-//  // Reverse order for top to bottom
-//  private final List<GroupObject> blades;
-//
-//  private final GroupObject glass;
-//
-//  private static Random rand = new Random();
-//
-//  public TelePadSpecialRenderer(TelePadRenderer telePadRenderer) {
-//    super();
-//    fullModel = telePadRenderer.getFullModel();
-//    blade1 = fullModel.get("blade1");
-//    blade2 = fullModel.get("blade2");
-//    blade3 = fullModel.get("blade3");
-//    blades = Lists.newArrayList(blade3, blade2, blade1);
-//
-//    glass = fullModel.get("glass");
-//  }
-//
-//  @Override
-//  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_, int b) {
-//    TileTelePad tp = (TileTelePad) te;
-//    if (tp.isMaster() && tp.inNetwork()) {
-//      TravelController.instance.addCandidate(tp.getLocation());
-//      {
-//        GL11.glPushMatrix();
-//        GL11.glTranslated(x + 0.5, y + 0.01, z + 0.5);
-//        Tessellator tes = Tessellator.instance;
-//        tes.setBrightness(0xF000F0);
-//        GL11.glDepthMask(true);
-//        rand.setSeed(te.xCoord + te.yCoord + te.zCoord);
-//        for (int i = 0; i < 3; i++) {
-//          GL11.glPushMatrix();
-//          GL11.glRotatef(tp.bladeRots[i] + rand.nextInt(360) + (tp.spinSpeed * p_147500_8_ * (i + 20)), 0, 1, 0);
-//          render(blades.get(i), te, tes);
-//          GL11.glPopMatrix();
-//        }
-//        GL11.glEnable(GL11.GL_BLEND);
-//        render(glass, te, tes);
-//        GL11.glDisable(GL11.GL_BLEND);
-//        GL11.glPopMatrix();
-//      }
-//    }
-//
-//    super.renderTileEntityAt(te, x, y, z, p_147500_8_);
-//  }
-//
-//  @Override
-//  protected void renderBlock(IBlockAccess world, double sf) {
-//    Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
-//    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EnderIO.blockTelePad.getHighlightIcon());
-//  }
-//
-//  @Override
-//  public TextureAtlasSprite getSelectedIcon() {
-//    return IconUtil.whiteTexture;
-//  }
-//
-//  @Override
-//  public TextureAtlasSprite getHighlightIcon() {
-//    return IconUtil.whiteTexture;
-//  }
-//
-//  private void render(GroupObject model, TileEntity te, Tessellator tes) {
-//    final IIcon icon = te.getBlockType().getIcon(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord, 0);
-//    if (icon != null && model != null) {
-//      tes.startDrawingQuads();
-//      TechneUtil.renderWithIcon(model, icon, null, Tessellator.instance, te.getWorldObj(), 0, 0, 0, null, false);
-//      tes.draw();
-//    }
-//  }
-//}
+
+import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTelePad> {
+
+  private final IBlockState blade, lights, glass;
+
+  public TelePadSpecialRenderer() {
+    super();
+    blade = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
+    lights = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
+    glass = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
+
+  }
+
+  @Override
+  public void renderTileEntityAt(TileTelePad tileentity, double x, double y, double z, float partialTicks, int destroyStage) {
+    if (tileentity.isMaster()) {
+      if (MinecraftForgeClient.getRenderPass() == 0) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+
+        RenderHelper.disableStandardItemLighting();
+
+        if (!tileentity.active()) {
+          GlStateManager.enableLighting();
+        }
+
+        render(tileentity, lights);
+
+        Random rand = new Random(tileentity.getPos().toLong());
+        for (int i = 0; i < 3; i++) {
+          GlStateManager.pushMatrix();
+          GlStateManager.translate(0.5, 0, 0.5);
+          GlStateManager.rotate(tileentity.bladeRots[i] + rand.nextInt(360) + (tileentity.spinSpeed * partialTicks * ((i * 2) + 20)), 0, 1, 0);
+          GlStateManager.translate(-0.5, i * 2f / 16f, -0.5);
+          render(tileentity, blade);
+          GlStateManager.popMatrix();
+        }
+
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
+      } else {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        RenderHelper.disableStandardItemLighting();
+
+        render(tileentity, glass);
+
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
+        super.renderTileEntityAt(tileentity, x, y, z, partialTicks, destroyStage);
+      }
+    }
+  }
+
+  public void render(TileEntity tileEntity, final IBlockState state) {
+    final BlockPos pos = tileEntity.getPos();
+    final Tessellator tessellator = Tessellator.getInstance();
+    final VertexBuffer vertexBuffer = tessellator.getBuffer();
+    final BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+    final IBakedModel ibakedmodel = blockrendererdispatcher.getBlockModelShapes().getModelForState(state);
+    bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+    if (Minecraft.isAmbientOcclusionEnabled()) {
+      GlStateManager.shadeModel(GL11.GL_SMOOTH);
+    } else {
+      GlStateManager.shadeModel(GL11.GL_FLAT);
+    }
+
+    vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+
+    vertexBuffer.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+    blockrendererdispatcher.getBlockModelRenderer().renderModel(tileEntity.getWorld(), ibakedmodel, state, pos, vertexBuffer, false);
+    vertexBuffer.setTranslation(0, 0, 0);
+    tessellator.draw();
+  }
+
+}

@@ -609,4 +609,9 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     return masterTile;
   }
   
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    return true;
+  }
+
 }

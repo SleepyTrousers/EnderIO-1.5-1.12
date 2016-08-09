@@ -44,10 +44,8 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
                                           QuadCollector quadCollector) {
 
     if (state.getBlock() == EnderIO.blockTelePad) {
-
-      BlockType type = state.getValue(BlockTelePad.BLOCK_TYPE);      
-      switch (blockLayer) {
-      case SOLID:
+      if (blockLayer == BlockRenderLayer.SOLID) {
+        BlockType type = state.getValue(BlockTelePad.BLOCK_TYPE);
         if (type == BlockType.SINGLE) {
           return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
         } else if (type == BlockType.MASTER) {
@@ -55,20 +53,13 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
         } else {
           return null;
         }
-      case TRANSLUCENT:
-        if (type == BlockType.MASTER) {
-          return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, GLASS_TOP_MODEL));
-        }
-      default:
-        return null;
       }
-
+      return null;
     } else if (blockLayer == BlockRenderLayer.CUTOUT) {
       return Collections.singletonList(state.getState().withProperty(EnumRenderMode.RENDER, SINGLE_MODEL));
     }
 
     return null;
-    
   }
 
   @SuppressWarnings("deprecation")
