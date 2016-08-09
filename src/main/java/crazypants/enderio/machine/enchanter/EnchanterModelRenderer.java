@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EnchanterModelRenderer extends TileEntitySpecialRenderer<TileEnchanter> {
 
-  private static final String TEXTURE = "enderio:models/BookStand.png";
+  private static final String TEXTURE = "enderio:textures/blocks/BookStand.png";
 
   private EnchanterModel model = new EnchanterModel();
 
