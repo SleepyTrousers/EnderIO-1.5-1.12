@@ -59,8 +59,8 @@
     </recipe>        
     <recipe name="EnderDistillation" energyCost="10000" >
       <input>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12" slot="0" multiplier="1"/>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13" slot="1" multiplier="1"/>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12" slot="0" multiplier="2"/>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13" slot="1" multiplier="2"/>
         <fluidStack name="nutrient_distillation" multiplier="0.25" />
       </input>
       <output>
