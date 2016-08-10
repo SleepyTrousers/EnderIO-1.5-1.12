@@ -405,7 +405,7 @@ public final class Config {
   public static int wirelessChargerRange = 24;
 
   public static long nutrientFoodBoostDelay = 400;
-  public static boolean rocketFuelIsExplosive = false;
+  public static boolean rocketFuelIsExplosive = true;
 
   public static int enchanterBaseLevelCost = 2;  
   public static double enchanterLevelCostFactor = 0.75;
