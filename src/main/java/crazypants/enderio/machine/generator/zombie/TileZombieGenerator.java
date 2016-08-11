@@ -146,7 +146,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200))) {
+    if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
       return false;
     }
     inPause = false;
