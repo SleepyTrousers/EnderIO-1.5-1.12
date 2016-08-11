@@ -145,14 +145,15 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     boolean hasPower = updateStackNBT(stack, worldIn, 0);
     boolean hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power    
     if (hasPower && hasFluid) {
-      BlockPos pos = getTargetPos(stack);
+      BlockPos pos = TelepadTarget.getTargetPos(stack.getTagCompound());
       if (pos == null) {        
         if (worldIn.isRemote) {
+          stopPlayingSound();
           entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
         }
         return stack;
       }
-      int dim = getTargetDimension(stack);
+      int dim = TelepadTarget.getTargetDimension(stack.getTagCompound());
       TeleportUtil.doTeleport(entityLiving, pos, dim, false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       if(!hasPower) {
@@ -355,22 +356,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     if (container.getTagCompound() == null) {
       container.setTagCompound(new NBTTagCompound());
     }
-    container.getTagCompound().setLong("targetPos", pos.toLong());
-    container.getTagCompound().setInteger("targetDim", dimension);
-  }
-
-  private BlockPos getTargetPos(ItemStack stack) {
-    if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("targetPos")) {
-      return null;
-    }
-    return BlockPos.fromLong(stack.getTagCompound().getLong("targetPos"));
-  }
-
-  private int getTargetDimension(ItemStack stack) {
-    if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("targetDim")) {
-      return -1;
-    }
-    return stack.getTagCompound().getInteger("targetDim");
+    new TelepadTarget(pos, dimension).writeToNBT(container.getTagCompound());    
   }
   
   // Fluid handeling

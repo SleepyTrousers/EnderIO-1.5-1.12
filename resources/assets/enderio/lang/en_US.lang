@@ -736,6 +736,10 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
+item.itemLocationPrintout.name=Location Printout
+item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
+item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
+
 item.itemRodOfReturn.name=Rod of Return
 item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad
 item.itemRodOfReturn.tooltip.detailed.line2=Sync with a Telepad using Shift-R-Click
@@ -746,7 +750,7 @@ enderio.itemRodOfReturn.chat.targetNotSet=No destination set
 enderio.itemRodOfReturn.chat.sync=Synchronised with Telepad
 
 item.itemCoordSelector.name=Coordinate Selector
-item.itemCoordSelector.tooltip.detailed.line1=Stores coordinates of a block.
+item.itemCoordSelector.tooltip.detailed.line1=Prints coordinates of a block.
 item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select
 item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
 item.itemCoordSelector.tooltip.detailed.line4=Shift right click at a block to

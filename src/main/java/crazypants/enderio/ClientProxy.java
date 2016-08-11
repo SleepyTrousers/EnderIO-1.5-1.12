@@ -55,6 +55,7 @@ import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
@@ -241,6 +242,7 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.itemItemConduit);
     registerRenderers(EnderIO.itemRedstoneConduit);
     registerRenderers(EnderIO.itemOCConduit);
+    ClientUtil.registerRenderer(EnderIO.itemlocationPrintout, ItemLocationPrintout.NAME);
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemRodOfReturn, ModObject.itemRodOfReturn.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.getUnlocalisedName());
