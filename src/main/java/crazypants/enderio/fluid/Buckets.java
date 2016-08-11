@@ -18,7 +18,7 @@ public class Buckets {
   public static ItemStack itemBucketLiquidSunshine;
   public static ItemStack itemBucketCloudSeed;
   public static ItemStack itemBucketCloudSeedConcentrated;
-  public static ItemStack itemBuckEnderDistillation;
+  public static ItemStack itemBucketEnderDistillation;
 
   public static void createBuckets() {
     if (FluidRegistry.isUniversalBucketEnabled()) {
@@ -41,7 +41,7 @@ public class Buckets {
       FluidRegistry.addBucketForFluid(Fluids.fluidCloudSeedConcentrated);
       itemBucketCloudSeedConcentrated = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeedConcentrated);      
       FluidRegistry.addBucketForFluid(Fluids.fluidEnderDistillation);
-      itemBuckEnderDistillation = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidEnderDistillation);
+      itemBucketEnderDistillation = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidEnderDistillation);
       
     } else {
       if (Fluids.fluidXpJuice != null) {
@@ -54,7 +54,7 @@ public class Buckets {
       itemBucketLiquidSunshine = new ItemStack(ItemBucketEio.create(Fluids.blockLiquidSunshine, Fluids.fluidLiquidSunshine));
       itemBucketCloudSeed = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeed, Fluids.fluidCloudSeed));
       itemBucketCloudSeedConcentrated = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeedConcentrated, Fluids.fluidCloudSeedConcentrated));
-      itemBuckEnderDistillation = new ItemStack(ItemBucketEio.create(Fluids.blockEnderDistillation, Fluids.fluidEnderDistillation));
+      itemBucketEnderDistillation = new ItemStack(ItemBucketEio.create(Fluids.blockEnderDistillation, Fluids.fluidEnderDistillation));
     }
   }
 
@@ -68,6 +68,7 @@ public class Buckets {
       ClientUtil.registerRenderer(itemBucketLiquidSunshine.getItem(), ((ItemBucketEio) itemBucketLiquidSunshine.getItem()).getItemName());
       ClientUtil.registerRenderer(itemBucketCloudSeed.getItem(), ((ItemBucketEio) itemBucketCloudSeed.getItem()).getItemName());
       ClientUtil.registerRenderer(itemBucketCloudSeedConcentrated.getItem(), ((ItemBucketEio) itemBucketCloudSeedConcentrated.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketEnderDistillation.getItem(), ((ItemBucketEio) itemBucketEnderDistillation.getItem()).getItemName());
       if (itemBucketXpJuice != null) {
         ClientUtil.registerRenderer(itemBucketXpJuice.getItem(), ((ItemBucketEio) itemBucketXpJuice.getItem()).getItemName());
       }
