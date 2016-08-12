@@ -389,7 +389,7 @@ public class RecipeConfigParser extends DefaultHandler {
         Log.debug(LP + "Could not find an entry in the ore dictionary for " + oreDict);
         return null;
       }
-      ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict);
+      ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict, true);
       if(stack == null || stack.getItem() == null) {
         Log.debug(LP + "Could not find a prefered item  in the ore dictionary for " + oreDict);
         return null;
