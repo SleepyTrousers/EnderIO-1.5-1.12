@@ -132,7 +132,7 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
     }
     
     StackHelper sh = (StackHelper)registry.getJeiHelpers().getStackHelper();
-    return sh.containsStack(available, allIng) != null;    
+    return sh.containsAnyStack(available, allIng) != null;
   }
 
   private boolean dbContainsIngredient(InventoryDatabaseClient db, List<ItemStack> allIng) {         
