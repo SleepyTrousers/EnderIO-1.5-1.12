@@ -5,9 +5,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -18,6 +15,8 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static crazypants.enderio.gui.IconEIO.CROSS;
 import static crazypants.enderio.gui.IconEIO.TICK;
@@ -162,6 +161,10 @@ public class ConduitDisplayMode {
       }
     }
     return null;
+  }
+
+  public int ordinal() {
+    return registrar.indexOf(this);
   }
 
   private static final String NBT_KEY = "enderio.displaymode";

@@ -53,18 +53,14 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
   private final static Cache<Pair<Block, Long>, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).<Pair<Block, Long>, QuadCollector> build();
 
-  private final @Nonnull Block block;
-  private final @Nonnull IBlockState state;
-  private final @Nonnull IBlockAccess world;
-  private final @Nonnull BlockPos pos;
-  private final @Nonnull IRenderMapper.IBlockRenderMapper renderMapper;
-  private boolean doCaching = false;
+  protected final @Nonnull Block block;
+  protected final @Nonnull IBlockState state;
+  protected final @Nonnull IBlockAccess world;
+  protected final @Nonnull BlockPos pos;
+  protected final @Nonnull IRenderMapper.IBlockRenderMapper renderMapper;
+  protected boolean doCaching = false;
 
   private IBakedModel model = null;
-
-  protected static Cache<Pair<Block, Long>, QuadCollector> getCache() {
-    return cache;
-  }
 
   public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
     this.state = notnull(state);
@@ -92,8 +88,16 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     this.model = parent.model;
   }
 
+  protected void putIntoCache(QuadCollector quads) {
+    cache.put(Pair.of(block, getCacheKey()), quads);
+  }
+
+  protected QuadCollector getFromCache() {
+    return cache.getIfPresent(Pair.of(block, getCacheKey()));
+  }
+
   public static void invalidate() {
-    getCache().invalidateAll();
+    cache.invalidateAll();
   }
 
   @Override
@@ -177,7 +181,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       if (paintSource != null) {
         addCacheKeyInternal(paintSource);
       }
-      quads = getCache().getIfPresent(Pair.of(block, getCacheKey()));
+      quads = getFromCache();
       cacheResult = quads == null ? "miss" : "hit";
     } else {
       cacheResult = "not cachable";
@@ -193,7 +197,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       }
 
       if (doCaching) {
-        getCache().put(Pair.of(block, getCacheKey()), quads);
+        putIntoCache(quads);
       }
     }
 

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.render.ICacheKey;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
 public class CacheKey implements ICacheKey {
@@ -19,8 +20,8 @@ public class CacheKey implements ICacheKey {
 
   protected void addCacheKeyInternal(@Nonnull Object addlCacheKey) {
     if (addlCacheKey instanceof IBlockState) {
-      // block states have no hashCode(), so we'd get the identity based default hash
-      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.toString().hashCode();
+      // block states have no hashCode(), so we get the identity instead
+      cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ Block.BLOCK_STATE_IDS.get((IBlockState) addlCacheKey);
     } else {
       cacheKey = ((cacheKey << 7) | (cacheKey >>> 57)) ^ addlCacheKey.hashCode();
     }

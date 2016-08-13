@@ -2,8 +2,8 @@ package crazypants.enderio.conduit.oc;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +19,12 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
@@ -45,11 +47,11 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class OCConduit extends AbstractConduit implements IOCConduit {
+public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
 
   protected OCConduitNetwork network;
 
-  private final Map<EnumFacing, DyeColor> signalColors = new HashMap<EnumFacing, DyeColor>();
+  private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   private static final TextureSupplier coreTextureS = TextureRegistry.registerTexture("blocks/ocConduitCore");
   private static final TextureSupplier coreTextureA = TextureRegistry.registerTexture("blocks/ocConduitCoreAnim");
@@ -536,6 +538,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return null;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    hashCodes.add_Enum(signalColors);
   }
 
 }

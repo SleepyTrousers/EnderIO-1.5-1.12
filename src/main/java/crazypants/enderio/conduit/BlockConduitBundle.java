@@ -167,10 +167,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       IBlockStateWrapper blockStateWrapper = new BlockStateWrapperConduitBundle(state, world, pos, ConduitRenderMapper.instance);
       TileConduitBundle bundle = getTileEntitySafe(world, pos);
       if (bundle != null) {
-        // not the best caching in the world, but good enough. A bit on the
-        // memory-intensive side...
         blockStateWrapper.addCacheKey(bundle);
-        blockStateWrapper.addCacheKey(bundle.getSerial());
       }
       blockStateWrapper.bakeModel();
       return blockStateWrapper;

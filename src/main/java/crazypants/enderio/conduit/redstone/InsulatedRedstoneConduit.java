@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,10 +27,12 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
@@ -51,7 +54,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit {
+public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
 
@@ -139,11 +142,13 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // --------------------------------- Class Start
   // -------------------------------------------
 
-  private Map<EnumFacing, ConnectionMode> forcedConnections = new HashMap<EnumFacing, ConnectionMode>();
+  private Map<EnumFacing, ConnectionMode> forcedConnections = new EnumMap<EnumFacing, ConnectionMode>(EnumFacing.class);
 
-  private Map<EnumFacing, DyeColor> signalColors = new HashMap<EnumFacing, DyeColor>();
+  private Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private Map<EnumFacing, Boolean> signalStrengths = new HashMap<EnumFacing, Boolean>();
+  private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+
+  private Map<EnumFacing, Boolean> specialConnections = null;
 
   private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
 
@@ -445,19 +450,31 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public boolean isSpecialConnection(EnumFacing dir) {
-    BlockCoord loc = getLocation().getLocation(dir);
-    Block block = getBundle().getEntity().getWorld().getBlockState(loc.getBlockPos()).getBlock();
-    World world = getBundle().getEntity().getWorld();
-    TileEntity te = world.getTileEntity(loc.getBlockPos());
-
-    Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
-    for (Class<?> connectable : connectableInterfaces.keySet()) {
-      if ((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
-        return connectableInterfaces.get(connectable);
-      }
+    if (specialConnections == null) {
+      computeSpecialConnections();
     }
+    return specialConnections.get(dir);
+  }
 
-    return false;
+  protected void computeSpecialConnections() {
+    if (specialConnections == null) {
+      specialConnections = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+    }
+    SIDE: for (EnumFacing dir : EnumFacing.values()) {
+      BlockCoord loc = getLocation().getLocation(dir);
+      Block block = getBundle().getEntity().getWorld().getBlockState(loc.getBlockPos()).getBlock();
+      World world = getBundle().getEntity().getWorld();
+      TileEntity te = world.getTileEntity(loc.getBlockPos());
+
+      Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
+      for (Class<?> connectable : connectableInterfaces.keySet()) {
+        if ((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
+          specialConnections.put(dir, connectableInterfaces.get(connectable));
+          continue SIDE;
+        }
+      }
+      specialConnections.put(dir, false);
+    }
   }
 
   @Override
@@ -604,6 +621,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (blockId != EnderIO.blockConduitBundle) {
       network.updateInputsFromConduit(this);
     }
+    computeSpecialConnections();
     return res;
   }
 
@@ -766,6 +784,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public String toString() {
     return "RedstoneConduit [network=" + network + " connections=" + conduitConnections + " active=" + active + "]";
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    hashCodes.add_Enum(signalColors);
+    if (specialConnections == null) {
+      computeSpecialConnections();
+    }
+    hashCodes.add_Boolean(specialConnections);
+    if (Config.redstoneConduitsShowState && isActive()) {
+      hashCodes.add(1);
+    }
   }
 
 }

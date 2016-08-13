@@ -18,10 +18,12 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
@@ -43,7 +45,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class ItemConduit extends AbstractConduit implements IItemConduit {
+public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
   
@@ -838,6 +840,14 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       network.getDatabase().onNeighborChange(neighbourPos);
     }
     return super.onNeighborChange(world, pos, neighbourPos);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    hashCodes.add_Enum(outputColors);
+    hashCodes.add_Enum(inputColors);
   }
 
 }

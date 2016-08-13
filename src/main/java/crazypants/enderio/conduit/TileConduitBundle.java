@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -26,12 +27,14 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.PainterUtil2;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -47,7 +50,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.config.Config.transparentFacesLetThroughBeaconBeam;
 
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
 
   public static final short NBT_VERSION = 1;
 
@@ -130,7 +133,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
         if(conduit != null) {
           conduit.setBundle(this);
-          conduits.add(conduit);
+          // keep conduits sorted on client side so the cache key is stable
+          addConduitSorted(conduit);
         }
       }
     }
@@ -182,6 +186,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   @Override
   @SideOnly(Side.CLIENT)
+  @Nonnull
   public FacadeRenderState getFacadeRenderedAs() {
     if(facadeRenderAs == null) {
       facadeRenderAs = FacadeRenderState.NONE;
@@ -362,6 +367,16 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     conduit.setBundle(this);
     conduit.onAddedToBundle();
     dirty();
+  }
+
+  protected void addConduitSorted(IConduit conduit) {
+    int idx = 0;
+    for (int i = 0; i < conduits.size(); i++) {
+      if (Offsets.get(conduits.get(i).getClass(), null).ordinal() > Offsets.get(conduit.getClass(), null).ordinal()) {
+        idx = i;
+      }
+    }
+    conduits.add(idx, conduit);
   }
 
   @Override
@@ -864,6 +879,19 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     IOCConduit cond = getConduit(IOCConduit.class);
     if (cond != null) {
       cond.invalidate();
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    hashCodes.add(facadeType.ordinal() << 16 | getFacadeRenderedAs().ordinal() << 8 | ConduitUtil.getDisplayMode(Minecraft.getMinecraft().thePlayer).ordinal());
+    for (IConduit conduit : conduits) {
+      if (conduit instanceof IConduitComponent) {
+        ((IConduitComponent) conduit).hashCodeForModelCaching(hashCodes);
+      } else {
+        hashCodes.add(conduit);
+      }
     }
   }
 

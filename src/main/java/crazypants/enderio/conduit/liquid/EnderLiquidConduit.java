@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -33,7 +34,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EnderLiquidConduit extends AbstractLiquidConduit {
+public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent {
 
   public static final String ICON_KEY = "enderio:blocks/liquidConduitEnder";
   public static final String ICON_CORE_KEY = "enderio:blocks/liquidConduitCoreEnder"; 

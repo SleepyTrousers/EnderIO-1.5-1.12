@@ -20,10 +20,12 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -43,8 +45,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PowerConduit extends AbstractConduit implements IPowerConduit {
+public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
   
@@ -91,7 +95,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   protected EnumMap<EnumFacing, Long> recievedTicks;
 
-  private final Map<EnumFacing, Integer> externalRedstoneSignals = new HashMap<EnumFacing, Integer>();
+  private final Map<EnumFacing, Integer> externalRedstoneSignals = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
   private boolean redstoneStateDirty = true;
 
@@ -525,4 +529,16 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public boolean displayPower() {
     return true;
   }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    if (subtype != 1) {
+      hashCodes.add(subtype);
+    }
+    hashCodes.add_Enum(rsModes);
+    hashCodes.add_Enum(rsColors);
+  }
+
 }

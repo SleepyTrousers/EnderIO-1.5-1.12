@@ -10,7 +10,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -25,7 +27,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class AdvancedLiquidConduit extends AbstractTankConduit {
+public class AdvancedLiquidConduit extends AbstractTankConduit implements IConduitComponent {
 
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
@@ -288,6 +290,16 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   @Override
   public AbstractTankConduitNetwork<? extends AbstractTankConduit> getTankNetwork() {
     return network;
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(hashCodes);
+    FluidStack fluidType = getFluidType();
+    if (fluidType != null && fluidType.getFluid() != null) {
+      hashCodes.add(fluidType.getFluid());
+    }
   }
 
 }
