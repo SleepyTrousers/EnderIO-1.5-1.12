@@ -24,8 +24,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -128,10 +126,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       if(target != null) {
         if(target.getLocation() != null) {
           list.add(new BlockCoord(target.getLocation()).chatString(TextFormatting.GRAY));
-          WorldProvider prov = DimensionManager.getProvider(target.getDimension());
-          if(prov != null) {
-            list.add(prov.getDimensionType().getName());
-          }
+          list.add(TelepadTarget.getDimenionName(target.getDimension()));
         }        
       }
     }

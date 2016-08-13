@@ -1,7 +1,10 @@
 package crazypants.enderio.material;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,10 +28,18 @@ public final class OreDictionaryPreferences {
     preferences.put(oreDictName, stack.copy());
   }
 
-  public ItemStack getPreferred(String oreDictName) {
+  public ItemStack getPreferred(String oreDictName, boolean createIfNull) {
     ItemStack result = null;
     if(preferences.containsKey(oreDictName)) {
       result = preferences.get(oreDictName);
+    } else if(createIfNull) {
+      List<ItemStack> ores = OreDictionaryHelper.getOres(oreDictName);
+      for (ItemStack ore : ores) {
+        if (result == null || (result.getMetadata() == OreDictionary.WILDCARD_VALUE && ore.getMetadata() != OreDictionary.WILDCARD_VALUE)) {
+          result = ore.copy();
+        }
+      }
+      preferences.put(oreDictName, result);
     }
     return result;
   }
@@ -46,7 +57,7 @@ public final class OreDictionaryPreferences {
     if(ids != null) {
       for (int i = 0; i < ids.length && result == null; i++) {
         String oreDict = OreDictionary.getOreName(ids[i]);
-        result = getPreferred(oreDict);
+        result = getPreferred(oreDict, false);
       }
     }
 
