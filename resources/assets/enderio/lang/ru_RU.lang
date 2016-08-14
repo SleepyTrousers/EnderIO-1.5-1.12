@@ -736,16 +736,21 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-ПКМ телепортиру�
 item.itemTravelStaff.tooltip.detailed.line5=игрока на короткую дистанцию
 enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 
+item.itemLocationPrintout.name=Распечаток местонахождения
+item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
+item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
+
 item.itemRodOfReturn.name=Стержень возвращения
 item.itemRodOfReturn.tooltip.detailed.line1=Возвращает игрока на телепорт
 item.itemRodOfReturn.tooltip.detailed.line2=Shift-ПКМ для синхронизации с телепортом
+item.itemRodOfReturn.tooltip.detailed.line3=Требует RF и росу пустоты
 enderio.itemRodOfReturn.chat.notEnoughPower=Недостаточно энергии
 enderio.itemRodOfReturn.chat.notEnoughFluid=Недостаточно жидкости
 enderio.itemRodOfReturn.chat.targetNotSet=Место назначения не установлено
 enderio.itemRodOfReturn.chat.sync=Синхронизирован с телепортом
 
 item.itemCoordSelector.name=Настройщик координат
-item.itemCoordSelector.tooltip.detailed.line1=Сохраняет координаты блока.
+item.itemCoordSelector.tooltip.detailed.line1=Печатает координаты блока.
 item.itemCoordSelector.tooltip.detailed.line2=ПКМ по блоку, чтобы выбрать
 item.itemCoordSelector.tooltip.detailed.line3=блок рядом с этой стороной.
 item.itemCoordSelector.tooltip.detailed.line4=Shift-ПКМ по блоку, чтобы
