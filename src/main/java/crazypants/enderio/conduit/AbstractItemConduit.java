@@ -137,7 +137,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
           stack.stackSize--;
           for (ItemStack drop : existingConduit.getDrops()) {
             if (!player.inventory.addItemStackToInventory(drop)) {
-              ItemUtil.spawnItemInWorldWithRandomMotion(world, drop,pos);
+              ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.1f);
             }
           }
           player.inventoryContainer.detectAndSendChanges();

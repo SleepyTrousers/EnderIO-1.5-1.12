@@ -12,6 +12,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
@@ -642,7 +643,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     ItemStack stack = player.getHeldItem(hand);
     if (stack != null && Block.getBlockFromItem(stack.getItem()) == EnderIO.blockConduitFacade) {
       // add or replace facade
-      return handleFacadeClick(world, pos, player, side, bundle, stack, hand);
+      return handleFacadeClick(world, pos, player, side, bundle, stack, hand, hitX, hitY, hitZ);
 
     } else if (ConduitUtil.isConduitEquipped(player, hand)) {
       // Add conduit
@@ -767,7 +768,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return false;
   }
 
-  public boolean handleFacadeClick(World world, BlockPos pos, EntityPlayer player, EnumFacing side, IConduitBundle bundle, ItemStack stack, EnumHand hand) {
+  public boolean handleFacadeClick(World world, BlockPos pos, EntityPlayer player, EnumFacing side, IConduitBundle bundle, ItemStack stack, EnumHand hand,
+      float hitX, float hitY, float hitZ) {
 
     // Add facade
     if (player.isSneaking()) {
@@ -786,9 +788,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return false;
       }
       if (!world.isRemote && !player.capabilities.isCreativeMode) {
-        ItemStack fac = new ItemStack(EnderIO.blockConduitFacade, 1, bundle.getFacadeType().ordinal());
-        PainterUtil2.setSourceBlock(fac, bundle.getPaintSource());
-        Util.dropItems(world, fac, pos, false);
+        ItemStack drop = new ItemStack(EnderIO.blockConduitFacade, 1, bundle.getFacadeType().ordinal());
+        PainterUtil2.setSourceBlock(drop, bundle.getPaintSource());
+        if (!player.inventory.addItemStackToInventory(drop)) {
+          ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);
+        }
       }
     }
     bundle.setPaintSource(facadeID);
@@ -811,6 +815,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       return false;
     }
     if (a.getBlock() != b.getBlock()) {
+      return false;
+    }
+    if (bundle.getFacadeType().ordinal() != facadeType) {
       return false;
     }
     return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);

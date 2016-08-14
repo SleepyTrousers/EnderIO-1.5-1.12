@@ -75,7 +75,7 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
         if (blockAt == EnderIO.blockConduitBundle) {
           if(((BlockConduitBundle) blockAt)
               .handleFacadeClick(world, placeAt, player, side.getOpposite(),
-              (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand)) {
+                  (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand, hitX, hitY, hitZ)) {
             return EnumActionResult.SUCCESS;
           }
         }
