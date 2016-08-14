@@ -21,7 +21,11 @@ public final class Log {
   }
 
   public static void info(String msg) {
-    LOGGER.info(msg);
+    if (inDev) {
+      LOGGER.info(msg);
+    } else {
+      LOGGER.debug(msg);
+    }
   }
 
   public static void debug(String msg) {
