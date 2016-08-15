@@ -57,7 +57,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Til
     ITravelAccessable ta = tileentity;
 
     BlockCoord onBlock = TravelController.instance.onBlockCoord;
-    if(onBlock != null && onBlock.equals(ta.getLocation())) {
+    if (onBlock != null && onBlock.getDist(ta.getLocation()) <= 2) {
       return;
     }
     if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer)) {

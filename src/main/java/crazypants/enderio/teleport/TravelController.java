@@ -21,6 +21,7 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
@@ -733,8 +734,12 @@ public class TravelController {
       int x = MathHelper.floor_double(player.posX);
       int y = MathHelper.floor_double(player.getEntityBoundingBox().minY) - 1;
       int z = MathHelper.floor_double(player.posZ);
-      if(world.getBlockState(new BlockPos(x, y, z)).getBlock() == EnderIO.blockTravelPlatform) {
-        return new BlockCoord(x, y, z);
+      final BlockPos pos = new BlockPos(x, y, z);
+      final Block block = world.getBlockState(pos).getBlock();
+      if (block instanceof BlockTravelAnchor) {
+        if (Config.telepadIsTravelAnchor || block != EnderIO.blockTelePad) {
+          return new BlockCoord(x, y, z);
+        }
       }
     }
     return null;

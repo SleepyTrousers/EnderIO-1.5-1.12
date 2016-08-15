@@ -23,6 +23,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.config.Config.telepadIsTravelAnchor;
+
 @SideOnly(Side.CLIENT)
 public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTelePad> {
 
@@ -72,7 +74,9 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
 
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
-        super.renderTileEntityAt(tileentity, x, y, z, partialTicks, destroyStage);
+        if (telepadIsTravelAnchor) {
+          super.renderTileEntityAt(tileentity, x, y, z, partialTicks, destroyStage);
+        }
       }
     }
   }

@@ -503,6 +503,7 @@ public final class Config {
   public static int telepadPowerCoefficient = 100000;
   public static int telepadPowerInterdimensional = 100000;
   public static boolean telepadShrinkEffect = true;
+  public static boolean telepadIsTravelAnchor = true;
 
   public static boolean inventoryPanelFree = false;
   public static float inventoryPanelPowerPerMB = 800.0f;
@@ -1393,6 +1394,8 @@ public final class Config {
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
         "The amount of RF required for an interdimensional teleport.").getInt();
+    telepadIsTravelAnchor = config
+        .get(sectionTelepad.name, "telepadIsTravelAnchor", telepadIsTravelAnchor, "If true, TelePads will also act as normal Travel Anchors.").getBoolean();
 
     telepadShrinkEffect = config.get(sectionPersonal.name, "telepadShrinkEffect", telepadShrinkEffect,
         "Can be used to disable the 'shrinking' effect of the telepad in case of conflicts with other mods.").getBoolean();
