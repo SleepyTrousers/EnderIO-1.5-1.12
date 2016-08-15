@@ -808,6 +808,17 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Inventory Panel Remote" required="true">
     <crafting>
       <grid size="3x3">
+        <item/><item/><item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:heavy_weighted_pressure_plate" /><item name="enderio:blockInventoryPanel" /><item name="minecraft:heavy_weighted_pressure_plate" />
+        <item name="minecraft:heavy_weighted_pressure_plate" /><item name="enderio:itemTravelStaff" /><item name="minecraft:heavy_weighted_pressure_plate" />
+      </grid>
+      <output name="enderio:itemRemoteInvAccess:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Remote, variant" required="true">
+    <crafting>
+      <grid size="3x3">
         <item/><item/><item name="PPP_IRON" />
         <item name="PPP_IRON" /><item name="enderio:blockInventoryPanel" /><item name="PPP_IRON" />
         <item name="PPP_IRON" /><item name="enderio:itemTravelStaff" /><item name="PPP_IRON" />
