@@ -9,6 +9,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.ItemTankHelper;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.tool.SmartTank;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -75,7 +76,12 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    EnderIO.blockTank.addBasicEntries(itemstack, entityplayer, list, flag);
+    SmartTank tank = loadTank(itemstack);
+    if (!tank.isEmpty()) {
+      String str = tank.getFluidAmount() + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
+          + tank.getFluid().getLocalizedName();
+      list.add(str);
+    }
   }
 
   @Override

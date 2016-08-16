@@ -13,7 +13,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.EnumRenderMode;
@@ -28,7 +27,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -175,20 +173,13 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    if(itemstack.getTagCompound()!= null && itemstack.getTagCompound().hasKey("tankContents")) {
-      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.getTagCompound().getTag("tankContents"));
-      if(fl != null && fl.getFluid() != null) {
-        String str = fl.amount + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getName();
-        list.add(str);
-      }
-    }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
-    if(itemstack.getItemDamage() == 1) {
+    if (itemstack.getItemDamage() == 1) {
       list.add(TextFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
     }
   }
