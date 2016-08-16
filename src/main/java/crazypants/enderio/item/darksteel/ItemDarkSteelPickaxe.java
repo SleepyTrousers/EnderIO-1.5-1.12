@@ -360,4 +360,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
+  @Override
+  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+  }
+
 }
