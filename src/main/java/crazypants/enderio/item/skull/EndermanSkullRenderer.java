@@ -1,42 +1,33 @@
 package crazypants.enderio.item.skull;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.math.MathHelper;
+import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.math.MathHelper;
 
-public class EndermanSkullRenderer extends TileEntitySpecialRenderer<TileEndermanSkull> {
+public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
+
+  public EndermanSkullRenderer() {
+    super(EnderIO.blockEndermanSkull);
+  }
 
   @Override
-  public void renderTileEntityAt(TileEndermanSkull te, double x, double y, double z, float partialTicks, int destroyStage) {
+  protected void renderTileEntity(@Nonnull TileEndermanSkull te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
 
-    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-    GL11.glPushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    // RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
 
-    GL11.glPushMatrix();
-    GL11.glTranslatef(0.5f, 0, 0.5f);
-    GL11.glRotatef(getYaw(te), 0, 1, 0);
-    GL11.glTranslatef(-0.5f, 0, -0.5f);
-
-    GL11.glDisable(GL11.GL_LIGHTING);
-    GlStateManager.color(1, 1, 1);
-    RenderUtil.bindBlockTexture();
+    GlStateManager.translate(0.5f, 0, 0.5f);
+    GlStateManager.rotate(getYaw(te), 0, 1, 0);
+    GlStateManager.translate(-0.5f, 0, -0.5f);
 
     RenderUtil.renderBlockModel(te.getWorld(), te.getPos(), true);
-
-    GL11.glEnable(GL11.GL_LIGHTING);
-
-    GL11.glPopMatrix();
-    GL11.glPopMatrix();
-
   }
 
   float getYaw(TileEndermanSkull te) {

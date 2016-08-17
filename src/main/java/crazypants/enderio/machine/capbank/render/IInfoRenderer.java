@@ -5,6 +5,6 @@ import net.minecraft.util.EnumFacing;
 
 public interface IInfoRenderer {
 
-  void render(TileCapBank cb, EnumFacing dir, double x, double y, double z, float partialTick);
+  void render(TileCapBank cb, EnumFacing dir, float partialTick);
 
 }

@@ -52,7 +52,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
   @Store({ StoreFor.CLIENT, StoreFor.SAVE })
-  public EnumFacing facing = EnumFacing.SOUTH;
+  public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
@@ -212,12 +212,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     updateBlock();
   }
 
-  public EnumFacing getFacing() {
+  public @Nonnull EnumFacing getFacing() {
     return facing;
   }
 
   public void setFacing(EnumFacing facing) {
-    this.facing = facing;
+    this.facing = facing == null ? EnumFacing.SOUTH : facing;
     markDirty();
   }
 

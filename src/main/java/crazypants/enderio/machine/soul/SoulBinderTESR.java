@@ -3,10 +3,12 @@ package crazypants.enderio.machine.soul;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
-import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import crazypants.enderio.EnderIO;
@@ -20,7 +22,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
@@ -31,41 +32,30 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class SoulBinderTESR extends TileEntitySpecialRenderer<TileSoulBinder> {
+public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
+
+  public SoulBinderTESR() {
+    super(EnderIO.blockSoulFuser);
+  }
 
   @Override
-  public void renderTileEntityAt(TileSoulBinder te, double x, double y, double z, float partialTicks, int destroyStage) {
-    if (te == null || te.isInvalid() || !te.hasWorldObj()) {
-      return;
-    }
-    final IBlockState blockState = te.getWorld().getBlockState(te.getPos());
-    if (blockState.getBlock() != EnderIO.blockSoulFuser) {
-      return;
-    }
+  protected boolean shouldRender(@Nonnull TileSoulBinder te, @Nonnull IBlockState blockState, int renderPass) {
+    return te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacadesClient());
+  }
 
-    if (te.isWorking() && (te.getPaintSource() == null || YetaUtil.shouldHeldItemHideFacadesClient())) {
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-      GL11.glPushMatrix();
-      GL11.glTranslatef((float) x, (float) y, (float) z);
+  @Override
+  protected void renderTileEntity(@Nonnull TileSoulBinder te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    GlStateManager.translate(0.5f, 0, 0.5f);
+    GlStateManager.rotate(360 * te.getProgress(), 0, 1, 0);
+    GlStateManager.translate(-0.5f, 0, -0.5f);
 
-      GL11.glPushMatrix();
-      GL11.glTranslatef(0.5f, 0, 0.5f);
-      GL11.glRotatef(360 * te.getProgress(), 0, 1, 0);
-      GL11.glTranslatef(-0.5f, 0, -0.5f);
+    GL11.glDisable(GL11.GL_LIGHTING); // sic!
 
-      GL11.glDisable(GL11.GL_LIGHTING);
-      GlStateManager.color(1, 1, 1);
-      RenderUtil.bindBlockTexture();
+    EnumRenderMode renderMode = te.isActive() ? EnumRenderMode.FRONT_ON : EnumRenderMode.FRONT;
+    renderBlockModel(te.getWorld(), te.getPos(), blockState.withProperty(EnumRenderMode.RENDER, renderMode.rotate(te.getFacing())), true,
+        te.getProgress() > 0.005 && te.getProgress() < 0.995);
 
-      EnumRenderMode renderMode = te.isActive() ? EnumRenderMode.FRONT_ON : EnumRenderMode.FRONT;
-      renderBlockModel(te.getWorld(), te.getPos(), blockState.withProperty(EnumRenderMode.RENDER, renderMode.rotate(te.getFacing())), true,
-          te.getProgress() > 0.005 && te.getProgress() < 0.995);
-
-      GL11.glEnable(GL11.GL_LIGHTING);
-
-      GL11.glPopMatrix();
-      GL11.glPopMatrix();
-    }
+    GL11.glEnable(GL11.GL_LIGHTING); // sic!
   }
 
   public static void renderBlockModel(World world, BlockPos pos, IBlockState state, boolean translateToOrigin, boolean relight) {

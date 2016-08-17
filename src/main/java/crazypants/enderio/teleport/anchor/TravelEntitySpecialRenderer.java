@@ -1,18 +1,21 @@
 package crazypants.enderio.teleport.anchor;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -24,7 +27,6 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -37,35 +39,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends TileEntitySpecialRenderer<T> {
+public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends ManagedTESR<T> {
 
   private final Vector4f selectedColor = new Vector4f(1, 0.25f, 0, 0.5f);
   private final Vector4f itemBlend = new Vector4f(0.3f, 0.3f, 0.3f, 0.3f);
   private final Vector4f blockBlend = new Vector4f(0.6f, 0.6f, 0.6f, 0.4f);
   private final Vector4f selectedBlockBlend = new Vector4f(0.9f, 0.33f, 0.1f, 0.35f);
 
+  public TravelEntitySpecialRenderer(Block block) {
+    super(block);
+  }
+
   public TravelEntitySpecialRenderer() {
+    super(EnderIO.blockTravelPlatform);
   }
 
   @Override
-  public void renderTileEntityAt(T tileentity, double x, double y, double z, float f, int destroyStage) {
+  public boolean shouldRender(@Nonnull T te, @Nonnull IBlockState blockState, int renderPass) {
+   return TravelController.instance.showTargets() &&
+       (TravelController.instance.onBlockCoord == null || TravelController.instance.onBlockCoord.getDist(te.getLocation()) > 2)
+        && te.canSeeBlock(Minecraft.getMinecraft().thePlayer);
+  }
 
-    if(!TravelController.instance.showTargets()) {
-      return;
-    }
-
-    ITravelAccessable ta = tileentity;
-
-    BlockCoord onBlock = TravelController.instance.onBlockCoord;
-    if (onBlock != null && onBlock.getDist(ta.getLocation()) <= 2) {
-      return;
-    }
-    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-
+  @Override
+  public void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
-    Vector3d loc = new Vector3d(tileentity.getPos().getX() + 0.5, tileentity.getPos().getY()+ 0.5, tileentity.getPos().getZ()+ 0.5);
+    Vector3d loc = new Vector3d(te.getPos().getX() + 0.5, te.getPos().getY() + 0.5, te.getPos().getZ() + 0.5);
     double maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().thePlayer) ? TravelSource.STAFF.getMaxDistanceTravelledSq()
         : TravelSource.BLOCK.getMaxDistanceTravelledSq();
     if(eye.distanceSquared(loc) > maxDistance) {
@@ -73,32 +72,22 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Til
     }
 
     double sf = TravelController.instance.getScaleForCandidate(loc);
-    boolean highlight = TravelController.instance.isBlockSelected(ta.getLocation());
+    boolean highlight = TravelController.instance.isBlockSelected(te.getLocation());
 
-    TravelController.instance.addCandidate(ta.getLocation());
+    TravelController.instance.addCandidate(te.getLocation());
 
     Minecraft.getMinecraft().entityRenderer.disableLightmap();
 
-    RenderUtil.bindBlockTexture();
     GlStateManager.enableRescaleNormal();
-    GlStateManager.enableDepth(); // fight corrupted GlStateManager state
     GlStateManager.disableDepth();
     GlStateManager.disableLighting();
-    GlStateManager.enableBlend();
-    GlStateManager.color(1, 1, 1, 1);
 
-    GlStateManager.pushMatrix();
-    GlStateManager.translate(x, y, z);
-    renderBlock(tileentity.getPos(), tileentity.getWorld(), sf, highlight);
-    renderItemLabel(ta.getItemLabel(), sf);
-    renderLabel(ta.getLabel(), sf, highlight);
-    GlStateManager.popMatrix();
+    renderBlock(te.getPos(), te.getWorld(), sf, highlight);
+    renderItemLabel(te.getItemLabel(), sf);
+    renderLabel(te.getLabel(), sf, highlight);
 
-    GlStateManager.enableLighting();
-    GlStateManager.enableDepth();
     GlStateManager.disableRescaleNormal();
     Minecraft.getMinecraft().entityRenderer.enableLightmap();
-
   }
 
   private void renderItemLabel(ItemStack itemLabel, double globalScale) {

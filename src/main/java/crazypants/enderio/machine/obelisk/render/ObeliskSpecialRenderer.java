@@ -2,9 +2,15 @@ package crazypants.enderio.machine.obelisk.render;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.EnderIO;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -12,11 +18,9 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -28,7 +32,7 @@ import static org.lwjgl.opengl.GL11.glTranslated;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
-public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
+public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTESR<T> {
 
   private ItemStack floatingStack;
 
@@ -36,24 +40,23 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
 
   private RenderEntityItem rei;
 
-  public ObeliskSpecialRenderer(ItemStack itemStack) {
+  public ObeliskSpecialRenderer(ItemStack itemStack, Block block) {
+    super(block);
     this.floatingStack = itemStack;
   }
 
   private EntityItem ei = null;
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick, int b) {
-    if (te == null) {
-      // Being rendered as an Item
-      renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, tick);
-      ObeliskBakery.render(ObeliskRenderManager.INSTANCE.getActiveTextures());
-    } else {
-      World world = te.getWorld();
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-      renderItemStack((T) te, world, x, y, z, tick);  
-    }
+  protected void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    World world = te.getWorld();
+    renderItemStack(te, world, 0, 0, 0, partialTicks);
+  }
+
+  @Override
+  protected void renderItem() {
+    renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, 0f);
+    ObeliskBakery.render(ObeliskRenderManager.INSTANCE.getActiveTextures());
   }
 
   protected void renderItemStack(T te, World world, double x, double y, double z, float tick) {

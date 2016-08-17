@@ -15,6 +15,7 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -153,7 +154,7 @@ public class HalfBakedQuad {
      */
     public void render() {
       RenderUtil.bindBlockTexture();
-      GlStateManager.disableLighting();
+      RenderHelper.disableStandardItemLighting();
       VertexBuffer tes = Tessellator.getInstance().getBuffer();
       for (int i = 0; i <= 1; i++) {
         if (i == 0) {
@@ -165,7 +166,7 @@ public class HalfBakedQuad {
         render(tes);
         Tessellator.getInstance().draw();
       }
-      GlStateManager.enableLighting();
+      RenderHelper.enableStandardItemLighting();
     }
 
   }

@@ -49,14 +49,15 @@ public class ObeliskRenderManager {
 
     block = EnderIO.blockExperianceOblisk;
     if (block != null) {
-      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(EnderIO.itemXpTransfer));
+      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(EnderIO.itemXpTransfer),
+          EnderIO.blockExperianceOblisk);
       registerRenderer(block, TileExperienceObelisk.class, eor);
 
     }
     block = EnderIO.blockAttractor;
     if (block != null) {
       ObeliskSpecialRenderer<TileAttractor> eor = new ObeliskSpecialRenderer<TileAttractor>(new ItemStack(EnderIO.itemMaterial, 1,
-          Material.ATTRACTOR_CRYSTAL.ordinal()));
+          Material.ATTRACTOR_CRYSTAL.ordinal()), EnderIO.blockAttractor);
       registerRenderer(block, TileAttractor.class, eor);
     }
 
@@ -80,7 +81,8 @@ public class ObeliskRenderManager {
 
     block = EnderIO.blockInhibitorObelisk;
     if (block != null) {
-      ObeliskSpecialRenderer<TileInhibitorObelisk> eor = new ObeliskSpecialRenderer<TileInhibitorObelisk>(new ItemStack(Items.ENDER_PEARL));
+      ObeliskSpecialRenderer<TileInhibitorObelisk> eor = new ObeliskSpecialRenderer<TileInhibitorObelisk>(new ItemStack(Items.ENDER_PEARL),
+          EnderIO.blockInhibitorObelisk);
       registerRenderer(block, TileInhibitorObelisk.class, eor);
     }
   }

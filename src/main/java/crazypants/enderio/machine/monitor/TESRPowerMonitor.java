@@ -1,61 +1,63 @@
 package crazypants.enderio.machine.monitor;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.EnderIO;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 @SideOnly(Side.CLIENT)
-public class TESRPowerMonitor extends TileEntitySpecialRenderer<TilePowerMonitor> {
+public class TESRPowerMonitor extends ManagedTESR<TilePowerMonitor> {
+
+  public TESRPowerMonitor() {
+    super(EnderIO.blockPowerMonitorAdvanced);
+  }
 
   private static final float px = 1f / 16f;
   private static BoundingBox bb1 = new BoundingBox(1 * px, 1 * px, 14.75f * px, 15 * px, 15 * px, 14.75f * px); // screen
   private static BoundingBox bb2 = new BoundingBox(0 * px, 0 * px, 16.00f * px, 16 * px, 16 * px, 16.00f * px); // screen, painted
 
   @Override
-  public void renderTileEntityAt(TilePowerMonitor te, double x, double y, double z, float partialTicks, int destroyStage) {
-    if (te.isAdvanced()) {
-      boolean isPainted = te.getPaintSource() != null;
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-      GlStateManager.pushMatrix();
-      GlStateManager.translate(x, y, z);
+  protected boolean shouldRender(@Nonnull TilePowerMonitor te, @Nonnull IBlockState blockState, int renderPass) {
+    return te.isAdvanced();
+  }
 
-      RenderUtil.bindBlockTexture();
-      GlStateManager.enableLighting();
-      GlStateManager.disableLighting();
-      VertexBuffer tes = Tessellator.getInstance().getBuffer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+  @Override
+  protected void renderTileEntity(@Nonnull TilePowerMonitor te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    boolean isPainted = te.getPaintSource() != null;
 
-      VertexRotationFacing xform = new VertexRotationFacing(te.getFacing());
-      xform.setCenter(new Vector3d(0.5, 0.5, 0.5));
-      xform.setRotation(EnumFacing.SOUTH);
-      te.bindTexture();
-      Helper helper = threadLocalHelper.get();
-      GlStateManager.color(1F, 1F, 1F, 1F);
-      if (isPainted) {
-        helper.setupVertices(bb2, xform);
-        helper.renderSingleFace(tes, EnumFacing.SOUTH, 0 * px, 14 * px, 0 * px, 14 * px, xform, Helper.stdBrightness, false);
-      } else {
-        helper.setupVertices(bb1, xform);
-        helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, Helper.stdBrightness, false);
-      }
+    VertexRotationFacing xform = new VertexRotationFacing(te.getFacing());
+    xform.setCenter(new Vector3d(0.5, 0.5, 0.5));
+    xform.setRotation(EnumFacing.SOUTH);
+    te.bindTexture();
+    Helper helper = threadLocalHelper.get();
 
-      Tessellator.getInstance().draw();
-      GlStateManager.popMatrix();
+    VertexBuffer tes = Tessellator.getInstance().getBuffer();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+    if (isPainted) {
+      helper.setupVertices(bb2, xform);
+      helper.renderSingleFace(tes, EnumFacing.SOUTH, 0 * px, 14 * px, 0 * px, 14 * px, xform, Helper.stdBrightness, false);
+    } else {
+      helper.setupVertices(bb1, xform);
+      helper.renderSingleFace(tes, EnumFacing.SOUTH, 1 * px, 15 * px, 1 * px, 15 * px, xform, Helper.stdBrightness, false);
     }
+
+    Tessellator.getInstance().draw();
   }
 
   ThreadLocal<Helper> threadLocalHelper = new ThreadLocal<Helper>() {

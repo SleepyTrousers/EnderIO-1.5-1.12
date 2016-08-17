@@ -1,38 +1,35 @@
 package crazypants.enderio.machine.transceiver.render;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiver> {
+public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
 
   private static final float scale = 0.7f;
 
   public TransceiverRenderer() {
+    super(EnderIO.blockTransceiver);
   }
 
   @Override
-  public void renderTileEntityAt(TileTransceiver te, double x, double y, double z, float tick, int b) {
-    if (te.isActive()) {
-      RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-      renderPower(te.getWorld(), x, y, z);
-    }
+  protected boolean shouldRender(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, int renderPass) {
+    return te.isActive();
   }
 
-  private void renderPower(World world, double x, double y, double z) {
-    RenderUtil.bindBlockTexture();
+  @Override
+  protected void renderTileEntity(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     TextureAtlasSprite icon = EnderIO.blockTransceiver.getPortalIcon();
 
     float time = Math.abs(50 - (EnderIO.proxy.getTickCount() % 100)) / 50f;
@@ -41,20 +38,10 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer<TileTransceiv
 
     BoundingBox bb = BoundingBox.UNIT_CUBE.scale(localScale, localScale, localScale);
 
-    GlStateManager.pushMatrix();
-    GlStateManager.translate((float) x, (float) y, (float) z);
     GlStateManager.enableNormalize();
-    GlStateManager.enableBlend();
-    GlStateManager.enableLighting();
     GlStateManager.disableLighting();
-    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GlStateManager.enableAlpha();
     GlStateManager.color(1, 1, 1, alpha);
     RenderUtil.renderBoundingBox(bb, icon);
-    GlStateManager.popMatrix();
-    GlStateManager.enableLighting();
-    GlStateManager.disableBlend();
-    GlStateManager.disableAlpha();
     GlStateManager.disableRescaleNormal();
   }
 

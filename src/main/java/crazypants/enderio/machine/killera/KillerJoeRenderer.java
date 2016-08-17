@@ -1,12 +1,15 @@
 package crazypants.enderio.machine.killera;
 
-import com.enderio.core.client.render.RenderUtil;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.ManagedTESR;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.TankRenderHelper;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHandSide;
@@ -16,39 +19,33 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> {
+public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
+
+  public KillerJoeRenderer() {
+    super(EnderIO.blockKillerJoe);
+  }
 
   @Override
-  public void renderTileEntityAt(TileKillerJoe te, double x, double y, double z, float partialTicks, int destroyStage) {
+  protected boolean shouldRender(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, int renderPass) {
+    return (renderPass == 0 && te.getStackInSlot(0) != null) || (renderPass == 1 && !te.tank.isEmpty());
+  }
 
-    if(te != null) {
-      if (MinecraftForgeClient.getRenderPass() == 0 && te.getStackInSlot(0) != null) {
-        RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-        GlStateManager.pushMatrix();
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.enableLighting();
-        renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks),
-            Minecraft.getMinecraft().thePlayer.getPrimaryHand() == EnumHandSide.LEFT);
-        GlStateManager.disableLighting();
-        GlStateManager.popMatrix();
-      } else if (MinecraftForgeClient.getRenderPass() == 1) {
-        HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
-        if (buffer != null) {
-          RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-          GlStateManager.pushMatrix();
-          GlStateManager.translate((float) x, (float) y, (float) z);
-          buffer.render();
-          GlStateManager.popMatrix();
-        }
+  @Override
+  protected void renderTileEntity(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    if (MinecraftForgeClient.getRenderPass() == 0) {
+      // RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+      GlStateManager.enableLighting();
+      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().thePlayer.getPrimaryHand() == EnumHandSide.LEFT);
+    } else if (MinecraftForgeClient.getRenderPass() == 1) {
+      HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
+      if (buffer != null) {
+        // RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+        buffer.render();
       }
     }
-
   }
 
   private void renderSword(EnumFacing facing, ItemStack sword, float swingProgress, boolean leftHand) {
-
-    //Sword
-    GlStateManager.pushMatrix();
 
     // rotate to facing direction
     GlStateManager.translate(0.5f, 0, 0.5f);
@@ -84,7 +81,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer<TileKillerJoe> 
     Minecraft.getMinecraft().getRenderItem().renderItem(sword, none);
 
     // cleanup
-    GlStateManager.popMatrix();
     GlStateManager.popMatrix();
     GlStateManager.popMatrix();
     

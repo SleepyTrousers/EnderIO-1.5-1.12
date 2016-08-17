@@ -5,7 +5,6 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -18,7 +17,6 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -214,9 +212,7 @@ public class FillGaugeBakery {
       int j = i % 65536;
       int k = i / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
-      GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-      RenderUtil.bindBlockTexture();
       VertexBuffer tes = Tessellator.getInstance().getBuffer();
       tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
       buffer.render(tes);

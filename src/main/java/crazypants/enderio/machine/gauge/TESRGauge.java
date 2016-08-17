@@ -3,37 +3,31 @@ package crazypants.enderio.machine.gauge;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
+import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.ManagedTESR;
 
 import cofh.api.energy.IEnergyHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.render.FillGaugeBakery;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
-public class TESRGauge extends TileEntitySpecialRenderer<TileGauge> {
+public class TESRGauge extends ManagedTESR<TileGauge> {
 
   public TESRGauge() {
+    super(EnderIO.blockGauge);
   }
 
   @Override
-  public void renderTileEntityAt(TileGauge te, double x, double y, double z, float partialTicks, int destroyStage) {
-
-    GlStateManager.disableLighting();
-    GlStateManager.enableLighting();
-
-    if (Minecraft.isAmbientOcclusionEnabled()) {
-      GlStateManager.shadeModel(GL11.GL_SMOOTH);
-    } else {
-      GlStateManager.shadeModel(GL11.GL_FLAT);
-    }
-
+  protected void renderTileEntity(@Nonnull TileGauge te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    RenderHelper.enableStandardItemLighting();
     World world = te.getWorld();
     Map<EnumFacing, IEnergyHandler> sides = BlockGauge.getDisplays(world, te.getPos());
     if (!sides.isEmpty()) {
@@ -46,7 +40,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileGauge> {
         FillGaugeBakery bakery = new FillGaugeBakery(world, ((TileEntity) eh).getPos(), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class), ratio);
         if (bakery.canRender()) {
           GL11.glPushMatrix();
-          GL11.glTranslated(x - face.getFrontOffsetX(), y - face.getFrontOffsetY(), z - face.getFrontOffsetZ());
+          GL11.glTranslated(-face.getFrontOffsetX(), -face.getFrontOffsetY(), -face.getFrontOffsetZ());
           bakery.render();
           GL11.glPopMatrix();
         }
@@ -62,7 +56,7 @@ public class TESRGauge extends TileEntitySpecialRenderer<TileGauge> {
             ratio);
         if (bakery.canRender()) {
           GL11.glPushMatrix();
-          GL11.glTranslated(x - face.getFrontOffsetX(), y - face.getFrontOffsetY(), z - face.getFrontOffsetZ());
+          GL11.glTranslated(-face.getFrontOffsetX(), -face.getFrontOffsetY(), -face.getFrontOffsetZ());
           bakery.render();
           GL11.glPopMatrix();
         }

@@ -1,55 +1,53 @@
 package crazypants.enderio.enderface;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Matrix4d;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEnderIO> {
+public class EnderIoRenderer extends ManagedTESR<TileEnderIO> {
 
-  private TravelEntitySpecialRenderer<TileEnderIO> selectionRenderer = new TravelEntitySpecialRenderer<TileEnderIO>() {
+  public EnderIoRenderer() {
+    super(EnderIO.blockEnderIo);
+  }
+
+  private TravelEntitySpecialRenderer<TileEnderIO> selectionRenderer = new TravelEntitySpecialRenderer<TileEnderIO>(EnderIO.blockEnderIo) {
 
   };
 
   @Override
-  public void renderTileEntityAt(TileEnderIO te, double x, double y, double z, float f, int breakingStage) {
+  protected boolean shouldRender(@Nonnull TileEnderIO te, @Nonnull IBlockState blockState, int renderPass) {
+    return renderPass == 0 || selectionRenderer.shouldRender(te, blockState, renderPass);
+  }
+
+  @Override
+  protected void renderTileEntity(@Nonnull TileEnderIO te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     
-    if (net.minecraftforge.client.MinecraftForgeClient.getRenderPass() == 1) {
-      if (te != null) {
-        selectionRenderer.renderTileEntityAt(te, x, y, z, f, breakingStage);
-      }
+    if (MinecraftForgeClient.getRenderPass() == 1) {
+      selectionRenderer.renderTileEntity(te, blockState, partialTicks, destroyStage);
       return;
     }
 
-    Matrix4d lookMat = null;
     int brightness = 255;
-    if(te != null) {
-      EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
-      lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
-      //TODO: 1.9
-      //brightness = RenderUtil.getTesselatorBrightness(entityPlayer.worldObj, te.getPos());
-    } else {
-      lookMat = new Matrix4d();
-      lookMat.setIdentity();
-    }
-        
-    render(x, y, z, lookMat, brightness);
-  }
+    EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
+    Matrix4d lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
 
-  public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {
-   
-    GL11.glPushMatrix();
-    GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+    GL11.glTranslated(0.5, 0.5, 0.5);
 
     TextureAtlasSprite tex = BlockEnderIO.enderEyeTex.get(TextureAtlasSprite.class);
     float minU = tex.getMinU();
@@ -57,8 +55,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEnderIO> {
     float minV = tex.getMinV();
     float maxV = tex.getMaxV();
 
-    RenderUtil.bindBlockTexture();
-    GL11.glColor3f(1, 1, 1);
     RenderUtil.renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
 
     // Glint
@@ -66,9 +62,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEnderIO> {
     
     float maxUV = 32;
     GlStateManager.depthFunc(GL11.GL_EQUAL);
-    GlStateManager.enableLighting();
-    GlStateManager.disableLighting();
-    GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     float blendFactor = 1F;
     GlStateManager.color(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
@@ -92,14 +85,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer<TileEnderIO> {
     GL11.glPopMatrix();
 
     GlStateManager.matrixMode(GL11.GL_MODELVIEW);
-    GlStateManager.disableBlend();
-    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GlStateManager.enableLighting();
-    GlStateManager.depthFunc(GL11.GL_LEQUAL);
-
-    GL11.glColor4f(1, 1, 1, 1.0F);
-    GlStateManager.popMatrix();
-
   }
 
 }

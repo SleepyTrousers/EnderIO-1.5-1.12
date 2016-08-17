@@ -1,31 +1,37 @@
 package crazypants.enderio.machine.enchanter;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
+import crazypants.enderio.EnderIO;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EnchanterModelRenderer extends TileEntitySpecialRenderer<TileEnchanter> {
+public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
+
+  public EnchanterModelRenderer() {
+    super(EnderIO.blockEnchanter);
+  }
 
   private static final String TEXTURE = "enderio:textures/blocks/BookStand.png";
 
   private EnchanterModel model = new EnchanterModel();
 
   @Override
-  public void renderTileEntityAt(TileEnchanter te, double x, double y, double z, float tick, int b) {
-    GlStateManager.pushMatrix();
-    GlStateManager.translate(x, y, z);
-    EnumFacing facing = EnumFacing.NORTH;
-    if (te != null) {
-      facing = te.getFacing();
-    }
-    renderModel(facing);
-    GlStateManager.popMatrix();
+  protected void renderTileEntity(@Nonnull TileEnchanter te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    renderModel(te.getFacing());
+  }
+
+  @Override
+  protected void renderItem() {
+    renderModel(EnumFacing.NORTH);
   }
 
   private void renderModel(EnumFacing facing) {

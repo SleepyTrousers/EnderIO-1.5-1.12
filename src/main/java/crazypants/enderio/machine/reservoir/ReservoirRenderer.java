@@ -4,56 +4,49 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.tool.SmartTank;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
-public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir>  {
-
-  private final BlockReservoir block;
+public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 
   public ReservoirRenderer(BlockReservoir res) {
-    block = res;
+    super(res);
   }
 
   @Override
-  public void renderTileEntityAt(TileReservoir tileentity, double x, double y, double z, float f, int b) {
-    if (tileentity != null && tileentity.tank.getFluidAmount() > 0 && MinecraftForgeClient.getRenderPass() == 1) {
+  protected boolean shouldRender(@Nonnull TileReservoir te, @Nonnull IBlockState blockState, int renderPass) {
+    return !te.tank.isEmpty();
+  }
 
-      GlStateManager.pushMatrix();
-      GlStateManager.translate(x, y, z);
-      RenderUtil.bindBlockTexture();
-      GlStateManager.disableLighting();
-
-      Tessellator tessellator = Tessellator.getInstance();
-      VertexBuffer tes = tessellator.getBuffer();
-      tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-      Set<EnumFacing> mergers = getMergers(tileentity.getWorld(), tileentity.getPos());
-      renderTankFluid(tileentity.tank, x, y, z, mergers, tileentity.getWorld(), tileentity.getPos());
-      tessellator.draw();
-
-      GlStateManager.enableLighting();
-      GlStateManager.popMatrix();
-    }
+  @Override
+  protected void renderTileEntity(@Nonnull TileReservoir te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
+    Tessellator tessellator = Tessellator.getInstance();
+    VertexBuffer tes = tessellator.getBuffer();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+    Set<EnumFacing> mergers = getMergers(te.getWorld(), te.getPos());
+    renderTankFluid(te.tank, mergers, te.getWorld(), te.getPos());
+    tessellator.draw();
   }
 
   private Set<EnumFacing> getMergers(World world, BlockPos pos) {
@@ -187,7 +180,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
     return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
-  private void renderTankFluid(SmartTank tank, double x, double y, double z, Set<EnumFacing> mergers, World world, BlockPos pos) {
+  private void renderTankFluid(SmartTank tank, Set<EnumFacing> mergers, World world, BlockPos pos) {
     TextureAtlasSprite icon = RenderUtil.getStillTexture(tank.getFluid());
     if (icon != null) {
       int color = tank.getFluid().getFluid().getColor(tank.getFluid());
@@ -231,12 +224,12 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer<TileReservoir> 
   }
 
   public static void renderFace(VertexBuffer tes, BoundingBox bb, EnumFacing face, float minU, float maxU, float minV, float maxV, int color) {
-    float d = LightUtil.diffuseLight(face);
+    float d = 1f; // LightUtil.diffuseLight(face);
     float r = d * ((color >> 16) & 0xFF) / 255f, g = d * ((color >> 8) & 0xFF) / 255f, b = d * (color & 0xFF) / 255f, a = ((color >> 24) & 0xFF) / 255f;
 
     List<Vertex> corners = bb.getCornersWithUvForFace(face, minU, maxU, minV, maxV);
     for (Vertex v : corners) {
-      tes.pos(v.x(), v.y(), v.z()).tex(v.u(), v.v()).color(r, g, b, a).endVertex();
+      tes.pos(v.x(), v.y(), v.z()).tex(v.u(), v.v()).color(r, g, b, a).normal(v.nx(), v.ny(), v.nz()).endVertex();
     }
   }
 

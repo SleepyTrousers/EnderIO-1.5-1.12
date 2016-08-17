@@ -4,15 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
@@ -23,11 +14,19 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumFacing;
 
 public class IoDisplay implements IInfoRenderer {
 
   @Override
-  public void render(TileCapBank cb, EnumFacing dir, double x, double y, double z, float partialTick) {
+  public void render(TileCapBank cb, EnumFacing dir, float partialTick) {
     if(dir.getFrontOffsetY() != 0) {
       return;
     }
@@ -47,6 +46,9 @@ public class IoDisplay implements IInfoRenderer {
     int k = i / 65536;
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+    GlStateManager.enablePolygonOffset();
+    GlStateManager.doPolygonOffset(-1.0f, -1.0f);
 
     boolean drawBackground = true;
     if(drawBackground) {
@@ -184,6 +186,7 @@ public class IoDisplay implements IInfoRenderer {
 
     GL11.glEnable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_BLEND);
+    GlStateManager.disablePolygonOffset();
     GL11.glPopAttrib();
     GL11.glPopMatrix();
   }
