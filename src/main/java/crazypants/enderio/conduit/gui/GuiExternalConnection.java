@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -94,7 +95,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
         }
       }
     }
-
+    if (tabs.isEmpty()) {
+      Minecraft.getMinecraft().thePlayer.closeScreen();
+    }
   }
 
   @Override
@@ -130,6 +133,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     x = (x - guiLeft);
     y = (y - guiTop);
 
+    if (activeTab < tabs.size())
     tabs.get(activeTab).mouseClicked(x, y, par3);
 
   }
@@ -142,6 +146,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   @Override
   protected void actionPerformed(GuiButton guiButton) throws IOException {
     super.actionPerformed(guiButton);
+    if (activeTab < tabs.size())
     tabs.get(activeTab).actionPerformed(guiButton);
   }
 
@@ -160,6 +165,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
       renderStdTab(sx, sy, i, tabs.get(i).getIcon(), i == activeTab);
     }
 
+    if (activeTab < tabs.size())
     tabs.get(activeTab).render(par1, par2, par3);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
