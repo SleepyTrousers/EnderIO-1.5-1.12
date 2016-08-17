@@ -106,7 +106,7 @@ public class TileVacuumChest extends TileEntityEio
         double z = (pos.getZ() + 0.5D - entity.posZ);
 
         double distance = Math.sqrt(x * x + y * y + z * z);
-        if (distance < 1.25) {
+        if (distance < 1.25 || range == 0) {
           hooverEntity(entity);
         } else {
           double speed = 0.06;
@@ -234,7 +234,7 @@ public class TileVacuumChest extends TileEntityEio
   }
 
   private int limitRange(int rangeIn) {
-    return Math.max(1, Math.min(Config.vacuumChestRange, rangeIn));
+    return Math.max(0, Math.min(Config.vacuumChestRange, rangeIn));
   }
 
   public void setRange(int range) {
@@ -397,7 +397,7 @@ public class TileVacuumChest extends TileEntityEio
 
   @Override
   public BoundingBox getBounds() {
-    return new BoundingBox(getPos()).expand(getRange());
+    return new BoundingBox(getPos()).expand(getRange() + (range == 0 ? 1 / 32f : 0));
   }
 
   public float getRange() {
