@@ -15,9 +15,10 @@ public class ServerRemoteGuiManager {
   }
 
   public static void openGui(EntityPlayerMP player, World world, BlockPos pos) {
-    int x = pos.getX();
-    int y = (world.provider.getDimension() << 8) | pos.getY();
-    int z = pos.getZ();
+    long posl = pos.toLong();
+    int x = (int) (posl & Integer.MAX_VALUE);
+    int y = world.provider.getDimension();
+    int z = (int) (posl >>> 32);
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileInventoryPanel) {
       PacketHandler.INSTANCE.sendTo(new PacketPrimeInventoryPanelRemote((TileInventoryPanel) te), player);

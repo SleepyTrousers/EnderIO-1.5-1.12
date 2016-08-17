@@ -23,22 +23,22 @@ public class ClientRemoteGuiManager implements IGuiHandler {
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    int d = y >> 8;
-    y = y & 0xff;
+  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int posLow, int dim, int posHigh) {
+    long posl = ((long) posHigh << 32) | posLow;
+    BlockPos pos = BlockPos.fromLong(posl);
     World targetWorld = world;
-    if (world.provider.getDimension() != d) {
-      targetWorld = DimensionManager.getWorld(d);
+    if (world.provider.getDimension() != dim) {
+      targetWorld = DimensionManager.getWorld(dim);
       if (targetWorld == null) {
-        Log.warn("Unexpected failure to get dimension " + d + " for the Inventory Panel Remote");
+        Log.warn("Unexpected failure to get dimension " + dim + " for the Inventory Panel Remote");
         return null;
       }
     }
-    TileEntity te = targetWorld.getTileEntity(new BlockPos(x, y, z));
+    TileEntity te = targetWorld.getTileEntity(pos);
     if (te instanceof TileInventoryPanel) {
       return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
     }
-    Log.warn("Unexpected failure to get tileentiyt at " + x + "/" + y + "/" + z + " for the Inventory Panel Remote");
+    Log.warn("Unexpected failure to get tileentity at " + pos + " for the Inventory Panel Remote");
     return null;
   }
 
