@@ -231,7 +231,7 @@ enderio.itemAlloy.name=Сплав
 enderio.electricalSteel.name=Наэлектризованная сталь
 enderio.energeticAlloy.name=Энергетический сплав
 enderio.vibrantAlloy.name=Вибрирующий сплав
-enderio.redstoneAlloy.name=Сплав из красного камня
+enderio.redstoneAlloy.name=Редстоуновый сплав
 enderio.conductiveIron.name=Проводящее железо
 enderio.pulsatingIron.name=Пульсирующее железо
 enderio.vibrantNugget.name=Самородок вибрирующего сплава
@@ -242,7 +242,7 @@ tile.blockIngotStorage.name=Хранилище слитков
 tile.enderio.electricalSteel.name=Блок наэлектризованной стали
 tile.enderio.energeticAlloy.name=Блок энергетического сплава
 tile.enderio.vibrantAlloy.name=Блок вибрирующего сплава
-tile.enderio.redstoneAlloy.name=Блок сплава из красного камня
+tile.enderio.redstoneAlloy.name=Блок редстоунового сплава
 tile.enderio.conductiveIron.name=Блок проводящего железа
 tile.enderio.pulsatingIron.name=Блок пульсирующего железа
 tile.enderio.vibrantNugget.name=Блок самородка вибрирующего сплава
@@ -304,30 +304,30 @@ enderio.tooltip.sunlightBlocked=Небо закрыто!
 
 item.itemElectricLight.name=Электрический светильник
 item.itemElectricLight.tooltip.detailed.line1=Освещает большую площадь при подаче
-item.itemElectricLight.tooltip.detailed.line2=энергии и сигнала красного камня.
+item.itemElectricLight.tooltip.detailed.line2=энергии и сигнала редстоуна.
 
 item.itemElectricLightInverted.name=Электрический светильник (Инвертированный)
 item.itemElectricLightInverted.tooltip.detailed.line1=Освещает большую площадь при подаче
 item.itemElectricLightInverted.tooltip.detailed.line2=энергии.
-item.itemElectricLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня.
+item.itemElectricLightInverted.tooltip.detailed.line3=Выключается по сигналу редстоуна.
 
 item.itemLight.name=Светильник
 item.itemLight.tooltip.detailed.line1=Излучает свет по
-item.itemLight.tooltip.detailed.line2=сигналу красного камня
+item.itemLight.tooltip.detailed.line2=сигналу редстоуна
 
 item.itemLightInverted.name=Светильник (Инвертированный)
 item.itemLightInverted.tooltip.detailed.line1=Излучает свет, выключается по
-item.itemLightInverted.tooltip.detailed.line2=сигналу красного камня
+item.itemLightInverted.tooltip.detailed.line2=сигналу редстоуна
 
 item.itemWirelessLight.name=Беспроводной электрический светильник
 item.itemWirelessLight.tooltip.detailed.line1=Освещает большую площадь при подаче
-item.itemWirelessLight.tooltip.detailed.line2=энергии и сигнала красного камня.
+item.itemWirelessLight.tooltip.detailed.line2=энергии и сигнала редстоуна.
 item.itemWirelessLight.tooltip.detailed.line3=Может получать энергию от беспроводных зарядников.
 
 item.itemWirelessLightInverted.name=Беспроводной электрический светильник (Инвертированный)
 item.itemWirelessLightInverted.tooltip.detailed.line1=Освещает большую площадь при подаче
 item.itemWirelessLightInverted.tooltip.detailed.line2=энергии.
-item.itemWirelessLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня.
+item.itemWirelessLightInverted.tooltip.detailed.line3=Выключается по сигналу редстоуна.
 item.itemWirelessLightInverted.tooltip.detailed.line4=Может получать энергию от беспроводных зарядников.
 
 tile.blockCapacitorBank.name=Блок конденсаторов (Устаревший)
@@ -399,7 +399,7 @@ enderio.trans.sending=Отправка
 tile.blockPowerMonitor.name=Индикатор энергии
 tile.blockPowerMonitor.tooltip.detailed.line1=Отображает сведения о затратах энергии
 tile.blockPowerMonitor.tooltip.detailed.line2=и хранилище
-tile.blockPowerMonitor.tooltip.detailed.line3=Может быть использован для излучения красного камня
+tile.blockPowerMonitor.tooltip.detailed.line3=Может быть использован для излучения редстоуна
 tile.blockPowerMonitor.tooltip.detailed.line4=на основе хранимой энергии
 tile.blockPowerMonitor.tooltip.detailed.line5=Должен быть присоединён к трубе
 tile.blockPowerMonitor.tooltip.detailed.line6=EnderIO
@@ -407,7 +407,7 @@ tile.blockPowerMonitor.tooltip.detailed.line6=EnderIO
 tile.blockPowerMonitorv2.name=Графический индикатор энергии
 tile.blockPowerMonitorv2.tooltip.detailed.line1=Отображает сведения о затратах энергии
 tile.blockPowerMonitorv2.tooltip.detailed.line2=и хранилище
-tile.blockPowerMonitorv2.tooltip.detailed.line3=Может быть использован для излучения красного камня
+tile.blockPowerMonitorv2.tooltip.detailed.line3=Может быть использован для излучения редстоуна
 tile.blockPowerMonitorv2.tooltip.detailed.line4=на основе хранимой энергии
 tile.blockPowerMonitorv2.tooltip.detailed.line5=Должен быть присоединён к трубе
 tile.blockPowerMonitorv2.tooltip.detailed.line6=EnderIO
@@ -999,7 +999,7 @@ enderio.gui.send=Отправлять
 enderio.gui.sendReceive=Отправлять и получать
 
 //Redstone controls
-enderio.gui.tooltip.redstoneControlMode=Режим красного камня
+enderio.gui.tooltip.redstoneControlMode=Режим редстоуна
 enderio.gui.tooltip.redstoneControlMode.ignore=Всегда активен
 enderio.gui.tooltip.redstoneControlMode.on=Активен по сигналу
 enderio.gui.tooltip.redstoneControlMode.off=Активен без сигнала
@@ -1082,8 +1082,8 @@ enderio.gui.mjReader.receiveItem1=Может получать
 enderio.gui.mjReader.receiveItem2=от:
 
 //CapactorBank
-enderio.gui.capBank.inputRs=Режим красного камня на входе
-enderio.gui.capBank.outputRs=Режим красного камня на выходе
+enderio.gui.capBank.inputRs=Режим редстоуна на входе
+enderio.gui.capBank.outputRs=Режим редстоуна на выходе
 enderio.gui.capBank.maxIo=Макс. вход/выход
 enderio.gui.capBank.maxInput=Макс. вход
 enderio.gui.capBank.maxOutput=Макс. выход
@@ -1204,7 +1204,7 @@ enderio.gui.conduit.item.functionupgrade.line1=Возможные функцио
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
 enderio.gui.conduit.redstone.signalStrengh=Сильный сигнал
-enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильный сигнал красного камня
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильный сигнал редстоуна
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
