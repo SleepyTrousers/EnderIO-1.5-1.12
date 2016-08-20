@@ -276,19 +276,26 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   private SmartTankFluidHandler smartTankFluidHandler;
 
+  protected SmartTankFluidHandler getSmartTankFluidHandler() {
+    if (smartTankFluidHandler == null) {
+      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
+    }
+    return smartTankFluidHandler;
+  }
+
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facingIn);
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+      return getSmartTankFluidHandler().has(facingIn);
+    }
+    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      if (smartTankFluidHandler == null) {
-        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
-      }
-      return (T) smartTankFluidHandler.get(facingIn);
+      return (T) getSmartTankFluidHandler().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
   }

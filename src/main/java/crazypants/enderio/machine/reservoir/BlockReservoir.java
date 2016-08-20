@@ -3,6 +3,7 @@ package crazypants.enderio.machine.reservoir;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -222,7 +223,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public TileEntity createTileEntity(World world, IBlockState metadata) {
+  public @Nonnull TileEntity createTileEntity(World world, IBlockState metadata) {
     return new TileReservoir();
   }
 

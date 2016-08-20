@@ -25,11 +25,19 @@ public abstract class SmartTankFluidHandler {
     this.tanks = tanks;
   }
 
+  public boolean has(EnumFacing facing) {
+    return facing != null && canAccess(facing);
+  }
+
   public SideHandler get(EnumFacing facing) {
-    if (sides[facing.ordinal()] == null) {
-      sides[facing.ordinal()] = new SideHandler(facing);
+    if (has(facing)) {
+      if (sides[facing.ordinal()] == null) {
+        sides[facing.ordinal()] = new SideHandler(facing);
+      }
+      return sides[facing.ordinal()];
+    } else {
+      return null;
     }
-    return sides[facing.ordinal()];
   }
 
   protected abstract boolean canFill(EnumFacing from);
