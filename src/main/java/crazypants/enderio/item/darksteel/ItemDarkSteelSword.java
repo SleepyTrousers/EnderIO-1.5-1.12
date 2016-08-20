@@ -345,7 +345,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return EnergyUpgrade.extractEnergy(container, maxExtract, simulate);
+    return 0;
   }
 
   @Override

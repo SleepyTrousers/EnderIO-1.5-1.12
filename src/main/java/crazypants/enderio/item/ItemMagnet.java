@@ -132,11 +132,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    if (Config.magnetAllowPowerExtraction) {
-      return extractEnergyInternal(container, maxExtract, simulate);
-    } else {
-      return 0;
-    }
+    return 0;
   }
 
   public int extractEnergyInternal(ItemStack container, int maxExtract, boolean simulate) {

@@ -309,7 +309,7 @@ public class DarkSteelController {
     if (armor != null && remaining > 0) {
       ItemStack stack = player.getItemStackFromSlot(armor.armorType);
       if (stack != null) {
-        armor.extractEnergy(stack, remaining, false);
+        EnergyUpgrade.extractEnergy(stack, remaining, false);
       }
     }
   }
