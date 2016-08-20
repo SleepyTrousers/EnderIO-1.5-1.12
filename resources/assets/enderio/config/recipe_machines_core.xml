@@ -854,7 +854,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Exit Rail" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="craftingPiston" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="minecraft:stone_pressure_plate" /><item name="ingotIron" />
         <item name="ingotIron" /><item name="dustRedstone" /><item name="ingotIron" />
       </grid>
