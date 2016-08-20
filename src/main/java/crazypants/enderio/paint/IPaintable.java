@@ -2,12 +2,13 @@ package crazypants.enderio.paint;
 
 import javax.annotation.Nullable;
 
-import crazypants.util.IFacade;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.common.Optional.Interface;
+import team.chisel.api.IFacade;
 
 /**
  * Master interface for paintable things. Do not implement directly, use one of the sub-interfaces.
@@ -49,6 +50,7 @@ public interface IPaintable {
 
   }
 
+  @Interface(iface = "team.chisel.api.IFacade", modid = "ChiselAPI")
   public static interface IBlockPaintableBlock extends IPaintable, IFacade {
 
   }

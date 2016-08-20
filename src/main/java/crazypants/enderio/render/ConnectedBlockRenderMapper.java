@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import crazypants.enderio.render.pipeline.QuadCollector;
-import crazypants.util.IFacade;
+import crazypants.util.FacadeUtil;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
@@ -51,9 +51,9 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     if (isSameKind(state, otherState)) {
       return true;
     }
-    if (otherState.getBlock() instanceof IFacade) {
+    if (FacadeUtil.instance.isFacaded(otherState)) {
       try {
-        IBlockState facade = ((IFacade) otherState.getBlock()).getFacade(world, other, null);
+        IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, other, null);
         if (facade != null) {
           return isSameKind(state, facade);
         }

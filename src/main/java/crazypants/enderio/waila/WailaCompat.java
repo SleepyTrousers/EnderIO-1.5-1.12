@@ -7,10 +7,6 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
-
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -19,15 +15,16 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.util.IFacade;
 import mcp.mobius.waila.api.ITaggedList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -43,14 +40,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.FluidStack;
 
-import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
 public class WailaCompat implements IWailaDataProvider {
 
   private class WailaWorldWrapper extends World {
@@ -67,8 +66,8 @@ public class WailaCompat implements IWailaDataProvider {
     public IBlockState getBlockState(BlockPos pos) {
       IBlockState bs = wrapped.getBlockState(pos);
       Block block = bs.getBlock();
-      if(block instanceof IFacade) {
-        return ((IFacade) block).getFacade(wrapped, pos, null);
+      if (block instanceof IPaintable.IBlockPaintableBlock) {
+        return ((IPaintable.IBlockPaintableBlock) block).getPaintSource(bs, wrapped, pos);
       }
       return bs;
     }
@@ -112,7 +111,6 @@ public class WailaCompat implements IWailaDataProvider {
   private static IWailaDataAccessor _accessor = null;
 
   public static void load(IWailaRegistrar registrar) {
-    registrar.registerStackProvider(INSTANCE, IFacade.class);
     registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
 
     registrar.registerBodyProvider(INSTANCE, BlockEio.class);
@@ -127,13 +125,13 @@ public class WailaCompat implements IWailaDataProvider {
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
     BlockPos pos = accessor.getPosition();
     if(config.getConfig("facades.hidden")) {
-      if(accessor.getBlock() instanceof IFacade) {
+      if (accessor.getBlock() instanceof IBlockPaintableBlock) {
         // If facades are hidden, we need to ignore it
         if(accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
           return null;
         }
-        IFacade bundle = (IFacade) accessor.getBlock();
-        IBlockState facade = bundle.getFacade(accessor.getWorld(), pos, accessor.getSide());
+        IBlockPaintableBlock bundle = (IBlockPaintableBlock) accessor.getBlock();
+        IBlockState facade = bundle.getPaintSource(accessor.getBlockState(), accessor.getWorld(), pos);
         if(facade != null && facade.getBlock() != accessor.getBlock()) {
           ItemStack ret = facade.getBlock().getPickBlock(facade, accessor.getMOP(), new WailaWorldWrapper(accessor.getWorld()), pos, accessor.getPlayer());
           return ret;

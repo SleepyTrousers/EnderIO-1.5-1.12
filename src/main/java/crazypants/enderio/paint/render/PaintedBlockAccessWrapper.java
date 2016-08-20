@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import crazypants.enderio.paint.IPaintable;
-import crazypants.util.IFacade;
+import crazypants.util.FacadeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +36,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   @Override
   public TileEntity getTileEntity(BlockPos pos) {
     IBlockState paintSource = getPaintSource(pos);
-    if (paintSource != null) {
+    if (paintSource != null && paintSource != super.getBlockState(pos)) {
       return createTileEntity(paintSource, pos);
     }
     return super.getTileEntity(pos);
@@ -56,10 +56,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
     if (state.getBlock() instanceof IPaintable.IBlockPaintableBlock) {
       return ((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos);
     }
-    if (state.getBlock() instanceof IFacade) {
-      return ((IFacade) state.getBlock()).getFacade(wrapped, pos, null);
-    }
-    return null;
+    return FacadeUtil.instance.getFacade(state, wrapped, pos, null);
   }
 
   private TileEntity createTileEntity(IBlockState state, BlockPos pos) {

@@ -11,7 +11,7 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ITintedBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.util.IFacade;
+import crazypants.util.FacadeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.properties.IProperty;
@@ -102,8 +102,8 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
       IBlockState ourState = world.getBlockState(pos).getActualState(world, pos);
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND))
           || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
-    } else if (otherBlock instanceof IFacade) {
-      IBlockState facade = ((IFacade) otherBlock).getFacade(world, pos.offset(side), side);
+    } else if (FacadeUtil.instance.isFacaded(otherState)) {
+      IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, pos.offset(side), side);
       if (facade != null && facade.getBlock() == this) {
         IBlockState ourState = world.getBlockState(pos);
         return !ourState.getValue(FusedQuartzType.KIND).connectTo(facade.getValue(FusedQuartzType.KIND))

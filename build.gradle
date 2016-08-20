@@ -78,6 +78,7 @@ dependencies {
     deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
     deobfCompile "net.sengir.forestry:${forestry_version}:api"
+    deobfCompile "team.chisel:Chisel:${chisel_version}:api"
 
     compile fileTree(dir: 'lib', include: '*.jar') 
 }
