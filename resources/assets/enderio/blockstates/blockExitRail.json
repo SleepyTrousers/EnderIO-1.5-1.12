@@ -1,0 +1,16 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "rail": "enderio:blocks/rail_exit"
+        }
+    },
+    "variants": {
+        "shape=north_south":  { "model": "rail_flat" },
+        "shape=east_west":  { "model": "rail_flat", "y": 90 },
+        "shape=ascending_east": { "model": "rail_raised_ne", "y": 90 },
+        "shape=ascending_west": { "model": "rail_raised_sw", "y": 90 },
+        "shape=ascending_north": { "model": "rail_raised_ne" },
+        "shape=ascending_south": { "model": "rail_raised_sw" }
+    }
+}

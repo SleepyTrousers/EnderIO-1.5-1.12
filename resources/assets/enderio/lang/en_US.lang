@@ -1435,3 +1435,5 @@ item.itemRemoteInvAccessender.name=Ender Inventory Panel Remote
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+
+tile.blockExitRail.name=Exit Rail

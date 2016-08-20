@@ -106,6 +106,7 @@ public enum ModObject implements IModObject {
   blockPaintedPressurePlate,
   blockPaintedRedstone,
   blockPaintedRedstoneSolid,
+  blockExitRail,
 
   itemConduitProbe,
   itemYetaWrench,

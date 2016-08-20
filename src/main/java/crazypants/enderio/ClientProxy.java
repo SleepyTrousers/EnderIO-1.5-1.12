@@ -169,6 +169,7 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);  
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
+    ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockExitRail), ModObject.blockExitRail.getUnlocalisedName());
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers
@@ -205,7 +206,7 @@ public class ClientProxy extends CommonProxy {
     if (Config.transceiverEnabled) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, new TransceiverRenderer());
     }
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer<TileTravelAnchor>());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
 

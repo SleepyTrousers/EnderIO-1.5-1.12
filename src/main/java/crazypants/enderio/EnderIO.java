@@ -120,6 +120,7 @@ import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.rail.BlockEnderRail;
+import crazypants.enderio.rail.BlockExitRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
@@ -269,6 +270,7 @@ public class EnderIO {
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
   public static BlockEnderRail blockEnderRail;
+  public static BlockExitRail blockExitRail;
 
   public static Fluids fluids;
 
@@ -371,6 +373,7 @@ public class EnderIO {
     BlockPaintedFusedQuartz.create();
 
     // blockEnderRail = BlockEnderRail.create();
+    blockExitRail = BlockExitRail.create();
 
     blockConduitBundle = BlockConduitBundle.create();
 
