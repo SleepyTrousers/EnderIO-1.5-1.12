@@ -148,7 +148,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  private Map<EnumFacing, Boolean> specialConnections = null;
+  private volatile Map<EnumFacing, Boolean> specialConnections = null;
 
   private final List<Set<Signal>> externalSignals = new ArrayList<Set<Signal>>();
 
@@ -457,9 +457,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   protected void computeSpecialConnections() {
-    if (specialConnections == null) {
-      specialConnections = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
-    }
+    Map<EnumFacing, Boolean> temp = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
     SIDE: for (EnumFacing dir : EnumFacing.values()) {
       BlockCoord loc = getLocation().getLocation(dir);
       Block block = getBundle().getEntity().getWorld().getBlockState(loc.getBlockPos()).getBlock();
@@ -469,12 +467,13 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
       for (Class<?> connectable : connectableInterfaces.keySet()) {
         if ((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
-          specialConnections.put(dir, connectableInterfaces.get(connectable));
+          temp.put(dir, connectableInterfaces.get(connectable));
           continue SIDE;
         }
       }
-      specialConnections.put(dir, false);
+      temp.put(dir, false);
     }
+    specialConnections = temp; // atomic assign for threading so no thread ever sees a half-filled map
   }
 
   @Override
