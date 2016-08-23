@@ -793,4 +793,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return getInventoryStackLimit(minSupSlot);
   }
 
+  @Override
+  public boolean shouldRenderInPass(int pass) {   
+    return pass == 1;
+  }
+
 }
