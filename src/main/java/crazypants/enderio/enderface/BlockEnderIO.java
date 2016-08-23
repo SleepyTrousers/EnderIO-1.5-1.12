@@ -1,19 +1,5 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
@@ -25,6 +11,19 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.TextureRegistry;
 import crazypants.enderio.render.TextureRegistry.TextureSupplier;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider {
 
@@ -42,8 +41,6 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   public static final TextureSupplier highlightOverlayIcon = TextureRegistry.registerTexture("blocks/enderIOHighlight");
   public static final TextureSupplier enderEyeTex = TextureRegistry.registerTexture("items/ender_eye", false);
   public static final TextureSupplier frameIcon = TextureRegistry.registerTexture("blocks/enderIOFrame");
-
-  static int pass;
 
   private BlockEnderIO() {
     super(ModObject.blockEnderIo.getUnlocalisedName(), TileEnderIO.class);
