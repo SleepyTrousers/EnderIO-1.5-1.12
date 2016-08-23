@@ -25,7 +25,7 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
 
   @Override
   protected boolean shouldRender(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, int renderPass) {
-    return te.isActive();
+    return te.isActive() && renderPass == 1;
   }
 
   @Override

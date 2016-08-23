@@ -80,7 +80,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     railController = new EnderRailController(this);
 
     sendItemFilter = new ItemFilter(true);
-    recieveItemFilter = new ItemFilter(true);
+    recieveItemFilter = new ItemFilter(true);    
     
     
   }
@@ -104,6 +104,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     processPower();
     processItems();
     return res;
+  }
+
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    return pass == 1;
   }
 
   @Override
