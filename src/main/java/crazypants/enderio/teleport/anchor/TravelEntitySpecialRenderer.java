@@ -87,6 +87,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
     renderLabel(te.getLabel(), sf, highlight);
 
     GlStateManager.disableRescaleNormal();
+    GlStateManager.enableDepth();
     Minecraft.getMinecraft().entityRenderer.enableLightmap();
   }
 

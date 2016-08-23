@@ -37,7 +37,7 @@ public class EnderIoRenderer extends ManagedTESR<TileEnderIO> {
 
   @Override
   protected void renderTileEntity(@Nonnull TileEnderIO te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
-    
+
     if (MinecraftForgeClient.getRenderPass() == 1) {
       selectionRenderer.renderTileEntity(te, blockState, partialTicks, destroyStage);
       return;
@@ -59,10 +59,12 @@ public class EnderIoRenderer extends ManagedTESR<TileEnderIO> {
 
     // Glint
     RenderUtil.bindGlintTexture();
-    
-    float maxUV = 32;
+
     GlStateManager.depthFunc(GL11.GL_EQUAL);
+    GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+    
+    float maxUV = 32;    
     float blendFactor = 1F;
     GlStateManager.color(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
     
@@ -83,8 +85,11 @@ public class EnderIoRenderer extends ManagedTESR<TileEnderIO> {
     GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
     RenderUtil.renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
-
     GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+    
+    GlStateManager.depthFunc(GL11.GL_LEQUAL);
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GlStateManager.disableBlend();
   }
 
 }
