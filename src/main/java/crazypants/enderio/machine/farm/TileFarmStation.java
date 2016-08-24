@@ -2,10 +2,12 @@ package crazypants.enderio.machine.farm;
 
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.mojang.authlib.GameProfile;
 
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
@@ -13,6 +15,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
@@ -40,7 +43,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
@@ -126,7 +128,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private BlockPos lastScanned;
-  private EntityPlayerMP farmerJoe;
+  private EntityPlayerMP farmerJoe;   
+  private static GameProfile FARMER_PROFILE = new GameProfile(UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d"), "[EioFarmer]");
 
   public static final int NUM_TOOL_SLOTS = 3;
 
@@ -469,7 +472,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     Block block = bs.getBlock();
     
     if(farmerJoe == null) {
-      farmerJoe = new FakeFarmPlayer(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
+      //farmerJoe = new FakeFarmPlayer(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
+      farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
     }
 
     if(isOpen(bc)) {

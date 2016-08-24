@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -41,5 +40,10 @@ public class FakePlayerEIO extends FakePlayer {
   @Override
   protected void playEquipSound(@Nullable ItemStack stack) {  
   }
+  
+//  @Override
+//  public boolean canPlayerEdit(BlockPos p_175151_1_, EnumFacing p_175151_2_, @Nullable ItemStack p_175151_3_) {
+//    return true;
+//  }
 
 }
