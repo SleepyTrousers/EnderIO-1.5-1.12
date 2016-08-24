@@ -4,6 +4,7 @@ import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.FlowerPicker;
+import crazypants.enderio.machine.farm.farmers.HempFarmerIE;
 import crazypants.enderio.machine.farm.farmers.MelonFarmer;
 import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
 import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
@@ -183,20 +184,12 @@ public final class FarmersRegistry {
   private static void addFlowers() {
     FarmersCommune.joinCommune(new FlowerPicker(FLOWERS));
   }
-  
-
 
   private static void addImmersiveEngineering() {
-    if (Block.REGISTRY.containsKey(new ResourceLocation("ImmersiveEngineering", "hemp"))) {
-      Block hemp = Block.REGISTRY.getObject(new ResourceLocation("ImmersiveEngineering", "hemp"));
-      Item hempSeed = Item.REGISTRY.getObject(new ResourceLocation("ImmersiveEngineering", "hemp"));
-      if (hempSeed != null) {
-        FarmersCommune.joinCommune(new StemFarmer(hemp, new ItemStack(hempSeed)));
-      }
+    HempFarmerIE farmer = HempFarmerIE.create();
+    if(farmer != null) {
+      FarmersCommune.joinCommune(farmer);
     }
-  }
-  
-  private FarmersRegistry() {
   }
 
   private static void addTechreborn() {
@@ -206,4 +199,7 @@ public final class FarmersRegistry {
     }
   }
 
+  private FarmersRegistry() {
+  }
+  
 }
