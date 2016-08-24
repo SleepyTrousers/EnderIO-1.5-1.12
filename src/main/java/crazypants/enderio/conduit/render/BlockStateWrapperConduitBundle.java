@@ -61,7 +61,7 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
     super.addCacheKeyInternal(addlCacheKey);
     if (addlCacheKey instanceof IConduitComponent) {
       ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(cachekey);
-    } else if (addlCacheKey instanceof IBlockState) {
+    } else if (addlCacheKey instanceof IBlockState) {      
       cachekey.add(Block.BLOCK_STATE_IDS.get((IBlockState) addlCacheKey));
     } else {
       cachekey.add(addlCacheKey);
@@ -96,16 +96,17 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
       hashCode = 31 * hashCode + i;
     }
 
-    public void add_Boolean(Map<EnumFacing, Boolean> o) {
+    public void addBoolean(Map<EnumFacing, Boolean> o) {
       assert EnumFacing.values().length <= 1 + 2 + 4;
       int i = 0;
       for (EnumFacing face : EnumFacing.values()) {
-        i = (i << 1) | (o.get(face) ? 1 : 0);
+        Boolean b = o.get(face);
+        i = (i << 1) | (b != null && b.booleanValue() ? 1 : 0);
       }
       add(i);
     }
 
-    public <T extends Enum<?>> void add_Enum(Map<EnumFacing, T> o) {
+    public <T extends Enum<?>> void addEnum(Map<EnumFacing, T> o) {
       int i = 0;
       for (EnumFacing face : EnumFacing.values()) {
         final T value = o.get(face);

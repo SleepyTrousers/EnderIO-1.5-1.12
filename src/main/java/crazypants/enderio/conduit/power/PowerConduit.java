@@ -537,8 +537,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if (subtype != 1) {
       hashCodes.add(subtype);
     }
-    hashCodes.add_Enum(rsModes);
-    hashCodes.add_Enum(rsColors);
+    hashCodes.addEnum(rsModes);
+    hashCodes.addEnum(rsColors);
   }
 
 }

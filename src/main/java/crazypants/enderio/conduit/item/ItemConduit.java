@@ -846,8 +846,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(hashCodes);
-    hashCodes.add_Enum(outputColors);
-    hashCodes.add_Enum(inputColors);
+    hashCodes.addEnum(outputColors);
+    hashCodes.addEnum(inputColors);
   }
 
 }

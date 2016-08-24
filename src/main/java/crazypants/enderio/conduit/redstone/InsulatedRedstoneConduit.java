@@ -789,11 +789,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(hashCodes);
-    hashCodes.add_Enum(signalColors);
+    hashCodes.addEnum(signalColors);
     if (specialConnections == null) {
       computeSpecialConnections();
     }
-    hashCodes.add_Boolean(specialConnections);
+    hashCodes.addBoolean(specialConnections);
     if (Config.redstoneConduitsShowState && isActive()) {
       hashCodes.add(1);
     }

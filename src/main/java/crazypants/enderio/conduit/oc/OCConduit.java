@@ -544,7 +544,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Override
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     super.hashCodeForModelCaching(hashCodes);
-    hashCodes.add_Enum(signalColors);
+    hashCodes.addEnum(signalColors);
   }
 
 }
