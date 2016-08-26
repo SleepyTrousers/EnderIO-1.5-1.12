@@ -10,6 +10,8 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.gui.GuiLocationPrintout;
+import crazypants.enderio.teleport.telepad.packet.PacketUpdateLocationPrintout;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;

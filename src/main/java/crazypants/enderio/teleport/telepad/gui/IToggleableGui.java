@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.gui;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
 

@@ -21,7 +21,7 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.teleport.telepad.oldimpl.TelepadRenderMapperOld;
+import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -133,12 +133,12 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {
-    return TelepadRenderMapperOld.instance;
+    return TelePadRenderMapper.instance;
   }
 
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return TelepadRenderMapperOld.instance;
+    return TelePadRenderMapper.instance;
   }
 
   @Override

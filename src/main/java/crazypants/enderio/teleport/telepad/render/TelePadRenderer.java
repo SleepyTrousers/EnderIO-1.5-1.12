@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.render;
 
 //public class TelePadRenderer extends TechneModelRenderer {
 //

@@ -1,8 +1,9 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.telepad.ITileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

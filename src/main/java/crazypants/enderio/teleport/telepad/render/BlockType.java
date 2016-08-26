@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.render;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;

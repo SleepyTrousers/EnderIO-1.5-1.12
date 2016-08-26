@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.packet;
 
 import com.enderio.core.common.util.ItemUtil;
 

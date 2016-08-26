@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.gui;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -11,6 +11,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.telepad.TelepadTarget;
+import crazypants.enderio.teleport.telepad.packet.PacketUpdateLocationPrintout;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;

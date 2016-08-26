@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.teleport.telepad.render;
 
 import java.util.Random;
 
@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
