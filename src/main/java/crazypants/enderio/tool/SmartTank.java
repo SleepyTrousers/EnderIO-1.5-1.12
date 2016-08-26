@@ -109,11 +109,8 @@ public class SmartTank extends FluidTank {
 
   @Override
   public boolean canFillFluidType(FluidStack resource) {
-    if (restriction != null) {
-      return resource != null && resource.getFluid() != null && FluidUtil.areFluidsTheSame(restriction, resource.getFluid());
-    } else {
-      return true;
-    }
+    return super.canFillFluidType(resource)
+        && (restriction == null || (resource != null && resource.getFluid() != null && FluidUtil.areFluidsTheSame(restriction, resource.getFluid())));
   }
 
   public void setFluidAmount(int amount) {
