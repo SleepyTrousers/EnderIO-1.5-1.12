@@ -104,7 +104,7 @@ public class TeleportUtil {
     if(player != null) {
       player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
     } else {
-      entity.setPosition(x, y, z);
+      entity.setPosition(x + 0.5, y + 1.1, z + 0.5);
     }
 
     entity.fallDistance = 0;
