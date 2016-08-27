@@ -1,18 +1,35 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.Set;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
-public class TelepadTarget {
+public class TelepadTarget implements IHandler<TelepadTarget> {
 
-  private final BlockPos location;
-  private final int dimension;
+  static {
+    Registry.GLOBAL_REGISTRY.register(new TelepadTarget());
+  }
+  
+  private BlockPos location;
+  private int dimension;
   private String name;
   private ItemStack icon;
 
+  public TelepadTarget() {
+    this(new BlockPos(0,-1,0), Integer.MIN_VALUE);
+  }
+  
   public TelepadTarget(BlockPos location, int dimension) {
     this(location, dimension, null, null);
   }
@@ -22,6 +39,10 @@ public class TelepadTarget {
     this.dimension = dimension;
     this.name = name;
     this.icon = icon;
+  }
+
+  public TelepadTarget(TelepadTarget newTarget) {
+    this(newTarget.location, newTarget.dimension, newTarget.name, newTarget.icon);
   }
 
   public BlockPos getLocation() {
@@ -47,7 +68,85 @@ public class TelepadTarget {
   public void setIcon(ItemStack icon) {
     this.icon = icon;
   }
+  
+  public int getX() {
+    return location.getX();
+  }
+  
+  public TelepadTarget setX(int x) {
+    location = new BlockPos(x, getY(), getZ());
+    return this;
+  }
 
+  public int getY() {
+    return location.getY();
+  }
+  
+  public TelepadTarget setY(int y) {
+    location = new BlockPos(getX(), y, getZ());
+    return this;
+  }
+
+  public int getZ() {
+    return location.getZ();
+  }
+  
+  public TelepadTarget setZ(int z) {
+    location = new BlockPos(getX(), getY(), z);
+    return this;
+  }
+  
+  public TelepadTarget setLocation(BlockPos pos) {
+    if(pos == null) {
+      pos = new BlockPos(0,-1,0);
+    }
+    location = pos;
+    return this;
+  }
+  
+  public TelepadTarget setDimension(int dimension) {
+    this.dimension = dimension;
+    return this;
+  }
+  
+  public String getChatString() {
+    String res = EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget");
+    if(name != null) {
+      res += " " + name + " ";
+    }
+    res += BlockCoord.chatString(location) + " ";
+    res += getDimenionName(dimension); 
+    return res;
+  }
+
+  public static String getDimenionName(int dim) {
+    if (!DimensionManager.isDimensionRegistered(dim)) {
+      return Integer.toString(dim);
+    }
+    DimensionType type = DimensionManager.getProviderType(dim);
+    if (type == null) {
+      return Integer.toString(dim);
+    }
+    String name = type.getName();
+    int[] dims = DimensionManager.getDimensions(type);
+    if (dims != null && dims.length > 1) {
+      name += " " + dim;
+    }
+    return name;
+  }
+  
+  @Override
+  public String toString() {
+    String res = "";
+    if(name != null) {
+      res += " " + name + " ";
+    }
+    res += location + " " + dimension;
+    return res;
+  }
+  
+  //----------------------- I/O -------------- :(
+  
   public void writeToNBT(ItemStack printout) {
     if (printout == null) {
       return;
@@ -61,7 +160,6 @@ public class TelepadTarget {
     } else {
       printout.clearCustomName();
     }
-
   }
 
   public void writeToNBT(NBTTagCompound tag) {
@@ -93,51 +191,57 @@ public class TelepadTarget {
     }
     return new TelepadTarget(pos, getTargetDimension(tag), getName(tag), getIcon(tag));
   }
+  
+  @Override
+  public boolean canHandle(Class<?> clazz) {
+    return TelepadTarget.class.isAssignableFrom(clazz);
+  }
 
-  public static ItemStack getIcon(NBTTagCompound tag) {
+  @Override
+  public boolean store(Registry registry, Set<StoreFor> phase, NBTTagCompound nbt, String name, TelepadTarget object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
+    NBTTagCompound root = new NBTTagCompound();
+    object.writeToNBT(root);
+    nbt.setTag(name, root);       
+    return true;
+  }
+
+  @Override
+  public TelepadTarget read(Registry registry, Set<StoreFor> phase, NBTTagCompound nbt, String name, TelepadTarget object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
+    if(nbt.hasKey(name)) {
+      NBTTagCompound root = nbt.getCompoundTag(name);
+      return readFromNBT(root);
+    }
+    return new TelepadTarget();    
+  }
+
+  private static ItemStack getIcon(NBTTagCompound tag) {
     if (tag == null || !tag.hasKey("targetIcon")) {
       return null;
     }
     return ItemStack.loadItemStackFromNBT(tag.getCompoundTag("targetIcon"));
   }
 
-  public static String getName(NBTTagCompound tag) {
+  private static String getName(NBTTagCompound tag) {
     if (tag == null || !tag.hasKey("targetName")) {
       return null;
     }
     return tag.getString("targetName");
   }
 
-  public static BlockPos getTargetPos(NBTTagCompound tag) {
+  private static BlockPos getTargetPos(NBTTagCompound tag) {
     if (tag == null || !tag.hasKey("targetPos")) {
       return null;
     }
     return BlockPos.fromLong(tag.getLong("targetPos"));
   }
 
-  public static int getTargetDimension(NBTTagCompound tag) {
+  private static int getTargetDimension(NBTTagCompound tag) {
     if (tag == null || !tag.hasKey("targetDim")) {
       return 0;
     }
     return tag.getInteger("targetDim");
   }
-
-  public static String getDimenionName(int dim) {
-    if (!DimensionManager.isDimensionRegistered(dim)) {
-      return Integer.toString(dim);
-    }
-    DimensionType type = DimensionManager.getProviderType(dim);
-    if (type == null) {
-      return Integer.toString(dim);
-    }
-    String name = type.getName();
-    int[] dims = DimensionManager.getDimensions(type);
-    if (dims != null && dims.length > 1) {
-      name += " " + dim;
-    }
-    return name;
-  }
-
-  
 
 }

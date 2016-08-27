@@ -4,9 +4,11 @@ import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.TelepadTarget;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -19,7 +21,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
   
   private int targetX, targetY, targetZ, targetDim;
   
-  public PacketUpdateCoords(ITileTelePad te, int x, int y, int z, int targetDim) {
+  public PacketUpdateCoords(TileTelePad te, int x, int y, int z, int targetDim) {
     super(te.getTileEntity());
     this.targetX = x;
     this.targetY = y;
@@ -27,7 +29,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
     this.targetDim = targetDim;    
   }
   
-  public PacketUpdateCoords(ITileTelePad te, BlockCoord bc, int targetDim) {
+  public PacketUpdateCoords(TileTelePad te, BlockCoord bc, int targetDim) {
     this(te, bc.x, bc.y, bc.z, targetDim);
   }
 
@@ -52,10 +54,11 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
   @Override
   public IMessage onMessage(PacketUpdateCoords message, MessageContext ctx) {
     TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
-    if(te instanceof ITileTelePad) {
-      ITileTelePad tp = (ITileTelePad)te;
-      tp.setCoords_internal(new BlockCoord(message.targetX, message.targetY, message.targetZ));      
-      tp.setTargetDim_internal(message.targetDim);     
+    if(te instanceof TileTelePad) {
+      TileTelePad tp = (TileTelePad)te;
+      TelepadTarget target = tp.getTarget();
+      target.setLocation(new BlockPos(message.targetX, message.targetY, message.targetZ)).setDimension(message.targetDim);      
+      tp.setTarget(target); //set it back so its marked dirty etc
     }
     return null;
   }

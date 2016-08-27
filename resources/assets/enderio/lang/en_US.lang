@@ -739,6 +739,7 @@ enderio.itemTravelStaff.notEnoughPower=Not enough power
 item.itemLocationPrintout.name=Location Printout
 item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
 item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
+item.itemLocationPrintout.chat.setTarget=Target set to
 
 item.itemRodOfReturn.name=Rod of Return
 item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad
@@ -756,11 +757,6 @@ item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
 item.itemCoordSelector.tooltip.detailed.line4=Shift right click at a block to
 item.itemCoordSelector.tooltip.detailed.line5=select that specific block.
 item.itemCoordSelector.tooltip.detailed.line6=Can select from a distance.
-enderio.itemCoordSelector.chat.newCoords=New Coords: %s
-enderio.itemCoordSelector.chat.setCoords=Set Coords: %s
-enderio.itemCoordSelector.chat.newDimension=New Dimension: %s%s
-enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
-enderio.itemCoordSelector.chat.alreadySet=Location already set
 
 //Painter
 tile.blockPainter.name=Painting Machine

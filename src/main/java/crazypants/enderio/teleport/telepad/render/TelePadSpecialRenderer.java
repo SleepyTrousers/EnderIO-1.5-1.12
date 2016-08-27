@@ -49,10 +49,6 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
   public void renderTileEntity(@Nonnull TileTelePad te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     if (MinecraftForgeClient.getRenderPass() == 0) {
 
-      if (!te.active()) {
-        GlStateManager.enableLighting();
-      }
-
       render(te, lights);
 
       Random rand = new Random(te.getPos().toLong());

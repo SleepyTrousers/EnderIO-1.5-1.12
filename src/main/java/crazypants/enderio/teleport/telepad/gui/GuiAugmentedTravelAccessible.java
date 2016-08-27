@@ -6,7 +6,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
 import crazypants.enderio.teleport.GuiTravelAccessable;
-import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.enderio.teleport.telepad.packet.PacketOpenServerGui;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
@@ -17,9 +17,9 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   ToggleTravelButton switchButton;
 
-  private ITileTelePad te;
+  private TileTelePad te;
   
-  public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, ITileTelePad te, World world) {
+  public GuiAugmentedTravelAccessible(InventoryPlayer playerInv, TileTelePad te, World world) {
     super(playerInv, te, world);
     this.te = te;
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, GuiTelePad.SWITCH_X, GuiTelePad.SWITCH_Y, IconEIO.IO_WHATSIT);

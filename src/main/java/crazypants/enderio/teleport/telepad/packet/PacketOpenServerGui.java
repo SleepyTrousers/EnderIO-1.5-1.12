@@ -3,7 +3,7 @@ package crazypants.enderio.teleport.telepad.packet;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,7 @@ public class PacketOpenServerGui extends MessageTileEntity<TileEntity> implement
 
   int id;
 
-  public PacketOpenServerGui(ITileTelePad te, int guiId) {
+  public PacketOpenServerGui(TileTelePad te, int guiId) {
     super(te.getTileEntity());
     this.id = guiId;
   }
@@ -41,7 +41,7 @@ public class PacketOpenServerGui extends MessageTileEntity<TileEntity> implement
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     World world = message.getWorld(ctx);
     TileEntity te = message.getTileEntity(world);    
-    if(te instanceof ITileTelePad) {
+    if(te instanceof TileTelePad) {
       player.openGui(EnderIO.instance, message.id, world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
     }    
     return null;

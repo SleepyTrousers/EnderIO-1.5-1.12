@@ -170,10 +170,10 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te instanceof ITelePad) {
+    if(te instanceof TileTelePad) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:
-        return new ContainerTelePad(player.inventory);
+        return new ContainerTelePad(player.inventory, (TileTelePad)te);
       case GuiHandler.GUI_ID_TELEPAD_TRAVEL:
         return new ContainerTravelAccessable(player.inventory, (ITelePad) te, world);
       default:

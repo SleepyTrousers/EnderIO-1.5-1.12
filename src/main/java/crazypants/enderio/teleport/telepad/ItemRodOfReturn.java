@@ -145,16 +145,15 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     boolean hasPower = updateStackNBT(stack, worldIn, 0);
     boolean hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power    
     if (hasPower && hasFluid) {
-      BlockPos pos = TelepadTarget.getTargetPos(stack.getTagCompound());
-      if (pos == null) {        
+      TelepadTarget target = TelepadTarget.readFromNBT(stack);
+      if(target == null) {
         if (worldIn.isRemote) {
           stopPlayingSound();
           entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
         }
         return stack;
-      }
-      int dim = TelepadTarget.getTargetDimension(stack.getTagCompound());
-      TeleportUtil.doTeleport(entityLiving, pos, dim, false, TravelSource.TELEPAD);
+      }            
+      TeleportUtil.doTeleport(entityLiving, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       if(!hasPower) {
         entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));

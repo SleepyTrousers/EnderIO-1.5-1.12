@@ -3,10 +3,11 @@ package crazypants.enderio.teleport.telepad;
 import java.util.List;
 import java.util.Queue;
 
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.api.common.util.IProgressTile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
@@ -21,6 +22,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
@@ -29,6 +31,7 @@ import crazypants.enderio.teleport.telepad.render.BlockType;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -36,11 +39,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
+public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable  {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 1000);
@@ -55,9 +61,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   private boolean coordsChanged = false;
 
   @Store
-  private BlockCoord target = new BlockCoord();
-  @Store
-  private int targetDim = Integer.MIN_VALUE;
+  private TelepadTarget target = new TelepadTarget(new BlockPos(0,0,0), Integer.MIN_VALUE);
 
   private int lastSyncPowerStored;
 
@@ -85,12 +89,16 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   public float speedMult = 2.5f;
 
   
-  @Override
+  @Store
+  protected ItemStack[] inventory = new ItemStack[2];
+  
+  public TileTelePad() {    
+  }
+  
   public boolean wasBlocked() {
     return wasBlocked;
   }
-
-  @Override
+  
   public void setBlocked(boolean blocked) {
     wasBlocked = blocked;    
   }
@@ -133,13 +141,22 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
       return;
     }
 
-    if (targetDim == Integer.MIN_VALUE) {
-      targetDim = worldObj.provider.getDimension();
+    if (target.getDimension() == Integer.MIN_VALUE) {      
+      target.setDimension(worldObj.provider.getDimension());
     }
 
     if (worldObj.isRemote) {
       updateEntityClient();
       return;
+    }
+    
+    if(inventory[0] != null) {
+      ItemStack stack = inventory[0];
+      TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
+      setTarget(newTarg);
+      inventory[0] = null;
+      inventory[1] = stack;
+      markDirty();      
     }
 
     if (active()) {
@@ -161,7 +178,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
       lastSyncPowerStored = getEnergyStored();
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
-    if (coordsChanged ) {
+    if (coordsChanged ) {      
       coordsChanged = false;
       PacketHandler.sendToAllAround(new PacketUpdateCoords(this, getX(), getY(), getZ(), getTargetDim()), this);
     }
@@ -249,31 +266,29 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
       activeSound = null;
     }
   }
-
-  @Override
+  
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
   }
 
   private int calculateTeleportPower() {
-    if (worldObj.provider.getDimension() == targetDim) {
-      int distance = new BlockCoord(this).getDist(target);
+    if (worldObj.provider.getDimension() == target.getDimension()) {
+      int distance = (int)Math.ceil(pos.getDistance(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ()));
       double base = Math.log((0.005 * distance) + 1);
-      this.maxPower = (int) (base * Config.telepadPowerCoefficient);
-      if (this.maxPower <= 0) {
-        this.maxPower = 1;
+      maxPower = (int) (base * Config.telepadPowerCoefficient);
+      if (maxPower <= 0) {
+        maxPower = 1;
       }
     } else {
-      this.maxPower = Config.telepadPowerInterdimensional;
+      maxPower = Config.telepadPowerInterdimensional;
     }
-    return this.maxPower;
+    return maxPower;
   }
 
   public boolean active() {
     return !toTeleport.isEmpty();
   }
 
-  @Override
   public Entity getCurrentTarget() {
     return toTeleport.peek();
   }
@@ -330,107 +345,93 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   @Override
   public int getX() {
     if (inNetwork()) {
-      return getMasterTile().target.x;
+      return getMasterTile().target.getX();
     }
-    return target.x;
+    return target.getX();
   }
 
   @Override
   public int getY() {
     if (inNetwork()) {
-      return getMasterTile().target.y;
+      return getMasterTile().target.getY();
     }
-    return target.y;
+    return target.getY();
   }
 
   @Override
   public int getZ() {
     if (inNetwork()) {
-      return getMasterTile().target.z;
+      return getMasterTile().target.getZ();
     }
-    return target.z;
+    return target.getZ();
   }
 
   @Override
   public int getTargetDim() {
     if (inNetwork()) {
-      return getMasterTile().targetDim;
+      return getMasterTile().target.getDimension();
     }
-    return targetDim;
+    return target.getDimension();
   }
 
   @Override
-  public ITelePad setX(int x) {
-    return Config.telepadLockCoords ? null : setX_internal(x);
+  public void setX(int x) {
+    if(Config.telepadLockCoords) {
+      return;
+    }
+    setTarget(getTarget().setX(x));    
   }
 
   @Override
-  public ITelePad setY(int y) {
-    return Config.telepadLockCoords ? null : setY_internal(y);
+  public void setY(int y) {
+    if(Config.telepadLockCoords) {
+      return;
+    }
+    setTarget(getTarget().setY(y));
   }
 
   @Override
-  public ITelePad setZ(int z) {
-    return Config.telepadLockCoords ? null : setZ_internal(z);
+  public void setZ(int z) {
+    if(Config.telepadLockCoords) {
+      return;
+    }
+    setTarget(getTarget().setZ(z));
   }
 
   @Override
-  public ITelePad setTargetDim(int dimID) {
-    return Config.telepadLockDimension ? null : setTargetDim_internal(dimID);
+  public void setTargetDim(int dimID) {
+    if(Config.telepadLockCoords) {
+      return;
+    }
+    setTarget(getTarget().setDimension(dimID));
   }
 
   @Override
-  public void setCoords(BlockCoord coords) {
-    if (!Config.telepadLockCoords) {
-      setCoords_internal(coords);
+  public void setCoords(BlockPos coords) {
+    if(Config.telepadLockCoords) {
+      return;
     }
+    setTarget(getTarget().setLocation(coords));
   }
 
-  ITelePad setX_internal(int x) {
-    if (inNetwork()) {
-      setCoords(new BlockCoord(x, target.y, target.z));
-      return getMasterTile();
+  public void setTarget(TelepadTarget newTarget) {    
+    if(inNetwork() && !isMaster()) {
+      getMaster().setTarget(newTarget);
+      return;
+    }    
+    if(newTarget == null) {
+      newTarget = new TelepadTarget();
     }
-    return null;
+    target = new TelepadTarget(newTarget);
+    coordsChanged = true;
+    markDirty();    
   }
-
-  ITelePad setY_internal(int y) {
-    if (inNetwork()) {
-      setCoords(new BlockCoord(target.x, y, target.z));
-      return getMasterTile();
+  
+  public TelepadTarget getTarget() {
+    if (!inNetwork() || isMaster()) {      
+      return target;
     }
-    return null;
-  }
-
-  ITelePad setZ_internal(int z) {
-    if (inNetwork()) {
-      setCoords(new BlockCoord(target.x, target.y, z));
-      return getMasterTile();
-    }
-    return null;
-  }
-
-  @Override
-  public ITelePad setTargetDim_internal(int dimID) {
-    if (inNetwork()) {
-      getMasterTile().targetDim = dimID;
-      coordsChanged = true;
-      return getMasterTile();
-    }
-    return null;
-  }
-
-  @Override
-  public void setCoords_internal(BlockCoord coords) {
-    if (inNetwork()) {
-      if (isMaster()) {
-        this.target = coords;
-        this.coordsChanged = true;
-        markDirty();
-      } else {
-        this.getMasterTile().setCoords_internal(coords);
-      }
-    }
+    return getMaster().getTarget();
   }
 
   @Override
@@ -473,8 +474,7 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     BlockPos p = getPos();
     return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 3, p.getZ() + 2);
   }
-
-  @Override
+  
   public void enqueueTeleport(Entity entity, boolean sendUpdate) {    
     if (entity == null || toTeleport.contains(entity)) {
       return;
@@ -492,7 +492,6 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     }
   }
 
-  @Override
   public void dequeueTeleport(Entity entity, boolean sendUpdate) {
     if (entity == null) {
       return;
@@ -522,13 +521,13 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   }
   
   private boolean clientTeleport(Entity entity) {
-    return TeleportUtil.clientTeleport(entity, target.getBlockPos(), targetDim, TravelSource.TELEPAD);
+    return TeleportUtil.clientTeleport(entity, target.getLocation(), target.getDimension(), TravelSource.TELEPAD);
         
   }
 
   private boolean serverTeleport(Entity entity) {    
     dequeueTeleport(entity, true);        
-    return TeleportUtil.serverTeleport(entity, target.getBlockPos(), targetDim, false, TravelSource.TELEPAD);    
+    return TeleportUtil.serverTeleport(entity, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);    
   }
 
   /* ITravelAccessable overrides */
@@ -598,7 +597,6 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
     return getMaxEnergyStored();
   }
 
-  @Override
   public int getUsage() {
     return maxEnergyUsed.get(capacitorData);
   }
@@ -616,5 +614,72 @@ public class TileTelePad extends TileTravelAnchor implements ITileTelePad {
   public boolean shouldRenderInPass(int pass) {
     return true;
   }
+  
+  //Inventory
+  
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {    
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return true;
+    }
+    return super.hasCapability(capability, facing);
+  }
+  
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    if (inNetwork() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {      
+      return (T) getMaster();
+    }
+    return super.getCapability(capability, facing);
+  }
+
+  @Override
+  public int getSlots() {
+    return 2;
+  }
+
+  @Override
+  public ItemStack getStackInSlot(int slot) {
+    if(slot < 0 || slot >= inventory.length) {
+      return null;
+    }
+    return inventory[slot];    
+  }
+  
+  @Override
+  public void setStackInSlot(int slot, ItemStack stack) {
+    if(slot < 0 || slot >= inventory.length) {
+      return;
+    }
+    inventory[slot] = stack;    
+  }
+
+  @Override
+  public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+    if(slot != 0 || inventory[0] != null || stack == null || stack.getItem() != EnderIO.itemlocationPrintout) {
+      return stack;
+    }
+    if(!simulate) {
+      inventory[0] = stack.copy();
+      markDirty();
+    }    
+    return null;
+  }
+
+  @Override
+  public ItemStack extractItem(int slot, int amount, boolean simulate) {
+    if(slot != 1 || amount < 1 || inventory[1] == null) {
+      return null;
+    }
+    ItemStack res = inventory[1].copy();
+    if(!simulate) {
+      markDirty();
+      inventory[1] = null;
+    }
+    return res;
+  }
+
+  
 
 }

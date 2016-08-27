@@ -19,7 +19,8 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.TelepadTarget;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.enderio.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.teleport.telepad.packet.PacketUpdateCoords;
 import net.minecraft.client.Minecraft;
@@ -40,25 +41,25 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   GuiButton teleportButton;
 
   private World world;
-  private ITileTelePad te;
+  private TileTelePad te;
 
   private TextFieldEnder xTF, yTF, zTF, dimTF;
   
   private int powerX = 8;
   private int powerY = 9;
-  private int powerScale = 100;
+  private int powerScale = 120;
   
   private int progressX = 26;
-  private int progressY = 90;
+  private int progressY = 110;
   private int progressScale = 124;
   
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
-  public GuiTelePad(InventoryPlayer playerInv, ITileTelePad te, World world) {
-    super(new ContainerTelePad(playerInv), "telePad");
+  public GuiTelePad(InventoryPlayer playerInv, TileTelePad te, World world) {
+    super(new ContainerTelePad(playerInv, te), "telePad");
     this.world = world;
     this.te = te;
-    ySize += 34;
+    ySize = 220;
 
     addToolTip(new GuiToolTip(new Rectangle(powerX, powerY, 10, powerScale), "") {
       @Override
@@ -78,12 +79,14 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
-    int x = 42;
-    int y = 8;
-    xTF = new TextFieldEnder(fr, x, y, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
-    yTF = new TextFieldEnder(fr, x, y + xTF.height + 2, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
-    zTF = new TextFieldEnder(fr, x, y + (xTF.height * 2) + 4, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
-    dimTF = new TextFieldEnder(fr, x, y + (xTF.height * 3) + 6, xSize - x * 2, 12, TextFieldEnder.FILTER_NUMERIC);
+    int x = 48;
+    int y = 24;
+    int tfHeight = 12;
+    int tfWidth = xSize - x * 2;
+    xTF = new TextFieldEnder(fr, x, y, tfWidth, tfHeight, TextFieldEnder.FILTER_NUMERIC);
+    yTF = new TextFieldEnder(fr, x, y + xTF.height + 2, tfWidth, tfHeight, TextFieldEnder.FILTER_NUMERIC);
+    zTF = new TextFieldEnder(fr, x, y + (xTF.height * 2) + 4, tfWidth, tfHeight, TextFieldEnder.FILTER_NUMERIC);
+    dimTF = new TextFieldEnder(fr, x, y + (xTF.height * 3) + 6, tfWidth, tfHeight, TextFieldEnder.FILTER_NUMERIC);
 
     xTF.setText(Integer.toString(te.getX()));
     yTF.setText(Integer.toString(te.getY()));
@@ -124,7 +127,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     int width = getFontRenderer().getStringWidth(text) + 10;
 
     int x = guiLeft + (xSize / 2) - (width / 2);
-    int y = guiTop + 65;
+    int y = guiTop + 83;
     
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, width, 20, text);
     addButton(teleportButton);
@@ -133,6 +136,14 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   @Override
   public void updateScreen() {
     super.updateScreen();
+    
+    if(te.getStackInSlot(0) != null) {
+      te.setTarget(TelepadTarget.readFromNBT(te.getStackInSlot(0)));
+      xTF.setText(Integer.toString(te.getX()));
+      yTF.setText(Integer.toString(te.getY()));
+      zTF.setText(Integer.toString(te.getZ()));
+      dimTF.setText(Integer.toString(te.getTargetDim()));
+    }
   }
 
   @Override
@@ -193,6 +204,11 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     } else if(te.wasBlocked()) {
       String s = EnderIO.lang.localize("gui.telepad.blocked");
       fnt.drawString(s, sx + xSize / 2 - fnt.getStringWidth(s) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0xAA0000);
+    }
+    
+    String name = te.getTarget().getName();
+    if(name != null) {
+      fnt.drawStringWithShadow(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, getGuiTop() + 10, 0xffffff);
     }
 
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);

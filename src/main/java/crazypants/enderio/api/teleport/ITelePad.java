@@ -2,8 +2,10 @@ package crazypants.enderio.api.teleport;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.Entity;
 import com.enderio.core.common.util.BlockCoord;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 
 public interface ITelePad extends ITravelAccessable {
 
@@ -70,9 +72,8 @@ public interface ITelePad extends ITravelAccessable {
    * 
    * @param x
    *          The X coord.
-   * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  ITelePad setX(int x);
+  void setX(int x);
 
   /**
    * Sets the target Y coordinate of the network. Has no effect if
@@ -80,9 +81,8 @@ public interface ITelePad extends ITravelAccessable {
    * 
    * @param y
    *          The Y coord.
-   * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  ITelePad setY(int y);
+  void setY(int y);
 
   /**
    * Sets the target Z coordinate of the network. Has no effect if
@@ -90,9 +90,8 @@ public interface ITelePad extends ITravelAccessable {
    * 
    * @param z
    *          The Z coord.
-   * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  ITelePad setZ(int z);
+  void setZ(int z);
 
   /**
    * Sets the target dimension of the network. Has no effect if
@@ -100,9 +99,8 @@ public interface ITelePad extends ITravelAccessable {
    * 
    * @param dimID
    *          The dimension ID.
-   * @return The master telepad TE. DOES NOT ALWAYS return itself.
    */
-  ITelePad setTargetDim(int dimID);
+  void setTargetDim(int dimID);
 
   /**
    * Util method to set all coords using a {@link BlockCoord} object.
@@ -114,7 +112,7 @@ public interface ITelePad extends ITravelAccessable {
    * @param coords
    *          The coords to set this telepad to.
    */
-  void setCoords(BlockCoord coords);
+  void setCoords(BlockPos coords);
 
   /**
    * Teleports a specific entity to the destination if:

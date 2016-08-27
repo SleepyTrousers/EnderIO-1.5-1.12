@@ -3,7 +3,7 @@ package crazypants.enderio.teleport.telepad.packet;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.telepad.ITileTelePad;
+import crazypants.enderio.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -28,13 +28,13 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
     super();
   }
 
-  public PacketTeleport(Type type, ITileTelePad te, int entityId) {
+  public PacketTeleport(Type type, TileTelePad te, int entityId) {
     super(te.getTileEntity());
     this.entityId = entityId;
     this.type = type;
   }
   
-  public PacketTeleport(Type type, ITileTelePad te, boolean wasBlocked) {
+  public PacketTeleport(Type type, TileTelePad te, boolean wasBlocked) {
     super(te.getTileEntity());
     this.wasBlocked = wasBlocked;
     this.type = type;
@@ -60,17 +60,17 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
   public IMessage onMessage(PacketTeleport message, MessageContext ctx) {
     World world = ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx);
     TileEntity te = message.getTileEntity(world);
-    if(te instanceof ITileTelePad) {
+    if(te instanceof TileTelePad) {
       Entity e = world.getEntityByID(message.entityId);
         switch(message.type) {
         case BEGIN:
-          ((ITileTelePad) te).enqueueTeleport(e, false);
+          ((TileTelePad) te).enqueueTeleport(e, false);
           break;
         case END:
-          ((ITileTelePad) te).dequeueTeleport(e, false);
+          ((TileTelePad) te).dequeueTeleport(e, false);
           break;
         case TELEPORT:
-          ((ITileTelePad)te).setBlocked(message.wasBlocked);
+          ((TileTelePad)te).setBlocked(message.wasBlocked);
           break;
         }
     }
