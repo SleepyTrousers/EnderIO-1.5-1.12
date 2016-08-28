@@ -1,0 +1,45 @@
+{
+  "forge_marker": 1,    
+  "defaults": {
+    "model": "enderio:blockDialingDevice",
+      "textures": {
+        "particle": "enderio:blocks/machineBottom"
+      }
+    },
+	"variants": {
+        "normal": [{}],
+        "inventory": [{}],
+        "facing": {
+          "down_tonorth": {},
+          "down_tosouth": {"y": 180},
+          "down_toeast": {"y": 90},
+          "down_towest": {"y": 270},
+
+          "up_tonorth": { "transform": { "rotation": [ { "z" : 180 } ] } },
+          "up_tosouth": { "transform": { "rotation": [ { "z" : 180 }, { "y": 180 } ] } },
+          "up_toeast": { "transform": { "rotation": [ { "z" : 180 }, { "y": 90 } ] } },
+          "up_towest": { "transform": { "rotation": [ { "z" : 180 }, { "y": 270 } ] } },
+
+          "north_toeast": { "transform": { "rotation": [ { "x" : 90 }, { "y": 270 } ] } },
+          "north_towest": { "transform": { "rotation": [ { "x" : 90 }, { "y": 90 } ] } },
+          "north_toup": { "transform": { "rotation": [ { "x" : 90 } ] } },
+          "north_todown": { "transform": { "rotation": [ { "x" : 90 }, { "y": 180 } ] } },
+
+          "south_toeast": { "transform": { "rotation": [ { "x" : 270 }, { "y": 270 } ] } },
+          "south_towest": { "transform": { "rotation": [ { "x" : 270 }, { "y": 90 } ] } },
+          "south_toup": { "transform": { "rotation": [ { "x" : 270 }, { "y": 180 } ] } },
+          "south_todown": { "transform": { "rotation": [ { "x" : 270 } ] } },
+
+          "west_tonorth": { "transform": { "rotation": [ { "z" : 270 } ] } },
+          "west_tosouth": { "transform": { "rotation": [ { "z" : 270 }, { "y": 180 }  ] } },
+          "west_toup": { "transform": { "rotation": [ { "z" : 270 }, { "y": 90 }  ] } },
+          "west_todown": { "transform": { "rotation": [ { "z" : 270 }, { "y": 270 }  ] } },
+
+          "east_tonorth": { "transform": { "rotation": [ { "z" : 90 } ] } },
+          "east_tosouth": { "transform": { "rotation": [ { "z" : 90 }, { "y": 180 }  ] } },
+          "east_toup": { "transform": { "rotation": [ { "z" : 90 }, { "y": 270 }  ] } },
+          "east_todown": { "transform": { "rotation": [ { "z" : 90 }, { "y": 90 }  ] } }
+        }
+        
+	}
+}

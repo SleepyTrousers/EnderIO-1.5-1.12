@@ -189,7 +189,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     if(te instanceof TileTelePad) {
       switch (ID) {
       case GuiHandler.GUI_ID_TELEPAD:
-        return new GuiTelePad(player.inventory, (TileTelePad) te, world);
+        return new GuiTelePad(player.inventory, (TileTelePad) te);
       case GuiHandler.GUI_ID_TELEPAD_TRAVEL:
         return new GuiAugmentedTravelAccessible(player.inventory, (TileTelePad) te, world);
       default:

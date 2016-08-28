@@ -19,6 +19,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -112,18 +113,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   }
 
   @Override
-  protected EnumFacing getFacingForHeading(int heading) {
-    switch (heading) {
-    case 0:
-      return EnumFacing.SOUTH;
-    case 1:
-      return EnumFacing.WEST;
-    case 2:
-      return EnumFacing.NORTH;      
-    case 3:
-    default:
-      return EnumFacing.EAST;    
-    }
+  protected EnumFacing getFacingForHeading(EntityLivingBase player) {
+    return super.getFacingForHeading(player).getOpposite();
   }
 
   @Override

@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
@@ -40,7 +41,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -173,9 +173,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       AbstractMachineEntity te = getTileEntity(world, pos);
       if (te != null) {
         te.readFromItemStack(stack);
-        if (player != null) {
-          int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-          te.setFacing(getFacingForHeading(heading));
+        if (player != null) {          
+          te.setFacing(getFacingForHeading(player));
         }
       }
       if (world.isRemote) {
@@ -185,18 +184,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  protected EnumFacing getFacingForHeading(int heading) {
-    switch (heading) {
-    case 0:
-      return EnumFacing.NORTH;
-    case 1:
-      return EnumFacing.EAST;
-    case 2:
-      return EnumFacing.SOUTH;
-    case 3:
-    default:
-      return EnumFacing.WEST;
-    }
+  protected EnumFacing getFacingForHeading(EntityLivingBase player) {
+    return Util.getFacingFromEntity(player);
   }
 
   @Override

@@ -165,10 +165,16 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);
     registerRenderers(EnderIO.blockElectricLight);
+    
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);  
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockDialingDevice);
+    
+    //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+  
+    
     ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockExitRail), ModObject.blockExitRail.getUnlocalisedName());
     ObeliskRenderManager.INSTANCE.registerRenderers();
 

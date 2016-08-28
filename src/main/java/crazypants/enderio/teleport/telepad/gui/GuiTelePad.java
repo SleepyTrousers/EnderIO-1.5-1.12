@@ -30,7 +30,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
@@ -40,7 +39,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   ToggleTravelButton switchButton;
   GuiButton teleportButton;
 
-  private World world;
+//  private World world;
   private TileTelePad te;
 
   private TextFieldEnder xTF, yTF, zTF, dimTF;
@@ -55,9 +54,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
-  public GuiTelePad(InventoryPlayer playerInv, TileTelePad te, World world) {
-    super(new ContainerTelePad(playerInv, te), "telePad");
-    this.world = world;
+  public GuiTelePad(InventoryPlayer playerInv, TileTelePad te) {
+    super(new ContainerTelePad(playerInv, te), "telePad");    
     this.te = te;
     ySize = 220;
 
@@ -219,7 +217,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   @Override
   public void switchGui() {
     BlockPos pos = te.getLocation().getBlockPos();
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, world, pos.getX(), pos.getY(), pos.getZ());
+    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, te.getWorld(), pos.getX(), pos.getY(), pos.getZ());
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD_TRAVEL));
   }
   

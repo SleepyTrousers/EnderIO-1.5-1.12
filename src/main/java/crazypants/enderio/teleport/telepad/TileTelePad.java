@@ -680,6 +680,4 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return res;
   }
 
-  
-
 }

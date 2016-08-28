@@ -114,6 +114,7 @@ public enum ModObject implements IModObject {
 
   blockTravelAnchor,
   blockTelePad,
+  blockDialingDevice,
   itemCoordSelector,
   itemTravelStaff,
   itemRodOfReturn,

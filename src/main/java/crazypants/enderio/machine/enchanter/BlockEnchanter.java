@@ -19,7 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -46,10 +45,10 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
-    int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+
     TileEnchanter te = getTileEntity(world, pos);
     if (te != null) {
-      te.setFacing(getFacingForHeading(heading));
+      te.setFacing(Util.getFacingFromEntity(player));
     }
     if (world.isRemote) {
       return;
@@ -62,20 +61,6 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
     return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
   }
 
-  protected EnumFacing getFacingForHeading(int heading) {
-    switch (heading) {
-    case 0:
-      return EnumFacing.NORTH;
-    case 1:
-      return EnumFacing.EAST;
-    case 2:
-      return EnumFacing.SOUTH;
-    case 3:
-    default:
-      return EnumFacing.WEST;
-    }
-  }
-
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     if (!world.isRemote) {
@@ -83,8 +68,6 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
     }
     return true;
   }
-
-  
   
   @Override
   public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

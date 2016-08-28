@@ -11,14 +11,14 @@ import com.enderio.core.common.ContainerEnderCap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.telepad.TelepadTarget;
-import crazypants.enderio.teleport.telepad.TileTelePad;
+import crazypants.enderio.teleport.telepad.TileDialingDevice;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerTelePad extends ContainerEnderCap<TileTelePad> {
+public class ContainerDialingDevice extends ContainerEnderCap<TileDialingDevice> {
 
-  public ContainerTelePad(InventoryPlayer playerInv, TileTelePad itemHandler) {
+  public ContainerDialingDevice(InventoryPlayer playerInv, TileDialingDevice itemHandler) {
     super(playerInv, itemHandler);
   }
 

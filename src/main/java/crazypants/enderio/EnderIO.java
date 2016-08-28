@@ -126,6 +126,7 @@ import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.teleport.telepad.BlockDialingDevice;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
@@ -194,10 +195,12 @@ public class EnderIO {
   // //Teleporting
   public static BlockTravelAnchor<TileTravelAnchor> blockTravelPlatform;
   public static BlockTelePad blockTelePad;
+  public static BlockDialingDevice blockDialingDevice;
   public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
   public static ItemRodOfReturn itemRodOfReturn;
   public static ItemLocationPrintout itemlocationPrintout;
+  
   
   //
   // // Painter
@@ -346,6 +349,7 @@ public class EnderIO {
     itemCoordSelector = ItemCoordSelector.create();
 
     blockTelePad = BlockTelePad.createTelepad();
+    blockDialingDevice = BlockDialingDevice.create();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();
