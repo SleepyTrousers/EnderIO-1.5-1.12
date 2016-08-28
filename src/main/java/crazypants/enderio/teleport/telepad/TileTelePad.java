@@ -180,7 +180,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     if (coordsChanged ) {      
       coordsChanged = false;
-      PacketHandler.sendToAllAround(new PacketUpdateCoords(this, getX(), getY(), getZ(), getTargetDim()), this);
+      PacketHandler.sendToAllAround(new PacketUpdateCoords(this, target), this);
     }
   }
 

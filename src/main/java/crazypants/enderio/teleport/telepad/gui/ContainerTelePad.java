@@ -30,7 +30,7 @@ public class ContainerTelePad extends com.enderio.core.common.ContainerEnderCap<
 
   @Override
   protected void addSlots() {
-    int x = 149;
+    int x = 153;
     int y = 47;
     slotno = inventorySlots.indexOf(addSlotToContainer(new SlotItemHandler(getItemHandler(), 0, x, y) {
       @Override

@@ -131,6 +131,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, width, 20, text);
     addButton(teleportButton);
+    
+    ((ContainerTelePad) inventorySlots).createGhostSlots(getGhostSlots());
   }
 
   @Override
@@ -160,7 +162,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       te.setY(bc.y);
       te.setZ(bc.z);
       te.setTargetDim(targetDim);
-      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, bc, targetDim));
+      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, te.getTarget()));
     }
   }
 
