@@ -38,7 +38,7 @@ public class ClientRemoteGuiManager implements IGuiHandler {
     if (te instanceof TileInventoryPanel) {
       return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
     }
-    Log.warn("Unexpected failure to get tileentity at " + pos + " for the Inventory Panel Remote");
+    Log.warn("Unexpected failure to get tileentity at " + pos + " in dimension " + dim + " for the Inventory Panel Remote. Got: " + te);
     return null;
   }
 
@@ -47,8 +47,6 @@ public class ClientRemoteGuiManager implements IGuiHandler {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    int d = y >> 8;
-    y = y & 0xff;
     TileInventoryPanel te;
     if (targetTE != null && targetTEtime >= EnderIO.proxy.getTickCount()) {
       te = targetTE;
