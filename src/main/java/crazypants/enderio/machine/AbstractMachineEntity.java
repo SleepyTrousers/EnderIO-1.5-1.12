@@ -306,11 +306,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     // check if the block on the client needs to update its texture
     if (isActive() != lastActive) {
       ticksSinceActiveChanged++;
-      if (ticksSinceActiveChanged > 20 || isActive()) {
+      if (lastActive ? ticksSinceActiveChanged > 20 : ticksSinceActiveChanged > 4) {
         ticksSinceActiveChanged = 0;
         lastActive = isActive();
         forceClientUpdate.set();
       }
+    } else {
+      ticksSinceActiveChanged = 0;
     }
 
     if (hasSound()) {
