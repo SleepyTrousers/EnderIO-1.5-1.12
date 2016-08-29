@@ -26,7 +26,7 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
-import crazypants.enderio.teleport.telepad.packet.PacketUpdateCoords;
+import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.Entity;
@@ -180,7 +180,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     }
     if (coordsChanged ) {      
       coordsChanged = false;
-      PacketHandler.sendToAllAround(new PacketUpdateCoords(this, target), this);
+      PacketHandler.sendToAllAround(new PacketSetTarget(this, target), this);
     }
   }
 

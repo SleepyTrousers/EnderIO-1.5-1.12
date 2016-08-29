@@ -13,15 +13,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketUpdateCoords, IMessage>{
+public class PacketSetTarget extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketSetTarget, IMessage> {
 
-  public PacketUpdateCoords() {
+  public PacketSetTarget() {
     super();
   }
   
   private TelepadTarget target;
   
-  public PacketUpdateCoords(TileTelePad te, TelepadTarget target) {
+  public PacketSetTarget(TileTelePad te, TelepadTarget target) {
     super(te.getTileEntity());    
     this.target = target;
   }
@@ -43,7 +43,7 @@ public class PacketUpdateCoords extends MessageTileEntity<TileEntity> implements
   }
   
   @Override
-  public IMessage onMessage(PacketUpdateCoords message, MessageContext ctx) {
+  public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
     TileEntity te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
     if(te instanceof TileTelePad) {
       TileTelePad tp = (TileTelePad)te;      
