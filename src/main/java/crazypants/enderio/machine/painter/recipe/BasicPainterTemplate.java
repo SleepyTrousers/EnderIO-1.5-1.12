@@ -67,6 +67,13 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
     } else if (result.getItem() == target.getItem() && target.hasTagCompound()) {
       result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
+
+      Block realresult = PainterUtil2.getBlockFromItem(result);
+      if (realresult instanceof IPaintable) {
+        ((IPaintable) realresult).setPaintSource(realresult, result, null);
+      } else {
+        PainterUtil2.setSourceBlock(result, null);
+      }
     }
     return new ResultStack[] { new ResultStack(result) };
   }
