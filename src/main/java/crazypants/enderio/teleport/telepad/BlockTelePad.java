@@ -21,7 +21,7 @@ import crazypants.enderio.teleport.telepad.gui.GuiAugmentedTravelAccessible;
 import crazypants.enderio.teleport.telepad.gui.GuiTelePad;
 import crazypants.enderio.teleport.telepad.packet.PacketOpenServerGui;
 import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
-import crazypants.enderio.teleport.telepad.packet.PacketUpdateCoords;
+import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
 import net.minecraft.block.Block;
@@ -48,8 +48,8 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public static BlockTelePad createTelepad() {
     
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGui.class, PacketOpenServerGui.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateCoords.class, PacketUpdateCoords.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
 

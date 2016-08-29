@@ -22,7 +22,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.telepad.TelepadTarget;
 import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.enderio.teleport.telepad.packet.PacketOpenServerGui;
-import crazypants.enderio.teleport.telepad.packet.PacketUpdateCoords;
+import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -160,7 +160,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
       te.setY(bc.y);
       te.setZ(bc.z);
       te.setTargetDim(targetDim);
-      PacketHandler.INSTANCE.sendToServer(new PacketUpdateCoords(te, te.getTarget()));
+      PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(te, te.getTarget()));
     }
   }
 
