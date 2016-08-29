@@ -25,8 +25,8 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.Entity;
@@ -145,7 +145,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       target.setDimension(worldObj.provider.getDimension());
     }
 
-    if (worldObj.isRemote) {
+    if (worldObj.isRemote) {      
       updateEntityClient();
       return;
     }
@@ -159,7 +159,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       markDirty();      
     }
 
-    if (active()) {
+    if (active()) {      
       if (powerUsed >= maxPower) {
         teleport(toTeleport.poll());
         powerUsed = 0;
@@ -171,7 +171,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       if (shouldDoWorkThisTick(5)) {
         updateQueuedEntities();
       }
-    }
+    } 
 
     boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
     if (powerChanged) {
@@ -212,7 +212,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   private void updateQueuedEntities() {
     if (worldObj.isRemote) {
-      if (active()) {
+      if (active()) {        
         getCurrentTarget().getEntityData().setFloat(PROGRESS_KEY, getProgress());
       }
     }
@@ -323,7 +323,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   /* IProgressTile */
 
   @Override
-  public float getProgress() {
+  public float getProgress() {    
     return ((float) powerUsed) / ((float) maxPower);
   }
 
@@ -450,16 +450,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public void teleportAll() {
-    if (!inNetwork()) {
+    TileTelePad m = getMasterTile();
+    if(m == null) {
       return;
     }
-    if (isMaster()) {
-      for (Entity e : getEntitiesInRange()) {
-        enqueueTeleport(e, true);
-      }
-    } else {
-      getMasterTile().teleportAll();
+    for (Entity e : m.getEntitiesInRange()) {      
+      m.enqueueTeleport(e, true);
     }
+
   }
 
   private List<Entity> getEntitiesInRange() {
@@ -475,7 +473,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return new AxisAlignedBB(p.getX() - 1, p.getY(), p.getZ() - 1, p.getX() + 2, p.getY() + 3, p.getZ() + 2);
   }
   
-  public void enqueueTeleport(Entity entity, boolean sendUpdate) {    
+  public void enqueueTeleport(Entity entity, boolean sendUpdate) {
+    //TODO: Entity is coming though as null on the server sometimes
+    System.out.println("TileTelePad.enqueueTeleport: " + worldObj.isRemote + " " + entity);
     if (entity == null || toTeleport.contains(entity)) {
       return;
     }
@@ -515,6 +515,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
       wasBlocked = !(entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity));
       PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.TELEPORT, this, wasBlocked));
+      if(entity instanceof EntityPlayer) {
+        ((EntityPlayer)entity).closeScreen();
+      }
       return !wasBlocked;
     }
     return false;
