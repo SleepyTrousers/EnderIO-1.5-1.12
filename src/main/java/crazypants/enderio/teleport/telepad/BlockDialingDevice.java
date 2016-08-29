@@ -4,8 +4,10 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.teleport.telepad.gui.GuiDialingDevice;
+import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,10 +20,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements IGuiHandler, ITileEntityProvider {
 
   public static BlockDialingDevice create() {
+    
+    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTargetList.class, PacketTargetList.class, PacketHandler.nextID(), Side.CLIENT);
+    
     BlockDialingDevice ret = new BlockDialingDevice();
     ret.init();
     return ret;

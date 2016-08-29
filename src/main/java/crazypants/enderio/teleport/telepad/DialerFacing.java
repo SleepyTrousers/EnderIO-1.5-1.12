@@ -12,6 +12,7 @@ import static net.minecraft.util.EnumFacing.WEST;
 
 //Derived from LogicFacing in RTTools
 public enum DialerFacing implements IStringSerializable {
+  
   DOWN_TONORTH("down_tonorth", 0, NORTH),
   DOWN_TOSOUTH("down_tosouth", 1, SOUTH),
   DOWN_TOWEST("down_towest", 2, WEST),

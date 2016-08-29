@@ -86,7 +86,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       if (worldIn.isRemote) {
         //player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", BlockCoord.chatString(pos))));
         
-        player.addChatMessage(new TextComponentString(targ.getChatString()));
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget") + " " + targ.getChatString()));
       }      
 
 //      int dim = TelepadTarget.getTargetDimension(stack.getTagCompound());

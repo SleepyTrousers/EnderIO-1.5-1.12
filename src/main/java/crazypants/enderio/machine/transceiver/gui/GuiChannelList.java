@@ -3,9 +3,6 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.util.Set;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.VertexBuffer;
-
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
@@ -14,6 +11,8 @@ import com.google.common.collect.Sets;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.VertexBuffer;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
@@ -47,7 +46,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   }
 
   @Override
-  protected boolean elementClicked(int i, boolean flag) {
+  protected boolean elementClicked(int i, boolean flag, int x, int y) {
     if (getElementAt(i) == null) {
       return false;
     } else {

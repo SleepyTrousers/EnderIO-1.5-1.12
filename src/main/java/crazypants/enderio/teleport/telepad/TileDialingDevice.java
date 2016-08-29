@@ -1,5 +1,8 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
@@ -7,6 +10,8 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.teleport.telepad.TelepadTarget.TelepadTargetArrayListHandler;
+import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +35,9 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   @Store
   private DialerFacing facing;
   
+  @Store(handler = TelepadTargetArrayListHandler.class)
+  private final ArrayList<TelepadTarget> targets = new ArrayList<TelepadTarget>();
+  
   @Override
   public void doUpdate() {
     super.doUpdate();
@@ -38,19 +46,21 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
       return;
     }
     
-    if(getEnergyStored() <= 0) {
-      return;
-    }
-    
-    if(inventory[0] != null) {
+    if(inventory[0] != null && inventory[1] == null) {        
       ItemStack stack = inventory[0];
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
-      //setTarget(newTarg);
+      if(newTarg != null && !targets.contains(newTarg)) {
+        addTarget(newTarg);  
+        PacketHandler.sendToAllAround(new PacketTargetList(this, newTarg, true), this);
+      }      
       inventory[0] = null;
       inventory[1] = stack;
       markDirty();      
     }
 
+    if(getEnergyStored() <= 0) {
+      return;
+    }
     setEnergyStored(getEnergyStored() - getUsage());
     
 
@@ -62,8 +72,38 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     
   }
   
-  //---------------------- Inventory -------------------------------------
+  public void addTarget(TelepadTarget newTarg) {
+    if(newTarg == null) {
+      return;
+    }    
+    targets.add(newTarg);
+    markDirty();                
+  }
   
+  public void removeTarget(TelepadTarget target) {
+    if(target == null) {
+      return;
+    }
+    targets.remove(target);
+    markDirty();
+  }
+  
+  public ArrayList<TelepadTarget> getTargets() {
+    return targets;
+  }
+  
+  public void setTargets(Collection<TelepadTarget> t) {
+    targets.clear();
+    if(t != null) {
+      targets.addAll(t);
+    } 
+  }
+  
+  
+  //---------------------- Inventory -------------------------------------
+
+  
+
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {    
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -199,5 +239,5 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
   }
-  
+
 }

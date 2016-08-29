@@ -4,11 +4,11 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.EnderIO;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.handlers.java.HandleArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -110,13 +110,17 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
   
   public String getChatString() {
-    String res = EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget");
+    String res = "";
     if(name != null) {
-      res += " " + name + " ";
+      res += name + " ";
     }
     res += BlockCoord.chatString(location) + " ";
     res += getDimenionName(dimension); 
     return res;
+  }
+  
+  public String getDimenionName() {    
+    return getDimenionName(dimension);
   }
 
   public static String getDimenionName(int dim) {
@@ -135,6 +139,10 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     return name;
   }
   
+  public boolean isValid() {
+    return location.getY() >= 0;
+  }
+  
   @Override
   public String toString() {
     String res = "";
@@ -145,8 +153,48 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     return res;
   }
   
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + dimension;
+    result = prime * result + ((icon == null) ? 0 : icon.hashCode());
+    result = prime * result + ((location == null) ? 0 : location.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    TelepadTarget other = (TelepadTarget) obj;
+    if (dimension != other.dimension)
+      return false;
+    if (icon == null) {
+      if (other.icon != null)
+        return false;
+    } else if (!icon.equals(other.icon))
+      return false;
+    if (location == null) {
+      if (other.location != null)
+        return false;
+    } else if (!location.equals(other.location))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    return true;
+  }
+    
   //----------------------- I/O -------------- :(
-  
+
   public void writeToNBT(ItemStack printout) {
     if (printout == null) {
       return;
@@ -242,6 +290,15 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
       return 0;
     }
     return tag.getInteger("targetDim");
+  }
+  
+  
+  public static class TelepadTargetArrayListHandler extends HandleArrayList<TelepadTarget> {
+
+    public TelepadTargetArrayListHandler() {
+      super(new TelepadTarget());
+    }
+
   }
 
 }

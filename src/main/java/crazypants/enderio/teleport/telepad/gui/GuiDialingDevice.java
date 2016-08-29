@@ -7,35 +7,38 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.telepad.TelepadTarget;
 import crazypants.enderio.teleport.telepad.TileDialingDevice;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiDialingDevice extends GuiContainerBaseEIO {
-  
+
   private static final int ID_TELEPORT_BUTTON = 96;
-  
+
   GuiButton teleportButton;
-  
-  private TileDialingDevice te;
-  
+
+  private final TileDialingDevice te;
+
   private int powerX = 8;
   private int powerY = 9;
   private int powerScale = 120;
-  
-//  private int progressX = 26;
-//  private int progressY = 110;
-//  private int progressScale = 124;
-  
-  public static int SWITCH_X = 155, SWITCH_Y = 5;
+
+  // private int progressX = 26;
+  // private int progressY = 110;
+  // private int progressScale = 124;
+
+  private final GuiTargetList targetList;
 
   public GuiDialingDevice(InventoryPlayer playerInv, TileDialingDevice te) {
-    super(new ContainerDialingDevice(playerInv, te), "telePad");
+    super(new ContainerDialingDevice(playerInv, te), "dialingDevice");
     this.te = te;
     ySize = 220;
 
@@ -46,23 +49,41 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
         updatePowerBarTooltip(text);
       }
     });
-    
-//    addToolTip(new GuiToolTip(new Rectangle(progressX, progressY, progressScale, 10), "") {
-//      @Override
-//      protected void updateText() {
-//        text.clear();
-//        text.add(Math.round(GuiDialingDevice.this.te.getProgress() * 100) + "%");
-//      }
-//    });
 
-//    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
-//
-//    int x = 48;
-//    int y = 24;
-//    int tfHeight = 12;
-//    int tfWidth = xSize - x * 2;
-    
+    // addToolTip(new GuiToolTip(new Rectangle(progressX, progressY,
+    // progressScale, 10), "") {
+    // @Override
+    // protected void updateText() {
+    // text.clear();
+    // text.add(Math.round(GuiDialingDevice.this.te.getProgress() * 100) + "%");
+    // }
+    // });
 
+    int w = 115;
+    int h = 71;
+    int x = 30;
+    int y = 10;
+    targetList = new GuiTargetList(w, h, x, y, te);
+    targetList.setShowSelectionBox(true);
+    targetList.setScrollButtonIds(100, 101);
+
+    addToolTip(new GuiToolTip(new Rectangle(x, y, w, h), "") {
+      @Override
+      protected void updateText() {
+        text.clear();
+        TelepadTarget el = targetList.getElementAt(getLastMouseX() + getGuiLeft(), getLastMouseY());
+        if (el != null) {
+          Rectangle iconBnds = targetList.getIconBounds(0);
+          if (iconBnds.contains(getLastMouseX() + getGuiLeft(), 1)) {
+            text.add(TextFormatting.RED + "Delete");
+          } else {
+            text.add(TextFormatting.WHITE + el.getName());
+            text.add(BlockCoord.chatString(el.getLocation()));
+            text.add(el.getDimenionName());
+          }
+        }
+      }
+    });
 
   }
 
@@ -73,7 +94,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   protected int getPowerOutputValue() {
     return te.getUsage();
   }
-  
+
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
@@ -82,27 +103,29 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
   @Override
   public void initGui() {
-    super.initGui();    
+    super.initGui();
 
     String text = EnderIO.lang.localize("gui.telepad.teleport");
     int width = getFontRenderer().getStringWidth(text) + 10;
 
     int x = guiLeft + (xSize / 2) - (width / 2);
-    int y = guiTop + 83;
-    
+    int y = guiTop + 85;
+
     teleportButton = new GuiButton(ID_TELEPORT_BUTTON, x, y, width, 20, text);
     addButton(teleportButton);
-    
+
     ((ContainerDialingDevice) inventorySlots).createGhostSlots(getGhostSlots());
+
+    targetList.onGuiInit(this);
   }
 
   @Override
   public void updateScreen() {
-    super.updateScreen();    
+    super.updateScreen();
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
+  protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
@@ -112,20 +135,21 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
 
     int powerScaled = te.getPowerScaled(powerScale);
     drawTexturedModalRect(sx + powerX, sy + powerY + powerScale - powerScaled, xSize, 0, 10, powerScaled);
-//    int progressScaled = Util.getProgressScaled(progressScale, te);
-//    drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
+    // int progressScaled = Util.getProgressScaled(progressScale, te);
+    // drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize,
+    // progressScaled, 10);
 
+    targetList.drawScreen(mouseX, mouseY, partialTick);
 
-    super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
+    super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
   }
 
-  
   @Override
   protected void actionPerformed(GuiButton button) throws IOException {
     super.actionPerformed(button);
-    
+
     if (button.id == ID_TELEPORT_BUTTON) {
-//      te.teleportAll();
+      // te.teleportAll();
     }
   }
 }
