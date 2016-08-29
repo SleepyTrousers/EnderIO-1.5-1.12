@@ -739,6 +739,7 @@ enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 item.itemLocationPrintout.name=Распечаток местонахождения
 item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
 item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
+item.itemLocationPrintout.chat.setTarget=Цель установлена на
 
 item.itemRodOfReturn.name=Стержень возвращения
 item.itemRodOfReturn.tooltip.detailed.line1=Возвращает игрока на телепорт
@@ -756,11 +757,6 @@ item.itemCoordSelector.tooltip.detailed.line3=блок рядом с этой с
 item.itemCoordSelector.tooltip.detailed.line4=Shift-ПКМ по блоку, чтобы
 item.itemCoordSelector.tooltip.detailed.line5=выбрать конкретный блок.
 item.itemCoordSelector.tooltip.detailed.line6=Можно выбирать блоки на расстоянии.
-enderio.itemCoordSelector.chat.newCoords=Новые координаты: %s
-enderio.itemCoordSelector.chat.setCoords=Выбранные координаты: %s
-enderio.itemCoordSelector.chat.newDimension=Новое измерение: %s%s
-enderio.itemCoordSelector.chat.setDimension=Выбранное измерение: %s%s
-enderio.itemCoordSelector.chat.alreadySet=Расположение уже установлено
 
 //Painter
 tile.blockPainter.name=Покрасочный механизм
@@ -1435,3 +1431,5 @@ item.itemRemoteInvAccessender.name=Беспроводная эндер-инве�
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+
+tile.blockExitRail.name=Выездные рельсы
