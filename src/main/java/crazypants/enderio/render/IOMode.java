@@ -2,6 +2,7 @@ package crazypants.enderio.render;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Locale;
 
 import net.minecraft.util.EnumFacing;
 
@@ -48,7 +49,7 @@ public class IOMode implements Comparable<IOMode> {
   public static final PropertyIO IO = PropertyIO.getInstance();
 
   public static IOMode get(EnumFacing direction, EnumIOMode iomode) {
-    String key = direction.toString().toLowerCase() + "_" + iomode.toString().toLowerCase();
+    String key = direction.toString().toLowerCase(Locale.US) + "_" + iomode.toString().toLowerCase(Locale.US);
     if (!values.containsKey(key)) {
       IOMode result = new IOMode(direction, iomode);
       values.put(key, result);
@@ -97,7 +98,7 @@ public class IOMode implements Comparable<IOMode> {
 
   @Override
   public String toString() {
-    return direction.toString().toLowerCase() + "_" + iomode.toString().toLowerCase();
+    return direction.toString().toLowerCase(Locale.US) + "_" + iomode.toString().toLowerCase(Locale.US);
   }
 
 }
