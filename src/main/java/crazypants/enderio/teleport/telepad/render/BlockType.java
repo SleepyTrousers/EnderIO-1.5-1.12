@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport.telepad.render;
 
+import java.util.Locale;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -41,7 +43,7 @@ public enum BlockType implements IStringSerializable {
 
   @Override
   public String getName() {
-    return name().toLowerCase();
+    return name().toLowerCase(Locale.US);
   }
   
   private static BlockPos reverseOffsetFor(EnumFacing... dirs) {

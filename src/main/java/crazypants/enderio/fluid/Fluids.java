@@ -234,7 +234,7 @@ public class Fluids {
 
     public FluidStateMapper(Fluid fluid) {
       this.fluid = fluid;
-      location = new ModelResourceLocation(EnderIO.MODID.toLowerCase() + ":fluids", fluid.getName());
+      location = new ModelResourceLocation(EnderIO.DOMAIN + ":fluids", fluid.getName());
     }
 
     @Override

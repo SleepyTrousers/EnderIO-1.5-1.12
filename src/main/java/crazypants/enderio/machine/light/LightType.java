@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.light;
 
+import java.util.Locale;
+
 import net.minecraft.util.IStringSerializable;
 
 public enum LightType implements IStringSerializable {
@@ -25,7 +27,7 @@ public enum LightType implements IStringSerializable {
   
   @Override
   public String getName() {
-    return name().toLowerCase();
+    return name().toLowerCase(Locale.US);
   }
 
   public int getMetadata() {
