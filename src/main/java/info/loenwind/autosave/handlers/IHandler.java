@@ -1,14 +1,14 @@
 package info.loenwind.autosave.handlers;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
-
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -74,6 +74,7 @@ public interface IHandler<T> {
    *          should be ignored
    * @param nbt
    *          The NBT to read the data from
+   * @param field TODO
    * @param name
    *          The name of the tag in the nbt where the data should be read from.
    *          This tag may not exist!
@@ -92,6 +93,6 @@ public interface IHandler<T> {
    * @throws InstantiationException
    * @throws NoHandlerFoundException
    */
-  T read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nullable T object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException;
+  T read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+      @Nullable T object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException;
 }

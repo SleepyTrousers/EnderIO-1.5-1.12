@@ -1,10 +1,6 @@
 package info.loenwind.autosave.handlers.java;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
-import info.loenwind.autosave.handlers.IHandler;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +8,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleArrayList<E extends Object> implements IHandler<List<E>> {
@@ -44,8 +44,8 @@ public class HandleArrayList<E extends Object> implements IHandler<List<E>> {
   }
 
   @Override
-  public List<E> read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nullable List<E> object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public List<E> read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+      @Nullable List<E> object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       if (object == null) {
         object = new ArrayList<E>();
@@ -57,7 +57,7 @@ public class HandleArrayList<E extends Object> implements IHandler<List<E>> {
       int size = tag.getInteger("size");
       for (int i = 0; i < size; i++) {
         if (tag.hasKey(i + "")) {
-          object.add(elemHandler.read(registry, phase, tag, i + "", null));
+          object.add(elemHandler.read(registry, phase, tag, null, i + "", null));
         } else {
           object.add(null);
         }

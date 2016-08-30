@@ -1,16 +1,5 @@
 package info.loenwind.autosave.engine;
 
-import info.loenwind.autosave.Reader;
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.Writer;
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
-import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.internal.HandleStorable;
-import info.loenwind.autosave.handlers.internal.NullHandler;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +13,16 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.handlers.internal.HandleStorable;
+import info.loenwind.autosave.handlers.internal.NullHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -92,7 +91,7 @@ public class StorableEngine {
         String fieldName = field.getName();
         if (!tag.hasKey(fieldName + NULL_POSTFIX) && fieldName != null) {
           for (IHandler handler : fieldHandlerCache.get(field)) {
-            Object result = handler.read(registry, phase, tag, fieldName, fieldData);
+            Object result = handler.read(registry, phase, tag, field, fieldName, fieldData);
             if (result != null) {
               field.set(object, result);
               break;
@@ -107,7 +106,7 @@ public class StorableEngine {
     Class<?> superclazz = superclassCache.get(clazz);
     if (superclazz != null) {
       for (IHandler handler : superclassHandlerCache.get(superclazz)) {
-        if (handler.read(registry, phase, tag, SUPERCLASS_KEY, object) != null) {
+        if (handler.read(registry, phase, tag, null, SUPERCLASS_KEY, object) != null) {
           break;
         }
       }
@@ -152,7 +151,7 @@ public class StorableEngine {
       @Nonnull Class<T> clazz, @Nullable T object) throws InstantiationException, IllegalAccessException, IllegalArgumentException, NoHandlerFoundException {
     if (!tag.hasKey(fieldName + NULL_POSTFIX)) {
       for (IHandler<T> handler : registry.findHandlers(clazz)) {
-        T result = handler.read(registry, phase, tag, fieldName, object);
+        T result = handler.read(registry, phase, tag, null, fieldName, object);
         if (result != null) {
           return result;
         }

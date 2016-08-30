@@ -1,14 +1,14 @@
 package info.loenwind.autosave.handlers.java;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.IHandler;
-
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleFloatArray implements IHandler<float[]> {
@@ -40,7 +40,7 @@ public class HandleFloatArray implements IHandler<float[]> {
   }
 
   @Override
-  public float[] read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public float[] read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable float[] object) {
     if (nbt.hasKey(name) && object != null) {
       int[] tmp = nbt.getIntArray(name);

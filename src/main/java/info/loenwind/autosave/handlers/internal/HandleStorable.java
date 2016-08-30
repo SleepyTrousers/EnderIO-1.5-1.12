@@ -8,6 +8,7 @@ import info.loenwind.autosave.engine.StorableEngine;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -54,7 +55,7 @@ public class HandleStorable<T extends Object> implements IHandler<T> {
   }
 
   @Override
-  public T read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nullable T object)
+  public T read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, Field field, @Nonnull String name, @Nullable T object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name) && object != null) {
       NBTTagCompound tag = NullHelper.notnullM(nbt.getCompoundTag(name), "NBTTagCompound.getCompoundTag()");

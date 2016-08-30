@@ -1,18 +1,18 @@
 package info.loenwind.autosave.handlers.minecraft;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store.StoreFor;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
-import info.loenwind.autosave.handlers.IHandler;
-
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.paint.PainterUtil2;
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store.StoreFor;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.paint.PainterUtil2;
 
 public class HandleIBlockState implements IHandler<IBlockState> {
 
@@ -34,7 +34,7 @@ public class HandleIBlockState implements IHandler<IBlockState> {
   }
 
   @Override
-  public IBlockState read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public IBlockState read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable IBlockState object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     return PainterUtil2.readNbt(nbt.getCompoundTag(name));
   }

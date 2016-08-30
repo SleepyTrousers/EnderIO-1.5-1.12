@@ -1,14 +1,14 @@
 package info.loenwind.autosave.handlers.java;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.IHandler;
-
+import java.lang.reflect.Field;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleBoolean implements IHandler<Boolean> {
@@ -29,7 +29,7 @@ public class HandleBoolean implements IHandler<Boolean> {
   }
 
   @Override
-  public Boolean read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public Boolean read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Boolean object) {
     return nbt.hasKey(name) ? nbt.getBoolean(name) : object != null ? object : false;
   }

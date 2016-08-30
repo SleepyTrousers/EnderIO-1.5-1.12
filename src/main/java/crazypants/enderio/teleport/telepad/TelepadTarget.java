@@ -1,6 +1,10 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.lang.reflect.Field;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
@@ -246,7 +250,8 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public boolean store(Registry registry, Set<StoreFor> phase, NBTTagCompound nbt, String name, TelepadTarget object)
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+      @Nonnull TelepadTarget object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
     NBTTagCompound root = new NBTTagCompound();
     object.writeToNBT(root);
@@ -255,8 +260,8 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public TelepadTarget read(Registry registry, Set<StoreFor> phase, NBTTagCompound nbt, String name, TelepadTarget object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
+  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+      @Nullable TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if(nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);
       return readFromNBT(root);
