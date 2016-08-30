@@ -278,11 +278,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       maxPower = (int) (base * Config.telepadPowerCoefficient);      
     } else {
       maxPower = Config.telepadPowerInterdimensional;
-    }
-    
+    }    
     //Max out at the inter dim. value
     int res = MathHelper.clamp_int(maxPower, 5000, Config.telepadPowerInterdimensional);
-    System.out.println("TileTelePad.calculateTeleportPower: " + res);
     return res;
   }
 

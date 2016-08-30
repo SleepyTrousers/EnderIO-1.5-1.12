@@ -728,6 +728,10 @@ tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
 tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
 enderio.gui.telepad.teleport=Teleport!
 
+tile.blockDialingDevice.name=Dialing Device
+tile.blockDialingDevice.tooltip.detailed.line1=Place near a Telepad 
+tile.blockDialingDevice.tooltip.detailed.line2=Stores and sets destinations.
+
 item.itemTravelStaff.name=Staff of Traveling
 item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
 item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be

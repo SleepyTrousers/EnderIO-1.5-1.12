@@ -732,13 +732,10 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-<!-- Disabled until it is fixed  --> 
-  <recipe name="TelePad" required="true" disabled="false">
-    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
-    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
-    <crafting>
+  <recipe name="TelePad" required="true" disabled="false">    
+    <crafting>    
       <grid size="3x3">
-        <item name="FUSED_QUARTZ" /><item name="enderio:itemTravelStaff" /><item name="FUSED_QUARTZ" />
+        <item name="FUSED_QUARTZ" /><item name="ENDER_CRYSTAL" /><item name="FUSED_QUARTZ" />
         <item name="DARK_STEEL" /><item name="enderio:blockTravelAnchor" /><item name="DARK_STEEL" />
         <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
       </grid>
@@ -746,6 +743,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
   
+  <recipe name="DialingDevice" required="true" disabled="false">    
+    <crafting>    
+      <grid size="3x3">
+        <item/>                  <item name="ELECTRICAL_STEEL" /><item/>
+        <item/>                  <item name="ENDER_RESONATOR" /><item/>
+        <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:blockDialingDevice" />
+    </crafting>
+  </recipe>  
 
   <recipe name="Painted Pressure Plate, Dark Steel" required="true">
     <crafting>

@@ -1,14 +1,13 @@
 package info.loenwind.autosave.handlers.java;
 
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.IHandler;
-
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 
@@ -26,6 +25,7 @@ public class HandleEnum implements IHandler<Enum<?>> {
   public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull Enum<?> object)
       throws IllegalArgumentException, IllegalAccessException {
+//    System.out.println("HandleEnum.store: " + object);
     nbt.setInteger(name, object.ordinal());
     return true;
   }
@@ -34,8 +34,11 @@ public class HandleEnum implements IHandler<Enum<?>> {
   public Enum<?> read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nullable Enum<?> object) {
     if (nbt.hasKey(name) && object != null) {
+//      System.out.println("HandleEnum.read: ");
       Enum<?>[] enumConstants = object.getClass().getEnumConstants();
-      return enumConstants[MathHelper.clamp_int(nbt.getInteger(name), 0, enumConstants.length - 1)];
+      Enum<?> res = enumConstants[MathHelper.clamp_int(nbt.getInteger(name), 0, enumConstants.length - 1)];
+//      System.out.println("HandleEnum.read: " + res);
+      return  res;
     } else {
       return object;
     }
