@@ -82,7 +82,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     return null;
   }
 
-  public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
+  private boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
     EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
     
     TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z, toTp.dimension);

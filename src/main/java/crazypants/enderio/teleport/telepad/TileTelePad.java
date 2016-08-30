@@ -49,9 +49,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable  {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 1000);
+  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 5000);
   private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
-  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1000);
+  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 5000);
 
   @Store
   private int storedEnergyRF;
@@ -275,14 +275,15 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (worldObj.provider.getDimension() == target.getDimension()) {
       int distance = (int)Math.ceil(pos.getDistance(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ()));
       double base = Math.log((0.005 * distance) + 1);
-      maxPower = (int) (base * Config.telepadPowerCoefficient);
-      if (maxPower <= 0) {
-        maxPower = 1;
-      }
+      maxPower = (int) (base * Config.telepadPowerCoefficient);      
     } else {
       maxPower = Config.telepadPowerInterdimensional;
     }
-    return maxPower;
+    
+    //Max out at the inter dim. value
+    int res = MathHelper.clamp_int(maxPower, 5000, Config.telepadPowerInterdimensional);
+    System.out.println("TileTelePad.calculateTeleportPower: " + res);
+    return res;
   }
 
   public boolean active() {
@@ -474,12 +475,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
   
   public void enqueueTeleport(Entity entity, boolean sendUpdate) {
-    //TODO: Entity is coming though as null on the server sometimes
-    System.out.println("TileTelePad.enqueueTeleport: " + worldObj.isRemote + " " + entity);
     if (entity == null || toTeleport.contains(entity)) {
       return;
     }
-
     calculateTeleportPower();
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
@@ -524,8 +522,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
   
   private boolean clientTeleport(Entity entity) {
-    return TeleportUtil.clientTeleport(entity, target.getLocation(), target.getDimension(), TravelSource.TELEPAD);
-        
+    return TeleportUtil.checkClientTeleport(entity, target.getLocation(), target.getDimension(), TravelSource.TELEPAD);          
   }
 
   private boolean serverTeleport(Entity entity) {    

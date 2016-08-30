@@ -134,7 +134,9 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
-    updateStackNBT(stack, world, timeLeft);
+    if (! (player instanceof EntityPlayer) || !((EntityPlayer)player).capabilities.isCreativeMode) {
+      updateStackNBT(stack, world, timeLeft);
+    }
     if(world.isRemote) {
       stopPlayingSound();
     }
@@ -142,8 +144,13 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   @Override
   public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-    boolean hasPower = updateStackNBT(stack, worldIn, 0);
-    boolean hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power    
+    boolean hasPower = true;
+    boolean hasFluid = true;
+    if (! (entityLiving instanceof EntityPlayer) || !((EntityPlayer)entityLiving).capabilities.isCreativeMode) {
+      hasPower = updateStackNBT(stack, worldIn, 0);
+      hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power        
+    }
+        
     if (hasPower && hasFluid) {
       TelepadTarget target = TelepadTarget.readFromNBT(stack);
       if(target == null) {

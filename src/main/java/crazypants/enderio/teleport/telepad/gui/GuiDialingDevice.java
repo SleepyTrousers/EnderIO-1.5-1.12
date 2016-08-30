@@ -205,7 +205,13 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
+    if(targetList.getSelectedElement() == null) {
+      String txt = TextFormatting.DARK_RED + "Enter Target";
+      renderInfoMessage(sx, sy, txt, 0x000000);
+      return;
+    }
 
+    bindGuiTexture();
     int progressScaled = Util.getProgressScaled(progressScale, telepad);    
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 

@@ -1,6 +1,5 @@
 package crazypants.enderio.teleport;
 
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -26,20 +25,16 @@ public class TeleportUtil {
   
   public static boolean doTeleport(Entity entityLiving, BlockPos pos, int targetDim, boolean conserveMotion, TravelSource source) {
     if (entityLiving.worldObj.isRemote) {
-      return clientTeleport(entityLiving, pos, targetDim, source);
-    }
-       
+      return checkClientTeleport(entityLiving, pos, targetDim, source);
+    }       
     return serverTeleport(entityLiving, pos, targetDim, conserveMotion, source);
   }
 
-  public static boolean clientTeleport(Entity entityLiving, BlockPos pos, int targetDim, TravelSource source) {
+  public static boolean checkClientTeleport(Entity entityLiving, BlockPos pos, int targetDim, TravelSource source) {
     TeleportEntityEvent evt = new TeleportEntityEvent(entityLiving, source, pos.getX(), pos.getY(), pos.getZ(), targetDim);
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
-    }    
-    if (entityLiving.worldObj.provider.getDimension() == targetDim) {
-      return TravelController.instance.doClientTeleport(entityLiving, null, new BlockCoord(pos), source, 0, false);
-    }
+    }         
     return true;
   }
 
@@ -99,12 +94,15 @@ public class TeleportUtil {
     }
     
     
+    //Force the chunk to load
+    if(!entity.worldObj.isBlockLoaded(pos)) {           
+      entity.worldObj.getChunkFromBlockCoords(pos);      
+    }
 
     if(player != null) {
       player.connection.setPlayerLocation(x + 0.5, y + 1.1, z + 0.5, player.rotationYaw, player.rotationPitch);
-//      player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
     } else {
-      entity.setPosition(x + 0.5, y + 1.1, z + 0.5);
+      entity.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
     }
 
     entity.fallDistance = 0;
@@ -119,6 +117,7 @@ public class TeleportUtil {
         player.connection.sendPacket(p);
       }
     }
+    
     return true;
   }
   

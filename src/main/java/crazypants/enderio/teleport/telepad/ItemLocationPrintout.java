@@ -89,36 +89,6 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget") + " " + targ.getChatString()));
       }      
 
-//      int dim = TelepadTarget.getTargetDimension(stack.getTagCompound());
-//      BlockCoord cur = new BlockCoord(tp.getX(), tp.getY(), tp.getZ());
-//      
-//      int curDim = tp.getTargetDim();
-//      if (!bc.equals(cur)) {
-//        if (tile != null) {
-//          tile.setCoords_internal(bc);
-//        } else {
-//          tp.setCoords(bc);
-//        }
-//        if (worldIn.isRemote) {
-//          player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", BlockCoord.chatString(pos))));
-//        }
-//      }
-//
-//      if (dim != curDim) {
-//        if (tile != null) {
-//          tile.setTargetDim_internal(dim);
-//        } else {
-//          tp.setTargetDim(dim);
-//        }
-//        if (worldIn.isRemote) {
-//          player.addChatMessage(new TextComponentString(
-//              EnderIO.lang.localize("itemCoordSelector.chat.setDimension", TextFormatting.GREEN.toString(), TelepadTarget.getDimenionName(dim))));
-//        }
-//      }
-//
-//      if (bc.equals(cur) && dim == curDim) {
-//        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.alreadySet")));
-//      }
     } else {
       BlockTravelAnchor.sendPrivateChatMessage(player, tile.getOwner());
     }
@@ -157,5 +127,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       return new GuiLocationPrintout(player, slot);
     }
   }
+  
+  
 
 }

@@ -14,6 +14,7 @@ import crazypants.enderio.teleport.telepad.TelepadTarget.TelepadTargetArrayListH
 import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
@@ -239,5 +240,28 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
   }
+
+  @Override
+  protected void writeCustomNBT(NBTTagCompound root) { 
+    super.writeCustomNBT(root);
+    //TODO: Remove once @Store issue is fixed
+    if(facing != null) {
+      root.setShort("facingOrd", (short)facing.ordinal());
+    }
+  }
+
+  @Override
+  protected void readCustomNBT(NBTTagCompound root) {
+    super.readCustomNBT(root);
+  //TODO: Remove once @Store issue is fixed
+    if(root.hasKey("facingOrd")) {
+      int ord = MathHelper.clamp_int(root.getShort("facingOrd"), 0, DialerFacing.values().length - 1);
+      facing = DialerFacing.values()[ord];      
+    } else {
+      facing = null;
+    }
+  }
+  
+  
 
 }
