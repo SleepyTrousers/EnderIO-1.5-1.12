@@ -10,7 +10,6 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.rail.TeleporterEIO;
 import crazypants.enderio.sound.SoundHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
@@ -52,7 +51,7 @@ public class TeleportUtil {
     }
     
     EntityPlayerMP player = null;
-    if (entity instanceof EntityPlayer) {
+    if (entity instanceof EntityPlayerMP) {
       player = (EntityPlayerMP) entity;
     }
     int x = pos.getX();
@@ -102,7 +101,8 @@ public class TeleportUtil {
     
 
     if(player != null) {
-      player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
+      player.connection.setPlayerLocation(x + 0.5, y + 1.1, z + 0.5, player.rotationYaw, player.rotationPitch);
+//      player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
     } else {
       entity.setPosition(x + 0.5, y + 1.1, z + 0.5);
     }

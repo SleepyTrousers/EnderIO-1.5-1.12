@@ -6,8 +6,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -21,6 +23,7 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
   }
 
   private int entityId;
+  private String playerName;
   private Type type;
   private boolean wasBlocked;
   
@@ -28,9 +31,19 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
     super();
   }
 
-  public PacketTeleport(Type type, TileTelePad te, int entityId) {
+  public PacketTeleport(Type type, TileTelePad te, Entity entity) {
     super(te.getTileEntity());
-    this.entityId = entityId;
+    
+    
+    if(entity instanceof EntityPlayer) {
+      EntityPlayer ep = (EntityPlayer)entity;      
+      playerName = ep.getName();
+      this.entityId = -1;
+    } else {
+      this.entityId = entity.getEntityId();
+      playerName = null;
+    }
+    
     this.type = type;
   }
   
@@ -46,6 +59,9 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
     buf.writeInt(entityId);
     buf.writeInt(type.ordinal());
     buf.writeBoolean(wasBlocked);
+    if(playerName != null) {
+      ByteBufUtils.writeUTF8String(buf, playerName);
+    }
   }
 
   @Override
@@ -54,6 +70,9 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
     entityId = buf.readInt();
     type = Type.values()[buf.readInt()];
     wasBlocked = buf.readBoolean();
+    if(entityId == -1) {
+      playerName = ByteBufUtils.readUTF8String(buf);
+    }
   }
 
   @Override
@@ -61,8 +80,14 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> implements IMe
     World world = ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx);
     TileEntity te = message.getTileEntity(world);
     if(te instanceof TileTelePad) {
-      Entity e = world.getEntityByID(message.entityId);
-        switch(message.type) {
+      
+      Entity e;
+      if(message.playerName != null) {
+        e = world.getPlayerEntityByName(message.playerName);        
+      } else {
+        e = world.getEntityByID(message.entityId); 
+      }
+      switch(message.type) {
         case BEGIN:
           ((TileTelePad) te).enqueueTeleport(e, false);
           break;

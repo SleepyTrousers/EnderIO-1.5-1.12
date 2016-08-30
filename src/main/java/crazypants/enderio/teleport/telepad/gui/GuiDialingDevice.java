@@ -232,7 +232,6 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     if (button.id == ID_TELEPORT_BUTTON) {
       TelepadTarget target = targetList.getSelectedElement();
       if (target != null && dialingDevice.getEnergyStored() > 0 && telepad != null) {
-        System.out.println("GuiDialingDevice.actionPerformed: ");
         telepad.setTarget(target);
         PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(telepad, target));
         telepad.teleportAll();

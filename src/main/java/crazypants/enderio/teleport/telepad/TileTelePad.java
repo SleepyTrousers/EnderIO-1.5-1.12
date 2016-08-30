@@ -144,12 +144,12 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (target.getDimension() == Integer.MIN_VALUE) {      
       target.setDimension(worldObj.provider.getDimension());
     }
-
+    
     if (worldObj.isRemote) {      
       updateEntityClient();
       return;
     }
-    
+
     if(inventory[0] != null) {
       ItemStack stack = inventory[0];
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
@@ -484,10 +484,10 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
     if (sendUpdate) {
-      if (entity.worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity.getEntityId()));
+      if (entity.worldObj.isRemote) {        
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity));
       } else {
-        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity));
       }
     }
   }
@@ -500,9 +500,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     if (sendUpdate) {
       if (worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.END, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.END, this, entity));
       } else {
-        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.END, this, entity.getEntityId()));
+        PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.END, this, entity));
       }
     }
     if (!active()) {
