@@ -29,11 +29,10 @@ public class GuiButtonIoConfig extends ToggleButton {
     setUnselectedToolTip(configTooltip);
 
     ArrayList<String> list = new ArrayList<String>();
-    list.add(configTooltip);
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
-    if(list.size() > 1) {
+    if(!list.isEmpty()) {
       setSelectedToolTip(list.toArray(new String[list.size()]));
-    }
+    }    
   }
 
   @Override

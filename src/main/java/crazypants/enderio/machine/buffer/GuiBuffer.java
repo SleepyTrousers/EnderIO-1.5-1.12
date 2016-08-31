@@ -32,8 +32,8 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     hasInventory = te.hasInventory();
     hasPower = te.hasPower();
 
-    redstoneButton.setPosition(isFull() ? 153 : 120, 24);
-    configB.setPosition(isFull() ? 153 : 120, 42);
+    redstoneButton.setPosition(isFull() ? 153 : 120, 14);
+           configB.setPosition(isFull() ? 153 : 120, 32);
 
     if (hasPower) {
       int x = (isFull() ? 20 : 58);
@@ -57,7 +57,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
       maxInput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxInput()));
       maxOutput.setMaxStringLength(10);
       maxOutput.setText(PowerDisplayUtil.formatPower(getTileEntity().getMaxOutput()));
-    }
+    }    
   }
 
   @Override
