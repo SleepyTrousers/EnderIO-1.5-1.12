@@ -740,6 +740,8 @@ item.itemLocationPrintout.name=Распечаток местонахождени
 item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
 item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
 item.itemLocationPrintout.chat.setTarget=Цель установлена на
+item.itemLocationPrintout.chat.addTarget=Добавлена цель
+item.itemLocationPrintout.chat.noPaper=Нет бумаги в инвентаре
 
 item.itemRodOfReturn.name=Стержень возвращения
 item.itemRodOfReturn.tooltip.detailed.line1=Возвращает игрока на телепорт
@@ -748,7 +750,8 @@ item.itemRodOfReturn.tooltip.detailed.line3=Требует RF и росу пус
 enderio.itemRodOfReturn.chat.notEnoughPower=Недостаточно энергии
 enderio.itemRodOfReturn.chat.notEnoughFluid=Недостаточно жидкости
 enderio.itemRodOfReturn.chat.targetNotSet=Место назначения не установлено
-enderio.itemRodOfReturn.chat.sync=Синхронизирован с телепортом
+enderio.itemRodOfReturn.chat.sync=Синхронизирован с местонахождением 
+enderio.itemRodOfReturn.chat.sync.telepad= Синхронизирован с телепортом
 
 item.itemCoordSelector.name=Настройщик координат
 item.itemCoordSelector.tooltip.detailed.line1=Печатает координаты блока.
