@@ -46,14 +46,15 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {    
-    if (rayTraceCoords(stack, world, player)) {
+    if (printCoords(stack, world, player)) {
       player.swingArm(hand);
     }
     return super.onItemRightClick(stack, world, player, hand);
   }
 
-  // returns false if the raytrace provided no new information
-  private boolean rayTraceCoords(ItemStack stack, World world, EntityPlayer player) {
+
+  private boolean printCoords(ItemStack stack, World world, EntityPlayer player) {
+    
     Vector3d headVec = Util.getEyePositionEio(player);
     Vec3d start = headVec.getVec3();
     Vec3d lookVec = player.getLook(1.0F);

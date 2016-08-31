@@ -236,7 +236,8 @@
       <output>
         <itemStack oreDictionary="nuggetEnderpearl" number="9" />
       </output>
-    </recipe>        
+    </recipe>
+    <!-- Not currently used         
     <recipe name="VibrantPowder" energyCost="1600" >
       <input>
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="6"/>
@@ -245,6 +246,7 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="11"/>
       </output>
     </recipe>
+     -->
     <recipe name="PulsatingPowder" energyCost="1600" >
       <input>
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="5"/>

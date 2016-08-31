@@ -745,6 +745,7 @@ item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Se
 item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
 item.itemLocationPrintout.chat.setTarget=Target set to
 item.itemLocationPrintout.chat.addTarget=Added target
+item.itemLocationPrintout.chat.noPaper=No Paper in Inventory
 
 item.itemRodOfReturn.name=Rod of Return
 item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad
@@ -753,7 +754,8 @@ item.itemRodOfReturn.tooltip.detailed.line3=Requires RF and Dew of the Void
 enderio.itemRodOfReturn.chat.notEnoughPower=Not enough power
 enderio.itemRodOfReturn.chat.notEnoughFluid=Not enough fluid
 enderio.itemRodOfReturn.chat.targetNotSet=No destination set
-enderio.itemRodOfReturn.chat.sync=Synchronised with Telepad
+enderio.itemRodOfReturn.chat.sync=Synchronised with location 
+enderio.itemRodOfReturn.chat.sync.telepad= Synchronised with Telepad
 
 item.itemCoordSelector.name=Coordinate Selector
 item.itemCoordSelector.tooltip.detailed.line1=Prints coordinates of a block.

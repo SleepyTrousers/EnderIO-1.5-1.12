@@ -168,6 +168,7 @@ public final class Config {
   public static float travelAnchorZoomScale = 0.2f;
 
   public static boolean rodOfReturnEnabled = true;
+  public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
   public static int rodOfReturnPowerStorage = 2000000;
   public static int rodOfReturnMinTicksToRecharge = 100;  
@@ -503,7 +504,9 @@ public final class Config {
   public static int telepadPowerInterdimensional = 100000;
   public static boolean telepadShrinkEffect = true;
   public static boolean telepadIsTravelAnchor = true;
-
+  public static int telepadEnergyBufferRF = 100000;
+  public static int telepadEnergyUsePerTickRF = 4000;
+  
   public static boolean inventoryPanelFree = false;
   public static float inventoryPanelPowerPerMB = 800.0f;
   public static float inventoryPanelScanCostPerSlot = 0.1f;
@@ -846,7 +849,9 @@ public final class Config {
     
     
     rodOfReturnEnabled = config.get(sectionRod.name, "rodOfReturnEnabled", rodOfReturnEnabled,
-        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);        
+        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);    
+    rodOfReturnCanTargetAnywhere = config.get(sectionRod.name, "rodOfReturnCanTargetAnywhere", rodOfReturnCanTargetAnywhere,
+        "If set to false the rod of return can only target a telepad.").getBoolean(rodOfReturnCanTargetAnywhere);
     rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
         "Number of ticks the rod must be used before teleporting").getInt(rodOfReturnTicksToActivate);
     rodOfReturnPowerStorage = config.get(sectionRod.name, "rodOfReturnPowerStorage", rodOfReturnPowerStorage,
@@ -1389,10 +1394,13 @@ public final class Config {
     telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
-        "The amount of RF required for an interdimensional teleport.").getInt();
+        "The amount of RF required for an interdimensional teleport.").getInt();        
+    telepadEnergyBufferRF = config.get(sectionTelepad.name, "telepadEnergyBufferRF", telepadEnergyBufferRF,
+        "The amount of RF in the internal buffer.").getInt();
+    telepadEnergyUsePerTickRF = config.get(sectionTelepad.name, "telepadEnergyUsePerTickRF", telepadEnergyUsePerTickRF,
+        "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").getInt();    
     telepadIsTravelAnchor = config
         .get(sectionTelepad.name, "telepadIsTravelAnchor", telepadIsTravelAnchor, "If true, TelePads will also act as normal Travel Anchors.").getBoolean();
-
     telepadShrinkEffect = config.get(sectionPersonal.name, "telepadShrinkEffect", telepadShrinkEffect,
         "Can be used to disable the 'shrinking' effect of the telepad in case of conflicts with other mods.").getBoolean();
 

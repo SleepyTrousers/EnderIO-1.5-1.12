@@ -49,9 +49,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable  {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 5000);
-  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
-  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 5000);
+  private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, Config.telepadEnergyUsePerTickRF);
+  private final ICapacitorKey maxEnergyStored = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, Config.telepadEnergyBufferRF);
+  private final ICapacitorKey maxEnergyUsed = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, Config.telepadEnergyUsePerTickRF);
 
   @Store
   private int storedEnergyRF;

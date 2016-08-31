@@ -88,21 +88,26 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
       EnumHand hand) {
 
-    if (world.isRemote) {
+    if (world.isRemote || !player.isSneaking()) {
       // If we dont return pass on the client this wont get called on the server
       return EnumActionResult.PASS;
     }
     TileEntity te = world.getTileEntity(pos);
-    if (te instanceof ITelePad && player.isSneaking()) {
+    if (te instanceof ITelePad) {
       ITelePad tp = (ITelePad)te;
       pos = tp.getMaster().getLocation().getBlockPos();
+      setTarget(stack, pos, world.provider.getDimension());
+      player.addChatMessage(
+          new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync.telepad") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
+      player.stopActiveHand();
+      return EnumActionResult.SUCCESS;
+    } else if(Config.rodOfReturnCanTargetAnywhere) {
       setTarget(stack, pos, world.provider.getDimension());
       player.addChatMessage(
           new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
       player.stopActiveHand();
       return EnumActionResult.SUCCESS;
     }
-
     return EnumActionResult.PASS;
   }
 

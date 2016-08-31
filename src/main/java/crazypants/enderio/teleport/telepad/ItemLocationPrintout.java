@@ -12,6 +12,7 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.gui.GuiLocationPrintout;
 import crazypants.enderio.teleport.telepad.packet.PacketUpdateLocationPrintout;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -71,33 +72,33 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       float hitZ) {
 
     TelepadTarget targ = TelepadTarget.readFromNBT(stack);
-    if(targ == null) {
+    if (targ == null) {
       player.addChatMessage(new TextComponentString("No location? but how.."));
-      return EnumActionResult.SUCCESS;        
+      return EnumActionResult.SUCCESS;
     }
-    
+
     TileEntity te = worldIn.getTileEntity(pos);
-    if(te instanceof TileTelePad) {
+    if (te instanceof TileTelePad) {
       TileTelePad tile = (TileTelePad) te;
       return onTelepadClicked(stack, player, worldIn, tile, targ);
-    } else if(te instanceof TileDialingDevice) {
-      TileDialingDevice dd = (TileDialingDevice)te;
+    } else if (te instanceof TileDialingDevice) {
+      TileDialingDevice dd = (TileDialingDevice) te;
       dd.addTarget(targ);
-      if (worldIn.isRemote) {               
+      if (worldIn.isRemote) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.addTarget") + " " + targ.getChatString()));
       }
       return EnumActionResult.SUCCESS;
     }
-    
+
     return EnumActionResult.PASS;
   }
 
   private EnumActionResult onTelepadClicked(ItemStack stack, EntityPlayer player, World worldIn, TileTelePad tile, TelepadTarget targ) {
-    if (tile.canBlockBeAccessed(player)) {            
+    if (tile.canBlockBeAccessed(player)) {
       tile.setTarget(targ);
-      if (worldIn.isRemote) {               
+      if (worldIn.isRemote) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget") + " " + targ.getChatString()));
-      }      
+      }
     } else {
       BlockTravelAnchor.sendPrivateChatMessage(player, tile.getOwner());
     }
@@ -126,6 +127,21 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     if (ID == GuiHandler.GUI_ID_LOCATION_PRINTOUT_CREATE) {
+
+      boolean foundPaper = false;
+      for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && !foundPaper; paperIndex++) {      
+        ItemStack invItem = player.inventoryContainer.inventorySlots.get(paperIndex).getStack();
+        if (invItem != null && invItem.getItem() == Items.PAPER) {          
+          player.inventoryContainer.inventorySlots.get(paperIndex).decrStackSize(1);
+          player.inventoryContainer.detectAndSendChanges();
+          foundPaper = true;
+        }
+      }
+      if (!foundPaper) {        
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.noPaper")));        
+        return null;
+      }
+
       TelepadTarget target = new TelepadTarget(new BlockPos(x, y, z), world.provider.getDimension());
       ItemStack stack = new ItemStack(this);
       target.writeToNBT(stack);
