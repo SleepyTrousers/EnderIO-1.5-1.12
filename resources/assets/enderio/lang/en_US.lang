@@ -744,6 +744,7 @@ item.itemLocationPrintout.name=Location Printout
 item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
 item.itemLocationPrintout.tooltip.detailed.line2=Used to add destinations to a Telepad
 item.itemLocationPrintout.chat.setTarget=Target set to
+item.itemLocationPrintout.chat.addTarget=Added target
 
 item.itemRodOfReturn.name=Rod of Return
 item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad

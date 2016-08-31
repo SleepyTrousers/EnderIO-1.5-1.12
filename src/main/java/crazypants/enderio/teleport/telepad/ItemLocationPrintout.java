@@ -70,25 +70,34 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY,
       float hitZ) {
 
-    TileEntity te = worldIn.getTileEntity(pos);
-    if (!(te instanceof TileTelePad)) {
-      return EnumActionResult.PASS;
+    TelepadTarget targ = TelepadTarget.readFromNBT(stack);
+    if(targ == null) {
+      player.addChatMessage(new TextComponentString("No location? but how.."));
+      return EnumActionResult.SUCCESS;        
     }
-
-    TileTelePad tile = (TileTelePad) te;;    
-    if (tile.canBlockBeAccessed(player)) {      
-      TelepadTarget targ = TelepadTarget.readFromNBT(stack);
-      if(targ == null) {
-        player.addChatMessage(new TextComponentString("No location? but how.."));
-        return EnumActionResult.SUCCESS;        
+    
+    TileEntity te = worldIn.getTileEntity(pos);
+    if(te instanceof TileTelePad) {
+      TileTelePad tile = (TileTelePad) te;
+      return onTelepadClicked(stack, player, worldIn, tile, targ);
+    } else if(te instanceof TileDialingDevice) {
+      TileDialingDevice dd = (TileDialingDevice)te;
+      dd.addTarget(targ);
+      if (worldIn.isRemote) {               
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.addTarget") + " " + targ.getChatString()));
       }
+      return EnumActionResult.SUCCESS;
+    }
+    
+    return EnumActionResult.PASS;
+  }
+
+  private EnumActionResult onTelepadClicked(ItemStack stack, EntityPlayer player, World worldIn, TileTelePad tile, TelepadTarget targ) {
+    if (tile.canBlockBeAccessed(player)) {            
       tile.setTarget(targ);
-      if (worldIn.isRemote) {
-        //player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemCoordSelector.chat.setCoords", BlockCoord.chatString(pos))));
-        
+      if (worldIn.isRemote) {               
         player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.setTarget") + " " + targ.getChatString()));
       }      
-
     } else {
       BlockTravelAnchor.sendPrivateChatMessage(player, tile.getOwner());
     }
@@ -127,7 +136,5 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       return new GuiLocationPrintout(player, slot);
     }
   }
-  
-  
 
 }
