@@ -120,14 +120,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
-      float hitY, float hitZ) {   
+      float hitY, float hitZ) {
     if(isTravelUpgradeActive(player, item, hand)) {
       return EnumActionResult.SUCCESS;
-    }          
+    }
     if(world.isRemote) {
-      return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);      
-    }          
-    if(Math.random() < 0.001 ) {      
+      return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);
+    }
+    if(Math.random() < 0.001 ) {
       Entity cow = EntityList.createEntityByIDFromName("Pig", world);
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
@@ -154,7 +154,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       player.inventory.currentItem = slot;
       Minecraft mc = Minecraft.getMinecraft();
        
-      EnumActionResult result = mc.playerController.processRightClickBlock(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);      
+      EnumActionResult result = mc.playerController.processRightClickBlock(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);
       player.inventory.currentItem = current;
       return result;
     }
@@ -177,7 +177,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
       return true;
@@ -187,7 +187,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public boolean canHarvestBlock(IBlockState block, ItemStack item) {    
+  public boolean canHarvestBlock(IBlockState block, ItemStack item) {
     if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
       return block == Blocks.SNOW_LAYER ? true : block == Blocks.SNOW || super.canHarvestBlock(block, item);
     } else {

@@ -83,12 +83,12 @@ public class ClientProxy extends CommonProxy {
 
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
-    { 3, 2, 0, 0, 0, 0 }, 
-    { 2, 3, 1, 1, 1, 1 }, 
-    { 1, 1, 3, 2, 5, 4 }, 
-    { 0, 0, 2, 3, 4, 5 }, 
-    { 4, 5, 4, 5, 3, 2 }, 
-    { 5, 4, 5, 4, 2, 3 } 
+    { 3, 2, 0, 0, 0, 0 },
+    { 2, 3, 1, 1, 1, 1 },
+    { 1, 1, 3, 2, 5, 4 },
+    { 0, 0, 2, 3, 4, 5 },
+    { 4, 5, 4, 5, 3, 2 },
+    { 5, 4, 5, 4, 2, 3 }
   };
   // @formatter:on
 
@@ -110,15 +110,15 @@ public class ClientProxy extends CommonProxy {
       neiInstalled = true;
     } catch (Exception e) {
       neiInstalled = false;
-    }    
+    }
     if(!neiInstalled) {
       try {
         Class.forName("crazypants.enderio.jei.AlloyRecipeCategory");
         neiInstalled = true;
       } catch (Exception e) {
         neiInstalled = false;
-      }     
-    }    
+      }
+    }
     checkedNei = true;
     return neiInstalled;
   }
@@ -129,7 +129,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void loadIcons() {    
+  public void loadIcons() {
     SmartModelAttacher.create();
     PaintRegistry.create();
   }
@@ -144,7 +144,7 @@ public class ClientProxy extends CommonProxy {
     if (Config.addFuelTooltipsToAllFluidContainers) {
       tt.addCallback(new TooltipHandlerFluid());
     }
-    
+
     //conduits
     ConduitBundleRenderManager.instance.registerRenderers();
 
@@ -155,33 +155,33 @@ public class ClientProxy extends CommonProxy {
     SmartModelAttacher.registerBlockItemModels();
 
     // Blocks
-    if (EnderIO.blockDarkIronBars != null) {      
+    if (EnderIO.blockDarkIronBars != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.getUnlocalisedName());
     }
     registerRenderers(EnderIO.blockDarkSteelAnvil);
     if (EnderIO.blockDarkSteelLadder != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.getUnlocalisedName());
-    }   
+    }
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);
     registerRenderers(EnderIO.blockElectricLight);
-    
+
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);  
+    ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockDialingDevice);
-    
+
     //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-  
-    
+
+
     ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockExitRail), ModObject.blockExitRail.getUnlocalisedName());
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers
     if (EnderIO.blockEnchanter != null) {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
-      ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);      
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
     }
     if (EnderIO.blockFarmStation != null) {
@@ -259,7 +259,7 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.getUnlocalisedName());
-    DarkSteelItems.registerItemRenderers();
+    DarkSteelItems.onClientPreInit();
     Buckets.registerRenderers();
     EnderIO.itemRemoteInvAccess.registerRenderers();
 
@@ -289,12 +289,12 @@ public class ClientProxy extends CommonProxy {
   private void registerRenderers(IHaveRenderers bob) {
     if (bob != null) {
       bob.registerRenderers();
-    }    
+    }
   }
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if (entityPlayer instanceof EntityPlayerMP) {      
+    if (entityPlayer instanceof EntityPlayerMP) {
       return ((EntityPlayerMP) entityPlayer).interactionManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);

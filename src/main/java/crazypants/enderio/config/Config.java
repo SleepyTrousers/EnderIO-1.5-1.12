@@ -171,7 +171,7 @@ public final class Config {
   public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
   public static int rodOfReturnPowerStorage = 2000000;
-  public static int rodOfReturnMinTicksToRecharge = 100;  
+  public static int rodOfReturnMinTicksToRecharge = 100;
   public static int rodOfReturnRfPerTick = 35000;
   public static int rodOfReturnFluidUsePerTeleport = 200;
   public static int rodOfReturnFluidStorage = 200;
@@ -181,7 +181,7 @@ public final class Config {
 
   public static boolean darkSteelRightClickPlaceEnabled = true;
   
-  public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.75, 0.95};
+  public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.7, 0.85};
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
   public static int darkSteelPowerStorageLevelTwo = 250000;
@@ -231,6 +231,18 @@ public final class Config {
   public static double darkSteelSwordEnderPearlDropChance = 1;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
 
+  public static boolean darkSteelBowEnabled = true;
+  public static float darkSteelBowDamageBonus = 0f;
+  public static float darkSteelBowForceMultiplier = 1.5f;
+  public static float darkSteelBowFovMultiplier = 0.35F;
+  public static int darkSteelBowPowerUsePerDamagePoint = 1000;
+
+  //TODO
+  public static int[] darkSteelBowDrawSpeeds = {30, 20, 18, 16, 14};
+  public static int darkSteelBowPowerUsePerDraw = 750;
+  public static int darkSteelBowPowerUsePerTickDrawn = 5;
+
+
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUseObsidian = 10000;
   public static float darkSteelPickApplyObsidianEffeciencyAtHardess = 40;
@@ -250,9 +262,9 @@ public final class Config {
   public static float darkSteelShearsEntityAreaBoostWhenPowered = 3.0f;
 
   public static int darkSteelUpgradeVibrantCost = 4;
-  public static int darkSteelUpgradePowerOneCost = 4;
-  public static int darkSteelUpgradePowerTwoCost = 6;
-  public static int darkSteelUpgradePowerThreeCost = 8;
+  public static int darkSteelUpgradePowerOneCost = 6;
+  public static int darkSteelUpgradePowerTwoCost = 8;
+  public static int darkSteelUpgradePowerThreeCost = 12;
 
   public static int darkSteelGliderCost = 4;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
@@ -407,7 +419,7 @@ public final class Config {
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
 
-  public static int enchanterBaseLevelCost = 2;  
+  public static int enchanterBaseLevelCost = 2;
   public static double enchanterLevelCostFactor = 0.75;
   public static double enchanterLapisCostFactor = 3;
 
@@ -538,7 +550,7 @@ public final class Config {
   
 
   public static void load(FMLPreInitializationEvent event) {
-    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);    
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
     if(!configDirectory.exists()) {
@@ -849,7 +861,7 @@ public final class Config {
     
     
     rodOfReturnEnabled = config.get(sectionRod.name, "rodOfReturnEnabled", rodOfReturnEnabled,
-        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);    
+        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);
     rodOfReturnCanTargetAnywhere = config.get(sectionRod.name, "rodOfReturnCanTargetAnywhere", rodOfReturnCanTargetAnywhere,
         "If set to false the rod of return can only target a telepad.").getBoolean(rodOfReturnCanTargetAnywhere);
     rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
@@ -863,7 +875,7 @@ public final class Config {
     rodOfReturnFluidStorage = config.get(sectionRod.name, "rodOfReturnFluidStorage", rodOfReturnFluidStorage,
         "How much fluid the rod can store").getInt(rodOfReturnFluidStorage);
     rodOfReturnFluidUsePerTeleport = config.get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport,
-        "How much fluid is used per teleport").getInt(rodOfReturnFluidUsePerTeleport);    
+        "How much fluid is used per teleport").getInt(rodOfReturnFluidUsePerTeleport);
     
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
@@ -1075,6 +1087,28 @@ public final class Config {
         .getDouble(
             darkSteelSwordEnderPearlDropChancePerLooting);
 
+
+    darkSteelBowEnabled = config.getBoolean("darkSteelBowEnabled", sectionDarkSteel.name, darkSteelBowEnabled, "If false the  Dark Steel Bow will be disabled");
+
+    darkSteelBowDamageBonus = (float) config
+        .get(sectionDarkSteel.name, "darkSteelBowDamageBonus", darkSteelBowDamageBonus, "The damage bonus applied to arrows fire from the bow.")
+        .getDouble(darkSteelBowDamageBonus);
+    darkSteelBowForceMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelBowForceMultiplier", darkSteelBowForceMultiplier,
+        "Effects the speed with which arrows leave the bow. A 'vanilla' bow has a multiplier of 2.").getDouble(darkSteelBowForceMultiplier);
+    darkSteelBowFovMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelBowFovMultiplier", darkSteelBowFovMultiplier,
+        "The reduction in FOV when the bow is fullen drawn (the zoom level). A 'vanilla' bow has a value of 0.15").getDouble(darkSteelBowFovMultiplier);
+    darkSteelBowPowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDamagePoint", darkSteelBowPowerUsePerDamagePoint,
+        "The amount of power (RF) used per hit.").getInt(darkSteelBowPowerUsePerDamagePoint);
+    darkSteelBowDrawSpeeds = config
+        .get(sectionDarkSteel.name, "darkSteelBowDrawSpeeds", darkSteelBowDrawSpeeds,
+            "A list of the amount of draw speeds at the different upgrade levels. A vanilla bow draw speed is 20")
+        .getIntList();
+    darkSteelBowPowerUsePerDraw = config.get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDraw", darkSteelBowPowerUsePerDraw,
+        "The power used to fully draw the bow").getInt(darkSteelBowPowerUsePerDraw);
+    darkSteelBowPowerUsePerTickDrawn = config.get(sectionDarkSteel.name, "darkSteelBowPowerUsePerTickDrawn", darkSteelBowPowerUsePerTickDrawn,
+        "The power used per tick to hold the boy fully drawn").getInt(darkSteelBowPowerUsePerTickDrawn);
+
+
     darkSteelPickPowerUseObsidian = config.get(sectionDarkSteel.name, "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian,
         "The amount of power (RF) used to break an obsidian block.").getInt(darkSteelPickPowerUseObsidian);
     darkSteelPickEffeciencyObsidian = config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
@@ -1114,7 +1148,7 @@ public final class Config {
 
     darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance, "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
 
-    darkSteelAnvilMaxLevel = config.get(sectionDarkSteel.name, "darkSteelAnvilMaxLevel", darkSteelAnvilMaxLevel, "Max cost operation the anvil can perform. Vanilla limit is 40.").getInt(); 
+    darkSteelAnvilMaxLevel = config.get(sectionDarkSteel.name, "darkSteelAnvilMaxLevel", darkSteelAnvilMaxLevel, "Max cost operation the anvil can perform. Vanilla limit is 40.").getInt();
     
     darkSteelLadderSpeedBoost = (float) config.get(sectionDarkSteel.name, "darkSteelLadderSpeedBoost", darkSteelLadderSpeedBoost, "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").getDouble();
 
@@ -1385,20 +1419,20 @@ public final class Config {
     } catch (Exception e) {
       Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
       e.printStackTrace();
-    }    
+    }
 
     telepadLockDimension = config.get(sectionTelepad.name, "lockDimension", telepadLockDimension,
         "If true, the dimension cannot be set via the GUI, the coord selector must be used.").getBoolean();
-    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,        
+    telepadLockCoords = config.get(sectionTelepad.name, "lockCoords", telepadLockCoords,
         "If true, the coordinates cannot be set via the GUI, the coord selector must be used.").getBoolean();
     telepadPowerCoefficient = config.get(sectionTelepad.name, "powerCoefficient", telepadPowerCoefficient,
         "Power for a teleport is calculated by the formula:\npower = [this value] * ln(0.005*distance + 1)").getInt();
     telepadPowerInterdimensional = config.get(sectionTelepad.name, "powerInterdimensional", telepadPowerInterdimensional,
-        "The amount of RF required for an interdimensional teleport.").getInt();        
+        "The amount of RF required for an interdimensional teleport.").getInt();
     telepadEnergyBufferRF = config.get(sectionTelepad.name, "telepadEnergyBufferRF", telepadEnergyBufferRF,
         "The amount of RF in the internal buffer.").getInt();
     telepadEnergyUsePerTickRF = config.get(sectionTelepad.name, "telepadEnergyUsePerTickRF", telepadEnergyUsePerTickRF,
-        "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").getInt();    
+        "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").getInt();
     telepadIsTravelAnchor = config
         .get(sectionTelepad.name, "telepadIsTravelAnchor", telepadIsTravelAnchor, "If true, TelePads will also act as normal Travel Anchors.").getBoolean();
     telepadShrinkEffect = config.get(sectionPersonal.name, "telepadShrinkEffect", telepadShrinkEffect,
@@ -1406,7 +1440,7 @@ public final class Config {
 
     inventoryPanelFree = config.getBoolean("inventoryPanelFree", sectionInventoryPanel.name, inventoryPanelFree, "If true, the inv panel will not accept fluids and will be active permanently.");
     inventoryPanelPowerPerMB = config.getFloat("powerPerMB", sectionInventoryPanel.name, inventoryPanelPowerPerMB, 1.0f, 10000.0f,
-        "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");    
+        "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
     inventoryPanelScanCostPerSlot = config.getFloat("scanCostPerSlot", sectionInventoryPanel.name, inventoryPanelScanCostPerSlot, 0.0f, 10.0f,
         "Internal power used for scanning a slot");
     inventoryPanelExtractCostPerItem = config.getFloat("extractCostPerItem", sectionInventoryPanel.name, inventoryPanelExtractCostPerItem, 0.0f, 10.0f,
@@ -1462,11 +1496,11 @@ public final class Config {
   public static ItemStack getStackForString(String s) {
     String[] nameAndMeta = s.split(";");
     int meta = nameAndMeta.length == 1 ? 0 : Integer.parseInt(nameAndMeta[1]);
-    String[] data = nameAndMeta[0].split(":");    
+    String[] data = nameAndMeta[0].split(":");
     Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
     if(item == null) {
       return null;
-    }    
+    }
     return new ItemStack(item, 1, meta);
   }
 

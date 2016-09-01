@@ -20,25 +20,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
-  public static final AbstractUpgrade EMPOWERED = new EnergyUpgrade(
+  public static final AbstractUpgrade EMPOWERED = new EnergyUpgrade(0,
       "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
       new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()),
       Config.darkSteelPowerStorageBase,
       Config.darkSteelPowerStorageBase / 100);
 
-  public static final AbstractUpgrade EMPOWERED_TWO = new EnergyUpgrade(
+  public static final AbstractUpgrade EMPOWERED_TWO = new EnergyUpgrade(1,
       "enderio.darksteel.upgrade.empowered_two", Config.darkSteelUpgradePowerOneCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 0),
       Config.darkSteelPowerStorageLevelOne,
       Config.darkSteelPowerStorageLevelOne / 100);
 
-  public static final AbstractUpgrade EMPOWERED_THREE = new EnergyUpgrade(
+  public static final AbstractUpgrade EMPOWERED_THREE = new EnergyUpgrade(2,
       "enderio.darksteel.upgrade.empowered_three", Config.darkSteelUpgradePowerTwoCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 1),
       Config.darkSteelPowerStorageLevelTwo,
       Config.darkSteelPowerStorageLevelTwo / 100);
 
-  public static final AbstractUpgrade EMPOWERED_FOUR = new EnergyUpgrade(
+  public static final AbstractUpgrade EMPOWERED_FOUR = new EnergyUpgrade(3,
       "enderio.darksteel.upgrade.empowered_four", Config.darkSteelUpgradePowerThreeCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 2),
       Config.darkSteelPowerStorageLevelThree,
@@ -54,6 +54,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   private static final Random RANDOM = new Random();
   
+  private static final String KEY_LEVEL = "energyUpgradeLevel";
+
   public static EnergyUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -122,8 +124,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if(item == null || !itemHasAnyPowerUpgrade(item)) {
       return;
     }
-    EnergyUpgrade eu = loadFromItem(item);    
-    eu.setEnergy(eu.getCapacity());   
+    EnergyUpgrade eu = loadFromItem(item);
+    eu.setEnergy(eu.getCapacity());
     eu.writeToItem(item);
   }
 
@@ -151,15 +153,17 @@ public class EnergyUpgrade extends AbstractUpgrade {
     return eu.getCapacity();
   }
 
-  protected int capacity;
-  protected int energy;  
+  protected final int capacity;
+  protected final int level;
+  protected int energy;
 
-  protected int maxInRF;
-  protected int maxOutRF;
+  protected final int maxInRF;
+  protected final int maxOutRF;
 
-  public EnergyUpgrade(String name, int levels, ItemStack upgradeItem, int capcity, int maxReceiveIO) {
+  public EnergyUpgrade(int level, String name, int levels, ItemStack upgradeItem, int capacity, int maxReceiveIO) {
     super(UPGRADE_NAME, name, upgradeItem, levels);
-    capacity = capcity;
+    this.level = level;
+    this.capacity = capacity;
     energy = 0;
     maxInRF = maxReceiveIO;
     maxOutRF = maxReceiveIO;
@@ -167,8 +171,9 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public EnergyUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
+    level = tag.getInteger(KEY_LEVEL);
     capacity = tag.getInteger(KEY_CAPACITY);
-    energy = tag.getInteger(KEY_ENERGY);    
+    energy = tag.getInteger(KEY_ENERGY);
     maxInRF = tag.getInteger(KEY_MAX_IN);
     maxOutRF = tag.getInteger(KEY_MAX_OUT);
   }
@@ -205,7 +210,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     upgradeStr.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
-    String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
+    String percDamage = (int)Math.round(getAbsorptionRatio() * 100) + "";
     String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
     for (int i = 0; i < upgradeStr.size(); i++) {
       String str = upgradeStr.get(i);
@@ -219,29 +224,25 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
+    upgradeRoot.setInteger(KEY_LEVEL, level);
     upgradeRoot.setInteger(KEY_CAPACITY, capacity);
     upgradeRoot.setInteger(KEY_ENERGY, energy);
-    
     upgradeRoot.setInteger(KEY_MAX_IN, maxInRF);
     upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
   }
 
-  public boolean isAbsorbDamageWithPower(ItemStack stack) {
-    boolean res= RANDOM.nextDouble() < getAbsorptionRatio(stack);
+  public boolean isAbsorbDamageWithPower() {
+    boolean res= RANDOM.nextDouble() < getAbsorptionRatio();
     return res;
   }
 
-  private double getAbsorptionRatio(ItemStack stack) {
-    AbstractUpgrade upgrade = loadFromItem(stack);
-    int index = 0;
-    if (upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
-      index = 1;
-    } else if (upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
-      index = 2;
-    } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
-      index = 3;
+  private double getAbsorptionRatio() {
+    int val = level;
+    if(val >= Config.darkSteelPowerDamgeAbsorptionRatios.length) {
+      System.out.println("EnergyUpgrade.getAbsorptionRatio: " + val);
+      val = 0;
     }
-    return Config.darkSteelPowerDamgeAbsorptionRatios[index];
+    return Config.darkSteelPowerDamgeAbsorptionRatios[val];
   }
 
   public int getEnergy() {
@@ -249,7 +250,14 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   public void setEnergy(int energy) {
+    if(energy < 0) {
+      energy = 0;
+    }
     this.energy = energy;
+  }
+
+  public int getLevel() {
+    return level;
   }
 
   public int receiveEnergy(int maxRF, boolean simulate) {

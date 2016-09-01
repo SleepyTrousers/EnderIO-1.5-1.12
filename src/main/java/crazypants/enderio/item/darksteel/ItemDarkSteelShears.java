@@ -212,7 +212,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     int damage = newDamage - oldDamage;
 
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
       super.setDamage(stack, newDamage);

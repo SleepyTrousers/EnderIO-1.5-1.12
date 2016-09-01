@@ -63,13 +63,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
 })
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, 
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
     IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
 
 
   public static final ArmorMaterial MATERIAL = createMaterial();
 
-  private static ArmorMaterial createMaterial() {    
+  private static ArmorMaterial createMaterial() {
     Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
     return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35, new int[] { 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
   }
@@ -147,7 +147,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
 
-  protected void init() {    
+  protected void init() {
     GameRegistry.register(this);
   }
   
@@ -159,7 +159,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
   
   @Override
-  @SideOnly(Side.CLIENT)  
+  @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
@@ -202,7 +202,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       return 7;
     case FEET:
     default:
-      return 4;             
+      return 4;
     }
     
   }
@@ -266,7 +266,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-    int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;    
+    int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
     return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
   }
 
@@ -299,7 +299,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
 
     } else {
@@ -434,13 +434,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
     if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
       return false;
-    }    
-    return NaturalistEyeUpgrade.isUpgradeEquipped(player);    
+    }
+    return NaturalistEyeUpgrade.isUpgradeEquipped(player);
   }
 
   @Override
   @Method(modid = "forestry")
-  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {    
+  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
     return ApiaristArmorUpgrade.loadFromItem(armor) != null;
   }
 

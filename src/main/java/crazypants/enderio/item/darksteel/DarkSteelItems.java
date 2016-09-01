@@ -1,6 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.HelmetPainterTemplate;
@@ -20,6 +21,7 @@ public class DarkSteelItems {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
+  public static ItemDarkSteelBow itemDarkSteelBow;
   public static ItemDarkSteelShears itemDarkSteelShears;
 
   public static ItemMagnet itemMagnet;
@@ -40,13 +42,16 @@ public class DarkSteelItems {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
+    if (Config.darkSteelBowEnabled) {
+      itemDarkSteelBow = ItemDarkSteelBow.create();
+    }
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
     itemMagnet = ItemMagnet.create();
   }
 
   @SideOnly(Side.CLIENT)
-  public static void registerItemRenderers() {  
+  public static void onClientPreInit() {
     itemGliderWing.registerRenderers();
     
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelBoots, DarkSteelItems.itemDarkSteelBoots.getItemName());
@@ -58,8 +63,11 @@ public class DarkSteelItems {
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelSword, DarkSteelItems.itemDarkSteelSword.getItemName());
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
-    
+    if (Config.darkSteelBowEnabled) {
+      ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelBow, ItemDarkSteelBow.NAME);
+    }
+
     ClientUtil.registerRenderer(itemMagnet, ModObject.itemMagnet.getUnlocalisedName());
   }
-    
+
 }

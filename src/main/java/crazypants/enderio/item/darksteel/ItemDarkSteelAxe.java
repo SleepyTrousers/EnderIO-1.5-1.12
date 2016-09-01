@@ -81,7 +81,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   protected ItemDarkSteelAxe() {
     //super(ItemDarkSteelSword.MATERIAL); //TODO: 1.9 bug in forge maybe?
-    super(ToolMaterial.DIAMOND);    
+    super(ToolMaterial.DIAMOND);
     toolMaterial = ItemDarkSteelSword.MATERIAL;
     damageVsEntity = 8;
     attackSpeed = -3;
@@ -114,7 +114,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {    
+  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     if (!player.worldObj.isRemote && player.isSneaking()) {
       IBlockState bs = player.worldObj.getBlockState(pos);
       Block block = bs.getBlock();
@@ -145,7 +145,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockPos bc, Block refBlock) {
 
     IBlockState bs = worldObj.getBlockState(bc);
-    Block block = bs.getBlock();    
+    Block block = bs.getBlock();
     bs = bs.getActualState(worldObj, bc);
     ItemStack held = player.getHeldItemMainhand();
 
@@ -205,7 +205,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
       return true;
@@ -215,7 +215,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public float getStrVsBlock(ItemStack stack, IBlockState state) {  
+  public float getStrVsBlock(ItemStack stack, IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
       if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;

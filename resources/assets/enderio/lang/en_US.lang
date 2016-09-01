@@ -853,6 +853,7 @@ item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
 item.darkSteel_axe.name=Dark Axe
 item.darkSteel_shears.name=Dark Shears
+item.darkSteelBow.name=Dark Bow
 
 enderio.item.darkSteel.tooltip.lvs=lvs
 

@@ -61,7 +61,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private static final @Nonnull String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
-  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25);                                                                                                                
+  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25);
   
   private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
   private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredSpeedBonus, 0);
@@ -270,7 +270,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private ItemStack getSkullForEntity(EntityLivingBase entityLiving) {
-    if (entityLiving instanceof EntitySkeleton) {      
+    if (entityLiving instanceof EntitySkeleton) {
       if (((EntitySkeleton) entityLiving).func_189771_df() == SkeletonType.WITHER) {
         return new ItemStack(Items.SKULL, 1, 1);
       } else {
@@ -292,13 +292,13 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
   
   @Override
-  public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {    
-    Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);       
-    if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {      
-      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {            
-        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), swordDamageModifierPowered);        
-        res.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), swordAttackSpeedPowered);                
-      } 
+  public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {
+    Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);
+    if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
+        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), swordDamageModifierPowered);
+        res.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), swordAttackSpeedPowered);
+      }
     }
     return res;
   }
@@ -313,7 +313,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
       // Durability damage
       EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-      if (eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
+      if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
         eu.extractEnergy(powerPerDamagePoint, false);
 
       } else {
@@ -405,7 +405,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     extractEnergy(equipped, power, false);
   }
 
-  private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {    
+  private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
     return (isEquipped(ep, EnumHand.MAIN_HAND) || isEquipped(ep, EnumHand.OFF_HAND)) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
   
@@ -438,8 +438,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
     return super.onItemRightClick(stack, world, player, hand);
   }
-
-  
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
