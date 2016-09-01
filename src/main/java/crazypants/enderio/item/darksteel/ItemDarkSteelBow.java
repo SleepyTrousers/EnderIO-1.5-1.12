@@ -259,6 +259,43 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     fovEvt.setNewfov((1.0F - ratio * fovMultiplier));
 
   }
+  
+  public int getDrawTime(ItemStack stack) {
+    return getDrawTime(EnergyUpgrade.loadFromItem(stack));
+  }
+
+  public int getDrawTime(EnergyUpgrade upgrade) {
+    if (upgrade == null) {
+      return Config.darkSteelBowDrawSpeeds[0];
+    }
+    if (upgrade.getEnergy() >= Config.darkSteelBowPowerUsePerDraw) {
+      return Config.darkSteelBowDrawSpeeds[upgrade.getLevel() + 1];
+    }
+    return Config.darkSteelBowDrawSpeeds[0];
+  }
+  
+  @Override
+  public void setDamage(ItemStack stack, int newDamage) {
+    int oldDamage = getDamage(stack);
+    if (newDamage <= oldDamage) {
+      super.setDamage(stack, newDamage);
+    } else {
+      int damage = newDamage - oldDamage;
+      if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelBowPowerUsePerDamagePoint)) {
+        super.setDamage(stack, newDamage);
+      }
+    }
+  }
+
+  private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      eu.extractEnergy(amount, false);
+      eu.writeToItem(stack);
+      return true;
+    }
+    return false;
+  }
 
   @Override
   public int getMaxItemUseDuration(ItemStack p_77626_1_) {
@@ -273,20 +310,6 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   @Override
   public int getItemEnchantability() {
     return 1;
-  }
-
-  public int getDrawTime(ItemStack stack) {
-    return getDrawTime(EnergyUpgrade.loadFromItem(stack));
-  }
-
-  public int getDrawTime(EnergyUpgrade upgrade) {
-    if (upgrade == null) {
-      return Config.darkSteelBowDrawSpeeds[0];
-    }
-    if (upgrade.getEnergy() >= Config.darkSteelBowPowerUsePerDraw) {
-      return Config.darkSteelBowDrawSpeeds[upgrade.getLevel() + 1];
-    }
-    return Config.darkSteelBowDrawSpeeds[0];
   }
 
   @Override
