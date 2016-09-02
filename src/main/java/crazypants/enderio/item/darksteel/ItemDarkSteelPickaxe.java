@@ -6,6 +6,7 @@ import java.util.Set;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Sets;
 
 import crazypants.enderio.EnderIO;
@@ -18,6 +19,7 @@ import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.material.Alloy;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -104,6 +106,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 3;
+  }
+  
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @Override

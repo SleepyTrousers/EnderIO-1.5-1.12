@@ -7,12 +7,14 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.OreDictionaryHelper;
 
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -57,7 +59,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     setUnlocalizedName(NAME);
     setRegistryName(NAME);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setMaxDamage(800);
+    setMaxDamage(300);
     setHasSubtypes(false);
 
     addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
@@ -329,6 +331,11 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 2;
+  }
+  
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    return OreDictionaryHelper.hasName(right, Material.NUTRITIOUS_STICK.oreDict);
   }
 
   @Override

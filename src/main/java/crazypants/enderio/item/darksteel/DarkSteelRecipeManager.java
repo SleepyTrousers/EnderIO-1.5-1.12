@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.EnderIO;
@@ -29,7 +28,6 @@ import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.jei.ItemHelper;
-import crazypants.enderio.material.Alloy;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -89,9 +87,12 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.getLeft().getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.getRight(), Alloy.DARK_STEEL.getOreIngot())) {
-      handleRepair(evt);
-    } else {    
+    if(evt.getLeft().getItem() instanceof IDarkSteelItem) {
+      IDarkSteelItem dsi = (IDarkSteelItem)evt.getLeft().getItem();
+      if(dsi.isItemForRepair(evt.getRight())) {
+        handleRepair(evt);
+      }
+    } else {
       handleUpgrade(evt);
     }
   }
@@ -155,7 +156,7 @@ public class DarkSteelRecipeManager {
           costPerLevel = 8;
           break;
         case RARE:
-          costPerLevel = 4;        
+          costPerLevel = 4;
         case UNCOMMON:
           costPerLevel = 2;
           break;

@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Multimap;
 
@@ -19,6 +20,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.material.Alloy;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -119,6 +121,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 3;
+  }
+  
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @SubscribeEvent

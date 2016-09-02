@@ -129,6 +129,7 @@ enderio.silicon.name=Silicon
 enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.pulsatingIronNugget.name=Pulsating Iron Nugget
+enderio.nutritiousStick.name=Nutritious Stick
 tile.blockDarkIronBars.name=Dark Iron Bars
 tile.blockEndermanSkull.name=Enderman Skull
 tile.blockEndermanSkull.base.name=Enderman Head

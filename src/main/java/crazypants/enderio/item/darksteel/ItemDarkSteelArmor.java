@@ -10,6 +10,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Multimap;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -27,6 +28,7 @@ import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.PaintedHelmetLayer;
+import crazypants.enderio.material.Alloy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
@@ -442,6 +444,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Method(modid = "forestry")
   public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
     return ApiaristArmorUpgrade.loadFromItem(armor) != null;
+  }
+
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
 }

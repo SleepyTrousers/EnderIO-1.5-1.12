@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -19,6 +20,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import crazypants.enderio.material.Alloy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -91,6 +93,11 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 2;
+  }
+  
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @Override
