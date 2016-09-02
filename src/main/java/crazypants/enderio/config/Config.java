@@ -233,12 +233,10 @@ public final class Config {
 
   public static boolean darkSteelBowEnabled = true;
   public static float darkSteelBowDamageBonus = 0f;
-  public static float darkSteelBowForceMultiplier = 1.5f;
-  public static float darkSteelBowFovMultiplier = 0.35F;
-  public static int darkSteelBowPowerUsePerDamagePoint = 1000;
-
-  //TODO
+  public static double[] darkSteelBowForceMultipliers = {1.1f, 1.2f, 1.3f, 1.4f, 1.5f};
   public static int[] darkSteelBowDrawSpeeds = {30, 20, 18, 16, 14};
+  public static double[] darkSteelBowFovMultipliers = {0.25, 0.3, 0.35, 0.4, 0.45};
+  public static int darkSteelBowPowerUsePerDamagePoint = 1000;
   public static int darkSteelBowPowerUsePerDraw = 750;
   public static int darkSteelBowPowerUsePerTickDrawn = 5;
 
@@ -1093,10 +1091,10 @@ public final class Config {
     darkSteelBowDamageBonus = (float) config
         .get(sectionDarkSteel.name, "darkSteelBowDamageBonus", darkSteelBowDamageBonus, "The damage bonus applied to arrows fire from the bow.")
         .getDouble(darkSteelBowDamageBonus);
-    darkSteelBowForceMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelBowForceMultiplier", darkSteelBowForceMultiplier,
-        "Effects the speed with which arrows leave the bow. A 'vanilla' bow has a multiplier of 2.").getDouble(darkSteelBowForceMultiplier);
-    darkSteelBowFovMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelBowFovMultiplier", darkSteelBowFovMultiplier,
-        "The reduction in FOV when the bow is fullen drawn (the zoom level). A 'vanilla' bow has a value of 0.15").getDouble(darkSteelBowFovMultiplier);
+    darkSteelBowForceMultipliers = config.get(sectionDarkSteel.name, "darkSteelBowForceMultipliers", darkSteelBowForceMultipliers,
+        "Multiplier that effects the speed with which arrows leave the bow.").getDoubleList();
+    darkSteelBowFovMultipliers = config.get(sectionDarkSteel.name, "darkSteelBowFovMultiplier", darkSteelBowFovMultipliers,
+        "The reduction in FOV when the bow is fullen drawn (the zoom level). A 'vanilla' bow has a value of 0.15").getDoubleList();
     darkSteelBowPowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDamagePoint", darkSteelBowPowerUsePerDamagePoint,
         "The amount of power (RF) used per hit.").getInt(darkSteelBowPowerUsePerDamagePoint);
     darkSteelBowDrawSpeeds = config

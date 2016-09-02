@@ -45,8 +45,6 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   public static final String NAME = "darkSteelBow";
 
   private float damageBonus = Config.darkSteelBowDamageBonus;
-  private float forceMultiplier = Config.darkSteelBowForceMultiplier;
-  private float fovMultiplier = Config.darkSteelBowFovMultiplier;
 
   public static ItemDarkSteelBow create() {
     ItemDarkSteelBow res = new ItemDarkSteelBow();
@@ -134,9 +132,12 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     if (drawRatio >= 0.1) {
       boolean arrowIsInfinite = hasInfinateArrows && itemstack.getItem() instanceof ItemArrow;
       if (!worldIn.isRemote) {
+        
+        EnergyUpgrade upgrade = EnergyUpgrade.loadFromItem(stack);
+        
         ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
         EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
-        entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, drawRatio * (3.0F + forceMultiplier), 0.25F);
+        entityarrow.setAim(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, drawRatio * 3.0F * getForceMultiplier(upgrade), 0.25F);
 
         if (drawRatio == 1.0F) {
           entityarrow.setIsCritical(true);
@@ -159,11 +160,11 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
           entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
-        entityarrow.setDamage(entityarrow.getDamage() + damageBonus + 20);
+        entityarrow.setDamage(entityarrow.getDamage() + damageBonus);
 
         worldIn.spawnEntityInWorld(entityarrow);
 
-        EnergyUpgrade upgrade = EnergyUpgrade.loadFromItem(stack);
+        
         int used = getRequiredPower(draw, upgrade);
         if (used > 0) {
           upgrade.setEnergy(upgrade.getEnergy() - used);
@@ -256,8 +257,13 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     } else {
       ratio *= ratio;
     }
-    fovEvt.setNewfov((1.0F - ratio * fovMultiplier));
-
+    
+    float mult = (float)Config.darkSteelBowFovMultipliers[0];
+    EnergyUpgrade upgrade = EnergyUpgrade.loadFromItem(currentItem);
+    if(upgrade != null && upgrade.getEnergy() > 0) {
+      mult = (float)Config.darkSteelBowFovMultipliers[upgrade.getLevel() + 1];
+    }
+    fovEvt.setNewfov((1.0F - ratio * mult));
   }
   
   public int getDrawTime(ItemStack stack) {
@@ -272,6 +278,14 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       return Config.darkSteelBowDrawSpeeds[upgrade.getLevel() + 1];
     }
     return Config.darkSteelBowDrawSpeeds[0];
+  }
+  
+  private float getForceMultiplier(EnergyUpgrade upgrade) {
+    float res = (float)Config.darkSteelBowForceMultipliers[0];
+    if (upgrade != null && upgrade.getEnergy() >= 0) {
+      res = (float)Config.darkSteelBowForceMultipliers[upgrade.getLevel() + 1];
+    }
+    return res;
   }
   
   @Override
@@ -326,6 +340,12 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
+  
+  //This will break the animation
+//  @Override
+//  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+//    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+//  }
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
