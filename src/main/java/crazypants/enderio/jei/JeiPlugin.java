@@ -1,23 +1,29 @@
 package crazypants.enderio.jei;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.material.Material;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.INbtIgnoreList;
 import mezz.jei.api.JEIPlugin;
-import net.minecraft.item.Item;
-
-import static crazypants.util.CapturedMob.CUSTOM_NAME_KEY;
-import static crazypants.util.CapturedMob.ENTITY_KEY;
-import static crazypants.util.CapturedMob.IS_STUB_KEY;
-import static crazypants.util.CapturedMob.VARIANT_KEY;
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {
@@ -27,7 +33,7 @@ public class JeiPlugin extends BlankModPlugin {
   @Override
   public void register(@Nonnull IModRegistry registry) {
 
-    IJeiHelpers jeiHelpers = registry.getJeiHelpers();    
+    IJeiHelpers jeiHelpers = registry.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
         
     AlloyRecipeCategory.register(registry,guiHelper);
@@ -40,22 +46,32 @@ public class JeiPlugin extends BlankModPlugin {
     DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
     TankRecipeCategory.register(registry, guiHelper);
     CombustionRecipeCategory.register(registry, guiHelper);
-
-    INbtIgnoreList nbtIgnoreList = registry.getJeiHelpers().getNbtIgnoreList();
-    final Item ppplate = Item.getItemFromBlock(EnderIO.blockPaintedPressurePlate);
-    if (ppplate != null) {
-      nbtIgnoreList.ignoreNbtTagNames(ppplate, ENTITY_KEY, CUSTOM_NAME_KEY, IS_STUB_KEY, VARIANT_KEY, SOURCE_BLOCK.getKey(), SOURCE_META.getKey());
-    }
-
     CrafterRecipeTransferHandler.register(registry);
     InventoryPanelRecipeTransferHandler.register(registry);
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
+    
+    //Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
+    List<ItemStack> inputs = new ArrayList<ItemStack>();
+    inputs.add(new ItemStack(Items.STICK));
+    inputs.add(Buckets.itemBucketNutrientDistillation.copy());
+    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    registry.addRecipes(Collections.singletonList(res));
+    
+    ItemStack tank = new ItemStack(EnderIO.blockTank);
+    IFluidHandler cap = FluidUtil.getFluidHandlerCapability(tank);
+    cap.fill(new FluidStack(Fluids.fluidNutrientDistillation,  8 * Fluid.BUCKET_VOLUME), true);
+    inputs = new ArrayList<ItemStack>();
+    inputs.add(new ItemStack(Items.STICK));
+    inputs.add(tank);
+    res = new ShapelessRecipes(new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    registry.addRecipes(Collections.singletonList(res));
+    
   }
 
   @Override
   public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
-    this.jeiRuntime = jeiRuntime;
+    JeiPlugin.jeiRuntime = jeiRuntime;
     JeiAccessor.jeiRuntimeAvailable = true;
   }
 
