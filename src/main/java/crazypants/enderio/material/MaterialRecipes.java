@@ -1,10 +1,12 @@
 package crazypants.enderio.material;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import static crazypants.util.RecipeUtil.addShaped;
@@ -24,13 +26,13 @@ public class MaterialRecipes {
   }
 
   public static void registerOresInDictionary() {
-    //Ore Dictionary Registration
+    // Ore Dictionary Registration
     for (PowderIngot powder : PowderIngot.values()) {
       if (!powder.hasDependancy()) {
         OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
       }
     }
-    
+
     for (Alloy alloy : Alloy.values()) {
       for (String oreDictName : alloy.getOreIngots()) {
         OreDictionary.registerOre(oreDictName, alloy.getStackIngot());
@@ -66,7 +68,7 @@ public class MaterialRecipes {
       OreDictionary.registerOre(type.getUnlocalisedName(), new ItemStack(type.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
     }
 
-    //Skulls
+    // Skulls
     ItemStack skull = new ItemStack(Items.SKULL, 1, OreDictionary.WILDCARD_VALUE);
     OreDictionary.registerOre("itemSkull", skull);
     OreDictionary.registerOre("itemSkull", new ItemStack(EnderIO.blockEndermanSkull));
@@ -93,6 +95,9 @@ public class MaterialRecipes {
         }
       }
     }
-
+    if(Config.darkSteelBowEnabled) {
+      GameRegistry.addRecipe(new NutritiousStickRecipe());
+    }
   }
+
 }

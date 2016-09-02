@@ -23,6 +23,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="FRANKEN_ZOMBIE" item="enderio:itemFrankenSkull:2" />
   <alias name="ENDER_RESONATOR" item="enderio:itemFrankenSkull:3" />
   <alias name="SENTIENT_ENDER" item="enderio:itemFrankenSkull:4" />
+  <alias name="SKELETAL_CONTRACTOR" item="enderio:itemFrankenSkull:5" />
 
   <alias name="CAPACITOR1" item="enderio:itemBasicCapacitor:0" />
   <alias name="CAPACITOR2" item="enderio:itemBasicCapacitor:1" />
@@ -67,6 +68,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="ENDER_CRYSTAL" item="itemEnderCrystal" />
   <alias name="ATTRACTOR_CRYSTAL" item="itemAttractorCrystal" />
   <alias name="WEATHER_CRYSTAL" item="itemWeatherCrystal" />
+  <alias name="NUTRITIOUS_STICK" item="itemNutritiousStick" />
 
   <alias name="CAP_BANK_1" item="enderio:blockCapBank:1" />
   <alias name="CAP_BANK_2" item="enderio:blockCapBank:2" />

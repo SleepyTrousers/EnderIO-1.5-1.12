@@ -1086,8 +1086,7 @@ public final class Config {
             darkSteelSwordEnderPearlDropChancePerLooting);
 
 
-    darkSteelBowEnabled = config.getBoolean("darkSteelBowEnabled", sectionDarkSteel.name, darkSteelBowEnabled, "If false the  Dark Steel Bow will be disabled");
-
+    darkSteelBowEnabled = config.getBoolean("darkSteelBowEnabled", sectionItems.name, darkSteelBowEnabled, "If false the  Dark Steel Bow will be disabled");
     darkSteelBowDamageBonus = (float) config
         .get(sectionDarkSteel.name, "darkSteelBowDamageBonus", darkSteelBowDamageBonus, "The damage bonus applied to arrows fire from the bow.")
         .getDouble(darkSteelBowDamageBonus);

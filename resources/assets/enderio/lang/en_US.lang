@@ -841,6 +841,7 @@ skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
 skullSentientEnder.name=Sentient Ender
+skullSkeletalContractor.name=Skeletal Contractor
 
 item.itemSpawnEggEnderIO.name=Spawn
 

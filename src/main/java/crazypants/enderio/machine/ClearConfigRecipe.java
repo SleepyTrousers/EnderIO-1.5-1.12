@@ -34,7 +34,7 @@ public class ClearConfigRecipe implements IRecipe {
       input = count == 1 && checkStack != null ? checkStack : input;
     }
     
-    if (count == 1 && input.getTagCompound() != null && input.getTagCompound().getBoolean("eio.abstractMachine")) {
+    if (count == 1 && input != null && input.getTagCompound() != null && input.getTagCompound().getBoolean("eio.abstractMachine")) {
       ItemStack out = input.copy();
       NBTTagCompound stackTagCompound = new NBTTagCompound();
       stackTagCompound.setBoolean("clearedConfig", true);
@@ -71,7 +71,7 @@ public class ClearConfigRecipe implements IRecipe {
   }
 
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {    
+  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
     return new ItemStack[inv.getSizeInventory()];
   }
 }

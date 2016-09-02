@@ -267,6 +267,18 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
   
+  <recipe name="Dark Bow" required="true">
+    <config name="darkSteelBowEnabled" section="Item Enabling" value="true"/>
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="NUTRITIOUS_STICK" /><item name="string"/>
+        <item name="SKELETAL_CONTRACTOR"/><item/><item name="string"/>
+        <item /><item name="NUTRITIOUS_STICK"/><item name="string"/>
+      </grid>
+      <output name="enderio:darkSteelBow" />
+    </crafting>
+  </recipe>
+  
   <recipe name="Conduit Facade" required="true">
     <crafting>
       <grid>
