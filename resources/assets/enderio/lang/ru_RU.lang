@@ -841,6 +841,7 @@ skullZombieController.name=Зомби-контроллер
 skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Эндера
 skullSentientEnder.name=Разумный Эндер
+skullSkeletalContractor.name=Скелетный подрядчик
 
 item.itemSpawnEggEnderIO.name=Яйцо призыва - 
 
