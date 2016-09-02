@@ -86,15 +86,21 @@ public class DarkSteelRecipeManager {
     if(evt.getLeft() == null || evt.getRight() == null) {
       return;
     }
-
-    if(evt.getLeft().getItem() instanceof IDarkSteelItem) {
-      IDarkSteelItem dsi = (IDarkSteelItem)evt.getLeft().getItem();
-      if(dsi.isItemForRepair(evt.getRight())) {
-        handleRepair(evt);
-      }
+    if(isRepair(evt)) {
+      handleRepair(evt);
     } else {
       handleUpgrade(evt);
     }
+  }
+  
+  private boolean isRepair(AnvilUpdateEvent evt) {
+    if(evt.getLeft().getItem() instanceof IDarkSteelItem) {
+      IDarkSteelItem dsi = (IDarkSteelItem)evt.getLeft().getItem();
+      if(dsi.isItemForRepair(evt.getRight())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void handleRepair(AnvilUpdateEvent evt) {
