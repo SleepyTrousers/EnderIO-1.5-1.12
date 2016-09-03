@@ -16,6 +16,7 @@ import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2exp;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerTechReborn;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import crazypants.enderio.machine.farm.farmers.ForestryFarmer;
 import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -23,6 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 
 public final class FarmersRegistry {
 
@@ -43,6 +45,9 @@ public final class FarmersRegistry {
     addMFR();
     addFlowers();
     addImmersiveEngineering();
+
+    if (Loader.isModLoaded("forestry"))
+      ForestryFarmer.init();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
