@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
@@ -61,6 +60,7 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -114,7 +114,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
 
   @SideOnly(Side.CLIENT)
-  private TextureAtlasSprite lastRemovedComponetIcon;
+  private TextureAtlasSprite lastHitIcon;
 
   private final Random rand = new Random();
 
@@ -203,25 +203,43 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     if (tex == null) {
-      tex = IconUtil.instance.whiteTexture;
+      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(EnderIO.blockTank.getDefaultState());
     }
-    lastRemovedComponetIcon = tex;
+    lastHitIcon = tex;
     BlockPos p = target.getBlockPos();
     addBlockHitEffects(world, effectRenderer, p.getX(), p.getY(), p.getZ(), target.sideHit, tex);
+    return true;
+  }
+  
+  @Override
+  public boolean addLandingEffects(IBlockState state, net.minecraft.world.WorldServer worldObj, BlockPos bp, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles ) {
+    //TODO: Should probably register a dummy state for this, but this gives a nice generic grey color for non facded blocks
+    int stateId = Block.getStateId(EnderIO.blockTank.getDefaultState());
+    TileConduitBundle te = getTileEntity(worldObj, bp);
+    if(te != null) {
+      IBlockState ps = te.getPaintSource();
+      if(ps != null) {
+        stateId = Block.getStateId(ps);
+      }
+    }
+    worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, bp.getX() + 0.5, bp.getY() + 1, bp.getZ() + 0.5, numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {stateId});
     return true;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
   public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
-
+    if (lastHitIcon == null) {
+      lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(EnderIO.blockTank.getDefaultState());
+    }
+    
     IBlockState state = world.getBlockState(pos);
-    if (state == null || state.getBlock() != this || lastRemovedComponetIcon == null) {
+    if (state == null || state.getBlock() != this || lastHitIcon == null) {
       return false;
     }
     state = state.getActualState(world, pos);
     int i = 4;
-    TextureAtlasSprite tex = lastRemovedComponetIcon;
+    TextureAtlasSprite tex = lastHitIcon;
     for (int j = 0; j < i; ++j) {
       for (int k = 0; k < i; ++k) {
         for (int l = 0; l < i; ++l) {
@@ -242,6 +260,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SideOnly(Side.CLIENT)
   private void addBlockHitEffects(World world, ParticleManager effectRenderer, int x, int y, int z, EnumFacing sideEnum, TextureAtlasSprite tex) {
+
     float f = 0.1F;
 
     double d0 = x + rand.nextDouble() * (bounds.maxX - bounds.minX - f * 2.0F) + f + bounds.minX;
@@ -328,18 +347,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return ret;
   }
 
-  // @Override
-  // public int getDamageValue(World world, BlockPos pos) {
-  // IBlockState f = getPaintSource(null, world, pos);
-  // return f == null ? 0 : f.getBlock().getMetaFromState(f);
-  // }
-
-  // TODO: 1.9 I think the above just uses the bellow, but we cant get the paint
-  // source here
-
   @Override
   public int damageDropped(IBlockState state) {
-    // getPaintSource
     return state == null ? 0 : state.getBlock().getMetaFromState(state);
   }
 
@@ -356,11 +365,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     IConduitBundle con = (IConduitBundle) te;
     return con.hasFacade();
-  }
-
-  @Override
-  public boolean canReplace(World worldIn, BlockPos pos, EnumFacing side, @Nullable ItemStack stack) {
-    return super.canReplace(worldIn, pos, side, stack);
   }
 
   @Override
@@ -693,7 +697,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       } else {
         if (!world.isRemote) {
           player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
-        }        
+        }
         return false;
       }
     }
@@ -861,7 +865,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Deprecated
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
-    TileConduitBundle conduit = getTileEntity(world, pos);    
+    TileConduitBundle conduit = getTileEntity(world, pos);
     if (conduit != null) {
       conduit.onNeighborBlockChange(neighborBlock);
     }
@@ -869,7 +873,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-    TileConduitBundle conduit = getTileEntity(world, pos);    
+    TileConduitBundle conduit = getTileEntity(world, pos);
     if (conduit != null) {
       conduit.onNeighborChange(world, pos, neighbor);
     }
@@ -883,7 +887,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     IConduitBundle con = getTileEntity(world, pos);
     if(con == null) {
       return;
-    }    
+    }
     if (con.hasFacade()) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
