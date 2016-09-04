@@ -175,6 +175,7 @@ public final class Config {
   public static int rodOfReturnRfPerTick = 35000;
   public static int rodOfReturnFluidUsePerTeleport = 200;
   public static int rodOfReturnFluidStorage = 200;
+  public static String rodOfReturnFluidType = "ender_distillation";
   
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -547,6 +548,8 @@ public final class Config {
 
   
 
+  
+
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -874,6 +877,7 @@ public final class Config {
         "How much fluid the rod can store").getInt(rodOfReturnFluidStorage);
     rodOfReturnFluidUsePerTeleport = config.get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport,
         "How much fluid is used per teleport").getInt(rodOfReturnFluidUsePerTeleport);
+    rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
     
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,

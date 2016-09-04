@@ -40,8 +40,6 @@ public class Fluids {
   public static final String LIQUID_SUNSHINE_NAME = "liquid_sunshine";
   public static final String CLOUD_SEED_NAME = "cloud_seed";
   public static final String CLOUD_SEED_CONCENTRATED_NAME = "cloud_seed_concentrated";
-  
-  
 
   public static Fluid fluidNutrientDistillation;
   public static BlockFluidEio blockNutrientDistillation;
@@ -179,7 +177,7 @@ public class Fluids {
     registerFluidBlockRendering(fluidRocketFuel, ROCKET_FUEL_NAME);
     registerFluidBlockRendering(fluidLiquidSunshine, LIQUID_SUNSHINE_NAME);
     registerFluidBlockRendering(fluidCloudSeed, CLOUD_SEED_NAME);
-    registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);    
+    registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);
   }
 
   @SideOnly(Side.CLIENT)

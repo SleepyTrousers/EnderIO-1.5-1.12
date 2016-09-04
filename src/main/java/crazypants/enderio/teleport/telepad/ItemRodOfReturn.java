@@ -1,18 +1,21 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.ClientUtil;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
@@ -45,6 +48,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -56,7 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 
-public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceTooltipProvider, IOverlayRenderAware {
+public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
   public static ItemRodOfReturn create() {
     ItemRodOfReturn result = new ItemRodOfReturn();
@@ -70,6 +75,8 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
+  
+  private final Fluid fluidType;
 
   protected ItemRodOfReturn() {
     super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
@@ -78,6 +85,18 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     setRegistryName(ModObject.itemRodOfReturn.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
+        
+    Fluid fluid = null;
+    if(Config.rodOfReturnFluidType != null) {
+      fluid = FluidRegistry.getFluid(Config.rodOfReturnFluidType);
+      if(fluid == null) {
+        Log.warn("ItemRodOfReturn: Could not find fluid '" + Config.rodOfReturnFluidType + "' using default fluid " + Fluids.fluidEnderDistillation);
+      }
+    }
+    if(fluid == null) {
+      fluid = Fluids.fluidEnderDistillation;
+    }
+    fluidType = fluid;
   }
 
   protected void init() {
@@ -129,10 +148,10 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     
     int used = (Config.rodOfReturnTicksToActivate - count) * 1000;
     int newVal = getEnergyStored(stack) - used;
-    if (newVal < 0) { 
+    if (newVal < 0) {
       if (player.worldObj.isRemote) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
-      } 
+      }
       player.stopActiveHand();
     }
   }
@@ -153,7 +172,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     boolean hasFluid = true;
     if (! (entityLiving instanceof EntityPlayer) || !((EntityPlayer)entityLiving).capabilities.isCreativeMode) {
       hasPower = updateStackNBT(stack, worldIn, 0);
-      hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power        
+      hasFluid = hasPower ? useFluid(stack) : true; //don't use fluid if we didn't have enough power
     }
         
     if (hasPower && hasFluid) {
@@ -164,7 +183,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
           entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
         }
         return stack;
-      }            
+      }
       TeleportUtil.doTeleport(entityLiving, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       if(!hasPower) {
@@ -172,7 +191,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       } else {
         entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughFluid", TextFormatting.RED.toString())));
       }
-    } 
+    }
     
     if(worldIn.isRemote) {
       stopPlayingSound();
@@ -235,12 +254,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     setFull(is);
     par3List.add(is);
   }
-
-  @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
-  }
-
+  
   @Override
   @SideOnly(Side.CLIENT)
   public boolean isFull3D() {
@@ -248,7 +262,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {        
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition, true);
     PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 1, true);
   }
@@ -256,7 +270,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   @SideOnly(Side.CLIENT)
   private void onUsingClient(ItemStack stack, EntityLivingBase player, int timeLeft) {
     
-    if (timeLeft > (Config.rodOfReturnTicksToActivate - 2)) {       
+    if (timeLeft > (Config.rodOfReturnTicksToActivate - 2)) {
       return;
     }
     
@@ -264,12 +278,12 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     float spinSpeed = progress * 2;
     if (activeSound != null) {
       activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
-    }    
+    }
     if (activeSound == null) {
       BlockPos p = player.getPosition();
       activeSound = new MachineSound(TileTelePad.ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
       playSound();
-    } 
+    }
     
     double dist = 2 - (progress * 1.5);
     Random rand = player.worldObj.rand;
@@ -293,7 +307,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 //        }
         ClientUtil.setParticleVelocity(fx, velocity.x, velocity.y, velocity.z);
         fx.setMaxAge(timeLeft + 2);
-      }            
+      }
     }
     
   }
@@ -320,7 +334,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
   private boolean updateStackNBT(ItemStack stack, World world, int timeLeft) {
     setLastUsedTick(stack, world.getTotalWorldTime());
      // half a second before it costs you
-    if (timeLeft > (Config.rodOfReturnTicksToActivate - 10)) {       
+    if (timeLeft > (Config.rodOfReturnTicksToActivate - 10)) {
       return false;
     }
     return useEnergy(stack, timeLeft);
@@ -367,12 +381,33 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
     if (container.getTagCompound() == null) {
       container.setTagCompound(new NBTTagCompound());
     }
-    new TelepadTarget(pos, dimension).writeToNBT(container.getTagCompound());    
+    new TelepadTarget(pos, dimension).writeToNBT(container.getTagCompound());
+  }
+  
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    SpecialTooltipHandler.addBasicTooltipFromResources(list, getUnlocalizedName());
+  }
+
+  @Override
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    List<String> entries = new ArrayList<String>();
+    SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
+    String fluidString = fluidType.getLocalizedName(new FluidStack(fluidType, 1000));
+    for (int i = 0; i < entries.size(); i++) {
+      String str = entries.get(i);
+      list.add(String.format(str, fluidString));
+    }
   }
   
   // Fluid handeling
     
-  private boolean useFluid(ItemStack container) {    
+  private boolean useFluid(ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (Config.rodOfReturnFluidUsePerTeleport > amount) {
       FLUIDAMOUNT.setInt(container, 0);
@@ -381,12 +416,12 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
       FLUIDAMOUNT.setInt(container, amount - Config.rodOfReturnFluidUsePerTeleport);
       return true;
     }
-  }  
+  }
   
   public FluidStack getFluid(ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
-      return new FluidStack(Fluids.fluidEnderDistillation, amount);
+      return new FluidStack(fluidType, amount);
     } else {
       return null;
     }
@@ -398,7 +433,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
     if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
-        || resource.getFluid() != Fluids.fluidEnderDistillation) {
+        || resource.getFluid() != fluidType) {
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
@@ -461,7 +496,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IResourceToo
 
         @Override
         public boolean canFillFluidType(FluidStack fluidStack) {
-          return fluidStack != null && fluidStack.getFluid() == Fluids.fluidEnderDistillation;
+          return fluidStack != null && fluidStack.getFluid() == fluidType;
         }
 
         @Override
