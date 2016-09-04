@@ -129,6 +129,7 @@ enderio.silicon.name=Кремний
 enderio.conduitBinder.name=Связующий элемент труб
 enderio.binderComposite.name=Составной связующий элемент
 enderio.pulsatingIronNugget.name=Пульсирующий железный самородок
+enderio.nutritiousStick.name=Питательная палка
 tile.blockDarkIronBars.name=Решётка из тёмного железа
 tile.blockEndermanSkull.name=Череп Эндермена
 tile.blockEndermanSkull.base.name=Голова Эндермена
@@ -1429,16 +1430,16 @@ enderio.remoteinv.chat.error=ОШИБКА: Техническая ошибка, 
 item.itemRemoteInvAccessbasic.name=Беспроводная инвентарная панель
 item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели на растоянии 5 чанков.
 item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessadvanced.name=Улучшенная беспроводная инвентарная панель
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки этого измерения.
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessender.name=Беспроводная эндер-инвентарная панель
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 tile.blockExitRail.name=Выездные рельсы
