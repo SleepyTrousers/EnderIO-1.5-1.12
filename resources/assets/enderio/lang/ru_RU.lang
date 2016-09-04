@@ -728,6 +728,7 @@ tile.blockTelePad.tooltip.detailed.line1=Использует энергию д�
 tile.blockTelePad.tooltip.detailed.line2=сущностей в указанную позицию и измерение.
 tile.blockTelePad.tooltip.detailed.line3=Должен быть размещён в виде мультиблока 3x1x3.
 enderio.gui.telepad.teleport=Телепортироваться!
+enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
 
 tile.blockDialingDevice.name=Наборное устройство
 tile.blockDialingDevice.tooltip.detailed.line1=Располагается рядом с телепортом
