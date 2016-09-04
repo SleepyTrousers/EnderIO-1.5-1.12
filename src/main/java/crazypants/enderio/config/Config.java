@@ -167,16 +167,6 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
-  public static boolean rodOfReturnEnabled = true;
-  public static boolean rodOfReturnCanTargetAnywhere = false;
-  public static int rodOfReturnTicksToActivate = 50;
-  public static int rodOfReturnPowerStorage = 2000000;
-  public static int rodOfReturnMinTicksToRecharge = 100;
-  public static int rodOfReturnRfPerTick = 35000;
-  public static int rodOfReturnFluidUsePerTeleport = 200;
-  public static int rodOfReturnFluidStorage = 200;
-  public static String rodOfReturnFluidType = "ender_distillation";
-  
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
@@ -517,6 +507,18 @@ public final class Config {
   public static boolean telepadIsTravelAnchor = true;
   public static int telepadEnergyBufferRF = 100000;
   public static int telepadEnergyUsePerTickRF = 4000;
+  public static String telepadFluidType = "ender_distillation";
+  public static int telepadFluidUse = 50;
+  
+  public static boolean rodOfReturnEnabled = true;
+  public static boolean rodOfReturnCanTargetAnywhere = false;
+  public static int rodOfReturnTicksToActivate = 50;
+  public static int rodOfReturnPowerStorage = 2000000;
+  public static int rodOfReturnMinTicksToRecharge = 100;
+  public static int rodOfReturnRfPerTick = 35000;
+  public static int rodOfReturnFluidUsePerTeleport = 200;
+  public static int rodOfReturnFluidStorage = 200;
+  public static String rodOfReturnFluidType = "ender_distillation";
   
   public static boolean inventoryPanelFree = false;
   public static float inventoryPanelPowerPerMB = 800.0f;
@@ -545,8 +547,6 @@ public final class Config {
   public static boolean topShowTanksByDefault = true;
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
-
-  
 
   
 
@@ -1434,6 +1434,11 @@ public final class Config {
         "The amount of RF in the internal buffer.").getInt();
     telepadEnergyUsePerTickRF = config.get(sectionTelepad.name, "telepadEnergyUsePerTickRF", telepadEnergyUsePerTickRF,
         "The max amount of RF that can be used per tick. Higher values allow faster teleporting.").getInt();
+    
+    telepadFluidType = config.getString("telepadFluidType", sectionTelepad.name, telepadFluidType, "The type of fluid required to teleport entities");
+    telepadFluidUse = config.get(sectionTelepad.name, "telepadFluidUse", telepadFluidUse,
+        "The max amount of fluid in mb used per teleport. If set to <= 0 fluid use will be disabled").getInt();
+    
     telepadIsTravelAnchor = config
         .get(sectionTelepad.name, "telepadIsTravelAnchor", telepadIsTravelAnchor, "If true, TelePads will also act as normal Travel Anchors.").getBoolean();
     telepadShrinkEffect = config.get(sectionPersonal.name, "telepadShrinkEffect", telepadShrinkEffect,

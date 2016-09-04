@@ -1,5 +1,12 @@
 package info.loenwind.autosave;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.enderio.machine.sagmill.GrindingMultiplierNBT;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleBlockCoord;
@@ -13,6 +20,7 @@ import info.loenwind.autosave.handlers.enderio.HandleStatCollector;
 import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
 import info.loenwind.autosave.handlers.forge.HandleFluidStack;
+import info.loenwind.autosave.handlers.forge.HandleFluidTank;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
 import info.loenwind.autosave.handlers.java.HandleBoolean;
 import info.loenwind.autosave.handlers.java.HandleEnum;
@@ -25,14 +33,6 @@ import info.loenwind.autosave.handlers.minecraft.HandleIBlockState;
 import info.loenwind.autosave.handlers.minecraft.HandleItem;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStackArray;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import crazypants.enderio.machine.sagmill.GrindingMultiplierNBT;
 
 /**
  * A registry for {@link IHandler}s.
@@ -76,6 +76,7 @@ public class Registry {
     // Forge basic types
     GLOBAL_REGISTRY.register(new HandleFluidStack());
     GLOBAL_REGISTRY.register(new HandleFluid());
+    GLOBAL_REGISTRY.register(new HandleFluidTank());
 
     // Annotated objects
     GLOBAL_REGISTRY.register(new HandleStorable<Object>());

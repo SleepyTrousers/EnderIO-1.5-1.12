@@ -728,6 +728,7 @@ tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
 tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
 tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
 enderio.gui.telepad.teleport=Teleport!
+enderio.chat.telepad.noFluid=Not enough %s to teleport!
 
 tile.blockDialingDevice.name=Dialing Device
 tile.blockDialingDevice.tooltip.detailed.line1=Place near a Telepad 

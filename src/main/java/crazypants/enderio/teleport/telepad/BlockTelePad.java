@@ -1,11 +1,14 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.EnumRenderMode;
@@ -19,11 +22,13 @@ import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.gui.ContainerTelePad;
 import crazypants.enderio.teleport.telepad.gui.GuiAugmentedTravelAccessible;
 import crazypants.enderio.teleport.telepad.gui.GuiTelePad;
+import crazypants.enderio.teleport.telepad.packet.PacketFluidLevel;
 import crazypants.enderio.teleport.telepad.packet.PacketOpenServerGui;
-import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
+import crazypants.enderio.waila.IWailaInfoProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -37,12 +42,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, IWailaInfoProvider {
 
   
   public static BlockTelePad createTelepad() {
@@ -52,6 +59,9 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     PacketHandler.INSTANCE.registerMessage(PacketSetTarget.class, PacketSetTarget.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketTeleport.class, PacketTeleport.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+    
+    //PacketFluidLevel
 
     BlockTelePad ret = new BlockTelePad();
     ret.init();
@@ -62,7 +72,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   
   public BlockTelePad() {
     super(ModObject.blockTelePad.getUnlocalisedName(), TileTelePad.class);
-    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));    
+    setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BLOCK_TYPE, BlockType.SINGLE));
     setLightOpacity(255);
     useNeighborBrightness = true;
   }
@@ -79,7 +89,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {    
+  public IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(BLOCK_TYPE, BlockType.getType(meta)).withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO);
   }
 
@@ -113,7 +123,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
    * This makes us "air" for purposes of lighting. Otherwise our model would be much too dark, as it is always surrounded be 8 TelePad blocks.
    */
   @Override
-  public boolean isFullCube(IBlockState bs) {   
+  public boolean isFullCube(IBlockState bs) {
     
     return false;
   }
@@ -134,7 +144,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Deprecated
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block changedTo) {    
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block changedTo) {
     if (world != null && pos != null) {
       TileTelePad  tileEntity = getTileEntity(world, pos);
       if (tileEntity != null) {
@@ -202,11 +212,11 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @Override
   public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 
-    BlockPos swCorner = findSouthWestCorner(worldIn, pos);    
-    BlockPos masterPos = getMasterPosForNewMB(worldIn, swCorner, pos);    
+    BlockPos swCorner = findSouthWestCorner(worldIn, pos);
+    BlockPos masterPos = getMasterPosForNewMB(worldIn, swCorner, pos);
     if(masterPos == null) {
-      return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer); 
-    }   
+      return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+    }
     
     BlockType myType = null;
     for(BlockType bt : BlockType.values()) {
@@ -214,14 +224,14 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
       if(test != null && test.equals(masterPos)) {
         myType = bt;
       }
-    }    
+    }
     if(myType == null) {
       return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
-    if(!worldIn.isRemote) {     
+    if(!worldIn.isRemote) {
       updateMultiBlock(worldIn, masterPos, pos, true);
-    }    
-    return getStateFromMeta(myType.ordinal());       
+    }
+    return getStateFromMeta(myType.ordinal());
   }
 
   @Override
@@ -242,10 +252,10 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
         Vec3i offset = type.getOffsetFromMaster();
         BlockPos targetPos = new BlockPos(masterPos.getX() + offset.getX(), masterPos.getY() + offset.getY(),masterPos.getZ() + offset.getZ());
         if(!targetPos.equals(ignorePos)) {
-          BlockType setToType = BlockType.SINGLE;                
+          BlockType setToType = BlockType.SINGLE;
           if(form) {
             setToType = type;
-          }  
+          }
           world.setBlockState(targetPos, getDefaultState().withProperty(BLOCK_TYPE, setToType), 3);
         }
       }
@@ -261,7 +271,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
           return null;
         }
         testPos = testPos.east();
-      }      
+      }
     }
     return swCorner.offset(EnumFacing.NORTH).offset(EnumFacing.EAST);
   }
@@ -299,6 +309,25 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
     return TelePadRenderMapper.instance;
+  }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    if(Config.telepadFluidUse <= 0) {
+      return;
+    }
+    TileTelePad te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null && te.inNetwork()) {
+      FluidStack stored = te.getMaster().tank.getFluid();
+      String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
+      int amount = stored == null ? 0 : stored.amount;
+      tooltip.add(String.format("%s%s : %s (%d %s)", TextFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
+    }
+  }
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.ALL_BITS;
   }
   
 }
