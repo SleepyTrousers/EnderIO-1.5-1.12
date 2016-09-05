@@ -15,36 +15,13 @@ public enum ItemRemoteInvAccessType {
   private final String nameSuffix;
   private final int range;
   private final boolean interdimensional;
-  private final int fluidCapacity;
-  private final int mbPerOpen;
-  private final int rfCapacity;
-  private final int rfPerTick;
   private final boolean visible;
-  private final Fluid fluidType;
 
   private ItemRemoteInvAccessType(int index, String nameSuffix, int range, boolean interdimensional, boolean visible) {
     this.nameSuffix = nameSuffix;
     this.range = range;
     this.interdimensional = interdimensional;
-    this.fluidCapacity = Config.remoteInventoryMBCapacity[index];
-    this.rfCapacity = Config.remoteInventoryRFCapacity[index];
-    this.mbPerOpen = Config.remoteInventoryMBPerOpen[index];
-    this.rfPerTick = Config.remoteInventoryRFPerTick[index];
     this.visible = visible;
-    
-    Fluid fluid = null;
-    String fluidName = Config.remoteInventoryFluidTypes[index];
-    if(fluidName != null) {
-      fluid = FluidRegistry.getFluid(fluidName);
-      if(fluid == null) {
-        Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + fluidName + "' using default fluid " + Fluids.fluidNutrientDistillation);
-      }
-    }
-    if(fluid == null) {
-      fluid = Fluids.fluidNutrientDistillation;
-    }
-    fluidType = fluid;
-    
   }
 
   public int toMetadata() {
@@ -89,27 +66,33 @@ public enum ItemRemoteInvAccessType {
   }
 
   public int getRfCapacity() {
-    return rfCapacity;
+    return Config.remoteInventoryRFCapacity[ordinal()];
   }
-  
+
   public int getFluidCapacity() {
-    return fluidCapacity;
+    return Config.remoteInventoryMBCapacity[ordinal()];
   }
 
   public Fluid getFluidType() {
-    return fluidType;
+    Fluid fluid = null;
+    fluid = FluidRegistry.getFluid(Config.remoteInventoryFluidTypes[ordinal()]);
+    if (fluid == null) {
+      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + Config.remoteInventoryFluidTypes[ordinal()] + "' using default fluid " + Fluids.fluidNutrientDistillation);
+      fluid = Fluids.fluidNutrientDistillation;
+    }
+    return fluid;
   }
-  
+
   public boolean isVisible() {
     return visible;
   }
 
   public int getMbPerOpen() {
-    return mbPerOpen;
+    return Config.remoteInventoryMBPerOpen[ordinal()];
   }
 
   public int getRfPerTick() {
-    return rfPerTick;
+    return Config.remoteInventoryRFPerTick[ordinal()];
   }
 
 }
