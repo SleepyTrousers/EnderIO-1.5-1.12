@@ -192,7 +192,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       return;
     }
     
-    if (inventory[0] != null) {
+    if (inventory[0] != null && inventory[1] == null) {
       ItemStack stack = inventory[0];
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
       setTarget(newTarg);
@@ -779,6 +779,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public void setFluidAmount(int level) {
     tank.setFluidAmount(level);
+  }
+
+  public FluidTank getTank() {
+    return tank;
+  }
+
+  public Fluid getFluidType() {
+    return fluidType;
   }
 
 }
