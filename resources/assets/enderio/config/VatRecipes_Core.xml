@@ -57,7 +57,7 @@
         <fluidStack name="nutrient_distillation" />
       </output>
     </recipe>        
-    <recipe name="EnderDistillation" energyCost="10000" >
+    <recipe name="EnderDistillation" energyCost="15000" >
       <input>
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12" slot="0" multiplier="2"/>
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13" slot="1" multiplier="2"/>
@@ -66,7 +66,17 @@
       <output>
         <fluidStack name="ender_distillation" />
       </output>
-    </recipe>    
+    </recipe>         
+    <recipe name="Vapor of Levity" energyCost="20000" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12" slot="0" multiplier="1"/>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="16" slot="1" multiplier="1"/>
+        <fluidStack name="ender_distillation" multiplier="1" />
+      </input>
+      <output>
+        <fluidStack name="vapor_of_levity" />
+      </output>
+    </recipe>           
     <recipe name="Hootch" energyCost="10000" >
       <input>
         <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="8" />

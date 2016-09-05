@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class SoulBinderRecipeManager {
 
@@ -29,6 +29,7 @@ public class SoulBinderRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSentientRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderEnderCystalRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderAttractorCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderPrecientCystalRecipe.instance);
 
     //Ender Rail
     //TODO: 1.8 Enable once BlockEnderRail is available
@@ -40,7 +41,7 @@ public class SoulBinderRecipeManager {
   }
 
   // Example of how to add a recipe:
-  //  
+  //
   //  NBTTagCompound root = new NBTTagCompound();
   //  root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
   //  root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
@@ -54,7 +55,7 @@ public class SoulBinderRecipeManager {
   //  stackRoot = new NBTTagCompound();
   //  is.writeToNBT(stackRoot);
   //  root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
-  //  
+  //
   //  SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
   //  FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
 

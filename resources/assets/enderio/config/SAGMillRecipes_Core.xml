@@ -263,6 +263,14 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13"/>
       </output>
     </recipe>
+    <recipe name="PrecientPowder" energyCost="1600" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="15"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="16"/>
+      </output>
+    </recipe>
     
   </recipeGroup>
 

@@ -29,7 +29,9 @@ public enum Material {
   VIBRANT_POWDER("vibrantPowder", true),
   PULSATING_POWDER("pulsatingPowder", true),
   ENDER_CYSTAL_POWDER("enderCrystalPowder", true),
-  NUTRITIOUS_STICK("nutritiousStick", false);
+  NUTRITIOUS_STICK("nutritiousStick", false),
+  PRECIENT_CRYSTAL("precientCrystal", true),
+  PRECIENT_POWDER("precientPowder", true);
 
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);

@@ -440,11 +440,13 @@ public final class Config {
   public static boolean soulVesselCapturesBosses = false;
 
   public static int soulBinderBrokenSpawnerRF = 2500000;
-  public static int soulBinderBrokenSpawnerLevels = 6;
+  public static int soulBinderBrokenSpawnerLevels = 8;
   public static int soulBinderReanimationRF = 100000;
   public static int soulBinderReanimationLevels = 4;
-  public static int soulBinderEnderCystalRF = 100000;
-  public static int soulBinderEnderCystalLevels = 4;
+  public static int soulBinderEnderCystalRF = 150000;
+  public static int soulBinderEnderCystalLevels = 6;
+  public static int soulBinderPrecientCystalRF = 200000;
+  public static int soulBinderPrecientCystalLevels = 8;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 4;
   public static int soulBinderEnderRailRF = 100000;
@@ -527,12 +529,11 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
   public static boolean inventoryPanelScaleText = true;
 
-  //TODO:
   public static int[] remoteInventoryMBPerOpen = {100, 25, 25};
   public static int[] remoteInventoryRFPerTick = {4, 6, 8};
   public static int[] remoteInventoryMBCapacity = {2000, 1000, 1500};
   public static int[] remoteInventoryRFCapacity = {60000, 120000, 150000};
-  public static String[] remoteInventoryFluidTypes = {"nutrient_distillation", "ender_distillation", "ender_distillation"};
+  public static String[] remoteInventoryFluidTypes = {"nutrient_distillation", "ender_distillation", "vapor_of_levity"};
 
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
@@ -550,7 +551,6 @@ public final class Config {
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
-  
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
@@ -1341,14 +1341,17 @@ public final class Config {
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
     soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
         "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
-
     soulBinderTunedPressurePlateRF = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF,
         "The number of RF required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateRF);
+    soulBinderPrecientCystalRF = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF,
+        "The number of RF required to create a precient crystal.").getInt(soulBinderPrecientCystalRF);
 
     soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
         "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
     soulBinderEnderCystalLevels = config.get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels,
         "The number of levels required to create an ender crystal.").getInt(soulBinderEnderCystalLevels);
+    soulBinderPrecientCystalLevels = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalLevels", soulBinderPrecientCystalLevels,
+        "The number of levels required to create a precient crystal.").getInt(soulBinderPrecientCystalLevels);
     soulBinderReanimationLevels = config.get(sectionSoulBinder.name, "soulBinderReanimationLevels", soulBinderReanimationLevels,
         "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
