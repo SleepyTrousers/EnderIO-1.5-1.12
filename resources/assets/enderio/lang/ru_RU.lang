@@ -157,6 +157,10 @@ fluid.ender_distillation=Роса пустоты
 tile.fluid.ender_distillation.name=Роса пустоты
 item.bucketEnder_distillation.name=Ведро росы пустоты
 
+fluid.vapor_of_levity=Пар левитации
+tile.vapor_of_levity.name=Пар левитации
+item.bucketVapor_of_levity.name=Ведро пара левитации
+
 fluid.hootch=Самогон
 tile.fluid.hootch.name=Самогон
 item.bucketHootch.name=Ведро самогона
