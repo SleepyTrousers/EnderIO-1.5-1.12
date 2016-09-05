@@ -12,7 +12,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -38,6 +37,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -47,10 +47,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.config.Config.remoteInventoryMBCapacity;
-import static crazypants.enderio.config.Config.remoteInventoryMBPerOpen;
-import static crazypants.enderio.config.Config.remoteInventoryRFCapacity;
-import static crazypants.enderio.config.Config.remoteInventoryRFPerTick;
 import static crazypants.util.NbtValue.ENERGY;
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 import static crazypants.util.NbtValue.REMOTE_D;
@@ -175,12 +171,12 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (getEnergyStored(equipped) < remoteInventoryRFPerTick * 10) {
+      if (getEnergyStored(equipped) < type.getRfPerTick() * 10) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outofpower")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (!drain(equipped, remoteInventoryMBPerOpen / ItemRemoteInvAccessType.fromStack(equipped).getCapacity())) {
+      if (!drain(equipped, type.getMbPerOpen())) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outoffluid")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
@@ -207,7 +203,8 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
   public void tick(ItemStack stack, EntityPlayer player) {
     if (EnderIO.proxy.getTickCount() % 10 == 0) {
-      extractInternal(stack, remoteInventoryRFPerTick / ItemRemoteInvAccessType.fromStack(stack).getCapacity() * 10);
+      ItemRemoteInvAccessType type = ItemRemoteInvAccessType.fromStack(stack);
+      extractInternal(stack, type.getRfPerTick() * 10);
     }
   }
 
@@ -239,7 +236,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return remoteInventoryRFCapacity * ItemRemoteInvAccessType.fromStack(container).getCapacity();
+    return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
   }
 
   @Override
@@ -276,14 +273,14 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     list.add(PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
         + PowerDisplayUtil.abrevation());
     list.add(FLUIDAMOUNT.getInt(itemStack, 0) + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
-        + Fluids.fluidNutrientDistillation.getLocalizedName(null));
+        + getFluidType(itemStack).getLocalizedName(null));
   }
 
   @Override
   public FluidStack getFluid(ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
-      return new FluidStack(Fluids.fluidNutrientDistillation, amount);
+      return new FluidStack(getFluidType(container), amount);
     } else {
       return null;
     }
@@ -291,13 +288,13 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
   @Override
   public int getCapacity(ItemStack container) {
-    return remoteInventoryMBCapacity * ItemRemoteInvAccessType.fromStack(container).getCapacity();
+    return ItemRemoteInvAccessType.fromStack(container).getFluidCapacity();
   }
 
   @Override
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
     if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
-        || resource.getFluid() != Fluids.fluidNutrientDistillation) {
+        || resource.getFluid() != getFluidType(container)) {
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
@@ -308,6 +305,10 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
       FLUIDAMOUNT.setInt(container, amount + toFill);
     }
     return toFill;
+  }
+  
+  public Fluid getFluidType(ItemStack stack) {
+    return ItemRemoteInvAccessType.fromStack(stack).getFluidType();
   }
 
   @Override
@@ -385,7 +386,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
         @Override
         public boolean canFillFluidType(FluidStack fluidStack) {
-          return fluidStack != null && fluidStack.getFluid() == Fluids.fluidNutrientDistillation;
+          return fluidStack != null && fluidStack.getFluid() == getFluidType(container);
         }
 
         @Override

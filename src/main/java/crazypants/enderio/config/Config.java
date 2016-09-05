@@ -527,10 +527,12 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
   public static boolean inventoryPanelScaleText = true;
 
-  public static int remoteInventoryMBPerOpen = 100;
-  public static int remoteInventoryRFPerTick = 4;
-  public static int remoteInventoryMBCapacity = 2000;
-  public static int remoteInventoryRFCapacity = 60000;
+  //TODO:
+  public static int[] remoteInventoryMBPerOpen = {100, 25, 25};
+  public static int[] remoteInventoryRFPerTick = {4, 6, 8};
+  public static int[] remoteInventoryMBCapacity = {2000, 1000, 1500};
+  public static int[] remoteInventoryRFCapacity = {60000, 120000, 150000};
+  public static String[] remoteInventoryFluidTypes = {"nutrient_distillation", "ender_distillation", "ender_distillation"};
 
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
@@ -1455,6 +1457,12 @@ public final class Config {
         10000.0f, "Internal power used per extract operation (independent of stack size)");
     inventoryPanelScaleText= config.getBoolean("inventoryPanelScaleText", sectionInventoryPanel.name, inventoryPanelScaleText,
         "If true stack sizes will be drawn at a smaller size with a little more detail.");
+        
+    remoteInventoryMBPerOpen = config.get(sectionInventoryPanel.name, "remoteInventoryMBPerOpen", remoteInventoryMBPerOpen, "MB required to open the panel").getIntList();
+    remoteInventoryRFPerTick = config.get(sectionInventoryPanel.name, "remoteInventoryRFPerTick", remoteInventoryRFPerTick, "RF used per tick when the panel is open").getIntList();
+    remoteInventoryMBCapacity = config.get(sectionInventoryPanel.name, "remoteInventoryMBCapacity", remoteInventoryMBCapacity, "Capacity of the intrenal tank in MB").getIntList();
+    remoteInventoryRFCapacity = config.get(sectionInventoryPanel.name, "remoteInventoryRFCapacity", remoteInventoryRFCapacity, "Capacity of the intrenal energy storage in RF").getIntList();
+    remoteInventoryFluidTypes = config.getStringList("remoteInventoryFluidTypes", sectionInventoryPanel.name, remoteInventoryFluidTypes, "The type of fluid reqquired");
     
     debugUpdatePackets = config.getBoolean("debugUpdatePackets", sectionPersonal.name, debugUpdatePackets,
         "DEBUG: If true, TEs will flash when they recieve an update packet.");

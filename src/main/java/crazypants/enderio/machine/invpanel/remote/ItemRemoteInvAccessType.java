@@ -1,24 +1,50 @@
 package crazypants.enderio.machine.invpanel.remote;
 
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public enum ItemRemoteInvAccessType {
-  BASIC("basic", 5 * 16, false, 1, true),
-  ADVANCED("advanced", -1, false, 2, true),
-  ENDER("ender", -1, true, 4, true);
+  BASIC(0, "basic", 5 * 16, false, true),
+  ADVANCED(1, "advanced", -1, false, true),
+  ENDER(2, "ender", -1, true, true);
 
   private final String nameSuffix;
   private final int range;
   private final boolean interdimensional;
-  private final int capacity;
+  private final int fluidCapacity;
+  private final int mbPerOpen;
+  private final int rfCapacity;
+  private final int rfPerTick;
   private final boolean visible;
+  private final Fluid fluidType;
 
-  private ItemRemoteInvAccessType(String nameSuffix, int range, boolean interdimensional, int capacity, boolean visible) {
+  private ItemRemoteInvAccessType(int index, String nameSuffix, int range, boolean interdimensional, boolean visible) {
     this.nameSuffix = nameSuffix;
     this.range = range;
     this.interdimensional = interdimensional;
-    this.capacity = capacity;
+    this.fluidCapacity = Config.remoteInventoryMBCapacity[index];
+    this.rfCapacity = Config.remoteInventoryRFCapacity[index];
+    this.mbPerOpen = Config.remoteInventoryMBPerOpen[index];
+    this.rfPerTick = Config.remoteInventoryRFPerTick[index];
     this.visible = visible;
+    
+    Fluid fluid = null;
+    String fluidName = Config.remoteInventoryFluidTypes[index];
+    if(fluidName != null) {
+      fluid = FluidRegistry.getFluid(fluidName);
+      if(fluid == null) {
+        Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + fluidName + "' using default fluid " + Fluids.fluidNutrientDistillation);
+      }
+    }
+    if(fluid == null) {
+      fluid = Fluids.fluidNutrientDistillation;
+    }
+    fluidType = fluid;
+    
   }
 
   public int toMetadata() {
@@ -62,12 +88,28 @@ public enum ItemRemoteInvAccessType {
     return interdimensional;
   }
 
-  public int getCapacity() {
-    return capacity;
+  public int getRfCapacity() {
+    return rfCapacity;
+  }
+  
+  public int getFluidCapacity() {
+    return fluidCapacity;
   }
 
+  public Fluid getFluidType() {
+    return fluidType;
+  }
+  
   public boolean isVisible() {
     return visible;
+  }
+
+  public int getMbPerOpen() {
+    return mbPerOpen;
+  }
+
+  public int getRfPerTick() {
+    return rfPerTick;
   }
 
 }
