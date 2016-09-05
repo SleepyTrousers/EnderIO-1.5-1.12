@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -44,7 +45,7 @@ public class BlockFluidEio extends BlockFluidClassic {
 
   protected BlockFluidEio(Fluid fluid, Material material) {
     super(fluid, material);
-    this.fluid = fluid;    
+    this.fluid = fluid;
     setUnlocalizedName(fluid.getUnlocalizedName());
     setRegistryName( "block" + StringUtils.capitalize(fluidName));
   }
@@ -74,6 +75,9 @@ public class BlockFluidEio extends BlockFluidClassic {
   @Override
   public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
     if(entity.worldObj.isRemote) {
+      if (this == Fluids.blockVaporOfLevity && entity instanceof EntityPlayer) {
+        ((EntityPlayer) entity).motionY += 0.1;
+      }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
       return;
     }
@@ -96,6 +100,8 @@ public class BlockFluidEio extends BlockFluidClassic {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 1200, 0, true, true));
     } else if (this == Fluids.blockCloudSeedConcentrated && entity instanceof EntityLivingBase) {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 40, 0, true, true));
+    }  else if (this == Fluids.blockVaporOfLevity && entity instanceof EntityLivingBase) {
+      ((EntityLivingBase) entity).motionY += 0.1;
     }
 
     super.onEntityCollidedWithBlock(world,pos, state, entity);

@@ -19,6 +19,7 @@ public class Buckets {
   public static ItemStack itemBucketCloudSeed;
   public static ItemStack itemBucketCloudSeedConcentrated;
   public static ItemStack itemBucketEnderDistillation;
+  public static ItemStack itemBucketVaporOfLevity;
 
   public static void createBuckets() {
     if (FluidRegistry.isUniversalBucketEnabled()) {
@@ -39,9 +40,11 @@ public class Buckets {
       FluidRegistry.addBucketForFluid(Fluids.fluidCloudSeed);
       itemBucketCloudSeed = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeed);
       FluidRegistry.addBucketForFluid(Fluids.fluidCloudSeedConcentrated);
-      itemBucketCloudSeedConcentrated = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeedConcentrated);      
+      itemBucketCloudSeedConcentrated = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidCloudSeedConcentrated);
       FluidRegistry.addBucketForFluid(Fluids.fluidEnderDistillation);
       itemBucketEnderDistillation = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidEnderDistillation);
+      FluidRegistry.addBucketForFluid(Fluids.fluidVaporOfLevity);
+      itemBucketVaporOfLevity= UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, Fluids.fluidVaporOfLevity);
       
     } else {
       if (Fluids.fluidXpJuice != null) {
@@ -55,6 +58,7 @@ public class Buckets {
       itemBucketCloudSeed = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeed, Fluids.fluidCloudSeed));
       itemBucketCloudSeedConcentrated = new ItemStack(ItemBucketEio.create(Fluids.blockCloudSeedConcentrated, Fluids.fluidCloudSeedConcentrated));
       itemBucketEnderDistillation = new ItemStack(ItemBucketEio.create(Fluids.blockEnderDistillation, Fluids.fluidEnderDistillation));
+      itemBucketVaporOfLevity = new ItemStack(ItemBucketEio.create(Fluids.blockVaporOfLevity, Fluids.fluidVaporOfLevity));
     }
   }
 
@@ -69,6 +73,7 @@ public class Buckets {
       ClientUtil.registerRenderer(itemBucketCloudSeed.getItem(), ((ItemBucketEio) itemBucketCloudSeed.getItem()).getItemName());
       ClientUtil.registerRenderer(itemBucketCloudSeedConcentrated.getItem(), ((ItemBucketEio) itemBucketCloudSeedConcentrated.getItem()).getItemName());
       ClientUtil.registerRenderer(itemBucketEnderDistillation.getItem(), ((ItemBucketEio) itemBucketEnderDistillation.getItem()).getItemName());
+      ClientUtil.registerRenderer(itemBucketVaporOfLevity.getItem(), ((ItemBucketEio) itemBucketVaporOfLevity.getItem()).getItemName());
       if (itemBucketXpJuice != null) {
         ClientUtil.registerRenderer(itemBucketXpJuice.getItem(), ((ItemBucketEio) itemBucketXpJuice.getItem()).getItemName());
       }

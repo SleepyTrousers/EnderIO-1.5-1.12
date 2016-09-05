@@ -164,6 +164,11 @@ public class EnderIO {
   public static final @Nonnull String DOMAIN = MODID.toLowerCase(Locale.US);
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
+  
+  //Enable this to use forge buckets
+//  static {
+//    FluidRegistry.enableUniversalBucket();
+//  }
 
   @Instance(MODID)
   public static EnderIO instance;
@@ -490,7 +495,7 @@ public class EnderIO {
     PaintSourceValidator.instance.loadConfig();
 
     //should have been registered by open  blocks
-    if (Fluids.fluidXpJuice == null) {                                       
+    if (Fluids.fluidXpJuice == null) {
       fluids.forgeRegisterXPJuice();
     }
     if (Config.dumpMobNames) {
@@ -502,7 +507,7 @@ public class EnderIO {
   @EventHandler
   public void loadComplete(FMLLoadCompleteEvent event) {
     // Some mods send IMCs during PostInit, so we catch them here.
-    processImc(FMLInterModComms.fetchRuntimeMessages(this)); 
+    processImc(FMLInterModComms.fetchRuntimeMessages(this));
   }
   
   @EventHandler
@@ -522,7 +527,7 @@ public class EnderIO {
   
   private void addModIntegration() {
     // ThaumcraftCompat.load();
-    BuildcraftIntegration.init();    
+    BuildcraftIntegration.init();
   }
 
   private void processImc(ImmutableList<IMCMessage> messages) {

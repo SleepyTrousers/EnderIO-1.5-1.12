@@ -32,6 +32,10 @@
         "ender_distillation": {
             "model": "forge:fluid",
             "custom": { "fluid": "ender_distillation" }            
+        },
+        "vapor_of_levity": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "vapor_of_levity" }            
         }
     }
 }

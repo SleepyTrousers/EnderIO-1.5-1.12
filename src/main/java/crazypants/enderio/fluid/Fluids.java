@@ -32,6 +32,7 @@ public class Fluids {
 
   public static final String NUTRIENT_DISTILLATION_NAME = "nutrient_distillation";
   public static final String ENDER_DISTILLATION_NAME = "ender_distillation";
+  public static final String VAPOR_OF_LEVITY_NAME = "vapor_of_levity";
   public static final String HOOTCH_NAME = "hootch";
   public static final String ROCKET_FUEL_NAME = "rocket_fuel";
   public static final String FIRE_WATER_NAME = "fire_water";
@@ -63,6 +64,9 @@ public class Fluids {
   
   public static Fluid fluidEnderDistillation;
   public static BlockFluidEio blockEnderDistillation;
+  
+  public static Fluid fluidVaporOfLevity;
+  public static BlockFluidEio blockVaporOfLevity;
 
   // Open block compatable liquid XP
   public static Fluid fluidXpJuice;
@@ -104,6 +108,16 @@ public class Fluids {
     FluidRegistry.registerFluid(f);
     fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
     blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.WATER);
+    
+    
+    //TODO: Check values for new fluid
+    f = new Fluid(Fluids.VAPOR_OF_LEVITY_NAME, getStill(Fluids.VAPOR_OF_LEVITY_NAME), getFlowing(Fluids.VAPOR_OF_LEVITY_NAME))
+        .setDensity(-10).setViscosity(100).setTemperature(5);
+    FluidRegistry.registerFluid(f);
+    fluidVaporOfLevity = FluidRegistry.getFluid(f.getName());
+    blockVaporOfLevity = BlockFluidEio.create(fluidVaporOfLevity, Material.WATER);
+    blockVaporOfLevity.setQuantaPerBlock(1);
+    
 
     f = new Fluid(Fluids.HOOTCH_NAME, Fluids.getStill(Fluids.HOOTCH_NAME), Fluids.getFlowing(Fluids.HOOTCH_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
@@ -178,6 +192,7 @@ public class Fluids {
     registerFluidBlockRendering(fluidLiquidSunshine, LIQUID_SUNSHINE_NAME);
     registerFluidBlockRendering(fluidCloudSeed, CLOUD_SEED_NAME);
     registerFluidBlockRendering(fluidCloudSeedConcentrated, CLOUD_SEED_CONCENTRATED_NAME);
+    registerFluidBlockRendering(fluidVaporOfLevity, VAPOR_OF_LEVITY_NAME);
   }
 
   @SideOnly(Side.CLIENT)

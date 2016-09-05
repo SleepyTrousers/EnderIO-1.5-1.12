@@ -157,6 +157,10 @@ fluid.ender_distillation=Dew of the Void
 tile.fluid.ender_distillation.name=Dew of the Void
 item.bucketEnder_distillation.name=Dew of the Void Bucket
 
+fluid.vapor_of_levity=Vapor of Levity
+tile.vapor_of_levity.name=Vapor of Levity
+item.bucketVapor_of_levity.name=Vapor of Levity
+
 fluid.hootch=Hootch
 tile.fluid.hootch.name=Hootch
 item.bucketHootch.name=Hootch Bucket
