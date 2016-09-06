@@ -20,7 +20,6 @@ import info.loenwind.autosave.handlers.enderio.HandleStatCollector;
 import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
 import info.loenwind.autosave.handlers.forge.HandleFluidStack;
-import info.loenwind.autosave.handlers.forge.HandleFluidTank;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
 import info.loenwind.autosave.handlers.java.HandleBoolean;
 import info.loenwind.autosave.handlers.java.HandleEnum;
@@ -76,7 +75,6 @@ public class Registry {
     // Forge basic types
     GLOBAL_REGISTRY.register(new HandleFluidStack());
     GLOBAL_REGISTRY.register(new HandleFluid());
-    GLOBAL_REGISTRY.register(new HandleFluidTank());
 
     // Annotated objects
     GLOBAL_REGISTRY.register(new HandleStorable<Object>());
