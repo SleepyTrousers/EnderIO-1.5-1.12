@@ -20,6 +20,8 @@ import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,11 +63,11 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     setMaxStackSize(1);
   }
 
-  @Override  
+  @Override
   public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
    
     if (world.isRemote) {
-      //If its client side we have to return pass so this method is called on server, where we need to perform the op 
+      //If its client side we have to return pass so this method is called on server, where we need to perform the op
       return EnumActionResult.PASS;
     }
     
@@ -77,6 +79,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
       RightClickBlock e = new RightClickBlock(player, hand, player.getHeldItem(hand), pos,side, new Vec3d(hitX, hitY, hitZ));
       if (MinecraftForge.EVENT_BUS.post(e) || e.getResult() == Result.DENY || e.getUseBlock() == Result.DENY || e.getUseItem() == Result.DENY) {
         return EnumActionResult.PASS;
+      }
+      if(block instanceof BlockDoor) {
+        EnumDoorHalf half = bs.getValue(BlockDoor.HALF);
+        if(half == EnumDoorHalf.UPPER) {
+          pos = pos.down();
+        }
       }
       if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
         ret = true;
@@ -97,10 +105,10 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
     if(!ret && player.isSneaking() && block instanceof BlockEio<?>) {
       BlockEio<?> beio = (BlockEio<?>)block;
       if(beio.shouldWrench(world, pos, player, side)) {
-        beio.onBlockActivated(world, pos, bs, player, hand, player.getHeldItem(hand), side, hitX, hitY, hitZ);       
+        beio.onBlockActivated(world, pos, bs, player, hand, player.getHeldItem(hand), side, hitX, hitY, hitZ);
         ret = true;
       }
-    }    
+    }
     if (ret) {
       player.swingArm(hand);
     }
@@ -142,7 +150,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean isFull3D() {   
+  public boolean isFull3D() {
     return true;
   }
 
@@ -153,7 +161,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   
   @Override
-  public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {  
+  public boolean canUse(ItemStack stack, EntityPlayer player, BlockPos pos) {
     return true;
   }
 
@@ -200,18 +208,18 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
 
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
-  public boolean canWrench(EntityPlayer arg0, Entity arg1) {    
+  public boolean canWrench(EntityPlayer arg0, Entity arg1) {
     return false;
   }
 
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
   public void wrenchUsed(EntityPlayer player, BlockPos pos) {
-    used(player.getHeldItemMainhand(), player, pos);    
+    used(player.getHeldItemMainhand(), player, pos);
   }
 
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
-  public void wrenchUsed(EntityPlayer player, Entity arg1) {       
+  public void wrenchUsed(EntityPlayer player, Entity arg1) {
   }
 }
