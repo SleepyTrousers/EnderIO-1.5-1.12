@@ -81,7 +81,9 @@ public class ItemEntry extends ItemEntryBase {
         modId = resourceName.getResourceDomain();
       }
     }
-    modId = "Unknown";
+    if (modId == null) {
+      modId = "Unknown";
+    }
   }
 
   @Override
