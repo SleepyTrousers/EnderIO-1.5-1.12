@@ -99,7 +99,7 @@ public class Fluids {
         .setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.WATER);
+    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.WATER, 0x5a5e00);
     
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
     
@@ -107,22 +107,21 @@ public class Fluids {
         .setDensity(200).setViscosity(1000).setTemperature(175);
     FluidRegistry.registerFluid(f);
     fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
-    blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.WATER);
+    blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.WATER, 0x149535);
     
     
-    //TODO: Check values for new fluid
     f = new Fluid(Fluids.VAPOR_OF_LEVITY_NAME, getStill(Fluids.VAPOR_OF_LEVITY_NAME), getFlowing(Fluids.VAPOR_OF_LEVITY_NAME))
         .setDensity(-10).setViscosity(100).setTemperature(5);
     FluidRegistry.registerFluid(f);
     fluidVaporOfLevity = FluidRegistry.getFluid(f.getName());
-    blockVaporOfLevity = BlockFluidEio.create(fluidVaporOfLevity, Material.WATER);
+    blockVaporOfLevity = BlockFluidEio.create(fluidVaporOfLevity, Material.WATER, 0x41716a);
     blockVaporOfLevity.setQuantaPerBlock(1);
     
 
     f = new Fluid(Fluids.HOOTCH_NAME, Fluids.getStill(Fluids.HOOTCH_NAME), Fluids.getFlowing(Fluids.HOOTCH_NAME)).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.WATER);
+    blockHootch = BlockFluidEio.create(fluidHootch, Material.WATER, 0xffffff);
     FluidFuelRegister.instance.addFuel(f, Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid",
         Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
@@ -131,7 +130,7 @@ public class Fluids {
         .setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
-    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.WATER);
+    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.WATER, 0x707044);
     FluidFuelRegister.instance.addFuel(f, Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid",
         Fluids.ROCKET_FUEL_NAME + "@" + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
@@ -140,7 +139,7 @@ public class Fluids {
         .setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
-    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.LAVA);
+    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.LAVA, 0x8a490f);
     FluidFuelRegister.instance.addFuel(f, Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid",
         Fluids.FIRE_WATER_NAME + "@" + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
@@ -148,19 +147,19 @@ public class Fluids {
     f = new Fluid(Fluids.LIQUID_SUNSHINE_NAME, getStill(LIQUID_SUNSHINE_NAME), getFlowing(LIQUID_SUNSHINE_NAME)).setDensity(200).setViscosity(400);
     FluidRegistry.registerFluid(f);
     fluidLiquidSunshine = FluidRegistry.getFluid(f.getName());
-    blockLiquidSunshine = BlockFluidEio.create(fluidLiquidSunshine, Material.WATER);
+    blockLiquidSunshine = BlockFluidEio.create(fluidLiquidSunshine, Material.WATER, 0xd2c561);
     blockLiquidSunshine.setLightLevel(1);
 
     f = new Fluid(Fluids.CLOUD_SEED_NAME, getStill(CLOUD_SEED_NAME), getFlowing(CLOUD_SEED_NAME)).setDensity(500).setViscosity(800);
     FluidRegistry.registerFluid(f);
     fluidCloudSeed = FluidRegistry.getFluid(f.getName());
-    blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.WATER);
+    blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.WATER, 0x248589);
 
     f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME, getStill(CLOUD_SEED_CONCENTRATED_NAME), getFlowing(CLOUD_SEED_CONCENTRATED_NAME)).setDensity(1000)
         .setViscosity(1200);
     FluidRegistry.registerFluid(f);
     fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
-    blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.WATER);
+    blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.WATER, 0x3f5c5d);
 
     if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
