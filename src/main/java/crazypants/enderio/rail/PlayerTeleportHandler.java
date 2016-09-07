@@ -28,7 +28,7 @@ public class PlayerTeleportHandler {
 
   public void teleportPlayer(TileTransceiver reciever, EntityPlayerMP playerToTP, EntityMinecart playerToMount) {
     //Need to quete these as we cant perform the operation during a tile entities update phase as
-    //we need to remove the player from being tracked 
+    //we need to remove the player from being tracked
     queue.add(new TeleportAction(reciever, playerToTP, playerToMount));
   }
 
@@ -45,7 +45,6 @@ public class PlayerTeleportHandler {
     }
 
     void doTeleport() {
-      //TODO: 1.8
 //      int toDim = reciever.getWorld().provider.getDimensionId();
 //      int meta = reciever.getBlockMetadata();
 //
@@ -72,9 +71,9 @@ public class PlayerTeleportHandler {
 //      }
 ////      ChunkCoordinates spawn = new ChunkCoordinates((int) playerToTP.posX, (int) playerToTP.posY, (int) playerToTP.posZ);
 ////      TeleportUtil.teleportPlayer((WorldServer) reciever.getWorldObj(), playerToTP, toDim, spawn);
-//            
+//
 //      reciever.getRailController().onPlayerTeleported(playerToTP, playerToMount);
-//      playerToTP.mcServer.getConfigurationManager().transferPlayerToDimension(playerToTP, toDim, new TeleporterEIO( playerToTP.mcServer.worldServerForDimension(toDim)));      
+//      playerToTP.mcServer.getConfigurationManager().transferPlayerToDimension(playerToTP, toDim, new TeleporterEIO( playerToTP.mcServer.worldServerForDimension(toDim)));
     }
 
   }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.util.BlockRenderLayer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -38,8 +37,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -72,7 +72,7 @@ public class GuiEnderface extends GuiScreen {
   private boolean animateInX = false;
   private boolean animateInY = false;
   // private boolean animating = true;
-  float animationDuration = 60;
+  float animationDuration = 10;
 
   private final Vector3d origin = new Vector3d();
   private final Vector3d eye = new Vector3d();
@@ -255,9 +255,7 @@ public class GuiEnderface extends GuiScreen {
     if (!animateInX && !animateInY) {
 
       if (chunkLoaded) {
-
-        // TODO: Need to depth sort transparent passes
-
+        
         TravelController.instance.setSelectionEnabled(false);
 
         GL11.glEnable(GL11.GL_CULL_FACE);
@@ -277,7 +275,7 @@ public class GuiEnderface extends GuiScreen {
           VertexBuffer wr = Tessellator.getInstance().getBuffer();
           wr.begin(7, DefaultVertexFormats.BLOCK);
           Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
-          for (ViewableBlocks ug : blocks) {           
+          for (ViewableBlocks ug : blocks) {
             BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
             blockrendererdispatcher.renderBlock(ug.bs, ug.bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
           }
@@ -296,7 +294,7 @@ public class GuiEnderface extends GuiScreen {
         TileEntityRendererDispatcher.staticPlayerZ = origin.z - eye.z;
 
         for (int pass = 0; pass < 2; pass++) {
-          ForgeHooksClient.setRenderPass(pass);          
+          ForgeHooksClient.setRenderPass(pass);
           setGlStateForPass(pass);
           for (ViewableBlocks ug : blocks) {
             TileEntity tile = world.getTileEntity(ug.bc.getBlockPos());
@@ -309,7 +307,7 @@ public class GuiEnderface extends GuiScreen {
               TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
               GL11.glPopAttrib();
             }
-          }          
+          }
         }
         setGlStateForPass(0);
         TravelController.instance.setSelectionEnabled(true);

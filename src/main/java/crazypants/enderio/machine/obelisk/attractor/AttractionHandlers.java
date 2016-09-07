@@ -10,10 +10,10 @@ public class AttractionHandlers {
   private final List<IMobAttractionHandler> registry = new ArrayList<IMobAttractionHandler>();
 
   private AttractionHandlers() {
-    // TODO: Squid
-    // TODO: Bat
-    // TODO: Wither
-    // TODO: Ghast
+    // TODO: Squid,
+    // Bat
+    // Wither
+    // Ghast
     // Immobile: Shulker
     // Not SoulVialable: Ender Dragon
     registry.add(new EndermanAttractionHandler());

@@ -15,7 +15,7 @@ public class CraftingHelperNEI extends CraftingHelper {
   @Optional.Method(modid = "NotEnoughItems")
   public void install() {
     super.install();
-    //TODO: 1.8
+    //TODO: Mod NEI
 //    if(overlayRenderer != null) {
 //      LayoutManager.overlayRenderer = (IRecipeOverlayRenderer) overlayRenderer;
 //    } else {
@@ -38,7 +38,6 @@ public class CraftingHelperNEI extends CraftingHelper {
   @Optional.Method(modid = "NotEnoughItems")
   public void remove() {
     super.remove();
-  //TODO: 1.8
 //    LayoutManager.overlayRenderer = null;
   }
 }

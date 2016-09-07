@@ -192,7 +192,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
         .getMaxEnergyStored()));
     final @Nullable NBTTagCompound tagCompound = itemstack.getTagCompound();
-    if (tagCompound != null) { // TODO
+    if (tagCompound != null) {
       ItemStack[] stacks = Reader.readField(tagCompound, ItemStack[].class, "inventory", new ItemStack[4]);
       if (stacks != null) {
         int count = 0;
@@ -382,7 +382,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     }
     
     IBlockState bs = world.getBlockState(pos);
-    world.notifyBlockUpdate(pos, bs, bs, 3);    
+    world.notifyBlockUpdate(pos, bs, bs, 3);
     }
   }
 

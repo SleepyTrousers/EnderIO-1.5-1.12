@@ -1,6 +1,5 @@
 package crazypants.enderio.item;
 
-import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
@@ -15,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +51,7 @@ public class YetaWrenchOverlayRenderer {
     return null;
   }
 
-  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedWrench) {    
+  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedWrench) {
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(equippedWrench);
     
     if (mode != cachedMode) {
@@ -64,8 +64,6 @@ public class YetaWrenchOverlayRenderer {
     
     int modeCount = ConduitDisplayMode.registrySize();
     Iterable<ConduitDisplayMode> renderable = ConduitDisplayMode.getRenderableModes();
-
-    //System.out.println("YetaWrenchOverlayRenderer.doRenderOverlay: " + Config.yetaWrenchOverlayMode);
     
     switch (Config.yetaWrenchOverlayMode) {
     case 0:
@@ -79,7 +77,6 @@ public class YetaWrenchOverlayRenderer {
         int x = res.getScaledWidth() / 2 - 8;
         int y = res.getScaledHeight() / 2 - 24;
 
-        // TODO when I've not been up for 16 hrs, clean this up
         IWidgetIcon widget = mode.getWidgetSelected();
         RenderUtil.bindTexture(widget.getMap().getTexture());
         widget.getMap().render(widget, x, y, true);
@@ -98,7 +95,6 @@ public class YetaWrenchOverlayRenderer {
         IWidgetIcon widget = mode.getWidgetSelected();
         RenderUtil.bindTexture(widget.getMap().getTexture());
         widget.getMap().render(widget, x, y, true);
-//        RenderUtil.renderQuad2D(x, y, 0, 16, 16, 0xFFFFFF);
       }
       break;
     case 1:
@@ -119,13 +115,13 @@ public class YetaWrenchOverlayRenderer {
       GL11.glShadeModel(GL11.GL_SMOOTH);
       
       
-      VertexFormat vf = DefaultVertexFormats.POSITION_COLOR;   
+      VertexFormat vf = DefaultVertexFormats.POSITION_COLOR;
       Tessellator tess = Tessellator.getInstance();
       VertexBuffer wr = tess.getBuffer();
-      wr.begin(GL11.GL_QUADS, vf);      
+      wr.begin(GL11.GL_QUADS, vf);
       wr.pos(x, y, -5).color(0, 0, 0, 0.2f).endVertex();;
       wr.pos(x, y + height, -5).color(0, 0, 0, 0.2f).endVertex();;
-      Vector4f color = new Vector4f(0, 0, 0, 1);      
+      Vector4f color = new Vector4f(0, 0, 0, 1);
       wr.pos(x + size, y + height, -5).color(color.x, color.y, color.z, color.w).endVertex();
       wr.pos(x + size, y, -5).color(color.x, color.y, color.z, color.w).endVertex();
       tess.draw();
@@ -177,7 +173,7 @@ public class YetaWrenchOverlayRenderer {
           y += 16;
         }
         count++;
-      }      
+      }
     }
   }
 }

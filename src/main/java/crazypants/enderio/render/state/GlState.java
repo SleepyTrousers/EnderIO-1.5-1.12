@@ -10,12 +10,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
 import net.minecraft.client.renderer.GlStateManager.FogMode;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 /**
  * A class to manage the GlStateManager's state.
@@ -628,7 +628,7 @@ public class GlState {
 
     @Override
     public void apply() {
-      //TODO: 1.9 some of these things removed
+      //TODO: 1.10 some of these things removed
       if (fog) {
         if (useDoubleAction) {
           GlStateManager.disableFog();
@@ -642,7 +642,6 @@ public class GlState {
           GlStateManager.setFogEnd(.6f);
         }
         GlStateManager.enableFog();
-        //TODO: 1.9
 //        GlStateManager.setFog(mode);
         GlStateManager.setFogDensity(density);
         GlStateManager.setFogStart(start);
@@ -709,7 +708,7 @@ public class GlState {
           GlStateManager.cullFace(CullFace.BACK);
         }
         GlStateManager.enableCull();
-        //TODO: 1.9
+        //TODO: 1.10
         //GlStateManager.cullFace(mode);
         if (forceAction) {
           GL11.glEnable(GL11.GL_CULL_FACE);

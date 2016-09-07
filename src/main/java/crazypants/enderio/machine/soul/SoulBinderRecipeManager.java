@@ -32,7 +32,6 @@ public class SoulBinderRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderPrecientCystalRecipe.instance);
 
     //Ender Rail
-    //TODO: 1.8 Enable once BlockEnderRail is available
 //    if(Config.transceiverEnabled && Config.enderRailEnabled) {
 //      BasicSoulBinderRecipe err = new BasicSoulBinderRecipe(new ItemStack(Blocks.detector_rail), new ItemStack(EnderIO.blockEnderRail),
 //          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "EnderRail", "SpecialMobs.SpecialEnderman", "Enderman");

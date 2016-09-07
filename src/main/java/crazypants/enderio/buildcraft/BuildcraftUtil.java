@@ -18,7 +18,7 @@ public class BuildcraftUtil implements IItemReceptor, IFluidReceptor {
       Class.forName("buildcraft.api.transport.IPipeTile");
       BuildcraftUtil instance = new BuildcraftUtil();
       ItemUtil.receptors.add(instance);
-      //TODO: 1.10 might not be needed if BC supports capabilities in 1.10
+      //TODO: Mod BC might not be needed if BC supports capabilities in 1.10
 //      FluidUtil.fluidReceptors.add(instance);
     } catch (Exception e) {
 

@@ -100,7 +100,7 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     @Override
-    protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {      
+    protected boolean isChunkLoaded(int x, int z, boolean allowEmpty) {
       return true;
     }
     
@@ -213,7 +213,7 @@ public class WailaCompat implements IWailaDataProvider {
       info.getWailaInfo(currenttip, player, world, pos.getX(), pos.getY(), pos.getZ());
     }
 
-    else { 
+    else {
       if(block instanceof IAdvancedTooltipProvider) {
         SpecialTooltipHandler.INSTANCE.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {
@@ -235,7 +235,7 @@ public class WailaCompat implements IWailaDataProvider {
           currenttip.add("");
         }
 
-        // TODO: Why do we dump the TEs state into NBT to get these values? We have the TE and could ask it directly.
+        // Why do we dump the TEs state into NBT to get these values? We have the TE and could ask it directly.
         int stored = accessor.getNBTData().getInteger("storedEnergyRF");
         int max = accessor.getNBTData().getInteger("maxStoredRF");
 
@@ -273,7 +273,7 @@ public class WailaCompat implements IWailaDataProvider {
         String lockedStr = fluidTypeLocked ? EnderIO.lang.localize("itemLiquidConduit.lockedWaila") : "";
         String fluidName = fluid.getLocalizedName();
         int fluidAmount = fluid.amount;
-        if(fluidAmount > 0) {       
+        if(fluidAmount > 0) {
           // NOTE: using PowerDisplayUtil.formatPower here to handle the non breaking space issue
           currenttip.add(String.format("%s%s%s%s %s%s%s %s", lockedStr,
               TextFormatting.WHITE, fluidName, TextFormatting.RESET,
@@ -300,10 +300,10 @@ public class WailaCompat implements IWailaDataProvider {
     if(te instanceof IConduitBundle) {
       IConduitBundle icb = (IConduitBundle) te;
       IPowerConduit pc = icb.getConduit(IPowerConduit.class);
-      if(pc != null ) {        
+      if(pc != null ) {
         tag.setInteger("maxStoredRF", pc.getMaxEnergyStored());
         if(icb.displayPower()) {
-          tag.setInteger("storedEnergyRF", pc.getEnergyStored());          
+          tag.setInteger("storedEnergyRF", pc.getEnergyStored());
         }
       }
       

@@ -325,7 +325,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   }
 
-  //TODO: What a hack!
+  //What a hack!
   private boolean isElementRoot(String str) {
     return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str) || "SliceAndSpliceRecipes".equals(str);
   }

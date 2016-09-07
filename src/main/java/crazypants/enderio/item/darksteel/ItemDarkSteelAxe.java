@@ -82,7 +82,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
 
   protected ItemDarkSteelAxe() {
-    //super(ItemDarkSteelSword.MATERIAL); //TODO: 1.9 bug in forge maybe?
+    //super(ItemDarkSteelSword.MATERIAL); //TODO: 1.10 bug in forge maybe?
     super(ToolMaterial.DIAMOND);
     toolMaterial = ItemDarkSteelSword.MATERIAL;
     damageVsEntity = 8;

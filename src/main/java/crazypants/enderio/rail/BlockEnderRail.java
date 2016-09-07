@@ -65,7 +65,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     BlockEnderRail res = new BlockEnderRail();
     res.init();
 
-    if(Config.enderRailTeleportPlayers) {      
+    if(Config.enderRailTeleportPlayers) {
       MinecraftForge.EVENT_BUS.register(PlayerTeleportHandler.instance);
     }
     return res;
@@ -84,7 +84,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       setCreativeTab(EnderIOTab.tabEnderIO);
     }
 //    setBlockTextureName("enderio:blockEnderRail");
-    setHardness(0.7F);    
+    setHardness(0.7F);
   }
 
   private void init() {
@@ -117,7 +117,6 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       float hitX, float hitY, float hitZ) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if(!world.isRemote) {
-        //TODO: 1.8
 //        int meta = world.getBlockMetadata(x, y, z);
 //        meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);
 //        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
@@ -171,7 +170,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(world.isRemote) {
       return;
     }
-//TODO: 1.8
+
 //    int origMeta = world.getBlockMetadata(x, y, z);
 //    int newMeta = origMeta;
 //    if(field_150053_a) {
@@ -291,7 +290,6 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
         if(entities != null) {
           toTeleport.add(entities);
           toDespawn.add(cartInTrain);
-          //TODO: 1.9 Mounted entities
 //          if(Config.enderRailTeleportPlayers && cartInTrain.riddenByEntity instanceof EntityPlayerMP) {
 //            playerToTP = (EntityPlayerMP) cartInTrain.riddenByEntity;
 //            playerToMount = getCart(entities);

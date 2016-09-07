@@ -15,7 +15,7 @@ public class ThaumcraftCompat {
 
   private static void loadAspects() {
 
-    //TODO: 1.9 Thaumcraft compat
+    //TODO: Mod Thaumcraft
 //    ThaumcraftApi.registerObjectTag("dustCoal", new AspectList().add(getAspects(Items.COAL)));
 //    ThaumcraftApi.registerObjectTag("itemSilicon", new AspectList().add(Aspect.FIRE, 1).add(Aspect.ORDER, 1).add(Aspect.SENSES, 1));
 //
@@ -54,7 +54,6 @@ public class ThaumcraftCompat {
 //        .add(getAspects(Blocks.SOUL_SAND))
 //        .add(getAspects(Items.GOLD_INGOT)));
 //
-//    //TODO: 1.8
 ////    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull), new AspectList()
 ////        .add(Aspect.MAGIC, 3)
 ////        .add(Aspect.TRAVEL, 4)
@@ -93,8 +92,7 @@ public class ThaumcraftCompat {
 //    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()), new AspectList()
 //        .add(Aspect.AIR, 2)
 //        .add(Aspect.ELDRITCH, 4)
-//        //TODO: 1.8 
-//        //.add(Aspect.TRAVEL, 2) 
+//        //.add(Aspect.TRAVEL, 2)
 //        .add(getAspects(Items.EMERALD)));
 //
 //    ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()), new AspectList()
@@ -151,7 +149,6 @@ public class ThaumcraftCompat {
 //  }
 
 //  private static void addAspectsFromRecipes(Item item, int meta) {
-//    //TODO: 1.8
 //    //ThaumcraftApi.registerObjectTag(new ItemStack(item, 1, meta), ThaumcraftApiHelper.generateTags(item, meta));
 //  }
 

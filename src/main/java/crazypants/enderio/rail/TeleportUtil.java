@@ -46,7 +46,6 @@ public class TeleportUtil {
     List<Entity> result = new ArrayList<Entity>();
     result.add(newCart);
 
-    //TODO: 1.9
 //    Entity passenger = cart.riddenByEntity;
 //    if(passenger != null && !(passenger instanceof EntityPlayer)) {
 //      Entity newPas = EntityList.createEntityByName(EntityList.getEntityString(passenger), worldserver1);
@@ -72,7 +71,6 @@ public class TeleportUtil {
     MinecraftServer minecraftserver = FMLCommonHandler.instance().getMinecraftServerInstance();
     WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimension());
 
-    //TODO: 1.9
 //    Entity passenger = cart.riddenByEntity;
 //    if(passenger != null && !(passenger instanceof EntityPlayer)) {
 //      worldserver.removeEntity(passenger);
@@ -97,7 +95,7 @@ public class TeleportUtil {
     if(Config.machineSoundsEnabled) {
       world.playSound(entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.5F, 0.25F, false);
     }
-  }  
+  }
 
 //  public static void teleportPlayer(WorldServer teleportTo, EntityPlayerMP player, int dimension, ChunkCoordinates spawn) {
 //    WorldServer originalWorld = (WorldServer) player.worldObj;
@@ -150,7 +148,7 @@ public class TeleportUtil {
 ////      world.getChunkFromChunkCoords(cx, cy).isModified = true;
 ////    }
 ////    world.loadedEntityList.remove(player);
-////    world.getEntityTracker().removeEntityFromAllTrackingPlayers(player);    
+////    world.getEntityTracker().removeEntityFromAllTrackingPlayers(player);
 //  }
 
  

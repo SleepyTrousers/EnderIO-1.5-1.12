@@ -66,7 +66,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
-    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: 1.9 Thaumcraft
+    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: Mod Thaumcraft
 
 
   public static final ArmorMaterial MATERIAL = createMaterial();
@@ -337,7 +337,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
-  //TODO: 1.9 Thaumcraft
+  //TODO: Mod Thaumcraft
 
 //  @Override
 //  @Method(modid = "Thaumcraft")

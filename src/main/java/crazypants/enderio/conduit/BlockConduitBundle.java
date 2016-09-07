@@ -310,7 +310,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
     // SoundEvent path = event.getSound();
     // World world = event.getEntity().worldObj;
-    // //TODO: 1.9 this equals is now stuffed
+    // //TODO: 1.10 this equals is now stuffed
     // if ("EnderIO:silence.step".equals(path) && world.isRemote) {
     // BlockCoord bc = new BlockCoord(event.getEntity().posX,
     // event.getEntity().posY - 2, event.getEntity().posZ);

@@ -108,7 +108,7 @@ public class KeyTracker {
   }
   
   @SubscribeEvent
-  public void onKeyInput(KeyInputEvent event) {   
+  public void onKeyInput(KeyInputEvent event) {
     handleGlide();
     handleElytra();
     handleSoundDetector();
@@ -188,7 +188,7 @@ public class KeyTracker {
 
   private void handleGoggles() {
 //    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    //TODO: 1.9 Thaumcraft
+    //TODO: Mod Thaumcraft
 //    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
 //      return;
 //    }
@@ -223,10 +223,10 @@ public class KeyTracker {
       
       int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
       equipped.setItemDamage(newMeta);
-      PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());   
+      PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());
       player.swingArm(EnumHand.MAIN_HAND);
       
-    }    
+    }
   }
 
   private void handleSoundDetector() {

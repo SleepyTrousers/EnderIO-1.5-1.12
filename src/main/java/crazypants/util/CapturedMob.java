@@ -92,7 +92,7 @@ public class CapturedMob {
 
   private CapturedMob(NBTTagCompound nbt) {
     if (nbt.hasKey(ENTITY_KEY)) {
-      entityNbt = (NBTTagCompound) nbt.getCompoundTag(ENTITY_KEY).copy();
+      entityNbt = nbt.getCompoundTag(ENTITY_KEY).copy();
     } else {
       entityNbt = null;
     }
@@ -112,7 +112,7 @@ public class CapturedMob {
       variant = mkEnumForType(ord);
     } else {
       variant = null;
-    }    
+    }
   }
 
   private CapturedMob(String entityId, Enum<?> variant) {
@@ -161,7 +161,7 @@ public class CapturedMob {
       data.setBoolean(IS_STUB_KEY, isStub);
     }
     if (variant != null) {
-      data.setShort(VARIANT_KEY, (short)variant.ordinal());      
+      data.setShort(VARIANT_KEY, (short)variant.ordinal());
     }
     return data;
   }
@@ -237,7 +237,7 @@ public class CapturedMob {
       ((EntityLiving) entity).playLivingSound();
     }
 
-    //TODO: 1.9, need to figure out how this works now
+    //TODO: 1.10, need to figure out how this works now
 //    Entity riddenByEntity = entity.riddenByEntity;
 //    while (riddenByEntity != null) {
 //      riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
@@ -343,7 +343,7 @@ public class CapturedMob {
   public @Nonnull String getDisplayName() {
     String baseName = null;
     if (variant != null && SKELETON_ENTITY_NAME.equals(entityId)) {
-      // TODO: The value is in the enum but not exposed, need to fix this
+      // The value is in the enum but not exposed, need to fix this
       String typeName = variant == SkeletonType.NORMAL ? entityId : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray";
       baseName = EntityUtil.getDisplayNameForEntity(typeName);
     } else if (variant != null && ZOMBIE_ENTITY_NAME.equals(entityId)) {

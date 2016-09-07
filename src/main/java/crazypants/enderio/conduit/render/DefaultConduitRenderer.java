@@ -11,13 +11,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import static net.minecraft.util.EnumFacing.DOWN;
-import static net.minecraft.util.EnumFacing.EAST;
-import static net.minecraft.util.EnumFacing.NORTH;
-import static net.minecraft.util.EnumFacing.SOUTH;
-import static net.minecraft.util.EnumFacing.UP;
-import static net.minecraft.util.EnumFacing.WEST;
-
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -29,6 +22,13 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.EAST;
+import static net.minecraft.util.EnumFacing.NORTH;
+import static net.minecraft.util.EnumFacing.SOUTH;
+import static net.minecraft.util.EnumFacing.UP;
+import static net.minecraft.util.EnumFacing.WEST;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -88,7 +88,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       addQuadsForSection(bb, tex, component.dir, quads);
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);        
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);
       }
     } else {
       BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
@@ -147,10 +147,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
           tex = conduit.getTransmitionTextureForState(component);
           if (tex == null) {
             tex = IconUtil.instance.errorTexture;
-          }          
+          }
           renderTransmissionDynamic(conduit, tex, component, selfIllum);
-        } 
-        tex = conduit.getTextureForState(component);        
+        }
+        tex = conduit.getTextureForState(component);
         renderConduitDynamic(tex, conduit, component, selfIllum);
       }
     }
@@ -338,7 +338,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     // tessellator.setColorOpaque_F(1, 1, 1);
   }
 
-  // TODO: This is a really hacky, imprecise and slow way to do this
+  // This is a really hacky, imprecise and slow way to do this
   public BoundingBox[] toCubes(BoundingBox bb) {
 
     // NB This on handles the really simple conduit case!

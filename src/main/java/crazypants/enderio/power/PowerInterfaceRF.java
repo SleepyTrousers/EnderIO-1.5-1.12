@@ -7,20 +7,18 @@ import net.minecraft.util.EnumFacing;
 
 public class PowerInterfaceRF implements IPowerInterface {
 
-  
-
   private final IEnergyConnection con;
   private IEnergyHandler eh;
   private IEnergyReceiver er;
 
-  public PowerInterfaceRF(IEnergyConnection con) {       
+  public PowerInterfaceRF(IEnergyConnection con) {
     this.con = con;
     if(con instanceof IEnergyHandler) {
       eh = (IEnergyHandler)con;
     }
     if(con instanceof IEnergyReceiver) {
       er = (IEnergyReceiver)con;
-    }       
+    }
   }
 
   @Override
@@ -81,11 +79,10 @@ public class PowerInterfaceRF implements IPowerInterface {
 
   @Override
   public boolean isInputOnly() {
-    // TODO: 1.8
     return false;
   }
 
-  public static int getPowerRequest(EnumFacing north, IInternalPowerReceiver pr) {    
+  public static int getPowerRequest(EnumFacing north, IInternalPowerReceiver pr) {
     return pr.receiveEnergy(north, 999999, true);
   }
 

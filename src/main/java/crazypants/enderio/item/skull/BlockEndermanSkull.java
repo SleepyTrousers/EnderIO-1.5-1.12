@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers { //TODO: 1.9 Thaumcraft IInfusionStabiliser
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers { //TODO: Mod Thaumcraft IInfusionStabiliser
 
   public enum SkullType implements IStringSerializable {
 
@@ -92,7 +92,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    Item item = Item.getItemFromBlock(this);    
+    Item item = Item.getItemFromBlock(this);
     int num = SkullType.values().length;
     for (int i = 0; i < num; i++) {
       SkullType st = SkullType.values()[i];
@@ -167,7 +167,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return super.getSelectedBoundingBox(bs, worldIn, pos);
   }
 
-  //TODO: 1.9 Thaumcraft
+  //TODO: Mod Thaumcraft
 //  @Override
 //  @Optional.Method(modid = "Thaumcraft")
 //  public boolean canStabaliseInfusion(World world, BlockPos pos) {

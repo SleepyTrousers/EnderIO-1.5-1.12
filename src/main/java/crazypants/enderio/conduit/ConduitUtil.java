@@ -163,8 +163,8 @@ public class ConduitUtil {
     }
     if(player == null || player.worldObj.isRemote) {
       return YetaUtil.shouldHeldItemHideFacadesClient();
-    } 
-    return YetaUtil.shouldHeldItemHideFacades(player); 
+    }
+    return YetaUtil.shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -388,7 +388,7 @@ public class ConduitUtil {
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
     if (!world.isRemote) {
-      //TODO: 1.9 We cant access the break sound here but I am not sure we need to
+      //TODO: 1.10 We cant access the break sound here but I am not sure we need to
       //world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
     } else {
       playClientBreakSound(snd);

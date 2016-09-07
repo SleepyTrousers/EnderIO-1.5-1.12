@@ -14,7 +14,6 @@ import crazypants.enderio.teleport.telepad.TelepadTarget.TelepadTargetArrayListH
 import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
@@ -43,20 +42,20 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public void doUpdate() {
     super.doUpdate();
     
-    if (worldObj.isRemote) {  
+    if (worldObj.isRemote) {
       return;
     }
     
-    if(inventory[0] != null && inventory[1] == null) {        
+    if(inventory[0] != null && inventory[1] == null) {
       ItemStack stack = inventory[0];
       TelepadTarget newTarg = TelepadTarget.readFromNBT(stack);
       if(newTarg != null && !targets.contains(newTarg)) {
-        addTarget(newTarg);  
+        addTarget(newTarg);
         PacketHandler.sendToAllAround(new PacketTargetList(this, newTarg, true), this);
-      }      
+      }
       inventory[0] = null;
       inventory[1] = stack;
-      markDirty();      
+      markDirty();
     }
 
     if(getEnergyStored() <= 0) {
@@ -76,9 +75,9 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public void addTarget(TelepadTarget newTarg) {
     if(newTarg == null) {
       return;
-    }    
+    }
     targets.add(newTarg);
-    markDirty();                
+    markDirty();
   }
   
   public void removeTarget(TelepadTarget target) {
@@ -97,7 +96,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     targets.clear();
     if(t != null) {
       targets.addAll(t);
-    } 
+    }
   }
   
   
@@ -106,7 +105,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {    
+  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return true;
     }
@@ -116,7 +115,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {      
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) this;
     }
     return super.getCapability(capability, facing);
@@ -132,7 +131,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     if(slot < 0 || slot >= inventory.length) {
       return null;
     }
-    return inventory[slot];    
+    return inventory[slot];
   }
   
   @Override
@@ -140,7 +139,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     if(slot < 0 || slot >= inventory.length) {
       return;
     }
-    inventory[slot] = stack;    
+    inventory[slot] = stack;
   }
 
   @Override
@@ -151,7 +150,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     if(!simulate) {
       inventory[0] = stack.copy();
       markDirty();
-    }    
+    }
     return null;
   }
 
@@ -192,7 +191,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public void setEnergyStored(int storedEnergy) {
-    storedEnergyRF = MathHelper.clamp_int(storedEnergy, 0, getMaxEnergyStored());       
+    storedEnergyRF = MathHelper.clamp_int(storedEnergy, 0, getMaxEnergyStored());
   }
 
   @Override
@@ -201,7 +200,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {   
+  public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
     int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored() - getEnergyStored()));
     if (!simulate) {
       setEnergyStored(getEnergyStored() + max);
@@ -240,28 +239,5 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public int getPowerScaled(int scale) {
     return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
   }
-
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) { 
-    super.writeCustomNBT(root);
-    //TODO: Remove once @Store issue is fixed
-    if(facing != null) {
-      root.setShort("facingOrd", (short)facing.ordinal());
-    }
-  }
-
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    super.readCustomNBT(root);
-  //TODO: Remove once @Store issue is fixed
-    if(root.hasKey("facingOrd")) {
-      int ord = MathHelper.clamp_int(root.getShort("facingOrd"), 0, DialerFacing.values().length - 1);
-      facing = DialerFacing.values()[ord];      
-    } else {
-      facing = null;
-    }
-  }
-  
-  
 
 }

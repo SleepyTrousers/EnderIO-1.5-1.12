@@ -46,7 +46,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
   }
 
   @Override
-  public void initGui() {    
+  public void initGui() {
     super.initGui();
 
     int x = (xSize / 2) - (BUTTON_SIZE / 2);
@@ -97,7 +97,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     drawTexturedModalRect(x, y, 186, 33, 16, 63);
 
     if(shouldRenderProgress() && getTileEntity().getActiveTask() != null) {
-      // TODO test
+      // TODO 1.10 test
       int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
       Color color = getTileEntity().getActiveTask().color;
       GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);

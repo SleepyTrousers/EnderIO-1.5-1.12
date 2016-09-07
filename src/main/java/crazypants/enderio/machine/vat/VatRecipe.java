@@ -69,7 +69,7 @@ public class VatRecipe implements IRecipe {
                     outputFluidStack.amount = Math.round(im * r2.getMulitplier() * Fluid.BUCKET_VOLUME);
                     inputFluidStacks.put(r0, r1, inputFluidStack.copy());
                     outputFluidStacks.put(r0, r1, outputFluidStack.copy());
-                    // TODO: 1.8 ee3
+                    // TODO: Mod ee3
                     // registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), r1.getInput().copy(), inputFluidStack.copy());
                   }
                 }
@@ -88,7 +88,7 @@ public class VatRecipe implements IRecipe {
                 outputFluidStack.amount = Math.round(im * r2.getMulitplier() * Fluid.BUCKET_VOLUME);
                 inputFluidStacks.put(r0, r0, inputFluidStack.copy());
                 outputFluidStacks.put(r0, r0, outputFluidStack.copy());
-                // TODO: 1.8 ee3
+                // TODO: Mod ee3
                 // registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
               }
             }

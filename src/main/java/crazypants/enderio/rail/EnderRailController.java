@@ -55,7 +55,7 @@ public class EnderRailController {
     List<EntityMinecart> carts = getMinecartsOnTrack();
     List<UUID> toRemove = new ArrayList<UUID>();
 
-    //any cart in the newly spawned list no longer on the track needs to be removed    
+    //any cart in the newly spawned list no longer on the track needs to be removed
     for (UUID recievedCartUID : newlySpawnedCarts) {
       EntityMinecart minecart = getMinecartWthUUID(recievedCartUID, carts);
       if(minecart == null) {
@@ -109,9 +109,9 @@ public class EnderRailController {
         if(ent instanceof EntityMinecart) {
           cart = (EntityMinecart) ent;
           setCartDirection(cart);
-        }        
+        }
         TeleportUtil.spawn(transciever.getWorld(), ent);
-        if(cart != null) {          
+        if(cart != null) {
           newlySpawnedCarts.add(cart.getPersistentID());
           CartLinkUtil.instance.recreateLinks(cart);
         }
@@ -123,7 +123,6 @@ public class EnderRailController {
   }
 
   private void setCartDirection(EntityMinecart cart) {
-    //TODO: 1.8
 //    int meta = transciever.getWorld().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
 //    EnumFacing dir = BlockEnderRail.getDirection(meta);
 //    CartLinkUtil.instance.setCartDirection(cart, dir);
@@ -138,7 +137,6 @@ public class EnderRailController {
   }
 
   public boolean isClear() {
-    //TODO: 1.8
 //    World worldObj = transciever.getWorld();
 //
 //    BlockCoord railCoord = new BlockCoord(transciever).getLocation(EnumFacing.UP);
@@ -163,7 +161,7 @@ public class EnderRailController {
   public static List<EntityMinecart> getMinecartsAt(World world, int x, int y, int z) {
     List<EntityMinecart> entities = world.getEntitiesWithinAABB(EntityMinecart.class, new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
     List<EntityMinecart> carts = new ArrayList<EntityMinecart>();
-    for (EntityMinecart cart : entities) {      
+    for (EntityMinecart cart : entities) {
       if(!cart.isDead) {
         carts.add(cart);
       }
@@ -256,13 +254,13 @@ public class EnderRailController {
 //    World world = transciever.getWorld();
 //    MinecraftServer minecraftserver = MinecraftServer.getServer();
 //    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.getDimensionId());
-//    for (int i = 0; i < 4; i++) {      
+//    for (int i = 0; i < 4; i++) {
 //      int x = transciever.getPos().getX() + randOffset(2);
 //      int y = transciever.getPos().getY() + 1;
 //      int z = transciever.getPos().getZ() + randOffset(2);
 //      BlockPos spawnPos = new BlockPos(x,y,z);
 //      Block b = world.getBlock(x, y, z);
-//      entity.setPosition(x + 0.5, entity.posY, z + 0.5);      
+//      entity.setPosition(x + 0.5, entity.posY, z + 0.5);
 //      if(world.canPlaceEntityOnSide(b, x, y, z, false, EnumFacing.UP, entity, null)) {
 //        resetForRandomRandomSpawn(entity);
 //        if(worldserver.spawnEntityInWorld(entity)) {
@@ -279,14 +277,14 @@ public class EnderRailController {
 
 //  private void resetForRandomRandomSpawn(Entity entity) {
 //    CartLinkUtil.instance.breakLinks(transciever.getWorld(), entity);
-//    
+//
 ////    entity.riddenByEntity = null;
 ////    entity.ridingEntity = null;
 //    entity.motionX = 0;
 //    entity.motionY = 0;
 //    entity.motionZ = 0;
 //    //    if(entity instanceof EntityMinecart) {
-//    //      entity.posY -= 0.3;      
+//    //      entity.posY -= 0.3;
 //    //    }
 //    entity.prevPosX = entity.posX;
 //    entity.prevPosY = entity.posY;

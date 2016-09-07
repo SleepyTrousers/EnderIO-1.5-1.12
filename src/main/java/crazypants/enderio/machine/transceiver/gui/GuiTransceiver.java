@@ -31,7 +31,6 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
-    // TODO: re-enable when EnderRail is ported
     // if(Config.enderRailEnabled) {
     // tabs.add(new ChannelTab(this, ChannelType.RAIL));
     // }

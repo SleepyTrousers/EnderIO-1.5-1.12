@@ -157,7 +157,6 @@ public class PaintRegistry {
       IModelState state = sourceModel.getDefaultState();
       state = combine(state, rotation);
       if (state instanceof UVLock) {
-        // TODO: 1.9 let's really hope everything that comes through here is instanceof IModelUVLock, otherwise I have no idea how to uvlock it...
         sourceModel = ModelProcessingHelper.uvlock(sourceModel, true);
         state = ((UVLock) state).getParent();
       }
