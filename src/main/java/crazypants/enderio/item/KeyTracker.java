@@ -1,5 +1,11 @@
 package crazypants.enderio.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.common.util.ChatUtil;
@@ -7,7 +13,6 @@ import com.enderio.core.common.util.ChatUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.item.MagnetController.ActiveMagnet;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.item.darksteel.DarkSteelController;
@@ -41,102 +46,82 @@ public class KeyTracker {
 
   public static final KeyTracker instance = new KeyTracker();
 
-  private final KeyBinding glideKey;
+  private interface Action {
+    void execute();
+  }
 
-  private final KeyBinding soundDetectorKey;
+  private final List<Pair<KeyBinding, Action>> keyActions = new ArrayList<Pair<KeyBinding, Action>>();
 
-  private final KeyBinding nightVisionKey;
-
-  private final KeyBinding stepAssistKey;
-
-  private final KeyBinding speedKey;
-
-  private final KeyBinding jumpKey;
-
-  private final KeyBinding gogglesKey;
-
-  private final KeyBinding yetaWrenchMode;
-
-  private final KeyBinding magnetKey;
-
-  private final KeyBinding topKey;
-  
-  private final KeyBinding fovPlusKey, fovMinusKey, fovPlusKeyFast, fovMinusKeyFast, fovResetKey;
+  private final KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
   public KeyTracker() {
-    glideKey = new KeyBinding("enderio.keybind.glidertoggle", Keyboard.KEY_G, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(glideKey);
-    soundDetectorKey = new KeyBinding("enderio.keybind.soundlocator", Keyboard.KEY_L, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(soundDetectorKey);
-    nightVisionKey = new KeyBinding("enderio.keybind.nightvision", Keyboard.KEY_P, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(nightVisionKey);
-    gogglesKey = new KeyBinding("enderio.keybind.gogglesofrevealing", Keyboard./* KEY_R */KEY_NONE, "enderio.category.darksteelarmor");
-    // ClientRegistry.registerKeyBinding(gogglesKey);
-
-    stepAssistKey = new KeyBinding("enderio.keybind.stepassist", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(stepAssistKey);
-
-    speedKey = new KeyBinding("enderio.keybind.speed", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(speedKey);
-
-    jumpKey = new KeyBinding("enderio.keybind.jump", Keyboard.KEY_NONE, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(jumpKey);
-
-    yetaWrenchMode = new KeyBinding("enderio.keybind.yetawrenchmode", Keyboard.KEY_Y, "enderio.category.tools");
-    ClientRegistry.registerKeyBinding(yetaWrenchMode);
-
-    magnetKey = new KeyBinding("enderio.keybind.magnet", Keyboard.CHAR_NONE, "enderio.category.tools");
-    ClientRegistry.registerKeyBinding(magnetKey);
-
-    topKey = new KeyBinding("enderio.keybind.top", Keyboard.CHAR_NONE, "enderio.category.darksteelarmor");
-    ClientRegistry.registerKeyBinding(topKey);
-
-    fovPlusKey = new KeyBinding("enderio.keybind.fovplus", Keyboard.CHAR_NONE, "key.categories.misc");
-    ClientRegistry.registerKeyBinding(fovPlusKey);
-
-    fovMinusKey = new KeyBinding("enderio.keybind.fovminus", Keyboard.CHAR_NONE, "key.categories.misc");
-    ClientRegistry.registerKeyBinding(fovMinusKey);
-
-    fovPlusKeyFast = new KeyBinding("enderio.keybind.fovplusfast", Keyboard.CHAR_NONE, "key.categories.misc");
-    ClientRegistry.registerKeyBinding(fovPlusKeyFast);
-
-    fovMinusKeyFast = new KeyBinding("enderio.keybind.fovminusfast", Keyboard.CHAR_NONE, "key.categories.misc");
-    ClientRegistry.registerKeyBinding(fovMinusKeyFast);
-
-    fovResetKey = new KeyBinding("enderio.keybind.fovreset", Keyboard.CHAR_NONE, "key.categories.misc");
-    ClientRegistry.registerKeyBinding(fovResetKey);
+    create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   enderio.category.darksteelarmor", new GlideAction());
+    create("enderio.keybind.soundlocator      ", Keyboard.KEY_L, "   enderio.category.darksteelarmor", new SoundDetectorAction());
+    create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   enderio.category.darksteelarmor", new NightVisionAction());
+    create("enderio.keybind.gogglesofrevealing", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new GogglesAction());
+    create("enderio.keybind.stepassist        ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new StepAssistAction());
+    create("enderio.keybind.speed             ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new SpeedAction());
+    create("enderio.keybind.jump              ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new JumpAction());
+    create("enderio.keybind.top               ", Keyboard.KEY_NONE, "enderio.category.darksteelarmor", new TopAction());
+    yetaWrenchMode = //
+    create("enderio.keybind.yetawrenchmode    ", Keyboard.KEY_Y, "   enderio.category.tools         ", new YetaWrenchAction());
+    create("enderio.keybind.magnet            ", Keyboard.KEY_NONE, "enderio.category.tools         ", new MagnetAction());
+    create("enderio.keybind.fovreset          ", Keyboard.KEY_NONE, "key.categories.misc            ", new FovAction());
+    fovPlusKey = create("     enderio.keybind.fovplus     ", Keyboard.KEY_NONE, "key.categories.misc");
+    fovMinusKey = create("    enderio.keybind.fovminus    ", Keyboard.KEY_NONE, "key.categories.misc");
+    fovPlusKeyFast = create(" enderio.keybind.fovplusfast ", Keyboard.KEY_NONE, "key.categories.misc");
+    fovMinusKeyFast = create("enderio.keybind.fovminusfast", Keyboard.KEY_NONE, "key.categories.misc");
   }
-  
+
+  private KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
+    final KeyBinding keyBinding = create(description, keyCode, category);
+    keyActions.add(Pair.of(keyBinding, action));
+    return keyBinding;
+  }
+
+  private KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
+    final KeyBinding keyBinding = new KeyBinding(description.trim(), keyCode, category.trim());
+    ClientRegistry.registerKeyBinding(keyBinding);
+    return keyBinding;
+  }
+
   @SubscribeEvent
   public void onKeyInput(KeyInputEvent event) {
-    handleGlide();
-    handleElytra();
-    handleSoundDetector();
-    handleNightVision();
-    handleYetaWrench();
-    handleGoggles();
-    handleStepAssist();
-    handleSpeed();
-    handleJump();
-    handleMagnet();
-    handleTop();
-    handleFov();
+    for (Pair<KeyBinding, Action> keyAction : keyActions) {
+      if (keyAction.getKey().isPressed()) {
+        keyAction.getValue().execute();
+      }
+    }
+
+    if (!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      SoundDetector.instance.setEnabled(false);
+    }
   }
 
-  private void sendEnabledChatMessage(String messageBase, boolean isActive) {
+  private static void sendEnabledChatMessage(String messageBase, boolean isActive) {
     String message = messageBase.concat(isActive ? ".enabled" : ".disabled");
     ChatUtil.sendNoSpamClientUnloc(EnderIO.lang, message);
   }
 
-  private void toggleDarkSteelController(Type type, String messageBase) {
+  private static void toggleDarkSteelController(Type type, String messageBase) {
     boolean isActive = !DarkSteelController.instance.isActive(Minecraft.getMinecraft().thePlayer, type);
     sendEnabledChatMessage(messageBase, isActive);
     DarkSteelController.instance.setActive(Minecraft.getMinecraft().thePlayer, type, isActive);
     PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
   }
 
-  private void handleMagnet() {
-    if(magnetKey.isPressed()) {
+  public static boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
+    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+    SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
+    if (upgrade == null) {
+      return false;
+    }
+    return true;
+  }
+
+  private static class MagnetAction implements Action {
+    @Override
+    public void execute() {
       EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
       ActiveMagnet magnet = MagnetController.getMagnet(player, false);
       if (magnet != null) {
@@ -159,140 +144,125 @@ public class KeyTracker {
     }
   }
 
-  private void handleJump() {
-    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(jumpKey.isPressed()) {
-      toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
-    }
-  }
-
-  private void handleSpeed() {
-    if(!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(speedKey.isPressed()) {
-      toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
-    }
-  }
-
-  private void handleStepAssist() {
-    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if(stepAssistKey.isPressed()) {
-      toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
-    }
-  }
-
-  private void handleGoggles() {
-//    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    //TODO: Mod Thaumcraft
-//    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
-//      return;
-//    }
-    // if(gogglesKey.isPressed()) {
-    // boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
-    // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
-    // DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
-    // }
-  }
-
-  private void handleYetaWrench() {
-    if(!yetaWrenchMode.isPressed()) {
-      if (yetaWrenchMode.getKeyCode() == 0) {
-        Config.checkYetaAccess();
+  private static class JumpAction implements Action {
+    @Override
+    public void execute() {
+      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+        toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
       }
-      return;
     }
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    ItemStack equipped = player.getHeldItemMainhand();
-    if(equipped == null) {
-      return;
-    }
-    if(equipped.getItem() instanceof IConduitControl) {
-      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
-      if(curMode == null) {
-        curMode = ConduitDisplayMode.ALL;
+  }
+
+  private static class SpeedAction implements Action {
+    @Override
+    public void execute() {
+      if (SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+        toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
       }
-      ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
-      ConduitDisplayMode.setDisplayMode(equipped, newMode);
-      PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
-    } else if(equipped.getItem() == EnderIO.itemConduitProbe) {
-      
-      int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
-      equipped.setItemDamage(newMeta);
-      PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());
-      player.swingArm(EnumHand.MAIN_HAND);
-      
     }
   }
 
-  private void handleSoundDetector() {
-    if(!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      SoundDetector.instance.setEnabled(false);
-      return;
-    }
-    if(soundDetectorKey.isPressed()) {
-      boolean isActive = !SoundDetector.instance.isEnabled();
-      sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
-      SoundDetector.instance.setEnabled(isActive);
+  private static class StepAssistAction implements Action {
+    @Override
+    public void execute() {
+      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+        toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
+      }
     }
   }
 
-  private void handleGlide() {
-    if(!DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
+  private static class GogglesAction implements Action {
+    @Override
+    public void execute() {
+      // TODO: Mod Thaumcraft
+      // EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      // if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
+      // boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
+      // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
+      // DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
+      // }
     }
-    if(glideKey.isPressed()) {
-      toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
+  }
+
+  private static class YetaWrenchAction implements Action {
+    @Override
+    public void execute() {
+      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      ItemStack equipped = player.getHeldItemMainhand();
+      if (equipped == null) {
+        return;
+      }
+      if (equipped.getItem() instanceof IConduitControl) {
+        ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
+        if (curMode == null) {
+          curMode = ConduitDisplayMode.ALL;
+        }
+        ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
+        ConduitDisplayMode.setDisplayMode(equipped, newMode);
+        PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
+      } else if (equipped.getItem() == EnderIO.itemConduitProbe) {
+        int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
+        equipped.setItemDamage(newMeta);
+        PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());
+        player.swingArm(EnumHand.MAIN_HAND);
+
+      }
+    }
+  }
+
+  private static class SoundDetectorAction implements Action {
+    @Override
+    public void execute() {
+      if (isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+        boolean isActive = !SoundDetector.instance.isEnabled();
+        sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
+        SoundDetector.instance.setEnabled(isActive);
+      }
+    }
+  }
+
+  private static class GlideAction implements Action {
+    @Override
+    public void execute() {
+      if (DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+        toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
+      } else if (DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+        toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
+      }
     }
   }
   
-  private void handleElytra() {
-    if (!DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      return;
-    }
-    if (glideKey.isPressed()) {
-      toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
-    }
-  }
-
-  private void handleNightVision() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){
-      return;
-    }
-    if(nightVisionKey.isPressed()) {
-      boolean isActive = !DarkSteelController.instance.isNightVisionActive();
-      if(isActive) {
-        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
-      } else {
-        SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
+  private static class NightVisionAction implements Action {
+    @Override
+    public void execute() {
+      EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      if (DarkSteelController.instance.isNightVisionUpgradeEquipped(player)) {
+        boolean isActive = !DarkSteelController.instance.isNightVisionActive();
+        if (isActive) {
+          SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
+        } else {
+          SoundHelper.playSound(player.worldObj, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
+        }
+        DarkSteelController.instance.setNightVisionActive(isActive);
       }
-      DarkSteelController.instance.setNightVisionActive(isActive);
     }
   }
 
-  public boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
-    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
-    if(upgrade == null) {
-      return false;
+  private static class TopAction implements Action {
+    @Override
+    public void execute() {
+      EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      if (DarkSteelController.instance.isTopUpgradeEquipped(player)) {
+        boolean isActive = !DarkSteelController.instance.isTopActive(player);
+        DarkSteelController.instance.setTopActive(player, isActive);
+      }
     }
-    return true;
-  }
-  
-  public KeyBinding getYetaWrenchMode() {
-    return yetaWrenchMode;
   }
 
-  private void handleTop() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if (topKey.isPressed() && DarkSteelController.instance.isTopUpgradeEquipped(player)) {
-      boolean isActive = !DarkSteelController.instance.isTopActive(player);
-      DarkSteelController.instance.setTopActive(player, isActive);
+  private class FovAction implements Action {
+    @Override
+    public void execute() {
+      fovLevelLast = fovLevelNext = 1;
     }
   }
 
@@ -333,10 +303,8 @@ public class KeyTracker {
     event.setFOV((float) (event.getFOV() * val));
   }
 
-  private void handleFov() {
-    if (fovResetKey.isPressed()) {
-      fovLevelLast = fovLevelNext = 1;
-    }
+  public KeyBinding getYetaWrenchMode() {
+    return yetaWrenchMode;
   }
 
 }
