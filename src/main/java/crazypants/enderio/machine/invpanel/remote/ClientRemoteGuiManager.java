@@ -24,7 +24,7 @@ public class ClientRemoteGuiManager implements IGuiHandler {
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int posLow, int dim, int posHigh) {
-    long posl = ((long) posHigh << 32) | posLow;
+    long posl = ((long) posHigh << 32) | (posLow & 0xffffffffL);
     BlockPos pos = BlockPos.fromLong(posl);
     World targetWorld = world;
     if (world.provider.getDimension() != dim) {

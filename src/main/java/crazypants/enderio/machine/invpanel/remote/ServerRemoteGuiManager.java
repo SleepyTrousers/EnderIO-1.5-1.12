@@ -16,7 +16,7 @@ public class ServerRemoteGuiManager {
 
   public static void openGui(EntityPlayerMP player, World world, BlockPos pos) {
     long posl = pos.toLong();
-    int x = (int) (posl & Integer.MAX_VALUE);
+    int x = (int) posl;
     int y = world.provider.getDimension();
     int z = (int) (posl >>> 32);
     TileEntity te = world.getTileEntity(pos);
