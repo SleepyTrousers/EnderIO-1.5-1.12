@@ -84,9 +84,9 @@ public class MagnetController {
 
     if (interestingItems != null) {
       for (Entity entity : interestingItems) {
-        double x = player.posX + 0.5D - entity.posX;
-        double y = player.posY + 1D - entity.posY;
-        double z = player.posZ + 0.5D - entity.posZ;
+        double x = player.posX - entity.posX;
+        double y = player.posY + player.eyeHeight - entity.posY;
+        double z = player.posZ - entity.posZ;
 
         double distance = x * x + y * y + z * z;
         if (distance < collisionDistanceSq) {
