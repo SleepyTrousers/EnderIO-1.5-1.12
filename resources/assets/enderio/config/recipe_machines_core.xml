@@ -708,6 +708,17 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:blockInventoryPanel" />
     </crafting>
   </recipe>
+  
+  <recipe name="Inventory Panel Sensor" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:itemFunctionUpgrade:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="REDSTONE_ALLOY" /><item name="CHASSIS" /><item name="REDSTONE_ALLOY" />
+        <item name="ELECTRICAL_STEEL" /><item name="item:minecraft:comparator"/><item name="ELECTRICAL_STEEL" />               
+      </grid>
+      <output name="enderio:blockInventoryPanelSensor" />
+    </crafting>
+  </recipe>
 
   <recipe name="Ender IO" required="true">
     <crafting>
