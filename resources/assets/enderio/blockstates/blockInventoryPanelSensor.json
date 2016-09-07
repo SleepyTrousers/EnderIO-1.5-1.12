@@ -3,8 +3,8 @@
     "defaults":{
         "textures":{
             "particle":"enderio:blocks/machineBottom",
-            "front":"enderio:blocks/powerMonitor",
-            "fronton":"enderio:blocks/powerMonitor"            
+            "front":"enderio:blocks/inventoryPanelSensor",
+            "fronton":"enderio:blocks/inventoryPanelSensorActive"
         }
     },
     "variants":{

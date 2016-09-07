@@ -1,0 +1,52 @@
+package crazypants.enderio.machine.invpanel.sensor;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> implements IMessageHandler<PacketActive, IMessage> {
+
+  private boolean active;
+
+  public PacketActive() {
+  }
+
+  public PacketActive(TileInventoryPanelSensor tile) {
+    super(tile);
+    this.active = tile.isActive();
+  }
+
+  @Override
+  public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
+    active = buf.readBoolean();
+  }
+
+  @Override
+  public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
+    buf.writeBoolean(active);
+  }
+
+  @Override
+  public IMessage onMessage(PacketActive message, MessageContext ctx) {
+    
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TileInventoryPanelSensor te = message.getTileEntity(player.worldObj);
+    if(te != null) {
+      if(message.active != te.isActive()) {
+        te.setActive(message.active);
+        System.out.println("PacketActive.onMessage: " + message.active);
+        //player.worldObj.markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+        //player.worldObj.notifyBlockUpdate(te.getPos(), player.worldObj., newState, 2);
+//        player.worldObj.notifyBlockOfStateChange(te.getPos(), te.getBlockType());
+      }
+    }
+    return null;
+  }
+}

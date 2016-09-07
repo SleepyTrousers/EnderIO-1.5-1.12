@@ -65,6 +65,7 @@ import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
+import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
@@ -265,6 +266,7 @@ public class EnderIO {
   public static BlockTransceiver blockTransceiver;
   public static BlockBuffer blockBuffer;
   public static BlockInventoryPanel blockInventoryPanel;
+  public static BlockInventoryPanelSensor blockInventoryPanelSensor;
   public static BlockKillerJoe blockKillerJoe;
   public static BlockEnchanter blockEnchanter;
   public static BlockGauge blockGauge;
@@ -347,6 +349,7 @@ public class EnderIO {
 
     blockBuffer = BlockBuffer.create();
     blockInventoryPanel = BlockInventoryPanel.create();
+    blockInventoryPanelSensor = BlockInventoryPanelSensor.create();
 
     blockEnderIo = BlockEnderIO.create();
 

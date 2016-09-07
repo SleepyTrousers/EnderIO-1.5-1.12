@@ -618,6 +618,15 @@ enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field wi
 
 enderio.machine.tooltip.configured=(Configured)
 
+tile.blockInventoryPanelSensor.name=Inventory Sensor
+tile.blockInventoryPanelSensor.tooltip.detailed.line1=Emits redstone signals based
+tile.blockInventoryPanelSensor.tooltip.detailed.line2=on the number of an item available
+tile.blockInventoryPanelSensor.tooltip.detailed.line3=in an Inventory Panel network
+
+enderio.gui.inventorySensor.control1=Start when < 
+enderio.gui.inventorySensor.control2=Stop when >=
+
+
 //Blocks
 tile.blockPaintedPressurePlate.wood.name=Wooden Pressure Plate
 tile.blockPaintedPressurePlate.wood.tooltip.detailed.line1=Can be painted in painting machine,

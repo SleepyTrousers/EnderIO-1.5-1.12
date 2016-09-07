@@ -2,11 +2,11 @@ package crazypants.enderio.capacitor;
 
 import java.util.Locale;
 
-import net.minecraftforge.common.config.Configuration;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config.Section;
+import net.minecraftforge.common.config.Configuration;
 
 import static crazypants.enderio.config.Config.sectionAttractor;
 import static crazypants.enderio.config.Config.sectionCapacitor;
@@ -73,6 +73,10 @@ public enum CapacitorKey implements ICapacitorKey {
   POWER_MONITOR_POWER_INTAKE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
   POWER_MONITOR_POWER_BUFFER(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 10000),
   POWER_MONITOR_POWER_USE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1),
+  
+  INV_PANEL_SENSOR_POWER_INTAKE(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
+  INV_PANEL_SENSOR_POWER_BUFFER(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 10000),
+  INV_PANEL_SENSOR_POWER_USE(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1),
 
   LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80, null, null),
   LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000, null, null),

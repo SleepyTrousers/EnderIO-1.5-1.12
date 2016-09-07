@@ -54,10 +54,11 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_WEATHER_OBELISK = 101;
   public static final int GUI_ID_TELEPAD = 102;
   public static final int GUI_ID_TELEPAD_TRAVEL = 103;
-  public static final int GUI_ID_TELEPAD_DIALING_DEVICE = 104;    
+  public static final int GUI_ID_TELEPAD_DIALING_DEVICE = 104;
   public static final int GUI_ID_INHIBITOR = 105;
   public static final int GUI_ID_INVENTORY_PANEL = 106;
   public static final int GUI_ID_SPAWN_RELOCATOR = 107;
+  public static final int GUI_ID_INVENTORY_PANEL_SENSOR = 108;
   public static final int GUI_ID_INVENTORY_PANEL_REMOTE = 205;
   public static final int GUI_ID_LOCATION_PRINTOUT = 206;
   public static final int GUI_ID_LOCATION_PRINTOUT_CREATE = 207;

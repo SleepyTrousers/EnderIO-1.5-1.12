@@ -109,7 +109,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
         if(entry.nbt != null) {
           CompressedStreamTools.write(entry.nbt, cdo);
         }
-        cdo.writeVariable(entry.countItems(this));
+        cdo.writeVariable(entry.countItems());
       }
       return cdo.getCompressed();
     } finally {
@@ -122,7 +122,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     try {
       cdo.writeByte(0);
       for(Map.Entry<Integer, ItemEntry> entry : simpleRegsitry.entrySet()) {
-        int count = entry.getValue().countItems(this);
+        int count = entry.getValue().countItems();
         if(count > 0) {
           cdo.writeVariable(count);
           cdo.writeShort(entry.getKey());
@@ -132,7 +132,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
       int prevID = COMPLEX_DBINDEX_START;
       for(ItemEntry entry : complexItems) {
         if(entry != null) {
-          int count = entry.countItems(this);
+          int count = entry.countItems();
           if(count > 0) {
             cdo.writeVariable(count);
             cdo.writeVariable(entry.dbID - prevID);
@@ -154,7 +154,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
       cdo.writeVariable(items.size());
       for(ItemEntry entry : items) {
         cdo.writeVariable(entry.dbID);
-        cdo.writeVariable(entry.countItems(this));
+        cdo.writeVariable(entry.countItems());
       }
       return cdo.getCompressed();
     } finally {

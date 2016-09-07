@@ -19,8 +19,8 @@ public class ItemEntry extends ItemEntryBase {
   void removeSlot(SlotKey slotKey) {
     slots.remove(slotKey);
   }
-
-  int countItems(InventoryDatabaseServer db) {
+  
+  public int countItems() {
     int count = 0;
     for (SlotKey slotKey : slots.values()) {
       count += slotKey.count;

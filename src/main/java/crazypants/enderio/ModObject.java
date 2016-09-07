@@ -120,15 +120,16 @@ public enum ModObject implements IModObject {
   itemRodOfReturn,
   itemMagnet,
   itemGliderWing,
-  blockEndermanSkull, 
-  itemSoulVessel, 
-  itemFrankenSkull, 
+  blockEndermanSkull,
+  itemSoulVessel,
+  itemFrankenSkull,
   
   blockEnderRail,
   
   itemEnderFood,
   blockGauge,
-  itemRemoteInvAccess;
+  itemRemoteInvAccess,
+  blockInventoryPanelSensor;
 
   private final @Nonnull String unlocalisedName;
 
