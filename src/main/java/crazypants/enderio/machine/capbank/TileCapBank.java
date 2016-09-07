@@ -217,7 +217,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       revalidateDisplayTypes = false;
     }
     if (displayTypesDirty) {
-      displayTypesDirty = false;      
+      displayTypesDirty = false;
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     }
@@ -677,7 +677,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   public void setMaxInput(int maxInput) {
+    if(this.maxInput == maxInput) {
+      return;
+    }
     this.maxInput = maxInput;
+    markDirty();
   }
 
   public int getMaxInputOverride() {
@@ -693,7 +697,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   public void setMaxOutput(int maxOutput) {
+    if(this.maxOutput == maxOutput) {
+      return;
+    }
     this.maxOutput = maxOutput;
+    markDirty();
   }
 
   public int getMaxOutputOverride() {
