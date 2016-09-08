@@ -32,7 +32,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
     PacketHandler.INSTANCE.registerMessage(PacketOpenServerGUI.class, PacketOpenServerGUI.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketLockClientContainer.Handler.class, PacketLockClientContainer.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockEnderIO result = new BlockEnderIO();    
+    BlockEnderIO result = new BlockEnderIO();
     result.init();
     return result;
   }
@@ -44,6 +44,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
 
   private BlockEnderIO() {
     super(ModObject.blockEnderIo.getUnlocalisedName(), TileEnderIO.class);
+    setCreativeTab(null);
   }
 
   @Override
@@ -58,7 +59,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
       if (player instanceof EntityPlayer) {
         eio.setPlacedBy((EntityPlayer) player);
       }
-      world.notifyBlockUpdate(pos, state, state, 3);      
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
