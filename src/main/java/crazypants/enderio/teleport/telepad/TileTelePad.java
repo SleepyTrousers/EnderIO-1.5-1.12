@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport.telepad;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -57,7 +58,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess {
+public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER,
@@ -787,6 +788,38 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   public Fluid getFluidType() {
     return fluidType;
+  }
+
+  @Override
+  public List<ITankData> getTankDisplayData() {
+    if(inNetwork()) {
+      return getMaster().createDisplayData();
+    }
+    return Collections.emptyList();
+  }
+  
+  private List<ITankData> createDisplayData() {
+    ITankData data = new TankData();
+    return Collections.singletonList(data);
+  }
+
+  private class TankData implements ITankData {
+
+    @Override
+    public EnumTankType getTankType() {
+      return EnumTankType.INPUT;
+    }
+
+    @Override
+    public FluidStack getContent() {
+      return getTank().getFluid();
+    }
+
+    @Override
+    public int getCapacity() {
+      return tank.getCapacity();
+    }
+    
   }
 
 }
