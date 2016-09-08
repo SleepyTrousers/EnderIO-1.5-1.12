@@ -698,7 +698,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         if (!world.isRemote) {
           player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
         }
-        return false;
+        return true;
       }
     }
 
