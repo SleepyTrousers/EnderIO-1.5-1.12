@@ -3,13 +3,6 @@ package crazypants.enderio.machine.monitor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
-import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
-import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -32,6 +25,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
+import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
+import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
+import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -59,6 +59,10 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   private float stopLevel = 0.99f;
   @Store(CLIENT)
   private boolean redStoneOn;
+  /**
+   * Forces neighbors to be kicked regardless of power change. Used to make sure state is propagated correctly after being loaded in from the save.
+   */
+  private boolean initialized = false;
 
   public TilePowerMonitor() {
     super(new SlotDefinition(0, 0, 0), POWER_MONITOR_POWER_INTAKE, POWER_MONITOR_POWER_BUFFER, POWER_MONITOR_POWER_USE);
@@ -114,6 +118,9 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
             broadcastSignal();
           }
         }
+        if (!initialized) {
+          broadcastSignal();
+        }
       }
     }
     if (advanced && shouldDoWorkThisTick(iconUpdateRate / 10)) {
@@ -127,6 +134,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   private void broadcastSignal() {
+    initialized = true;
     worldObj.notifyNeighborsOfStateChange(getPos(), worldObj.getBlockState(getPos()).getBlock());
   }
 
@@ -180,6 +188,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   public void onCapacitorDataChange() {
     // TODO setCapacitor(new BasicCapacitor(100, 10000, 10));
     currentTask = createTask(null, 0);
+    initialized = false;
   }
 
   // Side.CLIENT
