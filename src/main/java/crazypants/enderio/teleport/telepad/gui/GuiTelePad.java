@@ -57,7 +57,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   private int fluidX = 8;
   private int fluidY = 71;
-  private int fluidScale = 57;
+  private int fluidScale = 58;
 
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
