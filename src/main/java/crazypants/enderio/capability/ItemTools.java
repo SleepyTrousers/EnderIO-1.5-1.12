@@ -70,9 +70,9 @@ public class ItemTools {
     if (source != null && source.hasWorldObj() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
       TileEntity target = world.getTileEntity(targetPos);
       if (target != null && target.hasWorldObj() && canPutInto(target, targetFacing)) {
-        IItemHandler sourceHandler = source.getCapability(ITEM_HANDLER_CAPABILITY, sourceFacing);
+        IItemHandler sourceHandler = getExternalInventory(world, sourcePos, sourceFacing);
         if (sourceHandler != null && hasItems(sourceHandler)) {
-          IItemHandler targetHandler = target.getCapability(ITEM_HANDLER_CAPABILITY, targetFacing);
+          IItemHandler targetHandler = getExternalInventory(world, targetPos, targetFacing);
           if (targetHandler != null && hasFreeSpace(targetHandler)) {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);

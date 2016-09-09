@@ -6,10 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
@@ -27,6 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
 
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -169,11 +169,9 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (dir == null) {
       return false;
     }
-
     if (inventory[0] == null) {
       return false;
     }
-
     if (!shouldDoWorkThisTick(20)) {
       return false;
     }
@@ -181,11 +179,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
-
-    BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
-
-    return doPush(dir, te, 0, 0);
+    return doPush(dir);
   }
 
   public static float getEnergyMultiplier(ICapacitorData capacitorType) {

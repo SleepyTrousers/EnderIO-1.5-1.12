@@ -15,7 +15,6 @@ import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
@@ -38,7 +37,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9, 0, 0), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, null);
+    super(new SlotDefinition(9), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, null);
   }
 
   @Override
@@ -94,13 +93,13 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack var2, EnumFacing side) {
-    return hasInventory() && getIoMode(side).canRecieveInput() && isMachineItemValidForSlot(slot, var2);
+  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {
+    return hasInventory && super.canInsertItem(slot, itemstack, side);
   }
-
+  
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
-    return hasInventory() && getIoMode(side).canOutput() && canExtractItem(slot, itemstack);
+    return hasInventory() && super.canExtractItem(slot, itemstack, side);
   }
 
   @Override
@@ -141,22 +140,18 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     if (dir == null || !shouldDoWorkThisTick(20)) {
       return false;
     }
-
-    BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.getBlockPos());
-
+    
     if (isCreative()) {
       ItemStack[] invCopy = new ItemStack[inventory.length];
       for (int i = 0; i < inventory.length; i++) {
         invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
       }
-
-      boolean ret = super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+      boolean ret = super.doPush(dir);
 
       inventory = invCopy;
       return ret;
     } else {
-      return super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+      return super.doPush(dir);
     }
   }
 
