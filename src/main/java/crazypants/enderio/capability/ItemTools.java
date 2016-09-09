@@ -199,6 +199,10 @@ public class ItemTools {
       return stacks > 0 && items > 0;
     }
 
+    public Limit copy() {
+      return new Limit(stacks,items);
+    }
+
   }
 
   public static @Nullable IItemHandler getExternalInventory(IBlockAccess world, BlockPos pos, EnumFacing face) {

@@ -374,11 +374,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   protected Limit getPullLimit() {
-    return PULL_PUSH_LIMIT;
+    return PULL_PUSH_LIMIT.copy();
   }
   
   protected Limit getPushLimit() {
-    return PULL_PUSH_LIMIT;
+    return PULL_PUSH_LIMIT.copy();
   }
 
   protected boolean hasSpaceToPull() {
