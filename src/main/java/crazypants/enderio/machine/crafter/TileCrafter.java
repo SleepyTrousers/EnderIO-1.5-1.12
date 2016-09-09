@@ -1,22 +1,9 @@
 package crazypants.enderio.machine.crafter;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
@@ -28,6 +15,17 @@ import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_INTAKE;
@@ -183,6 +181,15 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < usedItems[i] && inventory[i] != null; j++) {
           setInventorySlotContents(i, eatOneItemForCrafting(inventory[i].copy()));
+        }
+      }
+
+      ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(inv, worldObj);
+      if (remaining != null) {
+        for(ItemStack stack : remaining) {
+          if(stack != null) {
+            containerItems.add(stack.copy());
+          }
         }
       }
 

@@ -9,13 +9,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.InventoryWrapper;
-import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.capability.ItemTools;
+import crazypants.enderio.capability.ItemTools.Limit;
+import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.config.Config;
@@ -32,25 +33,28 @@ import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 @Storable
 public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
+  private static final Limit PULL_PUSH_LIMIT = new Limit(1, 64);
+  
   @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
@@ -287,7 +291,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
-      // client/server connection      
+      // client/server connection
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       
@@ -331,7 +335,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (faceModes == null) {
       return false;
     }
-
     boolean res = false;
     Set<Entry<EnumFacing, IoMode>> ents = faceModes.entrySet();
     for (Entry<EnumFacing, IoMode> ent : ents) {
@@ -347,96 +350,43 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   protected boolean doPush(@Nullable EnumFacing dir) {
-
     if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20)) {
       return false;
     }
-
-    TileEntity te = worldObj.getTileEntity(getPos().offset(dir));
-
-    return doPush(dir, te, slotDefinition.minOutputSlot, slotDefinition.maxOutputSlot);
-  }
-
-  protected boolean doPush(EnumFacing dir, TileEntity te, int minSlot, int maxSlot) {
-    if (te == null) {
-      return false;
-    }
-    for (int i = minSlot; i <= maxSlot; i++) {
-      ItemStack item = inventory[i];
-      if (item != null) {
-        int num = ItemUtil.doInsertItem(te, item, dir.getOpposite());
-        if (num > 0) {
-          item.stackSize -= num;
-          if (item.stackSize <= 0) {
-            item = null;
-          }
-          inventory[i] = item;
-          markDirty();
-        }
-      }
+    MoveResult res = ItemTools.move(getPushLimit(), worldObj, getPos(), dir, getPos().offset(dir), dir.getOpposite());
+    if(res == MoveResult.MOVED) {
+      markDirty();
+      return true;
     }
     return false;
   }
 
   protected boolean doPull(@Nullable EnumFacing dir) {
-
-    if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20)) {
+    if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
       return false;
     }
-
-    boolean hasSpace = false;
-    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
-    }
-    if (!hasSpace) {
-      return false;
-    }
-
-    TileEntity te = worldObj.getTileEntity(getPos().offset(dir));
-    if (te == null) {
-      return false;
-    }
-    if (!(te instanceof IInventory)) {
-      return false;
-    }
-    ISidedInventory target;
-    if (te instanceof ISidedInventory) {
-      target = (ISidedInventory) te;
-    } else {
-      target = new InventoryWrapper((IInventory) te);
-    }
-
-    int[] targetSlots = target.getSlotsForFace(dir.getOpposite());
-    if (targetSlots == null) {
-      return false;
-    }
-
-    for (int inputSlot = slotDefinition.minInputSlot; inputSlot <= slotDefinition.maxInputSlot; inputSlot++) {
-      if (doPull(inputSlot, target, targetSlots, dir)) {
-        return false;
-      }
+    MoveResult res = ItemTools.move(getPullLimit(), worldObj, getPos().offset(dir), dir.getOpposite(), getPos(), dir);
+    if(res == MoveResult.MOVED) {
+      markDirty();
+      return true;
     }
     return false;
   }
 
-  protected boolean doPull(int inputSlot, ISidedInventory target, int[] targetSlots, EnumFacing side) {
-    for (int i = 0; i < targetSlots.length; i++) {
-      int tSlot = targetSlots[i];
-      ItemStack targetStack = target.getStackInSlot(tSlot);
-      if (targetStack != null && target.canExtractItem(i, targetStack, side.getOpposite())) {
-        int res = ItemUtil.doInsertItem(this, targetStack, side);
-        if (res > 0) {
-          targetStack = targetStack.copy();
-          targetStack.stackSize -= res;
-          if (targetStack.stackSize <= 0) {
-            targetStack = null;
-          }
-          target.setInventorySlotContents(tSlot, targetStack);
-          return true;
-        }
-      }
+  protected Limit getPullLimit() {
+    return PULL_PUSH_LIMIT.copy();
+  }
+  
+  protected Limit getPushLimit() {
+    return PULL_PUSH_LIMIT.copy();
+  }
+
+  protected boolean hasSpaceToPull() {
+    boolean hasSpace = false;
+    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
+      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
     }
-    return false;
+    return hasSpace;
   }
 
   protected abstract boolean processTasks(boolean redstoneCheck);
@@ -538,6 +488,23 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
+  }
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return true;
+    }
+    return super.hasCapability(capability, facing);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return (T)new SidedInvWrapper(this, facing);
+    }
+    return super.getCapability(capability, facing);
   }
 
   @Override
@@ -691,7 +658,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
   
   @Override
-  public BlockCoord getLocation() {    
+  public BlockCoord getLocation() {
     return new BlockCoord(pos);
   }
 

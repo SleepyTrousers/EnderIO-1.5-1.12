@@ -3,9 +3,6 @@ package crazypants.enderio.machine.transceiver.gui;
 import java.awt.Color;
 import java.awt.Point;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -20,6 +17,8 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class FilterTab implements ITabPanel {
 
@@ -132,6 +131,7 @@ public class FilterTab implements ITabPanel {
 
   @Override
   public void keyTyped(char par1, int par2) {
+    parent.doDefaultKeyTyped(par1, par2);
   }
 
   @Override

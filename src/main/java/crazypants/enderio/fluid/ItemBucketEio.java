@@ -40,7 +40,7 @@ public class ItemBucketEio extends ItemBucket {
   private String itemName;
 
   protected ItemBucketEio(Block block, String fluidName) {
-    super(block);  
+    super(block);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setContainerItem(Items.BUCKET);
     itemName = "bucket" + StringUtils.capitalize(fluidName);
@@ -57,12 +57,11 @@ public class ItemBucketEio extends ItemBucket {
   }
 
   @SideOnly(Side.CLIENT)
-  public void addRenderers() {       
-    // TODO 1.8 what??? copy&paste error?
-    ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:filterUpgradeBasic"),new ResourceLocation("enderio:filterUpgradeAdvanced"));        
+  public void addRenderers() {
+    ModelBakery.registerItemVariants(this, new ResourceLocation("enderio:filterUpgradeBasic"),new ResourceLocation("enderio:filterUpgradeAdvanced"));
     ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
-    ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    
-  }  
+    ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");
+  }
 
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, net.minecraft.nbt.NBTTagCompound nbt) {
