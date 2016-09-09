@@ -5,9 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.ITabPanel;
@@ -20,6 +17,8 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class GeneralTab implements ITabPanel {
 
@@ -160,6 +159,7 @@ public class GeneralTab implements ITabPanel {
 
   @Override
   public void keyTyped(char par1, int par2) {
+    parent.doDefaultKeyTyped(par1, par2);
   }
 
 }

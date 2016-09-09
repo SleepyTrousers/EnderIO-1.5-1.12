@@ -80,6 +80,14 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
       }
     }
   }
+  
+  void doDefaultKeyTyped(char par1, int par2) {
+    try {
+      super.keyTyped(par1, par2);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
   public void initGui() {
