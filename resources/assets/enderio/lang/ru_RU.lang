@@ -618,6 +618,15 @@ enderio.gui.inventorypanel.tooltip.sync.jei.line2=Текст, введённый
 
 enderio.machine.tooltip.configured=(Настроен)
 
+tile.blockInventoryPanelSensor.name=Инвентарный датчик
+tile.blockInventoryPanelSensor.tooltip.detailed.line1=Выдаёт сигнал редстоуна основываясь
+tile.blockInventoryPanelSensor.tooltip.detailed.line2=на количестве доступных предметов
+tile.blockInventoryPanelSensor.tooltip.detailed.line3=в сети инвентарной панели
+
+enderio.gui.inventorySensor.control1=Включается, когда < 
+enderio.gui.inventorySensor.control2=Выключается, когда >=
+
+
 //Blocks
 tile.blockPaintedPressurePlate.wood.name=Деревянная нажимная плита
 tile.blockPaintedPressurePlate.wood.tooltip.detailed.line1=Может быть покрашена в покрасочном механизме,
@@ -1217,7 +1226,7 @@ enderio.gui.conduit.item.functionupgrade.line1=Возможные функцио
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
 enderio.gui.conduit.redstone.signalStrengh=Сильный сигнал
-enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильный сигнал редстоуна
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Выдаёт сильный сигнал редстоуна
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
