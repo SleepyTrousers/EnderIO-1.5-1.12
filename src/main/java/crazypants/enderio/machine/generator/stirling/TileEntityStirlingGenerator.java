@@ -179,7 +179,8 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
-    return doPush(dir);
+
+    return super.doPush(dir);
   }
 
   public static float getEnergyMultiplier(ICapacitorData capacitorType) {
