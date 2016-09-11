@@ -147,7 +147,7 @@
     </recipe>
     <recipe name="Fused Glass" energyCost="2500" >
       <input>
-        <itemStack oreDictionary="blockGlass" />
+        <itemStack modID="minecraft" itemName="glass" />
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.1" />
