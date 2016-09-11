@@ -16,6 +16,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,8 +31,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
 
 public class LiquidConduit extends AbstractTankConduit {
 
@@ -75,9 +77,6 @@ public class LiquidConduit extends AbstractTankConduit {
 
   // -----------------------------
 
-  private long lastEmptyTick = 0;
-  private int numEmptyEvents = 0;
-
   public static final int MAX_EXTRACT_PER_TICK = Config.fluidConduitExtractRate;
 
   public static final int MAX_IO_PER_TICK = Config.fluidConduitMaxIoRate;
@@ -114,9 +113,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   private void doExtract() {
-
-    BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT)) {
+    if(!hasExtractableMode()) {
       return;
     }
 
@@ -127,8 +124,6 @@ public class LiquidConduit extends AbstractTankConduit {
       return;
     }
 
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
-    int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
 
@@ -263,7 +258,7 @@ public class LiquidConduit extends AbstractTankConduit {
     pushed += filledLocal;
 
     do {
-      if(dir != from && canOutputToDir(dir)) {
+      if(dir != from && canOutputToDir(dir) && !autoExtractForDir(dir)) {
         if(getConduitConnections().contains(dir)) {
           ILiquidConduit conduitCon = getFluidConduit(dir);
           if(conduitCon != null) {
@@ -296,7 +291,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return null;
     }
     return tank.drain(maxDrain, doDrain);
@@ -304,7 +299,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(resource != null && !resource.isFluidEqual(tank.getFluid())) {
+    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
     return drain(from, resource.amount, doDrain);
@@ -312,13 +307,13 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.OUTPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.OUTPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return false;
     }
     if(tank.getFluid() == null) {
       return true;
     }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if (fluid != null && fluid.getID() == tank.getFluid().getFluidID()) {
       return true;
     }
     return false;
@@ -326,7 +321,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
         || tank.getFluid() == null || fluid == null) {
       return false;
     }
@@ -341,7 +336,7 @@ public class LiquidConduit extends AbstractTankConduit {
   // -----------------------------
 
   @Override
-  protected void connectionsChanged() {
+  public void connectionsChanged() {
     super.connectionsChanged();
     updateTank();
   }
@@ -397,10 +392,10 @@ public class LiquidConduit extends AbstractTankConduit {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
-    if(isExtractingFromDir(component.dir)) {
+    if(getConnectionMode(component.dir) == ConnectionMode.INPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
     }
-    if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
     //    if(getFluidType() == null) {

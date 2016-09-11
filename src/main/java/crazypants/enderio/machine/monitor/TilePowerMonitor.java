@@ -3,6 +3,9 @@ package crazypants.enderio.machine.monitor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -12,25 +15,24 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.conduit.redstone.Signal;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.util.DyeColor;
+import crazypants.enderio.power.IInternalPoweredTile;
 
-public class TilePowerMonitor extends AbstractMachineEntity implements IInternalPowerReceptor {
+public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IInternalPoweredTile {
 
-  float energyPerTick = 0.05f;
+  int energyPerTick = 1;
 
-  float powerInConduits;
-  float maxPowerInCoduits;
-  float powerInCapBanks;
-  float maxPowerInCapBanks;
-  float powerInMachines;
-  float maxPowerInMachines;
-  float aveMjSent;
-  float aveMjRecieved;
+  int powerInConduits;
+  int maxPowerInConduits;
+  long powerInCapBanks;
+  long maxPowerInCapBanks;
+  long  powerInMachines;
+  long  maxPowerInMachines;
+  float aveRfSent;
+  float aveRfReceived;
 
   boolean engineControlEnabled = false;
   float startLevel = 0.75f;
@@ -65,6 +67,30 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return 0;
   }
 
+  public boolean isEngineControlEnabled() {
+    return this.engineControlEnabled;
+  }
+
+  public void setEngineControlEnabled(boolean control) {
+    this.engineControlEnabled = control;
+  }
+
+  public float getStartLevel() {
+    return this.startLevel;
+  }
+
+  public void setStartLevel(float start) {
+    this.startLevel = start;
+  }
+
+  public float getStopLevel() {
+    return this.stopLevel;
+  }
+
+  public void setStopLevel(float stop) {
+    this.stopLevel = stop;
+  }
+
   int asPercentInt(float val) {
     return Math.round(val * 100);
   }
@@ -93,11 +119,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return false;
   }
 
-  @Override
-  public float getProgress() {
-    return 0;
-  }
-
   public float getEnergyPerTick() {
     return energyPerTick;
   }
@@ -106,8 +127,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return powerInConduits;
   }
 
-  public float getMaxPowerInCoduits() {
-    return maxPowerInCoduits;
+  public float getMaxPowerInConduits() {
+    return maxPowerInConduits;
   }
 
   public float getPowerInCapBanks() {
@@ -126,17 +147,18 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return maxPowerInMachines;
   }
 
-  public float getAveMjSent() {
-    return aveMjSent;
+  public float getAveRfSent() {
+    return aveRfSent;
   }
 
-  public float getAveMjRecieved() {
-    return aveMjRecieved;
+  public float getAveRfReceived() {
+    return aveRfReceived;
   }
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
+    setEnergyStored(getEnergyStored() - energyPerTick);
+    
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
     NetworkPowerManager pm = getPowerManager();
     if(pm != null && update) {
@@ -145,7 +167,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
       if(!engineControlEnabled) {
         sig = null;
       } else {
-        float percentFull = getPercentFull();
+        float percentFull = getPercentFull();        
         if(currentlyEmmittedSignal == null) {
           if(percentFull <= startLevel) {
             sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
@@ -175,19 +197,19 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   private float getPercentFull() {
-    return (powerInConduits + powerInCapBanks) / (maxPowerInCoduits + maxPowerInCapBanks);
+    return (float)(powerInConduits + powerInCapBanks) / (maxPowerInConduits + maxPowerInCapBanks);
   }
 
   private void update(NetworkPowerManager pm) {
     powerInConduits = pm.getPowerInConduits();
-    maxPowerInCoduits = pm.getMaxPowerInConduits();
+    maxPowerInConduits = pm.getMaxPowerInConduits();
     powerInCapBanks = pm.getPowerInCapacitorBanks();
     maxPowerInCapBanks = pm.getMaxPowerInCapacitorBanks();
     powerInMachines = pm.getPowerInReceptors();
     maxPowerInMachines = pm.getMaxPowerInReceptors();
     PowerTracker tracker = pm.getNetworkPowerTracker();
-    aveMjSent = tracker.getAverageMjTickSent();
-    aveMjRecieved = tracker.getAverageMjTickRecieved();
+    aveRfSent = tracker.getAverageRfTickSent();
+    aveRfReceived = tracker.getAverageRfTickRecieved();
   }
 
   private NetworkPowerManager getPowerManager() {
@@ -213,14 +235,19 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
-    powerInConduits = nbtRoot.getFloat("powerInConduits");
-    maxPowerInCoduits = nbtRoot.getFloat("maxPowerInCoduits");
-    powerInCapBanks = nbtRoot.getFloat("powerInCapBanks");
-    maxPowerInCapBanks = nbtRoot.getFloat("maxPowerInCapBanks");
-    powerInMachines = nbtRoot.getFloat("powerInMachines");
-    maxPowerInMachines = nbtRoot.getFloat("maxPowerInMachines");
-    aveMjSent = nbtRoot.getFloat("aveMjSent");
-    aveMjRecieved = nbtRoot.getFloat("aveMjRecieved");
+    powerInConduits = nbtRoot.getInteger("powerInConduits");
+    maxPowerInConduits = nbtRoot.getInteger("maxPowerInConduits");
+    if(nbtRoot.hasKey("powerInCapBanks")) {
+      powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
+      maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
+    } else {
+      powerInCapBanks = nbtRoot.getLong("powerInCapBanksL");
+      maxPowerInCapBanks = nbtRoot.getLong("maxPowerInCapBanksL");
+    }
+    powerInMachines = nbtRoot.getLong("powerInMachines");
+    maxPowerInMachines = nbtRoot.getLong("maxPowerInMachines");
+    aveRfSent = nbtRoot.getFloat("aveRfSent");
+    aveRfReceived = nbtRoot.getFloat("aveRfReceived");
 
     engineControlEnabled = nbtRoot.getBoolean("engineControlEnabled");
     startLevel = nbtRoot.getFloat("startLevel");
@@ -234,14 +261,14 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   public void writePowerInfoToNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setFloat("powerInConduits", powerInConduits);
-    nbtRoot.setFloat("maxPowerInCoduits", maxPowerInCoduits);
-    nbtRoot.setFloat("powerInCapBanks", powerInCapBanks);
-    nbtRoot.setFloat("maxPowerInCapBanks", maxPowerInCapBanks);
-    nbtRoot.setFloat("powerInMachines", powerInMachines);
-    nbtRoot.setFloat("maxPowerInMachines", maxPowerInMachines);
-    nbtRoot.setFloat("aveMjSent", aveMjSent);
-    nbtRoot.setFloat("aveMjRecieved", aveMjRecieved);
+    nbtRoot.setInteger("powerInConduits", powerInConduits);
+    nbtRoot.setInteger("maxPowerInConduits", maxPowerInConduits);
+    nbtRoot.setLong("powerInCapBanksL", powerInCapBanks);
+    nbtRoot.setLong("maxPowerInCapBanksL", maxPowerInCapBanks);
+    nbtRoot.setLong("powerInMachines", powerInMachines);
+    nbtRoot.setLong("maxPowerInMachines", maxPowerInMachines);
+    nbtRoot.setFloat("aveRfSent", aveRfSent);
+    nbtRoot.setFloat("aveRfReceived", aveRfReceived);
 
     nbtRoot.setBoolean("engineControlEnabled", engineControlEnabled);
     nbtRoot.setFloat("startLevel", startLevel);

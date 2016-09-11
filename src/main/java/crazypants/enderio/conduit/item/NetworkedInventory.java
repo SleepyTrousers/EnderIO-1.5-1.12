@@ -11,15 +11,19 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
-import crazypants.util.InventoryWrapper;
-import crazypants.util.ItemUtil;
-import crazypants.util.RoundRobinIterator;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 
 public class NetworkedInventory {
 
@@ -38,6 +42,11 @@ public class NetworkedInventory {
 
   //work around for a vanilla chest changing into a double chest without doing unneeded checks all the time 
   boolean recheckInv = false;
+  //Hack for TiC crafting station not working correctly when setting output slot to null
+  boolean ticHack = false;
+
+  boolean inventoryPanel = false;
+
   World world;
   ItemConduitNetwork network;
 
@@ -51,10 +60,14 @@ public class NetworkedInventory {
     world = con.getBundle().getWorld();
 
     TileEntity te = world.getTileEntity(location.x, location.y, location.z);
-    if(te.getClass().getName().contains("cpw.mods.ironchest")) {
+    if(te.getClass().getName().equals("tconstruct.tools.logic.CraftingStationLogic")) {
+      ticHack = true;
+    } else if(te.getClass().getName().contains("cpw.mods.ironchest")) {
       recheckInv = true;
     } else if(te instanceof TileEntityChest) {
       recheckInv = true;
+    } else if(te instanceof TileInventoryPanel) {
+      inventoryPanel = true;
     }
     updateInventory();
   }
@@ -69,25 +82,31 @@ public class NetworkedInventory {
   }
 
   boolean canExtract() {
-    ConnectionMode mode = con.getConectionMode(conDir);
+    ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.IN_OUT;
   }
 
   boolean canInsert() {
-    ConnectionMode mode = con.getConectionMode(conDir);
+    if(inventoryPanel) {
+      return false;
+    }
+    ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
+  }
+
+  boolean isInventoryPanel() {
+    return inventoryPanel;
   }
 
   boolean isSticky() {
     return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
-  
-  int getPriority() {    
+
+  int getPriority() {
     return con.getOutputPriority(conDir);
   }
 
-  public void onTick(long tick) {
-    int transfered;
+  public void onTick() {
     if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
       //do nothing     
     } else {
@@ -166,7 +185,7 @@ public class NetworkedInventory {
   }
 
   private boolean doTransfer(ItemStack extractedItem, int slot, int maxExtract) {
-    if(extractedItem == null) {
+    if(extractedItem == null || extractedItem.getItem() == null) {
       return false;
     }
     ItemStack toExtract = extractedItem.copy();
@@ -175,23 +194,31 @@ public class NetworkedInventory {
     if(numInserted <= 0) {
       return false;
     }
+    itemExtracted(slot, numInserted);
+    return true;
 
+  }
+
+  public void itemExtracted(int slot, int numInserted) {
     ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
-      curStack = curStack.copy();
-      curStack.stackSize -= numInserted;
-      if(curStack.stackSize > 0) {
-        getInventory().setInventorySlotContents(slot, curStack);
+      if(ticHack) {
+        getInventory().decrStackSize(slot, numInserted);
         getInventory().markDirty();
       } else {
-        getInventory().setInventorySlotContents(slot, null);
-        getInventory().markDirty();
+        curStack = curStack.copy();
+        curStack.stackSize -= numInserted;
+        if(curStack.stackSize > 0) {
+          getInventory().setInventorySlotContents(slot, curStack);
+          getInventory().markDirty();          
+        } else {
+          getInventory().setInventorySlotContents(slot, null);
+          getInventory().markDirty();
+        }
       }
     }
     con.itemsExtracted(numInserted, slot);
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
-    return true;
-
   }
 
   int insertIntoTargets(ItemStack toExtract) {
@@ -235,8 +262,7 @@ public class NetworkedInventory {
     return sendPriority;
   }
 
-  private void updateInventory() {
-
+  public final void updateInventory() {
     TileEntity te = world.getTileEntity(location.x, location.y, location.z);
     if(te instanceof ISidedInventory) {
       inv = (ISidedInventory) te;
@@ -330,8 +356,15 @@ public class NetworkedInventory {
   }
 
   private Target getTarget(List<Target> targets, IItemConduit con, ForgeDirection dir) {
+    if(targets == null || con == null || con.getLocation() == null) {
+      return null;
+    }
     for (Target target : targets) {
-      if(target.inv.conDir == dir && target.inv.con.getLocation().equals(con.getLocation())) {
+      BlockCoord targetConLoc = null;
+      if(target != null && target.inv != null && target.inv.con != null) {
+        targetConLoc = target.inv.con.getLocation();
+      }
+      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
         return target;
       }
     }
@@ -339,13 +372,20 @@ public class NetworkedInventory {
   }
 
   private int distanceTo(NetworkedInventory other) {
-    return con.getLocation().distanceSquared(other.con.getLocation());
+    return con.getLocation().getDistSq(other.con.getLocation());
   }
 
   public ISidedInventory getInventory() {
     return inv;
   }
- 
+
+  public ISidedInventory getInventoryRecheck() {
+    if(recheckInv) {
+      updateInventory();
+    }
+    return inv;
+  }
+
   public int getInventorySide() {
     return inventorySide;
   }
@@ -353,7 +393,18 @@ public class NetworkedInventory {
   public void setInventorySide(int inventorySide) {
     this.inventorySide = inventorySide;
   }
-  
+
+  public String getLocalizedInventoryName() {
+    String inventoryName = getInventory().getInventoryName();
+    if(inventoryName == null) {
+      return "null";
+    } else {
+      // don't use Lang.localize as that passes the localized string to
+      // String.format which might crash when it contains formatting specifiers
+      return StatCollector.translateToLocal(inventoryName);
+    }
+  }
+
   static class Target implements Comparable<Target> {
     NetworkedInventory inv;
     int distance;
@@ -376,7 +427,7 @@ public class NetworkedInventory {
         return 1;
       }
       if(priority != o.priority) {
-        return ItemConduitNetwork.compare(o.priority,priority);
+        return ItemConduitNetwork.compare(o.priority, priority);
       }
       return ItemConduitNetwork.compare(distance, o.distance);
     }

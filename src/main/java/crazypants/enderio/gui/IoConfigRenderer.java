@@ -29,6 +29,18 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IBlockAccessWrapper;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -37,17 +49,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.render.BoundingBox;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.IBlockAccessWrapper;
-import crazypants.vecmath.Camera;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
+import crazypants.util.RenderPassHelper;
 
 public class IoConfigRenderer {
 
@@ -125,11 +127,11 @@ public class IoConfigRenderer {
     }
 
     world = mc.thePlayer.worldObj;
-    RB.blockAccess = new InnerBA();
+    RB.blockAccess = new InnerBA();    
   }
 
   public void init() {
-    initTime = world.getTotalWorldTime();
+    initTime = System.currentTimeMillis();
   }
 
   public SelectedFace getSelection() {
@@ -158,7 +160,8 @@ public class IoConfigRenderer {
     distance -= Mouse.getEventDWheel() * 0.01;
     distance = VecmathUtil.clamp(distance, 0.01, 200);
 
-    long elapsed = world.getTotalWorldTime() - initTime;
+    long elapsed = System.currentTimeMillis() - initTime;
+    
     int x = Mouse.getEventX();
     int y = Mouse.getEventY();
     Vector3d start = new Vector3d();
@@ -169,7 +172,7 @@ public class IoConfigRenderer {
       updateSelection(start, end);
     }
 
-    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 500) {
       if(Mouse.getEventButton() == 1) {
         if(selection != null) {
           selection.config.toggleIoModeForFace(selection.face);
@@ -197,13 +200,13 @@ public class IoConfigRenderer {
       }
     }
     selection = null;
-    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
+    MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);    
     if(hit != null) {
-      TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
+      TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);      
       if(te instanceof IIoConfigurable) {
         IIoConfigurable configuarble = (IIoConfigurable) te;
         ForgeDirection face = ForgeDirection.getOrientation(hit.sideHit);
-        selection = new SelectedFace(configuarble, face);
+        selection = new SelectedFace(configuarble, face);        
       }
     }
   }
@@ -229,6 +232,7 @@ public class IoConfigRenderer {
     if(!updateCamera(partialTick, vp.x, vp.y, vp.width, vp.height)) {
       return;
     }
+    GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
     applyCamera(partialTick);
     TravelController.instance.setSelectionEnabled(false);
     renderScene();
@@ -236,6 +240,7 @@ public class IoConfigRenderer {
     renderSelection();
 
     renderOverlay(par1, par2);
+    GL11.glPopAttrib();
   }
 
   private void renderSelection() {
@@ -286,6 +291,7 @@ public class IoConfigRenderer {
 
     mx -= vpx;
     my -= vpy;
+    
     if(mx >= x && mx <= x + IconEIO.IO_WHATSIT.width &&
         my >= y && my <= y + IconEIO.IO_WHATSIT.height) {
       RenderUtil.renderQuad2D(x, y, 0, IconEIO.IO_WHATSIT.width, IconEIO.IO_WHATSIT.height, new Vector4f(0.4f,0.4f,0.4f,0.6f));
@@ -295,17 +301,16 @@ public class IoConfigRenderer {
     }
 
     GL11.glColor3f(1, 1, 1);
-    IconEIO.IO_WHATSIT.renderIcon(x, y, true);
-
+    IconEIO.map.render(IconEIO.IO_WHATSIT, x, y, true);
 
     if(selection != null) {
       IconEIO ioIcon = null;
       //    INPUT
       IoMode mode = selection.config.getIoMode(selection.face);
       if(mode == IoMode.PULL) {
-        ioIcon = IconEIO.INPUT_SMALL_INV;
+        ioIcon = IconEIO.INPUT;
       } else if(mode == IoMode.PUSH) {
-        ioIcon = IconEIO.OUTPUT_SMALL_INV;
+        ioIcon = IconEIO.OUTPUT;
       } else if(mode == IoMode.PUSH_PULL) {
         ioIcon = IconEIO.INPUT_OUTPUT;
       } else if(mode == IoMode.DISABLED) {
@@ -321,7 +326,7 @@ public class IoConfigRenderer {
         xd /=2;
         xd += 4;
         xd /= scaledresolution.getScaleFactor();
-        ioIcon.renderIcon(xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
+        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
       }
     }
   }
@@ -368,12 +373,11 @@ public class IoConfigRenderer {
         doTileEntityRenderPass(neighbours, pass);
       }
     }
-    ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);
   }
 
   private void doTileEntityRenderPass(List<BlockCoord> blocks, int pass) {
-    ForgeHooksClient.setRenderPass(pass);
+    RenderPassHelper.setEntityRenderPass(pass);
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.x, bc.y, bc.z);
       if(tile != null) {
@@ -381,13 +385,16 @@ public class IoConfigRenderer {
         at.x += bc.x - origin.x;
         at.y += bc.y - origin.y;
         at.z += bc.z - origin.z;
+        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+        GL11.glPopAttrib();
       }
     }
+    RenderPassHelper.clearEntityRenderPass();
   }
 
   private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, int pass) {
-    ForgeHooksClient.setRenderPass(pass);
+    RenderPassHelper.setBlockRenderPass(pass);
 
     Tessellator.instance.startDrawingQuads();
     Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
@@ -400,13 +407,19 @@ public class IoConfigRenderer {
           RB.renderAllFaces = true;
           RB.setRenderAllFaces(true);
           RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          try {
+            RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          } catch (Exception e) {
+            //Ignore, things might blow up in rendering due to the modified block access
+            //but this is about as good as we can do
+          }
         }
       }
     }
 
     Tessellator.instance.draw();
     Tessellator.instance.setTranslation(0, 0, 0);
+    RenderPassHelper.clearBlockRenderPass();
   }
 
   private void setGlStateForPass(int pass, boolean isNeighbour) {

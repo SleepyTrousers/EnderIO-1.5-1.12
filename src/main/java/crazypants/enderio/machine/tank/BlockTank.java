@@ -3,8 +3,10 @@ package crazypants.enderio.machine.tank;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,10 +15,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,20 +27,16 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.FluidUtil;
-import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-    PacketHandler.INSTANCE.registerMessage(PacketTank.class, PacketTank.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
     BlockTank res = new BlockTank();
     res.init();
     return res;
@@ -46,16 +45,14 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   protected BlockTank() {
     super(ModObject.blockTank, TileTank.class);
     setStepSound(Block.soundTypeGlass);
+    setLightOpacity(0);
   }
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemTank.class, ModObject.blockTank.unlocalisedName);
-    if(teClass != null) {
-      GameRegistry.registerTileEntity(teClass, ModObject.blockTank.unlocalisedName + "TileEntity");
-    }
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TANK, this);
-    setLightOpacity(0);
+    GameRegistry.registerBlock(this, BlockItemTank.class, modObject.unlocalisedName);
+    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
   }
 
   @Override
@@ -63,77 +60,17 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return par1;
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileTank)) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    TileTank tank = (TileTank) te;
-    ItemStack item = entityPlayer.inventory.getCurrentItem();
-    if(item == null) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    //check for filled fluid containers and see if we can empty them into our input tank
-    FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(fluid != null) {
-      int filled = tank.fill(ForgeDirection.UP, fluid, false);
-      if(filled >= fluid.amount) {
-        tank.fill(ForgeDirection.UP, fluid, true);
-        if(!entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-        }
-        return true;
-      }
-    }
-
-    //now check for empty fluid containers to fill
-    FluidStack available = tank.tank.getFluid();
-    if(available != null) {
-      ItemStack res = FluidContainerRegistry.fillFluidContainer(available.copy(), item);
-      FluidStack filled = FluidContainerRegistry.getFluidForFilledItem(res);
-
-      if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
-        FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
-        for (FluidContainerData data : datas) {
-          if(data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
-            res = data.filledContainer.copy();
-            filled = FluidContainerRegistry.getFluidForFilledItem(res);
-          }
-        }
-      }
-
-      if(filled != null) {
-        tank.drain(ForgeDirection.DOWN, filled, true);
-        if(item.stackSize > 1) {
-          item.stackSize--;
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);
-          for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
-            if(entityPlayer.inventory.mainInventory[i] == null) {
-              entityPlayer.inventory.setInventorySlotContents(i, res);
-              return true;
-            }
-          }
-          if(!world.isRemote) {
-            Util.dropItems(world, res, x, y, z, true);
-          }
-
-        } else {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, res);
-        }
-
-        return true;
-      }
-    }
-    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
+    list.add(new ItemStack(this, 1, 0));
+    list.add(new ItemStack(this, 1, 1));
   }
 
   @Override
-  public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileTank(var2);
+  public TileEntity createTileEntity(World world, int metadata) {
+    return new TileTank(metadata);
   }
 
   @Override
@@ -154,18 +91,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return new GuiTank(player.inventory, (TileTank) te);
   }
 
-  //Causes crashes in 1.7 on some machines
-  //@Override
-  //@SideOnly(Side.CLIENT)
-  //public int getRenderBlockPass() {
-  //  return 1;
-  //}
-  //
-  //@Override
-  //public boolean canRenderInPass(int pass) {
-  //  return pass == 1;
-  //}
-
   @Override
   public boolean isOpaqueCube() {
     return false;
@@ -177,6 +102,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
 
     // used to render the block in the world
@@ -196,9 +122,20 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
     return iconBuffer[0][blockSide + offset];
+  }
+
+  @Override
+  public int getLightValue(IBlockAccess world, int x, int y, int z) {
+    TileEntity tank = world.getTileEntity(x, y, z);
+    if(tank instanceof TileTank) {
+      FluidStack stack = ((TileTank) tank).tank.getFluid();
+      return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
+    }
+    return super.getLightValue(world, x, y, z);
   }
 
   @Override
@@ -209,10 +146,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return "enderio:blockTank";
   }
 
+  @Override
   protected String getSideIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
 
+  @Override
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
@@ -242,12 +181,26 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
+  public boolean hasComparatorInputOverride() {
+    return true;
+  }
+
+  @Override
+  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
+    TileEntity te = w.getTileEntity(x, y, z);
+    if (te instanceof TileTank) {
+      return ((TileTank) te).getComparatorOutput();
+    }
+    return 0;
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {
       FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
       if(fl != null && fl.getFluid() != null) {
-        String str = fl.amount + " " + Lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
+        String str = fl.amount + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
         list.add(str);
       }
     }
@@ -256,9 +209,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if(itemstack.getItemDamage() == 1) {
-      list.add(EnumChatFormatting.ITALIC + Lang.localize("blastResistant"));
+      list.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("blastResistant"));
     }
   }
 
@@ -268,4 +221,16 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return stack.getUnlocalizedName();
   }
 
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileTank) {
+      TileTank tank = (TileTank) te;
+      FluidStack stored = tank.tank.getFluid();
+      String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
+      int amount = stored == null ? 0 : stored.amount;
+
+      tooltip.add(String.format("%s%s : %s (%d %s)", EnumChatFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
+    }
+  }
 }

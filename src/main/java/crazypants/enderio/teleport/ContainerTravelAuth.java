@@ -1,107 +1,152 @@
 package crazypants.enderio.teleport;
 
+import java.awt.Point;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.gui.TemplateSlot;
-import crazypants.util.ArrayInventory;
 
-public class ContainerTravelAuth extends Container {
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.util.ArrayInventory;
 
-  ItemStack[] enteredPassword = new ItemStack[5];
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
+import crazypants.enderio.teleport.packet.PacketPassword;
+
+public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
+
+  static class AuthInventory extends ArrayInventory {
+    private ContainerTravelAuth container;
+    
+    private AuthInventory(ItemStack[] inv) {
+      super(inv);
+    }
+    
+    private void setContainer(ContainerTravelAuth container) {
+      this.container = container;
+    }
+
+    @Override
+    public void markDirty() {
+      super.markDirty();
+      container.dirty = true;
+    }
+
+    @Override
+    public int getSizeInventory() {
+      return items.length;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int i) {
+      if(i < 0 || i >= items.length) {
+        return null;
+      }
+      return items[i];
+    }
+
+    @Override
+    public ItemStack decrStackSize(int fromSlot, int amount) {
+      ItemStack item = items[fromSlot];
+      items[fromSlot] = null;
+      if(item == null) {
+        return null;
+      }
+      item.stackSize = 0;
+      return item;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int i) {
+      return null;
+    }
+
+    @Override
+    public void setInventorySlotContents(int i, ItemStack itemstack) {
+      if(itemstack != null) {
+        items[i] = itemstack.copy();
+        items[i].stackSize = 0;
+      } else {
+        items[i] = null;
+      }
+    }
+
+    @Override
+    public String getInventoryName() {
+      return "Password";
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+      return 0;
+    }
+
+    public ItemStack[] getInventory() {
+      return this.items;
+    }
+  }
 
   boolean dirty = false;
 
   public ContainerTravelAuth(InventoryPlayer playerInv) {
-
-    ArrayInventory arrInv = new ArrayInventory(enteredPassword) {
-
-      @Override
-      public void markDirty() {
-        super.markDirty();
-        dirty = true;
-      }
-
-      @Override
-      public int getSizeInventory() {
-        return items.length;
-      }
-
-      @Override
-      public ItemStack getStackInSlot(int i) {
-        if(i < 0 || i >= items.length) {
-          return null;
-        }
-        return items[i];
-      }
-
-      @Override
-      public ItemStack decrStackSize(int fromSlot, int amount) {
-        ItemStack item = items[fromSlot];
-        items[fromSlot] = null;
-        if(item == null) {
-          return null;
-        }
-        item.stackSize = 0;
-        return item;
-      }
-
-      @Override
-      public ItemStack getStackInSlotOnClosing(int i) {
-        return null;
-      }
-
-      @Override
-      public void setInventorySlotContents(int i, ItemStack itemstack) {
-        if(itemstack != null) {
-          items[i] = itemstack.copy();
-          items[i].stackSize = 0;
-        } else {
-          items[i] = null;
-        }
-      }
-
-      @Override
-      public String getInventoryName() {
-        return "Password";
-      }
-
-      @Override
-      public int getInventoryStackLimit() {
-        return 0;
-      }
-
-    };
-    int x = 44;
-    int y = 28;
-    for (int i = 0; i < 5; i++) {
-      addSlotToContainer(new TemplateSlot(arrInv, i, x, y));
-      x += 18;
-    }
-
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 83 + i * 18));
-      }
-    }
-
-    for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 141));
-    }
-
+    super(playerInv, new AuthInventory(new ItemStack[5]));
+    getInv().setContainer(this);
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer entityplayer) {
-    return true;
+  protected void addSlots(InventoryPlayer playerInv) {
+  }
+
+  public void addGhostSlots(List<GhostSlot> ghostSlots) {
+    int x = 44;
+    int y = 28;
+    for (int i = 0; i < 5; i++) {
+      ghostSlots.add(new AuthGhostSlot(getInv(), i, x, y));
+      x += 18;
+    }
+  }
+
+  @Override
+  public Point getPlayerInventoryOffset() {
+    Point p = super.getPlayerInventoryOffset();
+    p.translate(0, -1);
+    return p;
   }
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
     return null;
+  }
+
+  private static class AuthGhostSlot extends GhostSlot {
+
+    private AuthInventory inv;
+
+    public AuthGhostSlot(AuthInventory ta, int slotIndex, int x, int y) {
+      this.slot = slotIndex;
+      this.x = x;
+      this.y = y;
+      this.displayStdOverlay = false;
+      this.grayOut = true;
+      this.stackSizeLimit = 1;
+      this.inv = ta;
+    }
+
+    @Override
+    public ItemStack getStack() {
+      ItemStack stack = inv.getStackInSlot(slot);
+      return stack;
+    }
+
+    @Override
+    public void putStack(ItemStack stack) {
+      inv.setInventorySlotContents(slot, stack);
+    }
+
   }
 
 }

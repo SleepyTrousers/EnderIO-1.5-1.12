@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit;
 
-import crazypants.util.Lang;
+import crazypants.enderio.EnderIO;
+
 
 public enum ConnectionMode {
 
@@ -46,6 +47,6 @@ public enum ConnectionMode {
   }
 
   public String getLocalisedName() {
-    return Lang.localize(unlocalisedName);
+    return EnderIO.lang.localize(unlocalisedName);
   }
 }

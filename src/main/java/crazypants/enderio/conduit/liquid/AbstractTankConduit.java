@@ -6,16 +6,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ChatUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
+import crazypants.enderio.tool.ToolUtil;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -24,6 +30,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected long lastEmptyTick = 0;
   protected int numEmptyEvents = 0;
   protected boolean fluidTypeLocked = false;
+  private int lastLightValue;
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -31,7 +38,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       return false;
     }
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
 
@@ -42,7 +49,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -97,7 +104,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if(network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
-            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.unlockedType")));
+            ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, "itemLiquidConduit.unlockedType");
           }
         } else if(network != null) {
           network.setFluidType(null);
@@ -109,14 +116,13 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     } else {
 
       FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(player.getCurrentEquippedItem());
-      if(fluid != null) {
-        if(!getBundle().getEntity().getWorldObj().isRemote) {
-          if(network != null
+      if (fluid != null) {
+        if (!getBundle().getEntity().getWorldObj().isRemote) {
+          if (network != null
               && (network.getFluidType() == null || network.getTotalVolume() < 500 || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
             network.setFluidType(fluid);
             network.setFluidTypeLocked(true);
-            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.lockedType") + " "
-                + FluidRegistry.getFluidName(fluid)));
+            ChatUtil.sendNoSpamUnloc(player, EnderIO.lang, "itemLiquidConduit.lockedType", " " + FluidRegistry.getFluidName(fluid));
           }
         }
         return true;
@@ -150,7 +156,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected abstract boolean canJoinNeighbour(ILiquidConduit n);
 
   public abstract AbstractTankConduitNetwork<? extends AbstractTankConduit> getTankNetwork();
-
+  
   public void setFluidType(FluidStack liquidType) {
     if(tank.getFluid() != null && tank.getFluid().isFluidEqual(liquidType)) {
       return;
@@ -177,6 +183,27 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       result = tank.getFluid();
     }
     return result;
+  }
+
+  public boolean isFluidTypeLocked() {
+    return fluidTypeLocked;
+  }
+
+  @Override
+  public void updateEntity(World world) {
+    int lightValue = getLightValue();
+    if(lastLightValue != lightValue) {
+      BlockCoord bc = getLocation();
+      getBundle().getWorld().updateLightByType(EnumSkyBlock.Block, bc.x, bc.y, bc.z);
+      lastLightValue = lightValue;
+    }
+    super.updateEntity(world);
+  }
+
+  @Override
+  public int getLightValue() {
+    FluidStack stack = getFluidType();
+    return stack == null || stack.amount <= 0 ? 0 : stack.getFluid().getLuminosity(stack);
   }
 
   protected abstract void updateTank();

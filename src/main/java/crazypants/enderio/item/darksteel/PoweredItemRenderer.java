@@ -11,9 +11,12 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector4f;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 
 public class PoweredItemRenderer implements IItemRenderer {
 
@@ -40,40 +43,55 @@ public class PoweredItemRenderer implements IItemRenderer {
 
     Minecraft mc = Minecraft.getMinecraft();
     ri.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
+    GL11.glDisable(GL11.GL_LIGHTING);
 
-    IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
     if(isJustCrafted(item)) {
       return;
     }
-
+    
+    boolean hasEnergyUpgrade = EnergyUpgrade.loadFromItem(item) != null;
+    int y = hasEnergyUpgrade ? 12 : 13;
+    int bgH = hasEnergyUpgrade ? 4 : 2;
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.renderQuad2D(2, 13, 0, 13, 3, ColorUtil.getRGB(Color.black));
+    RenderUtil.renderQuad2D(2, y, 0, 13, bgH, ColorUtil.getRGB(Color.black));
 
     double maxDam = item.getMaxDamage();
     double dispDamage = item.getItemDamageForDisplay();
-    float r = 0.0f;
-    float g = 1f;
-    float b = 0.0f;
-    int y = 14;
+    y = hasEnergyUpgrade ? 14 : 13;
     renderBar(y, maxDam, dispDamage, Color.green, Color.red);
 
-    maxDam = armor.getMaxEnergyStored(item);
-    dispDamage = armor.getEnergyStored(item);
-
-    r = 0.4f;
-    g = 0.4f;
-    b = 1f;
-    y = 13;
-    renderBar(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
+    if(hasEnergyUpgrade) {
+      IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
+      maxDam = armor.getMaxEnergyStored(item);
+      dispDamage = armor.getEnergyStored(item);
+      y = 12;
+      Color color = new Color(0x2D, 0xCE, 0xFA); // electric blue
+      renderBar2(y, maxDam, maxDam - dispDamage, color, color);
+    }
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   private boolean isJustCrafted(ItemStack item) {
     return EnergyUpgrade.loadFromItem(item) == null && item.getItemDamageForDisplay() == 0;
   }
 
+  private void renderBar2(int y, double maxDam, double dispDamage, Color full, Color empty) {
+    double ratio = dispDamage / maxDam;
+    Vector4f fg = ColorUtil.toFloat(full);
+    Vector4f ec = ColorUtil.toFloat(empty);
+    fg.interpolate(ec, (float) ratio);
+    Vector4f bg = ColorUtil.toFloat(Color.black);
+    bg.interpolate(fg, 0.15f);
+    
+    int barLength = (int) Math.round(12.0 * (1 - ratio));    
+    
+    RenderUtil.renderQuad2D(2, y, 0, 12, 1, bg);
+    RenderUtil.renderQuad2D(2, y, 0, barLength, 1, fg);
+  }
+
+  
   private void renderBar(int y, double maxDam, double dispDamage, Color full, Color empty) {
     double ratio = dispDamage / maxDam;
     Vector4f fg = ColorUtil.toFloat(full);
@@ -81,8 +99,7 @@ public class PoweredItemRenderer implements IItemRenderer {
 
     fg.interpolate(ec, (float) ratio);
 
-    Vector4f bg = new Vector4f(fg);
-    bg.scale(0.25 + (0.75 * 1 - ratio));
+    Vector4f bg = new Vector4f(0.17, 0.3, 0.1, 0);
 
     int barLength = (int) Math.round(12.0 * (1 - ratio));
     RenderUtil.renderQuad2D(2, y, 0, 12, 1, bg);

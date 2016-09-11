@@ -6,15 +6,15 @@ import crazypants.enderio.EnderIO;
 public enum Capacitors {
 
   BASIC_CAPACITOR(
-      new BasicCapacitor(20, 10000, 2),
+      new BasicCapacitor(80, 100000, 20),
       "basicCapacitor"),
 
   ACTIVATED_CAPACITOR(
-      new BasicCapacitor(40, 20000, 6),
+      new BasicCapacitor(240, 200000, 60),
       "activatedCapacitor"),
 
   ENDER_CAPACITOR(
-      new BasicCapacitor(100, 100000, 10),
+      new BasicCapacitor(400, 500000, 100),
       "enderCapacitor");
 
   public final ICapacitor capacitor;

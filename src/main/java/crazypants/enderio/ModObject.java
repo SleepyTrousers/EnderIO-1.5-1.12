@@ -11,10 +11,15 @@ public enum ModObject {
   itemConduitFacade,
   itemRedstoneConduit,
   itemItemConduit,
-  itemMeConduit,
+  itemGasConduit,
+  itemMEConduit,
+ itemOCConduit,
   itemBasicFilterUpgrade,
   itemExistingItemFilter,
+  itemModItemFilter,
+  itemPowerItemFilter,
   itemExtractSpeedUpgrade,
+  itemFunctionUpgrade,
 
   // Power
   itemPowerConduit,
@@ -40,6 +45,7 @@ public enum ModObject {
   blockAlloySmelter,
   blockSolarPanel,
   blockCapacitorBank,
+  blockCapBank,
   blockSagMill,
   blockHyperCube,
   blockPowerMonitor,
@@ -47,16 +53,35 @@ public enum ModObject {
   blockFarmStation,
   blockTank,
   blockCrafter,
-  
+  blockVacuumChest,
+  blockWirelessCharger,
+  blockEnchanter,
+  blockSoulBinder,
+  blockSliceAndSplice,
+  blockAttractor,
+  blockSpawnGuard,
+  blockExperienceObelisk,
+  blockWeatherObelisk,
+  blockInhibitorObelisk,
+  blockTransceiver,
+  blockBuffer,
+  blockInventoryPanel,
+
   blockPoweredSpawner,
   itemBrokenSpawner,
+
+  blockKillerJoe,
 
   blockElectricLight,
   blockLightNode,
   blockLight,
-  
+
   //Blocks
   blockDarkSteelPressurePlate,
+  blockDarkSteelAnvil,
+  blockDarkSteelLadder,
+  blockReinforcedObsidian,
+  blockIngotStorage,
 
   // Painter
   blockPainter,
@@ -71,15 +96,26 @@ public enum ModObject {
 
   itemConduitProbe,
   itemYetaWrench,
+  itemXpTransfer,
 
   blockTravelAnchor,
-  itemTravelStaff, 
-  itemMagnet;
+  blockTelePad,
+  itemCoordSelector,
+  itemTravelStaff,
+  itemMagnet,
+  itemGliderWing,
+  blockEndermanSkull, 
+  itemSoulVessel, 
+  itemFrankenSkull, 
+  
+  blockEnderRail,
+  
+  itemEnderFood;
 
   public final String unlocalisedName;
 
   private ModObject() {
-    this.unlocalisedName = name();
+    unlocalisedName = name();
   }
 
 }

@@ -1,21 +1,23 @@
 package crazypants.enderio.conduit.render;
 
-import static crazypants.util.ForgeDirectionOffsets.*;
-import static net.minecraftforge.common.util.ForgeDirection.*;
-
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
-import crazypants.render.BoundingBox;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vertex;
+
+import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 
 public class RoundedSegmentRenderer {
 

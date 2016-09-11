@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.crafter;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,17 +16,6 @@ public class DummyCraftingGrid implements IInventory {
   
   public ItemStack getOutput() {
     return inv[9];    
-  }
-
-  public void copyRequiredInputs(List<ItemStack> required) {
-    for (int i = 0; i < 9; i++) {
-      ItemStack is = inv[i];
-      if(is != null) {
-        ItemStack copy = is.copy();
-        copy.stackSize = 1;
-        required.add(copy);
-      }
-    }
   }
 
   @Override

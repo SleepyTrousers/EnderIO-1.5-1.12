@@ -4,10 +4,12 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+
+import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -71,7 +73,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     selectedChannel = null;
     if(name != null && name.trim().length() > 0) {
       if(user != null && user.trim().length() > 0) {
-        selectedChannel = new Channel(name, UUID.fromString(user));
+        selectedChannel = new Channel(name, PlayerUtil.getPlayerUIDUnstable(user));
       } else {
         selectedChannel = new Channel(name, null);
       }

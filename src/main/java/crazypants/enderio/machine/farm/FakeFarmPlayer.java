@@ -17,15 +17,22 @@ import net.minecraft.world.WorldServer;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.Log;
 
+/**
+ * This is not in the FakePlayer hierarchy for reasons.
+ *
+ */
 public class FakeFarmPlayer extends EntityPlayerMP {
-  
+
   private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
-  
+
   private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioFarmer]");
-  
+
   public FakeFarmPlayer(WorldServer world) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new ItemInWorldManager(world));
+    // ItemInWorldManager will access this field directly and can crash
+    playerNetServerHandler = new FakeNetHandlerPlayServer(this);
   }
 
   @Override
@@ -36,10 +43,6 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   @Override
   public ChunkCoordinates getPlayerCoordinates() {
     return new ChunkCoordinates(0, 0, 0);
-  }
-
-  @Override
-  public void addChatComponentMessage(IChatComponent chatmessagecomponent) {
   }
 
   @Override
@@ -79,9 +82,17 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   public void func_147100_a(C15PacketClientSettings pkt) {
     return;
   }
-  
+
   @Override
   public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
     return true;
   }
+
+  @Override
+  public void setWorld(World p_70029_1_) {
+    Log.warn("Ender IO Farming station fake player is being transfered to world '" + p_70029_1_
+        + "'. Trying to reject transfer. Call stack follows:");
+    Thread.dumpStack();
+  }
+
 }

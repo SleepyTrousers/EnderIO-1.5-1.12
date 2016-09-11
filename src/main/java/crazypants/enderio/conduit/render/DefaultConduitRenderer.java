@@ -1,22 +1,25 @@
 package crazypants.enderio.conduit.render;
 
-import static crazypants.render.CubeRenderer.*;
-import static net.minecraftforge.common.util.ForgeDirection.*;
-
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vertex;
+
+import static com.enderio.core.client.render.CubeRenderer.*;
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -29,7 +32,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
+      float worldLight, RenderBlocks rb) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     Tessellator tessellator = Tessellator.instance;
@@ -37,25 +40,26 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
     IIcon tex;
-    for (CollidableComponent component : components) {
-      if(renderComponent(component)) {
-        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if(isNSEWUD(component.dir) &&
-            conduit.getTransmitionTextureForState(component) != null) {
-          tessellator.setBrightness((int) (worldLight));
-          tex = conduit.getTransmitionTextureForState(component);
-          renderTransmission(conduit, tex, component, selfIllum);
-        }
 
-        tex = conduit.getTextureForState(component);
-        if(tex != null) {
-          tessellator.setBrightness((int) (worldLight));
-          renderConduit(tex, conduit, component, selfIllum);
+    if(!rb.hasOverrideBlockTexture()) {
+      for (CollidableComponent component : components) {
+        if(renderComponent(component)) {
+          float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
+          if(isNSEWUD(component.dir) &&
+              conduit.getTransmitionTextureForState(component) != null) {
+            tessellator.setBrightness((int) (worldLight));
+            tex = conduit.getTransmitionTextureForState(component);
+            renderTransmission(conduit, tex, component, selfIllum);
+          }
+
+          tex = conduit.getTextureForState(component);
+          if(tex != null) {
+            tessellator.setBrightness((int) (worldLight));
+            renderConduit(tex, conduit, component, selfIllum);
+          }
         }
       }
-
     }
-
   }
 
   @Override
@@ -75,10 +79,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
-      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
 
-      if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
-        tex = EnderIO.blockConduitBundle.getConnectorIcon();
+      if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+        tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
         for (Vertex c : corners) {
@@ -115,6 +119,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir, boolean isTransmission) {
+    drawSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
+  }
+
+  protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir,
+      boolean isTransmission, boolean mirrorTexture) {
 
     Tessellator tessellator = Tessellator.instance;
 
@@ -124,10 +133,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       setupVertices(bound);
     }
 
-    if(dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
-                                                   // texture
-      // dir relative to the cneter
-      // of the conduit
+    if (mirrorTexture && (dir == NORTH || dir == UP || dir == EAST)) {
+      // maintain consistent texture dir relative to the center of the conduit
       float tmp = minU;
       minU = maxU;
       maxU = tmp;

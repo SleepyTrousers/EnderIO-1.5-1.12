@@ -1,20 +1,43 @@
 package crazypants.enderio.machine;
 
+import java.util.List;
+import java.util.Locale;
+
 import net.minecraft.tileentity.TileEntity;
-import crazypants.util.Lang;
 
-public enum RedstoneControlMode {
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
+import com.google.common.collect.Lists;
 
-  IGNORE,
-  ON,
-  OFF,
-  NEVER;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 
-  RedstoneControlMode() {
+public enum RedstoneControlMode implements ICycleEnum {
+
+  IGNORE(IconEIO.REDSTONE_MODE_ALWAYS),
+  ON(IconEIO.REDSTONE_MODE_WITH_SIGNAL),
+  OFF(IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL),
+  NEVER(IconEIO.REDSTONE_MODE_NEVER);
+
+
+  private IWidgetIcon icon;
+  
+  RedstoneControlMode(IWidgetIcon icon) {
+    this.icon = icon;
   }
 
   public String getTooltip() {
-    return Lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
+    return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
+  }
+  
+  @Override
+  public IWidgetIcon getIcon() {
+    return icon;
+  }
+  
+  @Override
+  public List<String> getTooltipLines() {
+    return Lists.newArrayList(getTooltip());
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {
@@ -45,6 +68,15 @@ public enum RedstoneControlMode {
       ord++;
     }
     return values()[ord];
+  }
+
+  public RedstoneControlMode previous() {
+    int ord = ordinal();
+    ord--;
+    if(ord < 0) {
+      ord = values().length - 1;
+    } 
+    return values()[ord];    
   }
 
 }

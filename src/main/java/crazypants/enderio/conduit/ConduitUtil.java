@@ -3,66 +3,45 @@ package crazypants.enderio.conduit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.FMLCommonHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.gas.GasUtil;
+import crazypants.enderio.conduit.me.MEUtil;
+import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
+import crazypants.enderio.tool.ToolUtil;
 
 public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
-
-  public static AbstractConduitNetwork<?, ?> createNetworkForType(Class<? extends IConduit> type) {
-    if(IRedstoneConduit.class.isAssignableFrom(type)) {
-      return new RedstoneConduitNetwork();
-    } else if(IPowerConduit.class.isAssignableFrom(type)) {
-      return new PowerConduitNetwork();
-    } else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
-      return new EnderLiquidConduitNetwork();
-    } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
-      return new AdvancedLiquidConduitNetwork();
-    } else if(ILiquidConduit.class.isAssignableFrom(type)) {
-      return new LiquidConduitNetwork();
-    } else if(IItemConduit.class.isAssignableFrom(type)) {
-      return new ItemConduitNetwork();
-    }
-    FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
-    return null;
-  }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IConduit conduit) {
@@ -74,7 +53,7 @@ public class ConduitUtil {
       return;
     }
 
-    AbstractConduitNetwork res = createNetworkForType(conduit.getClass());
+    AbstractConduitNetwork res = conduit.createNetworkForType();
     res.init(conduit.getBundle(), connections, world);
     return;
   }
@@ -113,6 +92,10 @@ public class ConduitUtil {
     if(con.getNetwork() != null) { //this should have been destroyed when destroying the neighbours network but lets just make sure
       con.getNetwork().destroyNetwork();
     }
+    con.connectionsChanged();
+    if(neighbour != null) {
+      neighbour.connectionsChanged();
+    }
   }
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
@@ -127,6 +110,8 @@ public class ConduitUtil {
       if(neighbour.getNetwork() != null) {
         neighbour.getNetwork().destroyNetwork();
       }
+      con.connectionsChanged();
+      neighbour.connectionsChanged();
       return true;
     }
     return false;
@@ -167,7 +152,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && shouldHeldItemHideFacades(player);
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -177,10 +162,6 @@ public class ConduitUtil {
     }
     ItemStack equipped = player.getCurrentEquippedItem();
     if(equipped == null) {
-      return ConduitDisplayMode.ALL;
-    }
-
-    if(equipped.getItem() != EnderIO.itemYetaWench) {
       return ConduitDisplayMode.ALL;
     }
 
@@ -203,21 +184,19 @@ public class ConduitUtil {
       return true;
     }
     ConduitDisplayMode mode = getDisplayMode(player);
-    switch (mode) {
-    case ALL:
-      return true;
-    case FLUID:
-      return conduitType == ILiquidConduit.class;
-    case ITEM:
-      return conduitType == IItemConduit.class;
-    case POWER:
-      return conduitType == IPowerConduit.class;
-    case REDSTONE:
-      return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
-    default:
-      break;
+    return mode.renderConduit(conduitType);
+  }
+
+  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
+    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
+    if(player == null) {
+      return false;
     }
-    return true;
+    ItemStack held = player.getCurrentEquippedItem();
+    if(held != null && held.getItem() instanceof IHideFacades) {
+      return ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
+    }
+    return ToolUtil.isToolEquipped(player);
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {
@@ -232,21 +211,6 @@ public class ConduitUtil {
     return equipped.getItem() instanceof IConduitItem;
   }
 
-  public static boolean isToolEquipped(EntityPlayer player) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
-      return false;
-    }
-    ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
-      return false;
-    }
-    if(MpsUtil.instance.isPowerFistEquiped(equipped)) {
-      return MpsUtil.instance.isOmniToolActive(equipped);
-    }
-    return equipped.getItem() instanceof IToolWrench;
-  }
-
   public static boolean isProbeEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if(player == null) {
@@ -259,8 +223,8 @@ public class ConduitUtil {
     return equipped.getItem() == EnderIO.itemConduitProbe;
   }
 
-  public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
-    if(world == null) {
+  public static <T extends IConduit> T getConduit(World world, int x, int y, int z, Class<T> type) {
+    if(world == null || !world.blockExists(x, y, z)) {
       return null;
     }
     TileEntity te = world.getTileEntity(x, y, z);
@@ -271,11 +235,11 @@ public class ConduitUtil {
     return null;
   }
 
-  public static <T extends IConduit> T getConduit(IBlockAccess world, TileEntity te, ForgeDirection dir, Class<T> type) {
+  public static <T extends IConduit> T getConduit(World world, TileEntity te, ForgeDirection dir, Class<T> type) {
     return ConduitUtil.getConduit(world, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, type);
   }
 
-  public static <T extends IConduit> Collection<T> getConnectedConduits(IBlockAccess world, int x, int y, int z, Class<T> type) {
+  public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z, Class<T> type) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
@@ -313,7 +277,11 @@ public class ConduitUtil {
     if(typeName == null || conduitBody == null) {
       return null;
     }
-    if(nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
+    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) || (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
+        || (typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled())) {
+      return null;
+    }
+    if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
       Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
       typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
     }
@@ -334,6 +302,8 @@ public class ConduitUtil {
       return true;
     } else if(mode == RedstoneControlMode.NEVER) {
       return false;
+    } else if(mode == null) {
+      return false;
     }
 
     int signalStrength = getInternalSignalForColor(bundle, col);
@@ -341,7 +311,7 @@ public class ConduitUtil {
       TileEntity te = bundle.getEntity();
       signalStrength = Math.max(signalStrength, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
     }
-    return mode.isConditionMet(mode, signalStrength);
+    return RedstoneControlMode.isConditionMet(mode, signalStrength);
   }
 
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {
@@ -372,5 +342,76 @@ public class ConduitUtil {
     }
     return false;
   }
+  
+  public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {    
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(! (te instanceof TileConduitBundle) ) {
+      return;
+    }
+    IConduitBundle cb = (IConduitBundle) te;
+    Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
+    boolean hasInsulated = false;
+    for (IConduit con : cb.getConduits()) {
+      cons.addAll(con.getExternalConnections());
+      if(con instanceof IInsulatedRedstoneConduit) {
+        hasInsulated = true;
+      }
+    }
+    if(cons.isEmpty() && !hasInsulated) {
+      return;
+    }
+    if(cons.size() == 1) {
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
+      return;
+    }
+    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
+  }
 
+  public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientBreakSound(snd);
+    }
+  }
+
+  private static void playClientBreakSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+  }
+
+  public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientHitSound(snd);
+    }
+  }
+
+  private static void playClientHitSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
+  }
+
+  public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientStepSound(snd);
+    }
+  }
+
+  private static void playClientStepSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  }
+  
+  public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
+    if (!world.isRemote) {
+      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, snd.func_150496_b(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    } else {
+      playClientPlaceSound(snd);
+    }
+  }
+
+  private static void playClientPlaceSound(SoundType snd) {
+    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  }
 }

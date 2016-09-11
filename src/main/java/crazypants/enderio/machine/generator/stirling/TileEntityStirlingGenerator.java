@@ -4,52 +4,34 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.PowerHandler.Type;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.PowerDistributor;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
-import crazypants.util.BlockCoord;
+import crazypants.enderio.power.PowerDistributor;
 
-public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
+public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 
-  public static final float ENERGY_PER_TICK = 2;
+  // public for alloy smelter
+  public static final String SOUND_NAME = "generator.stirling";
 
   /** How many ticks left until the item is burnt. */
   public int burnTime = 0;
   public int totalBurnTime;
 
   private PowerDistributor powerDis;
-
+  
   public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0), Type.ENGINE);
-    configurePowerHandler();
-  }
-
-  @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
-    return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
-  }
-
-  @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    super.setCapacitor(capacitorType);
-    configurePowerHandler();
-  }
-
-  void configurePowerHandler() {
-    powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
-  }
-
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return true;
+    super(new SlotDefinition(1, 0));        
   }
 
   @Override
@@ -60,11 +42,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   @Override
   public String getInventoryName() {
     return "Stirling Generator";
-  }
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return 0;
   }
 
   @Override
@@ -84,7 +61,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    return false;
+    return !TileEntityFurnace.isItemFuel(itemstack);
   }
 
   @Override
@@ -100,6 +77,21 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return (float) burnTime / (float) totalBurnTime;
   }
 
+  @Override
+  public void setProgress(float progress) {
+    burnTime = (int) (totalBurnTime * progress);
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
+  }
+  
+  @Override
+  public String getSoundName() {
+    return SOUND_NAME;
+  }
+  
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
@@ -123,19 +115,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  protected void updateStoredEnergyFromPowerHandler() {
-    //no-op as we don't actually need a BC power handler for a generator
-    //Need to clean this up
+  public int getPowerUsePerTick() {
+    return Math.round(Config.stirlingGeneratorBaseRfPerTick * getEnergyMultiplier());
   }
 
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return (int)(storedEnergy * 10);
-  }
-
-  @Override
-  public float getPowerUsePerTick() {
-    return ENERGY_PER_TICK * getEnergyMultiplier();
+  public int getBurnTime(ItemStack item) {
+    return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
   }
 
   @Override
@@ -144,20 +129,20 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     boolean sendBurnTimePacket = false;
     
     if(burnTime > 0) {
-      if(storedEnergy < powerHandler.getMaxEnergyStored()) {
-        storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
+      if(getEnergyStored() < getMaxEnergyStored()) {
+        setEnergyStored(getEnergyStored() + getPowerUsePerTick());        
       }
       burnTime--;
-      sendBurnTimePacket = worldObj.getTotalWorldTime() % 20 == 1 || burnTime == 0;    
+      sendBurnTimePacket = shouldDoWorkThisTick(20,-1) || burnTime == 0;    
     }
 
     transmitEnergy();
 
     if(redstoneCheckPassed) {
 
-      if(burnTime <= 0 && storedEnergy < powerHandler.getMaxEnergyStored()) {
+      if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
-          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) * getBurnTimeMultiplier());
+          burnTime = getBurnTime(inventory[0]);
           if(burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
@@ -166,8 +151,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
             } else {
               decrStackSize(0, 1);
             }
+            needsUpdate = true;
           }
-          needsUpdate = true;
         }
       }
     }
@@ -178,24 +163,50 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return needsUpdate;
   }
 
-  private float getEnergyMultiplier() {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return 2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return 4;
+  @Override
+  protected boolean doPush(ForgeDirection dir) {
+    if(inventory[0] == null) {
+      return false;
     }
-    return 1;
+
+    if(!shouldDoWorkThisTick(20)) {
+      return false;
+    }
+
+    if(!canExtractItem(0, inventory[0], 0)) {
+      return false;
+    }
+
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+
+    return doPush(dir, te, 0, 0);
+  }
+
+  public static float getEnergyMultiplier(Capacitors capacitorType) {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+      return Config.stirlingGeneratorEnergyMultiplierT2;
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+      return Config.stirlingGeneratorEnergyMultiplierT3;
+    }
+    return Config.stirlingGeneratorEnergyMultiplierT1;
+  }
+
+  private float getEnergyMultiplier() {
+    return getEnergyMultiplier(getCapacitorType());
+  }
+
+  public static float getBurnTimeMultiplier(Capacitors capacitorType) {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+      return Config.stirlingGeneratorBurnTimeMultiplierT2;
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+      return Config.stirlingGeneratorBurnTimeMultiplierT3;
+    }
+    return Config.stirlingGeneratorBurnTimeMultiplierT1;
   }
 
   public float getBurnTimeMultiplier() {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      //burn for 62.5% of the time to produce 2x the power, i.e. 1.25 the effecientcy
-      return 1.25f;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      //burn for half as long to produce 4x the power, i.e. twice the effecientcy
-      return 1;
-    }
-    return 2;
+    return getBurnTimeMultiplier(getCapacitorType());
   }
 
   //private PowerDistributor powerDis;
@@ -203,12 +214,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    double canTransmit = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyExtracted());
+    int canTransmit = Math.min(getEnergyStored(), getPowerUsePerTick() * 2);
     if(canTransmit <= 0) {
       return false;
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, (float)canTransmit);
-    storedEnergy -= transmitted;
+    int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
+    setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }
 
@@ -216,7 +227,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public boolean hasCustomInventoryName() {
     return false;
   }
-
-
-
+  
+  
 }

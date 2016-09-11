@@ -12,6 +12,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
@@ -60,8 +61,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   protected IMachineRecipe canStartNextTask(float chance) {
     if(mode == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().vanillaRecipe;
-      if(vr.isRecipe(getInputs())) {
-        ResultStack[] res = vr.getCompletedResult(chance, getInputs());
+      if(vr.isRecipe(getRecipeInputs())) {
+        ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
         if(res == null || res.length == 0) {
           return null;
         }
@@ -70,7 +71,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
       return null;
     }
 
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(mode == Mode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
       nextRecipe = null;
     }
@@ -80,7 +81,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     // make sure we have room for the next output
     return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
   }
-
+  
   @Override
   public String getMachineName() {
     return ModObject.blockAlloySmelter.unlocalisedName;
@@ -123,7 +124,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     for (IMachineRecipe recipe : recipes) {
       if(!(recipe instanceof VanillaSmeltingRecipe)) {
 
-        if(recipe instanceof AlloyMachineRecipe) {
+        if(recipe instanceof ManyToOneMachineRecipe) {
           ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
           for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
             if(i >= 0 && i < inventory.length) {
@@ -134,7 +135,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
               }
             }
           }
-          if(((AlloyMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
+          if(((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
             return true;
           }
 
@@ -184,15 +185,19 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
     short mb = nbtRoot.getShort("mode");
-    mode = Mode.values()[mb];
+    Mode[] modes = Mode.values();
+    if(mb < 0 || mb >= modes.length) {
+      mb = 0;
+    }
+    mode = modes[mb];
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
     nbtRoot.setShort("mode", (short) mode.ordinal());
   }
 

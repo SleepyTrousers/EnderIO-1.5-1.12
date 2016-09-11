@@ -4,34 +4,43 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
 
-public class ReservoirRenderer extends TileEntitySpecialRenderer {
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class ReservoirRenderer extends TileEntitySpecialRenderer implements IResourceManagerReloadListener {
 
   private ResourceLocation texName = null;
   private IIcon tex = null;
-  private float switchSize = 0.25f;
-  private float switchHSize = switchSize / 2f;
-  private BoundingBox switchBB = new BoundingBox(0.5 - switchHSize, 0.5 - switchHSize, 0.5 - switchHSize, 0.5 + switchHSize, 0.5 + switchHSize,
-      0.5 + switchHSize);
 
   private final BlockReservoir block;
 
   public ReservoirRenderer(BlockReservoir res) {
     block = res;
+    RenderUtil.registerReloadListener(this);
   }
 
+  @Override
+  public void onResourceManagerReload(IResourceManager p_110549_1_) {
+      tex = null;
+  }
+  
   @Override
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 
@@ -111,10 +120,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     boolean isUp = dir.offsetY != 0;
 
-    if(dir == ForgeDirection.UP) {
-      int i = 0;
-    }
-
     forward.set(dir.offsetX, dir.offsetY, dir.offsetZ);
     forward.scale(0.5);
     forward.x *= bb.sizeX();
@@ -167,7 +172,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
   private IIcon getLiquidTexture() {
     if(tex == null) {
-      tex = ReservoirTank.WATER.getFluid().getStillIcon();
+      tex = FluidRegistry.WATER.getStillIcon();
     }
     return tex;
   }

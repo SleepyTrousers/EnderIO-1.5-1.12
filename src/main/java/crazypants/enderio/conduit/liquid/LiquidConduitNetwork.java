@@ -5,16 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.util.BlockCoord;
 
 public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
@@ -22,22 +19,20 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     super(LiquidConduit.class);
   }
 
-  private long timeAtLastApply;
+  private int ticksEmpty = 0;
 
   private int maxFlowsPerTick = 10;
   private int lastFlowIndex = 0;
 
   private boolean printFlowTiming = false;
 
-  private int pushToken = 0;
+  private int lastPushToken = 0;
 
   private int inputVolume;
 
   private int outputVolume;
 
   private boolean inputLocked = false;
-
-  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public boolean lockNetworkForFill() {
     if(inputLocked) {
@@ -52,34 +47,28 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote || liquidType == null) {
-      return;
-    }
-
-    long curTime = world.getTotalWorldTime();
-    if(curTime > 0 && curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickHandler);
-      //doTick(curTime);
-    }
-  }
-
-  private void doTick() {
-
+  public void doNetworkTick() {
     List<LiquidConduit> cons = getConduits();
     if(cons == null || cons.isEmpty()) {
       return;
     }
 
+    if(isEmpty()) {
+      if(!fluidTypeLocked && liquidType != null) {
+        ticksEmpty++;
+        if(ticksEmpty > 40) {
+          setFluidType(null);
+          ticksEmpty = 0;
+        }
+      }
+      return;
+    }
+
+    ticksEmpty = 0;
     long curTime = cons.get(0).getBundle().getEntity().getWorldObj().getTotalWorldTime();
 
     // 1000 water, 6000 lava
-    if(liquidType != null && liquidType.getFluid() != null) {
+    if(liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
       if(curTime % (visc / 500) == 0) {
         long start = System.nanoTime();
@@ -89,9 +78,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
           System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
         }
       }
-    }
-    if(!fluidTypeLocked && isEmpty()) {
-      setFluidType(null);
     }
   }
 
@@ -104,7 +90,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   int getNextPushToken() {
-    return ++pushToken;
+    return ++lastPushToken;
   }
 
   private boolean doFlow() {
@@ -191,8 +177,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int closestDistance = Integer.MAX_VALUE;
     LocatedFluidHandler closestTank = null;
     for (LocatedFluidHandler lh : externals) {
-      int distance = lh.bc.distanceSquared(conLoc);
-      if(distance < closestDistance) {
+      int distance = lh.bc.getDistSq(conLoc);
+      if(distance < closestDistance && con.canOutputToDir(lh.dir.getOpposite())) {
         int couldFill = lh.tank.fill(lh.dir, toDrain.copy(), false);
         if(couldFill > 0) {
           closestTank = lh;
@@ -375,19 +361,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       this.tank = tank;
       this.bc = bc;
       this.dir = dir;
-    }
-
-  }
-
-  private class InnerTickHandler implements TickListener {
-
-    @Override
-    public void tickStart(ServerTickEvent evt) {
-    }
-
-    @Override
-    public void tickEnd(ServerTickEvent evt) {
-      doTick();
     }
   }
 

@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 
 public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implements IMessageHandler<PacketConnectionMode, IMessage>{
 
@@ -19,7 +20,7 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
   public PacketConnectionMode(IConduit con, ForgeDirection dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.get(con));
     this.dir = dir;
-    mode = con.getConectionMode(dir);
+    mode = con.getConnectionMode(dir);
   }
 
   @Override
@@ -39,7 +40,15 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
 
   @Override
   public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
-    message.getTileCasted(ctx).setConnectionMode(message.dir, message.mode);
+    IConduit conduit = message.getTileCasted(ctx);
+    if(conduit == null) {
+      return null;
+    }
+    if(conduit instanceof IInsulatedRedstoneConduit) {
+      ((IInsulatedRedstoneConduit)conduit).forceConnectionMode(message.dir, message.mode);
+    } else {
+      conduit.setConnectionMode(message.dir, message.mode);
+    }
     message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;
   }

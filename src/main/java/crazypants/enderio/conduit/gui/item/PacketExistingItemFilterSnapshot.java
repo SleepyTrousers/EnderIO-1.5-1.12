@@ -18,18 +18,26 @@ import crazypants.enderio.conduit.packet.ConTypeEnum;
 
 public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketExistingItemFilterSnapshot, IMessage> {
 
+  public static enum Opcode {
+    CLEAR,
+    SET,
+    MERGE,
+    SET_BLACK,
+    UNSET_BLACK
+  }
+
   private ForgeDirection dir;
-  private boolean isClear;
+  private Opcode opcode;
   private boolean isInput;
 
-  public PacketExistingItemFilterSnapshot() {    
+  public PacketExistingItemFilterSnapshot() {
   }
   
-  public PacketExistingItemFilterSnapshot(IItemConduit con, ForgeDirection dir, boolean isInput, boolean isClear) {
+  public PacketExistingItemFilterSnapshot(IItemConduit con, ForgeDirection dir, boolean isInput, Opcode opcode) {
     super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
     this.dir = dir;
     this.isInput= isInput;
-    this.isClear = isClear;
+    this.opcode = opcode;
   }
   
   @Override
@@ -37,7 +45,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
     super.fromBytes(buf);
     dir = ForgeDirection.values()[buf.readShort()];
     isInput = buf.readBoolean();
-    isClear = buf.readBoolean();   
+    opcode = Opcode.values()[buf.readByte() & 255];
   }
 
   @Override
@@ -45,7 +53,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
     super.toBytes(buf);
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(isInput);
-    buf.writeBoolean(isClear);    
+    buf.writeByte(opcode.ordinal());
   }
 
   @Override
@@ -61,15 +69,38 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
       filter = (ExistingItemFilter)conduit.getOutputFilter(message.dir);
     }
     
-    if(message.isClear) {      
-      filter.setSnapshot((List<ItemStack>)null);
-      System.out.println("PacketExistingItemFilterSnapshot.onMessage: Cleared snapshot");      
-    } else {
-      ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();    
-      NetworkedInventory inv = icn.getInventory(conduit, message.dir);
-      filter.setSnapshot(inv);        
+    switch (message.opcode) {
+      case CLEAR:
+        filter.setSnapshot((List<ItemStack>)null);
+        System.out.println("PacketExistingItemFilterSnapshot.onMessage: Cleared snapshot");
+        break;
+
+      case SET: {
+        ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
+        NetworkedInventory inv = icn.getInventory(conduit, message.dir);
+        inv.updateInventory();
+        filter.setSnapshot(inv);
+        break;
+      }
+
+      case MERGE: {
+        ItemConduitNetwork icn = (ItemConduitNetwork)conduit.getNetwork();
+        NetworkedInventory inv = icn.getInventory(conduit, message.dir);
+        filter.mergeSnapshot(inv);
+        break;
+      }
+
+    case SET_BLACK:
+      filter.setBlacklist(true);
+      break;
+    case UNSET_BLACK:
+      filter.setBlacklist(false);
+      break;
+
+      default:
+        throw new AssertionError();
     }
-    
+
     if(message.isInput) {
       conduit.setInputFilter(message.dir, filter);  
     } else {

@@ -1,43 +1,47 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
+import crazypants.enderio.item.IRotatableFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.util.IFacade;
 
-public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
- 
-  
+public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
+
+  public static int renderId = -1;
+
   public static BlockPaintedGlowstone create() {
     BlockPaintedGlowstone result = new BlockPaintedGlowstone();
     result.init();
@@ -46,15 +50,18 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
 
   private IIcon lastRemovedComponetIcon = null;
 
-  private Random rand = new Random();
+  private final Random rand = new Random();
 
   protected BlockPaintedGlowstone() {
-    super(Material.glass);
+    super(ModObject.blockPaintedGlowstone.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
     setCreativeTab(null);
-    setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);    
+    setStepSound(soundTypeGlass);
+    setHardness(0.7F);
+    setLightLevel(1.0f);
   }
 
-  private void init() {
+  @Override
+  protected void init() {
     GameRegistry.registerBlock(this, BlockItemPaintedGlowstone.class, ModObject.blockPaintedGlowstone.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedGlowstone.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
@@ -65,11 +72,13 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
-  
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public int getLightValue() {  
-    return 15;
-  }  
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -80,7 +89,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().colorMultiplier(world, x, y, z);
       }
-    }    
+    }
     return super.colorMultiplier(world, x, y, z);
   }
 
@@ -117,7 +126,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -162,11 +171,12 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {    
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -177,7 +187,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
   }
-   
+  
   @SideOnly(Side.CLIENT)
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
@@ -190,56 +200,56 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    Block b = PainterUtil.getSourceBlock(stack);
+  public boolean tryRotateFacade(World world, int x, int y, int z, ForgeDirection axis) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      tef.setSourceBlock(b);
-      tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+      int oldMeta = tef.getSourceBlockMetadata();
+      int newMeta = PainterUtil.rotateFacadeMetadata(tef.getSourceBlock(), oldMeta, axis);
+      if(oldMeta != newMeta) {
+        tef.setSourceBlockMetadata(newMeta);
+        world.markBlockForUpdate(x, y, z);
+        tef.markDirty();
+        return true;
+      }
     }
-    world.markBlockForUpdate(x, y, z);
-    super.onBlockPlacedBy(world, x, y, z, player, stack);
-  }
-
-  /**
-   * Remove the tile entity too.
-   */
-  @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getTileEntity(x, y, z);
-
-      if(te instanceof TileEntityPaintedBlock) {
-        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-
-        ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
-
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
-
-      } 
-
-    }
-
-    world.removeTileEntity(x, y, z);
+    return false;
   }
 
   @Override
-  public int quantityDropped(Random par1Random) {
-    return 0; // need to do custom dropping to maintain source metadata
+  public int damageDropped(int meta) {
+    return meta;
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  @Override
+  protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
+    TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+    if(tef != null) {
+      ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
+      drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
+    }
+  }
+
+  @Override
+  public boolean doNormalDrops(World world, int x, int y, int z) {
+      return false;
+  }
+
+  @Override
+  public int getRenderType() {
+    return renderId;
+  }
+
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.glowstone);
+      super(Blocks.glowstone, BlockPaintedGlowstone.this);
+      MinecraftForge.EVENT_BUS.register(this);
+    }
+    
+    @Override
+    public boolean isValidPaintSource(ItemStack paintSource) {
+      return super.isValidPaintSource(paintSource) && Util.getBlockFromItemId(paintSource).isOpaqueCube();
     }
 
     @Override
@@ -248,17 +258,62 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
       if(paintSource == null) {
         return new ResultStack[0];
       }
+
+      if (paintSource.getItem() == Item.getItemFromBlock(Blocks.glowstone)) {
+        ItemStack stack = new ItemStack(Blocks.glowstone);
+        stack.stackTagCompound = new NBTTagCompound();
+        String tagName = "wasPainted";
+        stack.stackTagCompound.setBoolean(tagName, true);
+        return new ResultStack[] { new ResultStack(stack) };
+      }
+
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
 
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockGlowstone>(new ItemStack(Blocks.glowstone), BlockGlowstone.class);
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockPaintedGlowstone, 1, 0));
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
+    @SubscribeEvent
+    public void onTooltip(ItemTooltipEvent event) {
+      if (event.itemStack != null && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone && event.itemStack.stackTagCompound != null) {
+        if (event.itemStack.stackTagCompound.getBoolean("wasPainted")) {
+          event.toolTip.add(EnderIO.lang.localize("painter.tooltip.wasPainted"));
+        }
+      }
     }
   }
 
-  
+  @Override
+  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      return tef.getBlockMetadata();
+    }
+    return 0;
+  }
+
+  @Override
+  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof IPaintableTileEntity) {
+      Block sourceBlock = ((IPaintableTileEntity) te).getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock;
+      }
+    }
+    return this;
+  }
+
+  @Override
+  public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacade(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public int getVisualMeta(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return getFacadeMetadata(world, x, y, z, side.ordinal());
+  }
+
+  @Override
+  public boolean supportsVisualConnections() {
+    return true;
+  }
 }

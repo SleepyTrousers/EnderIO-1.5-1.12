@@ -7,15 +7,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.render.BoundingBox;
-import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomRenderBlocks;
-import crazypants.render.IRenderFace;
-import crazypants.render.RenderUtil;
-import crazypants.render.VertexTransform;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
+
+import com.enderio.core.api.client.render.IRenderFace;
+import com.enderio.core.api.client.render.VertexTransform;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
 
 public class TranslatedCubeRenderer {
 
@@ -25,6 +26,10 @@ public class TranslatedCubeRenderer {
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
+  public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, boolean enableLighting) {
+    renderBoundingBox(x, y, z, block, bb, vt, null, enableLighting);
+  }
+  
   public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt) {
     renderBoundingBox(x, y, z, block, bb, vt, null);
   }
@@ -57,9 +62,9 @@ public class TranslatedCubeRenderer {
           v.xyz.sub(xyz);
           xform.apply(v);
           if(!enableLighting) {
-            v.brightness = -1;
+            v.brightness = 15 << 20 | 15 << 4;
             float col = RenderUtil.getColorMultiplierForFace(face);
-            v.color = new Vector4f(col,col,col,1);
+            v.color = new Vector4f(col,col,col,1);            
             v.normal = null;
           }
         }
@@ -69,5 +74,8 @@ public class TranslatedCubeRenderer {
       Tessellator.instance.addTranslation(-(float)x,- (float)y, -(float)z);
     }
   }
-
+  
+  public CustomCubeRenderer getRenderer() {
+    return ccr;
+  }
 }

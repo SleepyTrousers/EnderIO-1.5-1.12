@@ -4,8 +4,10 @@ import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.util.DyeColor;
 
 public interface IRedstoneConduit extends IConduit {
 
@@ -30,8 +32,11 @@ public interface IRedstoneConduit extends IConduit {
 
   void updateNetwork();
 
+  // MFR RedNet
+
   int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
 
   int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
 
+  void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues);
 }

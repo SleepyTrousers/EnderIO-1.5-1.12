@@ -8,14 +8,18 @@ public interface IPowerInterface {
 
   boolean canConduitConnect(ForgeDirection direction);
 
-  float getEnergyStored(ForgeDirection dir);
+  int getEnergyStored(ForgeDirection dir);
 
-  float getMaxEnergyStored(ForgeDirection dir);
+  int getMaxEnergyStored(ForgeDirection dir);
 
-  float getPowerRequest(ForgeDirection dir);
+  int getPowerRequest(ForgeDirection dir);
 
-  float getMinEnergyReceived(ForgeDirection dir);
+  int getMinEnergyReceived(ForgeDirection dir);
 
-  float recieveEnergy(ForgeDirection opposite, float canOffer);
+  int recieveEnergy(ForgeDirection opposite, int canOffer);
+
+  boolean isOutputOnly();
+
+  boolean isInputOnly();
 
 }

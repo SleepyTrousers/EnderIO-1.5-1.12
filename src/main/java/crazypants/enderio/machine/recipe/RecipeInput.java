@@ -34,9 +34,9 @@ public class RecipeInput {
   }
 
   protected RecipeInput(ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier, int slot) {
-    this.input = input;
+    this.input = input == null ? null : input.copy();
     this.useMeta = useMeta;
-    this.fluid = fluid;
+    this.fluid = fluid == null ? null : fluid.copy();
     this.multiplier = mulitplier;
     this.slot = slot;
   }

@@ -10,25 +10,31 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
-import crazypants.enderio.teleport.packet.PacketAccessMode;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Lang;
+import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
 
-public class GuiTravelAccessable extends GuiContainerBase {
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.packet.PacketAccessMode;
+import crazypants.enderio.teleport.packet.PacketLabel;
+
+public class GuiTravelAccessable extends GuiContainerBaseEIO {
 
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
 
-  private CheckBoxEIO publicCB;
-  private CheckBoxEIO privateCB;
-  private CheckBoxEIO protectedCB;
+  private CheckBox publicCB;
+  private CheckBox privateCB;
+  private CheckBox protectedCB;
+
+  private TextFieldEnder tf;
 
   private String publicStr;
   private String privateStr;
@@ -39,18 +45,24 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private int col1x;
   private int col2x;
 
-  private World world;
+  protected World world;
 
   public GuiTravelAccessable(InventoryPlayer playerInv, ITravelAccessable te, World world) {
-    super(new ContainerTravelAccessable(playerInv, te, world));
-    this.te = te;
-    this.world = world;
+    this(new ContainerTravelAccessable(playerInv, te, world));
+  }
 
-    publicStr = Lang.localize("gui.travelAccessable.public");
-    privateStr = Lang.localize("gui.travelAccessable.private");
-    protectedStr = Lang.localize("gui.travelAccessable.protected");
+  public GuiTravelAccessable(ContainerTravelAccessable container) {
+    super(container, "travelAccessable");
+    this.te = container.ta;
+    this.world = container.world;
+
+    publicStr = EnderIO.lang.localize("gui.travelAccessable.public");
+    privateStr = EnderIO.lang.localize("gui.travelAccessable.private");
+    protectedStr = EnderIO.lang.localize("gui.travelAccessable.protected");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
+    tf = new TextFieldEnder(fr, 28, 10, 90, 16);
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
@@ -61,18 +73,20 @@ public class GuiTravelAccessable extends GuiContainerBase {
     int y = 50;
 
     x = col0x - 8;
-    privateCB = new CheckBoxEIO(this, ID_PRIVATE, x, y);
+    privateCB = new CheckBox(this, ID_PRIVATE, x, y);
     privateCB.setSelected(te.getAccessMode() == AccessMode.PRIVATE);
 
     x = col1x - 8;
-    protectedCB = new CheckBoxEIO(this, ID_PROTECTED, x, y);
+    protectedCB = new CheckBox(this, ID_PROTECTED, x, y);
     protectedCB.setSelected(te.getAccessMode() == AccessMode.PROTECTED);
 
     x = col2x - 8;
-    publicCB = new CheckBoxEIO(this, ID_PUBLIC, x, y);
+    publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
     ySize = 185;
+    
+    textFields.add(tf);
   }
 
   @Override
@@ -98,12 +112,32 @@ public class GuiTravelAccessable extends GuiContainerBase {
     publicCB.onGuiInit();
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
+
+    tf.setMaxStringLength(32);
+    tf.setFocused(true);
+    String txt = te.getLabel();
+    if(txt != null && txt.length() > 0) {
+      tf.setText(txt);
+    }
+
+    ((ContainerTravelAccessable) inventorySlots).addGhostSlots(getGhostSlots());
+
+  }
+  
+  @Override
+  public void updateScreen() {
+    super.updateScreen();
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+  public void mouseClicked(int x, int y, int par3) {
+    super.mouseClicked(x, y, par3);
+  }
+
+  @Override
+  public void drawGuiContainerBackgroundLayer(float f, int i, int j) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
@@ -122,7 +156,39 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     x = sx + col2x - fontRenderer.getStringWidth(publicStr) / 2;
     fontRenderer.drawStringWithShadow(publicStr, x, y, col);
+    checkLabelForChange();
 
+    super.drawGuiContainerBackgroundLayer(f, i, j);
+  }
+
+  private void checkLabelForChange() {
+    String newTxt = tf.getText();
+    if(newTxt != null && newTxt.length() == 0) {
+      newTxt = null;
+    }
+
+    String curText = te.getLabel();
+    if(curText != null && curText.length() == 0) {
+      curText = null;
+    }
+
+    boolean changed = false;
+    if(newTxt == null) {
+      if(curText == null) {
+        changed = false;
+      } else {
+        changed = true;
+      }
+    } else {
+      changed = !newTxt.equals(curText);
+    }
+    if(!changed) {
+      return;
+    }
+    te.setLabel(newTxt);
+    BlockCoord bc = te.getLocation();
+    PacketLabel p = new PacketLabel(bc.x, bc.y, bc.z, te.getLabel());
+    PacketHandler.INSTANCE.sendToServer(p);
   }
 
   @Override
@@ -130,11 +196,10 @@ public class GuiTravelAccessable extends GuiContainerBase {
     super.drawForegroundImpl(mouseX, mouseY);
 
     if(te.getAccessMode() != AccessMode.PROTECTED) {
-      int sx = (width - xSize) / 2;
-      int sy = (height - ySize) / 2;
-      RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
+      bindGuiTexture();
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
       drawTexturedModalRect(43, 72, 5, 35, 90, 18);
       GL11.glDisable(GL11.GL_BLEND);

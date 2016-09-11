@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.item;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
@@ -18,12 +19,12 @@ public class ItemItemConduit extends AbstractItemConduit {
 
   public static ItemItemConduit create() {
     ItemItemConduit result = new ItemItemConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemItemConduit() {
-    super(ModObject.itemItemConduit);
+    super(ModObject.itemItemConduit, subtypes);
   }
 
   @Override
@@ -32,8 +33,12 @@ public class ItemItemConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack item) {
+  public IConduit createConduit(ItemStack item, EntityPlayer player) {
     return new ItemConduit(item.getItemDamage());
   }
 
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 }

@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
@@ -17,12 +18,12 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
 
   public static ItemRedstoneConduit create() {
     ItemRedstoneConduit result = new ItemRedstoneConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemRedstoneConduit() {
-    super(ModObject.itemRedstoneConduit);
+    super(ModObject.itemRedstoneConduit, subtypes);
   }
 
   @Override
@@ -31,7 +32,7 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     if(stack.getItemDamage() == 0) {
       return new RedstoneConduit();
     }
@@ -42,4 +43,8 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
     }
   }
 
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 }

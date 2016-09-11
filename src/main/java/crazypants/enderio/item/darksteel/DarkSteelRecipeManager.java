@@ -12,10 +12,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.oredict.OreDictionary;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
+import com.google.common.collect.ImmutableList;
+
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
-import crazypants.util.Lang;
+import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 
 public class DarkSteelRecipeManager {
 
@@ -34,6 +53,24 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpeedUpgrade.SPEED_ONE);
     upgrades.add(SpeedUpgrade.SPEED_TWO);
     upgrades.add(SpeedUpgrade.SPEED_THREE);
+    upgrades.add(GliderUpgrade.INSTANCE);
+    upgrades.add(SoundDetectorUpgrade.INSTANCE);
+    upgrades.add(SwimUpgrade.INSTANCE);
+    upgrades.add(NightVisionUpgrade.INSTANCE);
+    upgrades.add(TravelUpgrade.INSTANCE);
+    upgrades.add(SpoonUpgrade.INSTANCE);
+    upgrades.add(SolarUpgrade.SOLAR_ONE);
+    upgrades.add(SolarUpgrade.SOLAR_TWO);
+    if(Loader.isModLoaded("Thaumcraft")) {
+      ThaumcraftCompat.loadUpgrades(upgrades);
+    }
+    if(Loader.isModLoaded("Forestry")) {
+      upgrades.add(NaturalistEyeUpgrade.INSTANCE);
+      upgrades.add(ApiaristArmorUpgrade.HELMET);
+      upgrades.add(ApiaristArmorUpgrade.CHEST);
+      upgrades.add(ApiaristArmorUpgrade.LEGS);
+      upgrades.add(ApiaristArmorUpgrade.BOOTS);
+    }
   }
 
   @SubscribeEvent
@@ -42,16 +79,11 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && 
-        evt.right.getItem() == EnderIO.itemAlloy && 
-        evt.right.getItemDamage() == Alloy.DARK_STEEL.ordinal()) {
-
+    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
       handleRepair(evt);
-            
     } else {    
       handleUpgrade(evt);
     }
-
   }
 
   private void handleRepair(AnvilUpdateEvent evt) {
@@ -165,13 +197,16 @@ public class DarkSteelRecipeManager {
       }
     }
     if(!applyableUpgrades.isEmpty()) {
-      list.add(EnumChatFormatting.YELLOW + "Anvil Upgrades: ");
+      list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
-        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItem().getDisplayName() + " + " + up.getLevelCost()
-            + " lvs");
+        list.add(EnumChatFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
+        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
+            + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
       }
     }
   }
 
+  public Iterator<IDarkSteelUpgrade> recipeIterator() {
+    return ImmutableList.copyOf(upgrades).iterator();
+  }
 }

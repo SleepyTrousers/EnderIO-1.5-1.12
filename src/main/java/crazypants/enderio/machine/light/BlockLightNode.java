@@ -1,11 +1,15 @@
 package crazypants.enderio.machine.light;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 
@@ -19,8 +23,9 @@ public class BlockLightNode extends BlockEio {
 
   public BlockLightNode() {
     super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class, Material.air);
-    setCreativeTab(null);    
+    setCreativeTab(null);
     setBlockBounds(0, 0, 0, 0, 0, 0);
+    setTickRandomly(true);
   }
 
   @Override
@@ -35,13 +40,7 @@ public class BlockLightNode extends BlockEio {
 
   @Override
   public boolean isBlockSolid(IBlockAccess iblockaccess, int x, int y, int z, int l) {
-    Block blockID = iblockaccess.getBlock(x, y, z);
-    if(blockID == this) {
-      return false;
-    } else {
-
-      return super.isBlockSolid(iblockaccess, x, y, z, l);
-    }
+    return false;
   }
 
   @Override
@@ -60,22 +59,11 @@ public class BlockLightNode extends BlockEio {
     if(te != null) {
       te.onBlockRemoved();
     }
-    world.removeTileEntity(x, y, z);
   }
 
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    Block block = world.getBlock(x, y, z);
-    if(block != null && block != this) {
-      return block.getLightValue(world, x, y, z);
-    }
-    int onVal = 15;
-    // TileEntity te = world.getTileEntity(x, y, z);
-    // if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) {
-    // System.out.println("BlockLightNode.getLightValue: ");
-    // onVal = 5;
-    // }
-    return world.getBlockMetadata(x, y, z) > 0 ? onVal : 0;
+    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
   }
 
   @Override
@@ -87,8 +75,22 @@ public class BlockLightNode extends BlockEio {
   }
 
   @Override
+  public void updateTick(World world, int x, int y, int z, Random r) {
+    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
+    if(te != null) {
+      te.checkParent();
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
+  }
+
+  @Override
+  public int quantityDropped(Random p_149745_1_) {
+    return 0;
   }
 
 }

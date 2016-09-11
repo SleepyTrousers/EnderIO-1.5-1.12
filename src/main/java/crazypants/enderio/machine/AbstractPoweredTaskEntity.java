@@ -6,21 +6,25 @@ import java.util.Random;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.network.PacketHandler;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
+import com.enderio.core.api.common.util.IProgressTile;
+
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.power.IInternalPowerReceiver;
+
+public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IProgressTile {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
+  protected IMachineRecipe cachedNextRecipe;
 
   protected final Random random = new Random();
 
   protected int ticksSinceCheckedRecipe = 0;
-  protected boolean startFailed = false;  
-  
-  protected int lastProgressScaled = -1;
+  protected boolean startFailed = false;
+  protected float nextChance = Float.NaN;
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -46,46 +50,50 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   }
 
   @Override
-  public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-    if(!super.canInsertItem(i, itemstack, j)) {
-      return false;
-    }
-    if(!isItemValidForSlot(i, itemstack)) {
-      return false;
-    }
-    if(inventory[i] == null) {
-      return true;
-    }
-    return inventory[i].isItemEqual(itemstack);
-  }
-
-  @Override
   public boolean isActive() {
-    return currentTask == null ? false : currentTask.getProgress() > 0 && hasPower() && redstoneCheckPassed;
+    return currentTask == null ? false : currentTask.getProgress() >= 0 && hasPower() && redstoneCheckPassed;
   }
 
   @Override
   public float getProgress() {
-    return currentTask == null ? 0 : currentTask.getProgress();
+    return currentTask == null ? -1 : currentTask.getProgress();
+  }
+
+  @Override
+  public TileEntity getTileEntity() {
+    return this;
+  }
+
+  @Override
+  public void setProgress(float progress) {
+    this.currentTask = progress < 0 ? null : new PoweredTaskProgress(progress);
+  }
+
+  public IPoweredTask getCurrentTask() {
+    return currentTask;
   }
 
   public float getExperienceForOutput(ItemStack output) {
     if(lastCompletedRecipe == null) {
       return 0;
     }
-    return lastCompletedRecipe.getExperianceForOutput(output);
+    return lastCompletedRecipe.getExperienceForOutput(output);
+  }
+
+  public boolean getRedstoneChecksPassed() {
+    return redstoneCheckPassed;
   }
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-    
-    if(!redstoneChecksPassed) {      
+
+    if(!redstoneChecksPassed) {
       return false;
     }
 
     boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress(redstoneChecksPassed);    
+    requiresClientSync |= checkProgress(redstoneChecksPassed);
 
     if(currentTask != null || !hasPower() || !hasInputStacks()) {
       return requiresClientSync;
@@ -99,17 +107,26 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     ticksSinceCheckedRecipe = 0;
 
-    float chance = random.nextFloat();
+    // Get a new chance when we don't have one yet
+    // If a recipe could not be started we will try with the same chance next time
+    if(Float.isNaN(nextChance)) {
+      nextChance = random.nextFloat();
+    }
+
     // Then see if we need to start a new one
-    IMachineRecipe nextRecipe = canStartNextTask(chance);
+    IMachineRecipe nextRecipe = canStartNextTask(nextChance);
     if(nextRecipe != null) {
-      boolean started = startNextTask(nextRecipe, chance);      
-      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);        
-      startFailed = !started;                        
+      boolean started = startNextTask(nextRecipe, nextChance);
+      if(started) {
+        // this chance value has been used up
+        nextChance = Float.NaN;
+      }
+      startFailed = !started;
     } else {
       startFailed = true;
     }
-    
+    sendTaskProgressPacket();
+
     return requiresClientSync;
   }
 
@@ -117,7 +134,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     if(currentTask == null || !hasPower()) {
       return false;
     }
-    if(redstoneChecksPassed) {
+    if (redstoneChecksPassed && !currentTask.isComplete()) {
       usePower();
     }
     // then check if we are done
@@ -125,13 +142,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       taskComplete();
       return false;
     }
-    
-    int curScaled = getProgressScaled(16);
-    if(curScaled != lastProgressScaled) {
-      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
-      lastProgressScaled = curScaled;
-    }
-    
+
     return false;
   }
 
@@ -139,10 +150,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return usePower(getPowerUsePerTick());
   }
 
-  protected double usePower(double wantToUse) {
-    double used = Math.min(powerHandler.getEnergyStored(), wantToUse);
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
-    currentTask.update((float) used);
+  public int usePower(int wantToUse) {
+    int used = Math.min(getEnergyStored(), wantToUse);
+    setEnergyStored(Math.max(0, getEnergyStored() - used));
+    if(currentTask != null) {
+      currentTask.update(used);
+    }
     return used;
   }
 
@@ -151,14 +164,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       lastCompletedRecipe = currentTask.getRecipe();
       ResultStack[] output = currentTask.getCompletedResult();
       if(output != null && output.length > 0) {
-        ResultStack[] results = currentTask.getCompletedResult();
-        mergeResults(results);
+        mergeResults(output);
       }
     }
     markDirty();
     currentTask = null;
     lastProgressScaled = 0;
-    PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
   }
 
   protected void mergeResults(ResultStack[] results) {
@@ -195,6 +206,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
         listIndex++;
       }
     }
+
+    cachedNextRecipe = null;
   }
 
   protected void mergeFluidResult(ResultStack result) {
@@ -237,19 +250,25 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return 0;
   }
 
-  protected MachineRecipeInput[] getInputs() {
+  protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots()];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
       res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
       fromSlot++;
     }
-
     return res;
   }
 
+  protected IMachineRecipe getNextRecipe() {
+    if (cachedNextRecipe == null) {
+      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    }
+    return cachedNextRecipe;
+  }
+
   protected IMachineRecipe canStartNextTask(float chance) {
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
+    IMachineRecipe nextRecipe = getNextRecipe();
     if(nextRecipe == null) {
       return null; // no template
     }
@@ -259,15 +278,24 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
 
-    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
+    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
     List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
     if(slotDefinition.getNumOutputSlots() > 0) {
+      boolean allFull = true;
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack st = inventory[i];
         if(st != null) {
           st = st.copy();
+          if(allFull && st.stackSize < st.getMaxStackSize()) {
+            allFull = false;
+          }
+        } else {
+          allFull = false;
         }
         outputStacks.add(st);
+      }
+      if(allFull) {
+        return false;
       }
     }
 
@@ -305,10 +333,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   }
 
   protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
-    if(hasPower() && nextRecipe.isRecipe(getInputs())) {
+    if(hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
       // then get our recipe and take away the source items
       currentTask = createTask(nextRecipe, chance);
-      List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getInputs());
+      List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());
       for (MachineRecipeInput item : consumed) {
         if(item != null) {
           if(item.item != null && item.item.stackSize > 0) {
@@ -325,13 +353,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   }
 
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
-    return new PoweredTask(nextRecipe, chance, getInputs());
+    return new PoweredTask(nextRecipe, chance, getRecipeInputs());
+  }
+
+  protected IPoweredTask createTask(NBTTagCompound taskTagCompound) {
+    return PoweredTask.readFromNBT(taskTagCompound);
   }
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
+    currentTask = nbtRoot.hasKey("currentTask") ? createTask(nbtRoot.getCompoundTag("currentTask")) : null;
     String uid = nbtRoot.getString("lastCompletedRecipe");
     lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
   }
@@ -346,6 +378,29 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     if(lastCompletedRecipe != null) {
       nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());
+    }
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    cachedNextRecipe = null;
+  }
+
+  @Override
+  public ItemStack decrStackSize(int fromSlot, int amount) {
+    ItemStack res = super.decrStackSize(fromSlot, amount);
+    if(slotDefinition.isInputSlot(fromSlot)) {
+      cachedNextRecipe = null;
+    }
+    return res;
+  }
+
+  @Override
+  public void setInventorySlotContents(int slot, ItemStack contents) {
+    super.setInventorySlotContents(slot, contents);
+    if(slotDefinition.isInputSlot(slot)) {
+      cachedNextRecipe = null;
     }
   }
 

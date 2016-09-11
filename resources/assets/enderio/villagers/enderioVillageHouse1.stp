@@ -1,0 +1,184 @@
+{
+  "structureTemplate": {
+    "canSpanChunks": true,
+    "generationRequiresLoadedChunks": true,
+    "rotations": [],
+    "components": [
+      {
+        "uid": "enderioVillagerHouse1",
+        "offset": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "siteValidator": {
+      "validators": [
+        {
+          "canSpawnOnWater": false,
+          "maxSamples": 100,
+          "sampleSpacing": 4,
+          "tolerance": 2,
+          "border": {
+            "down": 0,
+            "up": 0,
+            "north": 1,
+            "south": 1,
+            "west": 1,
+            "east": 1
+          },
+          "type": "LevelGroundValidator"
+        }
+      ],
+      "type": "CompositeSiteValidator"
+    },
+    "sitePreperation": {
+      "preperations": [
+        {
+          "border": {
+            "down": 0,
+            "up": 3,
+            "north": 0,
+            "south": 0,
+            "west": 0,
+            "east": 0
+          },
+          "clearPlants": true,
+          "clearBellowGround": false,
+          "clearItems": true,
+          "type": "ClearPreperation"
+        },
+        {
+          "fillMeta": 0,
+          "surfaceMeta": 0,
+          "useBiomeFillerBlock": true,
+          "clearPlants": true,
+          "border": {
+            "down": 0,
+            "up": 0,
+            "north": 0,
+            "south": 0,
+            "west": 0,
+            "east": 0
+          },
+          "type": "FillPreperation"
+        }
+      ],
+      "type": "CompositePreperation"
+    },
+    "decorator": {
+      "decorators": [
+        {
+          "category": "eioVillagerHouse1",
+          "targets": [
+            "chest"
+          ],
+          "type": "LootTableInventory"
+        }
+      ],
+      "type": "CompositeDecorator"
+    },
+    "lootCategories": {
+      "categories": [
+        {
+          "category": "eioVillagerHouse1",
+          "minItems": 3,
+          "maxItems": 6,
+          "entries": [
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 3,
+              "weight": 30,
+              "item": {
+                "item": "minecraft:skull",
+                "number": 1,
+                "meta": 2
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 10,
+              "item": {
+                "item": "EnderIO:blockEndermanSkull",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 15,
+              "item": {
+                "item": "EnderIO:item.darkSteel_sword",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 30,
+              "item": {
+                "item": "EnderIO:itemEnderFood",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 10,
+              "item": {
+                "item": "EnderIO:item.darkSteel_helmet",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 10,
+              "item": {
+                "item": "EnderIO:item.darkSteel_chestplate",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 10,
+              "item": {
+                "item": "EnderIO:item.darkSteel_leggings",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 1,
+              "weight": 10,
+              "item": {
+                "item": "EnderIO:item.darkSteel_boots",
+                "number": 1,
+                "meta": 0
+              }
+            },
+            {
+              "minChanceToGenerate": 1,
+              "maxChanceToGenerate": 6,
+              "weight": 50,
+              "item": {
+                "item": "minecraft:ender_pearl",
+                "number": 1,
+                "meta": 0
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

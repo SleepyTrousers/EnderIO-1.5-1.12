@@ -1,7 +1,6 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Color;
-import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -11,26 +10,27 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.network.MessageTileNBT;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.network.MessageTileNBT;
 
-public class GuiTravelAuth extends GuiContainerBase {
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.network.PacketHandler;
+
+public class GuiTravelAuth extends GuiContainerBaseEIO {
 
   private final String title;
   private final ITravelAccessable ta;
-  private final UUID username;
+  
   private boolean failed = false;
   private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
-    super(new ContainerTravelAuth(player.inventory));
+    super(new ContainerTravelAuth(player.inventory), "travelAuth");
     this.ta = te;
-    title = Lang.localize("gui.travelAccessable.enterCode");
-    username = player.getGameProfile().getId();
+    title = EnderIO.lang.localize("gui.travelAccessable.enterCode");  
     this.player = player;
   }
 
@@ -39,17 +39,18 @@ public class GuiTravelAuth extends GuiContainerBase {
     super.initGui();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
-    String str = Lang.localize("gui.travelAccessable.ok");
+    String str = EnderIO.lang.localize("gui.travelAccessable.ok");
     int strLen = getFontRenderer().getStringWidth(str);
     GuiButton okB = new GuiButton(0, width / 2 - (strLen / 2) - 5, sy + 50, strLen + 10, 20, str);
     buttonList.clear();
     buttonList.add(okB);
+    ((ContainerTravelAuth) inventorySlots).addGhostSlots(getGhostSlots());
   }
 
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if(ta.authoriseUser(player, poo.enteredPassword)) {
+    if(ta.authoriseUser(player, poo.getInv().getInventory())) {
       TileEntity te = ((TileEntity) ta);
       PacketHandler.INSTANCE.sendToServer(new MessageTileNBT(te));
 
@@ -73,9 +74,9 @@ public class GuiTravelAuth extends GuiContainerBase {
   }
 
   @Override
-  protected void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
+  public void drawGuiContainerBackgroundLayer(float f, int mx, int my) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("enderio:textures/gui/travelAuth.png");
+    bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
@@ -93,6 +94,7 @@ public class GuiTravelAuth extends GuiContainerBase {
       drawRect(sx + 43, sy + 27, sx + 43 + 90, sy + 27 + 18, ColorUtil.getARGB(new Color(1f, 0f, 0f, 0.5f)));
     }
 
+    super.drawGuiContainerBackgroundLayer(f, mx, my);
   }
 
 }

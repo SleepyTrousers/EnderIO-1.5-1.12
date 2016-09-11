@@ -12,10 +12,12 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
   protected final List<I> conduits = new ArrayList<I>();
 
-  protected Class<I> implClass;
+  protected final Class<I> implClass;
+  protected final Class<T> baseConduitClass;
 
-  protected AbstractConduitNetwork(Class<I> implClass) {
+  protected AbstractConduitNetwork(Class<I> implClass, Class<T> baseConduitClass) {
     this.implClass = implClass;
+    this.baseConduitClass = baseConduitClass;
   }
 
   public void init(IConduitBundle tile, Collection<I> connections, World world) {
@@ -35,7 +37,9 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     notifyNetworkOfUpdate();
   }
 
-  public abstract Class<T> getBaseConduitType();
+  public final Class<T> getBaseConduitType() {
+    return baseConduitClass;
+  }
 
   protected void setNetwork(World world, IConduitBundle tile) {
 
@@ -58,6 +62,9 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
   public void addConduit(I con) {
     if(!conduits.contains(con)) {
+      if(conduits.isEmpty()) {
+        ConduitNetworkTickHandler.instance.registerNetwork(this);
+      }
       conduits.add(con);
     }
   }
@@ -67,6 +74,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       con.setNetwork(null);
     }
     conduits.clear();
+    ConduitNetworkTickHandler.instance.unregisterNetwork(this);
   }
 
   public List<I> getConduits() {
@@ -90,7 +98,6 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     return "AbstractConduitNetwork [conduits=" + sb.toString() + "]";
   }
 
-  public void onUpdateEntity(IConduit conduit) {
+  public void doNetworkTick() {
   }
-
 }

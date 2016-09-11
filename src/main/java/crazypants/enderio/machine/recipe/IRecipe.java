@@ -10,7 +10,7 @@ public interface IRecipe {
 
   boolean isValid();
 
-  float getEnergyRequired();
+  int getEnergyRequired();
 
   RecipeOutput[] getOutputs();
 
@@ -19,6 +19,8 @@ public interface IRecipe {
   List<ItemStack> getInputStacks();
 
   List<FluidStack> getInputFluidStacks();
+
+  RecipeBonusType getBonusType();
 
   //  boolean isInputForRecipe(List<ItemStack> test);
   //

@@ -1,61 +1,43 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.enderface.te.MeProxy;
-import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.ITravelAccessable;
-import crazypants.util.Lang;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
   public static BlockEnderIO create() {
 
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ME_ACCESS_TERMINAL, new IGuiHandler() {
-
-      @Override
-      public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        try {
-          return MeProxy.createMeTerminalContainer(player, x, y, z, false);
-        } catch (Exception e) {
-          Log.warn("BlockEnderIO: Error occured creating the server gui element for an ME Terminal " + e);
-        }
-        return null;
-      }
-
-      @Override
-      public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return MeProxy.instance.createTerminalGui(player, x, y, z);
-      }
-
-    });
-
-    PacketHandler.INSTANCE.registerMessage(PacketOpenRemoteUi.class, PacketOpenRemoteUi.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenServerGUI.class, PacketOpenServerGUI.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketLockClientContainer.Handler.class, PacketLockClientContainer.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockEnderIO result = new BlockEnderIO();
     result.init();
     return result;
   }
 
+  @SideOnly(Side.CLIENT)
   IIcon frameIcon;
+  @SideOnly(Side.CLIENT) 
   IIcon selectedOverlayIcon;
+  @SideOnly(Side.CLIENT)
   IIcon highlightOverlayIcon;
 
   static int pass;
@@ -87,20 +69,14 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if(entityPlayer.isSneaking()) {
-      return false;
-    }
+  public boolean openGui(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
-        if(world.isRemote) {
-          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
-              + Lang.localize("gui.travelAccessable.privateBlock2")));
-        }
+        BlockTravelAnchor.sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }
       return true;
     }
@@ -133,6 +109,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
     frameIcon = iIconRegister.registerIcon("enderio:enderIOFrame");
@@ -144,11 +121,4 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
-  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
-      super.breakBlock(world, x, y, z, block, p_149749_6_);
-      world.removeTileEntity(x, y, z);
-  }
-
-
 }

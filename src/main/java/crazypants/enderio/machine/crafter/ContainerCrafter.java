@@ -1,29 +1,25 @@
 package crazypants.enderio.machine.crafter;
 
 import java.awt.Point;
+import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineContainer;
-import crazypants.gui.TemplateSlot;
 
-public class ContainerCrafter extends AbstractMachineContainer {
+import com.enderio.core.client.gui.widget.GhostSlot;
 
-  private TileCrafter crafter;
-  private DummyCraftingGrid craftingGrid;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.PacketHandler;
+
+public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
   public ContainerCrafter(InventoryPlayer playerInv, TileCrafter te) {
     super(playerInv, te);
-    addCrafterSlots();
   }
 
-  private void addCrafterSlots() {
-    crafter = (TileCrafter) tileEntity;
-    craftingGrid = crafter.craftingGrid;
-
+  public void addCrafterSlots(List<GhostSlot> ghostSlots) {
     int topY = 16;
     int leftX = 31;
     int index = 0;
@@ -32,58 +28,44 @@ public class ContainerCrafter extends AbstractMachineContainer {
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new DummySlot(craftingGrid, index, x, y));
+        ghostSlots.add(new DummySlot(index, x, y));
         index++;
       }
     }
-    addSlotToContainer(new DummySlot(craftingGrid, 9, 90, 34));
 
+    ghostSlots.add(new DummySlot(9, 90, 34));
   }
 
   @Override
-  protected Point getPlayerInventoryOffset() {
+  public Point getPlayerInventoryOffset() {
     return new Point(30, 84);
   }
 
-  protected Point getUpgradeOffset() {
+  @Override
+  public Point getUpgradeOffset() {
     return new Point(6, 60);
   }
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-
     int topY = 16;
-    int leftX = 31;
+    int leftX = 113;
     int index = 0;
 
-    leftX = 113;
-    index = 0;
     for (int row = 0; row < 3; ++row) {
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new InputSlot(tileEntity, index, x, y));
+        addSlotToContainer(new InputSlot(getInv(), index, x, y));
         index++;
       }
     }
-    addSlotToContainer(new Slot(tileEntity, 9, 172, 34) {
+    addSlotToContainer(new Slot(getInv(), 9, 172, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return false;
       }
     });
-  }
-  
-  @Override
-  public ItemStack slotClick(int par1, int par2, int par3,
-      EntityPlayer par4EntityPlayer) {
-    if(par1 >= 0 && par1 < inventorySlots.size()) {
-      Slot slot = getSlot(par1);
-      if(slot.getHasStack() && slot instanceof DummySlot) {
-	slot.putStack(null);
-      }
-    }
-    return super.slotClick(par1, par2, par3, par4EntityPlayer);
   }
 
   private class InputSlot extends Slot {
@@ -95,43 +77,38 @@ public class ContainerCrafter extends AbstractMachineContainer {
     @Override
     public boolean isItemValid(ItemStack itemStack) {
 
-      ItemStack refStack = crafter.craftingGrid.getStackInSlot(slotNumber);
+      ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
       if(refStack == null || itemStack == null) {
         return false;
       }
-      return refStack.isItemEqual(itemStack);
+      return TileCrafter.compareDamageable(itemStack, refStack);
     }
   }
 
-  private class DummySlot extends TemplateSlot {
+  private class DummySlot extends GhostSlot {
+    private final int slotIndex;
 
-    public DummySlot(IInventory inventory, int slotIndex, int x, int y) {
-      super(inventory, slotIndex, x, y);
+    public DummySlot(int slotIndex, int x, int y) {
+      this.slotIndex = slotIndex;
+      this.x = x;
+      this.y = y;
     }
 
     @Override
-    public boolean isItemValid(ItemStack itemStack) {
-      return true;
+    public ItemStack getStack() {
+      return getInv().craftingGrid.getStackInSlot(slotIndex);
     }
 
     @Override
-    public void putStack(ItemStack par1ItemStack) {
-      if(par1ItemStack != null) {
-        par1ItemStack.stackSize = 0;
+    public void putStack(ItemStack stack) {
+      if(slotIndex >= 9) {
+        return;
       }
-      inventory.setInventorySlotContents(slotIndex, par1ItemStack);
-      onSlotChanged();
-    }
-
-    @Override
-    public void onSlotChanged() {
-      super.onSlotChanged();
-      crafter.updateCraftingOutput();    
-    }
-    
-    @Override
-    public boolean canTakeStack(EntityPlayer player) {
-      return false;
+      if(stack != null) {
+        stack = stack.copy();
+        stack.stackSize = 1;
+      }
+      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getInv(), slotIndex, stack));
     }
   }
 }

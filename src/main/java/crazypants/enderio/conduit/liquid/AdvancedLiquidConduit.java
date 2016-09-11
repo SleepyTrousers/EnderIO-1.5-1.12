@@ -12,6 +12,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -20,8 +24,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
-import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
+import crazypants.enderio.machine.RedstoneControlMode;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit {
 
@@ -85,7 +88,8 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   private void doExtract() {
     BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT)) {
+    // Extraction can happen on extract mode or in/out mode
+    if(!hasExtractableMode()) {
       return;
     }
     if(network == null) {
@@ -170,6 +174,12 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     super.setConnectionMode(dir, mode);
     refreshInputs(dir);
   }
+  
+  @Override
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+    super.setExtractionRedstoneMode(mode, dir);
+    refreshInputs(dir);
+  }
 
   private void refreshInputs(ForgeDirection dir) {
     if(network == null) {
@@ -177,7 +187,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     }
     LiquidOutput lo = new LiquidOutput(getLocation().getLocation(dir), dir.getOpposite());
     network.removeInput(lo);
-    if(getConectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
+    if(canInputToDir(dir) && containsExternalConnection(dir)) {
       network.addInput(lo);
     }
   }
@@ -226,7 +236,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(network == null || !getConectionMode(from).acceptsInput()) {
+    if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fill(from, resource, doFill);
@@ -234,7 +244,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(network == null || !getConectionMode(from).acceptsOutput()) {
+    if(network == null || !getConnectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, resource, doDrain);
@@ -242,7 +252,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(network == null || !getConectionMode(from).acceptsOutput()) {
+    if(network == null || !getConnectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, maxDrain, doDrain);
@@ -253,7 +263,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsInput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
+    return canExtractFromDir(from) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
   }
 
   @Override
@@ -261,7 +271,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsOutput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
+    return canInputToDir(from) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
   }
 
   @Override

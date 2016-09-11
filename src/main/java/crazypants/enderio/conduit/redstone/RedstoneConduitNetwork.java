@@ -9,6 +9,12 @@ import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Sets;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 
@@ -21,12 +27,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   private boolean networkEnabled = true;
 
   public RedstoneConduitNetwork() {
-    super(IRedstoneConduit.class);
-  }
-
-  @Override
-  public Class<IRedstoneConduit> getBaseConduitType() {
-    return IRedstoneConduit.class;
+    super(IRedstoneConduit.class, IRedstoneConduit.class);
   }
 
   @Override
@@ -71,7 +72,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public Set<Signal> getSignals() {
-    if(networkEnabled) {
+    if (networkEnabled) {
       return signals;
     } else {
       return Collections.emptySet();
@@ -129,7 +130,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void notifyNetworkOfUpdate() {
     for (IRedstoneConduit con : conduits) {
-      con.setActive(!getSignals().isEmpty());
+      con.setActive(false);
+      for (Signal s : getSignals()) {
+        if (s.strength > 0) {
+          con.setActive(true);
+          break;
+        }
+      }
     }
     super.notifyNetworkOfUpdate();
   }
@@ -143,9 +150,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     StringBuilder sb = new StringBuilder();
     for (IRedstoneConduit con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      sb.append("<");
-      sb.append(te.xCoord + "," + te.yCoord + "," + te.zCoord);
-      sb.append(">");
+      sb.append("<").append(te.xCoord).append(",").append(te.yCoord).append(",").append(te.zCoord).append(">");
     }
     return sb.toString();
   }
@@ -175,27 +180,64 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void notifyConduitNeighbours(IRedstoneConduit con, Signal signal) {
-    if(con.getBundle() == null) {
+    if (con.getBundle() == null) {
       System.out.println("RedstoneConduitNetwork.notifyNeigborsOfSignalUpdate: NULL BUNDLE!!!!");
       return;
     }
     TileEntity te = con.getBundle().getEntity();
 
     World worldObj = te.getWorldObj();
-    worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord));
 
-    // Need to notify neighbours neighbours for changes to string signals
-    if(signal != null && signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord) {
+    BlockCoord bc1 = new BlockCoord(te);
 
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord));
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord));
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord));
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord));
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1));
-      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1));
-
+    if (!worldObj.blockExists(te.xCoord, te.yCoord, te.zCoord)) {
+      return;
     }
 
+    // Done manually to avoid orphaning chunks
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord bc2 = bc1.getLocation(dir);
+      if (worldObj.blockExists(bc2.x, bc2.y, bc2.z)) {
+        worldObj.notifyBlockOfNeighborChange(bc2.x, bc2.y, bc2.z, EnderIO.blockConduitBundle);
+        if (signal != null && bc2.getBlock(worldObj).isNormalCube()) {
+          for (ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
+            BlockCoord bc3 = bc2.getLocation(dir2);
+            if (!bc3.equals(bc1) && worldObj.blockExists(bc3.x, bc3.y, bc3.z)) {
+              worldObj.notifyBlockOfNeighborChange(bc3.x, bc3.y, bc3.z, EnderIO.blockConduitBundle);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * This is a bit of a hack...avoids the network searching for inputs from
+   * unloaded chunks by only filtering out the invalid signals from the unloaded
+   * chunk.
+   * 
+   * @param conduits
+   * @param oldSignals
+   */
+  public void afterChunkUnload(List<IRedstoneConduit> conduits, Set<Signal> oldSignals) {
+    World world = null;
+    for (IRedstoneConduit c : conduits) {
+      if (world == null) {
+        world = c.getBundle().getWorld();
+      }
+      BlockCoord loc = c.getLocation();
+      if (world.blockExists(loc.x, loc.y, loc.z)) {
+        this.conduits.add(c);
+        c.setNetwork(this);
+      }
+    }
+    Set<Signal> valid = Sets.newHashSet();
+    for (Signal s : oldSignals) {
+      if (world.blockExists(s.x, s.y, s.z)) {
+        valid.add(s);
+      }
+    }
+    this.addSignals(valid);
   }
 
 }

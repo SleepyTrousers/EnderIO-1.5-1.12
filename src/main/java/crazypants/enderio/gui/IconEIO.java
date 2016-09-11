@@ -1,149 +1,197 @@
 package crazypants.enderio.gui;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import crazypants.render.RenderUtil;
 
-public final class IconEIO {
+import org.lwjgl.opengl.GL11;
 
-  public static final IconEIO TICK = new IconEIO(0, 100);
-  public static final IconEIO MINUS = new IconEIO(16, 100);
-  public static final IconEIO PUBLIC = new IconEIO(32, 100);
-  public static final IconEIO PRIVATE = new IconEIO(48, 100);
-  public static final IconEIO CROSS = new IconEIO(64, 100);
-  public static final IconEIO PLUS = new IconEIO(80, 100);
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.api.client.render.IWidgetMap;
 
-  public static final IconEIO BUTTON = new IconEIO(0, 116);
-  public static final IconEIO CHECKED_BUTTON = new IconEIO(0, 132);
-  public static final IconEIO BUTTON_HIGHLIGHT = new IconEIO(16, 116);
-  public static final IconEIO BUTTON_DISABLED = new IconEIO(32, 116);
-  public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
-  public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
+public enum IconEIO implements IWidgetIcon {
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 96, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, 96, 64);
+  TICK(0, 192),
+  MINUS(16, 192),
+  LOCK_UNLOCKED(32, 192),
+  LOCK_LOCKED(48, 192),
+  CROSS(64, 192),
+  PLUS(80, 192),
+  ARROWS(176, 192),
+  ADD(112, 240),
+  SUBTRACT(96, 240),
 
-  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(96, 148, 32, 32);
+  WRENCH_OVERLAY_POWER(0, 112),
+  WRENCH_OVERLAY_POWER_OFF(0 + 48, 112),
 
-  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
+  WRENCH_OVERLAY_REDSTONE(16, 112),
+  WRENCH_OVERLAY_REDSTONE_OFF(16 + 48, 112),
 
-  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(64, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(64 + 96, 148, 32, 32);
+  WRENCH_OVERLAY_FLUID(0, 128),
+  WRENCH_OVERLAY_FLUID_OFF(0 + 48, 128),
 
-  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(16, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(112, 180, 32, 32);
+  WRENCH_OVERLAY_ITEM(16, 128),
+  WRENCH_OVERLAY_ITEM_OFF(16 + 48, 128),
 
-  public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(48, 180, 32, 32);
+  WRENCH_OVERLAY_GAS(32, 112),
+  WRENCH_OVERLAY_GAS_OFF(32 + 48, 112),
 
-  public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
-  public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
+  WRENCH_OVERLAY_ME(32, 128),
+  WRENCH_OVERLAY_ME_OFF(32 + 48, 128),
 
-  public static final IconEIO LEFT_ARROW = new IconEIO(217, 0, 16, 32);
-  public static final IconEIO RIGHT_ARROW = new IconEIO(201, 0, 16, 32);
+  WRENCH_OVERLAY_OC(96, 112),
+  WRENCH_OVERLAY_OC_OFF(96, 128),
 
-  public static final IconEIO REDSTONE_MODE_ALWAYS = new IconEIO(200, 60, 20, 20);
-  public static final IconEIO REDSTONE_MODE_WITH_SIGNAL = new IconEIO(220, 60, 20, 20);
-  public static final IconEIO REDSTONE_MODE_WITHOUT_SIGNAL = new IconEIO(200, 80, 20, 20);
-  public static final IconEIO REDSTONE_MODE_NEVER = new IconEIO(220, 80, 20, 20);
+  PROBE_OVERLAY_PROBE(112, 192, 16, 16),
+  PROBE_OVERLAY_COPY(128, 192, 16, 16),
+  PROBE_OVERLAY_PROBE_OFF(144, 192, 16, 16),
+  PROBE_OVERLAY_COPY_OFF(160, 192, 16, 16),
 
-  public static final IconEIO FILTER_META = new IconEIO(0, 212, 22, 22);
-  public static final IconEIO FILTER_NBT = new IconEIO(22, 212, 22, 22);
-  public static final IconEIO FILTER_ORE_DICT = new IconEIO(44, 212, 22, 22);
-  public static final IconEIO FILTER_WHITELIST = new IconEIO(0, 234, 22, 22);
-  public static final IconEIO FILTER_BLACKLIST = new IconEIO(22, 234, 22, 22);
-  public static final IconEIO FILTER_STICKY = new IconEIO(44, 234, 22, 22);
-  public static final IconEIO FILTER_STICKY_OFF = new IconEIO(64, 234, 22, 22);
+  ACTIVE_TAB(205, 0, 19, 24),
+  INACTIVE_TAB(237, 0, 19, 24),
 
-  public static final IconEIO FILTER_META_OFF = new IconEIO(64, 212, 22, 22);
-  public static final IconEIO FILTER_NBT_OFF = new IconEIO(64 + 22, 212, 22, 22);
-  public static final IconEIO FILTER_ORE_DICT_OFF = new IconEIO(64 + 44, 212, 22, 22);
+  REDSTONE_MODE_WITHOUT_SIGNAL(64, 224),
+  REDSTONE_MODE_WITH_SIGNAL(80, 224),
+  REDSTONE_MODE_ALWAYS(96, 224),
+  REDSTONE_MODE_NEVER(112, 224),
 
-  public static final IconEIO INPUT = new IconEIO(128, 197 + 32, 30, 14);
-  public static final IconEIO INPUT_SMALL = new IconEIO(159, 220, 16, 8);
-  public static final IconEIO INPUT_SMALL_INV = new IconEIO(159, 228, 16, 8);
-  public static final IconEIO DISABLED = new IconEIO(159, 236, 16, 8);
+  FILTER_META(160, 224),
+  FILTER_NBT(176, 224),
+  FILTER_ORE_DICT(192, 224),
+  FILTER_WHITELIST(0, 224),
+  FILTER_BLACKLIST(0, 240),
+  FILTER_STICKY(16, 240),
+  FILTER_STICKY_OFF(32, 240),
 
-  public static final IconEIO OUTPUT = new IconEIO(128, 180 + 32, 30, 14);
-  public static final IconEIO OUTPUT_SMALL = new IconEIO(177, 220, 16, 8);
-  public static final IconEIO OUTPUT_SMALL_INV = new IconEIO(177, 228, 16, 8);
+  FILTER_META_OFF(208, 224),
+  FILTER_NBT_OFF(224, 224),
+  FILTER_ORE_DICT_OFF(240, 224),
 
-  public static final IconEIO INPUT_OUTPUT = new IconEIO(159, 212, 30, 8);
+  FILTER_FUZZY_DISABLED(240, 176),
+  FILTER_FUZZY_25(224, 176),
+  FILTER_FUZZY_50(208, 176),
+  FILTER_FUZZY_75(192, 176),
+  FILTER_FUZZY_99(176, 176),
 
-  public static final IconEIO INPUT_OFF = new IconEIO(188, 180 + 32, 30, 14);
-  public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197 + 32, 30, 14);
-  public static final IconEIO INPUT_OUTPUT_OFF = new IconEIO(218 + 32, 180, 30, 8);
+  @Deprecated
+  INPUT_OLD(128, 197 + 32, 30, 14),
+  @Deprecated
+  OUTPUT_OLD(128, 180 + 32, 30, 14),
 
-  public static final IconEIO LOOP = new IconEIO(217, 236, 20, 20);
-  public static final IconEIO LOOP_OFF = new IconEIO(236, 236, 20, 20);
-  
-  public static final IconEIO ROUND_ROBIN = new IconEIO(86, 236, 20, 20);
-  public static final IconEIO ROUND_ROBIN_OFF = new IconEIO(106, 236, 20, 20);
+  INPUT(32, 176, 16, 8),
+  OUTPUT(48, 176, 16, 8),
+  INPUT_OUTPUT(32, 176, 32, 8),
+  DISABLED(64, 176),
+  LOOP(80, 176),
+  LOOP_OFF(96, 176),
 
-  public static final IconEIO IO_CONFIG_UP = new IconEIO(80, 116, 24, 24);
-  public static final IconEIO IO_CONFIG_DOWN  = new IconEIO(104, 116, 24, 24);
+  ROUND_ROBIN(64, 240),
+  ROUND_ROBIN_OFF(80, 240),
 
-  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13,13);
+  IO_CONFIG_UP(16, 224),
+  IO_CONFIG_DOWN(32, 224),
+  IO_WHATSIT(128, 208),
 
-  public static final IconEIO RECIPE = new IconEIO(128, 116, 24,24);
-  
-  public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10,10);
-  public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10,10);
-  
+  RECIPE(0, 224),
 
+  SOUND(176, 208),
 
+  XP(128, 224),
+  XP_PLUS(144, 224),
 
+  SINGLE_PLUS(240, 192),
+  DOUBLE_PLUS(224, 192),
+  TRIPLE_PLUS(208, 192),
+  SINGLE_MINUS(240, 208),
+  DOUBLE_MINUS(224, 208),
+  TRIPLE_MINUS(208, 208),
+
+  ENDER_RAIL(192, 208),
+
+  FILTER(192, 192),
+
+  ITEM_STACK(144, 208),
+  ITEM_SINGLE(160, 208),
+
+  SUN(160, 240),
+  RAIN(176, 240),
+  THUNDER(192, 240),
+
+  SORT_DIR_DOWN(0, 176),
+  SORT_DIR_UP(16, 176),
+
+  SORT_NAME_DOWN(208, 240, SORT_DIR_DOWN),
+  SORT_NAME_UP(208, 240, SORT_DIR_UP),
+  SORT_SIZE_DOWN(224, 240, SORT_DIR_DOWN),
+  SORT_SIZE_UP(224, 240, SORT_DIR_UP),
+  SORT_MOD_DOWN(240, 240, SORT_DIR_DOWN),
+  SORT_MOD_UP(240, 240, SORT_DIR_UP);
+
+  // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;
-  private static final double PIX_SIZE = 1d / TEX_SIZE;
 
-  public final double minU;
-  public final double maxU;
-  public final double minV;
-  public final double maxV;
-  public final double width;
-  public final double height;
+  public final int x;
+  public final int y;
+  public final int width;
+  public final int height;
+  public final IconEIO overlay;
 
-  public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgets.png");
+  public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgetsv2.png");
 
-  public IconEIO(int x, int y) {
-    this(x, y, 16, 16);
+  public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
+    @Override
+    public void render(IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw,
+        boolean flipY) {
+      GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+      super.render(widget, x, y, width, height, zLevel, doDraw, flipY);
+    }
+  };
+
+  IconEIO(int x, int y) {
+    this(x, y, null);
   }
 
-  public IconEIO(int x, int y, int width, int height) {
-    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)));
+  IconEIO(int x, int y, IconEIO overlay) {
+    this(x, y, 16, 16, overlay);
   }
 
-  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV) {
+  IconEIO(int x, int y, int width, int height) {
+    this(x, y, width, height, null);
+  }
+
+  private IconEIO(int x, int y, int width, int height, IconEIO overlay) {
+    this.x = x;
+    this.y = y;
     this.width = width;
     this.height = height;
-    this.minU = minU;
-    this.maxU = maxU;
-    this.minV = minV;
-    this.maxV = maxV;
+    this.overlay = overlay;
   }
 
-  public void renderIcon(double x, double y) {
-    renderIcon(x, y, width, height, 0, false);
+  @Override
+  public IWidgetMap getMap() {
+    return map;
   }
 
-  public void renderIcon(double x, double y, boolean doDraw) {
-    renderIcon(x, y, width, height, 0, doDraw);
+  @Override
+  public int getX() {
+    return x;
   }
 
-  public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {
-
-    Tessellator tessellator = Tessellator.instance;
-    if(doDraw) {
-      RenderUtil.bindTexture(TEXTURE);
-      tessellator.startDrawingQuads();
-    }
-    tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
-    tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
-    tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
-    tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
-    if(doDraw) {
-      tessellator.draw();
-    }
+  @Override
+  public int getY() {
+    return y;
   }
 
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public IconEIO getOverlay() {
+    return overlay;
+  }
 }
