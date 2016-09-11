@@ -5,11 +5,12 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPiston;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
 
@@ -62,11 +63,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     if (result == null) {
       result = mkItemStack(target, targetBlock);
       if (targetBlock == Block.getBlockFromItem(target.getItem()) && target.hasTagCompound()) {
-        result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
+        result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
       }
       ((IPaintable) targetBlock).setPaintSource(targetBlock, result, paintState);
     } else if (result.getItem() == target.getItem() && target.hasTagCompound()) {
-      result.setTagCompound((NBTTagCompound) target.getTagCompound().copy());
+      result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
 
       Block realresult = PainterUtil2.getBlockFromItem(result);
       if (realresult instanceof IPaintable) {
@@ -80,6 +81,10 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
 
   // This line is in this excessively named method to show up nicely in a stack trace
   private IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
+    if (paintSource.getItem().getClass() == ItemPiston.class) {
+      // Vanilla bug. ItemPiston returns an invalid block meta.
+      return paintBlock.getDefaultState();
+    }
     return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
   }
 
