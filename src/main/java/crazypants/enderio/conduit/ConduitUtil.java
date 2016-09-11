@@ -13,8 +13,8 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -158,10 +158,10 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
-    if(bundle.getPaintSource() == null) {
+    if (bundle.getPaintSource() == null) {
       return false;
     }
-    if(player == null || player.worldObj.isRemote) {
+    if (player == null || player.worldObj.isRemote) {
       return YetaUtil.shouldHeldItemHideFacadesClient();
     }
     return YetaUtil.shouldHeldItemHideFacades(player);
@@ -202,7 +202,7 @@ public class ConduitUtil {
   public static boolean isConduitEquipped(EntityPlayer player) {
     return isConduitEquipped(player, EnumHand.MAIN_HAND);
   }
-  
+
   public static boolean isConduitEquipped(EntityPlayer player, EnumHand hand) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {
@@ -290,15 +290,12 @@ public class ConduitUtil {
     if (typeName == null || conduitBody == null) {
       return null;
     }
-    // if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) ||
-    // (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
-    // || (typeName.contains("conduit.gas") && !GasUtil.isGasConduitEnabled()))
-    // {
-    // return null;
-    // }
-    if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
-      Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
-      typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
+    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled())) {
+      // (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
+      // || (typeName.contains("conduit.gas") &&
+      // !GasUtil.isGasConduitEnabled()))
+      // {
+      return null;
     }
     IConduit result;
     try {
@@ -359,9 +356,9 @@ public class ConduitUtil {
   }
 
   public static void openConduitGui(World world, BlockPos pos, EntityPlayer player) {
-    openConduitGui(world, pos.getX(),pos.getY(),pos.getZ(), player);
+    openConduitGui(world, pos.getX(), pos.getY(), pos.getZ(), player);
   }
-  
+
   public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (!(te instanceof TileConduitBundle)) {
