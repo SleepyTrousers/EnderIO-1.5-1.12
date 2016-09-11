@@ -7,6 +7,8 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capability.ItemTools;
+import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.SlotDefinition;
@@ -166,21 +168,18 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    if (dir == null) {
+    if (dir == null || inventory[0] == null || !shouldDoWorkThisTick(20)) {
       return false;
     }
-    if (inventory[0] == null) {
-      return false;
-    }
-    if (!shouldDoWorkThisTick(20)) {
-      return false;
-    }
-
     if (!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
-
-    return super.doPush(dir);
+    MoveResult res = ItemTools.move(getPushLimit(), worldObj, getPos(), dir, getPos().offset(dir), dir.getOpposite());
+    if(res == MoveResult.MOVED) {
+      markDirty();
+      return true;
+    }
+    return false;
   }
 
   public static float getEnergyMultiplier(ICapacitorData capacitorType) {
