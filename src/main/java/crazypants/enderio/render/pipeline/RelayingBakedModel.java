@@ -56,14 +56,14 @@ public class RelayingBakedModel implements IPerspectiveAwareModel {
 
   @Override
   public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-    long start = crazypants.util.Profiler.client.start();
+    long start = crazypants.util.Profiler.instance.start();
     if (state instanceof BlockStateWrapperBase) {
       IBakedModel model = ((BlockStateWrapperBase) state).getModel();
       if (model instanceof CollectedQuadBakedBlockModel) {
         ((CollectedQuadBakedBlockModel) model).setParticleTexture(getParticleTexture());
       }
       if (model != null) {
-        crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (relayed)");
+        crazypants.util.Profiler.instance.stop(start, state.getBlock().getLocalizedName() + " (relayed)");
         return model.getQuads(state, side, rand);
       }
     }

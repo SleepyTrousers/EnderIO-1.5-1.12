@@ -20,6 +20,7 @@ import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.util.Profiler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
@@ -44,8 +45,6 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -162,48 +161,41 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
   @Override
   public void bakeModel() {
-    long start = crazypants.util.Profiler.client.start();
+    long start = Profiler.instance.start();
     QuadCollector quads = null;
-    IBlockState rawPaintSource = null;
-    IBlockState paintSource = null;
+    QuadCollector overlayQuads = null;
+    @Nonnull
+    QuadCollector paintQuads = new QuadCollector();
+    boolean hasPaintRendered = false;
     String cacheResult;
 
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacadesClient())) {
-      rawPaintSource = PaintWrangler.getActualBlockState(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos));
-      paintSource = PaintWrangler.getDynamicBlockState(world, pos, rawPaintSource);
-      if (doCaching && paintSource != null && paintSource.isOpaqueCube() && !YetaUtil.shouldHeldItemHideFacadesClient()) {
-        // assume that a solid paint makes it so the Blocks/TEs state doesn't matter for rendering
-        resetCacheKeyInternal();
-      }
+      hasPaintRendered = PaintWrangler.wrangleBakedModel(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos), paintQuads);
     }
 
-    if (doCaching) {
-      if (paintSource != null) {
-        addCacheKeyInternal(paintSource);
-      }
-      quads = getFromCache();
-      cacheResult = quads == null ? "miss" : "hit";
-    } else {
-      cacheResult = "not cachable";
-    }
-
-    if (quads == null) {
-      quads = new QuadCollector();
-      if (!bakePaintLayer(quads, rawPaintSource, paintSource)) {
-        bakeBlockLayer(quads);
-        paintSource = null;
-      } else if (renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
-        bakeBlockLayer(quads);
-      }
-
+    if (!hasPaintRendered || renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
       if (doCaching) {
-        putIntoCache(quads);
+        quads = getFromCache();
+        cacheResult = quads == null ? "miss" : "hit";
+      } else {
+        cacheResult = "not cachable";
       }
+      if (quads == null) {
+        quads = new QuadCollector();
+        bakeBlockLayer(quads);
+        if (doCaching) {
+          putIntoCache(quads);
+        }
+      }
+    } else {
+      cacheResult = "paint only";
     }
 
-    model = new CollectedQuadBakedBlockModel(quads.combine(OverlayHolder.getOverlay(renderMapper.mapOverlayLayer(this, world, pos, paintSource != null))));
+    overlayQuads = OverlayHolder.getOverlay(renderMapper.mapOverlayLayer(this, world, pos, hasPaintRendered));
 
-    crazypants.util.Profiler.client.stop(start, state.getBlock().getLocalizedName() + " (bake, cache=" + cacheResult + ")");
+    model = new CollectedQuadBakedBlockModel(paintQuads.combine(overlayQuads).combine(quads));
+
+    Profiler.instance.stop(start, state.getBlock().getLocalizedName() + " (bake, cache=" + cacheResult + ")");
   }
 
   protected void bakeBlockLayer(QuadCollector quads) {
@@ -219,23 +211,6 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     } else {
       BlockRenderLayer layer = block.getBlockLayer();
       quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
-    }
-  }
-
-  protected boolean bakePaintLayer(QuadCollector quads, IBlockState rawPaintSource, IBlockState paintSource) {
-    if (paintSource != null) {
-      BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
-      boolean rendered = true;
-      for (BlockRenderLayer layer : quads.getBlockLayers()) {
-        if (paintSource.getBlock().canRenderInLayer(paintSource, layer)) {
-          ForgeHooksClient.setRenderLayer(layer);
-          rendered = rendered && PaintWrangler.wrangleBakedModel(world, pos, rawPaintSource, paintSource, quads);
-        }
-      }
-      ForgeHooksClient.setRenderLayer(oldRenderLayer);
-      return rendered;
-    } else {
-      return false;
     }
   }
 
@@ -288,8 +263,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getLightOpacity(IBlockAccess world, BlockPos pos) {
-    return state.getLightOpacity(world, pos);
+  public int getLightOpacity(IBlockAccess world1, BlockPos pos1) {
+    return state.getLightOpacity(world1, pos1);
   }
 
   @SuppressWarnings("deprecation")  
@@ -299,8 +274,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getLightValue(IBlockAccess world, BlockPos pos) {
-    return state.getLightValue(world, pos);
+  public int getLightValue(IBlockAccess world1, BlockPos pos1) {
+    return state.getLightValue(world1, pos1);
   }
 
   @Override
@@ -339,8 +314,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getPackedLightmapCoords(IBlockAccess source, BlockPos pos) {
-    return state.getPackedLightmapCoords(source, pos);
+  public int getPackedLightmapCoords(IBlockAccess source, BlockPos pos1) {
+    return state.getPackedLightmapCoords(source, pos1);
   }
 
   @Override
@@ -364,8 +339,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getWeakPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-    return state.getWeakPower(blockAccess, pos, side);
+  public int getWeakPower(IBlockAccess blockAccess, BlockPos pos1, EnumFacing side) {
+    return state.getWeakPower(blockAccess, pos1, side);
   }
 
   @Override
@@ -374,23 +349,23 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getComparatorInputOverride(World worldIn, BlockPos pos) {
-    return state.getComparatorInputOverride(worldIn, pos);
+  public int getComparatorInputOverride(World worldIn, BlockPos pos1) {
+    return state.getComparatorInputOverride(worldIn, pos1);
   }
 
   @Override
-  public float getBlockHardness(World worldIn, BlockPos pos) {
-    return state.getBlockHardness(worldIn, pos);
+  public float getBlockHardness(World worldIn, BlockPos pos1) {
+    return state.getBlockHardness(worldIn, pos1);
   }
 
   @Override
-  public float getPlayerRelativeBlockHardness(EntityPlayer player, World worldIn, BlockPos pos) {
-    return state.getPlayerRelativeBlockHardness(player, worldIn, pos);
+  public float getPlayerRelativeBlockHardness(EntityPlayer player, World worldIn, BlockPos pos1) {
+    return state.getPlayerRelativeBlockHardness(player, worldIn, pos1);
   }
 
   @Override
-  public int getStrongPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-    return state.getStrongPower(blockAccess, pos, side);
+  public int getStrongPower(IBlockAccess blockAccess, BlockPos pos1, EnumFacing side) {
+    return state.getStrongPower(blockAccess, pos1, side);
   }
 
   @Override
@@ -399,18 +374,18 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos) {
-    return state.getActualState(blockAccess, pos);
+  public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos1) {
+    return state.getActualState(blockAccess, pos1);
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos) {
-    return state.getCollisionBoundingBox(worldIn, pos);
+  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos1) {
+    return state.getCollisionBoundingBox(worldIn, pos1);
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos, EnumFacing facing) {
-    return state.shouldSideBeRendered(blockAccess, pos, facing);
+  public boolean shouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos1, EnumFacing facing) {
+    return state.shouldSideBeRendered(blockAccess, pos1, facing);
   }
 
   @Override
@@ -419,23 +394,23 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos) {
-    return state.getSelectedBoundingBox(worldIn, pos);
+  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos1) {
+    return state.getSelectedBoundingBox(worldIn, pos1);
   }
 
   @Override
-  public void addCollisionBoxToList(World worldIn, BlockPos pos, AxisAlignedBB p_185908_3_, List<AxisAlignedBB> p_185908_4_, @Nullable Entity p_185908_5_) {
-    state.addCollisionBoxToList(worldIn, pos, p_185908_3_, p_185908_4_, p_185908_5_);
+  public void addCollisionBoxToList(World worldIn, BlockPos pos1, AxisAlignedBB p_185908_3_, List<AxisAlignedBB> p_185908_4_, @Nullable Entity p_185908_5_) {
+    state.addCollisionBoxToList(worldIn, pos1, p_185908_3_, p_185908_4_, p_185908_5_);
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos) {
-    return state.getBoundingBox(blockAccess, pos);
+  public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos1) {
+    return state.getBoundingBox(blockAccess, pos1);
   }
 
   @Override
-  public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
-    return state.collisionRayTrace(worldIn, pos, start, end);
+  public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos1, Vec3d start, Vec3d end) {
+    return state.collisionRayTrace(worldIn, pos1, start, end);
   }
 
   @SuppressWarnings("deprecation")
@@ -445,23 +420,23 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    return state.doesSideBlockRendering(world, pos, side);
+  public boolean doesSideBlockRendering(IBlockAccess world1, BlockPos pos1, EnumFacing side) {
+    return state.doesSideBlockRendering(world1, pos1, side);
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    return state.isSideSolid(world, pos, side);
+  public boolean isSideSolid(IBlockAccess world1, BlockPos pos1, EnumFacing side) {
+    return state.isSideSolid(world1, pos1, side);
   }
 
   @Override
-  public boolean onBlockEventReceived(World worldIn, BlockPos pos, int id, int param) {    
-    return state.onBlockEventReceived(worldIn, pos, id, param);
+  public boolean onBlockEventReceived(World worldIn, BlockPos pos1, int id, int param) {
+    return state.onBlockEventReceived(worldIn, pos1, id, param);
   }
 
   @Override
-  public void neighborChanged(World worldIn, BlockPos pos, Block p_189546_3_) {
-    state.neighborChanged(worldIn, pos, p_189546_3_);    
+  public void neighborChanged(World worldIn, BlockPos pos1, Block p_189546_3_) {
+    state.neighborChanged(worldIn, pos1, p_189546_3_);
   }
 
   @Override
