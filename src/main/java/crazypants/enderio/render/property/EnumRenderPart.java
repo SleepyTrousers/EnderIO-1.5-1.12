@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.property;
 
 import java.util.Locale;
 
@@ -26,6 +26,7 @@ public enum EnumRenderPart implements IStringSerializable {
   SOUL_FRAME_WEST(SOUL_FRAME),
   SOUL_FRAME_EAST(SOUL_FRAME);
 
+  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
   private final int parentid;

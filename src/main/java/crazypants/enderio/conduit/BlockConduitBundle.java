@@ -47,7 +47,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;

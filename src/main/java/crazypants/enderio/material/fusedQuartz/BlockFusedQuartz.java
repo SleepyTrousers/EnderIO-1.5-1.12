@@ -5,12 +5,12 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ITintedBlock;
-import crazypants.enderio.render.SmartModelAttacher;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.util.FacadeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;

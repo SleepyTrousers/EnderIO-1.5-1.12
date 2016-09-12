@@ -1,10 +1,13 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.rendermapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.util.QuadCollector;
 import crazypants.util.FacadeUtil;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlockRenderMapper {
 
@@ -51,7 +54,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     if (isSameKind(state, otherState)) {
       return true;
     }
-    if (FacadeUtil.instance.isFacaded(otherState)) {
+    if (FacadeUtil.instance.isFacaded(otherState) && other != null) {
       try {
         IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, other, null);
         if (facade != null) {

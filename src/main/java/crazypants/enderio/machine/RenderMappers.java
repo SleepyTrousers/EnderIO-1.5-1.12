@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.render.EnumRenderPart;
-import crazypants.enderio.render.IOMode.EnumIOMode;
+import crazypants.enderio.render.property.EnumRenderPart;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
 
 @SideOnly(Side.CLIENT)
 public final class RenderMappers {

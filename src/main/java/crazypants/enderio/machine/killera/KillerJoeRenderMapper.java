@@ -33,17 +33,17 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.TankRenderHelper;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
-import crazypants.enderio.render.VertexScale;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.render.util.QuadCollector;
+import crazypants.enderio.render.util.TankRenderHelper;
+import crazypants.enderio.render.util.VertexScale;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.tool.SmartTank;
 
 public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,

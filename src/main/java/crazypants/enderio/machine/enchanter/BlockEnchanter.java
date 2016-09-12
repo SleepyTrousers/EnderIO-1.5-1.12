@@ -10,7 +10,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.ITESRItemBlock;
-import crazypants.enderio.render.SmartModelAttacher;
+import crazypants.enderio.render.registry.SmartModelAttacher;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

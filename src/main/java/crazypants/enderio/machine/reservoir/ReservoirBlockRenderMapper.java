@@ -11,10 +11,10 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.render.ConnectedBlockRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.render.util.QuadCollector;
 
 public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
 

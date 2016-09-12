@@ -19,13 +19,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.render.util.QuadCollector;
 
 public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 

@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.property.EnumRenderMode;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.teleport.telepad.TileTelePad;
 import net.minecraft.block.state.IBlockState;

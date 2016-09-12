@@ -3,10 +3,10 @@ package crazypants.enderio.material.fusedQuartz;
 import java.util.EnumMap;
 import java.util.List;
 
-import crazypants.enderio.render.ConnectedBlockRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;

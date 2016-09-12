@@ -9,13 +9,13 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.render.EnumRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.render.util.QuadCollector;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

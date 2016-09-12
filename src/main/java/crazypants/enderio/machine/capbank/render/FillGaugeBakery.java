@@ -15,7 +15,7 @@ import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
-import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;

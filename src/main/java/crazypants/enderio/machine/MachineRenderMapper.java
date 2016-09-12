@@ -8,15 +8,15 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.property.EnumRenderPart;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

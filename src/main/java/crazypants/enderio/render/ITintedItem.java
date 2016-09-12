@@ -1,5 +1,6 @@
 package crazypants.enderio.render;
 
+import crazypants.enderio.render.registry.PaintTintHandler;
 import net.minecraft.item.ItemStack;
 
 /**

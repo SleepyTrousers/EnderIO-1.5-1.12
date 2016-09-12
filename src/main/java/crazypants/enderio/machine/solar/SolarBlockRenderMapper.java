@@ -11,14 +11,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.render.ConnectedBlockRenderMapper;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
-import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.pipeline.QuadCollector;
 
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.render.util.QuadCollector;
 
 public class SolarBlockRenderMapper extends ConnectedBlockRenderMapper {
 

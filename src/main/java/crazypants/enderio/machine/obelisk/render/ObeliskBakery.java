@@ -12,8 +12,8 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.render.HalfBakedQuad.HalfBakedList;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;

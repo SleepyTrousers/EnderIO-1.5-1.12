@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.model;
 
 import java.util.List;
 

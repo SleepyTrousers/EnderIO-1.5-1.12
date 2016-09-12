@@ -1,4 +1,4 @@
-package crazypants.enderio.render.pipeline;
+package crazypants.enderio.render.model;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
+import crazypants.enderio.render.pipeline.EnderItemOverrideList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

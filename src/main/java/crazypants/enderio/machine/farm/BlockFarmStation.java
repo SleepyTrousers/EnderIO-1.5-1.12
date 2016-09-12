@@ -20,9 +20,9 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.render.property.IOMode;
 
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 

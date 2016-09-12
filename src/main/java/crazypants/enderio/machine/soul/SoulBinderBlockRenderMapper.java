@@ -13,9 +13,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.render.EnumRenderMode;
-import crazypants.enderio.render.EnumRenderPart;
 import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.property.EnumRenderPart;
 
 public class SoulBinderBlockRenderMapper extends MachineRenderMapper {
 

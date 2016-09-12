@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.property;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -35,11 +35,11 @@ import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.render.TextureRegistry;
-import crazypants.enderio.render.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.property.IOMode;
+import crazypants.enderio.render.registry.TextureRegistry;
+import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 

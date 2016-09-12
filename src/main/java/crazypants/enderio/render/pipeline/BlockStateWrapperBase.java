@@ -18,8 +18,10 @@ import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.IRenderMapper;
+import crazypants.enderio.render.model.CollectedQuadBakedBlockModel;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.QuadCollector;
 import crazypants.util.Profiler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -214,7 +216,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     }
   }
 
-  protected IBakedModel getModel() {
+  public IBakedModel getModel() {
     if (model == null) {
       bakeModel();
       if (model != null) {

@@ -14,7 +14,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduitComponent;
 import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
-import crazypants.enderio.render.pipeline.QuadCollector;
+import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;

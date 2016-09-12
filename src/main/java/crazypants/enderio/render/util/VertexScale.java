@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.util;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.common.vecmath.Vector3d;

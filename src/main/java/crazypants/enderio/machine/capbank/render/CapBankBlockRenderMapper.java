@@ -12,20 +12,21 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.render.ConnectedBlockRenderMapper;
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.IBlockStateWrapper;
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.dummy.BlockMachineIO;
-import crazypants.enderio.render.pipeline.QuadCollector;
-
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.property.IOMode;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
+import crazypants.enderio.render.util.QuadCollector;
 
 public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
 

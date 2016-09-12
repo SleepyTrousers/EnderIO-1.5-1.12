@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,12 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.ITintedBlock;
+import crazypants.enderio.render.ITintedItem;
+import crazypants.enderio.render.model.RelayingBakedModel;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.pipeline.OverlayHolder;
-import crazypants.enderio.render.pipeline.RelayingBakedModel;
+import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;

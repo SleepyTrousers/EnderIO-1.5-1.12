@@ -7,9 +7,10 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.render.IOMode;
-import crazypants.enderio.render.IOMode.EnumIOMode;
 import crazypants.enderio.render.dummy.BlockMachineIO;
+import crazypants.enderio.render.property.IOMode;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;

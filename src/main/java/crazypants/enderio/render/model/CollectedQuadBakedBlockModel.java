@@ -1,10 +1,11 @@
-package crazypants.enderio.render.pipeline;
+package crazypants.enderio.render.model;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.render.util.QuadCollector;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

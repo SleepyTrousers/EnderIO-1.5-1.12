@@ -23,9 +23,9 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRenderMapper;
-import crazypants.enderio.render.EnumRenderMode6;
-import crazypants.enderio.render.IOMode.EnumIOMode;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
+import crazypants.enderio.render.property.EnumRenderMode6;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
+import crazypants.enderio.render.util.ItemQuadCollector;
 
 public class InvPanelRenderMapper extends MachineRenderMapper {
 

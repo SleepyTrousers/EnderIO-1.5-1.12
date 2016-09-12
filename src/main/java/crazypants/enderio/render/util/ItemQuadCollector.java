@@ -1,4 +1,4 @@
-package crazypants.enderio.render.pipeline;
+package crazypants.enderio.render.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.property;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -7,17 +7,17 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.util.NullHelper;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
 import static net.minecraft.util.EnumFacing.NORTH;
 import static net.minecraft.util.EnumFacing.SOUTH;
 import static net.minecraft.util.EnumFacing.UP;
 import static net.minecraft.util.EnumFacing.WEST;
-
-import crazypants.util.NullHelper;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 
 public enum EnumMergingBlockRenderMode implements IStringSerializable {
   DEFAULTS,
@@ -67,6 +67,7 @@ public enum EnumMergingBlockRenderMode implements IStringSerializable {
 
   ;
 
+  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumMergingBlockRenderMode> RENDER = PropertyEnum.<EnumMergingBlockRenderMode> create("render",
       EnumMergingBlockRenderMode.class);
 

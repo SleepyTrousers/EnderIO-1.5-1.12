@@ -12,14 +12,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.render.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.pipeline.ItemQuadCollector;
-
-import static crazypants.enderio.render.EnumMergingBlockRenderMode.RENDER;
+import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.util.ItemQuadCollector;
 
 public class SolarItemRenderMapper implements IRenderMapper.IItemRenderMapper.IItemStateMapper {
 

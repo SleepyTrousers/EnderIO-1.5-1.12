@@ -1,8 +1,10 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.registry;
 
 import javax.annotation.Nullable;
 
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.ITintedBlock;
+import crazypants.enderio.render.ITintedItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

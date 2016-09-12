@@ -2,6 +2,7 @@ package crazypants.enderio.render;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.render.registry.PaintTintHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;

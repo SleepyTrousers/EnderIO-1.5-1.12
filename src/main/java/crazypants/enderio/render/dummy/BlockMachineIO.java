@@ -2,6 +2,7 @@ package crazypants.enderio.render.dummy;
 
 import java.util.List;
 
+import crazypants.enderio.render.property.IOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -17,7 +18,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.render.IOMode;
 
 public class BlockMachineIO extends Block {
 

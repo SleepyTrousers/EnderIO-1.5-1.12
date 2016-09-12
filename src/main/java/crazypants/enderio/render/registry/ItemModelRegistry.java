@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.render.model.RotatingSmartItemModel;
 
 @SideOnly(Side.CLIENT)
 public class ItemModelRegistry {

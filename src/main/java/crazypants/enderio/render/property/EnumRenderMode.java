@@ -1,4 +1,4 @@
-package crazypants.enderio.render;
+package crazypants.enderio.render.property;
 
 import java.util.Locale;
 
@@ -40,6 +40,7 @@ public enum EnumRenderMode implements IStringSerializable {
   FRONT_ON_WEST(FRONT_ON),
   FRONT_ON_EAST(FRONT_ON);
 
+  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumRenderMode> RENDER = PropertyEnum.<EnumRenderMode> create("render", EnumRenderMode.class);
 
   private final int parentid;

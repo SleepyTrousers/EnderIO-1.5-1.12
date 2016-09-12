@@ -13,7 +13,7 @@ import com.enderio.core.common.util.IBlockAccessWrapper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.EnumRenderMode;
+import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
