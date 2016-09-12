@@ -3,6 +3,7 @@ package crazypants.enderio.machine.obelisk.inhibitor;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 
@@ -14,6 +15,7 @@ import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -61,16 +63,16 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   }
 
 
-  public Map<BlockCoord, Float> activeInhibitors = Maps.newHashMap();
+  public Map<BlockCoord, BoundingBox> activeInhibitors = Maps.newHashMap();
 
   @SubscribeEvent
   public void onTeleport(TeleportEntityEvent event) {
-    for (Entry<BlockCoord, Float> e : activeInhibitors.entrySet()) {
-      BlockCoord bc = e.getKey();
-      int dist = bc.getDist(new BlockCoord(event.targetX, event.targetY, event.targetZ));
-      if (dist < e.getValue()) {
+    Vec3d pos = new Vec3d(event.targetX,event.targetY,event.targetZ);
+    for (Entry<BlockCoord, BoundingBox> e : activeInhibitors.entrySet()) {
+      if (e.getValue().isVecInside(pos)) {
+        BlockCoord bc = e.getKey();
         TileEntity te = bc.getTileEntity(event.getEntity().worldObj);
-        if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && te.getWorld().provider.getDimension() == event.dimension) {          
+        if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && te.getWorld().provider.getDimension() == event.dimension) {
           event.setCanceled(true);
         }
       }
