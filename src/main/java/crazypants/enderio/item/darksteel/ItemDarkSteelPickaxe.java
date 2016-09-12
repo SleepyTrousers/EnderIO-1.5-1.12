@@ -329,7 +329,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public void extractInternal(ItemStack equipped, int power) {
-    extractEnergy(equipped, power, false);
+    EnergyUpgrade.extractEnergy(equipped, power, false);
   }
 
   private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {

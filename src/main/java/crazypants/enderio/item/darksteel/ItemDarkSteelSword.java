@@ -409,7 +409,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public void extractInternal(ItemStack equipped, int power) {
-    extractEnergy(equipped, power, false);
+    EnergyUpgrade.extractEnergy(equipped, power, false);
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
