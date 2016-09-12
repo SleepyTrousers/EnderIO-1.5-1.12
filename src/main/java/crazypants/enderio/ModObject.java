@@ -87,6 +87,7 @@ public enum ModObject implements IModObject {
   blockDarkSteelLadder,
   blockReinforcedObsidian,
   blockIngotStorage,
+  blockSelfResettingLever,
 
   // Painter
   blockPainter,

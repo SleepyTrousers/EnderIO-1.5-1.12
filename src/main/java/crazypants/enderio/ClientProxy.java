@@ -5,6 +5,7 @@ import java.util.List;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.DebugCommand;
@@ -161,6 +162,9 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.blockDarkSteelAnvil);
     if (EnderIO.blockDarkSteelLadder != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.getUnlocalisedName());
+    }
+    for (BlockSelfResettingLever b : BlockSelfResettingLever.getBlocks()) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
     }
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);

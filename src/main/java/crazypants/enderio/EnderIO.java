@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
+import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -374,6 +375,7 @@ public class EnderIO {
 
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockDarkSteelLadder = BlockDarkSteelLadder.create();
+    BlockSelfResettingLever.create();
 
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();

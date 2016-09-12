@@ -551,6 +551,7 @@ public final class Config {
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
+  public static String leversEnabled = "10,30,60,300";
 
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
@@ -1489,6 +1490,9 @@ public final class Config {
 
     allowFovControlsInSurvivalMode = config.getBoolean("allowFovControlsInSurvivalMode", sectionMisc.name, allowFovControlsInSurvivalMode,
         "If true, the FOV keyboard controls can be used in survival and advanture mode. Otherwise they are limited to create and spectator modes.");
+
+    leversEnabled = config.getString("leversEnabled", sectionRecipe.name, leversEnabled,
+        "A comma-seperated list of durations in seconds. For these, self-reseting levers will be created. Set to 0 to disable the lever. Please note that you also need to supply a resource pack with matching blockstates and a language file for this to work.");
 
     CapacitorKey.processConfig(config);
   }

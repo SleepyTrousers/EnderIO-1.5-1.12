@@ -1459,3 +1459,8 @@ item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel 
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
 
 tile.blockExitRail.name=Exit Rail
+
+tile.blockSelfResettingLever10.name=Self-resetting lever (10 seconds)
+tile.blockSelfResettingLever30.name=Self-resetting lever (30 seconds)
+tile.blockSelfResettingLever60.name=Self-resetting lever (1 Minute)
+tile.blockSelfResettingLever300.name=Self-resetting lever (5 Minutes)
