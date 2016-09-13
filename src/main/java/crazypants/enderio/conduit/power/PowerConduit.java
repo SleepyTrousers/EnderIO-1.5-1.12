@@ -399,7 +399,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
     IPowerInterface rec = getExternalPowerReceptor(direction);
-    return rec != null && rec.canConnect(direction);
+    return rec != null;
   }
   
   @Override
@@ -452,7 +452,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if(test instanceof IConduitBundle) {
       return null;
     }
-    return PowerHandlerUtil.create(test);
+    return PowerHandlerUtil.create(test, direction.getOpposite());
   }
 
   @Override

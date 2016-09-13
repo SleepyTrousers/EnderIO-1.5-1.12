@@ -1,21 +1,9 @@
 package crazypants.enderio.power;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IPowerInterface {
+public interface IPowerInterface extends IEnergyStorage {
 
   Object getDelegate();
-
-  boolean canConnect(EnumFacing direction);
-
-  int getEnergyStored(EnumFacing dir);
-
-  int getMaxEnergyStored(EnumFacing dir);
-
-  int recieveEnergy(EnumFacing opposite, int canOffer);
-
-  boolean isOutputOnly();
-
-  boolean isInputOnly();
-
+  
 }

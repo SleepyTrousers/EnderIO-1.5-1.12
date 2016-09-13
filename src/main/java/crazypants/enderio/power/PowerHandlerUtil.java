@@ -1,25 +1,45 @@
 package crazypants.enderio.power;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.capbank.TileCapBank;
+import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerHandlerUtil {
 
   public static final @Nonnull String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
 
-  public static IPowerInterface create(Object o) {
-    if (o instanceof TileCapBank) {
-      return new CapBankPI((TileCapBank) o);
-    } else if (o instanceof IInternalPoweredTile) {
-      return new PowerInterfaceInternal((IInternalPoweredTile) o);
+  @CapabilityInject(IEnergyStorage.class)
+  private static final Capability<IEnergyStorage> ENERGY_HANDLER = null;
+
+  public static IPowerInterface create(@Nullable ICapabilityProvider provider, EnumFacing side) {
+    if (provider instanceof IInternalPoweredTile) {
+      return new PowerInterfaceInternal((IInternalPoweredTile) provider, side);
     }
-//    else if (o instanceof IEnergyConnection) {
-//      return new PowerInterfaceRF((IEnergyConnection) o);
-//    }
+    IEnergyStorage cap = getCapability(provider, side);
+    if (cap != null) {
+      return new PowerInterfaceForge(cap);
+    }
+    if (provider instanceof IEnergyConnection) {
+     return new PowerInterfaceRF((IEnergyConnection) provider, side);
+    }
+    return null;
+  }
+
+  public static IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
+    if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
+      return provider.getCapability(ENERGY_HANDLER, side);
+    } else if (provider instanceof ItemStack && ((ItemStack) provider).getItem() instanceof IEnergyContainerItem) {
+      return new ItemWrapperRF((IEnergyContainerItem) ((ItemStack) provider).getItem(), (ItemStack) provider);
+    }
     return null;
   }
 
@@ -29,7 +49,7 @@ public class PowerHandlerUtil {
     }
     NBTTagCompound tag = item.getTagCompound();
 
-    if(tag.hasKey("storedEnergy")) {
+    if (tag.hasKey("storedEnergy")) {
       double storedMj = tag.getDouble("storedEnergy");
       return (int) (storedMj * 10);
     }
@@ -39,23 +59,21 @@ public class PowerHandlerUtil {
 
   public static void setStoredEnergyForItem(ItemStack item, int storedEnergy) {
     NBTTagCompound tag = item.getTagCompound();
-    if(tag == null) {
+    if (tag == null) {
       tag = new NBTTagCompound();
     }
     tag.setInteger(STORED_ENERGY_NBT_KEY, storedEnergy);
     item.setTagCompound(tag);
   }
 
-
   public static int recieveInternal(IInternalPowerReceiver target, int maxReceive, EnumFacing from, boolean simulate) {
     int result = Math.min(target.getMaxEnergyRecieved(from), maxReceive);
     result = Math.min(target.getMaxEnergyStored() - target.getEnergyStored(), result);
     result = Math.max(0, result);
-    if(result > 0 && !simulate) {
+    if (result > 0 && !simulate) {
       target.setEnergyStored(target.getEnergyStored() + result);
     }
     return result;
   }
 
-  
 }

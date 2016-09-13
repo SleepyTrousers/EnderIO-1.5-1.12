@@ -6,12 +6,14 @@ public class PowerInterfaceInternal implements IPowerInterface {
   
   private final IInternalPoweredTile con;
   private IInternalPowerReceiver er;
+  private final EnumFacing side;
 
-  public PowerInterfaceInternal(IInternalPoweredTile con) {
+  public PowerInterfaceInternal(IInternalPoweredTile con, EnumFacing side) {
     this.con = con;
     if(con instanceof IInternalPowerReceiver) {
       er = (IInternalPowerReceiver)con;
     }
+    this.side = side;
   }
 
   @Override
@@ -20,45 +22,37 @@ public class PowerInterfaceInternal implements IPowerInterface {
   }
 
   @Override
-  public boolean canConnect(EnumFacing from) {
-    if(from != null) {
-      from = from.getOpposite();
-    }
-    return con.canConnectEnergy(from);
-  }
-
-  @Override
-  public int getEnergyStored(EnumFacing dir) {
+  public int getEnergyStored() {
     return con.getEnergyStored();
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing dir) {
+  public int getMaxEnergyStored() {
     return con.getMaxEnergyStored();
 
   }
 
   @Override
-  public int recieveEnergy(EnumFacing dir, int canOffer) {
+  public int receiveEnergy(int canOffer, boolean sim) {
     if(er == null) {
       return 0;
     }
-    return er.receiveEnergy(dir, canOffer, false);
+    return er.receiveEnergy(side, canOffer, sim);
   }
 
   @Override
-  public boolean isOutputOnly() {
-    return er == null;
-  }
-
-  @Override
-  public boolean isInputOnly() {
+  public boolean canExtract() {
     return false;
   }
 
-  public static int getPowerRequest(EnumFacing north, IInternalPowerReceiver pr) {
-    return pr.receiveEnergy(north, 999999, true);
+  @Override
+  public boolean canReceive() {
+    return er != null;
   }
 
+  @Override
+  public int extractEnergy(int maxExtract, boolean simulate) {
+    return 0;
+  }
   
 }

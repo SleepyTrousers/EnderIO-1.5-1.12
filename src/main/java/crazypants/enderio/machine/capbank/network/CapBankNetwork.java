@@ -82,7 +82,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     this.id = id;
   }
 
-  //--------- Network Management 
+  //--------- Network Management
 
   public void init(TileCapBank cap, Collection<TileCapBank> neighbours, World world) {
     if(world.isRemote) {
@@ -203,7 +203,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     return new NetworkState(this);
   }
 
-  //--------- Tick Handling 
+  //--------- Tick Handling
 
   @Override
   public void onUpdateEntity(TileCapBank tileCapBank) {
@@ -293,7 +293,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       return 0;
     }
     IPowerInterface inf = next.getReceptor();
-    int result = inf.recieveEnergy(next.getDir().getOpposite(), available);
+    int result = inf.receiveEnergy(available, false);
     if(result < 0) {
       result = 0;
     }
@@ -338,7 +338,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     cb.setEnergyStored(cb.getEnergyStored() + remaining);
   }
 
-  //------ Power     
+  //------ Power
 
   @Override
   public float getAverageChangePerTick() {

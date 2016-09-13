@@ -10,8 +10,9 @@ public class PowerInterfaceRF implements IPowerInterface {
   private final IEnergyConnection con;
   private IEnergyHandler eh;
   private IEnergyReceiver er;
+  private final EnumFacing side;
 
-  public PowerInterfaceRF(IEnergyConnection con) {
+  public PowerInterfaceRF(IEnergyConnection con, EnumFacing side) {
     this.con = con;
     if(con instanceof IEnergyHandler) {
       eh = (IEnergyHandler)con;
@@ -19,6 +20,7 @@ public class PowerInterfaceRF implements IPowerInterface {
     if(con instanceof IEnergyReceiver) {
       er = (IEnergyReceiver)con;
     }
+    this.side = side;
   }
 
   @Override
@@ -27,50 +29,47 @@ public class PowerInterfaceRF implements IPowerInterface {
   }
 
   @Override
-  public boolean canConnect(EnumFacing from) {
-    if(from != null) {
-      from = from.getOpposite();
-    }
-    return con.canConnectEnergy(from);
-  }
-
-  @Override
-  public int getEnergyStored(EnumFacing dir) {
+  public int getEnergyStored() {
     if (eh == null) {
       return 0;
     }
-    return eh.getEnergyStored(dir);
+    return eh.getEnergyStored(side);
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing dir) {
+  public int getMaxEnergyStored() {
     if (eh == null) {
       return 0;
     }
-    return eh.getMaxEnergyStored(dir);
+    return eh.getMaxEnergyStored(side);
 
   }
 
   @Override
-  public int recieveEnergy(EnumFacing dir, int canOffer) {
+  public int receiveEnergy(int canOffer, boolean sim) {
     if(er == null) {
       return 0;
     }
-    return er.receiveEnergy(dir, canOffer, false);
-  }
-
-  @Override
-  public boolean isOutputOnly() {
-    return er == null;
-  }
-
-  @Override
-  public boolean isInputOnly() {
-    return false;
+    return er.receiveEnergy(side, canOffer, sim);
   }
 
   public static int getPowerRequest(EnumFacing north, IInternalPowerReceiver pr) {
     return pr.receiveEnergy(north, 999999, true);
+  }
+
+  @Override
+  public boolean canExtract() {
+    return false;
+  }
+
+  @Override
+  public boolean canReceive() {
+    return er != null;
+  }
+
+  @Override
+  public int extractEnergy(int maxExtract, boolean simulate) {
+    return 0;
   }
 
 }

@@ -126,11 +126,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private void transmitEnergy() {
-    IPowerInterface receptor = PowerHandlerUtil.create(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)));
+    IPowerInterface receptor = PowerHandlerUtil.create(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
     if (receptor != null) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
       if (canTransmit > 0) {
-        network.extractEnergy(receptor.recieveEnergy(EnumFacing.UP, canTransmit));
+        network.extractEnergy(receptor.receiveEnergy(canTransmit, false));
       }
     }
   }

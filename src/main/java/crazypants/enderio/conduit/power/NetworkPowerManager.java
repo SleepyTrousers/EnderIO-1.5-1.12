@@ -81,7 +81,7 @@ public class NetworkPowerManager {
         IPowerInterface powerReceptor = re.powerInterface;
         if(!done.contains(powerReceptor.getDelegate())) {
           done.add(powerReceptor.getDelegate());
-          result += powerReceptor.getEnergyStored(re.direction);
+          result += powerReceptor.getEnergyStored();
         }
       }
     }
@@ -96,7 +96,7 @@ public class NetworkPowerManager {
         IPowerInterface powerReceptor = re.powerInterface;
         if(!done.contains(powerReceptor.getDelegate())) {
           done.add(powerReceptor.getDelegate());
-          result += powerReceptor.getMaxEnergyStored(re.direction);
+          result += powerReceptor.getMaxEnergyStored();
         }
       }
     }
@@ -154,7 +154,7 @@ public class NetworkPowerManager {
       IPowerInterface pp = r.powerInterface;
       if(pp != null) {
         int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-        int used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+        int used = pp.receiveEnergy(canOffer, false);
         used = Math.max(0, used);
         trackerSend(r.emmiter, used, false);
         available -= used;
@@ -271,7 +271,7 @@ public class NetworkPowerManager {
         int give = (int) Math.ceil(con.getMaxEnergyStored() * filledRatio);
         give = Math.min(give, con.getMaxEnergyStored());
         give = Math.min(give, energyLeft);
-        con.setEnergyStored(give);    
+        con.setEnergyStored(give);
         energyLeft -= give;
       } else {
         con.setEnergyStored(0);

@@ -34,8 +34,8 @@ public class TESRGauge extends ManagedTESR<TileGauge> {
       for (Entry<EnumFacing, IPowerInterface> side : sides.entrySet()) {
         IPowerInterface eh = side.getValue();
         EnumFacing face = side.getKey().getOpposite();
-        int energyStored = eh.getEnergyStored(face);
-        int maxEnergyStored = eh.getMaxEnergyStored(face);
+        int energyStored = eh.getEnergyStored();
+        int maxEnergyStored = eh.getMaxEnergyStored();
         float ratio = maxEnergyStored > 0 ? (float) energyStored / (float) maxEnergyStored : 0f;
         FillGaugeBakery bakery = new FillGaugeBakery(world, ((TileEntity) eh).getPos(), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class), ratio);
         if (bakery.canRender()) {
