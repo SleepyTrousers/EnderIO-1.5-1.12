@@ -2,7 +2,6 @@ package crazypants.enderio.power;
 
 import javax.annotation.Nonnull;
 
-import cofh.api.energy.IEnergyConnection;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +14,12 @@ public class PowerHandlerUtil {
   public static IPowerInterface create(Object o) {
     if (o instanceof TileCapBank) {
       return new CapBankPI((TileCapBank) o);
-    } else if (o instanceof IEnergyConnection) {
-      return new PowerInterfaceRF((IEnergyConnection) o);
-    }     
+    } else if (o instanceof IInternalPoweredTile) {
+      return new PowerInterfaceInternal((IInternalPoweredTile) o);
+    }
+//    else if (o instanceof IEnergyConnection) {
+//      return new PowerInterfaceRF((IEnergyConnection) o);
+//    }
     return null;
   }
 
@@ -45,7 +47,7 @@ public class PowerHandlerUtil {
   }
 
 
-  public static int recieveInternal(IInternalPoweredTile target, int maxReceive, EnumFacing from, boolean simulate) {
+  public static int recieveInternal(IInternalPowerReceiver target, int maxReceive, EnumFacing from, boolean simulate) {
     int result = Math.min(target.getMaxEnergyRecieved(from), maxReceive);
     result = Math.min(target.getMaxEnergyStored() - target.getEnergyStored(), result);
     result = Math.max(0, result);

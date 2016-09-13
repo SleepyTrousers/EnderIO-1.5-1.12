@@ -4,7 +4,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.power.IInternalPowerProvider;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
@@ -18,37 +18,34 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 @Storable
-public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
+public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider {
 
   private boolean forceNetworkSearch = true;
 
   protected SolarPanelNetwork network = new SolarPanelNetwork();
 
-  @Override
-  public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
+  
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
     return from == EnumFacing.DOWN;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    return 0;
-  }
-
+  //RF
+//  @Override
+//  public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+//    return 0;
+//  }
+//
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return getEnergyStored();
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return getMaxEnergyStored();
+//  }
+ 
   @Override
   public int getEnergyStored() {
     return network.getEnergyAvailablePerTick();
@@ -130,7 +127,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private void transmitEnergy() {
     IPowerInterface receptor = PowerHandlerUtil.create(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)));
-    if (receptor != null && receptor.getPowerRequest(EnumFacing.UP) > 0) {
+    if (receptor != null) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
       if (canTransmit > 0) {
         network.extractEnergy(receptor.recieveEnergy(EnumFacing.UP, canTransmit));

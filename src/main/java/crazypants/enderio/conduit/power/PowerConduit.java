@@ -182,7 +182,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
     
   @Override
-  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {    
+  protected void readTypeSettings(EnumFacing dir, NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
   }
@@ -223,7 +223,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
       nbtRoot.setInteger("energyStoredRF", (int)(nbtRoot.getFloat("energyStored") * 10));
       
     }
-    setEnergyStored(nbtRoot.getInteger("energyStoredRF"));    
+    setEnergyStored(nbtRoot.getInteger("energyStoredRF"));
 
     for (EnumFacing dir : EnumFacing.VALUES) {
       String key = "pRsMode." + dir.name();
@@ -244,7 +244,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public void onTick() {   
+  public void onTick() {
   }
 
   @Override
@@ -274,8 +274,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     boolean res;
     if(mode == RedstoneControlMode.OFF) {
       //if checking for no signal, must be no signal from both
-      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || RedstoneControlMode.isConditionMet(mode, exSig));     
-    } else {      
+      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || RedstoneControlMode.isConditionMet(mode, exSig));
+    } else {
       //if checking for a signal, either is fine
       res = RedstoneControlMode.isConditionMet(mode, signal) || (col == DyeColor.RED && RedstoneControlMode.isConditionMet(mode, exSig));
     }
@@ -356,7 +356,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     int freeSpace = getMaxEnergyStored() - getEnergyStored();
     int result = Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
-      setEnergyStored(getEnergyStored() + result);      
+      setEnergyStored(getEnergyStored() + result);
 
       if(getBundle() != null) {
         if(recievedTicks == null) {
@@ -374,15 +374,16 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     return true;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return getEnergyStored();
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return getMaxEnergyStored();
+//  }
 
   @Override
   public AbstractConduitNetwork<?, ?> getNetwork() {
@@ -398,8 +399,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreDisabled) {
     IPowerInterface rec = getExternalPowerReceptor(direction);
-    
-    return rec != null && rec.canConduitConnect(direction);
+    return rec != null && rec.canConnect(direction);
   }
   
   @Override
@@ -414,7 +414,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if( !(conduit instanceof IPowerConduit)) {
       return false;
     }
-    IPowerConduit pc = (IPowerConduit)conduit;    
+    IPowerConduit pc = (IPowerConduit)conduit;
     return pc.getMaxEnergyStored() == getMaxEnergyStored();
   }
 

@@ -1,23 +1,16 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.util.EnumFacing;
 
-public class PowerInterfaceRF implements IPowerInterface {
+public class PowerInterfaceInternal implements IPowerInterface {
+  
+  private final IInternalPoweredTile con;
+  private IInternalPowerReceiver er;
 
-  private final IEnergyConnection con;
-  private IEnergyHandler eh;
-  private IEnergyReceiver er;
-
-  public PowerInterfaceRF(IEnergyConnection con) {
+  public PowerInterfaceInternal(IInternalPoweredTile con) {
     this.con = con;
-    if(con instanceof IEnergyHandler) {
-      eh = (IEnergyHandler)con;
-    }
-    if(con instanceof IEnergyReceiver) {
-      er = (IEnergyReceiver)con;
+    if(con instanceof IInternalPowerReceiver) {
+      er = (IInternalPowerReceiver)con;
     }
   }
 
@@ -36,18 +29,12 @@ public class PowerInterfaceRF implements IPowerInterface {
 
   @Override
   public int getEnergyStored(EnumFacing dir) {
-    if (eh == null) {
-      return 0;
-    }
-    return eh.getEnergyStored(dir);
+    return con.getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(EnumFacing dir) {
-    if (eh == null) {
-      return 0;
-    }
-    return eh.getMaxEnergyStored(dir);
+    return con.getMaxEnergyStored();
 
   }
 
@@ -73,4 +60,5 @@ public class PowerInterfaceRF implements IPowerInterface {
     return pr.receiveEnergy(north, 999999, true);
   }
 
+  
 }

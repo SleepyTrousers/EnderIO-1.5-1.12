@@ -1,11 +1,11 @@
 package crazypants.enderio.machine;
 
-import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.util.EnumFacing;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.util.EnumFacing;
 
 @Storable
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
@@ -31,15 +31,24 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
     }
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
-
+  
   @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
+  public int getMaxEnergyRecieved(EnumFacing dir) {
+    if (isSideDisabled(dir) || maxEnergyRecieved == null) {
+      return 0;
+    }
+    return maxEnergyRecieved.get(capacitorData);
   }
 
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return getEnergyStored();
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return getMaxEnergyStored();
+//  }
 
 }

@@ -125,15 +125,16 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     return 0;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return storedEnergyRF;
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return MAX_ENERGY_STORED;
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return storedEnergyRF;
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return MAX_ENERGY_STORED;
+//  }
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {

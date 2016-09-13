@@ -2,7 +2,7 @@ package crazypants.enderio.power;
 
 import crazypants.enderio.machine.capbank.TileCapBank;
 
-public class CapBankPI extends PowerInterfaceRF {
+public class CapBankPI extends PowerInterfaceInternal {
 
   public CapBankPI(TileCapBank powerReceptor) {
     super(powerReceptor);

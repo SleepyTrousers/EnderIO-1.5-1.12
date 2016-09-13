@@ -28,8 +28,8 @@ import net.minecraft.util.math.MathHelper;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  protected ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+  protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
   @Store({ StoreFor.SAVE, StoreFor.CLIENT })
   // Not StoreFor.ITEM to keep the storedEnergy tag out in the open
@@ -87,14 +87,6 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
     return !isSideDisabled(from);
-  }
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    if (isSideDisabled(dir) || maxEnergyRecieved == null) {
-      return 0;
-    }
-    return maxEnergyRecieved.get(capacitorData);
   }
 
   @Override

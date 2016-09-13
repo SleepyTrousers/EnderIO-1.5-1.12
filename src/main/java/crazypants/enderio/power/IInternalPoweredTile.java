@@ -1,14 +1,23 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyConnection;
+import com.enderio.core.common.util.BlockCoord;
+
+//import cofh.api.energy.IEnergyConnection;
 import net.minecraft.util.EnumFacing;
 
-//IEnergyHandler, 
-public interface IInternalPoweredTile extends IPowerContainer, IEnergyConnection {
 
-  int getMaxEnergyRecieved(EnumFacing dir);
+public interface IInternalPoweredTile {//, IEnergyConnection {
+
+  //RF
+  boolean canConnectEnergy(EnumFacing from);
+  
+  int getEnergyStored();
   
   int getMaxEnergyStored();
+
+  void setEnergyStored(int storedEnergy);
+
+  BlockCoord getLocation();
   
   /**
    * Should the power be displayed in WAILA or other places

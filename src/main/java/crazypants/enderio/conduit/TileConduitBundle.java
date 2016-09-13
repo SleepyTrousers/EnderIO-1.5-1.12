@@ -56,7 +56,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   private final List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
-  private IBlockState facade = null;  
+  private IBlockState facade = null;
   private EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
   private boolean facadeChanged;
@@ -117,7 +117,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       nbtRoot.setString("facadeType", facadeType.name());
     }
     
-    nbtRoot.setShort("nbtVersion", NBT_VERSION);    
+    nbtRoot.setShort("nbtVersion", NBT_VERSION);
   }
 
   @Override
@@ -229,7 +229,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void doUpdate() {    
+  public void doUpdate() {
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
@@ -245,14 +245,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     //client side only, check for changes in rendering of the bundle
     if(worldObj.isRemote) {
       updateEntityClient();
-    } 
+    }
   }
 
   private void doConduitsDirty() {
     if(!worldObj.isRemote) {
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());      
+      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
       markDirty();
     } else {
       geometryChanged(); // Q&D
@@ -263,7 +263,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private void doFacadeChanged() {
     //force re-calc of lighting for both client and server
     ConduitUtil.forceSkylightRecalculation(worldObj, getPos());
-    worldObj.checkLight(getPos());    
+    worldObj.checkLight(getPos());
     IBlockState bs = worldObj.getBlockState(pos);
     worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     worldObj.notifyNeighborsOfStateChange(getPos(), EnderIO.blockConduitBundle);
@@ -308,7 +308,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if(markForUpdate) {
       geometryChanged(); // Q&D
       IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);      
+      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
     }
   }
 
@@ -331,7 +331,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     if(needsUpdate) {
       dirty();
-    }   
+    }
   }
 
   @Override
@@ -533,7 +533,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     for (CollidableComponent conCC : conduitsBounds) {
       for (CollidableComponent innerCC : conduitsBounds) {
         if(!InsulatedRedstoneConduit.COLOR_CONTROLLER_ID.equals(innerCC.data) && !InsulatedRedstoneConduit.COLOR_CONTROLLER_ID.equals(conCC.data)
-            && conCC != innerCC && conCC.bound.intersects(innerCC.bound)) {          
+            && conCC != innerCC && conCC.bound.intersects(innerCC.bound)) {
           collidingTypes.add((Class<IConduit>) conCC.conduitType);
         }
       }
@@ -676,23 +676,24 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return false;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      return pc.getEnergyStored(from);
-    }
-    return 0;
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      return pc.getMaxEnergyStored(from);
-    }
-    return 0;
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if(pc != null) {
+//      return pc.getEnergyStored(from);
+//    }
+//    return 0;
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    IPowerConduit pc = getConduit(IPowerConduit.class);
+//    if(pc != null) {
+//      return pc.getMaxEnergyStored(from);
+//    }
+//    return 0;
+//  }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {

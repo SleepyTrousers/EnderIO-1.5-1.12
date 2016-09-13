@@ -43,7 +43,7 @@ public class PowerDistributor {
     while (receptorIterator.hasNext() && available > 0 && appliedCount < numReceptors) {
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
-      if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= available) {
+      if(pp != null) {
         int used = pp.recieveEnergy(receptor.fromDir.getOpposite(), available);
         transmitted += used;
         available -= used;
@@ -71,7 +71,7 @@ public class PowerDistributor {
         BlockCoord checkLoc = bc.getLocation(dir);
         TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
         IPowerInterface pi = PowerHandlerUtil.create(te);
-        if (pi != null && pi.canConduitConnect(dir)) {
+        if (pi != null && pi.canConnect(dir)) {
           receptors.add(new Receptor(pi, dir));
         }
       }

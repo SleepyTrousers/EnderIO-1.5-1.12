@@ -648,15 +648,16 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return max;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return getEnergyStored();
+//  }
+//
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return getMaxEnergyStored();
+//  }
 
   public int getUsage() {
     return maxEnergyUsed.get(capacitorData);

@@ -653,10 +653,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return energyStored;
   }
 
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
+  //RF
+//  @Override
+//  public int getEnergyStored(EnumFacing from) {
+//    return getEnergyStored();
+//  }
 
   @Override
   public int getMaxEnergyStored() {
@@ -720,10 +721,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     return network.receiveEnergy(maxReceive, simulate);
   }
 
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getType().getMaxEnergyStored();
-  }
+  //RF
+//  @Override
+//  public int getMaxEnergyStored(EnumFacing from) {
+//    return getType().getMaxEnergyStored();
+//  }
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {

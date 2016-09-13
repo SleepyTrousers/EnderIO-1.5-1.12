@@ -145,17 +145,17 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     }
     inPause = false;
 
-    if(tank.getFluidAmount() < getActivationAmount()) {      
+    if(tank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
     
     
-    ticksRemaingFuel--;    
+    ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
       tank.removeFluidAmount(1);
-      ticksRemaingFuel = tickPerBucketOfFuel/1000;    
-    }    
-    setEnergyStored(getEnergyStored() + outputPerTick);     
+      ticksRemaingFuel = tickPerBucketOfFuel/1000;
+    }
+    setEnergyStored(getEnergyStored() + outputPerTick);
     return true;
   }
   
@@ -171,7 +171,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
     int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
-    setEnergyStored(getEnergyStored() - transmitted);    
+    setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
 
@@ -257,5 +257,4 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     }
     return super.getCapability(capability, facingIn);
   }
-
 }

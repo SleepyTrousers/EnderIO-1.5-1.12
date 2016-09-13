@@ -6,15 +6,11 @@ public interface IPowerInterface {
 
   Object getDelegate();
 
-  boolean canConduitConnect(EnumFacing direction);
+  boolean canConnect(EnumFacing direction);
 
   int getEnergyStored(EnumFacing dir);
 
   int getMaxEnergyStored(EnumFacing dir);
-
-  int getPowerRequest(EnumFacing dir);
-
-  int getMinEnergyReceived(EnumFacing dir);
 
   int recieveEnergy(EnumFacing opposite, int canOffer);
 
