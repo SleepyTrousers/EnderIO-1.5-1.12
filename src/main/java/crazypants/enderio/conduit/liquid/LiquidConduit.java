@@ -145,7 +145,7 @@ public class LiquidConduit extends AbstractTankConduit {
             }
           }
           if(!foundFluid) {
-            return;
+            continue;
           }
 
           FluidStack couldDrain = extTank.drain(dir.getOpposite(), MAX_EXTRACT_PER_TICK, false);
