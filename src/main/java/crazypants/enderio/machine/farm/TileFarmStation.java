@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -24,6 +23,7 @@ import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Things;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -43,6 +43,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
@@ -128,7 +129,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private BlockPos lastScanned;
-  private EntityPlayerMP farmerJoe;   
+  private EntityPlayerMP farmerJoe;
   private static GameProfile FARMER_PROFILE = new GameProfile(UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d"), "[EioFarmer]");
 
   public static final int NUM_TOOL_SLOTS = 3;
@@ -245,9 +246,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private boolean isDryRfTool(ItemStack stack) {
-    return farmEvictEmptyRFTools && stack != null && stack.getItem() instanceof IEnergyContainerItem
-        && ((IEnergyContainerItem) stack.getItem()).getEnergyStored(stack) <= 0
-        && ((IEnergyContainerItem) stack.getItem()).getMaxEnergyStored(stack) > 0;
+    if(!farmEvictEmptyRFTools || stack == null) {
+      return false;
+    }
+    IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
+    if(cap == null) {
+      return false;
+    }
+    return cap.getMaxEnergyStored() > 0 && cap.getEnergyStored() <= 0;
   }
 
   public ItemStack getTool(ToolType type) {
@@ -798,7 +804,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  public boolean shouldRenderInPass(int pass) {   
+  public boolean shouldRenderInPass(int pass) {
     return pass == 1;
   }
 

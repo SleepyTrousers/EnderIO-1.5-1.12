@@ -14,7 +14,6 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -318,12 +317,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
     if (er == null || er.getConduit() != null) {
       setIoMode(faceHit, IoMode.NONE);
-    } else if (er.getReceptor().isInputOnly()) {
+    } else if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
-    } else if (er.getReceptor().isOutputOnly()) {
-      setIoMode(faceHit, IoMode.PULL);
     } else {
-      setIoMode(faceHit, IoMode.PUSH);
+      setIoMode(faceHit, IoMode.PULL);
     }
   }
 
@@ -594,11 +591,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private IPowerInterface getReceptorForFace(@Nonnull EnumFacing faceHit) {
     TileEntity te = worldObj.getTileEntity(getPos().offset(faceHit));
     if (!(te instanceof TileCapBank)) {
-      return PowerHandlerUtil.create(te);
+      return PowerHandlerUtil.create(te, faceHit.getOpposite());
     } else {
       TileCapBank other = (TileCapBank) te;
       if (other.getType() != getType()) {
-        return PowerHandlerUtil.create(te);
+        return PowerHandlerUtil.create(te, faceHit.getOpposite());
       }
     }
     return null;
@@ -619,19 +616,19 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private void validateModeForReceptor(EnergyReceptor er) {
     if (er == null)
       return;
-    IoMode ioMode = getIoMode(er.getDir());
-    if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
-      if (er.getReceptor().isOutputOnly()) {
-        setIoMode(er.getDir(), IoMode.PULL, false);
-      } else if (er.getReceptor().isInputOnly()) {
-        setIoMode(er.getDir(), IoMode.PUSH, false);
-      }
-    }
-    if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
-      setIoMode(er.getDir(), IoMode.PUSH, false);
-    } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
-      setIoMode(er.getDir(), IoMode.DISABLED, false);
-    }
+//    IoMode ioMode = getIoMode(er.getDir());
+//    if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
+//      if (er.getReceptor().isOutputOnly()) {
+//        setIoMode(er.getDir(), IoMode.PULL, false);
+//      } else if (er.getReceptor().isInputOnly()) {
+//        setIoMode(er.getDir(), IoMode.PUSH, false);
+//      }
+//    }
+//    if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
+//      setIoMode(er.getDir(), IoMode.PUSH, false);
+//    } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
+//      setIoMode(er.getDir(), IoMode.DISABLED, false);
+//    }
   }
 
   @Override
@@ -822,7 +819,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof IEnergyContainerItem;
+    return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
   public ItemStack[] getInventory() {

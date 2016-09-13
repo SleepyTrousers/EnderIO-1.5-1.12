@@ -5,15 +5,16 @@ import java.util.List;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.gui.item.PowerItemFilterGui;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.power.PowerHandlerUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,11 +45,10 @@ public class PowerItemFilter implements IItemFilter {
 
   @Override
   public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
-    if(item != null && item.getItem() instanceof IEnergyContainerItem) {
-      IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
-
-      int max = chargable.getMaxEnergyStored(item);
-      int cur = chargable.getEnergyStored(item);
+    IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
+    if(chargable != null ) {
+      int max = chargable.getMaxEnergyStored();
+      int cur = chargable.getEnergyStored();
       int ref = (int)((long)max * level / MAX_LEVEL);
 
       switch (mode) {

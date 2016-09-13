@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -27,9 +26,11 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -307,13 +308,13 @@ public class CapBankNetwork implements ICapBankNetwork {
     boolean chargedItem = false;
     int available = getEnergyAvailableForTick(getMaxIO());
     for (ItemStack item : items) {
-      if(item != null && available > 0 && item.stackSize == 1 && item.getItem() instanceof IEnergyContainerItem) {
-        IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
-        int max = chargable.getMaxEnergyStored(item);
-        int cur = chargable.getEnergyStored(item);
+      if(item != null && available > 0 && item.stackSize == 1 && PowerHandlerUtil.getCapability(item, null) != null) {
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
+        int max = chargable.getMaxEnergyStored();
+        int cur = chargable.getEnergyStored();
         if(cur < max) {
           int canUse = Math.min(available, max - cur);
-          int used = chargable.receiveEnergy(item, canUse, false);
+          int used = chargable.receiveEnergy(canUse, false);
           if(used > 0) {
             addEnergy(-used);
             chargedItem = true;
