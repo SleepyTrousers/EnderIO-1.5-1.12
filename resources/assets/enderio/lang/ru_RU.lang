@@ -1459,3 +1459,8 @@ item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по пане�
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 tile.blockExitRail.name=Выездные рельсы
+
+tile.blockSelfResettingLever10.name=Рычаг с самовозвратом (10 секунд)
+tile.blockSelfResettingLever30.name=Рычаг с самовозвратом (30 секунд)
+tile.blockSelfResettingLever60.name=Рычаг с самовозвратом (1 минута)
+tile.blockSelfResettingLever300.name=Рычаг с самовозвратом (5 минут)
