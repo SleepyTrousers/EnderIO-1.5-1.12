@@ -54,6 +54,10 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
     return super.getTileEntity(pos);
   }
 
+  public TileEntity getRealTileEntity(BlockPos pos) {
+    return wrapped.getTileEntity(pos);
+  }
+
   @Override
   public IBlockState getBlockState(BlockPos pos) {
     IBlockState paintSource = getPaintSource(pos);

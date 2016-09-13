@@ -88,6 +88,8 @@ public enum ModObject implements IModObject {
   blockReinforcedObsidian,
   blockIngotStorage,
   blockSelfResettingLever,
+  blockDecoration1,
+  blockDecoration2,
 
   // Painter
   blockPainter,

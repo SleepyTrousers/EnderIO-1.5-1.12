@@ -1,0 +1,60 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "enderio:cube",
+        "textures": {
+            "particle": "enderio:blocks/machineBottom"
+        }
+    },
+  "variants":{
+    "facing":{
+      "south": {          },
+      "west":  { "y":  90 },
+      "north": { "y": 180 },
+      "east":  { "y": 270 }
+    },
+    "type":{
+      "type00":             { "textures": {
+        "particle": "enderio:items/machineChassi",
+        "bottom":   "enderio:items/machineChassi",
+        "top":      "enderio:items/machineChassi",
+        "side":     "enderio:items/machineChassi"
+      }, "model":   "enderio:hollowCube" },
+      "type01":             { "textures": { "all": "enderio:blocks/machineBottom" } },
+      "type02":             { "textures": { "all": "enderio:blocks/machineTop" } },
+      "type03":             { "textures": { "all": "enderio:blocks/machineSide" } },
+      "type04":             { "textures": { "all": "enderio:blocks/machineBack" } },
+      "type05":             { "textures": {
+        "particle": "enderio:blocks/machineBottom",
+        "bottom":   "enderio:blocks/machineBottom",
+        "top":      "enderio:blocks/machineTop",
+        "side":     "enderio:blocks/machineSide"
+      }, "model":   "enderio:sidedCube" },
+      "type06":             { "textures": {
+        "particle": "enderio:blocks/machineBottom",
+        "bottom":   "enderio:blocks/machineBottom",
+        "top":      "enderio:blocks/machineTop",
+        "side":     "enderio:blocks/machineBack"
+      }, "model":   "enderio:sidedCube" },
+      "type07":             { "textures": { "all": "enderio:blocks/blockSoulMachineBlank" } },
+      "type08":             { "textures": { "all": "enderio:blocks/blockSoulMachineTop" } },
+      "type09":             { "textures": { "all": "enderio:blocks/blockSoulMachineSide" } },
+      "type10":             { "textures": { "all": "enderio:blocks/blockSoulMachineBack" } },
+      "type11":             { "textures": {
+        "particle": "enderio:blocks/blockSoulMachineBlank",
+        "bottom":   "enderio:blocks/blockSoulMachineBlank",
+        "top":      "enderio:blocks/blockSoulMachineTop",
+        "side":     "enderio:blocks/blockSoulMachineSide"
+      }, "model":   "enderio:sidedCube" },
+      "type12":             { "textures": {
+        "particle": "enderio:blocks/blockSoulMachineBlank",
+        "bottom":   "enderio:blocks/blockSoulMachineBlank",
+        "top":      "enderio:blocks/blockSoulMachineTop",
+        "side":     "enderio:blocks/blockSoulMachineBack"
+      }, "model":   "enderio:sidedCube" },
+      "type13":             { "textures": { "all": "enderio:blocks/capacitorBankCreativeBorder" } },
+      "type14":             { "textures": { "all": "enderio:items/itemBrokenSpawner" } },
+      "type15":             { "model": "enderio:null" }
+    }
+  }
+}

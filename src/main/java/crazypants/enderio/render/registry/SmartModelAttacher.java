@@ -61,7 +61,7 @@ public class SmartModelAttacher {
   }
 
   /**
-   * Register a block that does not have one of our special rendering properties. All its blockstates will be rendered by our smart model, to the render mapper
+   * Register a block that does not have one of our special rendering properties. All its blockstates will be rendered by our smart model, so the render mapper
    * cannot reference them and must get its blockstates from elsewhere.
    */
   public static void registerNoProps(Block block) {
