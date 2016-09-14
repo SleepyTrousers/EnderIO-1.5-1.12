@@ -56,17 +56,22 @@ public class EnergyUpgrade extends AbstractUpgrade {
   
   private static final String KEY_LEVEL = "energyUpgradeLevel";
 
+  public static EnergyUpgrade loadFromNBT(NBTTagCompound nbt) {
+    if(nbt == null) {
+      return null;
+    }
+    if(!nbt.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
+      return null;
+    }
+    return new EnergyUpgrade(nbt.getCompoundTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+  }
+  
   public static EnergyUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
-      return null;
-    }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new EnergyUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return loadFromNBT(stack.getTagCompound());
+    
   }
 
   public static boolean itemHasAnyPowerUpgrade(ItemStack itemstack) {

@@ -5,13 +5,14 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4i;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -76,11 +77,12 @@ public class PowerBarOverlayRenderHelper {
   }
   
   public boolean render(ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
-    if (hasEnergyStore(stack) && stack.getItem() instanceof IEnergyContainerItem) {
-      IEnergyContainerItem energyItem = (IEnergyContainerItem) stack.getItem();
-      int maxEnergy = energyItem.getMaxEnergyStored(stack);
+    IEnergyStorage energyItem = PowerHandlerUtil.getCapability(stack, null);
+    
+    if(energyItem != null) {
+      int maxEnergy = energyItem.getMaxEnergyStored();
       if (maxEnergy > 0) {
-        int energy = energyItem.getEnergyStored(stack);
+        int energy = energyItem.getEnergyStored();
         if (alwaysShow || shouldShowBar(maxEnergy, energy)) {
           double level = (double) energy / (double) maxEnergy;
           boolean up = stack.getItem().showDurabilityBar(stack);

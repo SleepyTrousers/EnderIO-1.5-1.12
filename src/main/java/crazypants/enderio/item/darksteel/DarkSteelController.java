@@ -77,7 +77,7 @@ public class DarkSteelController {
     speedController = new SpeedController();
   }
   
-  public void register() {        
+  public void register() {
     MinecraftForge.EVENT_BUS.register(this);
     MinecraftForge.EVENT_BUS.register(speedController);
   }
@@ -327,7 +327,7 @@ public class DarkSteelController {
     }
     if (armor != null) {
       ItemStack stack = player.getItemStackFromSlot(armor.armorType);
-      res = armor.getEnergyStored(stack);
+      res = EnergyUpgrade.getEnergyStored(stack);
     }
     return res;
   }

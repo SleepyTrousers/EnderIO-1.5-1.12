@@ -10,11 +10,11 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
@@ -30,6 +30,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -37,6 +38,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,7 +47,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
+//RF
+public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware { //IEnergyContainerItem,
 
   public static final String NAME = "darkSteel_axe";
 
@@ -168,7 +171,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
         if (worldObj.rand.nextFloat() <= chance) {
           worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
           if (block == refBlock) { // other wise leaves
-            extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+            EnergyUpgrade.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
             usedPower = true;
           }
         }
@@ -224,7 +227,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   @Override
   public float getStrVsBlock(ItemStack stack, IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
-      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
+      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || EnergyUpgrade.getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
@@ -250,23 +253,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new EnergyUpgadeCap(stack);
   }
 
   @Override

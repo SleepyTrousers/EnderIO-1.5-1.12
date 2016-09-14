@@ -9,10 +9,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
@@ -24,7 +24,9 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerHandlerItemStack;
 import crazypants.enderio.teleport.TeleportUtil;
+import crazypants.util.NbtValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,7 +63,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 
-public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedTooltipProvider, IOverlayRenderAware {
+public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
   public static ItemRodOfReturn create() {
     ItemRodOfReturn result = new ItemRodOfReturn();
@@ -79,7 +81,6 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
   private final Fluid fluidType;
 
   protected ItemRodOfReturn() {
-    super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemRodOfReturn.getUnlocalisedName());
     setRegistryName(ModObject.itemRodOfReturn.getUnlocalisedName());
@@ -239,7 +240,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
     str = PowerDisplayUtil.formatPower(FLUIDAMOUNT.getInt(itemStack, 0)) + "/" + PowerDisplayUtil.formatPower(Config.rodOfReturnFluidStorage) + " MB";
     list.add(str);
     
-    str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
+    str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(Config.rodOfReturnPowerStorage) + " "
         + PowerDisplayUtil.abrevation();
     list.add(str);
   }
@@ -365,11 +366,13 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
     return true;
   }
 
+  private int getEnergyStored(ItemStack stack) {
+    return NbtValue.ENERGY.getInt(stack);
+  }
+
   private void setEnergy(ItemStack container, int energy) {
-    if (container.getTagCompound() == null) {
-      container.setTagCompound(new NBTTagCompound());
-    }
-    container.getTagCompound().setInteger("Energy", energy);
+    energy = MathHelper.clamp_int(energy, 0, Config.rodOfReturnPowerStorage);
+    NbtValue.ENERGY.setInt(container, energy);
   }
 
   private void setFull(ItemStack container) {
@@ -426,10 +429,6 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
       return null;
     }
   }
- 
-  public int getCapacity(ItemStack container) {
-    return Config.rodOfReturnFluidStorage;
-  }
 
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
     if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
@@ -437,7 +436,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
-    int capacity = getCapacity(container);
+    int capacity = Config.rodOfReturnFluidStorage;
     int free = capacity - amount;
     int toFill = Math.min(resource.amount, free);
     if (toFill > 0 && doFill) {
@@ -448,13 +447,13 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
   
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new CapabilityProvider(stack);
+    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new PowerHandlerItemStack(stack, Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0));
   }
 
-  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
+  private class FluidCapabilityProvider implements IFluidHandler, ICapabilityProvider {
     protected final ItemStack container;
 
-    private CapabilityProvider(ItemStack container) {
+    private FluidCapabilityProvider(ItemStack container) {
       this.container = container;
     }
 
@@ -481,7 +480,7 @@ public class ItemRodOfReturn extends ItemEnergyContainer implements IAdvancedToo
 
         @Override
         public int getCapacity() {
-          return ItemRodOfReturn.this.getCapacity(container);
+          return Config.rodOfReturnFluidStorage;
         }
 
         @Override

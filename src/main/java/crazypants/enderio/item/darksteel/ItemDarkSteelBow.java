@@ -9,10 +9,10 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -36,13 +37,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvancedTooltipProvider, IOverlayRenderAware, IEnergyContainerItem {
+public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvancedTooltipProvider, IOverlayRenderAware {
 
   public static final String NAME = "darkSteelBow";
 
@@ -379,23 +381,8 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   // --------------- EnergyContainer
 
   @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new EnergyUpgadeCap(stack);
   }
 
 }

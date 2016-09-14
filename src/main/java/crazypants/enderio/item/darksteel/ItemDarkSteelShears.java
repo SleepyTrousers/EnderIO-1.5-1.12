@@ -13,11 +13,11 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.material.Alloy;
@@ -29,19 +29,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
+public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static final String NAME = "darkSteel_shears";
 
@@ -234,25 +236,10 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
   }
 
   @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new EnergyUpgadeCap(stack);
   }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
-  }
-
+  
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
