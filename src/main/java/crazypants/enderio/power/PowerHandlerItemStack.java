@@ -14,9 +14,9 @@ import net.minecraftforge.energy.IEnergyStorage;
 public class PowerHandlerItemStack implements IEnergyStorage, ICapabilityProvider {
 
   protected final ItemStack container;
-  protected final int capacity;
-  protected final int maxInput;
-  protected final int maxOutput;
+  protected int capacity;
+  protected int maxInput;
+  protected int maxOutput;
 
   public PowerHandlerItemStack(ItemStack container, int capacity, int maxInput, int maxOutput) {
     this.container = container;

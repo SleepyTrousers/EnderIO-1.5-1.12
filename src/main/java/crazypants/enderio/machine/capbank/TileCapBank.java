@@ -32,6 +32,7 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.NbtValue;
 import crazypants.util.NullHelper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -854,14 +855,18 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
     super.readContentsFromNBT(nbtRoot);
-    energyStored = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
-    setEnergyStored(energyStored); // Call this to clamp values in case config changed
+    //Handle version before making RF optional
+    if(nbtRoot.hasKey("storedEnergyRF")) {
+      energyStored = nbtRoot.getInteger("storedEnergyRF");
+    } else {
+      energyStored = NbtValue.ENERGY.getInt(nbtRoot);
+    }
   }
 
   @Override
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     super.writeContentsToNBT(nbtRoot);
-    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, energyStored);
+    NbtValue.ENERGY.setInt(nbtRoot, energyStored);
   }
 
   @Override

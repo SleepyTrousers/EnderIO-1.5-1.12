@@ -17,16 +17,12 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -34,6 +30,9 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
 public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
@@ -406,8 +405,8 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
     ItemStack capBankStack = new ItemStack(EnderIO.blockCapBank, 1, 3);
     if (statData.maxPowerInCapBanks > 0) {
-      PowerHandlerUtil.setStoredEnergyForItem(capBankStack,
-              (int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));      
+      BlockItemCapBank.setStoredEnergyForItem(capBankStack,
+              (int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));
     }
 
     itemRender.renderItemIntoGUI(capBankStack, x, y + LINE_Y_OFFSET);

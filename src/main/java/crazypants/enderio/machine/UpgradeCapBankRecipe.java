@@ -1,6 +1,6 @@
 package crazypants.enderio.machine;
 
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -37,13 +37,13 @@ public class UpgradeCapBankRecipe extends ShapedOreRecipe {
       for(int x=0 ; x<3 ; x++) {
         ItemStack st = var1.getStackInRowAndColumn(x, y);
         if(st != null) {
-          energy += PowerHandlerUtil.getStoredEnergyForItem(st);
+          energy += BlockItemCapBank.getStoredEnergyForItem(st);
         }
       }
     }
 
     ItemStack res = super.getCraftingResult(var1);
-    PowerHandlerUtil.setStoredEnergyForItem(res, (int)Math.min(Integer.MAX_VALUE, energy));
+    BlockItemCapBank.setStoredEnergyForItem(res, (int)Math.min(Integer.MAX_VALUE, energy));
     return res;
   }
 }

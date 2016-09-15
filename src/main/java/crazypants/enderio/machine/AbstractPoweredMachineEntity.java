@@ -15,7 +15,7 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -181,7 +181,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if (stack != null) {
       NBTTagCompound root = stack.getTagCompound();
       if (root != null) {
-        setEnergyStored(root.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+        int energyStored;
+        if(root.hasKey("storedEnergyRF")) {
+          //handle old key in versions before adding cap support
+          energyStored = root.getInteger("storedEnergyRF");
+        } else {
+          energyStored = NbtValue.ENERGY.getInt(root);
+        }
+        setEnergyStored(energyStored);
       }
     }
   }
@@ -196,7 +203,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if (root == null) {
       stack.setTagCompound(root = new NBTTagCompound());
     }
-    root.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
+    NbtValue.ENERGY.setInt(stack, storedEnergyRF);
   }
 
 }
