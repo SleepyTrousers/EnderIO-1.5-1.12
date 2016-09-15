@@ -452,7 +452,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if(test instanceof IConduitBundle) {
       return null;
     }
-    return PowerHandlerUtil.create(test, direction.getOpposite());
+    return PowerHandlerUtil.getPowerInterface(test, direction.getOpposite());
   }
 
   @Override

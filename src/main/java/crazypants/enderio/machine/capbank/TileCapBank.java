@@ -592,11 +592,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private IPowerInterface getReceptorForFace(@Nonnull EnumFacing faceHit) {
     TileEntity te = worldObj.getTileEntity(getPos().offset(faceHit));
     if (!(te instanceof TileCapBank)) {
-      return PowerHandlerUtil.create(te, faceHit.getOpposite());
+      return PowerHandlerUtil.getPowerInterface(te, faceHit.getOpposite());
     } else {
       TileCapBank other = (TileCapBank) te;
       if (other.getType() != getType()) {
-        return PowerHandlerUtil.create(te, faceHit.getOpposite());
+        return PowerHandlerUtil.getPowerInterface(te, faceHit.getOpposite());
       }
     }
     return null;

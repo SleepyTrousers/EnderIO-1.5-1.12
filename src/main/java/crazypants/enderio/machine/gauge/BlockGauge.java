@@ -119,7 +119,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     for (EnumFacing face : EnumFacing.Plane.HORIZONTAL) {
       BlockPos neighbor = pos.offset(face);
       TileEntity tile = BlockEnder.getAnyTileEntitySafe(world, neighbor);
-      IPowerInterface eh = PowerHandlerUtil.create(tile, face.getOpposite());
+      IPowerInterface eh = PowerHandlerUtil.getPowerInterface(tile, face.getOpposite());
       if (eh != null && !(tile instanceof TileCapBank) && !(tile instanceof IConduitBundle)) {
         sides.put(face, eh);
       }

@@ -13,12 +13,10 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerHandlerUtil {
 
-//  public static final @Nonnull String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
-
   @CapabilityInject(IEnergyStorage.class)
   private static final Capability<IEnergyStorage> ENERGY_HANDLER = null;
 
-  public static IPowerInterface create(@Nullable ICapabilityProvider provider, EnumFacing side) {
+  public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
     if (provider instanceof IInternalPoweredTile) {
       return new PowerInterfaceInternal((IInternalPoweredTile) provider, side);
     }
@@ -31,7 +29,11 @@ public class PowerHandlerUtil {
     }
     return null;
   }
-
+  
+  public static IEnergyStorage getCapability(ItemStack stack) {
+    return getCapability(stack, null);
+  }
+  
   public static IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
     if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
       return provider.getCapability(ENERGY_HANDLER, side);

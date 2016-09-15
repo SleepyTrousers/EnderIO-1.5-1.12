@@ -70,7 +70,7 @@ public class PowerDistributor {
       if(!(transmitter instanceof AbstractMachineEntity) || ((AbstractMachineEntity) transmitter).getIoMode(dir).canOutput()) {
         BlockCoord checkLoc = bc.getLocation(dir);
         TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
-        IPowerInterface pi = PowerHandlerUtil.create(te, dir.getOpposite());
+        IPowerInterface pi = PowerHandlerUtil.getPowerInterface(te, dir.getOpposite());
         if (pi != null) {
           receptors.add(new Receptor(pi, dir));
         }
