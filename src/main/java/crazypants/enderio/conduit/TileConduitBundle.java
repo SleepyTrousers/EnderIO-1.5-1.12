@@ -677,23 +677,25 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if(pc != null) {
-//      return pc.getEnergyStored(from);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    IPowerConduit pc = getConduit(IPowerConduit.class);
-//    if(pc != null) {
-//      return pc.getMaxEnergyStored(from);
-//    }
-//    return 0;
-//  }
+  @Override
+  @Method(modid = "CoFHAPI|energy")
+  public int getEnergyStored(EnumFacing from) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  @Method(modid = "CoFHAPI|energy")
+  public int getMaxEnergyStored(EnumFacing from) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyStored();
+    }
+    return 0;
+  }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
@@ -895,5 +897,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
   }
+
+  
 
 }

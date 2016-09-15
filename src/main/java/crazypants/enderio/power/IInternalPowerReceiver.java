@@ -1,13 +1,11 @@
 package crazypants.enderio.power;
 
-//import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.util.EnumFacing;
 
-public interface IInternalPowerReceiver extends IInternalPoweredTile {//, IEnergyReceiver {
+public interface IInternalPowerReceiver extends IInternalPoweredTile {
 
   int getMaxEnergyRecieved(EnumFacing dir);
   
-  //RF
   int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate);
-  
+    
 }

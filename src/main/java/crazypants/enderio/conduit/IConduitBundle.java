@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import cofh.api.energy.IEnergyReceiver;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
@@ -30,9 +31,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),
     @Interface(iface = "mods.immibis.microblocks.api.IMicroblockSupporterTile", modid = "ImmibisMicroblocks"),
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
-    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network")
+    @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"),
+    @Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI|energy")
 })
-public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment {
+public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver {
 
   TileEntity getEntity();
 
