@@ -6,6 +6,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
 import info.loenwind.autosave.annotations.Storable;
@@ -16,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider {
@@ -30,21 +33,22 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     return from == EnumFacing.DOWN;
   }
 
-  //RF
-//  @Override
-//  public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-//    return 0;
-//  }
-//
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return getEnergyStored();
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return getMaxEnergyStored();
-//  }
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
+      return (T) new PowerHandlerPoweredTile(this);
+    }
+    return super.getCapability(capability, facingIn);
+  }
  
   @Override
   public int getEnergyStored() {

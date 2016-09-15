@@ -15,6 +15,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
@@ -24,6 +25,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
@@ -368,16 +371,22 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     return requiresPower;
   }
 
-  //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return getEnergyStored();
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return getMaxEnergyStored();
-//  }
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return (T) new PowerHandlerRecieverTile(this, facingIn);
+    }
+    return super.getCapability(capability, facingIn);
+  }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {

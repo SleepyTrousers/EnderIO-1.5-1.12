@@ -26,6 +26,7 @@ import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.packet.PacketFluidLevel;
@@ -47,6 +48,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -648,17 +650,6 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return max;
   }
 
-  //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return getEnergyStored();
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return getMaxEnergyStored();
-//  }
-
   public int getUsage() {
     return maxEnergyUsed.get(capacitorData);
   }
@@ -681,9 +672,10 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-    if (inNetwork() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return true;
-    } else if (inNetwork() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    if (inNetwork() && (
+        capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+        capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ||
+        capability == CapabilityEnergy.ENERGY)) {
       return true;
     }
     return super.hasCapability(capability, facing);
@@ -698,8 +690,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) getMaster();
     }
-    if (inNetwork() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getMaster().tank;
+    }
+    if (capability == CapabilityEnergy.ENERGY) {
+      return (T) new PowerHandlerRecieverTile(getMaster(), facing);
     }
     return super.getCapability(capability, facing);
   }

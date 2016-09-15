@@ -30,6 +30,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.rail.EnderRailController;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -81,8 +83,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
     sendItemFilter = new ItemFilter(true);
     recieveItemFilter = new ItemFilter(true);
-    
-    
   }
 
   public EnderRailController getRailController() {
@@ -467,6 +467,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return true;
     }
+    if(capability == CapabilityEnergy.ENERGY) {
+      return true;
+    }
     return super.hasCapability(capability, facing);
   }
   
@@ -475,6 +478,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
   public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T)new FluidCap(facing);
+    }
+    if (capability == CapabilityEnergy.ENERGY) {
+      return (T) new PowerHandlerRecieverTile(this, facing);
     }
     return super.getCapability(capability, facing);
   }

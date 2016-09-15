@@ -15,6 +15,7 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.PowerHandlerPoweredTile;
 import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -23,6 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
@@ -102,6 +105,23 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public int getEnergyStored() {
     return storedEnergyRF;
+  }
+    
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
+      return (T) new PowerHandlerPoweredTile(this);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
   //----- Common Machine Functions

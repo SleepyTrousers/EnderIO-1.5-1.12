@@ -9,6 +9,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -17,6 +18,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
@@ -124,16 +127,22 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     return 0;
   }
 
-  //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return storedEnergyRF;
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return MAX_ENERGY_STORED;
-//  }
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return (T) new PowerHandlerRecieverTile(this, facingIn);
+    }
+    return super.getCapability(capability, facingIn);
+  }
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {

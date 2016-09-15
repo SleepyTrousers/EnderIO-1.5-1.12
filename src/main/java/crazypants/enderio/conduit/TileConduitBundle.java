@@ -30,6 +30,7 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.power.PowerHandlerPoweredTile;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
@@ -41,6 +42,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -731,6 +734,23 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       pc.setEnergyStored(stored);
     }
     
+  }
+  
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
+      return (T) new PowerHandlerPoweredTile(this);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 //------- Liquids -----------------------------

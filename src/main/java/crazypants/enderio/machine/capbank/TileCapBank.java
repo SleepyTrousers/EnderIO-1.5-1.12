@@ -53,6 +53,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -632,6 +635,27 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 //    }
   }
 
+  
+  //------------------- Power -----------------
+  
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
+      return (T) new CapHandler(facingIn);
+    }
+    return super.getCapability(capability, facingIn);
+  }
+  
+  
   @Override
   public void addEnergy(int energy) {
     if (network == null) {
@@ -650,12 +674,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   public int getEnergyStored() {
     return energyStored;
   }
-
-  //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return getEnergyStored();
-//  }
 
   @Override
   public int getMaxEnergyStored() {
@@ -718,12 +736,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     return network.receiveEnergy(maxReceive, simulate);
   }
-
-  //RF
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return getType().getMaxEnergyStored();
-//  }
 
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
@@ -903,4 +915,43 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     super.writeCustomNBT(root);
   }
 
+  private class CapHandler implements IEnergyStorage {
+
+    private final EnumFacing from;
+    
+    public CapHandler(EnumFacing from) {
+      this.from = from;
+    }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+      return TileCapBank.this.receiveEnergy(from, maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+      return 0;
+    }
+
+    @Override
+    public int getEnergyStored() {
+      return TileCapBank.this.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+      return TileCapBank.this.getMaxEnergyStored();
+    }
+
+    @Override
+    public boolean canExtract() {
+      return false;
+    }
+
+    @Override
+    public boolean canReceive() {
+      return true;
+    }
+  }
+  
 }

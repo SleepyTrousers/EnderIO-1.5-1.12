@@ -12,10 +12,13 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
@@ -205,6 +208,23 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public int getMaxEnergyStored() {
     return hasPower ? super.getMaxEnergyStored() : 0;
+  }
+  
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && hasPower) {
+      return true;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY && hasPower) {
+      return (T) new PowerHandlerRecieverTile(this, facingIn);
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

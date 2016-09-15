@@ -17,9 +17,9 @@ public class PowerHandlerUtil {
   private static final Capability<IEnergyStorage> ENERGY_HANDLER = null;
 
   public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    if (provider instanceof IInternalPoweredTile) {
-      return new PowerInterfaceInternal((IInternalPoweredTile) provider, side);
-    }
+//    if (provider instanceof IInternalPoweredTile) {
+//      return new PowerInterfaceInternal((IInternalPoweredTile) provider, side);
+//    }
     IEnergyStorage cap = getCapability(provider, side);
     if (cap != null) {
       return new PowerInterfaceForge(cap);

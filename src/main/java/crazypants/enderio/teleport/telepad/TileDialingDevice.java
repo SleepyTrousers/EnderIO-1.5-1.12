@@ -10,6 +10,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.teleport.telepad.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -101,12 +103,10 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   
   
   //---------------------- Inventory -------------------------------------
-
   
-
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY) {
       return true;
     }
     return super.hasCapability(capability, facing);
@@ -117,6 +117,9 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) this;
+    }
+    if (capability == CapabilityEnergy.ENERGY) {
+      return (T) new PowerHandlerRecieverTile(this, facing);
     }
     return super.getCapability(capability, facing);
   }
@@ -207,17 +210,6 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
     }
     return max;
   }
-
-  //RF
-//  @Override
-//  public int getEnergyStored(EnumFacing from) {
-//    return getEnergyStored();
-//  }
-//
-//  @Override
-//  public int getMaxEnergyStored(EnumFacing from) {
-//    return getMaxEnergyStored();
-//  }
 
   public int getUsage() {
     return RF_PER_TICK;
