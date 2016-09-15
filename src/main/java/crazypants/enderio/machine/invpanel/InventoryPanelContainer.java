@@ -166,7 +166,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void removeListener(IContainerListener crafting) {    
+  public void removeListener(IContainerListener crafting) {
     super.removeListener(crafting);
     removeChangeLog();
   }
@@ -174,7 +174,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   
 
   @Override
-  public void addListener(IContainerListener crafting) {    
+  public void addListener(IContainerListener crafting) {
     if(changedItems != null) {
       sendChangeLog();
     }
@@ -466,7 +466,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
   @SuppressWarnings("null")
   public void tick(EntityPlayer player) {
-    if (super.canInteractWith(player)) {
+    if (!super.canInteractWith(player)) {
       if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
         ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
       } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
