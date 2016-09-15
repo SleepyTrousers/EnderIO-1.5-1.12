@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
@@ -15,6 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerHandlerItemStack;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -37,6 +37,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
@@ -54,7 +55,7 @@ import static crazypants.util.NbtValue.REMOTE_X;
 import static crazypants.util.NbtValue.REMOTE_Y;
 import static crazypants.util.NbtValue.REMOTE_Z;
 
-public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IEnergyContainerItem {
+public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem {
 
   public static ItemRemoteInvAccess create() {
     ClientRemoteGuiManager.create();
@@ -224,7 +225,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
   }
 
   public ItemStack setFull(ItemStack container) {
-    setEnergy(container, getMaxEnergyStored(container));
+    setEnergy(container, ItemRemoteInvAccessType.fromStack(container).getRfCapacity());
     FLUIDAMOUNT.setInt(container, getCapacity(container));
     return container;
   }
@@ -234,25 +235,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     setEnergy(itemStack, 0);
   }
 
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
-  }
-
-  @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    if (container == null || !(container.getItem() == this) || maxReceive <= 0) {
-      return 0;
-    }
-    int amount = ENERGY.getInt(container, 0);
-    int capacity = getMaxEnergyStored(container);
-    int free = capacity - amount;
-    int toFill = Math.min(Math.min(maxReceive, free), capacity / 100);
-    if (toFill > 0 && !simulate) {
-      ENERGY.setInt(container, amount + toFill);
-    }
-    return toFill;
-  }
+  
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
@@ -326,19 +309,17 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     }
   }
 
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
   public int getEnergyStored(ItemStack container) {
     return ENERGY.getInt(container, 0);
   }
 
+  public int getMaxEnergyStored(ItemStack container) {
+    return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
+  }
+
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new CapabilityProvider(stack);
+   return new CapabilityProvider(stack);
   }
 
   private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
@@ -350,13 +331,19 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
+      if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        return (T) this;
+      } else if(capability == CapabilityEnergy.ENERGY) {
+        int capacity =getMaxEnergyStored(container);
+        return (T)new PowerHandlerItemStack(container, capacity, capacity / 100, 0);
+      }
+      return null;
     }
 
     @Override
