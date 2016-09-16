@@ -24,7 +24,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import crazypants.enderio.teleport.TeleportUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.Minecraft;

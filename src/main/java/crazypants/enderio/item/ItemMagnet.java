@@ -16,7 +16,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import crazypants.util.BaublesUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;

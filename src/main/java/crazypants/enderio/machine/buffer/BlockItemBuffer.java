@@ -11,7 +11,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

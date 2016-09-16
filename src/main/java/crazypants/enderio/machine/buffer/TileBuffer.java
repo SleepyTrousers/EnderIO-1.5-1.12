@@ -12,7 +12,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
-import crazypants.enderio.power.PowerHandlerRecieverTile;
+import crazypants.enderio.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
@@ -222,7 +222,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return hasPower ? (T) new PowerHandlerRecieverTile(this, facingIn) : null;
+      return hasPower ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
     }
     return super.getCapability(capability, facingIn);
   }

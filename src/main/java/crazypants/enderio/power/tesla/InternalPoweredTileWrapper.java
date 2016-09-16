@@ -1,12 +1,13 @@
-package crazypants.enderio.power;
+package crazypants.enderio.power.tesla;
 
+import crazypants.enderio.power.IInternalPoweredTile;
+import net.darkhax.tesla.api.ITeslaHolder;
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
-public class PowerHandlerPoweredTile implements IEnergyStorage {
+public class InternalPoweredTileWrapper implements ITeslaHolder {
 
   
   public static class PoweredTileCapabilityProvider implements ICapabilityProvider {
@@ -19,14 +20,14 @@ public class PowerHandlerPoweredTile implements IEnergyStorage {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY;
+      return capability == TeslaCapabilities.CAPABILITY_HOLDER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
-        return (T) new PowerHandlerPoweredTile(tile, facing);
+      if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {
+        return (T) new InternalPoweredTileWrapper(tile, facing);
       }
       return null;
     }
@@ -36,40 +37,22 @@ public class PowerHandlerPoweredTile implements IEnergyStorage {
   private final IInternalPoweredTile tile;
   protected final EnumFacing from;
   
-  public PowerHandlerPoweredTile(IInternalPoweredTile tile, EnumFacing from) {
+  public InternalPoweredTileWrapper(IInternalPoweredTile tile, EnumFacing from) {
     this.tile = tile;
     this.from = from;
   }
 
   @Override
-  public int getEnergyStored() {
+  public long getStoredPower() {
     return tile.getEnergyStored(from);
   }
 
   @Override
-  public int getMaxEnergyStored() {
-    return tile.getEnergyStored(from);
-  }
-  
-  @Override
-  public int receiveEnergy(int maxReceive, boolean simulate) {
-    return 0;
+  public long getCapacity() {
+    return tile.getMaxEnergyStored(from);
   }
 
-  @Override
-  public int extractEnergy(int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public boolean canExtract() {
-    return false;
-  }
-
-  @Override
-  public boolean canReceive() {
-    return false;
-  }
+ 
   
   
   

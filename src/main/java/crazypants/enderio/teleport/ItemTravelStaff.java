@@ -13,7 +13,7 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import crazypants.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

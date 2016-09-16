@@ -64,6 +64,7 @@ repositories {
     maven { url = "http://files.minecraftforge.net/maven" }
     maven { url = "http://maven.cil.li/" }
     maven { url = "http://maven.ic2.player.to" }
+    maven { url = "http://maven.epoxide.xyz" }
     mavenLocal()
 }
 
@@ -79,6 +80,7 @@ dependencies {
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
     deobfCompile "net.sengir.forestry:${forestry_version}:api"
     deobfCompile "team.chisel:Chisel:${chisel_version}:api"
+    compile "net.darkhax.tesla:Tesla:${tesla_version}"
 
     compile fileTree(dir: 'lib', include: '*.jar') 
 }

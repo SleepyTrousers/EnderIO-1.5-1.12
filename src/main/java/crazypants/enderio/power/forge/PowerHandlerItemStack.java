@@ -1,4 +1,4 @@
-package crazypants.enderio.power;
+package crazypants.enderio.power.forge;
 
 import javax.annotation.Nullable;
 

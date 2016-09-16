@@ -509,7 +509,7 @@ public class EnderIO {
     }
     addModIntegration();
     
-    PowerHandlerUtil.postInit(event);
+    PowerHandlerUtil.onPostInit(event);
   }
 
   @EventHandler

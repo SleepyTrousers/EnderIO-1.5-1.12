@@ -14,7 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;

@@ -1,5 +1,6 @@
-package crazypants.enderio.power;
+package crazypants.enderio.power.forge;
 
+import crazypants.enderio.power.IPowerInterface;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 

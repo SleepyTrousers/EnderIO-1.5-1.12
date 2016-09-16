@@ -9,7 +9,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.power.PowerHandlerItemStack;
+import crazypants.enderio.power.forge.PowerHandlerItemStack;
 import crazypants.util.NbtValue;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
