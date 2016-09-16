@@ -10,6 +10,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class RfAdpater implements IPowerApiAdapter {
+  
+
+  public RfAdpater() throws Exception {
+    //Make sure we can load these classes or throw an excpetion
+    Class.forName("cofh.api.energy.IEnergyConnection");
+    Class.forName("cofh.api.energy.IEnergyContainerItem");
+  }
 
   @Override
   public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
