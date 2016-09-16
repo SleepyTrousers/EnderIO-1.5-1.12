@@ -1,5 +1,8 @@
 package crazypants.enderio.power;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import cofh.api.energy.IEnergyConnection;
@@ -13,7 +16,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -23,16 +25,18 @@ public class PowerHandlerUtil {
 
   @CapabilityInject(IEnergyStorage.class)
   private static final Capability<IEnergyStorage> ENERGY_HANDLER = null;
+  
+  private static final List<IPowerApiAdapter> providers = new ArrayList<IPowerApiAdapter>();
 
   public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    IEnergyStorage cap = getCapability(provider, side);
-    if (cap != null) {
-      return new PowerInterfaceForge(provider, cap);
+    IPowerInterface res = null;
+    for(IPowerApiAdapter prov : providers) {
+      res = prov.getPowerInterface(provider, side);
+      if(res != null) {
+        return res;
+      }
     }
-    if (provider instanceof IEnergyConnection) {
-      return new PowerInterfaceRF((IEnergyConnection) provider, side);
-    }
-    return null;
+    return res;
   }
 
   public static IEnergyStorage getCapability(ItemStack stack) {
@@ -40,12 +44,14 @@ public class PowerHandlerUtil {
   }
 
   public static IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
-      return provider.getCapability(ENERGY_HANDLER, side);
-    } else if (provider instanceof ItemStack && ((ItemStack) provider).getItem() instanceof IEnergyContainerItem) {
-      return new ItemWrapperRF((IEnergyContainerItem) ((ItemStack) provider).getItem(), (ItemStack) provider);
+    IEnergyStorage res = null;
+    for(IPowerApiAdapter prov : providers) {
+      res = prov.getCapability(provider, side);
+      if(res != null) {
+        return res;
+      }
     }
-    return null;
+    return res;
   }
 
   public static int recieveInternal(IInternalPowerReceiver target, int maxReceive, EnumFacing from, boolean simulate) {
@@ -60,6 +66,8 @@ public class PowerHandlerUtil {
 
   public static void postInit(FMLPostInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(new CapAttacher());
+    providers.add(new ForgePowerProvider());
+    providers.add(new RfPowerProvider());
   }
 
   public static class CapAttacher {
@@ -68,56 +76,56 @@ public class PowerHandlerUtil {
     public void attachCapability(AttachCapabilitiesEvent.TileEntity evt) {
       TileEntity te = evt.getTileEntity();
       if (te instanceof IInternalPowerReceiver) {
-        evt.addCapability(new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower"), new RecieverTileProvider((IInternalPowerReceiver) te));
+        evt.addCapability(new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower"), new PowerHandlerRecieverTile.RecieverTileCapabilityProvider((IInternalPowerReceiver) te));
       } else if (te instanceof IInternalPoweredTile) {
-        evt.addCapability(new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower"), new PoweredTileProvider((IInternalPoweredTile) te));
+        evt.addCapability(new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower"), new PowerHandlerPoweredTile.PoweredTileCapabilityProvider((IInternalPoweredTile) te));
       }
     }
 
   }
-
-  public static class PoweredTileProvider implements ICapabilityProvider {
-
-    private final IInternalPoweredTile tile;
-
-    public PoweredTileProvider(IInternalPoweredTile tile) {
-      this.tile = tile;
-    }
+  
+  private static class ForgePowerProvider implements IPowerApiAdapter {
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
-        return (T) new PowerHandlerPoweredTile(tile, facing);
+    public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
+      IEnergyStorage cap = getCapability(provider, side);
+      if (cap != null) {
+        return new PowerInterfaceForge(provider, cap);
       }
       return null;
     }
 
+    @Override
+    public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
+      if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
+        return provider.getCapability(ENERGY_HANDLER, side);
+      }
+      return null;
+    }
+    
   }
+  
+  private static class RfPowerProvider implements IPowerApiAdapter {
 
-  public static class RecieverTileProvider extends PoweredTileProvider {
-
-    private final IInternalPowerReceiver tile;
-
-    public RecieverTileProvider(IInternalPowerReceiver tile) {
-      super(tile);
-      this.tile = tile;
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
-        return (T) new PowerHandlerRecieverTile(tile, facing);
+    public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
+      if (provider instanceof IEnergyConnection) {
+        IEnergyConnection con = (IEnergyConnection)provider;
+        if(con.canConnectEnergy(side)) {
+          return new PowerInterfaceRF((IEnergyConnection) provider, side);
+        }
       }
       return null;
     }
 
+    @Override
+    public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
+      if (provider instanceof ItemStack && ((ItemStack) provider).getItem() instanceof IEnergyContainerItem) {
+        return new ItemWrapperRF((IEnergyContainerItem) ((ItemStack) provider).getItem(), (ItemStack) provider);
+      }
+      return null;
+    }
+    
   }
 
 }

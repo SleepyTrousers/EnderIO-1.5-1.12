@@ -1,10 +1,38 @@
 package crazypants.enderio.power;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerHandlerPoweredTile implements IEnergyStorage {
 
+  
+  public static class PoweredTileCapabilityProvider implements ICapabilityProvider {
+
+    private final IInternalPoweredTile tile;
+
+    public PoweredTileCapabilityProvider(IInternalPoweredTile tile) {
+      this.tile = tile;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+      return capability == CapabilityEnergy.ENERGY;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+      if (capability == CapabilityEnergy.ENERGY) {
+        return (T) new PowerHandlerPoweredTile(tile, facing);
+      }
+      return null;
+    }
+
+  }
+  
   private final IInternalPoweredTile tile;
   protected final EnumFacing from;
   
@@ -42,5 +70,7 @@ public class PowerHandlerPoweredTile implements IEnergyStorage {
   public boolean canReceive() {
     return false;
   }
+  
+  
   
 }
