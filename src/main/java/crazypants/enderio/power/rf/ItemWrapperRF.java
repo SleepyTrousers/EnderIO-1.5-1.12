@@ -1,4 +1,4 @@
-package crazypants.enderio.power;
+package crazypants.enderio.power.rf;
 
 import cofh.api.energy.IEnergyContainerItem;
 import net.minecraft.item.ItemStack;

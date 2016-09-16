@@ -1,8 +1,10 @@
-package crazypants.enderio.power;
+package crazypants.enderio.power.rf;
 
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.util.EnumFacing;
 
 public class PowerInterfaceRF implements IPowerInterface {

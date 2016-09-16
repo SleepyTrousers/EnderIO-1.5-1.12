@@ -17,7 +17,7 @@ import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerInterfaceRF;
+import crazypants.enderio.power.rf.PowerInterfaceRF;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

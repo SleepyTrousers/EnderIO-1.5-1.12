@@ -5,9 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -67,7 +66,16 @@ public class PowerHandlerUtil {
   public static void postInit(FMLPostInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(new CapAttacher());
     providers.add(new ForgePowerProvider());
-    providers.add(new RfPowerProvider());
+    try {
+      Object o = Class.forName("crazypants.enderio.power.rf.RfAdpater").newInstance();
+      if(o instanceof IPowerApiAdapter) {
+        providers.add((IPowerApiAdapter)o);
+        Log.info("RF integration loaded");
+      }
+    } catch(Exception e) {
+      Log.info("RF API not found. RF integration not loaded.");
+    }
+    
   }
 
   public static class CapAttacher {
@@ -99,29 +107,6 @@ public class PowerHandlerUtil {
     public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
       if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
         return provider.getCapability(ENERGY_HANDLER, side);
-      }
-      return null;
-    }
-    
-  }
-  
-  private static class RfPowerProvider implements IPowerApiAdapter {
-
-    @Override
-    public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
-      if (provider instanceof IEnergyConnection) {
-        IEnergyConnection con = (IEnergyConnection)provider;
-        if(con.canConnectEnergy(side)) {
-          return new PowerInterfaceRF((IEnergyConnection) provider, side);
-        }
-      }
-      return null;
-    }
-
-    @Override
-    public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
-      if (provider instanceof ItemStack && ((ItemStack) provider).getItem() instanceof IEnergyContainerItem) {
-        return new ItemWrapperRF((IEnergyContainerItem) ((ItemStack) provider).getItem(), (ItemStack) provider);
       }
       return null;
     }
