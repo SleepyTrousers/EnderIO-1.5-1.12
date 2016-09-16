@@ -24,7 +24,7 @@ public class PowerInterfaceRF implements IPowerInterface {
   }
 
   @Override
-  public Object getDelegate() {
+  public Object getProvider() {
     return con;
   }
 

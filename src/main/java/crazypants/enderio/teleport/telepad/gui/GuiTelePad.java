@@ -135,7 +135,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(te.getEnergyStored(), te.getMaxEnergyStored()));
+    text.add(PowerDisplayUtil.formatStoredPower(te.getEnergyStored(null), te.getMaxEnergyStored(null)));
   }
 
   @Override

@@ -24,8 +24,8 @@ public class EnergyReceptor {
     this.receptor = receptor;
     fromDir = dir;
     mode = cb.getIoMode(dir);
-    if(receptor.getDelegate() instanceof IConduitBundle) {
-      conduit = ((IConduitBundle) receptor.getDelegate()).getConduit(IPowerConduit.class);
+    if(receptor.getProvider() instanceof IConduitBundle) {
+      conduit = ((IConduitBundle) receptor.getProvider()).getConduit(IPowerConduit.class);
     } else {
       conduit = null;
     }

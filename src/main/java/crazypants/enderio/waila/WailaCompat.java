@@ -301,9 +301,9 @@ public class WailaCompat implements IWailaDataProvider {
       IConduitBundle icb = (IConduitBundle) te;
       IPowerConduit pc = icb.getConduit(IPowerConduit.class);
       if(pc != null ) {
-        tag.setInteger("maxStoredRF", pc.getMaxEnergyStored());
+        tag.setInteger("maxStoredRF", pc.getMaxEnergyStored(null));
         if(icb.displayPower()) {
-          tag.setInteger("storedEnergyRF", pc.getEnergyStored());
+          tag.setInteger("storedEnergyRF", pc.getEnergyStored(null));
         }
       }
       
@@ -318,8 +318,8 @@ public class WailaCompat implements IWailaDataProvider {
       }
     } else if(te instanceof IInternalPoweredTile) {
       IInternalPoweredTile ipte = (IInternalPoweredTile) te;
-      tag.setInteger("storedEnergyRF", ipte.getEnergyStored());
-      tag.setInteger("maxStoredRF", ipte.getMaxEnergyStored());
+      tag.setInteger("storedEnergyRF", ipte.getEnergyStored(null));
+      tag.setInteger("maxStoredRF", ipte.getMaxEnergyStored(null));
     }
 
     tag.setInteger("x", pos.getX());

@@ -20,7 +20,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
 
   public PacketPowerStorage(IInternalPoweredTile ent) {
     pos = ent.getLocation().getBlockPos();
-    storedEnergy = ent.getEnergyStored();
+    storedEnergy = ent.getEnergyStored(null);
   }
 
   @Override

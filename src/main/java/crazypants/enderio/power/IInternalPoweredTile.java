@@ -6,15 +6,17 @@ import com.enderio.core.common.util.BlockCoord;
 import net.minecraft.util.EnumFacing;
 
 
-public interface IInternalPoweredTile {//, IEnergyConnection {
+public interface IInternalPoweredTile {//, IEnergyConnection, IEnergyHandler {
 
   //RF
   boolean canConnectEnergy(EnumFacing from);
   
-  int getEnergyStored();
+  //RF
+  int getEnergyStored(EnumFacing from);
   
-  int getMaxEnergyStored();
-
+  //RF
+  int getMaxEnergyStored(EnumFacing from);
+  
   void setEnergyStored(int storedEnergy);
 
   BlockCoord getLocation();

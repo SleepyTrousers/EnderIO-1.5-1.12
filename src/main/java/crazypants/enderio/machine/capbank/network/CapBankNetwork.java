@@ -160,8 +160,8 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
       maxIO = (int) newIO;
 
-      energyStored += cap.getEnergyStored();
-      maxEnergyStored += cap.getMaxEnergyStored();
+      energyStored += cap.getEnergyStored(null);
+      maxEnergyStored += cap.getMaxEnergyStored(null);
       if(maxInput == -1) {
         maxInput = cap.getMaxInputOverride();
       }
@@ -336,7 +336,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       cb.setEnergyStored(energyPerCapBank);
     }
     TileCapBank cb = capBanks.get(0);
-    cb.setEnergyStored(cb.getEnergyStored() + remaining);
+    cb.setEnergyStored(cb.getEnergyStored(null) + remaining);
   }
 
   //------ Power

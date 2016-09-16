@@ -4,6 +4,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IPowerInterface extends IEnergyStorage {
 
-  Object getDelegate();
+  Object getProvider();
   
 }

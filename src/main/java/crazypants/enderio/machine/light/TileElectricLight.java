@@ -15,7 +15,6 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
@@ -25,8 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
@@ -129,7 +126,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
         if(!hasPower()) {
           isActivated = false;
         } else {
-          setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
+          setEnergyStored(getEnergyStored(null) - RF_USE_PER_TICK);
         }
       }
 
@@ -168,9 +165,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
-      if (energyStoredRF < getMaxEnergyStored()) {
+      if (energyStoredRF < getMaxEnergyStored(null)) {
         boolean needInit = energyStoredRF == 0;
-        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored(null) - energyStoredRF, 10));
         if (needInit && energyStoredRF > 0) {
           init = true;
         }
@@ -372,23 +369,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return (T) new PowerHandlerRecieverTile(this, facingIn);
-    }
-    return super.getCapability(capability, facingIn);
-  }
-
-  @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
     if(!requiresPower) {
       return 0;
@@ -397,7 +377,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     if(!requiresPower) {
       return 0;
     }
@@ -405,7 +385,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     if(!requiresPower) {
       return 0;
     }

@@ -57,15 +57,15 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
   }
 
   protected int usePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored() - used));
+    int used = Math.min(getEnergyStored(null), wantToUse);
+    setEnergyStored(Math.max(0, getEnergyStored(null) - used));
     return used;
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {
     if (mob == null || getBounds() == null) {
       return false;
-    }    
+    }
     return getBounds().isVecInside(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 

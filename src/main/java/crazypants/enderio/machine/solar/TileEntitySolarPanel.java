@@ -34,29 +34,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && facingIn == EnumFacing.DOWN) {
-      return (T) new PowerHandlerPoweredTile(this);
-    }
-    return super.getCapability(capability, facingIn);
-  }
- 
-  @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return network.getEnergyAvailablePerTick();
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing facing) {
     return network.getEnergyMaxPerTick();
   }
 
@@ -64,6 +47,23 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   public void setEnergyStored(int stored) {
   }
 
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY ) {
+      return facingIn == EnumFacing.DOWN;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return facingIn != EnumFacing.DOWN ? null : (T) new PowerHandlerPoweredTile(this, facingIn);
+    }
+    return super.getCapability(capability, facingIn);
+  }
+  
   @Override
   public void doUpdate() {
     if (!hasWorldObj() || worldObj.isRemote) {

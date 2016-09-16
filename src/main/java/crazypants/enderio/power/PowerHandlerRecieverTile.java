@@ -3,19 +3,17 @@ package crazypants.enderio.power;
 import net.minecraft.util.EnumFacing;
 
 public class PowerHandlerRecieverTile extends PowerHandlerPoweredTile {
-
-  private final EnumFacing facing;
+  
   private final IInternalPowerReceiver tile;
 
   public PowerHandlerRecieverTile(IInternalPowerReceiver tile, EnumFacing facing) {
-    super(tile);
+    super(tile, facing);
     this.tile = tile;
-    this.facing = facing;
   }
 
   @Override
   public int receiveEnergy(int maxReceive, boolean simulate) {
-    return tile.receiveEnergy(facing, maxReceive, simulate);
+    return tile.receiveEnergy(from, maxReceive, simulate);
   }
 
   @Override

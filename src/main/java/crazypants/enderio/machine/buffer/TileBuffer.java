@@ -60,15 +60,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || getEnergyStored() <= 0) {
+    if (!redstoneCheck || getEnergyStored(null) <= 0) {
       return false;
     }
     if (dist == null) {
       dist = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
+    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored(null)));
     if (!isCreative()) {
-      setEnergyStored(getEnergyStored() - transmitted);
+      setEnergyStored(getEnergyStored(null) - transmitted);
     }
     return false;
   }
@@ -209,11 +209,11 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   public int getMaxEnergyStored() {
     return hasPower ? super.getMaxEnergyStored() : 0;
   }
-  
+
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && hasPower) {
-      return true;
+    if (capability == CapabilityEnergy.ENERGY) {
+      return hasPower;
     }
     return super.hasCapability(capability, facingIn);
   }
@@ -221,8 +221,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && hasPower) {
-      return (T) new PowerHandlerRecieverTile(this, facingIn);
+    if (capability == CapabilityEnergy.ENERGY) {
+      return hasPower ? (T) new PowerHandlerRecieverTile(this, facingIn) : null;
     }
     return super.getCapability(capability, facingIn);
   }

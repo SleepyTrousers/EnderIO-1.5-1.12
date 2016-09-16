@@ -15,7 +15,6 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerHandlerPoweredTile;
 import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -24,8 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
@@ -91,39 +88,30 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public boolean canConnectEnergy(EnumFacing from) {
     return !isSideDisabled(from);
   }
-
-  @Override
+  
   public int getMaxEnergyStored() {
-    return maxEnergyStored == null ? 0 : maxEnergyStored.get(capacitorData);
+    return getMaxEnergyStored(null);
   }
 
+  @Override
+  public int getMaxEnergyStored(EnumFacing from) {
+    return maxEnergyStored == null ? 0 : maxEnergyStored.get(capacitorData);
+  }
+  
   @Override
   public void setEnergyStored(int stored) {
     storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return storedEnergyRF;
   }
-    
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
+  
+  public int getEnergyStored() {
+    return getEnergyStored(null);
   }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY && getIoMode(facingIn) != IoMode.DISABLED) {
-      return (T) new PowerHandlerPoweredTile(this);
-    }
-    return super.getCapability(capability, facingIn);
-  }
-
+  
   //----- Common Machine Functions
 
   @Override
@@ -147,7 +135,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   public void onCapacitorDataChange() {
     //Force a check that the new value is in bounds
-    setEnergyStored(getEnergyStored());
+    setEnergyStored(getEnergyStored(null));
     forceClientUpdate.set();
   }
 

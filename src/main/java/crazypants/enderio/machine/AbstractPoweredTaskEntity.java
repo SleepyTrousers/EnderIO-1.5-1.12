@@ -167,6 +167,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected double usePower() {
     return usePower(getPowerUsePerTick());
   }
+  
+  public int getEnergyStored() {
+    return getEnergyStored(null);
+  }
 
   public int usePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
@@ -395,7 +399,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
   
   @Override
-  public BlockCoord getLocation() {   
+  public BlockCoord getLocation() {
     return new BlockCoord(pos);
   }
 

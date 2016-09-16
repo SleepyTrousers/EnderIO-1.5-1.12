@@ -248,13 +248,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return energyStoredRF;
   }
 
   @Override
   public void setEnergyStored(int energyStored) {
-    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());
+    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored(null));
   }
 
  
@@ -353,10 +353,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
     }
-    int freeSpace = getMaxEnergyStored() - getEnergyStored();
+    int freeSpace = getMaxEnergyStored(from) - getEnergyStored(from);
     int result = Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
-      setEnergyStored(getEnergyStored() + result);
+      setEnergyStored(getEnergyStored(from) + result);
 
       if(getBundle() != null) {
         if(recievedTicks == null) {
@@ -415,7 +415,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
       return false;
     }
     IPowerConduit pc = (IPowerConduit)conduit;
-    return pc.getMaxEnergyStored() == getMaxEnergyStored();
+    return pc.getMaxEnergyStored(direction) == getMaxEnergyStored(direction);
   }
 
   @Override
@@ -521,7 +521,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     return getMaxEnergyIO(subtype);
   }
 

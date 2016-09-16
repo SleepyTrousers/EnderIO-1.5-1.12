@@ -79,8 +79,8 @@ public class NetworkPowerManager {
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor.getDelegate())) {
-          done.add(powerReceptor.getDelegate());
+        if(!done.contains(powerReceptor.getProvider())) {
+          done.add(powerReceptor.getProvider());
           result += powerReceptor.getEnergyStored();
         }
       }
@@ -94,8 +94,8 @@ public class NetworkPowerManager {
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor.getDelegate())) {
-          done.add(powerReceptor.getDelegate());
+        if(!done.contains(powerReceptor.getProvider())) {
+          done.add(powerReceptor.getProvider());
           result += powerReceptor.getMaxEnergyStored();
         }
       }
@@ -205,7 +205,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickStart(con.getEnergyStored());
+        tracker.tickStart(con.getEnergyStored(null));
       }
     }
   }
@@ -237,7 +237,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickEnd(con.getEnergyStored());
+        tracker.tickEnd(con.getEnergyStored(null));
       }
     }
   }
@@ -268,8 +268,8 @@ public class NetworkPowerManager {
         // NB: use ceil to ensure we dont through away any energy due to
         // rounding
         // errors
-        int give = (int) Math.ceil(con.getMaxEnergyStored() * filledRatio);
-        give = Math.min(give, con.getMaxEnergyStored());
+        int give = (int) Math.ceil(con.getMaxEnergyStored(null) * filledRatio);
+        give = Math.min(give, con.getMaxEnergyStored(null));
         give = Math.min(give, energyLeft);
         con.setEnergyStored(give);
         energyLeft -= give;
@@ -287,9 +287,9 @@ public class NetworkPowerManager {
     maxEnergyStored = 0;
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
-      maxEnergyStored += con.getMaxEnergyStored();
+      maxEnergyStored += con.getMaxEnergyStored(null);
       con.onTick();
-      energyStored += con.getEnergyStored();
+      energyStored += con.getEnergyStored(null);
     }
     energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);
   }
@@ -305,8 +305,8 @@ public class NetworkPowerManager {
     receptors.clear();
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
-      if(rec.powerInterface.getDelegate() != null &&
-          rec.powerInterface.getDelegate() instanceof IPowerStorage) {
+      if(rec.powerInterface.getProvider() != null &&
+          rec.powerInterface.getProvider() instanceof IPowerStorage) {
         storageReceptors.add(rec);
       } else {
         receptors.add(rec);
@@ -355,7 +355,7 @@ public class NetworkPowerManager {
       double maxToBalance = 0;
 
       for (ReceptorEntry rec : storageReceptors) {
-        IPowerStorage cb = (IPowerStorage) rec.powerInterface.getDelegate();
+        IPowerStorage cb = (IPowerStorage) rec.powerInterface.getProvider();
 
         boolean processed = capBanks.contains(cb.getController());
 

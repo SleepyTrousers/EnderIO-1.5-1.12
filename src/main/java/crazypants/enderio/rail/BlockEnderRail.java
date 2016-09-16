@@ -223,7 +223,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       for (TileTransceiver reciever : iter) {
         if(isValidDestination(sender, channel, reciever)) {
           int requiredPower = getPowerRequired(cart, sender, reciever);
-          if(sender.getEnergyStored() >= requiredPower) {
+          if(sender.getEnergyStored(null) >= requiredPower) {
             if(teleportCart(world, cart, sender, reciever)) {
               sender.usePower(requiredPower);
               return;

@@ -93,7 +93,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     
     public static WeatherTask fromFluid(Fluid f) {
       if (f == Fluids.fluidLiquidSunshine) {
-        return CLEAR; 
+        return CLEAR;
       } else if (f == Fluids.fluidCloudSeed) {
         return RAIN;
       } else if (f == Fluids.fluidCloudSeedConcentrated) {
@@ -181,8 +181,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
   
   @SideOnly(Side.CLIENT)
-  private void doLoadingParticles() {    
-    if (progress < 0.9f) {      
+  private void doLoadingParticles() {
+    if (progress < 0.9f) {
       Color c = getActiveTask().color;
       double correction = 0.1;
       BlockPos pos1 = getPos();
@@ -223,8 +223,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       canBeActive = true;
 
       if(isActive()) {
-        if(getEnergyStored() > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
-          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
+        if(getEnergyStored(null) > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
+          setEnergyStored(getEnergyStored(null) - getPowerUsePerTick());
 
           int toUse = 4;
           inputTank.removeFluidAmount(toUse);

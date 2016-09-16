@@ -119,7 +119,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       side = EnumFacing.EAST;
     }
 
-    int range = 4;    
+    int range = 4;
     TileTelePad result = null;
     for (int i = 0; i < range*2; i++) {
       for(int j=0;j<range*2;j++) {
@@ -129,8 +129,8 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
           if(result != null) {
             return result.getMaster();
           }
-        }        
-      }      
+        }
+      }
     }
 
     return result;
@@ -147,7 +147,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored()));
+    text.add(PowerDisplayUtil.formatStoredPower(dialingDevice.getEnergyStored(), dialingDevice.getMaxEnergyStored(null)));
   }
 
   @Override
@@ -200,7 +200,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
     }
-    if (telepad.getEnergyStored() <= 0) {
+    if (telepad.getEnergyStored(null) <= 0) {
       String txt = TextFormatting.DARK_RED + "Telepad not powered";
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
@@ -212,7 +212,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO {
     }
 
     bindGuiTexture();
-    int progressScaled = Util.getProgressScaled(progressScale, telepad);    
+    int progressScaled = Util.getProgressScaled(progressScale, telepad);
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 
     Entity e = telepad.getCurrentTarget();

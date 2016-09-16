@@ -3,12 +3,9 @@ package crazypants.enderio.machine;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.PowerHandlerRecieverTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
@@ -43,21 +40,4 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
     return maxEnergyRecieved.get(capacitorData);
   }
   
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return (T) new PowerHandlerRecieverTile(this, facingIn);
-    }
-    return super.getCapability(capability, facingIn);
-  }
-
 }

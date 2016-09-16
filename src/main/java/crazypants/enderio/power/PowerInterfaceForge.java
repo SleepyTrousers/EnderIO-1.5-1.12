@@ -1,12 +1,15 @@
 package crazypants.enderio.power;
 
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerInterfaceForge implements IPowerInterface {
 
   private final IEnergyStorage delegate;
+  private final ICapabilityProvider provider;
 
-  public PowerInterfaceForge(IEnergyStorage delegate) {
+  public PowerInterfaceForge(ICapabilityProvider provider, IEnergyStorage delegate) {
+    this.provider = provider;
     this.delegate = delegate;
   }
 
@@ -16,8 +19,8 @@ public class PowerInterfaceForge implements IPowerInterface {
   }
 
   @Override
-  public Object getDelegate() {
-    return delegate;
+  public Object getProvider() {
+    return provider;
   }
 
   @Override
