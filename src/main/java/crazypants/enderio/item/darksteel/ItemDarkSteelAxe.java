@@ -10,7 +10,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
@@ -45,7 +44,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
+//RF
+public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware { //IEnergyContainerItem,
 
   public static final String NAME = "darkSteel_axe";
 
@@ -168,7 +168,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
         if (worldObj.rand.nextFloat() <= chance) {
           worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
           if (block == refBlock) { // other wise leaves
-            extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+            EnergyUpgrade.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
             usedPower = true;
           }
         }
@@ -224,7 +224,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   @Override
   public float getStrVsBlock(ItemStack stack, IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
-      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
+      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || EnergyUpgrade.getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
@@ -247,26 +247,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   protected void init() {
     GameRegistry.register(this);
-  }
-
-  @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   @Override

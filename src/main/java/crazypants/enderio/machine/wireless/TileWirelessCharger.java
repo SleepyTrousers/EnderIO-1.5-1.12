@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -18,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
@@ -70,14 +70,13 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     for (int i = 0, end = items.length; i < end && available > 0; i++) {
       ItemStack item = items[i];
       if (item != null) {
-        if (item.getItem() instanceof IEnergyContainerItem && item.stackSize == 1) {
-          IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
-
-          int max = chargable.getMaxEnergyStored(item);
-          int cur = chargable.getEnergyStored(item);
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
+        if (chargable != null && item.stackSize == 1) {
+          int max = chargable.getMaxEnergyStored();
+          int cur = chargable.getEnergyStored();
           int canUse = Math.min(available, max - cur);
           if (cur < max) {
-            int used = chargable.receiveEnergy(item, canUse, false);
+            int used = chargable.receiveEnergy(canUse, false);
             if (used > 0) {
               storedEnergyRF = storedEnergyRF - used;
               chargedItem = true;
@@ -96,12 +95,12 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return storedEnergyRF;
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing facing) {
     return MAX_ENERGY_STORED;
   }
 
@@ -126,16 +125,6 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
-    return storedEnergyRF;
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return MAX_ENERGY_STORED;
-  }
-
-  @Override
   public boolean canConnectEnergy(EnumFacing from) {
     return true;
   }
@@ -152,7 +141,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   @Override
   public boolean isActive() {
-    return getEnergyStored() > 0 && !isPoweredRedstone();
+    return getEnergyStored(null) > 0 && !isPoweredRedstone();
   }
 
   @Override

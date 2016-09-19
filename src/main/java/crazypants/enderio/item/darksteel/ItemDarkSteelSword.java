@@ -332,7 +332,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
         eu.writeToItem(sword);
 
         if (eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
-          extractEnergy(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit, false);
+          extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);
           String name = EntityList.getEntityString(entity);
           if (entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
             entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
@@ -346,23 +346,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
   public int getEnergyStored(ItemStack container) {
     return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   @Override

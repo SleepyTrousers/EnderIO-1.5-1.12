@@ -4,9 +4,10 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.power.IInternalPowerProvider;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.power.forge.InternalPoweredTileWrapper;
 import crazypants.enderio.waila.IWailaNBTProvider;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.block.state.IBlockState;
@@ -16,19 +17,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
-public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
+public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider {
 
   private boolean forceNetworkSearch = true;
 
   protected SolarPanelNetwork network = new SolarPanelNetwork();
 
-  @Override
-  public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
+  
   @Override
   public boolean canConnectEnergy(EnumFacing from) {
     return from == EnumFacing.DOWN;
@@ -36,26 +35,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   @Override
   public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored() {
     return network.getEnergyAvailablePerTick();
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing facing) {
     return network.getEnergyMaxPerTick();
   }
 
@@ -63,6 +47,23 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   public void setEnergyStored(int stored) {
   }
 
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY ) {
+      return facingIn == EnumFacing.DOWN;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return facingIn != EnumFacing.DOWN ? null : (T) new InternalPoweredTileWrapper(this, facingIn);
+    }
+    return super.getCapability(capability, facingIn);
+  }
+  
   @Override
   public void doUpdate() {
     if (!hasWorldObj() || worldObj.isRemote) {
@@ -129,11 +130,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private void transmitEnergy() {
-    IPowerInterface receptor = PowerHandlerUtil.create(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)));
-    if (receptor != null && receptor.getPowerRequest(EnumFacing.UP) > 0) {
+    IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
+    if (receptor != null) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
       if (canTransmit > 0) {
-        network.extractEnergy(receptor.recieveEnergy(EnumFacing.UP, canTransmit));
+        network.extractEnergy(receptor.receiveEnergy(canTransmit, false));
       }
     }
   }

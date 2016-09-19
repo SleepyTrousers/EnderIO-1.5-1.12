@@ -55,11 +55,11 @@ public class EnderIOCrashCallable implements ICrashCallable {
               if (apiVersion != null) {
                 if (!apiVersion.equals(apiVersionString)) {
                   if ("1.8-BuildCraft-Testing".equals(apiVersion) || apiVersion.contains("1.7")) {
-                    result.add(" * An unsupportted RF API is installed (" + apiVersion + " from (guessing) " + whereFrom(cofh.api.CoFHAPIProps.class)
+                    result.add(" * An unsupportted RF API is installed (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps")
                         + ").");
                     result.add("   Ender IO needs at least 1.8.9R1.2.0B1 and will NOT work with older versions.");
                   } else {
-                    result.add(" * The RF API that is being used (" + apiVersion + " from (guessing) " + whereFrom(cofh.api.CoFHAPIProps.class)
+                    result.add(" * The RF API that is being used (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps.class")
                         + ") differes from that that is reported as being loaded (" + apiVersionString + " from " + modContainer.getSource().getName()
                         + ").");
                     result.add("   It is a supported version, but that difference may lead to problems.");
@@ -132,6 +132,18 @@ public class EnderIOCrashCallable implements ICrashCallable {
   }
 
   // adapted from http://stackoverflow.com/a/19494116/4105897
+  
+  public static String whereFrom(String c) {
+    if (c == null) {
+      return null;
+    }
+    try {
+      return whereFrom(Class.forName(c));
+    }catch(Exception e) {
+      return null;
+    }
+  }
+  
   public static String whereFrom(Class<?> c) {
     if (c == null) {
       return null;

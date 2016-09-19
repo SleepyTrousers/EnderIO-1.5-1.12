@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ManagedTESR;
 
-import cofh.api.energy.IEnergyHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.render.FillGaugeBakery;
+import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -29,13 +29,13 @@ public class TESRGauge extends ManagedTESR<TileGauge> {
   protected void renderTileEntity(@Nonnull TileGauge te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     RenderHelper.enableStandardItemLighting();
     World world = te.getWorld();
-    Map<EnumFacing, IEnergyHandler> sides = BlockGauge.getDisplays(world, te.getPos());
+    Map<EnumFacing, IPowerInterface> sides = BlockGauge.getDisplays(world, te.getPos());
     if (!sides.isEmpty()) {
-      for (Entry<EnumFacing, IEnergyHandler> side : sides.entrySet()) {
-        IEnergyHandler eh = side.getValue();
+      for (Entry<EnumFacing, IPowerInterface> side : sides.entrySet()) {
+        IPowerInterface eh = side.getValue();
         EnumFacing face = side.getKey().getOpposite();
-        int energyStored = eh.getEnergyStored(face);
-        int maxEnergyStored = eh.getMaxEnergyStored(face);
+        int energyStored = eh.getEnergyStored();
+        int maxEnergyStored = eh.getMaxEnergyStored();
         float ratio = maxEnergyStored > 0 ? (float) energyStored / (float) maxEnergyStored : 0f;
         FillGaugeBakery bakery = new FillGaugeBakery(world, ((TileEntity) eh).getPos(), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class), ratio);
         if (bakery.canRender()) {

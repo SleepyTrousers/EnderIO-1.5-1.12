@@ -5,7 +5,6 @@ import java.util.List;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -14,11 +13,11 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.AbstractPoweredItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -27,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
+public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
 
   private long lastBlickTick = 0;
 
@@ -36,6 +35,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     result.init();
     return result;
   }
+  
 
   protected ItemTravelStaff() {
     super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
@@ -52,13 +52,11 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergy(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
-  
-  
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {  
+  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
     if(player.isSneaking()) {
       long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
       if(ticksSinceBlink < 0) {
@@ -92,18 +90,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   @Override
   public void extractInternal(ItemStack item, int powerUse) {
     int res = Math.max(0, getEnergyStored(item) - powerUse);
-    setEnergy(item, res);
-  }
-
-  void setEnergy(ItemStack container, int energy) {
-    if(container.getTagCompound() == null) {
-      container.setTagCompound(new NBTTagCompound());
-    }
-    container.getTagCompound().setInteger("Energy", energy);
-  }
-
-  public void setFull(ItemStack container) {
-    setEnergy(container, Config.darkSteelPowerStorageLevelTwo);
+    setEnergyStored(item, res);
   }
 
   @Override

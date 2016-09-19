@@ -12,7 +12,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -27,9 +26,11 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -82,7 +83,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     this.id = id;
   }
 
-  //--------- Network Management 
+  //--------- Network Management
 
   public void init(TileCapBank cap, Collection<TileCapBank> neighbours, World world) {
     if(world.isRemote) {
@@ -159,8 +160,8 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
       maxIO = (int) newIO;
 
-      energyStored += cap.getEnergyStored();
-      maxEnergyStored += cap.getMaxEnergyStored();
+      energyStored += cap.getEnergyStored(null);
+      maxEnergyStored += cap.getMaxEnergyStored(null);
       if(maxInput == -1) {
         maxInput = cap.getMaxInputOverride();
       }
@@ -203,7 +204,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     return new NetworkState(this);
   }
 
-  //--------- Tick Handling 
+  //--------- Tick Handling
 
   @Override
   public void onUpdateEntity(TileCapBank tileCapBank) {
@@ -293,7 +294,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       return 0;
     }
     IPowerInterface inf = next.getReceptor();
-    int result = inf.recieveEnergy(next.getDir().getOpposite(), available);
+    int result = inf.receiveEnergy(available, false);
     if(result < 0) {
       result = 0;
     }
@@ -307,14 +308,15 @@ public class CapBankNetwork implements ICapBankNetwork {
     boolean chargedItem = false;
     int available = getEnergyAvailableForTick(getMaxIO());
     for (ItemStack item : items) {
-      if(item != null && available > 0 && item.stackSize == 1 && item.getItem() instanceof IEnergyContainerItem) {
-        IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
-        int max = chargable.getMaxEnergyStored(item);
-        int cur = chargable.getEnergyStored(item);
+      if(item != null && available > 0 && item.stackSize == 1 && PowerHandlerUtil.getCapability(item, null) != null) {
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
+        int max = chargable.getMaxEnergyStored();
+        int cur = chargable.getEnergyStored();
         if(cur < max) {
           int canUse = Math.min(available, max - cur);
-          int used = chargable.receiveEnergy(item, canUse, false);
+          int used = chargable.receiveEnergy(canUse, false);
           if(used > 0) {
+            
             addEnergy(-used);
             chargedItem = true;
             available -= used;
@@ -335,10 +337,10 @@ public class CapBankNetwork implements ICapBankNetwork {
       cb.setEnergyStored(energyPerCapBank);
     }
     TileCapBank cb = capBanks.get(0);
-    cb.setEnergyStored(cb.getEnergyStored() + remaining);
+    cb.setEnergyStored(cb.getEnergyStored(null) + remaining);
   }
 
-  //------ Power     
+  //------ Power
 
   @Override
   public float getAverageChangePerTick() {

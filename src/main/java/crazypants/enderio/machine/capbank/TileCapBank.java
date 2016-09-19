@@ -14,7 +14,6 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -33,6 +32,7 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.NbtValue;
 import crazypants.util.NullHelper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -260,7 +260,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       return IoMode.DISABLED;
     }
     if (curMode == IoMode.DISABLED) {
-      if (rec == null || rec.getDelegate() instanceof IConduitBundle) {
+      if (rec == null || rec.getProvider() instanceof IConduitBundle) {
         setIoMode(faceHit, IoMode.NONE, true);
         return IoMode.NONE;
       }
@@ -276,7 +276,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     IPowerInterface rec = getReceptorForFace(faceHit);
     if (mode == IoMode.NONE) {
-      return rec == null || rec.getDelegate() instanceof IConduitBundle;
+      return rec == null || rec.getProvider() instanceof IConduitBundle;
     }
     return true;
   }
@@ -311,6 +311,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
+      worldObj.notifyNeighborsOfStateChange(pos, blockType);
     }
   }
 
@@ -318,12 +319,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
     if (er == null || er.getConduit() != null) {
       setIoMode(faceHit, IoMode.NONE);
-    } else if (er.getReceptor().isInputOnly()) {
+    } else if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
-    } else if (er.getReceptor().isOutputOnly()) {
-      setIoMode(faceHit, IoMode.PULL);
     } else {
-      setIoMode(faceHit, IoMode.PUSH);
+      setIoMode(faceHit, IoMode.PULL);
     }
   }
 
@@ -510,7 +509,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public long getEnergyStoredL() {
     if (network == null) {
-      return getEnergyStored();
+      return getEnergyStored(null);
     }
     return network.getEnergyStoredL();
   }
@@ -518,7 +517,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public long getMaxEnergyStoredL() {
     if (network == null) {
-      return getMaxEnergyStored();
+      return getMaxEnergyStored(null);
     }
     return network.getMaxEnergyStoredL();
   }
@@ -594,11 +593,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private IPowerInterface getReceptorForFace(@Nonnull EnumFacing faceHit) {
     TileEntity te = worldObj.getTileEntity(getPos().offset(faceHit));
     if (!(te instanceof TileCapBank)) {
-      return PowerHandlerUtil.create(te);
+      return PowerHandlerUtil.getPowerInterface(te, faceHit.getOpposite());
     } else {
       TileCapBank other = (TileCapBank) te;
       if (other.getType() != getType()) {
-        return PowerHandlerUtil.create(te);
+        return PowerHandlerUtil.getPowerInterface(te, faceHit.getOpposite());
       }
     }
     return null;
@@ -606,7 +605,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   private EnergyReceptor getEnergyReceptorForFace(@Nonnull EnumFacing dir) {
     IPowerInterface pi = getReceptorForFace(dir);
-    if (pi == null || pi.getDelegate() instanceof TileCapBank) {
+    if (pi == null || pi.getProvider() instanceof TileCapBank) {
       return null;
     }
     return new EnergyReceptor(this, pi, dir);
@@ -619,25 +618,28 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   private void validateModeForReceptor(EnergyReceptor er) {
     if (er == null)
       return;
-    IoMode ioMode = getIoMode(er.getDir());
-    if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
-      if (er.getReceptor().isOutputOnly()) {
-        setIoMode(er.getDir(), IoMode.PULL, false);
-      } else if (er.getReceptor().isInputOnly()) {
-        setIoMode(er.getDir(), IoMode.PUSH, false);
-      }
-    }
-    if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
-      setIoMode(er.getDir(), IoMode.PUSH, false);
-    } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
-      setIoMode(er.getDir(), IoMode.DISABLED, false);
-    }
+//    IoMode ioMode = getIoMode(er.getDir());
+//    if ((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
+//      if (er.getReceptor().isOutputOnly()) {
+//        setIoMode(er.getDir(), IoMode.PULL, false);
+//      } else if (er.getReceptor().isInputOnly()) {
+//        setIoMode(er.getDir(), IoMode.PUSH, false);
+//      }
+//    }
+//    if (ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
+//      setIoMode(er.getDir(), IoMode.PUSH, false);
+//    } else if (ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
+//      setIoMode(er.getDir(), IoMode.DISABLED, false);
+//    }
   }
 
+  
+  //------------------- Power -----------------
+  
   @Override
   public void addEnergy(int energy) {
     if (network == null) {
-      setEnergyStored(getEnergyStored() + energy);
+      setEnergyStored(getEnergyStored(null) + energy);
     } else {
       network.addEnergy(energy);
     }
@@ -645,21 +647,16 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public void setEnergyStored(int stored) {
-    energyStored = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
-  }
-
-  @Override
-  public int getEnergyStored() {
-    return energyStored;
+    energyStored = MathHelper.clamp_int(stored, 0, getMaxEnergyStored(null));
   }
 
   @Override
   public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
+    return energyStored;
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     return getType().getMaxEnergyStored();
   }
 
@@ -721,18 +718,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getType().getMaxEnergyStored();
-  }
-
-  @Override
   public boolean canConnectEnergy(EnumFacing from) {
     return from != null && getIoMode(from) != IoMode.DISABLED;
   }
 
   public int getComparatorOutput() {
-    double stored = getEnergyStored();
-    return stored == 0 ? 0 : (int) (1 + stored / getMaxEnergyStored() * 14);
+    double stored = getEnergyStored(null);
+    return stored == 0 ? 0 : (int) (1 + stored / getMaxEnergyStored(null) * 14);
   }
 
   @Override
@@ -820,7 +812,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof IEnergyContainerItem;
+    return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
   public ItemStack[] getInventory() {
@@ -855,14 +847,18 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public void readContentsFromNBT(NBTTagCompound nbtRoot) {
     super.readContentsFromNBT(nbtRoot);
-    energyStored = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
-    setEnergyStored(energyStored); // Call this to clamp values in case config changed
+    //Handle version before making RF optional
+    if(nbtRoot.hasKey("storedEnergyRF")) {
+      energyStored = nbtRoot.getInteger("storedEnergyRF");
+    } else {
+      energyStored = NbtValue.ENERGY.getInt(nbtRoot);
+    }
   }
 
   @Override
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     super.writeContentsToNBT(nbtRoot);
-    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, energyStored);
+    NbtValue.ENERGY.setInt(nbtRoot, energyStored);
   }
 
   @Override
@@ -898,5 +894,5 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   protected void writeCustomNBT(NBTTagCompound root) {
     super.writeCustomNBT(root);
   }
-
+  
 }

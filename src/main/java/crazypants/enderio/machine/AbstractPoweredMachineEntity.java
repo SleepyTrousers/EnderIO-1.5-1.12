@@ -15,7 +15,7 @@ import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -28,8 +28,8 @@ import net.minecraft.util.math.MathHelper;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
-  private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  protected ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+  protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
   @Store({ StoreFor.SAVE, StoreFor.CLIENT })
   // Not StoreFor.ITEM to keep the storedEnergy tag out in the open
@@ -88,30 +88,30 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public boolean canConnectEnergy(EnumFacing from) {
     return !isSideDisabled(from);
   }
-
-  @Override
-  public int getMaxEnergyRecieved(EnumFacing dir) {
-    if (isSideDisabled(dir) || maxEnergyRecieved == null) {
-      return 0;
-    }
-    return maxEnergyRecieved.get(capacitorData);
+  
+  public int getMaxEnergyStored() {
+    return getMaxEnergyStored(null);
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     return maxEnergyStored == null ? 0 : maxEnergyStored.get(capacitorData);
   }
-
+  
   @Override
   public void setEnergyStored(int stored) {
     storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return storedEnergyRF;
   }
-
+  
+  public int getEnergyStored() {
+    return getEnergyStored(null);
+  }
+  
   //----- Common Machine Functions
 
   @Override
@@ -135,7 +135,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   public void onCapacitorDataChange() {
     //Force a check that the new value is in bounds
-    setEnergyStored(getEnergyStored());
+    setEnergyStored(getEnergyStored(null));
     forceClientUpdate.set();
   }
 
@@ -189,7 +189,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if (stack != null) {
       NBTTagCompound root = stack.getTagCompound();
       if (root != null) {
-        setEnergyStored(root.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY));
+        int energyStored;
+        if(root.hasKey("storedEnergyRF")) {
+          //handle old key in versions before adding cap support
+          energyStored = root.getInteger("storedEnergyRF");
+        } else {
+          energyStored = NbtValue.ENERGY.getInt(root);
+        }
+        setEnergyStored(energyStored);
       }
     }
   }
@@ -204,7 +211,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     if (root == null) {
       stack.setTagCompound(root = new NBTTagCompound());
     }
-    root.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
+    NbtValue.ENERGY.setInt(stack, storedEnergyRF);
   }
 
 }

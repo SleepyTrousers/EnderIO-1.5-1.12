@@ -321,8 +321,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       if (tileEntity instanceof IInternalPoweredTile) {
         IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
         if (te.displayPower()) {
-          maxrf = te.getMaxEnergyStored();
-          rf = te.getEnergyStored();
+          maxrf = te.getMaxEnergyStored(null);
+          rf = te.getEnergyStored(null);
           isPowered = rf > 0;
           hasRF = maxrf > 0;
         }

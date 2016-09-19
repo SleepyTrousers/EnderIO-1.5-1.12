@@ -10,14 +10,15 @@ import com.enderio.core.common.util.ItemUtil;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import cofh.api.energy.ItemEnergyContainer;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.AbstractPoweredItem;
 import crazypants.util.BaublesUtil;
+import crazypants.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.config.Config.magnetAllowInMainInventory;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
-public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
+public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
   private static final String ACTIVE_KEY = "magnetActive";
 
@@ -69,12 +70,12 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   public static boolean hasPower(ItemStack itemStack) {
-    int energyStored = DarkSteelItems.itemMagnet.getEnergyStored(itemStack);
+    int energyStored = NbtValue.ENERGY.getInt(itemStack);
     return energyStored > 0 && energyStored >= Config.magnetPowerUsePerSecondRF;
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
-    DarkSteelItems.itemMagnet.extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF, false);
+    DarkSteelItems.itemMagnet.extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
   }
 
   static MagnetController controller = new MagnetController();
@@ -87,7 +88,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   protected ItemMagnet() {
-    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100);
+    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF/100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMagnet.getUnlocalisedName());
     setRegistryName(ModObject.itemMagnet.getUnlocalisedName());
@@ -114,7 +115,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " "
+    String str = PowerDisplayUtil.formatPower(NbtValue.ENERGY.getInt(itemStack)) + "/" + PowerDisplayUtil.formatPower(Config.magnetPowerCapacityRF) + " "
         + PowerDisplayUtil.abrevation();
     list.add(str);
   }
@@ -127,27 +128,16 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergy(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  public int extractEnergyInternal(ItemStack container, int maxExtract, boolean simulate) {
-    return super.extractEnergy(container, maxExtract, simulate);
-  }
-
-  void setEnergy(ItemStack container, int energy) {
-    if (container.getTagCompound() == null) {
-      container.setTagCompound(new NBTTagCompound());
+  private void extractEnergyInternal(ItemStack itemStack, int extract) {
+    if(extract <= 0) {
+      return;
     }
-    container.getTagCompound().setInteger("Energy", energy);
-  }
-
-  void setFull(ItemStack container) {
-    setEnergy(container, Config.magnetPowerCapacityRF);
+    int energy = getEnergyStored(itemStack);
+    energy = Math.max(0, energy - extract);
+    setEnergyStored(itemStack, energy);
   }
 
   @Override

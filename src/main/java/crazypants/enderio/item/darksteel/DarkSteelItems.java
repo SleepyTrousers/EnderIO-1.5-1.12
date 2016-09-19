@@ -3,10 +3,12 @@ package crazypants.enderio.item.darksteel;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgradePowerAdapter;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.HelmetPainterTemplate;
 import crazypants.util.ClientUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -48,6 +50,8 @@ public class DarkSteelItems {
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
     itemMagnet = ItemMagnet.create();
+    
+    MinecraftForge.EVENT_BUS.register(new EnergyUpgradePowerAdapter());
   }
 
   @SideOnly(Side.CLIENT)

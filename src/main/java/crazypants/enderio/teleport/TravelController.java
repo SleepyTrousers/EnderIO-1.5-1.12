@@ -216,7 +216,7 @@ public class TravelController {
     return false;
   }
 
-  private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {    
+  private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {
     return TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
         && (hitBlock.getBlockHardness(player.worldObj, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
@@ -545,7 +545,7 @@ public class TravelController {
   private boolean isClear(World w, IBlockState bs, Block block, BlockPos bp) {
     if(block == null || block.isAir(bs, w, bp)) {
       return true;
-    }    
+    }
     final AxisAlignedBB aabb = bs.getBoundingBox(w, bp);
     if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
       return true;

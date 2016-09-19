@@ -4,9 +4,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -144,7 +144,7 @@ public class InventoryImpl implements IInventory {
     if(itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof IEnergyContainerItem;
+    return PowerHandlerUtil.getCapability(itemstack, null) != null;
   }
 
   @Override
@@ -173,7 +173,7 @@ public class InventoryImpl implements IInventory {
   }
 
   @Override
-  public void setField(int id, int value) {    
+  public void setField(int id, int value) {
   }
 
   @Override

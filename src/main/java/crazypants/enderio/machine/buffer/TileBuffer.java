@@ -10,17 +10,20 @@ import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
-public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerHandler, IPaintable.IPaintableTileEntity {
+public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
 
   @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   private boolean hasPower;
@@ -57,15 +60,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || getEnergyStored() <= 0) {
+    if (!redstoneCheck || getEnergyStored(null) <= 0) {
       return false;
     }
     if (dist == null) {
       dist = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
+    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored(null)));
     if (!isCreative()) {
-      setEnergyStored(getEnergyStored() - transmitted);
+      setEnergyStored(getEnergyStored(null) - transmitted);
     }
     return false;
   }
@@ -205,6 +208,23 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   @Override
   public int getMaxEnergyStored() {
     return hasPower ? super.getMaxEnergyStored() : 0;
+  }
+
+  @Override
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return hasPower;
+    }
+    return super.hasCapability(capability, facingIn);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return hasPower ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

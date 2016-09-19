@@ -1,20 +1,10 @@
 package crazypants.enderio.machine.light;
 
-import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.EnumSkyBlock;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
@@ -26,6 +16,14 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
+import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
@@ -122,13 +120,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       return;
     }
 
-    boolean isActivated = init ? worldObj.isBlockPowered(pos) ^ isInvereted : lastActive;    
+    boolean isActivated = init ? worldObj.isBlockPowered(pos) ^ isInvereted : lastActive;
     if(requiresPower) {
       if(isActivated) {
         if(!hasPower()) {
           isActivated = false;
         } else {
-          setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
+          setEnergyStored(getEnergyStored(null) - RF_USE_PER_TICK);
         }
       }
 
@@ -141,23 +139,23 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
       IBlockState bs = worldObj.getBlockState(pos);
       bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
-      worldObj.setBlockState(pos, bs, 2);      
+      worldObj.setBlockState(pos, bs, 2);
 
-      if(requiresPower) {        
+      if(requiresPower) {
         for (BlockPos ln : lightNodes) {
           if(ln != null) {
             bs = worldObj.getBlockState(ln);
-            if(bs.getBlock() == EnderIO.blockLightNode) {              
+            if(bs.getBlock() == EnderIO.blockLightNode) {
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
               worldObj.setBlockState(ln, bs, 2);
               worldObj.notifyBlockUpdate(ln, bs, bs, 3);
               worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln);
-            }                                              
+            }
           }
         }
       }
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);      
+      worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
       init = false;
       lastActive = isActivated;
       
@@ -167,9 +165,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
-      if (energyStoredRF < getMaxEnergyStored()) {
+      if (energyStoredRF < getMaxEnergyStored(null)) {
         boolean needInit = energyStoredRF == 0;
-        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored(null) - energyStoredRF, 10));
         if (needInit && energyStoredRF > 0) {
           init = true;
         }
@@ -371,16 +369,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
-
-  @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
     if(!requiresPower) {
       return 0;
@@ -389,7 +377,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     if(!requiresPower) {
       return 0;
     }
@@ -397,7 +385,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     if(!requiresPower) {
       return 0;
     }

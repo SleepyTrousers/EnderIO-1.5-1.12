@@ -13,7 +13,6 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Multimap;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
@@ -65,9 +64,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
 })
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
-    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist { // , IGoggles, IRevealer, IVisDiscountGear, //TODO: Mod Thaumcraft
-
+public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
+    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
+  //TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
 
   public static final ArmorMaterial MATERIAL = createMaterial();
 
@@ -260,7 +259,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(source.isUnblockable()) {
       return new ArmorProperties(0, 0, armor.getMaxDamage() + 1 - armor.getItemDamage());
     }
-    double damageRatio = damageReduceAmount + (getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
+    double damageRatio = damageReduceAmount + (EnergyUpgrade.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
     damageRatio /= 25D;
     ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
     return ap;
@@ -268,7 +267,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-    int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
+    int powerBonus = EnergyUpgrade.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
     return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
   }
 
@@ -281,7 +280,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
     if (equipmentSlot == this.armorType) {
-      boolean isPowered = getEnergyStored(stack) > 0;
+      boolean isPowered = EnergyUpgrade.getEnergyStored(stack) > 0;
       if (isPowered) {
         int toughnessBonus = 1;
         multimap.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getAttributeUnlocalizedName());
@@ -315,26 +314,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     return false;
-  }
-
-  @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   //TODO: Mod Thaumcraft

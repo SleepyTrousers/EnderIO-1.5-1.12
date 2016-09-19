@@ -4,10 +4,11 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,13 +50,12 @@ public class PowerDisplayUtil {
     if(item == null) {
       return null;
     }
-    if(! (item.getItem() instanceof IEnergyContainerItem) ) {
+    IEnergyStorage ci = PowerHandlerUtil.getCapability(item, null);
+    if(ci == null) {
       return null;
     }
-
-    IEnergyContainerItem ci = (IEnergyContainerItem)item.getItem();
-    return EnderIO.lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored(item)) + "/"
-    + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item)) + " " + PowerDisplayUtil.abrevation();
+    return EnderIO.lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored()) + "/"
+    + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation();
   }
 
   public static String formatPowerPerTick(int powerPerTick) {

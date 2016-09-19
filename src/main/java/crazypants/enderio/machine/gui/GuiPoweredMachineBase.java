@@ -51,8 +51,8 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
 
   public void renderPowerBar(int k, int l) {
-    if(renderPowerBar()) {      
-      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());      
+    if(renderPowerBar()) {
+      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());
       // x, y, u, v, width, height
       drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
     }
@@ -76,7 +76,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);    
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
     renderPowerBar(k, l);

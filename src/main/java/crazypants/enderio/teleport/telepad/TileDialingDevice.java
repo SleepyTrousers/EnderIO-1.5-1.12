@@ -101,9 +101,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   
   
   //---------------------- Inventory -------------------------------------
-
   
-
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -175,7 +173,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getMaxEnergyStored() {
+  public int getMaxEnergyStored(EnumFacing from) {
     return RF_PER_TICK * 20 * 60 * 4;
   }
 
@@ -185,13 +183,13 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public int getEnergyStored() {
+  public int getEnergyStored(EnumFacing from) {
     return storedEnergyRF;
   }
 
   @Override
   public void setEnergyStored(int storedEnergy) {
-    storedEnergyRF = MathHelper.clamp_int(storedEnergy, 0, getMaxEnergyStored());
+    storedEnergyRF = MathHelper.clamp_int(storedEnergy, 0, getMaxEnergyStored(null));
   }
 
   @Override
@@ -201,23 +199,13 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored() - getEnergyStored()));
+    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored(from) - getEnergyStored(null)));
     if (!simulate) {
       setEnergyStored(getEnergyStored() + max);
     }
     return max;
   }
-
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
-
+  
   public int getUsage() {
     return RF_PER_TICK;
   }
@@ -237,7 +225,11 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   }
 
   public int getPowerScaled(int scale) {
-    return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
+    return (int) ((((float) getEnergyStored()) / (getMaxEnergyStored(null))) * scale);
+  }
+
+  public int getEnergyStored() {
+    return getEnergyStored(null);
   }
 
 }

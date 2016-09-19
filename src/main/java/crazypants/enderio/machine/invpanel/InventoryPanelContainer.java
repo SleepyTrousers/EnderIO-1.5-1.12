@@ -166,7 +166,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   @Override
-  public void removeListener(IContainerListener crafting) {    
+  public void removeListener(IContainerListener crafting) {
     super.removeListener(crafting);
     removeChangeLog();
   }
@@ -174,7 +174,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   
 
   @Override
-  public void addListener(IContainerListener crafting) {    
+  public void addListener(IContainerListener crafting) {
     if(changedItems != null) {
       sendChangeLog();
     }

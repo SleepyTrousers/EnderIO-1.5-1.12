@@ -17,14 +17,14 @@ import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerInterfaceRF;
+import crazypants.enderio.power.rf.PowerInterfaceRF;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -58,7 +58,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     }
     if(te instanceof IInternalPoweredTile) {
       return true;
-    }   
+    }
     return false;
   }
 
@@ -111,7 +111,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
       return null;
     }
-    Block block = world.getBlockState(new BlockPos(message.x, message.y, message.z)).getBlock();    
+    Block block = world.getBlockState(new BlockPos(message.x, message.y, message.z)).getBlock();
 
     TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TileConduitBundle) {
@@ -120,10 +120,10 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
     } else if(te instanceof IInternalPowerReceiver) {
       IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
-      sendPowerReciptorInfo(player, block, pr.getEnergyStored(), pr.getMaxEnergyStored(), 0,
+      sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
             0, PowerInterfaceRF.getPowerRequest(EnumFacing.NORTH, pr));
 
-    } 
+    }
     return null;
   }
 
@@ -288,9 +288,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     color = "\u00A79 ";
     sb.append(color);
     sb.append(CON_BUF);
-    sb.append(PowerDisplayUtil.formatPower(con.getEnergyStored()));
+    sb.append(PowerDisplayUtil.formatPower(con.getEnergyStored(null)));
     sb.append(OF);
-    sb.append(PowerDisplayUtil.formatPower(con.getMaxEnergyStored()));
+    sb.append(PowerDisplayUtil.formatPower(con.getMaxEnergyStored(null)));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
@@ -334,7 +334,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.abrevation());
 
     String[] lines = sb.toString().split("\n");
-    ChatUtil.sendNoSpam(player, lines);   
+    ChatUtil.sendNoSpam(player, lines);
   }
 
 }

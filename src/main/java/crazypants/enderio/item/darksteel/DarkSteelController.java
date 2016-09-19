@@ -14,7 +14,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
@@ -28,6 +27,7 @@ import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
 import crazypants.util.NullHelper;
@@ -46,6 +46,7 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -77,7 +78,7 @@ public class DarkSteelController {
     speedController = new SpeedController();
   }
   
-  public void register() {        
+  public void register() {
     MinecraftForge.EVENT_BUS.register(this);
     MinecraftForge.EVENT_BUS.register(speedController);
   }
@@ -177,9 +178,10 @@ public class DarkSteelController {
 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
         ItemStack stack = player.inventory.armorInventory[nextIndex];
-        if (stack != null
-            && (EnergyUpgrade.loadFromItem(stack) != null || (Config.darkSteelSolarChargeOthers && stack.getItem() instanceof IEnergyContainerItem))) {
-          toAdd -= ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, toAdd, false);
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
+        if (cap != null
+            && (EnergyUpgrade.loadFromItem(stack) != null || Config.darkSteelSolarChargeOthers)) {
+          toAdd -= cap.receiveEnergy(toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;
       }
@@ -296,9 +298,9 @@ public class DarkSteelController {
     int remaining = cost;
     if (Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        if (stack != null && stack.getItem() instanceof IEnergyContainerItem) {
-          IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
-          int used = cont.extractEnergy(stack, remaining, false);
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack);
+        if (cap != null && cap.canExtract()) {
+          int used = cap.extractEnergy(remaining, false);
           remaining -= used;
           if (remaining <= 0) {
             return;
@@ -319,15 +321,15 @@ public class DarkSteelController {
 
     if (Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        if (stack != null && stack.getItem() instanceof IEnergyContainerItem) {
-          IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
-          res += cont.extractEnergy(stack, Integer.MAX_VALUE, true);
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack);
+        if (cap != null && cap.canExtract()) {
+          res += cap.extractEnergy(Integer.MAX_VALUE, true);
         }
       }
     }
     if (armor != null) {
       ItemStack stack = player.getItemStackFromSlot(armor.armorType);
-      res = armor.getEnergyStored(stack);
+      res = EnergyUpgrade.getEnergyStored(stack);
     }
     return res;
   }

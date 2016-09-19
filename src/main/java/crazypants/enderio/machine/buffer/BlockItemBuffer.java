@@ -2,33 +2,38 @@ package crazypants.enderio.machine.buffer;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.power.AbstractPoweredBlockItem;
+import crazypants.enderio.power.forge.InternalPoweredItemWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
-public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, IOverlayRenderAware {
+public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
   public BlockItemBuffer(Block block, String name) {
-    super(block);
+    super(block, 0, 0 ,0);
     setHasSubtypes(true);
     setMaxDamage(0);
     setRegistryName(name);
@@ -78,58 +83,77 @@ public class BlockItemBuffer extends ItemBlock implements IEnergyContainerItem, 
   }
 
   @Override
-  public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
-    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
-    if (stack.stackSize == 1 && type.hasPower && !type.isCreative) {
-      int energy = getEnergyStored(stack);
-      int maxInput = Config.powerConduitTierThreeRF / 20;
-      int energyReceived = Math.min(BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) - energy, Math.min(maxReceive, maxInput));
-
-      if (!simulate) {
-        energy += energyReceived;
-        PowerHandlerUtil.setStoredEnergyForItem(stack, energy);
-      }
-      return energyReceived;
-    }
-    return 0;
-  }
-
-  @Override
-  public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate) {
-    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
-    if (stack.stackSize == 1 && type.hasPower) {
-      int energy = PowerHandlerUtil.getStoredEnergyForItem(stack);
-      int energyExtracted = Math.min(energy, Math.min(Config.powerConduitTierThreeRF / 20, maxExtract));
-
-      if (!simulate && !type.isCreative) {
-        energy -= energyExtracted;
-        PowerHandlerUtil.setStoredEnergyForItem(stack, energy);
-      }
-      return energyExtracted;
-    }
-    return 0;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack stack) {
-    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
-    if (stack.stackSize == 1 && type.hasPower) {
-      return type.isCreative ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : PowerHandlerUtil.getStoredEnergyForItem(stack);
-    }
-    return 0;
+  public boolean hasEffect(ItemStack stack) {
+    return EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack stack) {
-    if (stack.stackSize == 1 && EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
-      return BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR);
-    }
-    return 0;
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    return type.hasPower ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
-    return EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
+  public int getMaxInput(ItemStack container) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+    return type.hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
+  }
+
+  @Override
+  public int getMaxOutput(ItemStack container) {
+    return getMaxInput(container);
+  }
+  
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new InnerProv(stack);
+  }
+
+  private class InnerProv implements ICapabilityProvider {
+
+    private final ItemStack container;
+    
+    public InnerProv(ItemStack container) {
+      this.container = container;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+      return capability == CapabilityEnergy.ENERGY && EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+      if(capability != CapabilityEnergy.ENERGY) {
+        return null;
+      }
+      BufferType type = EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+      if(!type.hasPower || container.stackSize > 1) {
+        return null;
+      }
+      if(type.isCreative) {
+        return (T)new CreativePowerCap(container);
+      }
+      return null;
+    }
+  }
+  
+  private class CreativePowerCap extends InternalPoweredItemWrapper {
+
+    public CreativePowerCap (ItemStack container) {
+      super(container, BlockItemBuffer.this);
+    }
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        return maxReceive;
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+      return maxExtract;
+    }
   }
 
 }

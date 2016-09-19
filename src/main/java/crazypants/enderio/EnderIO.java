@@ -16,8 +16,8 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
-import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.block.BlockReinforcedObsidian;
+import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
@@ -121,6 +121,7 @@ import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.rail.BlockExitRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
@@ -507,6 +508,8 @@ public class EnderIO {
       dumpMobNamesToFile();
     }
     addModIntegration();
+    
+    PowerHandlerUtil.onPostInit(event);
   }
 
   @EventHandler

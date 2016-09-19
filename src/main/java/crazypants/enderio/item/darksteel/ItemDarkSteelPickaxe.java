@@ -117,7 +117,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   public boolean onBlockDestroyed(ItemStack item, World world, IBlockState bs, BlockPos pos, EntityLivingBase entityLiving) {
     if (bs.getBlockHardness(world, pos) != 0.0D) {
       if (useObsidianEffeciency(item, bs)) {
-        extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
+        extractInternal(item, Config.darkSteelPickPowerUseObsidian);
       }
     }
     return super.onBlockDestroyed(item, world, bs, pos, entityLiving);
@@ -262,27 +262,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   protected void init() {
     GameRegistry.register(this);
   }
-
-  @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
+  
   @Override
   public int getEnergyStored(ItemStack container) {
     return EnergyUpgrade.getEnergyStored(container);
   }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getMaxEnergyStored(container);
-  }
-
+ 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     return false;

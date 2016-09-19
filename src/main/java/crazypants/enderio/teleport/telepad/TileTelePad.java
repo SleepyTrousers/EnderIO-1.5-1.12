@@ -212,8 +212,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         teleport(toTeleport.poll());
         powerUsed = 0;
       } else {
-        int usable = Math.min(Math.min(getUsage(), requiredPower), getEnergyStored());
-        setEnergyStored(getEnergyStored() - usable);
+        int usable = Math.min(Math.min(getUsage(), requiredPower), getEnergyStored(null));
+        setEnergyStored(getEnergyStored(null) - usable);
         powerUsed += usable;
       }
       if (shouldDoWorkThisTick(5)) {
@@ -221,9 +221,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
       }
     }
 
-    boolean powerChanged = (lastSyncPowerStored != getEnergyStored() && shouldDoWorkThisTick(5));
+    boolean powerChanged = (lastSyncPowerStored != getEnergyStored(null) && shouldDoWorkThisTick(5));
     if (powerChanged) {
-      lastSyncPowerStored = getEnergyStored();
+      lastSyncPowerStored = getEnergyStored(null);
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
     if (coordsChanged) {
@@ -316,7 +316,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   public int getPowerScaled(int scale) {
-    return (int) ((((float) getEnergyStored()) / ((float) getMaxEnergyStored())) * scale);
+    return (int) ((((float) getEnergyStored(null)) / (getMaxEnergyStored(null))) * scale);
   }
 
   private int calculateTeleportPower() {
@@ -606,8 +606,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   @Override
-  public int getMaxEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyStored.get(capacitorData) : getMasterTile().getMaxEnergyStored() : 0;
+  public int getMaxEnergyStored(EnumFacing from) {
+    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? maxEnergyStored.get(capacitorData) : getMasterTile().getMaxEnergyStored(from) : 0;
   }
 
   @Override
@@ -616,15 +616,15 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   }
 
   @Override
-  public int getEnergyStored() {
-    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? storedEnergyRF : getMasterTile().getEnergyStored() : 0;
+  public int getEnergyStored(EnumFacing from) {
+    return inNetwork() && getMasterTile() != null ? getMasterTile() == this ? storedEnergyRF : getMasterTile().getEnergyStored(from) : 0;
   }
 
   @Override
   public void setEnergyStored(int storedEnergy) {
     if (inNetwork() && getMasterTile() != null) {
       if (getMasterTile() == this) {
-        storedEnergyRF = Math.min(getMaxEnergyStored(), storedEnergy);
+        storedEnergyRF = Math.min(getMaxEnergyStored(null), storedEnergy);
       } else {
         getMasterTile().setEnergyStored(storedEnergy);
       }
@@ -641,23 +641,13 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (!inNetwork()) {
       return 0;
     }
-    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored() - getEnergyStored()));
+    int max = Math.max(0, Math.min(Math.min(getMaxEnergyRecieved(from), maxReceive), getMaxEnergyStored(from) - getEnergyStored(from)));
     if (!simulate) {
-      setEnergyStored(getEnergyStored() + max);
+      setEnergyStored(getEnergyStored(null) + max);
     }
     return max;
   }
-
-  @Override
-  public int getEnergyStored(EnumFacing from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return getMaxEnergyStored();
-  }
-
+  
   public int getUsage() {
     return maxEnergyUsed.get(capacitorData);
   }
@@ -680,9 +670,9 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-    if (inNetwork() && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return true;
-    } else if (inNetwork() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    if (inNetwork() && (
+        capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+        capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)) {
       return true;
     }
     return super.hasCapability(capability, facing);
@@ -697,7 +687,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) getMaster();
     }
-    if (inNetwork() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getMaster().tank;
     }
     return super.getCapability(capability, facing);

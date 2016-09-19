@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LootManager {
 
-//Add this code to an item (e.g. ItemAlloy) to easily test generation of loot  
+//Add this code to an item (e.g. ItemAlloy) to easily test generation of loot
 //@Override
 //public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
 //    EnumHand hand) {
@@ -144,7 +144,7 @@ public class LootManager {
     if (!lp.isEmpty()) {
       table.addPool(lp);
     }
-
+    
   }
 
   private LootItem createLootEntry(Item item, double chance) {
@@ -159,7 +159,7 @@ public class LootManager {
     return new LootItem(new ItemStack(item, 1, ordinal), chance, minStackSize, maxStackSize);
   }
 
-  private LootItem createLootCapacitor(double weight) {    
+  private LootItem createLootCapacitor(double weight) {
     return new CapItem(weight);
   }
 
@@ -230,7 +230,7 @@ public class LootManager {
     }
 
     @Override
-    public void generateLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {      
+    public void generateLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {
       for (LootItem entry : items) {
         if (rand.nextDouble() < entry.chance) {
           ItemStack stack = entry.createStack(rand);
