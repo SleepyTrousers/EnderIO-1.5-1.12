@@ -5,13 +5,13 @@ import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.api.ITeslaProducer;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TeslaCapabilityWrapper implements IEnergyStorage {
+public class TeslaToForgeAdapter implements IEnergyStorage {
   
   private ITeslaHolder capHolder;
   private ITeslaConsumer capConsumer;
   private ITeslaProducer capProducer;
 
-  public TeslaCapabilityWrapper(ITeslaHolder capHolder, ITeslaConsumer capConsumer, ITeslaProducer capProducer) {
+  public TeslaToForgeAdapter(ITeslaHolder capHolder, ITeslaConsumer capConsumer, ITeslaProducer capProducer) {
     this.capHolder = capHolder;
     this.capConsumer = capConsumer;
     this.capProducer = capProducer;

@@ -14,7 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
+import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -37,7 +37,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
@@ -55,7 +54,7 @@ import static crazypants.util.NbtValue.REMOTE_X;
 import static crazypants.util.NbtValue.REMOTE_Y;
 import static crazypants.util.NbtValue.REMOTE_Z;
 
-public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem {
+public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem {
 
   public static ItemRemoteInvAccess create() {
     ClientRemoteGuiManager.create();
@@ -212,27 +211,24 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
   private boolean extractInternal(ItemStack item, int powerUse) {
     int stored = getEnergyStored(item);
     if (stored >= powerUse) {
-      setEnergy(item, stored - powerUse);
+      setEnergyStored(item, stored - powerUse);
       return true;
     } else if (stored > 0) {
-      setEnergy(item, 0);
+      setEnergyStored(item, 0);
     }
     return false;
   }
 
-  private void setEnergy(ItemStack container, int energy) {
-    ENERGY.setInt(container, energy);
-  }
-
+ 
   public ItemStack setFull(ItemStack container) {
-    setEnergy(container, ItemRemoteInvAccessType.fromStack(container).getRfCapacity());
+    setEnergyStored(container, getMaxEnergyStored(container));
     FLUIDAMOUNT.setInt(container, getCapacity(container));
     return container;
   }
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergy(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
   
@@ -309,12 +305,30 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     }
   }
 
-  public int getEnergyStored(ItemStack container) {
-    return ENERGY.getInt(container, 0);
-  }
-
+  
+  @Override
   public int getMaxEnergyStored(ItemStack container) {
     return ItemRemoteInvAccessType.fromStack(container).getRfCapacity();
+  }
+  
+  @Override
+  public void setEnergyStored(ItemStack container, int energy) {
+   ENERGY.setInt(container, energy);
+  }
+  
+  @Override
+  public int getEnergyStored(ItemStack stack) {
+    return ENERGY.getInt(stack);
+  }
+
+  @Override
+  public int getMaxInput(ItemStack stack) {
+    return ItemRemoteInvAccessType.fromStack(stack).getRfCapacity()/100;
+  }
+
+  @Override
+  public int getMaxOutput(ItemStack stack) {
+    return 0;
   }
 
   @Override
@@ -331,7 +345,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityEnergy.ENERGY;
+      return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
@@ -339,9 +353,6 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
       if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
         return (T) this;
-      } else if(capability == CapabilityEnergy.ENERGY) {
-        int capacity =getMaxEnergyStored(container);
-        return (T)new PowerHandlerItemStack(container, capacity, capacity / 100, 0);
       }
       return null;
     }
@@ -400,4 +411,5 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
       return null;
     }
   }
+
 }

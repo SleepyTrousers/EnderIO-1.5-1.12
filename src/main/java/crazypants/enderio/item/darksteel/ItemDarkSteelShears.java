@@ -17,7 +17,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.material.Alloy;
@@ -29,14 +28,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -235,11 +232,6 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     GameRegistry.register(this);
   }
 
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new EnergyUpgadeCap(stack);
-  }
-  
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();

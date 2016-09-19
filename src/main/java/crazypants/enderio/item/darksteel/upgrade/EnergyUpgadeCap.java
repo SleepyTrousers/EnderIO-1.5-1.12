@@ -9,7 +9,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyUpgadeCap implements IEnergyStorage , ICapabilityProvider {
+public class EnergyUpgadeCap implements IEnergyStorage, ICapabilityProvider {
   
   private final ItemStack container;
 
@@ -19,7 +19,6 @@ public class EnergyUpgadeCap implements IEnergyStorage , ICapabilityProvider {
 
   @Override
   public int receiveEnergy(int maxReceive, boolean simulate) {
-    System.out.println("EnergyUpgadeCap.receiveEnergy: ");
     return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
   }
 

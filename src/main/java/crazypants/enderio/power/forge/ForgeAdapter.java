@@ -2,6 +2,7 @@ package crazypants.enderio.power.forge;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.AttachCapabilitiesEvent.Item;
 
 public class ForgeAdapter implements IPowerApiAdapter {
 
@@ -49,5 +51,19 @@ public class ForgeAdapter implements IPowerApiAdapter {
       evt.addCapability(KEY, new InternalPoweredTileWrapper.PoweredTileCapabilityProvider((IInternalPoweredTile) te));
     }
   }
+
+  @Override
+  public void attachCapabilities(Item evt) {
+    if(evt.getCapabilities().containsKey(KEY)) {
+      return;
+    }
+    if(evt.getItem() instanceof IInternalPoweredItem) {
+//      System.out.println("ForgeAdapter.attachCapabilities: Attached cap to " + evt.getItem());
+      IInternalPoweredItem item = (IInternalPoweredItem)evt.getItem();
+      evt.addCapability(KEY, new InternalPoweredItemWrapper.PoweredItemCapabilityProvider(item, evt.getItemStack()));
+    }
+  }
+  
+  
   
 }

@@ -13,23 +13,20 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
-import crazypants.util.NbtValue;
+import crazypants.enderio.power.AbstractPoweredItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemTravelStaff extends Item implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
+public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
 
   private long lastBlickTick = 0;
 
@@ -38,9 +35,10 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IResourceToo
     result.init();
     return result;
   }
+  
 
   protected ItemTravelStaff() {
-    //super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
+    super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemTravelStaff.getUnlocalisedName());
     setRegistryName(ModObject.itemTravelStaff.getUnlocalisedName());
@@ -54,7 +52,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IResourceToo
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergy(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
   @Override
@@ -92,32 +90,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IResourceToo
   @Override
   public void extractInternal(ItemStack item, int powerUse) {
     int res = Math.max(0, getEnergyStored(item) - powerUse);
-    setEnergy(item, res);
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack item) {
-    return NbtValue.ENERGY.getInt(item);
-  }
-  
-  private int getMaxEnergyStored(ItemStack itemStack) {
-    return Config.darkSteelPowerStorageLevelTwo;
-  }
-
-  void setEnergy(ItemStack container, int energy) {
-    if(container.getTagCompound() == null) {
-      container.setTagCompound(new NBTTagCompound());
-    }
-    container.getTagCompound().setInteger("Energy", energy);
-  }
-
-  public void setFull(ItemStack container) {
-    setEnergy(container, getMaxEnergyStored(container));
-  }
-  
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new PowerHandlerItemStack(stack, Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
+    setEnergyStored(item, res);
   }
 
   @Override

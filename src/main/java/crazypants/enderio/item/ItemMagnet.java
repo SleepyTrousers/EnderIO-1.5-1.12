@@ -16,7 +16,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
+import crazypants.enderio.power.AbstractPoweredItem;
 import crazypants.util.BaublesUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,7 +31,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -41,7 +40,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.config.Config.magnetAllowInMainInventory;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
-public class ItemMagnet extends Item implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
+public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
   private static final String ACTIVE_KEY = "magnetActive";
 
@@ -89,7 +88,7 @@ public class ItemMagnet extends Item implements IResourceTooltipProvider, IBaubl
   }
 
   protected ItemMagnet() {
-    //super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100);
+    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF/100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMagnet.getUnlocalisedName());
     setRegistryName(ModObject.itemMagnet.getUnlocalisedName());
@@ -108,7 +107,7 @@ public class ItemMagnet extends Item implements IResourceTooltipProvider, IBaubl
     par3List.add(is);
 
     is = new ItemStack(this);
-    NbtValue.ENERGY.setInt(is, Config.magnetPowerCapacityRF);
+    setFull(is);
     par3List.add(is);
   }
 
@@ -129,21 +128,16 @@ public class ItemMagnet extends Item implements IResourceTooltipProvider, IBaubl
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    NbtValue.ENERGY.setInt(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new PowerHandlerItemStack(stack, Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100, 0);
-  }
-  
   private void extractEnergyInternal(ItemStack itemStack, int extract) {
     if(extract <= 0) {
       return;
     }
-    int energy = NbtValue.ENERGY.getInt(itemStack);
+    int energy = getEnergyStored(itemStack);
     energy = Math.max(0, energy - extract);
-    NbtValue.ENERGY.setInt(itemStack, energy);
+    setEnergyStored(itemStack, energy);
   }
 
   @Override

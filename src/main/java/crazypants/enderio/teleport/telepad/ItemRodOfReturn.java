@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -24,9 +23,8 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
+import crazypants.enderio.power.AbstractPoweredItem;
 import crazypants.enderio.teleport.TeleportUtil;
-import crazypants.util.NbtValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.creativetab.CreativeTabs;
@@ -63,7 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 
-public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware {
+public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
   public static ItemRodOfReturn create() {
     ItemRodOfReturn result = new ItemRodOfReturn();
@@ -79,8 +77,9 @@ public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, I
   private MachineSound activeSound;
   
   private final Fluid fluidType;
-
+  
   protected ItemRodOfReturn() {
+    super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemRodOfReturn.getUnlocalisedName());
     setRegistryName(ModObject.itemRodOfReturn.getUnlocalisedName());
@@ -218,7 +217,7 @@ public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, I
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergy(itemStack, 0);
+    setEnergyStored(itemStack, 0);
   }
 
   @Override
@@ -359,24 +358,16 @@ public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, I
     int used = (Config.rodOfReturnTicksToActivate - timeLeft) * Config.rodOfReturnRfPerTick;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
-      setEnergy(stack, 0);
+      setEnergyStored(stack, 0);
       return false;
     }
-    setEnergy(stack, newVal);
+    setEnergyStored(stack, newVal);
     return true;
   }
-
-  private int getEnergyStored(ItemStack stack) {
-    return NbtValue.ENERGY.getInt(stack);
-  }
-
-  private void setEnergy(ItemStack container, int energy) {
-    energy = MathHelper.clamp_int(energy, 0, Config.rodOfReturnPowerStorage);
-    NbtValue.ENERGY.setInt(container, energy);
-  }
-
-  private void setFull(ItemStack container) {
-    setEnergy(container, Config.rodOfReturnPowerStorage);
+  
+  @Override
+  public void setFull(ItemStack container) {
+    super.setFull(container);
     FLUIDAMOUNT.setInt(container, Config.rodOfReturnFluidStorage);
   }
 
@@ -447,7 +438,7 @@ public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, I
   
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new PowerHandlerItemStack(stack, Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0));
+    return new FluidCapabilityProvider(stack);
   }
 
   private class FluidCapabilityProvider implements IFluidHandler, ICapabilityProvider {
@@ -522,5 +513,7 @@ public class ItemRodOfReturn extends Item implements IAdvancedTooltipProvider, I
       return null;
     }
   }
+
+  
 
 }

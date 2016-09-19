@@ -21,7 +21,6 @@ import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
@@ -46,12 +45,10 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
@@ -69,10 +66,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
     IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
-  //RF IEnergyContainerItem,
-  //TODO: Mod Thaumcraft
-  //IGoggles, IRevealer, IVisDiscountGear,
-
+  //TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
 
   public static final ArmorMaterial MATERIAL = createMaterial();
 
@@ -320,11 +314,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     return false;
-  }
-
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new EnergyUpgadeCap(stack);
   }
 
   //TODO: Mod Thaumcraft

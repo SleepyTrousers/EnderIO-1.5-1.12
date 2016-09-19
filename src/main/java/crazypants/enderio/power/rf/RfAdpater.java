@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.AttachCapabilitiesEvent.Item;
 import net.minecraftforge.event.AttachCapabilitiesEvent.TileEntity;
 
 public class RfAdpater implements IPowerApiAdapter {
@@ -40,6 +41,10 @@ public class RfAdpater implements IPowerApiAdapter {
 
   @Override
   public void attachCapabilities(TileEntity evt) {
+  }
+
+  @Override
+  public void attachCapabilities(Item evt) {
   }
   
 }

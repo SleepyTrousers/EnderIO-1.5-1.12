@@ -18,7 +18,6 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgadeCap;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
@@ -48,7 +47,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -347,11 +345,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return true;
   }
 
-  @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new EnergyUpgadeCap(stack);
-  }
-  
   @Override
   public int getEnergyStored(ItemStack container) {
     return EnergyUpgrade.getEnergyStored(container);

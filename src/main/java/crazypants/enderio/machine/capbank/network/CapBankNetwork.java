@@ -316,6 +316,7 @@ public class CapBankNetwork implements ICapBankNetwork {
           int canUse = Math.min(available, max - cur);
           int used = chargable.receiveEnergy(canUse, false);
           if(used > 0) {
+            
             addEnergy(-used);
             chargedItem = true;
             available -= used;

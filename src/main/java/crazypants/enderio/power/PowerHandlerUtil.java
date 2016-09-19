@@ -19,7 +19,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class PowerHandlerUtil {
 
   private static final List<IPowerApiAdapter> providers = new ArrayList<IPowerApiAdapter>();
-
+  
+  public static void addAdapter(IPowerApiAdapter adapter) {
+    if(adapter != null) {
+      providers.add(adapter);
+    }
+  }
   
   public static void onPostInit(FMLPostInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(new CapAttacher());
@@ -82,7 +87,14 @@ public class PowerHandlerUtil {
     @SubscribeEvent
     public void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt) {
       for(IPowerApiAdapter prov : providers) {
-        prov.attachCapabilities(evt);;
+        prov.attachCapabilities(evt);
+      }
+    }
+    
+    @SubscribeEvent
+    public void attachCapabilities(AttachCapabilitiesEvent.Item evt) {
+      for(IPowerApiAdapter prov : providers) {
+        prov.attachCapabilities(evt);
       }
     }
 

@@ -14,5 +14,7 @@ public interface IPowerApiAdapter {
   IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side);
   
   void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt);
+
+  void attachCapabilities(AttachCapabilitiesEvent.Item evt);
   
 }

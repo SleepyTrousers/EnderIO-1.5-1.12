@@ -11,11 +11,11 @@ import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.PainterUtil2;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
+import crazypants.enderio.power.AbstractPoweredBlockItem;
+import crazypants.enderio.power.forge.InternalPoweredItemWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,10 +30,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
-public class BlockItemBuffer extends ItemBlock implements IOverlayRenderAware {
+public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
   public BlockItemBuffer(Block block, String name) {
-    super(block);
+    super(block, 0, 0 ,0);
     setHasSubtypes(true);
     setMaxDamage(0);
     setRegistryName(name);
@@ -88,6 +88,23 @@ public class BlockItemBuffer extends ItemBlock implements IOverlayRenderAware {
   }
 
   @Override
+  public int getMaxEnergyStored(ItemStack stack) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    return type.hasPower ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
+  }
+
+  @Override
+  public int getMaxInput(ItemStack container) {
+    BufferType type = EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+    return type.hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
+  }
+
+  @Override
+  public int getMaxOutput(ItemStack container) {
+    return getMaxInput(container);
+  }
+  
+  @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
     return new InnerProv(stack);
   }
@@ -118,14 +135,14 @@ public class BlockItemBuffer extends ItemBlock implements IOverlayRenderAware {
       if(type.isCreative) {
         return (T)new CreativePowerCap(container);
       }
-      return (T)new PowerHandlerItemStack(container, BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR), Config.powerConduitTierThreeRF / 20, Config.powerConduitTierThreeRF / 20);
+      return null;
     }
   }
   
-  private class CreativePowerCap extends PowerHandlerItemStack {
+  private class CreativePowerCap extends InternalPoweredItemWrapper {
 
     public CreativePowerCap (ItemStack container) {
-      super(container, BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR), Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF);
+      super(container, BlockItemBuffer.this);
     }
 
     @Override

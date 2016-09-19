@@ -9,9 +9,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.power.forge.PowerHandlerItemStack;
+import crazypants.enderio.power.AbstractPoweredBlockItem;
+import crazypants.enderio.power.forge.InternalPoweredItemWrapper;
 import crazypants.util.NbtValue;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -19,7 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware {
+public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
@@ -38,7 +38,7 @@ public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware {
   }
 
   public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull String name) {
-    super(blockCapBank);
+    super(blockCapBank, 0, 0, 0);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setRegistryName(name);
@@ -66,16 +66,26 @@ public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware {
     return CapBankType.getTypeFromMeta(stack.getMetadata()).isCreative() || super.hasEffect(stack);
   }
 
+  @Override
   public int getMaxEnergyStored(ItemStack stack) {
     return CapBankType.getTypeFromMeta(stack.getMetadata()).getMaxEnergyStored();
+  }
+
+  @Override
+  public int getMaxInput(ItemStack container) {
+    return CapBankType.getTypeFromMeta(container.getMetadata()).getMaxIO();
+  }
+
+  @Override
+  public int getMaxOutput(ItemStack container) {
+    return CapBankType.getTypeFromMeta(container.getMetadata()).getMaxIO();
   }
   
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
     return new InnerProv(stack);
   }
-  
-  
+
   private class InnerProv implements ICapabilityProvider {
 
     private final ItemStack container;
@@ -92,21 +102,17 @@ public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability != CapabilityEnergy.ENERGY) {
-        return null;
+      if(capability == CapabilityEnergy.ENERGY && CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
+        return (T)new CreativePowerCap(container);
       }
-      CapBankType type = CapBankType.getTypeFromMeta(container.getMetadata());
-      if(type.isCreative()) {
-        new CreativePowerCap(container);
-      }
-      return (T)new PowerHandlerItemStack(container, type.getMaxEnergyStored(), type.getMaxIO(), type.getMaxIO());
+      return null;
     }
   }
   
-  private class CreativePowerCap extends PowerHandlerItemStack {
+  private class CreativePowerCap extends InternalPoweredItemWrapper {
 
     public CreativePowerCap (ItemStack container) {
-      super(container, CapBankType.CREATIVE.getMaxEnergyStored(), CapBankType.CREATIVE.getMaxIO(), CapBankType.CREATIVE.getMaxIO());
+      super(container, BlockItemCapBank.this);
     }
 
     @Override
