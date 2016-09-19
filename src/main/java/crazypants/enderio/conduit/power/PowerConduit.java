@@ -362,7 +362,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
         if(recievedTicks == null) {
           recievedTicks = new EnumMap<EnumFacing, Long>(EnumFacing.class);
         }
-        recievedTicks.put(from, getBundle().getBundleWorldObj().getTotalWorldTime());
+        if(from != null) {
+          recievedTicks.put(from, getBundle().getBundleWorldObj().getTotalWorldTime());
+        }
       }
 
     }
