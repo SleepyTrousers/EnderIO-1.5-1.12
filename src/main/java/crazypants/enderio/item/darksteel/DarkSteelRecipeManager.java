@@ -1,7 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,6 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.jei.ItemHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -229,17 +227,7 @@ public class DarkSteelRecipeManager {
     return result.isEmpty() ? null : result;
   }
 
-  public List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes() {
-    List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
-    Set<String> seen = new HashSet<String>();
-    List<ItemStack> items = getRecipes(seen, list, ItemHelper.getValidItems());
-    while (!items.isEmpty()) {
-      items = getRecipes(seen, list, items);
-    }
-    return list;
-  }
-
-  private List<ItemStack> getRecipes(Set<String> seen, List<Triple<ItemStack, ItemStack, ItemStack>> list, List<ItemStack> input) {
+  public List<ItemStack> getRecipes(Set<String> seen, List<Triple<ItemStack, ItemStack, ItemStack>> list, List<ItemStack> input) {
     List<ItemStack> output = new ArrayList<ItemStack>();
     for (ItemStack stack : input) {
       for (IDarkSteelUpgrade upgrade : upgrades) {

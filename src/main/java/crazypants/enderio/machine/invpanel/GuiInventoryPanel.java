@@ -27,7 +27,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.jei.JeiAccessor;
+import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.machine.invpanel.client.CraftingHelper;
 import crazypants.enderio.machine.invpanel.client.DatabaseView;

@@ -4,11 +4,11 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.integration.waila.IWailaNBTProvider;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.forge.InternalPoweredTileWrapper;
-import crazypants.enderio.waila.IWailaNBTProvider;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

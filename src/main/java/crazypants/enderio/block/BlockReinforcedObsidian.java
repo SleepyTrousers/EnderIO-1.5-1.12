@@ -9,7 +9,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
