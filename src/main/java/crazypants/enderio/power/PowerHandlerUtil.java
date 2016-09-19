@@ -1,7 +1,7 @@
 package crazypants.enderio.power;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PowerHandlerUtil {
 
-  private static final List<IPowerApiAdapter> providers = new ArrayList<IPowerApiAdapter>();
+  private static final List<IPowerApiAdapter> providers = new CopyOnWriteArrayList<IPowerApiAdapter>();
   
   public static void addAdapter(IPowerApiAdapter adapter) {
     if(adapter != null) {
@@ -27,7 +27,6 @@ public class PowerHandlerUtil {
   }
   
   public static void onPostInit(FMLPostInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(new CapAttacher());
     providers.add(new ForgeAdapter());
     try {
       IPowerApiAdapter o = (IPowerApiAdapter)Class.forName("crazypants.enderio.power.rf.RfAdpater").newInstance();
@@ -43,7 +42,7 @@ public class PowerHandlerUtil {
     } catch(Exception e) {
       Log.warn("Tesla API not found. Tesla integration not loaded.");
     }
-    
+    MinecraftForge.EVENT_BUS.register(new CapAttacher());
   }
   
   public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
