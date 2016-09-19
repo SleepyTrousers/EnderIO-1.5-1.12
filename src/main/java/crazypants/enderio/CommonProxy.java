@@ -60,7 +60,7 @@ public class CommonProxy {
   
   public void preInit() {
     if (Loader.isModLoaded("theoneprobe")) {
-      FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.top.TOPCompatibility");
+      FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.integration.top.TOPCompatibility");
     }
   }
   
