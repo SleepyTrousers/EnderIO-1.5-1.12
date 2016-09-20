@@ -13,6 +13,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemPiston;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
@@ -30,7 +31,7 @@ public class PainterUtil2 {
     boolean textureOnly = false;
     if (paintSource != null) {
       Block block = getBlockFromItem(paintSource);
-      IBlockState bs = block.getDefaultState();
+      IBlockState bs = Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, block);
       solidPaint = bs.isOpaqueCube();
       if (!shouldHaveModel(block)) {
         if (shouldHaveTexture(block)) {
@@ -208,6 +209,15 @@ public class PainterUtil2 {
     } else {
       return blockLayer == BlockRenderLayer.SOLID;
     }
+  }
+
+  // This line is in this excessively named method to show up nicely in a stack trace
+  public static IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
+    if (paintSource.getItem().getClass() == ItemPiston.class) {
+      // Vanilla bug. ItemPiston returns an invalid block meta.
+      return paintBlock.getDefaultState();
+    }
+    return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
   }
 
 }

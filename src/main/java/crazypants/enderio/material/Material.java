@@ -31,7 +31,8 @@ public enum Material {
   ENDER_CYSTAL_POWDER("enderCrystalPowder", true),
   NUTRITIOUS_STICK("nutritiousStick", false),
   PRECIENT_CRYSTAL("precientCrystal", true),
-  PRECIENT_POWDER("precientPowder", true);
+  PRECIENT_POWDER("precientPowder", true),
+  CHASSIPARTS("chassiParts", false);
 
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);

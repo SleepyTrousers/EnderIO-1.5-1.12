@@ -69,6 +69,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="ATTRACTOR_CRYSTAL" item="itemAttractorCrystal" />
   <alias name="WEATHER_CRYSTAL" item="itemWeatherCrystal" />
   <alias name="NUTRITIOUS_STICK" item="itemNutritiousStick" />
+  <alias name="CHASSIPARTS" item="itemChassiParts" />
 
   <alias name="CAP_BANK_1" item="enderio:blockCapBank:1" />
   <alias name="CAP_BANK_2" item="enderio:blockCapBank:2" />

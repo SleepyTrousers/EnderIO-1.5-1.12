@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -10,10 +12,16 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockDecoration2;
 
@@ -49,17 +57,32 @@ public class BlockDecorationFacing extends BlockDecoration {
 
   @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-    IBlockState result = state;
     if (worldIn instanceof PaintedBlockAccessWrapper) {
       TileEntity tileEntity = ((PaintedBlockAccessWrapper) worldIn).getRealTileEntity(pos);
       if (tileEntity instanceof AbstractMachineEntity) {
-        result = result.withProperty(FACING, ((AbstractMachineEntity) tileEntity).getFacing());
-      } else {
-        result = result.withProperty(FACING, EnumFacing.SOUTH);
+        return state.withProperty(FACING, ((AbstractMachineEntity) tileEntity).getFacing()).withProperty(ACTIVE,
+            ((AbstractMachineEntity) tileEntity).isActive());
       }
-      result = result.withProperty(ACTIVE, ((AbstractMachineEntity) tileEntity).isActive());
     }
-    return result;
+    return state.withProperty(FACING, EnumFacing.SOUTH).withProperty(ACTIVE, false);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    Item item = Item.getItemFromBlock(this);
+    Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(this);
+    for (EnumDecoBlock type : EnumDecoBlock.TYPE.getAllowedValues()) {
+      IBlockState state = getDefaultState().withProperty(EnumDecoBlock.TYPE, type).withProperty(FACING, EnumFacing.NORTH).withProperty(ACTIVE, false);
+      ModelResourceLocation mrl = locations.get(state);
+      ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
+    }
+  }
+
+  @Override
+  public boolean isOpaqueCube(IBlockState state) {
+    EnumDecoBlock type = state.getValue(EnumDecoBlock.TYPE);
+    return type != EnumDecoBlock.TYPE11 && type != EnumDecoBlock.TYPE12;
   }
 
 }
