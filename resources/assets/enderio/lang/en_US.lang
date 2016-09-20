@@ -1465,6 +1465,8 @@ tile.blockSelfResettingLever30.name=Self-resetting lever (30 seconds)
 tile.blockSelfResettingLever60.name=Self-resetting lever (1 Minute)
 tile.blockSelfResettingLever300.name=Self-resetting lever (5 Minutes)
 
+enderio.chassiParts.name=Chassis Plates
+
 tile.blockDecoration1_type00.name=Machine Chassis (decoration block)
 tile.blockDecoration1_type01.name=Blank Machine (decoration block)
 tile.blockDecoration1_type02.name=Machine Tops (decoration block)
