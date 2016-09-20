@@ -456,4 +456,428 @@ XML editor will display that as tooltips when editing this file.
     </smelting>
   </recipe>
 
+  <recipe name="Chassis Parts" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="CHASSIS"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+      </grid>
+      <output name="CHASSIPARTS" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/0" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="CHASSIPARTS"/><item />
+        <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
+        <item /><item name="CHASSIPARTS"/><item />
+      </grid>
+      <output name="enderio:blockDecoration1:0" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/1 a" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ingotIron"/><item />
+        <item name="ingotIron"/><item name="enderio:blockDecoration1:0"/><item name="ingotIron"/>
+        <item /><item name="ingotIron"/><item />
+      </grid>
+      <output name="enderio:blockDecoration1:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/1 b" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CHASSIPARTS"/><item name="ingotIron"/><item name="CHASSIPARTS"/>
+        <item name="ingotIron"/><item /><item name="ingotIron"/>
+        <item name="CHASSIPARTS"/><item name="ingotIron"/><item name="CHASSIPARTS"/>
+      </grid>
+      <output name="enderio:blockDecoration1:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/1 c" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="CHASSIPARTS"/><item name="ingotIron"/>
+        <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
+        <item name="ingotIron"/><item name="CHASSIPARTS"/><item name="ingotIron"/>
+      </grid>
+      <output name="enderio:blockDecoration1:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/1 d" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:6"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/2" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:2" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/3" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:2"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:3" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/4" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:3"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:4" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/5" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:4"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:5" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/6" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:5"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:6" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/7 a" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="SOULARIUM"/><item />
+        <item name="SOULARIUM"/><item name="enderio:blockDecoration1:0"/><item name="SOULARIUM"/>
+        <item /><item name="SOULARIUM"/><item />
+      </grid>
+      <output name="enderio:blockDecoration1:7" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/7 b" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CHASSIPARTS"/><item name="SOULARIUM"/><item name="CHASSIPARTS"/>
+        <item name="SOULARIUM"/><item /><item name="SOULARIUM"/>
+        <item name="CHASSIPARTS"/><item name="SOULARIUM"/><item name="CHASSIPARTS"/>
+      </grid>
+      <output name="enderio:blockDecoration1:7" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/7 c" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM"/><item name="CHASSIPARTS"/><item name="SOULARIUM"/>
+        <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
+        <item name="SOULARIUM"/><item name="CHASSIPARTS"/><item name="SOULARIUM"/>
+      </grid>
+      <output name="enderio:blockDecoration1:7" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/7 d" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:12"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:7" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/8" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:7"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:8" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/9" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:8"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:9" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/10" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:9"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:10" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/11" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:10"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:11" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/12" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:11"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:12" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/13" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="oredict:dyeRed"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:13" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/1 f" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:13"/><item name="minecraft:water_bucket"/>
+      </shapeless>
+      <output name="enderio:blockDecoration1:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/14 a" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="barsIron"/><item />
+        <item name="barsIron"/><item name="enderio:blockDecoration1:0"/><item name="barsIron"/>
+        <item /><item name="barsIron"/><item />
+      </grid>
+      <output name="enderio:blockDecoration1:14" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/14 b" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CHASSIPARTS"/><item name="barsIron"/><item name="CHASSIPARTS"/>
+        <item name="barsIron"/><item /><item name="barsIron"/>
+        <item name="CHASSIPARTS"/><item name="barsIron"/><item name="CHASSIPARTS"/>
+      </grid>
+      <output name="enderio:blockDecoration1:14" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/14 c" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="barsIron"/><item name="CHASSIPARTS"/><item name="barsIron"/>
+        <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
+        <item name="barsIron"/><item name="CHASSIPARTS"/><item name="barsIron"/>
+      </grid>
+      <output name="enderio:blockDecoration1:14" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/15 a" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="FUSED_GLASS"/><item />
+        <item name="FUSED_GLASS"/><item name="enderio:blockDecoration1:0"/><item name="FUSED_GLASS"/>
+        <item /><item name="FUSED_GLASS"/><item />
+      </grid>
+      <output name="enderio:blockDecoration1:15" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/15 b" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="CHASSIPARTS"/><item name="FUSED_GLASS"/><item name="CHASSIPARTS"/>
+        <item name="FUSED_GLASS"/><item /><item name="FUSED_GLASS"/>
+        <item name="CHASSIPARTS"/><item name="FUSED_GLASS"/><item name="CHASSIPARTS"/>
+      </grid>
+      <output name="enderio:blockDecoration1:15" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 1/15 c" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="FUSED_GLASS"/><item name="CHASSIPARTS"/><item name="FUSED_GLASS"/>
+        <item name="CHASSIPARTS"/><item /><item name="CHASSIPARTS"/>
+        <item name="FUSED_GLASS"/><item name="CHASSIPARTS"/><item name="FUSED_GLASS"/>
+      </grid>
+      <output name="enderio:blockDecoration1:15" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/0" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="minecraft:furnace"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:0" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/1" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="chestWood"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:1" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/2" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="CHASSIS"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:2" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/3" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration2:1"/><item name="enderio:blockDecoration2:2"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:3" amount="2"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/4" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration2:3"/><item name="netherStar"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:4" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/5" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="workbench"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:5" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/6" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="gemDiamond"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:6" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/7" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="enderio:itemPowerConduit:0"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:7" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/8" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="itemFlint"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:8" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/9" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:7"/><item name="minecraft:iron_axe"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:9" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/10" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="GEAR"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:10" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/11" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:15"/><item name="barsIron"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:11" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/12" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:15"/><item name="enderio:blockDarkIronBars"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:12" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/13" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="CONDUIT_BINDER"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:13" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/14" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="ingotIron"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:14" amount="1"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Deco Block 2/15" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:blockDecoration1:1"/><item name="CAPACITOR1"/>
+      </shapeless>
+      <output name="enderio:blockDecoration2:15" amount="1"/>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>

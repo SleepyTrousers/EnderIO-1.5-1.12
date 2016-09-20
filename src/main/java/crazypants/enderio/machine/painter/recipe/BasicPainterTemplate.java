@@ -9,7 +9,6 @@ import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPiston;
 import net.minecraft.item.ItemStack;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
@@ -54,7 +53,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     if (paintBlock == null) {
       return new ResultStack[0];
     }
-    IBlockState paintState = Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
+    IBlockState paintState = PainterUtil2.Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, paintBlock);
     if (paintState == null) {
       return new ResultStack[0];
     }
@@ -77,15 +76,6 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       }
     }
     return new ResultStack[] { new ResultStack(result) };
-  }
-
-  // This line is in this excessively named method to show up nicely in a stack trace
-  private IBlockState Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(ItemStack paintSource, Block paintBlock) {
-    if (paintSource.getItem().getClass() == ItemPiston.class) {
-      // Vanilla bug. ItemPiston returns an invalid block meta.
-      return paintBlock.getDefaultState();
-    }
-    return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
   }
 
   protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {

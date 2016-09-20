@@ -16,6 +16,8 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
+import crazypants.enderio.block.BlockDecoration;
+import crazypants.enderio.block.BlockDecorationFacing;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -283,6 +285,7 @@ public class EnderIO {
   public static BlockReinforcedObsidian blockReinforcedObsidian;
   public static BlockEnderRail blockEnderRail;
   public static BlockExitRail blockExitRail;
+  public static BlockDecoration blockDecoration1, blockDecoration2;
 
   public static Fluids fluids;
 
@@ -443,6 +446,9 @@ public class EnderIO {
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
+
+    blockDecoration1 = BlockDecoration.create();
+    blockDecoration2 = BlockDecorationFacing.create();
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 

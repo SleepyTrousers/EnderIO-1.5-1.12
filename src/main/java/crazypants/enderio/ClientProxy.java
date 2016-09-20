@@ -169,6 +169,8 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.blockIngotStorage);
     registerRenderers(EnderIO.blockEndermanSkull);
     registerRenderers(EnderIO.blockElectricLight);
+    registerRenderers(EnderIO.blockDecoration1);
+    registerRenderers(EnderIO.blockDecoration2);
 
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
