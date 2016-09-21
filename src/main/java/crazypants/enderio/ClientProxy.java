@@ -15,6 +15,7 @@ import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
+import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
@@ -93,9 +94,6 @@ public class ClientProxy extends CommonProxy {
   };
   // @formatter:on
 
-  private boolean checkedNei = false;
-  private boolean neiInstalled = false;
-
   @Override
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;
@@ -103,25 +101,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public boolean isAnEiInstalled() {
-    if (checkedNei) {
-      return neiInstalled;
-    }
-    try {
-      Class.forName("crazypants.enderio.nei.EnchanterRecipeHandler");
-      neiInstalled = true;
-    } catch (Exception e) {
-      neiInstalled = false;
-    }
-    if(!neiInstalled) {
-      try {
-        Class.forName("crazypants.enderio.jei.AlloyRecipeCategory");
-        neiInstalled = true;
-      } catch (Exception e) {
-        neiInstalled = false;
-      }
-    }
-    checkedNei = true;
-    return neiInstalled;
+    return JeiAccessor.isJeiRuntimeAvailable();
   }
 
   @Override
