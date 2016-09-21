@@ -160,7 +160,7 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-build.dependsOn sourceJar, deobfJar, apiJar, exportJavadoc
+build.dependsOn sourceJar, apiJar
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -169,8 +169,7 @@ publishing {
             from components.java
 
             artifact sourceJar
-            artifact apiJar
-            artifact deobfJar
+            artifact apiJar            
         }
     }
 
@@ -183,8 +182,7 @@ publishing {
 
 artifacts {
     archives sourceJar
-    archives apiJar
-    archives deobfJar
+    archives apiJar    
 }
 
 
