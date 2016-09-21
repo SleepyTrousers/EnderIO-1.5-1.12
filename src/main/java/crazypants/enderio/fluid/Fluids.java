@@ -162,12 +162,17 @@ public class Fluids {
     blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.WATER, 0x3f5c5d);
 
     if (!Loader.isModLoaded("OpenBlocks")) {
-      Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid(Config.xpJuiceName, Fluids.getRaw(Fluids.XP_JUICE_NAME + "still"), Fluids.getRaw(Fluids.XP_JUICE_NAME + "flowing"))
+      f = new Fluid(Config.xpJuiceName, Fluids.getRaw(Fluids.XP_JUICE_NAME + "still"), Fluids.getRaw(Fluids.XP_JUICE_NAME + "flowing"))
           .setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
-      FluidRegistry.registerFluid(fluidXpJuice);
+      if (FluidRegistry.registerFluid(f)) {
+        Log.info("XP Juice registered by Ender IO.");
+        fluidXpJuice = FluidRegistry.getFluid(f.getName());
+      } else {
+        Log.info("XP Juice already registered by another mod as '" + FluidRegistry.getFluid(f.getName()).getUnlocalizedName() + "'");
+        fluidXpJuice = null; // will be set later
+      }
     } else {
-      Log.info("XP Juice regististration left to Open Blocks.");
+      Log.info("XP Juice registration left to Open Blocks.");
     }
 
     Buckets.createBuckets();
