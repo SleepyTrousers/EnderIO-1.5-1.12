@@ -15,7 +15,6 @@ import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -37,7 +36,7 @@ public class TESRGauge extends ManagedTESR<TileGauge> {
         int energyStored = eh.getEnergyStored();
         int maxEnergyStored = eh.getMaxEnergyStored();
         float ratio = maxEnergyStored > 0 ? (float) energyStored / (float) maxEnergyStored : 0f;
-        FillGaugeBakery bakery = new FillGaugeBakery(world, ((TileEntity) eh).getPos(), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class), ratio);
+        FillGaugeBakery bakery = new FillGaugeBakery(world, te.getPos().offset(side.getKey()), face, BlockGauge.gaugeIcon.get(TextureAtlasSprite.class), ratio);
         if (bakery.canRender()) {
           GL11.glPushMatrix();
           GL11.glTranslated(-face.getFrontOffsetX(), -face.getFrontOffsetY(), -face.getFrontOffsetZ());
