@@ -109,6 +109,9 @@ public class GuiExternalConnection extends GuiContainerBase {
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    if (tabs.size() == 0)
+      return;
+    
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     int sx = (width - xSize) / 2;
