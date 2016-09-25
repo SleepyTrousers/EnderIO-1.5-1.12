@@ -5,6 +5,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.integration.waila.IWailaNBTProvider;
+import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
-public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider {
+public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider, IHasConduitProbeData {
 
   private boolean forceNetworkSearch = true;
 
@@ -172,5 +173,10 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   @Override
   public BlockCoord getLocation() {
     return new BlockCoord(pos);
+  }
+
+  @Override
+  public String[] getConduitProbeData() {
+    return network.getConduitProbeData();
   }
 }

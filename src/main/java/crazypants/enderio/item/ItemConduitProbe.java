@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -88,11 +87,6 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer playerIn, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {
   
-         TileEntity te = world.getTileEntity(pos);
-    if(!(te instanceof IConduitBundle)) {
-      return EnumActionResult.PASS;
-    }
-        
     if(itemStack.getItemDamage() == 0) {      
       if(PacketConduitProbe.canCreatePacket(world, pos.getX(), pos.getY(), pos.getZ())) {
         if(world.isRemote) {

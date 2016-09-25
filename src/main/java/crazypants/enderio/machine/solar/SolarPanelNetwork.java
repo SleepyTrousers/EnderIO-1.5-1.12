@@ -8,13 +8,14 @@ import java.util.Set;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SolarPanelNetwork {
+public class SolarPanelNetwork implements IHasConduitProbeData {
 
   private Set<BlockPos> panels = new HashSet<BlockPos>();
   private World world = null;
@@ -23,7 +24,7 @@ public class SolarPanelNetwork {
   private int energyMaxPerTick = 0;
   private int energyAvailablePerTick = 0;
   private int energyAvailableThisTick = 0;
-  private long lastTick = -1, nextCollectTick = Long.MAX_VALUE;
+  private long lastTick = -1, nextCollectTick = 0;
 
   public SolarPanelNetwork() {
     this((World) null);
@@ -41,7 +42,7 @@ public class SolarPanelNetwork {
   void onUpdate(TileEntitySolarPanel panel, boolean force) {
     if (valid && (force || !contains(panel))) {
       panels.add(panel.getPos().toImmutable());
-      nextCollectTick = Long.MAX_VALUE;
+      nextCollectTick = 0;
       cleanupMemberlist();
     }
   }
@@ -153,7 +154,7 @@ public class SolarPanelNetwork {
     long tick = EnderIO.proxy.getTickCount();
     if (tick != lastTick && world != null) {
       lastTick = tick;
-      if (tick < nextCollectTick) {
+      if (tick > nextCollectTick) {
         nextCollectTick = tick + Config.photovoltaicRecalcSunTick;
         energyMaxPerTick = energyAvailablePerTick = 0;
         float lightRatio = TileEntitySolarPanel.calculateLightRatio(world);
@@ -197,6 +198,18 @@ public class SolarPanelNetwork {
   public int getEnergyMaxPerTick() {
     updateEnergy();
     return energyMaxPerTick;
+  }
+
+  @Override
+  public String[] getConduitProbeData() {
+    return new String[] { toString() };
+  }
+
+  @Override
+  public String toString() {
+    return "SolarPanelNetwork [panels=" + panels.size() + ", valid=" + valid + ", energyMaxPerTick=" + energyMaxPerTick + ", energyAvailablePerTick="
+        + energyAvailablePerTick + ", energyAvailableThisTick=" + energyAvailableThisTick + ", lastTick=" + lastTick + ", nextCollectTick=" + nextCollectTick
+        + ", rfMax=" + rfMax + "]";
   }
 
 }

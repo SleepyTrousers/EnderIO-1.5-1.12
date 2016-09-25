@@ -59,6 +59,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     if(te instanceof IInternalPoweredTile) {
       return true;
     }
+    if (te instanceof IHasConduitProbeData) {
+      return true;
+    }
     return false;
   }
 
@@ -123,6 +126,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
             0, PowerInterfaceRF.getPowerRequest(EnumFacing.NORTH, pr));
 
+    } else if (te instanceof IHasConduitProbeData) {
+      ChatUtil.sendNoSpam(player, ((IHasConduitProbeData) te).getConduitProbeData());
     }
     return null;
   }
@@ -337,4 +342,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     ChatUtil.sendNoSpam(player, lines);
   }
 
+  public static interface IHasConduitProbeData {
+
+    String[] getConduitProbeData();
+
+  }
 }
