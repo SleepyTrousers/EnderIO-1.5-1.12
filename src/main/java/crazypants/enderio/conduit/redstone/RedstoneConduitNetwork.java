@@ -172,7 +172,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
 
     // Done manually to avoid orphaning chunks
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (EnumFacing dir : con.getExternalConnections()) {
       BlockPos bc2 = bc1.offset(dir);
       if (worldObj.isBlockLoaded(bc2)) {
         worldObj.notifyBlockOfStateChange(bc2, EnderIO.blockConduitBundle);
