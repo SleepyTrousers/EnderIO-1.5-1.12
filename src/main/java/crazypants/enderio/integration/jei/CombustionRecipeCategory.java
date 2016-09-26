@@ -2,6 +2,7 @@ package crazypants.enderio.integration.jei;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -58,31 +60,9 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
     }
 
-    @SuppressWarnings("null")
     @Override
-    public @Nonnull List<?> getInputs() {
-      return Collections.emptyList();
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<FluidStack> getFluidInputs() {
-      List<FluidStack> result = new ArrayList<FluidStack>();
-      result.add(fluidCoolant);
-      result.add(fluidFuel);
-      return result;
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<?> getOutputs() {
-      return Collections.emptyList();
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<FluidStack> getFluidOutputs() {
-      return Collections.emptyList();
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+      ingredients.setInputs(FluidStack.class, Arrays.asList(fluidCoolant, fluidFuel));
     }
 
     @Override
@@ -176,14 +156,13 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
   @SuppressWarnings("null")
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull CombustionRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull CombustionRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
-    fluidStacks.init(0, false, 114 - xOff, 21 - yOff, 15, 47, 1000, false, null);
-    fluidStacks.init(1, false, 48 - xOff, 21 - yOff, 15, 47, 1000, false, null);
+    fluidStacks.init(0, true, 114 - xOff, 21 - yOff, 15, 47, 1000, false, null);
+    fluidStacks.init(1, true, 48 - xOff, 21 - yOff, 15, 47, 1000, false, null);
 
-    fluidStacks.set(0, recipeWrapper.fluidCoolant);
-    fluidStacks.set(1, recipeWrapper.fluidFuel);
+    fluidStacks.set(ingredients);
   }
 
 }

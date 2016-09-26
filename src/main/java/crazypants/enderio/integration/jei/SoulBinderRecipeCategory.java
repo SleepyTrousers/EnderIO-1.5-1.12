@@ -24,6 +24,7 @@ import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.asm.transformers.ItemStackTransformer;
 
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
@@ -55,17 +57,11 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       return recipe.getEnergyRequired();
     }
 
-    @SuppressWarnings("null")
     @Override
-    public @Nonnull List<?> getInputs() {
-      return Arrays.asList(new ItemStack(EnderIO.itemSoulVessel), recipe.getInputStack() );
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+      ingredients.setInputs(ItemStack.class, Arrays.asList(new ItemStack(EnderIO.itemSoulVessel), recipe.getInputStack()));
+      ingredients.setOutputs(ItemStack.class, Arrays.asList(recipe.getOutputStack(), new ItemStack(EnderIO.itemSoulVessel)));
     }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<?> getOutputs() {
-      return Arrays.asList(recipe.getOutputStack(), new ItemStack(EnderIO.itemSoulVessel));
-    }   
     
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {           
@@ -147,7 +143,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
   }  
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SoulBinderRecipeCategory.SoulBinderRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SoulBinderRecipeCategory.SoulBinderRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
@@ -167,19 +163,21 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
     }
     guiItemStacks.set(0, soulStacks);
 
-    guiItemStacks.setFromRecipe(1, inputStack != null ? inputStack : new ArrayList<ItemStack>());
+    if (inputStack != null) {
+      guiItemStacks.set(1, inputStack);
+    }
 
     if (EnderIO.itemBrokenSpawner == outputStack.getItem() || currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
       for (CapturedMob soul : souls) {
         outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));
       }      
-      guiItemStacks.setFromRecipe(2, outputs);
+      guiItemStacks.set(2, outputs);
     } else {
-      guiItemStacks.setFromRecipe(2, outputStack);
+      guiItemStacks.set(2, outputStack);
     }
 
-    guiItemStacks.setFromRecipe(3, new ItemStack(EnderIO.itemSoulVessel));
+    guiItemStacks.set(3, new ItemStack(EnderIO.itemSoulVessel));
   }
   
 }

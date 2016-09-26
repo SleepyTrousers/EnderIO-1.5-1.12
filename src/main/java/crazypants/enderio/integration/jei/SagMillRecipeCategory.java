@@ -23,6 +23,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -122,7 +123,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SagMillRecipeCategory.SagRecipe recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SagMillRecipeCategory.SagRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
 
     currentRecipe = recipeWrapper;
 
@@ -136,17 +137,17 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);    
     guiItemStacks.init(5, false, 121 - xOff, 22 - yOff);
 
-    Object ingredients = currentRecipe.getInputs().get(0);
-    if (ingredients != null) {
-      guiItemStacks.setFromRecipe(0, ingredients);
+    List<ItemStack> inputs = ingredients.getInputs(ItemStack.class).get(0);
+    if (inputs != null) {
+      guiItemStacks.set(0, inputs);
     }
     int i = 1;
-    for (Object output : currentRecipe.getOutputs()) {
+    for (ItemStack output : ingredients.getOutputs(ItemStack.class)) {
       if (output != null) {
-        guiItemStacks.setFromRecipe(i, output);
+        guiItemStacks.set(i, output);
         i++;
       }
-    }    
+    }
     guiItemStacks.set(5, getBalls());       
   }
   
