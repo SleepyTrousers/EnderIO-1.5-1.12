@@ -20,6 +20,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -56,42 +57,21 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
     public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
     }
 
-    @SuppressWarnings("null")
     @Override
-    public @Nonnull List<?> getInputs() {
+    public void getIngredients(IIngredients ingredients) {
       if (itemInput != null) {
-        return Collections.singletonList(itemInput);
+        ingredients.setInputs(ItemStack.class, Collections.singletonList(itemInput));
       }
-      return Collections.emptyList();
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<FluidStack> getFluidInputs() {
       if (fluidInput != null) {
-        return Collections.singletonList(fluidInput);
+        ingredients.setInputs(FluidStack.class, Collections.singletonList(fluidInput));
       }
-      return Collections.emptyList();
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<?> getOutputs() {
       if (itemOutput != null) {
-        return Collections.singletonList(itemOutput);
+        ingredients.setOutput(ItemStack.class, itemOutput);
       }
-      return Collections.emptyList();
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<FluidStack> getFluidOutputs() {
       if (fluidOutput != null) {
-        return Collections.singletonList(fluidOutput);
+        ingredients.setOutput(FluidStack.class, fluidOutput);
       }
-      return Collections.emptyList();
     }
-
 
   } // -------------------------------------
 
@@ -183,7 +163,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
   @SuppressWarnings("null")
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TankRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TankRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
 
@@ -194,13 +174,18 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
     fluidStacks.init(0, false, 80 - xOff, 21 - yOff, 16, 47, 16000, true, null);
 
-    if (recipeWrapper.fluidInput == null) {
-      guiItemStacks.setFromRecipe(0, recipeWrapper.itemInput);
-      guiItemStacks.setFromRecipe(2, recipeWrapper.itemOutput);
+    List<List<ItemStack>> itemInputs = ingredients.getInputs(ItemStack.class);
+    List<ItemStack> itemOutputs = ingredients.getOutputs(ItemStack.class);
+    List<List<FluidStack>> fluidInputs = ingredients.getInputs(FluidStack.class);
+    List<ItemStack> inputIngredient = itemInputs.get(0);
+    ItemStack outputIngredient = itemOutputs.get(0);
+    if (fluidInputs.isEmpty()) {
+      guiItemStacks.set(0, inputIngredient);
+      guiItemStacks.set(2, outputIngredient);
       fluidStacks.set(0, recipeWrapper.fluidOutput);
     } else {
-      guiItemStacks.setFromRecipe(1, recipeWrapper.itemInput);
-      guiItemStacks.setFromRecipe(3, recipeWrapper.itemOutput);
+      guiItemStacks.set(1, inputIngredient);
+      guiItemStacks.set(3, outputIngredient);
       fluidStacks.set(0, recipeWrapper.fluidInput);
     }
   }

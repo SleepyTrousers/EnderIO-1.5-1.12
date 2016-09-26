@@ -550,9 +550,12 @@ public final class Config {
   public static boolean topShowTanksByDefault = true;
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
+  
+  public static boolean enableBaublesIntegration = true;
 
   public static String leversEnabled = "10,30,60,300";
 
+  
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -1414,6 +1417,9 @@ public final class Config {
         "If true, quite clear glass and fused quartz of different colors will connect textures.");
 
     paintedGlowstoneRequireSilkTouch = config.getBoolean("paintedGlowstoneRequireSilkTouch", sectionMisc.name, paintedGlowstoneRequireSilkTouch, "If true, painted glowstone will drop dust unless broken with silk touch");
+    
+    
+    enableBaublesIntegration = config.getBoolean("enableBaublesIntegration", sectionMisc.name, enableBaublesIntegration, "If false baubles intergation will be disabled even if Baubles is installed");
     
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
         "If false the soul bound enchantment will not be available");

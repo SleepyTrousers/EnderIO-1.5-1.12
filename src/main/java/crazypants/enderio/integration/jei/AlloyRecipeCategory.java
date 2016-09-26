@@ -18,6 +18,7 @@ import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.client.Minecraft;
@@ -119,7 +120,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   }
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull AlloyRecipeCategory.AlloyRecipe recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull AlloyRecipeCategory.AlloyRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
     guiItemStacks.init(0, true, 53 - xOff, 16 - yOff);
@@ -127,15 +128,15 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     guiItemStacks.init(2, true, 102 - xOff, 16 - yOff);
     guiItemStacks.init(3, false, 78 - xOff, 57 - yOff);
 
-    List<?> inputs = recipeWrapper.getInputs();
+    List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
     for (int index = 0; index < inputs.size(); index++) {
-      Object ingredients = inputs.get(index);
-      if (ingredients != null) {
-        guiItemStacks.setFromRecipe(index, ingredients);
+      List<ItemStack> input = inputs.get(index);
+      if (input != null) {
+        guiItemStacks.set(index, input);
       }
     }
-    List<?> outputs = recipeWrapper.getOutputs();
-    guiItemStacks.setFromRecipe(3, outputs);
+    List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+    guiItemStacks.set(3, outputs);
     currentRecipe = recipeWrapper;
   }
 

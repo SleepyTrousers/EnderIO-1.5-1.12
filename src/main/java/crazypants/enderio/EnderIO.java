@@ -162,7 +162,7 @@ import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:Waila", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:Waila;after:JEI@[3.11.1,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final @Nonnull String MODID = "EnderIO";

@@ -26,11 +26,10 @@ import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.gui.Focus;
-import mezz.jei.gui.ingredients.GuiIngredientGroup;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -126,16 +125,13 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
     }
 
     @Override
-    public @Nonnull List<?> getInputs() {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
       List<ItemStack> list = new ArrayList<ItemStack>(paints);
       list.add(target);
-      return list;
-    }
+      ingredients.setInputs(ItemStack.class, list);
 
-    @Override
-    public @Nonnull List<?> getOutputs() {
-      return results;
-    }   
+      ingredients.setOutputs(ItemStack.class, results);
+    }
     
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {           
@@ -201,7 +197,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
   }  
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull PainterRecipeCategory.PainterRecipeWrapper currentRecipe) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull PainterRecipeCategory.PainterRecipeWrapper currentRecipe, @Nonnull IIngredients ingredients) {
       IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
       guiItemStacks.init(0, true, 67 - xOff - 1, 34 - yOff - 1);
       guiItemStacks.init(1, true, 38 - xOff - 1, 34 - yOff - 1);
@@ -210,62 +206,56 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
       guiItemStacks.set(0, currentRecipe.target);
 
       // Not very nice, but the only way to get correct painting recipes into JEI, it seems.
-    // TODO: focus is now exposed, change this to use the exposed focus
-      if (guiItemStacks instanceof GuiIngredientGroup) {
-        try {
-          List<ItemStack> paints = new ArrayList<ItemStack>();
-          List<ItemStack> results = new ArrayList<ItemStack>();
+      try {
+        List<ItemStack> paints = new ArrayList<ItemStack>();
+        List<ItemStack> results = new ArrayList<ItemStack>();
 
-          Field focusField = GuiIngredientGroup.class.getDeclaredField("focus");
-          focusField.setAccessible(true);
-          Focus<ItemStack > focus = (Focus<ItemStack>) focusField.get(guiItemStacks);          
-          if (focus != null && focus.getMode() != IFocus.Mode.NONE) { //&& !focus.isBlank() 
-            ItemStack focused = focus.getValue();
-            if (focus.getMode() == IFocus.Mode.OUTPUT) {
-              // JEI is focusing on the output item. Limit the recipe to only the paints that actually give this output item. Needs some extra comparison
-              // because we told JEI to ignore paint information, which is ok for crafting and soul binding, but not here.
-              for (int i = 0; i < currentRecipe.paints.size(); i++) {
-                ItemStack resultStack = currentRecipe.results.get(i);
-                ItemStack paintStack = currentRecipe.paints.get(i);
-                if (Internal.getStackHelper().isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
-                    && SOURCE_META.getInt(focused) == SOURCE_META.getInt(resultStack)) {
-                  paints.add(paintStack);
-                  results.add(resultStack);
-                }
-              }
-            } else if (!Internal.getStackHelper().isEquivalent(focused, currentRecipe.target)) {
-              // JEI is focusing on the paint. Limit the output items to things that are painted with this paint.
-              for (int i = 0; i < currentRecipe.paints.size(); i++) {
-                ItemStack resultStack = currentRecipe.results.get(i);
-                ItemStack paintStack = currentRecipe.paints.get(i);
-                if (Internal.getStackHelper().isEquivalent(focused, paintStack)) {
-                  paints.add(paintStack);
-                  results.add(resultStack);
-                }
-              }
-            } else {
-              // JEI is focusing on a paintable item. If that item also can be used as a paint source, it will display "item+item=anything", which is somewhere
-              // between weird and wrong. So remove the recipe "item+item" from the list to get "anything+item=anything".
-              for (int i = 0; i < currentRecipe.paints.size(); i++) {
-                ItemStack resultStack = currentRecipe.results.get(i);
-                ItemStack paintStack = currentRecipe.paints.get(i);
-                if (!Internal.getStackHelper().isEquivalent(focused, paintStack)) {
-                  paints.add(paintStack);
-                  results.add(resultStack);
-                }
+        IFocus<?> focus = recipeLayout.getFocus();
+        Object focusValue = focus.getValue();
+        if (focusValue instanceof ItemStack && focus.getMode() != IFocus.Mode.NONE) { //&& !focus.isBlank()
+          ItemStack focused = (ItemStack) focusValue;
+          if (focus.getMode() == IFocus.Mode.OUTPUT) {
+            // JEI is focusing on the output item. Limit the recipe to only the paints that actually give this output item. Needs some extra comparison
+            // because we told JEI to ignore paint information, which is ok for crafting and soul binding, but not here.
+            for (int i = 0; i < currentRecipe.paints.size(); i++) {
+              ItemStack resultStack = currentRecipe.results.get(i);
+              ItemStack paintStack = currentRecipe.paints.get(i);
+              if (Internal.getStackHelper().isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
+                  && SOURCE_META.getInt(focused) == SOURCE_META.getInt(resultStack)) {
+                paints.add(paintStack);
+                results.add(resultStack);
               }
             }
-            if (!paints.isEmpty()) {
-              guiItemStacks.set(1, paints);
-              guiItemStacks.set(2, results);
-              return;
+          } else if (!Internal.getStackHelper().isEquivalent(focused, currentRecipe.target)) {
+            // JEI is focusing on the paint. Limit the output items to things that are painted with this paint.
+            for (int i = 0; i < currentRecipe.paints.size(); i++) {
+              ItemStack resultStack = currentRecipe.results.get(i);
+              ItemStack paintStack = currentRecipe.paints.get(i);
+              if (Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+                paints.add(paintStack);
+                results.add(resultStack);
+              }
+            }
+          } else {
+            // JEI is focusing on a paintable item. If that item also can be used as a paint source, it will display "item+item=anything", which is somewhere
+            // between weird and wrong. So remove the recipe "item+item" from the list to get "anything+item=anything".
+            for (int i = 0; i < currentRecipe.paints.size(); i++) {
+              ItemStack resultStack = currentRecipe.results.get(i);
+              ItemStack paintStack = currentRecipe.paints.get(i);
+              if (!Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+                paints.add(paintStack);
+                results.add(resultStack);
+              }
             }
           }
-        } catch (Throwable t) {
-          Log.debug(t.getMessage());
+          if (!paints.isEmpty()) {
+            guiItemStacks.set(1, paints);
+            guiItemStacks.set(2, results);
+            return;
+          }
         }
-      } else {
-        Log.debug("Assertion failed");
+      } catch (Throwable t) {
+        Log.debug(t.getMessage());
       }
 
       guiItemStacks.set(1, currentRecipe.paints);
