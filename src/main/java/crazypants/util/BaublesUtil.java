@@ -1,6 +1,7 @@
 package crazypants.util;
 
 import baubles.api.BaublesApi;
+import crazypants.enderio.config.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -26,7 +27,7 @@ public class BaublesUtil {
         } else {
           return MPCLIENT;
         }
-      } else if (side == Side.SERVER) {        
+      } else if (side == Side.SERVER) {
         if (FMLCommonHandler.instance().getMinecraftServerInstance().isDedicatedServer()) {
           return MPSERVER;
         } else if (Minecraft.getMinecraft().isIntegratedServerRunning()) {
@@ -40,7 +41,7 @@ public class BaublesUtil {
   private static final BaublesUtil instance = new BaublesUtil();
   private static final boolean baublesLoaded;
   static {
-    baublesLoaded = Loader.isModLoaded("Baubles");
+    baublesLoaded = Config.enableBaublesIntegration && Loader.isModLoaded("Baubles");
   }
 
   private BaublesUtil() {
