@@ -19,6 +19,7 @@ import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -114,7 +115,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   }
   
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
     currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
@@ -130,21 +131,21 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     guiItemStacks.init(8, false, 133 - xOff, 48 - yOff);
 
     
-    guiItemStacks.setFromRecipe(0, getAxes());
-    guiItemStacks.setFromRecipe(1, getShears());
+    guiItemStacks.set(0, getAxes());
+    guiItemStacks.set(1, getShears());
     
     
-    List<?> inputs = recipeWrapper.getInputs();
+    List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
     int slot = 2;
-    for(Object input : inputs) {
+    for(List<ItemStack> input : inputs) {
       if (input != null) {
-        guiItemStacks.setFromRecipe(slot, input);
+        guiItemStacks.set(slot, input);
       }
       ++slot;
     }    
-    Object output = recipeWrapper.getOutputs().get(0);
+    ItemStack output = ingredients.getOutputs(ItemStack.class).get(0);
     if (output != null) {
-      guiItemStacks.setFromRecipe(8, output);
+      guiItemStacks.set(8, output);
     }
   }
   

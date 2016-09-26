@@ -1,6 +1,8 @@
 package crazypants.enderio.integration.jei;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +19,9 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.gui.ingredients.GuiIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
@@ -60,9 +62,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
       ItemStack stack = null;
       IGuiIngredient<ItemStack> ging = currentIngredients.get(1);
-      if (ging instanceof GuiIngredient) {
-        GuiIngredient<ItemStack> gi = (GuiIngredient<ItemStack>) ging;
-        stack = gi.getIngredient();
+      if (ging != null) {
+        stack = ging.getDisplayedIngredient();
       }
       if (stack == null) {
         return;
@@ -78,23 +79,19 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     }
 
     @Override
-    public @Nonnull List<?> getInputs() {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
       List<ItemStack> itemInputs = new ArrayList<ItemStack>();
       List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
       List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
       getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
-      itemInputs.add(new ItemStack(Items.WRITABLE_BOOK));
-      itemInputs.addAll(lapizInputs);
-      return itemInputs;
-    }
 
-    @Override
-    public @Nonnull List<?> getOutputs() {
-      List<ItemStack> itemInputs = new ArrayList<ItemStack>();
-      List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
-      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
-      getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
-      return itemOutputs;
+      List<List<ItemStack>> inputs = new ArrayList<List<ItemStack>>();
+      inputs.add(Collections.singletonList(new ItemStack(Items.WRITABLE_BOOK)));
+      inputs.add(itemInputs);
+      inputs.add(lapizInputs);
+
+      ingredients.setInputLists(ItemStack.class, inputs);
+      ingredients.setOutputs(ItemStack.class, itemOutputs);
     }
 
   }
@@ -159,7 +156,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   }
 
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
 
     currentRecipe = recipeWrapper;
 
@@ -173,16 +170,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     guiItemStacks.init(2, true, 85 - xOff - 1, 34 - yOff);
     guiItemStacks.init(3, false, 144 - xOff - 1, 34 - yOff);
 
-    guiItemStacks.setFromRecipe(0, new ItemStack(Items.WRITABLE_BOOK));
-
-    EnchanterRecipe rec = currentRecipe.rec;
-    List<ItemStack> itemInputs = new ArrayList<ItemStack>();
-    List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
-    List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
-    getItemStacks(rec, itemInputs, lapizInputs, itemOutputs);
-    guiItemStacks.set(1, itemInputs);
-    guiItemStacks.set(2, lapizInputs);
-    guiItemStacks.set(3, itemOutputs);
+    guiItemStacks.set(ingredients);
   }
 
   private static void getItemStacks(EnchanterRecipe rec, List<ItemStack> itemInputs, List<ItemStack> lapizInputs, List<ItemStack> itemOutputs) {

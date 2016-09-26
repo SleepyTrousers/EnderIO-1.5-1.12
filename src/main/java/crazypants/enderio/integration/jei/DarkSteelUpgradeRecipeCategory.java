@@ -1,6 +1,7 @@
 package crazypants.enderio.integration.jei;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import mezz.jei.api.ingredients.IIngredients;
 import org.apache.commons.lang3.tuple.Triple;
 
 import crazypants.enderio.EnderIO;
@@ -54,17 +56,9 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
     }
 
     @Override
-    public @Nonnull List<?> getInputs() {
-      List<ItemStack> itemInputs = new ArrayList<ItemStack>();
-      itemInputs.add(stacks.getLeft());
-      itemInputs.add(stacks.getMiddle());
-      return itemInputs;
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public @Nonnull List<?> getOutputs() {
-      return Collections.singletonList(stacks.getRight());
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+      ingredients.setInputs(ItemStack.class, Arrays.asList(stacks.getLeft(), stacks.getMiddle()));
+      ingredients.setOutput(ItemStack.class, stacks.getRight());
     }
 
   } // -------------------------------------
@@ -147,16 +141,14 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
 
   @SuppressWarnings("null")
   @Override
-  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DarkSteelUpgradeRecipeWrapper recipeWrapper) {
+  public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DarkSteelUpgradeRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
     guiItemStacks.init(0, true, 27 - xOff - 1, 47 - yOff - 1);
     guiItemStacks.init(1, true, 76 - xOff - 1, 47 - yOff - 1);
     guiItemStacks.init(2, false, 134 - xOff - 1, 47 - yOff - 1);
 
-    guiItemStacks.setFromRecipe(0,recipeWrapper.stacks.getLeft());
-    guiItemStacks.setFromRecipe(1,recipeWrapper.stacks.getMiddle());
-    guiItemStacks.setFromRecipe(2,recipeWrapper.stacks.getRight());
+    guiItemStacks.set(ingredients);
   }
 
   public static class DarkSteelUpgradeSubtypeInterpreter implements ISubtypeInterpreter {
