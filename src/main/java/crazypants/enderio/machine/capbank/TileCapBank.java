@@ -173,6 +173,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
           }
           network.getInventory().setCapBank(cb);
           markDirty();
+          cb.markDirty();
           break;
         }
       }

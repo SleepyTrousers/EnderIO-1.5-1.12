@@ -140,6 +140,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
     }
     capBanks.clear();
+    inventory.setCapBank(null);
     if(cap != null) {
       PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
     }
