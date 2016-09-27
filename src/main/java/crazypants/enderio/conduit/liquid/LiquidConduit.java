@@ -129,8 +129,8 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
           FluidStack couldDrain = extTank.getAvailableFluid();
           if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
+            couldDrain = couldDrain.copy();
             if (couldDrain.amount > MAX_EXTRACT_PER_TICK) {
-              couldDrain = couldDrain.copy();
               couldDrain.amount = MAX_EXTRACT_PER_TICK;
             }
             int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
