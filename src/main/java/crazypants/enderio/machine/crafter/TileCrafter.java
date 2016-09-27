@@ -177,14 +177,15 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       }
       MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
 
+      ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(inv, worldObj);
+      
       // (3a) ... remove the used up items and ...
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < usedItems[i] && inventory[i] != null; j++) {
-          setInventorySlotContents(i, eatOneItemForCrafting(inventory[i].copy()));
+          setInventorySlotContents(i, eatOneItemForCrafting(i, inventory[i].copy(), remaining));
         }
       }
-
-      ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(inv, worldObj);
+      
       if (remaining != null) {
         for(ItemStack stack : remaining) {
           if(stack != null) {
@@ -232,43 +233,21 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     return true;
   }
 
-  private ItemStack eatOneItemForCrafting(ItemStack avail) {
-    // 101 special cases for container items
-    if (avail.getItem().hasContainerItem(avail)) {
+  private ItemStack eatOneItemForCrafting(int slot, ItemStack avail, ItemStack[] remaining) {
+    //if one of the remaining items is the container item for the input, place the remaining item in the same grid
+    if (remaining != null && remaining.length > 0 && avail.getItem().hasContainerItem(avail)) {
       ItemStack used = avail.getItem().getContainerItem(avail);
-      if (used == null) {
-        // The promised container item does not exist
-        avail.stackSize--;
-      } else if (used.isItemStackDamageable() && used.getItemDamage() > used.getMaxDamage()) {
-        // Container item was used up
-        used = null;
-        avail.stackSize--;
-      } else if (used.isItemEqual(avail)) {
-        if (used.isItemStackDamageable()) {
-          // Container item is the same, but may have a different damage value
-          if (avail.stackSize == 1) {
-            // itemstack was used up, container item can replace it
-            avail = used;
-          } else {
-            // itemstack was not used up, container item goes into overflow
-            // (impossible case with vanilla and mods that play by the rules)
-            containerItems.add(used.copy());
-            avail.stackSize--;
+      if(used != null) {
+        for(int i=0; i < remaining.length;  i++) {
+          ItemStack s  = remaining[i];
+          if(s != null && s.isItemEqualIgnoreDurability(used) && isItemValidForSlot(slot, s)) {
+            remaining[i] = null;
+            return s;
           }
-        } else {
-          // Container item is exactly the same: item should not be used up
-          // Nothing to do here
         }
-      } else {
-        // Container item is different (e.g. bucket for lava bucket) and goes into the overflow
-        containerItems.add(used.copy());
-        avail.stackSize--;
       }
-    } else {
-      // no container item, use up one item of the stack
-      avail.stackSize--;
     }
-
+    avail.stackSize--;
     if (avail.stackSize == 0) {
       avail = null;
     }
