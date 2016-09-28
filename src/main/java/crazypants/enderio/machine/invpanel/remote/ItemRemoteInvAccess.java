@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.invpanel.remote;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
@@ -54,7 +57,7 @@ import static crazypants.util.NbtValue.REMOTE_X;
 import static crazypants.util.NbtValue.REMOTE_Y;
 import static crazypants.util.NbtValue.REMOTE_Z;
 
-public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem {
+public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem {
 
   public static ItemRemoteInvAccess create() {
     ClientRemoteGuiManager.create();
@@ -177,7 +180,9 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
       }
 
       if (!drain(equipped, type.getMbPerOpen())) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outoffluid")));
+        Fluid fluid = type.getFluidType();
+        String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.outoffluid").replace("{FLUIDNAME}", fluidname)));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
@@ -185,11 +190,6 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
     return super.onItemRightClick(equipped, world, player, hand);
-  }
-
-  @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return getUnlocalizedName(itemStack);
   }
 
   public boolean canInteractWith(ItemStack stack, EntityPlayer player) {
@@ -286,7 +286,7 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     return toFill;
   }
   
-  public Fluid getFluidType(ItemStack stack) {
+  public @Nonnull Fluid getFluidType(ItemStack stack) {
     return ItemRemoteInvAccessType.fromStack(stack).getFluidType();
   }
 
@@ -409,6 +409,27 @@ public class ItemRemoteInvAccess extends Item implements IResourceTooltipProvide
     @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain) {
       return null;
+    }
+  }
+
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName(itemstack));
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    SpecialTooltipHandler.addBasicTooltipFromResources(list, getUnlocalizedName(itemstack));
+  }
+
+  @Override
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    List<String> list0 = new ArrayList<String>();
+    SpecialTooltipHandler.addDetailedTooltipFromResources(list0, getUnlocalizedName(itemstack));
+    Fluid fluid = getFluidType(itemstack);
+    String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
+    for (String string : list0) {
+      list.add(string.replace("{FLUIDNAME}", fluidname));
     }
   }
 

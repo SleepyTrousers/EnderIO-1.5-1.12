@@ -1440,23 +1440,23 @@ enderio.remoteinv.chat.invalidtargetworld=ERROR: Target in unaccessible dimensio
 enderio.remoteinv.chat.notloaded=ERROR: Target is not loaded
 enderio.remoteinv.chat.invalidtarget=ERROR: Target does not exist
 enderio.remoteinv.chat.outofpower=ERROR: Out of power
-enderio.remoteinv.chat.outoffluid=ERROR: Out of nutrient distillation
+enderio.remoteinv.chat.outoffluid=ERROR: Out of {FLUIDNAME}
 enderio.remoteinv.chat.error=ERROR: Technical error, see log
 
 item.itemRemoteInvAccessbasic.name=Inventory Panel Remote
 item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Allows you to access an Inventory Panel from up to 5 chunks away.
 item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.itemRemoteInvAccessadvanced.name=Advanced Inventory Panel Remote
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.itemRemoteInvAccessender.name=Ender Inventory Panel Remote
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses Nutrient Distillation to open a connection and RF to keep it open.
+item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 tile.blockExitRail.name=Exit Rail
 
