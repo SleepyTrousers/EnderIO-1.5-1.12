@@ -155,14 +155,6 @@
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
       </output>
     </recipe>
-    <recipe name="SiliconRedSand" energyCost="720" >
-      <input>
-        <itemStack oreDictionary="sand" itemMeta="1" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
-      </output>
-    </recipe>
     <recipe name="CoalOre" energyCost="3600" >
       <input>
         <itemStack oreDictionary="oreCoal" />
