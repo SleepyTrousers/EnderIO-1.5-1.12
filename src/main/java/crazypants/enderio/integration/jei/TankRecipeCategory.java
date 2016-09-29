@@ -177,8 +177,8 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
     List<List<ItemStack>> itemInputs = ingredients.getInputs(ItemStack.class);
     List<ItemStack> itemOutputs = ingredients.getOutputs(ItemStack.class);
     List<List<FluidStack>> fluidInputs = ingredients.getInputs(FluidStack.class);
-    List<ItemStack> inputIngredient = itemInputs.get(0);
-    ItemStack outputIngredient = itemOutputs.get(0);
+    List<ItemStack> inputIngredient = itemInputs.isEmpty() ? null : itemInputs.get(0);
+    ItemStack outputIngredient = itemOutputs.isEmpty() ? null : itemOutputs.get(0);
     if (fluidInputs.isEmpty()) {
       guiItemStacks.set(0, inputIngredient);
       guiItemStacks.set(2, outputIngredient);
