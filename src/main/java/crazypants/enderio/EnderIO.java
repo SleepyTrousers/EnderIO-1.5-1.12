@@ -300,6 +300,11 @@ public class EnderIO {
   public static BlockVacuumChest blockVacuumChest;
   public static ItemRemoteInvAccess itemRemoteInvAccess;
 
+  // prePreInit
+  static {
+    PowerHandlerUtil.create();
+  }
+
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
@@ -459,8 +464,6 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-    PowerHandlerUtil.onInit(event); // must be done before anyone starts creating itemstacks
-
     Things.enterInit();
 
     Config.init();

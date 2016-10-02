@@ -7,14 +7,12 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.power.forge.ForgeAdapter;
+import crazypants.enderio.power.rf.RfAdapter;
+import crazypants.enderio.power.tesla.TeslaAdapter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PowerHandlerUtil {
 
@@ -26,23 +24,25 @@ public class PowerHandlerUtil {
     }
   }
   
-  public static void onInit(FMLInitializationEvent event) {
-    providers.add(new ForgeAdapter());
+  /**
+   * Prime power adapters. To be loaded very early, best before init phase.
+   */
+  public static void create() {
     try {
-      IPowerApiAdapter o = (IPowerApiAdapter)Class.forName("crazypants.enderio.power.rf.RfAdpater").newInstance();
-      providers.add(o);
-      Log.info("RF integration loaded");
-    } catch(Exception e) {
-      Log.warn("RF API not found. RF integration not loaded.");
+      ForgeAdapter.create();
+    } catch (Throwable e) {
+      Log.error("Forge not found. Forge Energy integration NOT loaded: " + e);
     }
     try {
-      IPowerApiAdapter o = (IPowerApiAdapter)Class.forName("crazypants.enderio.power.tesla.TeslaAdapter").newInstance();
-      providers.add(o);
-      Log.info("Tesla integration loaded");
-    } catch(Exception e) {
-      Log.warn("Tesla API not found. Tesla integration not loaded.");
+      TeslaAdapter.create();
+    } catch (Throwable e) {
+      Log.warn("Tesla API not found. Tesla integration not loaded. This is not an error. Reason: " + e);
     }
-    MinecraftForge.EVENT_BUS.register(new CapAttacher());
+    try {
+      RfAdapter.create();
+    } catch (Throwable e) {
+      Log.warn("RF API not found. RF integration not loaded. This is not an error. Reason: " + e);
+    }
   }
   
   public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
@@ -79,24 +79,6 @@ public class PowerHandlerUtil {
       target.setEnergyStored(target.getEnergyStored(from) + result);
     }
     return result;
-  }
-
-  public static class CapAttacher {
-
-    @SubscribeEvent
-    public void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt) {
-      for(IPowerApiAdapter prov : providers) {
-        prov.attachCapabilities(evt);
-      }
-    }
-    
-    @SubscribeEvent
-    public void attachCapabilities(AttachCapabilitiesEvent.Item evt) {
-      for(IPowerApiAdapter prov : providers) {
-        prov.attachCapabilities(evt);
-      }
-    }
-
   }
 
 }

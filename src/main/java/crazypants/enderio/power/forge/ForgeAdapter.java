@@ -1,19 +1,25 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent.Item;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeAdapter implements IPowerApiAdapter {
 
@@ -22,8 +28,19 @@ public class ForgeAdapter implements IPowerApiAdapter {
   
   private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower");
   
+  public static void create() throws Exception {
+    // class is now loaded and @CapabilityInjects are active
+  }
+
+  @CapabilityInject(IEnergyStorage.class)
+  private static void capRegistered(Capability<IEnergyStorage> cap) {
+    PowerHandlerUtil.addAdapter(new ForgeAdapter());
+    MinecraftForge.EVENT_BUS.register(ForgeAdapter.class);
+    Log.info("Forge Energy integration loaded");
+  }
+
   @Override
-  public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
+  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
     IEnergyStorage cap = getCapability(provider, side);
     if (cap != null) {
       return new PowerInterfaceForge(provider, cap);
@@ -32,15 +49,15 @@ public class ForgeAdapter implements IPowerApiAdapter {
   }
 
   @Override
-  public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
+  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
     if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
       return provider.getCapability(ENERGY_HANDLER, side);
     }
     return null;
   }
 
-  @Override
-  public void attachCapabilities(net.minecraftforge.event.AttachCapabilitiesEvent.TileEntity evt) {
+  @SubscribeEvent
+  public static void attachCapabilities(net.minecraftforge.event.AttachCapabilitiesEvent.TileEntity evt) {
     if(evt.getCapabilities().containsKey(KEY)) {
       return;
     }
@@ -52,8 +69,8 @@ public class ForgeAdapter implements IPowerApiAdapter {
     }
   }
 
-  @Override
-  public void attachCapabilities(Item evt) {
+  @SubscribeEvent
+  public static void attachCapabilities(Item evt) {
     if(evt.getCapabilities().containsKey(KEY)) {
       return;
     }

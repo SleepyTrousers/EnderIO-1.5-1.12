@@ -1,11 +1,15 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.forge.PowerInterfaceForge;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
@@ -14,23 +18,34 @@ import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent.Item;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TeslaAdapter implements IPowerApiAdapter {
   
 
   private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderTesla");
   
-  public TeslaAdapter() throws Exception {
-    //Make sure we can load these classes or throw an excpetion
+  public static void create() throws Exception {
+    // Make sure we can load these classes or throw an exception
     Class.forName("net.darkhax.tesla.capability.TeslaCapabilities");
+    // class is now loaded and @CapabilityInjects are active
+  }
+
+  @CapabilityInject(ITeslaHolder.class)
+  private static void capRegistered(Capability<ITeslaHolder> cap) {
+    PowerHandlerUtil.addAdapter(new TeslaAdapter());
+    MinecraftForge.EVENT_BUS.register(TeslaAdapter.class);
+    Log.info("Tesla integration loaded");
   }
 
   @Override
-  public IPowerInterface getPowerInterface(ICapabilityProvider provider, EnumFacing side) {
+  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
     IEnergyStorage cap = getCapability(provider, side);
     if (cap != null) {
       return new PowerInterfaceForge(provider, cap);
@@ -39,7 +54,7 @@ public class TeslaAdapter implements IPowerApiAdapter {
   }
 
   @Override
-  public IEnergyStorage getCapability(ICapabilityProvider provider, EnumFacing side) {
+  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
     if(provider == null) {
       return null;
     }
@@ -61,8 +76,8 @@ public class TeslaAdapter implements IPowerApiAdapter {
     return new TeslaToForgeAdapter(capHolder, capConsumer, capProducer);
   }
 
-  @Override
-  public void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt) {
+  @SubscribeEvent
+  public static void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt) {
     if(evt.getCapabilities().containsKey(KEY)) {
       return;
     }
@@ -74,8 +89,8 @@ public class TeslaAdapter implements IPowerApiAdapter {
     }
   }
 
-  @Override
-  public void attachCapabilities(Item evt) {
+  @SubscribeEvent
+  public static void attachCapabilities(AttachCapabilitiesEvent.Item evt) {
     if(evt.getCapabilities().containsKey(KEY)) {
       return;
     }
