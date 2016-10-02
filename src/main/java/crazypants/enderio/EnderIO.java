@@ -459,6 +459,8 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
+    PowerHandlerUtil.onInit(event); // must be done before anyone starts creating itemstacks
+
     Things.enterInit();
 
     Config.init();
@@ -514,8 +516,6 @@ public class EnderIO {
       dumpMobNamesToFile();
     }
     addModIntegration();
-    
-    PowerHandlerUtil.onPostInit(event);
   }
 
   @EventHandler

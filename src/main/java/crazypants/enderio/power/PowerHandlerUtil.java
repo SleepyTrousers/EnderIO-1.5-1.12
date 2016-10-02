@@ -13,7 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PowerHandlerUtil {
@@ -26,7 +26,7 @@ public class PowerHandlerUtil {
     }
   }
   
-  public static void onPostInit(FMLPostInitializationEvent event) {
+  public static void onInit(FMLInitializationEvent event) {
     providers.add(new ForgeAdapter());
     try {
       IPowerApiAdapter o = (IPowerApiAdapter)Class.forName("crazypants.enderio.power.rf.RfAdpater").newInstance();
