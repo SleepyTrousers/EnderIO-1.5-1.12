@@ -458,7 +458,7 @@ public class EnderIO {
     blockDecoration1 = BlockDecoration.create();
     blockDecoration2 = BlockDecorationFacing.create();
 
-    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
+    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.integration.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
 
