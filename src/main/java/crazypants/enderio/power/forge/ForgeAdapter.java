@@ -28,12 +28,7 @@ public class ForgeAdapter implements IPowerApiAdapter {
   
   private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower");
   
-  public static void create() throws Exception {
-    // class is now loaded and @CapabilityInjects are active
-  }
-
-  @CapabilityInject(IEnergyStorage.class)
-  private static void capRegistered(Capability<IEnergyStorage> cap) {
+  public static void capRegistered(Capability<?> cap) {
     PowerHandlerUtil.addAdapter(new ForgeAdapter());
     MinecraftForge.EVENT_BUS.register(ForgeAdapter.class);
     Log.info("Forge Energy integration loaded");

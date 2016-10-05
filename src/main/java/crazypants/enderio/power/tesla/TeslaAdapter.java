@@ -20,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -31,14 +30,7 @@ public class TeslaAdapter implements IPowerApiAdapter {
 
   private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderTesla");
   
-  public static void create() throws Exception {
-    // Make sure we can load these classes or throw an exception
-    Class.forName("net.darkhax.tesla.capability.TeslaCapabilities");
-    // class is now loaded and @CapabilityInjects are active
-  }
-
-  @CapabilityInject(ITeslaHolder.class)
-  private static void capRegistered(Capability<ITeslaHolder> cap) {
+  public static void capRegistered(Capability<?> cap) {
     PowerHandlerUtil.addAdapter(new TeslaAdapter());
     MinecraftForge.EVENT_BUS.register(TeslaAdapter.class);
     Log.info("Tesla integration loaded");

@@ -123,6 +123,7 @@ import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
+import crazypants.enderio.power.CapInjectHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.rail.BlockExitRail;
@@ -302,13 +303,15 @@ public class EnderIO {
 
   // prePreInit
   static {
-    PowerHandlerUtil.create();
+    CapInjectHandler.loadClass();
   }
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
     EnderIOCrashCallable.create();
+
+    PowerHandlerUtil.create();
 
     Config.load(event);
 
