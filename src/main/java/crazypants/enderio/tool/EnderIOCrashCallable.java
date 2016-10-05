@@ -177,7 +177,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
   public static List<String> rfDiagnostics() {
     List<String> result = new ArrayList<String>();
     apiDiagnostics(result, "RF", "cofh.api.energy.", "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler", "IEnergyProvider",
-        "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler");
+        "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler");
     return result;
   }
 
