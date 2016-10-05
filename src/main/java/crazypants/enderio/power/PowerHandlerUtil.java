@@ -32,16 +32,25 @@ public class PowerHandlerUtil {
       ForgeAdapter.create();
     } catch (Throwable e) {
       Log.error("Forge not found. Forge Energy integration NOT loaded: " + e);
+      if (Log.LOGGER.isDebugEnabled()) {
+        e.printStackTrace();
+      }
     }
     try {
       TeslaAdapter.create();
     } catch (Throwable e) {
       Log.warn("Tesla API not found. Tesla integration not loaded. This is not an error. Reason: " + e);
+      if (Log.LOGGER.isDebugEnabled()) {
+        e.printStackTrace();
+      }
     }
     try {
       RfAdapter.create();
     } catch (Throwable e) {
       Log.warn("RF API not found. RF integration not loaded. This is not an error. Reason: " + e);
+      if (Log.LOGGER.isDebugEnabled()) {
+        e.printStackTrace();
+      }
     }
   }
   

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.api.EnderIOAPIProps;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.API;
@@ -112,7 +113,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
     } else {
       msg += "Found the following problem(s) with your installation (That does NOT mean that Ender IO caused the crash or was involved in it in "
           + "any way. We add this information to help finding common problems, not as an invitation to post any crash you encounter to "
-          + "Ender IO's issue tracker.):\n";
+          + "Ender IO's issue tracker. Always check the stack trace above to see which mod is most likely failing.):\n";
       for (String string : data) {
         msg += "                 " + string + "\n";
       }
@@ -121,6 +122,10 @@ public class EnderIOCrashCallable implements ICrashCallable {
     }
     msg += "\tDetailed RF API diagnostics:\n";
     for (String string : rfDiagnostics()) {
+      msg += "                 " + string + "\n";
+    }
+    msg += "\tDetailed Tesla API diagnostics:\n";
+    for (String string : teslaDiagnostics()) {
       msg += "                 " + string + "\n";
     }
     return msg;
@@ -169,21 +174,35 @@ public class EnderIOCrashCallable implements ICrashCallable {
     return "<unknown>";
   }
 
-  private final static String[] rfclasses = new String[] { "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler",
-      "IEnergyProvider", "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler" };
-
   public static List<String> rfDiagnostics() {
     List<String> result = new ArrayList<String>();
-    for (String rfclass : rfclasses) {
+    apiDiagnostics(result, "RF", "cofh.api.energy.", "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler", "IEnergyProvider",
+        "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler", "TileEnergyHandler");
+    return result;
+  }
+
+  public static List<String> teslaDiagnostics() {
+    List<String> result = new ArrayList<String>();
+    apiDiagnostics(result, "Tesla", "net.darkhax.tesla.", "Tesla");
+    apiDiagnostics(result, "Tesla", "net.darkhax.tesla.capability.", "TeslaCapabilities");
+    apiDiagnostics(result, "Tesla", "net.darkhax.tesla.api.", "ITeslaConsumer", "ITeslaHolder", "ITeslaProducer");
+    apiDiagnostics(result, "Tesla", "net.darkhax.tesla.api.implementation.", "BaseTeslaContainer", "BaseTeslaContainerProvider", "InfiniteTeslaConsumer",
+        "InfiniteTeslaConsumerProvider", "InfiniteTeslaProducer", "InfiniteTeslaProducerProvider");
+    return result;
+  }
+
+  public static void apiDiagnostics(List<String> result, String displayName, String prefix, String... clazzes) {
+    for (String clazz : clazzes) {
       try {
-        Class<?> forName = Class.forName("cofh.api.energy." + rfclass);
-        result.add(" * RF API class '" + rfclass + "' is loaded from: " + whereFrom(forName));
+        Class<?> forName = Class.forName(prefix + clazz);
+        result.add(" * " + displayName + " API class '" + clazz + "' is loaded from: " + whereFrom(forName));
       } catch (ClassNotFoundException e) {
-        result.add(" * RF API class '" + rfclass + "' could not be loaded (see strack trace above)");
-        e.printStackTrace();
+        result.add(" * " + displayName + " API class '" + clazz + "' could not be loaded (reason: " + e + ")");
+        if (Log.LOGGER.isDebugEnabled()) {
+          e.printStackTrace();
+        }
       }
     }
-    return result;
   }
 
 }

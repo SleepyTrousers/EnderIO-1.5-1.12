@@ -19,7 +19,7 @@ public class RfAdapter implements IPowerApiAdapter {
   public static void create() throws Exception {
     // Make sure we can load these classes or throw an exception
     Class.forName("cofh.api.energy.IEnergyConnection");
-    Class.forName("cofh.api.energy.IEnergyContainerItem");
+    // Class.forName("cofh.api.energy.IEnergyContainerItem");
     PowerHandlerUtil.addAdapter(new RfAdapter());
     Log.info("RF integration loaded");
   }
