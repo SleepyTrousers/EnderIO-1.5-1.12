@@ -16,8 +16,14 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public class NutritiousStickRecipe implements IRecipe {
+
+  static {
+    RecipeSorter.register("EnderIO:nutritiousStick", NutritiousStickRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+  }
 
   @Override
   public boolean matches(InventoryCrafting inv, World worldIn) {
