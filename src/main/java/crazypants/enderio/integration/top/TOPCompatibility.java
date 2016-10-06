@@ -1,5 +1,6 @@
 package crazypants.enderio.integration.top;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +31,7 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.spawner.TilePoweredSpawner;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -391,6 +393,14 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mobs = te.getMobsInFilter();
         mobAction = te.getSpawnObeliskAction().getActionString();
         hasMobs = true;
+      }
+
+      if (tileEntity instanceof TilePoweredSpawner) {
+        if (((TilePoweredSpawner) tileEntity).hasEntity()) {
+          mobs = Collections.singletonList(((TilePoweredSpawner) tileEntity).getEntity());
+          mobAction = AbstractMobObelisk.SpawnObeliskAction.SPAWN.getActionString();
+          hasMobs = true;
+        }
       }
 
       if (tileEntity instanceof ITankAccess.IExtendedTankAccess) {

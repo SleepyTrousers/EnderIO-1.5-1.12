@@ -21,6 +21,7 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     ATTRACT("blockAttractor.action"),
     AVERT("blockSpawnGuard.action"),
     RELOCATE("blockSpawnRelocator.action"),
+    SPAWN("blockPoweredSpawner.action"),
   
     ;
   

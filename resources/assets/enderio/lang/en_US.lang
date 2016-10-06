@@ -515,6 +515,7 @@ tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
 tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
+enderio.blockPoweredSpawner.action=Spawns
 
 item.itemBrokenSpawner.name=Broken Spawner
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
