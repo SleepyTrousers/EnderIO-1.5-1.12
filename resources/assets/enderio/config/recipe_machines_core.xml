@@ -472,6 +472,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Inhibitor Obelisk" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ENDER_CRYSTAL" /><item />
+        <item /><item name="SOULARIUM" /><item />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:blockInhibitorObelisk" />
+    </crafting>
+  </recipe>
+
   <recipe name="Experience Obelisk" required="true">
     <crafting>
       <grid size="3x3">
