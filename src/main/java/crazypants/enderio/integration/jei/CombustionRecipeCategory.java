@@ -3,7 +3,6 @@ package crazypants.enderio.integration.jei;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
@@ -94,7 +94,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
     registry.addRecipeCategories(new CombustionRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<CombustionRecipeWrapper>(CombustionRecipeWrapper.class, CombustionRecipeCategory.UID));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockCombustionGenerator, 1, 0), CombustionRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(ModObject.blockCombustionGenerator.getBlock(), 1, 0), CombustionRecipeCategory.UID);
     registry.addRecipeClickArea(GuiCombustionGenerator.class, 155, 42, 16, 16, CombustionRecipeCategory.UID);
 
     long start = System.nanoTime();
@@ -146,7 +146,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
-    return EnderIO.blockCombustionGenerator.getLocalizedName();
+    return ModObject.blockCombustionGenerator.getBlock().getLocalizedName();
   }
 
   @Override

@@ -2,7 +2,6 @@ package crazypants.enderio.machine.solar;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.integration.waila.IWailaNBTProvider;
 import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
@@ -20,6 +19,8 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+
+import static crazypants.enderio.ModObject.blockSolarPanel;
 
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPoweredTile, IWailaNBTProvider, IHasConduitProbeData {
@@ -95,7 +96,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   static int getEnergyPerTick(World world, BlockPos pos) {
     final IBlockState blockState = world.getBlockState(pos);
-    if (blockState.getBlock() == EnderIO.blockSolarPanel) {
+    if (blockState.getBlock() == blockSolarPanel.getBlock()) {
       return blockState.getValue(SolarType.KIND).getRfperTick();
     } else {
       return -1;

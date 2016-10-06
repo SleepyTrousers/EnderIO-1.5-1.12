@@ -80,6 +80,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockCapBank;
+
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
@@ -173,13 +175,13 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockFarmStation != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
     }
-    if (EnderIO.blockZombieGenerator != null) {
+    if (ModObject.blockZombieGenerator.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, new ZombieGeneratorRenderer());
     }
     if (EnderIO.blockKillerJoe != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
     }
-    if (EnderIO.blockCapBank != null) {
+    if (blockCapBank.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer());
     }
     if (EnderIO.blockEnderIo != null) {

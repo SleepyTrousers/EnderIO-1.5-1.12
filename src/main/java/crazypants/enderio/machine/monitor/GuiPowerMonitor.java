@@ -31,6 +31,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import static crazypants.enderio.ModObject.blockAlloySmelter;
+import static crazypants.enderio.ModObject.blockCapBank;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
@@ -403,7 +405,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     itemRender.renderItemIntoGUI(new ItemStack(EnderIO.itemPowerConduit, 1, 2), x, y);
     tooltipConduitStorage.setBounds(new Rectangle(TEXT_MARGIN_LEFT, TEXT_MARGIN_TOP, TEXT_WIDTH, 16));
 
-    ItemStack capBankStack = new ItemStack(EnderIO.blockCapBank, 1, 3);
+    ItemStack capBankStack = new ItemStack(blockCapBank.getBlock(), 1, 3);
     if (statData.maxPowerInCapBanks > 0) {
       BlockItemCapBank.setStoredEnergyForItem(capBankStack,
               (int) (((BlockItemCapBank) capBankStack.getItem()).getMaxEnergyStored(capBankStack) * ((double) statData.powerInCapBanks / (double) statData.maxPowerInCapBanks)));
@@ -412,7 +414,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     itemRender.renderItemIntoGUI(capBankStack, x, y + LINE_Y_OFFSET);
     tooltipCapacitorBankStorage.setBounds(new Rectangle(TEXT_MARGIN_LEFT, TEXT_MARGIN_TOP + LINE_Y_OFFSET, TEXT_WIDTH, 16));
 
-    itemRender.renderItemIntoGUI(new ItemStack(EnderIO.blockAlloySmelter), x, y + 3 * LINE_Y_OFFSET);
+    itemRender.renderItemIntoGUI(new ItemStack(blockAlloySmelter.getBlock()), x, y + 3 * LINE_Y_OFFSET);
     tooltipMachineBuffers.setBounds(new Rectangle(TEXT_MARGIN_LEFT, TEXT_MARGIN_TOP + 3 * LINE_Y_OFFSET, TEXT_WIDTH, 16));
     RenderHelper.disableStandardItemLighting();
 

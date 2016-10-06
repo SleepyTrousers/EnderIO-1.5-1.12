@@ -1,6 +1,5 @@
 package crazypants.enderio.integration.jei;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,6 +38,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.ModObject.blockPainter;
 import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;
@@ -146,7 +146,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
     registry.addRecipeCategories(new PainterRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<PainterRecipeWrapper>(PainterRecipeWrapper.class, PainterRecipeCategory.UID));
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockPainter), PainterRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockPainter.getBlock()), PainterRecipeCategory.UID);
 
     registry.addRecipes(
         splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.getUnlocalisedName()).values(), ItemHelper.getValidItems()));
@@ -182,7 +182,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = EnderIO.blockPainter.getLocalizedName();
+    String localizedName = blockPainter.getBlock().getLocalizedName();
     return localizedName != null ? localizedName : "ERROR";
   }
 

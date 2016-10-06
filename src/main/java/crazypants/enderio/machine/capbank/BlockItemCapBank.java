@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
@@ -19,10 +18,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
+import static crazypants.enderio.ModObject.blockCapBank;
+
 public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
-    ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
+    ItemStack res = new ItemStack(blockCapBank.getBlock(), 1, meta);
     if (storedEnergy > 0) {
       setStoredEnergyForItem(res, storedEnergy);
     }

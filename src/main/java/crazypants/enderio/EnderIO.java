@@ -54,18 +54,13 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
-import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.gauge.BlockGauge;
-import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
-import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
-import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
@@ -80,22 +75,10 @@ import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
-import crazypants.enderio.machine.painter.BlockPainter;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedCarpet;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedFence;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedFenceGate;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedGlowstone;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedRedstone;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
-import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
-import crazypants.enderio.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
@@ -212,19 +195,6 @@ public class EnderIO {
   public static ItemRodOfReturn itemRodOfReturn;
   public static ItemLocationPrintout itemlocationPrintout;
   
-  
-  //
-  // // Painter
-  public static BlockPainter blockPainter;
-  public static BlockPaintedFence blockPaintedFence;
-  public static BlockPaintedFenceGate blockPaintedFenceGate;
-  public static BlockPaintedWall blockPaintedWall;
-  public static BlockPaintedStairs blockPaintedStair;
-  public static BlockPaintedSlab blockPaintedSlab;
-  public static BlockPaintedGlowstone blockPaintedGlowstone;
-  public static BlockPaintedCarpet blockPaintedCarpet;
-  public static BlockPaintedPressurePlate blockPaintedPressurePlate;
-  //
   // // Conduits
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
@@ -242,16 +212,9 @@ public class EnderIO {
   public static ItemFunctionUpgrade itemFunctionUpgrade;
 
   // Machines
-  public static BlockStirlingGenerator blockStirlingGenerator;
-  public static BlockCombustionGenerator blockCombustionGenerator;
-  public static BlockZombieGenerator blockZombieGenerator;
-  public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
-  public static BlockAlloySmelter blockAlloySmelter;
 
-  public static BlockCapBank blockCapBank;
   public static BlockWirelessCharger blockWirelessCharger;
-  public static BlockSagMill blockCrusher;
   public static Block blockPowerMonitor;
   public static Block blockPowerMonitorAdvanced;
   public static BlockVat blockVat;
@@ -324,26 +287,7 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    blockStirlingGenerator = BlockStirlingGenerator.create();
-
-    blockCombustionGenerator = BlockCombustionGenerator.create();
-    blockZombieGenerator = BlockZombieGenerator.create();
-    blockSolarPanel = BlockSolarPanel.create();
-
-    blockCrusher = BlockSagMill.create();
-    blockAlloySmelter = BlockAlloySmelter.create();
-    blockCapBank = BlockCapBank.create();
-
-    blockPainter = BlockPainter.create();
-    blockPaintedFence = BlockPaintedFence.create();
-    blockPaintedFenceGate = BlockPaintedFenceGate.create();
-    blockPaintedWall = BlockPaintedWall.create();
-    blockPaintedStair = BlockPaintedStairs.create();
-    blockPaintedSlab = BlockPaintedSlab.create();
-    blockPaintedGlowstone = BlockPaintedGlowstone.create();
-    BlockPaintedRedstone.create();
-    blockPaintedCarpet = BlockPaintedCarpet.create();
-    blockPaintedPressurePlate = BlockPaintedPressurePlate.create();
+    ModObject.preinit();
 
     blockCrafter = BlockCrafter.create();
     blockVat = BlockVat.create();

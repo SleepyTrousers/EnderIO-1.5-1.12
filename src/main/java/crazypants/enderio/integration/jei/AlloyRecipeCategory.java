@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.ModObject.blockAlloySmelter;
 import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
@@ -48,7 +49,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<AlloyRecipe>(AlloyRecipe.class, AlloyRecipeCategory.UID));
     registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockAlloySmelter), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockAlloySmelter.getBlock()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
 
     List<AlloyRecipe> result = new ArrayList<AlloyRecipe>();
     for (IRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
@@ -94,7 +95,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = EnderIO.blockAlloySmelter.getLocalizedName();
+    String localizedName = blockAlloySmelter.getBlock().getLocalizedName();
     return localizedName != null ? localizedName : "ERROR";
   }
 

@@ -14,7 +14,6 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
@@ -55,6 +54,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.blockCapBank;
 
 @Storable
 public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
@@ -410,7 +411,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     List<EnumFacing> reset = new ArrayList<EnumFacing>();
     for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       IBlockState bs = worldObj.getBlockState(getPos().offset(NullHelper.notnullJ(entry.getKey(), "EnumMap.getKey()")));
-      if (bs.isOpaqueCube() || bs.getBlock() == EnderIO.blockCapBank) {
+      if (bs.isOpaqueCube() || bs.getBlock() == blockCapBank.getBlock()) {
         reset.add(entry.getKey());
       }
     }
@@ -787,7 +788,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public @Nonnull String getName() {
-    return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
+    return blockCapBank.getBlock().getUnlocalizedName() + ".name";
   }
 
   @Override

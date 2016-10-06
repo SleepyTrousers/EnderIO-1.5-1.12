@@ -1,12 +1,13 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+
+import static crazypants.enderio.ModObject.blockSolarPanel;
 
 public class SolarUpgrade extends AbstractUpgrade {
 
@@ -39,7 +40,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
 
   public SolarUpgrade(String unlocName, byte level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(EnderIO.blockSolarPanel, 1, level - 1), levelCost);
+    super(UPGRADE_NAME, unlocName, new ItemStack(blockSolarPanel.getBlock(), 1, level - 1), levelCost);
     this.level = level;
   }
   

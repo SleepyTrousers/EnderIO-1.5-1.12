@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.ICacheKey;
@@ -23,6 +23,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockCapBank;
 import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
@@ -56,7 +57,7 @@ public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapp
       int maxEnergy = energyItem.getMaxEnergyStored();
       if (maxEnergy > 0) {
         int energy = energyItem.getEnergyStored();
-        FillGaugeBakery gauge = new FillGaugeBakery(EnderIO.blockCapBank.getGaugeIcon(), (double) energy / maxEnergy);
+        FillGaugeBakery gauge = new FillGaugeBakery(((BlockCapBank) blockCapBank.getBlock()).getGaugeIcon(), (double) energy / maxEnergy);
         if (gauge.canRender()) {
           ItemQuadCollector result = new ItemQuadCollector();
           List<BakedQuad> quads = new ArrayList<BakedQuad>();

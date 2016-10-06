@@ -3,7 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
 import crazypants.enderio.machine.painter.blocks.RecipePaintedPressurePlate;
@@ -12,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
 import static crazypants.util.RecipeUtil.addShapeless;
 
 public class ItemRecipes {
@@ -20,8 +20,8 @@ public class ItemRecipes {
     GameRegistry.addRecipe(new RecipePaintedPressurePlate()); // plate + wool = silent plate (keeps nbt)
     for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
       // these are just for JEI, the RecipePaintedPressurePlate has higher priority
-      GameRegistry.addShapedRecipe(new ItemStack(EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(true)), "p", "w", 'p', new ItemStack(
-          EnderIO.blockPaintedPressurePlate, 1, type.getMetaFromType(false)), 'w', Blocks.WOOL);
+      GameRegistry.addShapedRecipe(new ItemStack(blockPaintedPressurePlate.getBlock(), 1, type.getMetaFromType(true)), "p", "w", 'p',
+          new ItemStack(blockPaintedPressurePlate.getBlock(), 1, type.getMetaFromType(false)), 'w', Blocks.WOOL);
     }
 
     List<BlockSelfResettingLever> levers = BlockSelfResettingLever.getBlocks();

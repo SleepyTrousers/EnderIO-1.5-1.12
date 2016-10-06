@@ -15,6 +15,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.ModObject.blockSolarPanel;
+
 public class SolarPanelNetwork implements IHasConduitProbeData {
 
   private Set<BlockPos> panels = new HashSet<BlockPos>();
@@ -113,13 +115,13 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
     }
     SolarType otherType = null;
     IBlockState otherState = world.getBlockState(other);
-    if (otherState.getBlock() == EnderIO.blockSolarPanel) {
+    if (otherState.getBlock() == blockSolarPanel.getBlock()) {
       otherType = otherState.getValue(SolarType.KIND);
     }
     for (BlockPos panel : panels) {
       if (world.isBlockLoaded(panel)) {
         IBlockState state = world.getBlockState(panel);
-        if (state.getBlock() == EnderIO.blockSolarPanel) {
+        if (state.getBlock() == blockSolarPanel.getBlock()) {
           return state.getValue(SolarType.KIND) == otherType;
         }
       }

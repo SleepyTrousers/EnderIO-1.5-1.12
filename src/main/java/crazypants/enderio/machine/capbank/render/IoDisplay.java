@@ -11,6 +11,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -22,6 +23,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+
+import static crazypants.enderio.ModObject.blockCapBank;
 
 public class IoDisplay implements IInfoRenderer {
 
@@ -56,7 +59,7 @@ public class IoDisplay implements IInfoRenderer {
 
       float scale = 0.85f;
       float offset = (1-scale)/2;
-      TextureAtlasSprite icon = EnderIO.blockCapBank.getInfoPanelIcon();
+      TextureAtlasSprite icon = ((BlockCapBank) blockCapBank.getBlock()).getInfoPanelIcon();
       float minU = icon.getMinU();
       float maxU = icon.getMaxU();
       float minV = icon.getMinV();

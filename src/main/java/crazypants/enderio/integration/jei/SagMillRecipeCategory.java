@@ -32,6 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
+import static crazypants.enderio.ModObject.blockSagMill;
 import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
@@ -54,7 +55,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     registry.addRecipeCategories(new SagMillRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<SagRecipe>(SagRecipe.class, SagMillRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSagMill.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockCrusher), SagMillRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockSagMill.getBlock()), SagMillRecipeCategory.UID);
 
     List<SagRecipe> result = new ArrayList<SagRecipe>();
     for (IRecipe rec : SagMillRecipeManager.getInstance().getRecipes()) {
@@ -98,7 +99,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = EnderIO.blockCrusher.getLocalizedName();
+    String localizedName = blockSagMill.getBlock().getLocalizedName();
     return localizedName != null ? localizedName : "ERROR";
   }
 

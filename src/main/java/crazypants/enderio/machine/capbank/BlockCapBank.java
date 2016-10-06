@@ -71,6 +71,8 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockCapBank;
+
 public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
     ISmartRenderAwareBlock {
 
@@ -254,7 +256,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         if (world.isRemote) {
           world.notifyBlockUpdate(pos, bs, bs, 3);
         } else {
-          final BlockCapBank blockCapBank2 = EnderIO.blockCapBank;
+          final Block blockCapBank2 = blockCapBank.getBlock();
           if (blockCapBank2 != null) {
             world.notifyNeighborsOfStateChange(pos, blockCapBank2);
           }

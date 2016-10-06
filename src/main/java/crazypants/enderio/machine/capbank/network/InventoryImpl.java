@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import static crazypants.enderio.ModObject.blockCapBank;
 
 public class InventoryImpl implements IInventory {
 
@@ -121,7 +122,7 @@ public class InventoryImpl implements IInventory {
 
   @Override
   public String getName() {
-    return EnderIO.blockCapBank.getUnlocalizedName() + ".name";
+    return blockCapBank.getBlock().getUnlocalizedName() + ".name";
   }
 
   @Override

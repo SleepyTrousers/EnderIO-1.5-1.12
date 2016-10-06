@@ -7,7 +7,8 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
+
+import static crazypants.enderio.ModObject.blockSolarPanel;
 
 @SideOnly(Side.CLIENT)
 public class SolarUpgradeLayer implements IRenderUpgrade {
@@ -40,7 +41,7 @@ public class SolarUpgradeLayer implements IRenderUpgrade {
     Minecraft
         .getMinecraft()
         .getItemRenderer()
-        .renderItem(entitylivingbaseIn, new ItemStack(EnderIO.blockSolarPanel, 1, SolarUpgrade.loadFromItem(piece).getLevel() - 1),
+        .renderItem(entitylivingbaseIn, new ItemStack(blockSolarPanel.getBlock(), 1, SolarUpgrade.loadFromItem(piece).getLevel() - 1),
             net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.HEAD);
 
     GlStateManager.popMatrix();

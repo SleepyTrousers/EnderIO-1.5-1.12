@@ -2,15 +2,15 @@ package crazypants.enderio.machine.soul;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.common.util.EntityUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
 import crazypants.util.CapturedMob;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
 
 public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe {
 
@@ -35,7 +35,7 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
 
   @Override
   protected boolean isValidInputItem(ItemStack item) {
-    if (Block.getBlockFromItem(item.getItem()) == EnderIO.blockPaintedPressurePlate) {
+    if (Block.getBlockFromItem(item.getItem()) == blockPaintedPressurePlate.getBlock()) {
       EnumPressurePlateType type = EnumPressurePlateType.getTypeFromMeta(item.getMetadata());
       boolean silentFromMeta = EnumPressurePlateType.getSilentFromMeta(item.getMetadata());
       return (type == EnumPressurePlateType.SOULARIUM || type == EnumPressurePlateType.TUNED) && silentFromMeta == silent;
@@ -45,12 +45,12 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(silent));
+    return new ItemStack(blockPaintedPressurePlate.getBlock(), 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(silent));
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.blockPaintedPressurePlate, 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
+    return new ItemStack(blockPaintedPressurePlate.getBlock(), 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
   }
 
   @Override
