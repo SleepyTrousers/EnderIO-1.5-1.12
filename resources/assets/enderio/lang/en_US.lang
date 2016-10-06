@@ -1355,6 +1355,7 @@ enderio.top.tank.content.empty=Empty
 enderio.top.tank.header.input=Input Tank: %s
 enderio.top.tank.header.output=Output Tank: %s
 enderio.top.tank.header.storage=%s
+enderio.top.xp.levels= Levels
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"

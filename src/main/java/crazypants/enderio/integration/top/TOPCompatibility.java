@@ -31,6 +31,8 @@ import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.xp.IHaveExperience;
 import crazypants.util.CapturedMob;
 import crazypants.util.NbtValue;
 import mcjty.theoneprobe.api.ElementAlignment;
@@ -62,6 +64,7 @@ import static crazypants.enderio.config.Config.topShowRangeByDefault;
 import static crazypants.enderio.config.Config.topShowRedstoneByDefault;
 import static crazypants.enderio.config.Config.topShowSideConfigByDefault;
 import static crazypants.enderio.config.Config.topShowTanksByDefault;
+import static crazypants.enderio.config.Config.topShowXPByDefault;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
@@ -98,6 +101,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mkProgressLine(mode, eiobox, data);
 
         mkRfLine(mode, eiobox, data);
+
+        mkXPLine(mode, eiobox, data);
 
         mkRedstoneLine(mode, eiobox, data);
 
@@ -243,6 +248,22 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
+  private void mkXPLine(ProbeMode mode, EioBox eiobox, Data data) {
+    if (data.hasXP) {
+      if (mode != ProbeMode.NORMAL || topShowXPByDefault) {
+        // We need to put the number of levels in as "current" value for it to be displayed as text. To make the progress bar scale to the partial level, we set
+        // the "max" value in a way that is in the same ratio to the number of levels as the xp needed for the next level is to the current xp. If the bar
+        // should be empty but we do have at least one level in, there will be a small error, as (levels/Integer.MAX_VALUE) > 0.
+        int scalemax = data.xpBarScaled > 0 ? data.experienceLevel * 100 / data.xpBarScaled : Integer.MAX_VALUE;
+        eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.EXPERIENCE_BOTTLE)).progress(data.experienceLevel, scalemax,
+            eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.xp.levels")).filledColor(0xff00FF0F).alternateFilledColor(0xff00AA0A)
+                .borderColor(0xff00AA0A));
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
   private void mkTankLines(ProbeMode mode, EioBox eiobox, Data data) {
     if (data.tankData != null && !data.tankData.isEmpty()) {
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
@@ -298,10 +319,10 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       NO_PROGRESS_IDLE;
     }
 
-    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs;
+    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP;
     boolean isActive, isPowered, redstoneControlStatus;
     float progress;
-    int rf, maxrf;
+    int rf, maxrf, experienceLevel, xpBarScaled;
     String redstoneTooltip, sideName, mobAction;
     IWidgetIcon redstoneIcon;
     IoMode ioMode;
@@ -374,6 +395,15 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
       if (tileEntity instanceof ITankAccess.IExtendedTankAccess) {
         tankData = ((ITankAccess.IExtendedTankAccess) tileEntity).getTankDisplayData();
+      }
+
+      if (tileEntity instanceof IHaveExperience) {
+        ExperienceContainer experienceContainer = ((IHaveExperience) tileEntity).getContainer();
+        if (experienceContainer != null) {
+          hasXP = true;
+          experienceLevel = experienceContainer.getExperienceLevel();
+          xpBarScaled = experienceContainer.getXpBarScaled(100);
+        }
       }
 
       calculateProgress();
