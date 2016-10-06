@@ -1518,6 +1518,33 @@ public final class Config {
     for (String hoe : hoeStrings) {
       farmHoes.add(hoe);
     }
+    if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 4) {
+      throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 4 values");
+    }
+    if (darkSteelBowForceMultipliers == null || darkSteelBowForceMultipliers.length != 5) {
+      throw new IllegalArgumentException("Ender IO config value darkSteelBowForceMultipliers must have exactly 5 values");
+    }
+    if (darkSteelBowDrawSpeeds == null || darkSteelBowDrawSpeeds.length != 5) {
+      throw new IllegalArgumentException("Ender IO config value darkSteelBowDrawSpeeds must have exactly 5 values");
+    }
+    if (darkSteelBowFovMultipliers == null || darkSteelBowFovMultipliers.length != 5) {
+      throw new IllegalArgumentException("Ender IO config value darkSteelBowFovMultipliers must have exactly 5 values");
+    }
+    if (remoteInventoryMBPerOpen == null || remoteInventoryMBPerOpen.length != 3) {
+      throw new IllegalArgumentException("Ender IO config value remoteInventoryMBPerOpen must have exactly 3 values");
+    }
+    if (remoteInventoryRFPerTick == null || remoteInventoryRFPerTick.length != 3) {
+      throw new IllegalArgumentException("Ender IO config value remoteInventoryRFPerTick must have exactly 3 values");
+    }
+    if (remoteInventoryMBCapacity == null || remoteInventoryMBCapacity.length != 3) {
+      throw new IllegalArgumentException("Ender IO config value remoteInventoryMBCapacity must have exactly 3 values");
+    }
+    if (remoteInventoryRFCapacity == null || remoteInventoryRFCapacity.length != 3) {
+      throw new IllegalArgumentException("Ender IO config value remoteInventoryRFCapacity must have exactly 3 values");
+    }
+    if (remoteInventoryFluidTypes == null || remoteInventoryFluidTypes.length != 3) {
+      throw new IllegalArgumentException("Ender IO config value remoteInventoryFluidTypes must have exactly 3 values");
+    }
   }
 
   public static ItemStack getStackForString(String s) {
