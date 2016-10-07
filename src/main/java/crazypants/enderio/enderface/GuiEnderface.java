@@ -46,6 +46,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ForgeHooksClient;
 
+import static crazypants.enderio.ModObject.blockEnderIo;
+
 public class GuiEnderface extends GuiScreen {
 
   // protected static final RenderBlocks RB = new RenderBlocks();
@@ -115,7 +117,7 @@ public class GuiEnderface extends GuiScreen {
     chunkLoaded = c != null && c.isLoaded();
     // RB.blockAccess = world;
 
-    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EnderIO.blockEnderIo, EnderIO.blockEnderIo.getDefaultState()));
+    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, blockEnderIo.getBlock(), blockEnderIo.getBlock().getDefaultState()));
 
     for (int x = ioX - range; x <= ioX + range; x++) {
       for (int y = ioY - range; y <= ioY + range; y++) {

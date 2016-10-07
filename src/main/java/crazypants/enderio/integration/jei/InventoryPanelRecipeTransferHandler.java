@@ -27,6 +27,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import static crazypants.enderio.ModObject.blockInventoryPanel;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_INVENTORY_SLOT;
@@ -47,7 +48,7 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
   public static void register(IModRegistry registry) {
     IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
     recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler(registry));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockInventoryPanel), VanillaRecipeCategoryUid.CRAFTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockInventoryPanel.getBlock()), VanillaRecipeCategoryUid.CRAFTING);
   }
  
   private final IModRegistry registry;

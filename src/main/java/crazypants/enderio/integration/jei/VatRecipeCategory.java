@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+import static crazypants.enderio.ModObject.blockVat;
 import static crazypants.enderio.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
@@ -140,7 +141,7 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
     });
     registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockVat), VatRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockVat.getBlock()), VatRecipeCategory.UID);
 
     List<VatRecipeWrapper> result = new ArrayList<VatRecipeWrapper>();
     for (IRecipe rec : VatRecipeManager.getInstance().getRecipes()) {
@@ -172,7 +173,7 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
   @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
-    return EnderIO.blockVat.getLocalizedName();
+    return blockVat.getBlock().getLocalizedName();
   }
 
   @Override

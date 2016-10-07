@@ -3,6 +3,7 @@ package crazypants.enderio;
 import java.util.List;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.block.BlockSelfResettingLever;
@@ -42,6 +43,7 @@ import crazypants.enderio.machine.monitor.TESRPowerMonitor;
 import crazypants.enderio.machine.monitor.TilePowerMonitor;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machine.ranged.MarkerParticle;
+import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.soul.SoulBinderTESR;
@@ -81,6 +83,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockCapBank;
+import static crazypants.enderio.ModObject.blockDialingDevice;
+import static crazypants.enderio.ModObject.blockEnderIo;
+import static crazypants.enderio.ModObject.blockFarmStation;
+import static crazypants.enderio.ModObject.blockReservoir;
+import static crazypants.enderio.ModObject.blockTank;
+import static crazypants.enderio.ModObject.blockTravelAnchor;
+import static crazypants.enderio.ModObject.blockVacuumChest;
+import static crazypants.enderio.ModObject.blockWirelessCharger;
+import static crazypants.enderio.ModObject.itemCoordSelector;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -154,11 +165,11 @@ public class ClientProxy extends CommonProxy {
     registerRenderers(EnderIO.blockDecoration1);
     registerRenderers(EnderIO.blockDecoration2);
 
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockTravelPlatform);
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockWirelessCharger);
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockVacuumChest);
+    ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockTravelAnchor.getBlock());
+    ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockWirelessCharger.getBlock());
+    ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockVacuumChest.getBlock());
     ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockDialingDevice);
+    ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockDialingDevice.getBlock());
 
     //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 
@@ -172,7 +183,7 @@ public class ClientProxy extends CommonProxy {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
       ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
     }
-    if (EnderIO.blockFarmStation != null) {
+    if (blockFarmStation.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
     }
     if (ModObject.blockZombieGenerator.getBlock() != null) {
@@ -184,14 +195,14 @@ public class ClientProxy extends CommonProxy {
     if (blockCapBank.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer());
     }
-    if (EnderIO.blockEnderIo != null) {
+    if (blockEnderIo.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, new EnderIoRenderer());
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), ModObject.blockEnderIo.getUnlocalisedName());
+      ClientUtil.registerRenderer(Item.getItemFromBlock(blockEnderIo.getBlock()), ModObject.blockEnderIo.getUnlocalisedName());
     }
-    if (EnderIO.blockReservoir != null) {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+    if (blockReservoir.getBlock() != null) {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) blockReservoir.getBlock()));
     }
-    if (EnderIO.blockTank != null) {
+    if (blockTank.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
     }
     if (EnderIO.blockEndermanSkull != null) {
@@ -246,7 +257,7 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemCoordSelector, ModObject.itemCoordSelector.getUnlocalisedName());
+    ClientUtil.registerRenderer(itemCoordSelector.getItem(), ModObject.itemCoordSelector.getUnlocalisedName());
     DarkSteelItems.onClientPreInit();
     Buckets.registerRenderers();
     EnderIO.itemRemoteInvAccess.registerRenderers();

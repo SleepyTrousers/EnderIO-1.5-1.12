@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockInventoryPanel;
 import static crazypants.util.NbtValue.ENERGY;
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 import static crazypants.util.NbtValue.REMOTE_D;
@@ -163,7 +164,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (targetWorld.getBlockState(pos).getBlock() != EnderIO.blockInventoryPanel) {
+      if (targetWorld.getBlockState(pos).getBlock() != blockInventoryPanel.getBlock()) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.invalidtarget")));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }

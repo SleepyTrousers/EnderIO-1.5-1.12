@@ -32,6 +32,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import static crazypants.enderio.ModObject.blockTank;
+
 public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.TankRecipeWrapper> {
 
   public static final @Nonnull String UID = "EIOTank";
@@ -79,8 +81,8 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
     registry.addRecipeCategories(new TankRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<TankRecipeWrapper>(TankRecipeWrapper.class, TankRecipeCategory.UID));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockTank, 1, 0), TankRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockTank, 1, 1), TankRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockTank.getBlock(), 1, 0), TankRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockTank.getBlock(), 1, 1), TankRecipeCategory.UID);
     registry.addRecipeClickArea(GuiTank.class, 155, 42, 16, 16, TankRecipeCategory.UID);
 
     long start = System.nanoTime();
@@ -153,7 +155,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
   @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
-    return EnderIO.blockTank.getLocalizedName();
+    return blockTank.getBlock().getLocalizedName();
   }
 
   @Override

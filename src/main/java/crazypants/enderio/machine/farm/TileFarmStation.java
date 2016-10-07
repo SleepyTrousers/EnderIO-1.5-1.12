@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -46,6 +45,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
+import static crazypants.enderio.ModObject.blockFarmStation;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
@@ -759,7 +759,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Override
   public @Nonnull String getName() {
-    return EnderIO.blockFarmStation.getLocalizedName();
+    return blockFarmStation.getBlock().getLocalizedName();
   }
 
   @Override

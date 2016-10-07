@@ -4,12 +4,13 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+
+import static crazypants.enderio.ModObject.blockBuffer;
 
 public enum BufferType implements IStringSerializable {
 
@@ -53,7 +54,7 @@ public enum BufferType implements IStringSerializable {
   }
 
   public static @Nonnull ItemStack getStack(BufferType type) {
-    return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
+    return new ItemStack(blockBuffer.getBlock(), 1, type.ordinal());
   }
 
 }

@@ -10,7 +10,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.MetadataUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -36,6 +35,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import static crazypants.enderio.ModObject.blockTransceiver;
 
 public class BlockEnderRail extends BlockRail implements IResourceTooltipProvider {
 
@@ -152,7 +153,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   @Override
   public boolean canPlaceBlockAt(World world, BlockPos pos) {
-    return world.getBlockState(pos.down()).getBlock() == EnderIO.blockTransceiver;
+    return world.getBlockState(pos.down()).getBlock() == blockTransceiver.getBlock();
   }
 
 //  @Override

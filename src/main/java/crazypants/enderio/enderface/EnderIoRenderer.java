@@ -8,7 +8,6 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Matrix4d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -19,14 +18,16 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockEnderIo;
+
 @SideOnly(Side.CLIENT)
 public class EnderIoRenderer extends ManagedTESR<TileEnderIO> {
 
   public EnderIoRenderer() {
-    super(EnderIO.blockEnderIo);
+    super(blockEnderIo.getBlock());
   }
 
-  private TravelEntitySpecialRenderer<TileEnderIO> selectionRenderer = new TravelEntitySpecialRenderer<TileEnderIO>(EnderIO.blockEnderIo) {
+  private TravelEntitySpecialRenderer<TileEnderIO> selectionRenderer = new TravelEntitySpecialRenderer<TileEnderIO>(blockEnderIo.getBlock()) {
 
   };
 

@@ -2,11 +2,18 @@ package crazypants.enderio;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.crafter.BlockCrafter;
+import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
+import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
+import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedFence;
@@ -17,15 +24,30 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedRedstone;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
+import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.tank.BlockTank;
+import crazypants.enderio.machine.transceiver.BlockTransceiver;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vat.BlockVat;
+import crazypants.enderio.machine.wireless.BlockWirelessCharger;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.enderio.teleport.telepad.BlockDialingDevice;
+import crazypants.enderio.teleport.telepad.BlockTelePad;
+import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
 public enum ModObject implements IModObject {
   // Enderface
-  blockEnderIo,
+  blockEnderIo {
+    @Override
+    protected void create() {
+      block = BlockEnderIO.create();
+    }
+  },
   itemEnderface,
 
   // Conduits
@@ -79,7 +101,12 @@ public enum ModObject implements IModObject {
       block = BlockZombieGenerator.create();
     }
   },
-  blockReservoir,
+  blockReservoir {
+    @Override
+    protected void create() {
+      block = BlockReservoir.create();
+    }
+  },
   blockAlloySmelter {
     @Override
     protected void create() {
@@ -105,14 +132,54 @@ public enum ModObject implements IModObject {
     }
   },
   blockHyperCube,
-  blockPowerMonitor,
-  blockPowerMonitorv2,
-  blockVat,
-  blockFarmStation,
-  blockTank,
-  blockCrafter,
-  blockVacuumChest,
-  blockWirelessCharger,
+  blockPowerMonitor {
+    @Override
+    protected void create() {
+      block = BlockPowerMonitor.createPowerMonitor();
+    }
+  },
+  blockPowerMonitorv2 {
+    @Override
+    protected void create() {
+      block = BlockPowerMonitor.createAdvancedPowerMonitor();
+    }
+  },
+  blockVat {
+    @Override
+    protected void create() {
+      block = BlockVat.create();
+    }
+  },
+  blockFarmStation {
+    @Override
+    protected void create() {
+      block = BlockFarmStation.create();
+    }
+  },
+  blockTank {
+    @Override
+    protected void create() {
+      block = BlockTank.create();
+    }
+  },
+  blockCrafter {
+    @Override
+    protected void create() {
+      block = BlockCrafter.create();
+    }
+  },
+  blockVacuumChest {
+    @Override
+    protected void create() {
+      block = BlockVacuumChest.create();
+    }
+  },
+  blockWirelessCharger {
+    @Override
+    protected void create() {
+      block = BlockWirelessCharger.create();
+    }
+  },
   blockEnchanter,
   blockSoulBinder,
   blockSliceAndSplice,
@@ -122,9 +189,24 @@ public enum ModObject implements IModObject {
   blockExperienceObelisk,
   blockWeatherObelisk,
   blockInhibitorObelisk,
-  blockTransceiver,
-  blockBuffer,
-  blockInventoryPanel,
+  blockTransceiver {
+    @Override
+    protected void create() {
+      block = BlockTransceiver.create();
+    }
+  },
+  blockBuffer {
+    @Override
+    protected void create() {
+      block = BlockBuffer.create();
+    }
+  },
+  blockInventoryPanel {
+    @Override
+    protected void create() {
+      block = BlockInventoryPanel.create();
+    }
+  },
 
   blockPoweredSpawner,
   itemBrokenSpawner,
@@ -218,10 +300,30 @@ public enum ModObject implements IModObject {
   itemYetaWrench,
   itemXpTransfer,
 
-  blockTravelAnchor,
-  blockTelePad,
-  blockDialingDevice,
-  itemCoordSelector,
+  blockTravelAnchor {
+    @Override
+    protected void create() {
+      block = BlockTravelAnchor.create();
+    }
+  },
+  blockTelePad {
+    @Override
+    protected void create() {
+      block = BlockTelePad.createTelepad();
+    }
+  },
+  blockDialingDevice {
+    @Override
+    protected void create() {
+      block = BlockDialingDevice.create();
+    }
+  },
+  itemCoordSelector {
+    @Override
+    protected void create() {
+      item = ItemCoordSelector.create();
+    }
+  },
   itemTravelStaff,
   itemRodOfReturn,
   itemMagnet,
@@ -235,7 +337,12 @@ public enum ModObject implements IModObject {
   itemEnderFood,
   blockGauge,
   itemRemoteInvAccess,
-  blockInventoryPanelSensor;
+  blockInventoryPanelSensor {
+    @Override
+    protected void create() {
+      block = BlockInventoryPanelSensor.create();
+    }
+  };
 
   private final @Nonnull String unlocalisedName;
 

@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
@@ -28,6 +27,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockBuffer;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 
 public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverlayRenderAware {
@@ -77,25 +77,25 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
-    if (stack.stackSize == 1 && EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
+    if (stack.stackSize == 1 && blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).hasPower) {
       PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
     }
   }
 
   @Override
   public boolean hasEffect(ItemStack stack) {
-    return EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
+    return blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE).isCreative || super.hasEffect(stack);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack stack) {
-    BufferType type = EnderIO.blockBuffer.getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
+    BufferType type = blockBuffer.getBlock().getStateFromMeta(stack.getMetadata()).getValue(BufferType.TYPE);
     return type.hasPower ? BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : 0;
   }
 
   @Override
   public int getMaxInput(ItemStack container) {
-    BufferType type = EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+    BufferType type = blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
     return type.hasPower ? Config.powerConduitTierThreeRF / 20 : 0;
   }
 
@@ -119,7 +119,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY && EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
+      return capability == CapabilityEnergy.ENERGY && blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
     }
 
     @SuppressWarnings("unchecked")
@@ -128,7 +128,7 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
       if(capability != CapabilityEnergy.ENERGY) {
         return null;
       }
-      BufferType type = EnderIO.blockBuffer.getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
+      BufferType type = blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
       if(!type.hasPower || container.stackSize > 1) {
         return null;
       }

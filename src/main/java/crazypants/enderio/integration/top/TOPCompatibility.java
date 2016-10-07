@@ -58,6 +58,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import static crazypants.enderio.ModObject.blockTank;
 import static crazypants.enderio.config.Config.topEnabled;
 import static crazypants.enderio.config.Config.topShowMobsByDefault;
 import static crazypants.enderio.config.Config.topShowPowerByDefault;
@@ -270,7 +271,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.tankData != null && !data.tankData.isEmpty()) {
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
         for (ITankData tank : data.tankData) {
-          ItemStack stack = new ItemStack(EnderIO.blockTank);
+          ItemStack stack = new ItemStack(blockTank.getBlock());
           String content1 = null;
           String content2 = null;
           final FluidStack fluid = tank.getContent();

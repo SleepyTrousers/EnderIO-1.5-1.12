@@ -87,6 +87,8 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockTank;
+
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockConduitBundle create() {
@@ -203,7 +205,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     if (tex == null) {
-      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(EnderIO.blockTank.getDefaultState());
+      tex = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockTank.getBlock().getDefaultState());
     }
     lastHitIcon = tex;
     BlockPos p = target.getBlockPos();
@@ -214,7 +216,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public boolean addLandingEffects(IBlockState state, net.minecraft.world.WorldServer worldObj, BlockPos bp, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles ) {
     //TODO: Should probably register a dummy state for this, but this gives a nice generic grey color for non facded blocks
-    int stateId = Block.getStateId(EnderIO.blockTank.getDefaultState());
+    int stateId = Block.getStateId(blockTank.getBlock().getDefaultState());
     TileConduitBundle te = getTileEntity(worldObj, bp);
     if(te != null) {
       IBlockState ps = te.getPaintSource();
@@ -230,7 +232,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
     if (lastHitIcon == null) {
-      lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(EnderIO.blockTank.getDefaultState());
+      lastHitIcon = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(blockTank.getBlock().getDefaultState());
     }
     
     IBlockState state = world.getBlockState(pos);

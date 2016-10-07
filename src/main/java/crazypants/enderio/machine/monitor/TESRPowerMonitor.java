@@ -11,7 +11,6 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -20,12 +19,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockPowerMonitorv2;
 
 @SideOnly(Side.CLIENT)
 public class TESRPowerMonitor extends ManagedTESR<TilePowerMonitor> {
 
   public TESRPowerMonitor() {
-    super(EnderIO.blockPowerMonitorAdvanced);
+    super(blockPowerMonitorv2.getBlock());
   }
 
   private static final float px = 1f / 16f;

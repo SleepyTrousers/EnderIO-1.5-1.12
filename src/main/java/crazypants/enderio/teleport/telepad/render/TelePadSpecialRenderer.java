@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.render.property.EnumRenderMode;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import crazypants.enderio.teleport.telepad.TileTelePad;
@@ -25,6 +24,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockTelePad;
 import static crazypants.enderio.config.Config.telepadIsTravelAnchor;
 
 @SideOnly(Side.CLIENT)
@@ -33,10 +33,10 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer<TileTele
   private final IBlockState blade, lights, glass;
 
   public TelePadSpecialRenderer() {
-    super(EnderIO.blockTelePad);
-    blade = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
-    lights = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
-    glass = EnderIO.blockTelePad.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
+    super(blockTelePad.getBlock());
+    blade = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_WEST);
+    lights = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON_WEST);
+    glass = blockTelePad.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON);
 
   }
 

@@ -52,6 +52,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockEnderIo;
+import static crazypants.enderio.ModObject.blockTelePad;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
 public class TravelController {
@@ -272,7 +274,7 @@ public class TravelController {
     if(selectedCoord == null) {
       return false;
     }
-    return EnderIO.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == EnderIO.blockEnderIo;
+    return EnderIO.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == blockEnderIo.getBlock();
   }
 
   @SubscribeEvent
@@ -737,7 +739,7 @@ public class TravelController {
       final BlockPos pos = new BlockPos(x, y, z);
       final Block block = world.getBlockState(pos).getBlock();
       if (block instanceof BlockTravelAnchor) {
-        if (Config.telepadIsTravelAnchor || block != EnderIO.blockTelePad) {
+        if (Config.telepadIsTravelAnchor || block != blockTelePad.getBlock()) {
           return new BlockCoord(x, y, z);
         }
       }

@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import static crazypants.enderio.ModObject.blockTank;
+
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {
 
@@ -58,7 +60,7 @@ public class JeiPlugin extends BlankModPlugin {
     ShapelessRecipes res = new ShapelessRecipes(new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
     
-    ItemStack tank = new ItemStack(EnderIO.blockTank);
+    ItemStack tank = new ItemStack(blockTank.getBlock());
     IFluidHandler cap = FluidUtil.getFluidHandlerCapability(tank);
     cap.fill(new FluidStack(Fluids.fluidNutrientDistillation,  8 * Fluid.BUCKET_VOLUME), true);
     inputs = new ArrayList<ItemStack>();

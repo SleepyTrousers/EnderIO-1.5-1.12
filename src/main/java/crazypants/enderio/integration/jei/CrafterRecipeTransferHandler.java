@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.crafter.ContainerCrafter;
 import crazypants.enderio.machine.crafter.ContainerCrafter.DummySlot;
 import crazypants.enderio.machine.crafter.GuiCrafter;
@@ -32,7 +32,7 @@ public class CrafterRecipeTransferHandler implements IRecipeTransferHandler {
     IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
     recipeTransferRegistry.addRecipeTransferHandler(new CrafterRecipeTransferHandler());
     registry.addRecipeClickArea(GuiCrafter.class, 219 - 21, 43 + 19, 16, 16, VanillaRecipeCategoryUid.CRAFTING);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockCrafter), VanillaRecipeCategoryUid.CRAFTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(ModObject.blockCrafter.getBlock()), VanillaRecipeCategoryUid.CRAFTING);
   }
 
   private CrafterRecipeTransferHandler() {

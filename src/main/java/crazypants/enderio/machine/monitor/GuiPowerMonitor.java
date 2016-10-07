@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.ModObject.blockAlloySmelter;
 import static crazypants.enderio.ModObject.blockCapBank;
+import static crazypants.enderio.ModObject.blockPowerMonitor;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
@@ -40,7 +41,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
   private static enum Tab {
     GRAPH(0, new ItemStack(BlockPowerMonitor.advancedInstance)),
-    STAT(1, new ItemStack(EnderIO.blockPowerMonitor)),
+    STAT(1, new ItemStack(blockPowerMonitor.getBlock())),
     CONTROL(2, new ItemStack(Items.REDSTONE));
 
     int tabNo;

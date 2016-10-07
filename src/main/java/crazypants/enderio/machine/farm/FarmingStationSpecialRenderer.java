@@ -6,17 +6,18 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockFarmStation;
+
 @SideOnly(Side.CLIENT)
 public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> {
 
   public FarmingStationSpecialRenderer() {
-    super(EnderIO.blockFarmStation);
+    super(blockFarmStation.getBlock());
   }
 
   @Override

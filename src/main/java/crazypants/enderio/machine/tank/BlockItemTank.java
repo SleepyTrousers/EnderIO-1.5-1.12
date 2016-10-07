@@ -29,10 +29,12 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockTank;
+
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider, IFluidContainerItem {
 
   public BlockItemTank() {
-    super(EnderIO.blockTank);
+    super(blockTank.getBlock());
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -71,7 +73,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    EnderIO.blockTank.addCommonEntries(itemstack, entityplayer, list, flag);
+    ((IAdvancedTooltipProvider) blockTank.getBlock()).addCommonEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -86,7 +88,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    EnderIO.blockTank.addDetailedEntries(itemstack, entityplayer, list, flag);
+    ((IAdvancedTooltipProvider) blockTank.getBlock()).addDetailedEntries(itemstack, entityplayer, list, flag);
   }
   
   private SmartTank loadTank(ItemStack stack) {

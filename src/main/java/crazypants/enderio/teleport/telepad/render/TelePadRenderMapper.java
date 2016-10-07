@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -27,6 +26,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockTelePad;
+
 public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemStateMapper {
 
   public static final TelePadRenderMapper instance = new TelePadRenderMapper();
@@ -44,7 +45,7 @@ public class TelePadRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
                                           QuadCollector quadCollector) {
 
-    if (state.getBlock() == EnderIO.blockTelePad) {
+    if (state.getBlock() == blockTelePad.getBlock()) {
       if (blockLayer == BlockRenderLayer.SOLID) {
         BlockType type = state.getValue(BlockTelePad.BLOCK_TYPE);
         if (type == BlockType.SINGLE) {

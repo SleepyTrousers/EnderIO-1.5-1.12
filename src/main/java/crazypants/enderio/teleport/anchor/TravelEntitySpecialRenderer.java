@@ -12,7 +12,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.Block;
@@ -38,6 +37,8 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockTravelAnchor;
+
 @SideOnly(Side.CLIENT)
 public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends ManagedTESR<T> {
 
@@ -51,7 +52,7 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   }
 
   public TravelEntitySpecialRenderer() {
-    super(EnderIO.blockTravelPlatform);
+    super(blockTravelAnchor.getBlock());
   }
 
   @Override

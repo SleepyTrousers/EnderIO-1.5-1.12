@@ -38,7 +38,6 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
-import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
@@ -54,20 +53,14 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.buffer.BlockBuffer;
-import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.gauge.BlockGauge;
-import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
-import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
-import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -75,7 +68,6 @@ import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
-import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
@@ -84,13 +76,8 @@ import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.tank.BlockTank;
-import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
-import crazypants.enderio.machine.vacuum.BlockVacuumChest;
-import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
@@ -113,17 +100,11 @@ import crazypants.enderio.rail.BlockExitRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.telepad.BlockDialingDevice;
-import crazypants.enderio.teleport.telepad.BlockTelePad;
-import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
 import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
-import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -183,14 +164,9 @@ public class EnderIO {
   public static ItemEnderFood itemEnderFood;
 
   // // Enderface
-  public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
   // //Teleporting
-  public static BlockTravelAnchor<TileTravelAnchor> blockTravelPlatform;
-  public static BlockTelePad blockTelePad;
-  public static BlockDialingDevice blockDialingDevice;
-  public static ItemCoordSelector itemCoordSelector;
   public static ItemTravelStaff itemTravelStaff;
   public static ItemRodOfReturn itemRodOfReturn;
   public static ItemLocationPrintout itemlocationPrintout;
@@ -212,15 +188,7 @@ public class EnderIO {
   public static ItemFunctionUpgrade itemFunctionUpgrade;
 
   // Machines
-  public static BlockReservoir blockReservoir;
 
-  public static BlockWirelessCharger blockWirelessCharger;
-  public static Block blockPowerMonitor;
-  public static Block blockPowerMonitorAdvanced;
-  public static BlockVat blockVat;
-  public static BlockFarmStation blockFarmStation;
-  public static BlockTank blockTank;
-  public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
   public static BlockSliceAndSplice blockSliceAndSplice;
@@ -231,10 +199,6 @@ public class EnderIO {
   public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockInhibitorObelisk blockInhibitorObelisk;
-  public static BlockTransceiver blockTransceiver;
-  public static BlockBuffer blockBuffer;
-  public static BlockInventoryPanel blockInventoryPanel;
-  public static BlockInventoryPanelSensor blockInventoryPanelSensor;
   public static BlockKillerJoe blockKillerJoe;
   public static BlockEnchanter blockEnchanter;
   public static BlockGauge blockGauge;
@@ -261,7 +225,6 @@ public class EnderIO {
   public static ItemSoulVessel itemSoulVessel;
   public static ItemFrankenSkull itemFrankenSkull;
 
-  public static BlockVacuumChest blockVacuumChest;
   public static ItemRemoteInvAccess itemRemoteInvAccess;
 
   // prePreInit
@@ -288,33 +251,6 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     ModObject.preinit();
-
-    blockCrafter = BlockCrafter.create();
-    blockVat = BlockVat.create();
-    blockPowerMonitor = BlockPowerMonitor.createPowerMonitor();
-    blockPowerMonitorAdvanced = BlockPowerMonitor.createAdvancedPowerMonitor();
-    blockFarmStation = BlockFarmStation.create();
-
-    blockWirelessCharger = BlockWirelessCharger.create();
-
-    blockTank = BlockTank.create();
-
-    blockReservoir = BlockReservoir.create();
-    blockVacuumChest = BlockVacuumChest.create();
-
-    blockTransceiver = BlockTransceiver.create();
-
-    blockBuffer = BlockBuffer.create();
-    blockInventoryPanel = BlockInventoryPanel.create();
-    blockInventoryPanelSensor = BlockInventoryPanelSensor.create();
-
-    blockEnderIo = BlockEnderIO.create();
-
-    blockTravelPlatform = BlockTravelAnchor.create();
-    itemCoordSelector = ItemCoordSelector.create();
-
-    blockTelePad = BlockTelePad.createTelepad();
-    blockDialingDevice = BlockDialingDevice.create();
 
     blockSliceAndSplice = BlockSliceAndSplice.create();
     blockSoulFuser = BlockSoulBinder.create();
