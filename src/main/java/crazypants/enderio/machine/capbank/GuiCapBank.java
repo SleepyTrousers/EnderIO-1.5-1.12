@@ -74,6 +74,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private int initialStateCount = -1;
   private boolean initState = true;
+  private boolean textFieldsHaveRealData = false;
 
   private final ContainerCapBank container;
 
@@ -212,6 +213,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   private void updateInputOutput() {
+    if (!textFieldsHaveRealData) {
+      return;
+    }
     int input = PowerDisplayUtil.parsePower(maxInputTF);
     if (input >= 0 && network.getMaxInput() != input) {
       setMaxInput(input);
@@ -374,6 +378,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private void updateFieldsFromState() {
     maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
     maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
+    textFieldsHaveRealData = true;
     inputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
     outputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));
   }
