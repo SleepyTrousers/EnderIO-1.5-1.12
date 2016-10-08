@@ -1,7 +1,9 @@
 package crazypants.enderio;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.enderio.core.client.EnderCoreModConflictException;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -352,6 +354,20 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
     itemIn.getSubItems(itemIn, tab, subItems);
+  }
+
+  @Override
+  public void stopWithErrorScreen(String... message) {
+    List<String> lines = new ArrayList<String>();
+    for (String string : message) {
+      Log.error(string);
+      while (string.length() > 71) {
+        lines.add(string.substring(0, 70));
+        string = string.substring(70, string.length());
+      }
+      lines.add(string);
+    }
+    throw new EnderCoreModConflictException(lines.toArray(new String[0]));
   }
 
 }

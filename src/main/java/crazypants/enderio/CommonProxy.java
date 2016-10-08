@@ -79,37 +79,50 @@ public class CommonProxy {
             recipes.enforceValidity();
             recipes.register();
           } else {
-            throw new InvalidRecipeConfigException("Recipes config file recipe_" + filename + ".xml is empty or invalid!");
+            recipeError(filename, "File is empty or invalid");
           }
         } catch (InvalidRecipeConfigException e) {
-          Log.error("Failed to read recipe config file " + filename + "_core.xml or " + filename + "_user.xml\n\n\n\n"
-              + "\n======================================================================="
-              + "\n== FATAL ERROR ========================================================"
-              + "\n======================================================================="
-              + "\n== Cannot register recipes as configured. This means that either     =="
-              + "\n== your custom config file has an error or another mod does bad      =="
-              + "\n== things to vanilla items or the Ore Dictionary.                    =="
-              + "\n=======================================================================" //
-              + "\n== Bad file: " + filename + "_core.xml or " + filename + "_user.xml"
-              + "\n=======================================================================" //
-              + "\n== Error: " + e.getMessage() //
-              + "\n======================================================================="
-              + "\n======================================================================="
-              + "\n== Note: To start the game anyway, you can disable recipe loading in =="
-              + "\n======== the Ender IO config file. However, then all of Ender IO's   =="
-              + "\n======== crafting recipes will be missing.                           =="
-              + "\n=======================================================================" //
-              + "\n\n\n");
-          throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+          recipeError(filename, e.getMessage());
         } catch (IOException e) {
-          throw new RuntimeException("Error while reading recipes config file recipe_" + filename + ".xml: " + e.getMessage());
+          recipeError(filename, "IO error while reading file:" + e.getMessage());
         } catch (XMLStreamException e) {
-          throw new RuntimeException("Recipes config file recipe_" + filename + ".xml is invalid: " + e.getMessage());
+          recipeError(filename, "File has malformed XML:" + e.getMessage());
         }
       }
     }
 
     registerCommands();
+  }
+
+  private void recipeError(String filename, String message) {
+    stopWithErrorScreen( //
+        "=======================================================================", //
+        "== ENDER IO FATAL ERROR ==", //
+        "=======================================================================", //
+        "Cannot register recipes as configured. This means that either", //
+        "your custom config file has an error or another mod does bad", //
+        "things to vanilla items or the Ore Dictionary.", //
+        "=======================================================================", //
+        "== Bad file ==", //
+        "recipe_" + filename + "_core.xml or recipe_" + filename + "_user.xml", //
+        "=======================================================================", //
+        "== Error Message ==", //
+        message, //
+        "=======================================================================", //
+        "", //
+        "=======================================================================", //
+        "Note: To start the game anyway, you can disable recipe loading in the", //
+        "Ender IO config file. However, then all of Ender IO's crafting recipes", //
+        "will be missing.", //
+        "=======================================================================" //
+    );
+  }
+
+  public void stopWithErrorScreen(String... message) {
+    for (String string : message) {
+      Log.error(string);
+    }
+    throw new RuntimeException("Ender IO cannot continue, see error messages above");
   }
 
   protected void registerCommands() {
