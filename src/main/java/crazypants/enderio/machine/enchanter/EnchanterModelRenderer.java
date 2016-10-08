@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -13,11 +12,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockEnchanter;
+
 @SideOnly(Side.CLIENT)
 public class EnchanterModelRenderer extends ManagedTESR<TileEnchanter> {
 
   public EnchanterModelRenderer() {
-    super(EnderIO.blockEnchanter);
+    super(blockEnchanter.getBlock());
   }
 
   private static final String TEXTURE = "enderio:textures/blocks/BookStand.png";

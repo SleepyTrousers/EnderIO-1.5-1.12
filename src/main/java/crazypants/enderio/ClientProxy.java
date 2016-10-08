@@ -52,6 +52,7 @@ import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
+import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.registry.ItemModelRegistry;
@@ -83,15 +84,25 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockCapBank;
+import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
+import static crazypants.enderio.ModObject.blockDarkSteelLadder;
 import static crazypants.enderio.ModObject.blockDialingDevice;
+import static crazypants.enderio.ModObject.blockElectricLight;
+import static crazypants.enderio.ModObject.blockEnchanter;
 import static crazypants.enderio.ModObject.blockEnderIo;
+import static crazypants.enderio.ModObject.blockEndermanSkull;
+import static crazypants.enderio.ModObject.blockExitRail;
 import static crazypants.enderio.ModObject.blockFarmStation;
+import static crazypants.enderio.ModObject.blockKillerJoe;
+import static crazypants.enderio.ModObject.blockReinforcedObsidian;
 import static crazypants.enderio.ModObject.blockReservoir;
 import static crazypants.enderio.ModObject.blockTank;
 import static crazypants.enderio.ModObject.blockTravelAnchor;
 import static crazypants.enderio.ModObject.blockVacuumChest;
 import static crazypants.enderio.ModObject.blockWirelessCharger;
+import static crazypants.enderio.ModObject.itemBrokenSpawner;
 import static crazypants.enderio.ModObject.itemCoordSelector;
+import static crazypants.enderio.ModObject.itemFrankenSkull;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -152,36 +163,36 @@ public class ClientProxy extends CommonProxy {
     if (EnderIO.blockDarkIronBars != null) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.getUnlocalisedName());
     }
-    registerRenderers(EnderIO.blockDarkSteelAnvil);
-    if (EnderIO.blockDarkSteelLadder != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelLadder), ModObject.blockDarkSteelLadder.getUnlocalisedName());
+    registerRenderers((IHaveRenderers) blockDarkSteelAnvil.getBlock());
+    if (blockDarkSteelLadder.getBlock() != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(blockDarkSteelLadder.getBlock()), ModObject.blockDarkSteelLadder.getUnlocalisedName());
     }
     for (BlockSelfResettingLever b : BlockSelfResettingLever.getBlocks()) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
     }
     registerRenderers(EnderIO.blockIngotStorage);
-    registerRenderers(EnderIO.blockEndermanSkull);
-    registerRenderers(EnderIO.blockElectricLight);
+    registerRenderers((IHaveRenderers) blockEndermanSkull.getBlock());
+    registerRenderers((IHaveRenderers) blockElectricLight.getBlock());
     registerRenderers(EnderIO.blockDecoration1);
     registerRenderers(EnderIO.blockDecoration2);
 
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockTravelAnchor.getBlock());
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockWirelessCharger.getBlock());
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockVacuumChest.getBlock());
-    ClientUtil.registerDefaultItemRenderer(EnderIO.blockReinforcedObsidian);
+    ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockReinforcedObsidian.getBlock());
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockDialingDevice.getBlock());
 
     //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 
 
-    ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockExitRail), ModObject.blockExitRail.getUnlocalisedName());
+    ClientUtil.registerRenderer(Item.getItemFromBlock(blockExitRail.getBlock()), ModObject.blockExitRail.getUnlocalisedName());
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Tile Renderers
-    if (EnderIO.blockEnchanter != null) {
+    if (blockEnchanter.getBlock() != null) {
       EnchanterModelRenderer emr = new EnchanterModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
-      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(EnderIO.blockEnchanter), 0, TileEnchanter.class);
+      ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(blockEnchanter.getBlock()), 0, TileEnchanter.class);
     }
     if (blockFarmStation.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
@@ -189,7 +200,7 @@ public class ClientProxy extends CommonProxy {
     if (ModObject.blockZombieGenerator.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, new ZombieGeneratorRenderer());
     }
-    if (EnderIO.blockKillerJoe != null) {
+    if (blockKillerJoe.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
     }
     if (blockCapBank.getBlock() != null) {
@@ -205,7 +216,7 @@ public class ClientProxy extends CommonProxy {
     if (blockTank.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
     }
-    if (EnderIO.blockEndermanSkull != null) {
+    if (blockEndermanSkull.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
     }
     if (Config.transceiverEnabled) {
@@ -231,8 +242,8 @@ public class ClientProxy extends CommonProxy {
     EnderIO.itemAlloy.registerRenderers();
     EnderIO.itemBasicCapacitor.registerRenderers();
     EnderIO.itemPowderIngot.registerRenderers();
-    if (EnderIO.itemFrankenSkull != null) {
-      EnderIO.itemFrankenSkull.registerRenderers();
+    if (itemFrankenSkull.getItem() != null) {
+      ((ItemFrankenSkull) itemFrankenSkull.getItem()).registerRenderers();
     }
     registerRenderers(EnderIO.itemMachinePart);
     registerRenderers(EnderIO.itemMaterial);
@@ -252,7 +263,7 @@ public class ClientProxy extends CommonProxy {
     ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemRodOfReturn, ModObject.itemRodOfReturn.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemBrokenSpawner, ModObject.itemBrokenSpawner.getUnlocalisedName());
+    ClientUtil.registerRenderer(itemBrokenSpawner.getItem(), ModObject.itemBrokenSpawner.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.getUnlocalisedName());
     ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.getUnlocalisedName());

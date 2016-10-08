@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
@@ -37,6 +36,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockFusedQuartz;
+
 public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock> implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
   
   public static BlockPaintedFusedQuartz create() {
@@ -57,7 +58,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     super.init();
     SmartModelAttacher.registerNoProps(this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFusedQuartz>(this,
-        EnderIO.blockFusedQuartz) {
+        blockFusedQuartz.getBlock()) {
       @Override
       public ItemStack isUnpaintingOp(ItemStack paintSource, ItemStack target) {
         if (paintSource == null || target == null) {
@@ -70,8 +71,8 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
           return null;
         }
 
-        if (paintBlock == EnderIO.blockFusedQuartz && paintSource.getItemDamage() == target.getItemDamage()) {
-          return new ItemStack(EnderIO.blockFusedQuartz, 1, target.getItemDamage());
+        if (paintBlock == blockFusedQuartz.getBlock() && paintSource.getItemDamage() == target.getItemDamage()) {
+          return new ItemStack(blockFusedQuartz.getBlock(), 1, target.getItemDamage());
         }
 
         return null;

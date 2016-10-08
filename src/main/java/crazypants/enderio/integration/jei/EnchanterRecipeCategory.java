@@ -1,7 +1,6 @@
 package crazypants.enderio.integration.jei;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.ModObject.blockEnchanter;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
@@ -108,7 +108,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
     });
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockEnchanter), EnchanterRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockEnchanter.getBlock()), EnchanterRecipeCategory.UID);
 
     List<EnchanterRecipeWrapper> result = new ArrayList<EnchanterRecipeWrapper>();
 
@@ -147,7 +147,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   @SuppressWarnings("null")
   @Override
   public @Nonnull String getTitle() {
-    return EnderIO.blockEnchanter.getLocalizedName();
+    return blockEnchanter.getBlock().getLocalizedName();
   }
 
   @Override

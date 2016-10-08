@@ -33,6 +33,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.ModObject.blockConduitBundle;
+
 public class GuiExternalConnectionSelector extends GuiScreen {
 
   private static int BUTTON_HEIGHT = 20;
@@ -102,7 +104,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
-      if (b != null && b != EnderIO.blockConduitBundle) {
+      if (b != null && b != blockConduitBundle.getBlock()) {
         try {// TODO: This seems wrong. pickBlock?
           Item item = b.getItemDropped(bs, world.rand, 0);
           if (item != null) {

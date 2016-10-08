@@ -11,7 +11,6 @@ import com.enderio.core.common.util.MetadataUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
@@ -78,8 +77,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   // private int linkId;
 
   protected BlockEnderRail() {
-    setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
-    setRegistryName(ModObject.blockEnderRail.getUnlocalisedName());
+    // setUnlocalizedName(ModObject.blockEnderRail.getUnlocalisedName());
+    // setRegistryName(ModObject.blockEnderRail.getUnlocalisedName());
     setSoundType(SoundType.METAL);
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);

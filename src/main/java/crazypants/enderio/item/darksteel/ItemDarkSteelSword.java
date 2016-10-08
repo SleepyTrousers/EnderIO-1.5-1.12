@@ -57,6 +57,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockEndermanSkull;
+
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static final @Nonnull String NAME = "darkSteel_sword";
@@ -288,7 +290,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     } else if (entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.SKULL, 1, 4);
     } else if (entityLiving instanceof EntityEnderman) {
-      return new ItemStack(EnderIO.blockEndermanSkull);
+      return new ItemStack(blockEndermanSkull.getBlock());
     }
 
     return null;

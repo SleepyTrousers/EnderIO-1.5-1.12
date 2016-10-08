@@ -14,15 +14,9 @@ import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
-import crazypants.enderio.block.BlockDarkSteelAnvil;
-import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDecoration;
 import crazypants.enderio.block.BlockDecorationFacing;
-import crazypants.enderio.block.BlockReinforcedObsidian;
-import crazypants.enderio.block.BlockSelfResettingLever;
-import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
-import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
@@ -49,32 +43,17 @@ import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.gauge.BlockGauge;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
-import crazypants.enderio.machine.killera.BlockKillerJoe;
-import crazypants.enderio.machine.light.BlockElectricLight;
-import crazypants.enderio.machine.light.BlockLightNode;
-import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
-import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
-import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
-import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
-import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
-import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
-import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
-import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
-import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vat.VatRecipeManager;
@@ -82,21 +61,15 @@ import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
-import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
-import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
-import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
-import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.power.CapInjectHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.rail.BlockEnderRail;
-import crazypants.enderio.rail.BlockExitRail;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
@@ -155,7 +128,6 @@ public class EnderIO {
   // Materials
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
-  public static BlockFusedQuartz blockFusedQuartz;
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
@@ -172,8 +144,6 @@ public class EnderIO {
   public static ItemLocationPrintout itemlocationPrintout;
   
   // // Conduits
-  public static BlockConduitBundle blockConduitBundle;
-  public static BlockConduitFacade blockConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
@@ -189,30 +159,9 @@ public class EnderIO {
 
   // Machines
 
-  public static BlockPoweredSpawner blockPoweredSpawner;
-  public static ItemBrokenSpawner itemBrokenSpawner;
-  public static BlockSliceAndSplice blockSliceAndSplice;
-  public static BlockSoulBinder blockSoulFuser;
-  public static BlockAttractor blockAttractor;
-  public static BlockAversionObelisk blockSpawnGuard;
-  public static BlockRelocatorObelisk blockSpawnRelocator;
-  public static BlockExperienceObelisk blockExperianceOblisk;
-  public static BlockWeatherObelisk blockWeatherObelisk;
-  public static BlockInhibitorObelisk blockInhibitorObelisk;
-  public static BlockKillerJoe blockKillerJoe;
-  public static BlockEnchanter blockEnchanter;
   public static BlockGauge blockGauge;
 
-  public static BlockElectricLight blockElectricLight;
-  public static BlockLightNode blockLightNode;
-
   // Blocks
-  public static BlockDarkSteelAnvil blockDarkSteelAnvil;
-  public static BlockDarkSteelLadder blockDarkSteelLadder;
-  public static BlockEndermanSkull blockEndermanSkull;
-  public static BlockReinforcedObsidian blockReinforcedObsidian;
-  public static BlockEnderRail blockEnderRail;
-  public static BlockExitRail blockExitRail;
   public static BlockDecoration blockDecoration1, blockDecoration2;
 
   public static Fluids fluids;
@@ -223,7 +172,6 @@ public class EnderIO {
   public static ItemXpTransfer itemXpTransfer;
 
   public static ItemSoulVessel itemSoulVessel;
-  public static ItemFrankenSkull itemFrankenSkull;
 
   public static ItemRemoteInvAccess itemRemoteInvAccess;
 
@@ -251,44 +199,6 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     ModObject.preinit();
-
-    blockSliceAndSplice = BlockSliceAndSplice.create();
-    blockSoulFuser = BlockSoulBinder.create();
-    blockPoweredSpawner = BlockPoweredSpawner.create();
-    blockKillerJoe = BlockKillerJoe.create();
-    blockAttractor = BlockAttractor.create();
-    blockSpawnGuard = BlockAversionObelisk.create();
-    blockSpawnRelocator = BlockRelocatorObelisk.create();
-    blockExperianceOblisk = BlockExperienceObelisk.create();
-    blockWeatherObelisk = BlockWeatherObelisk.create();
-    blockInhibitorObelisk = BlockInhibitorObelisk.create();
-    blockEnchanter = BlockEnchanter.create();
-
-
-    blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
-    blockDarkSteelLadder = BlockDarkSteelLadder.create();
-    BlockSelfResettingLever.create();
-
-    blockElectricLight = BlockElectricLight.create();
-    blockLightNode = BlockLightNode.create();
-
-    blockReinforcedObsidian = BlockReinforcedObsidian.create();
-
-    blockFusedQuartz = BlockFusedQuartz.create();
-    BlockColoredFusedQuartz.create();
-    BlockPaintedFusedQuartz.create();
-
-    // blockEnderRail = BlockEnderRail.create();
-    blockExitRail = BlockExitRail.create();
-
-    blockConduitBundle = BlockConduitBundle.create();
-
-    blockConduitFacade = BlockConduitFacade.create();
-
-    itemBrokenSpawner = ItemBrokenSpawner.create();
-
-    blockEndermanSkull = BlockEndermanSkull.create();
-    itemFrankenSkull = ItemFrankenSkull.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();

@@ -8,7 +8,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IConduitControl;
@@ -43,6 +42,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.blockConduitBundle;
 
 @Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core") })
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench {
@@ -136,7 +137,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
     IBlockState bs = player.worldObj.getBlockState(pos);
     Block block = bs.getBlock();
-    if (player.isSneaking() && block == EnderIO.blockConduitBundle && player.capabilities.isCreativeMode) {
+    if (player.isSneaking() && block == blockConduitBundle.getBlock() && player.capabilities.isCreativeMode) {
       block.onBlockClicked(player.worldObj, pos, player);
       return true;
     }

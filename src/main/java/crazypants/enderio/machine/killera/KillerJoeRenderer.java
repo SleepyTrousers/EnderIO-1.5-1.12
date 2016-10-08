@@ -4,9 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ManagedTESR;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.render.util.TankRenderHelper;
 import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
+import crazypants.enderio.render.util.TankRenderHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,11 +17,13 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockKillerJoe;
+
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
 
   public KillerJoeRenderer() {
-    super(EnderIO.blockKillerJoe);
+    super(blockKillerJoe.getBlock());
   }
 
   @Override

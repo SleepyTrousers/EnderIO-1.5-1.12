@@ -27,6 +27,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.ModObject.blockSliceAndSplice;
 import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
@@ -49,7 +50,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     registry.addRecipeCategories(new SliceAndSpliceRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new RecipeHandler<SliceAndSpliceRecipe>(SliceAndSpliceRecipe.class, SliceAndSpliceRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSliceAndSplice.class, 155, 42, 16, 16, SliceAndSpliceRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockSliceAndSplice), SliceAndSpliceRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockSliceAndSplice.getBlock()), SliceAndSpliceRecipeCategory.UID);
 
     List<SliceAndSpliceRecipe> result = new ArrayList<SliceAndSpliceRecipe>();    
     for (IRecipe rec : SliceAndSpliceRecipeManager.getInstance().getRecipes()) {
@@ -90,7 +91,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = EnderIO.blockSliceAndSplice.getLocalizedName();
+    String localizedName = blockSliceAndSplice.getBlock().getLocalizedName();
     return localizedName != null ? localizedName : "ERROR";
   }
 

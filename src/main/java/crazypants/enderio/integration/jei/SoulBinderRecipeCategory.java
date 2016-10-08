@@ -32,8 +32,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.asm.transformers.ItemStackTransformer;
 
+import static crazypants.enderio.ModObject.blockSoulBinder;
+import static crazypants.enderio.ModObject.itemBrokenSpawner;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
@@ -81,7 +82,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
     registry.addRecipeCategories(new SoulBinderRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<SoulBinderRecipeWrapper>(SoulBinderRecipeWrapper.class, SoulBinderRecipeCategory.UID));
     registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockSoulFuser), SoulBinderRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockSoulBinder.getBlock()), SoulBinderRecipeCategory.UID);
 
     List<SoulBinderRecipeWrapper> result = new ArrayList<SoulBinderRecipeWrapper>(); 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.getUnlocalisedName());
@@ -128,7 +129,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = EnderIO.blockSoulFuser.getLocalizedName();
+    String localizedName = blockSoulBinder.getBlock().getLocalizedName();
     return localizedName != null ? localizedName : "ERROR";
   }
 
@@ -167,7 +168,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       guiItemStacks.set(1, inputStack);
     }
 
-    if (EnderIO.itemBrokenSpawner == outputStack.getItem() || currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
+    if (itemBrokenSpawner.getItem() == outputStack.getItem() || currentRecipe.recipe instanceof SoulBinderTunedPressurePlateRecipe) {
       List<ItemStack> outputs = new ArrayList<ItemStack>();
       for (CapturedMob soul : souls) {
         outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));

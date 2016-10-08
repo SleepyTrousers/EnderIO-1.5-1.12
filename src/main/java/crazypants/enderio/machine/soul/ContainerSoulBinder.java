@@ -13,6 +13,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import static crazypants.enderio.ModObject.itemBrokenSpawner;
+
 public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
 
   // JEI wants this data without giving us a chance to instantiate a container
@@ -75,7 +77,7 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
 
   public void createGhostSlots(List<GhostSlot> slots) {
     slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, getSlotFromInventory(getInv(), 0)));
-    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBrokenSpawner, getSlotFromInventory(getInv(), 1)));
+    slots.add(new GhostBackgroundItemSlot(itemBrokenSpawner.getItem(), getSlotFromInventory(getInv(), 1)));
   }
 
 }

@@ -58,6 +58,9 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockPoweredSpawner;
+import static crazypants.enderio.ModObject.itemBrokenSpawner;
+
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
  
@@ -148,7 +151,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                   }                  
                 }              
               }
-              ItemStack drop = CapturedMob.create(entityName, type).toStack(EnderIO.itemBrokenSpawner, 0, 1);
+              ItemStack drop = CapturedMob.create(entityName, type).toStack(itemBrokenSpawner.getItem(), 0, 1);
               dropCache.put(new BlockCoord(evt.getPos()), drop);
 
               for (int i = (int) (Math.random() * 7); i > 0; i--) {
@@ -188,7 +191,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                 if (logic != null) {
                   String entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    evt.getDrops().add(CapturedMob.create(entityName, null).toStack(EnderIO.itemBrokenSpawner, 0, 1));
+                    evt.getDrops().add(CapturedMob.create(entityName, null).toStack(itemBrokenSpawner.getItem(), 0, 1));
                   }
                 }
               }
@@ -231,10 +234,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft() == null || evt.getLeft().stackSize != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)) {
+    if (evt.getLeft() == null || evt.getLeft().stackSize != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(blockPoweredSpawner.getBlock())) {
       return;
     }
-    if (evt.getRight() == null || evt.getRight().stackSize != 1 || evt.getRight().getItem() != EnderIO.itemBrokenSpawner) {
+    if (evt.getRight() == null || evt.getRight().stackSize != 1 || evt.getRight().getItem() != itemBrokenSpawner.getItem()) {
       return;
     }
 
@@ -278,7 +281,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  public boolean isBlackListed(String entityId) {
+  public static boolean isBlackListed(String entityId) {
     return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }
 

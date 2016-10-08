@@ -6,7 +6,6 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.IModObject;
@@ -27,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.blockConduitBundle;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem,IHaveRenderers {
 
@@ -59,10 +60,10 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
   @Override
   public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
    
-    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle.getDefaultState(), player, world, pos, side);
+    BlockCoord placeAt = Util.canPlaceItem(stack, blockConduitBundle.getBlock().getDefaultState(), player, world, pos, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if(world.setBlockState(placeAt.getBlockPos(), EnderIO.blockConduitBundle.getDefaultState(), 1)) {
+        if (world.setBlockState(placeAt.getBlockPos(), blockConduitBundle.getBlock().getDefaultState(), 1)) {
           TileEntity te = world.getTileEntity(placeAt.getBlockPos());
           if(te instanceof IConduitBundle) {
             IConduitBundle bundle = (IConduitBundle) te;
@@ -81,7 +82,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
       
       BlockPos place = pos.offset(side);
 
-      if(world.getBlockState(place).getBlock() == EnderIO.blockConduitBundle) {
+      if (world.getBlockState(place).getBlock() == blockConduitBundle.getBlock()) {
 
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
         if(bundle == null) {          

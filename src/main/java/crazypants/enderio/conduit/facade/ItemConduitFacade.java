@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockConduitBundle;
+
 public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
   public ItemConduitFacade(Block block, String name) {
@@ -60,7 +62,7 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
 
     if (player.canPlayerEdit(placeAt, side, itemStack) && PainterUtil2.getSourceBlock(itemStack) != null) {
       if (world.isAirBlock(placeAt)) {
-        world.setBlockState(placeAt, EnderIO.blockConduitBundle.getDefaultState());
+        world.setBlockState(placeAt, blockConduitBundle.getBlock().getDefaultState());
         IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeAt);
         IBlockState bs = PainterUtil2.getSourceBlock(itemStack);
         bundle.setPaintSource(bs);
@@ -72,7 +74,7 @@ public class ItemConduitFacade extends ItemBlock implements IAdvancedTooltipProv
         return EnumActionResult.SUCCESS;
       } else {
         Block blockAt = world.getBlockState(placeAt).getBlock();
-        if (blockAt == EnderIO.blockConduitBundle) {
+        if (blockAt == blockConduitBundle.getBlock()) {
           if(((BlockConduitBundle) blockAt)
               .handleFacadeClick(world, placeAt, player, side.getOpposite(),
                   (IConduitBundle) world.getTileEntity(placeAt), itemStack, hand, hitX, hitY, hitZ)) {

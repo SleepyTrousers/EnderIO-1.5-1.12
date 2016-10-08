@@ -48,6 +48,7 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockConduitBundle;
 import static crazypants.enderio.config.Config.transparentFacesLetThroughBeaconBeam;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
@@ -81,7 +82,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   Object covers;
   
   public TileConduitBundle() {
-    this.blockType = EnderIO.blockConduitBundle;
+    this.blockType = blockConduitBundle.getBlock();
   }
 
   @Override
@@ -266,7 +267,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     worldObj.checkLight(getPos());
     IBlockState bs = worldObj.getBlockState(pos);
     worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-    worldObj.notifyNeighborsOfStateChange(getPos(), EnderIO.blockConduitBundle);
+    worldObj.notifyNeighborsOfStateChange(getPos(), blockConduitBundle.getBlock());
     facadeChanged = false;
   }
 

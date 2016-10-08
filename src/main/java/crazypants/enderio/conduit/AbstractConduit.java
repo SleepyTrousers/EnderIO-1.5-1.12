@@ -11,7 +11,6 @@ import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -43,6 +42,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.blockConduitBundle;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -497,7 +498,7 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if (!externalConnections.isEmpty()) {
-      world.notifyNeighborsOfStateChange(te.getPos(), EnderIO.blockConduitBundle);
+      world.notifyNeighborsOfStateChange(te.getPos(), blockConduitBundle.getBlock());
     }
     externalConnections.clear();
 
@@ -514,7 +515,7 @@ public abstract class AbstractConduit implements IConduit {
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if (block == EnderIO.blockConduitBundle) {
+    if (block == blockConduitBundle.getBlock()) {
       return false;
     }
 

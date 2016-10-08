@@ -1,10 +1,11 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.util.CapturedMob;
+import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.ModObject.itemFrankenSkull;
 
 public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {
 
@@ -16,12 +17,12 @@ public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   public ItemStack getInputStack() {
-    return new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
+    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
   }
  
   @Override

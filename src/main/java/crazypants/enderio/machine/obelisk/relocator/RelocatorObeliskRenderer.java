@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.blockSpawnRelocator;
 
 @SideOnly(Side.CLIENT)
 public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocatorObelisk> {
@@ -14,7 +15,7 @@ public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocat
   private ItemStack onStack = new ItemStack(Blocks.PRISMARINE);
 
   public RelocatorObeliskRenderer() {
-    super(null, EnderIO.blockSpawnRelocator);
+    super(null, blockSpawnRelocator.getBlock());
   }
 
   @Override

@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.light;
 
+import crazypants.enderio.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
+
+import static crazypants.enderio.ModObject.blockElectricLight;
 
 @Storable
 public class TileLightNode extends TileEntityEio {
@@ -26,7 +27,7 @@ public class TileLightNode extends TileEntityEio {
 
   public void checkParent() {
     if (hasWorldObj() && parent != null && worldObj.isBlockLoaded(parent)) {
-      if (worldObj.getBlockState(parent).getBlock() != EnderIO.blockElectricLight) {
+      if (worldObj.getBlockState(parent).getBlock() != blockElectricLight.getBlock()) {
         worldObj.setBlockToAir(pos);
       }
     }

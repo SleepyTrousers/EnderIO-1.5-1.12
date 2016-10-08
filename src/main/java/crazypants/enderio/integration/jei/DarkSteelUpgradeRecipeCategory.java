@@ -2,7 +2,6 @@ package crazypants.enderio.integration.jei;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import mezz.jei.api.ingredients.IIngredients;
 import org.apache.commons.lang3.tuple.Triple;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import mezz.jei.api.IGuiHelper;
@@ -25,6 +22,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -33,6 +31,8 @@ import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
 
 public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkSteelUpgradeRecipeCategory.DarkSteelUpgradeRecipeWrapper> {
 
@@ -79,7 +79,7 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
     registry.addRecipeCategories(new DarkSteelUpgradeRecipeCategory(guiHelper));
     registry.addRecipeHandlers(new BaseRecipeHandler<DarkSteelUpgradeRecipeWrapper>(DarkSteelUpgradeRecipeWrapper.class, DarkSteelUpgradeRecipeCategory.UID));
     registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.ANVIL), DarkSteelUpgradeRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(EnderIO.blockDarkSteelAnvil), DarkSteelUpgradeRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlock()), DarkSteelUpgradeRecipeCategory.UID);
 
     long start = System.nanoTime();
     final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = getAllRecipes();

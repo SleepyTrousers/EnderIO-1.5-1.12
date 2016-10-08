@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.obelisk.weather;
 
+import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
+
+import static crazypants.enderio.ModObject.blockWeatherObelisk;
 
 public class WeatherObeliskSpecialRenderer extends ObeliskSpecialRenderer<TileWeatherObelisk> {
   
   public WeatherObeliskSpecialRenderer(ItemStack itemStack) {
-    super(itemStack, EnderIO.blockWeatherObelisk);
+    super(itemStack, blockWeatherObelisk.getBlock());
   }
   
   @Override

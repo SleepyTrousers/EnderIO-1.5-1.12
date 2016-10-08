@@ -68,6 +68,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockFusedQuartz;
+
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
     INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper {
@@ -555,7 +557,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer) && (paintSource == null || paintSource.getBlock() != EnderIO.blockFusedQuartz)) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer) && (paintSource == null || paintSource.getBlock() != blockFusedQuartz.getBlock())) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

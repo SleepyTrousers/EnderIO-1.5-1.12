@@ -54,6 +54,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.blockConduitBundle;
+
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
@@ -264,7 +266,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
             BlockCoord loc = getLocation().getLocation(faceHit);
             Block id = world.getBlockState(loc.getBlockPos()).getBlock();
-            if (id == EnderIO.blockConduitBundle) {
+            if (id == blockConduitBundle.getBlock()) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
               if (neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
@@ -418,7 +420,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     Block block = bs.getBlock();
     TileEntity te = world.getTileEntity(loc.getBlockPos());
 
-    if (block == null || block == EnderIO.blockConduitBundle) {
+    if (block == null || block == blockConduitBundle.getBlock()) {
       return false;
     }
 
@@ -617,7 +619,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (network == null || network.updatingNetwork) {
       return false;
     }
-    if (blockId != EnderIO.blockConduitBundle) {
+    if (blockId != blockConduitBundle.getBlock()) {
       network.updateInputsFromConduit(this);
     }
     computeSpecialConnections();

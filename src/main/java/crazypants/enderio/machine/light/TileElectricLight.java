@@ -10,7 +10,6 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
@@ -25,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 
+import static crazypants.enderio.ModObject.blockLightNode;
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
@@ -145,7 +145,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
         for (BlockPos ln : lightNodes) {
           if(ln != null) {
             bs = worldObj.getBlockState(ln);
-            if(bs.getBlock() == EnderIO.blockLightNode) {
+            if (bs.getBlock() == blockLightNode.getBlock()) {
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
               worldObj.setBlockState(ln, bs, 2);
               worldObj.notifyBlockUpdate(ln, bs, bs, 3);
@@ -235,7 +235,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
         for (BlockPos entry : after) {
           if (!before.contains(entry)) {
-            worldObj.setBlockState(entry, EnderIO.blockLightNode.getDefaultState(), 3);
+            worldObj.setBlockState(entry, blockLightNode.getBlock().getDefaultState(), 3);
             TileEntity te = worldObj.getTileEntity(entry);
             if (te instanceof TileLightNode) {
               ((TileLightNode) te).setParentPos(getPos());
@@ -300,13 +300,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private boolean isLightNode(Vector3d offset) {
     BlockPos bp = new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ()  + (int) offset.z);
-    return worldObj.getBlockState(bp).getBlock() == EnderIO.blockLightNode && worldObj.getTileEntity(bp) instanceof TileLightNode;
+    return worldObj.getBlockState(bp).getBlock() == blockLightNode.getBlock() && worldObj.getTileEntity(bp) instanceof TileLightNode;
   }
 
   private void clearLightNodes() {
     if(lightNodes != null) {
       for (BlockPos ln : lightNodes) {
-        if (worldObj.getBlockState(ln).getBlock() == EnderIO.blockLightNode) {
+        if (worldObj.getBlockState(ln).getBlock() == blockLightNode.getBlock()) {
           worldObj.setBlockToAir(ln);
         }
       }

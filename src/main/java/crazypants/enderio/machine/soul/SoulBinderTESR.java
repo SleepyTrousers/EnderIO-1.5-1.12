@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
@@ -32,10 +31,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
+import static crazypants.enderio.ModObject.blockSoulBinder;
+
 public class SoulBinderTESR extends ManagedTESR<TileSoulBinder> {
 
   public SoulBinderTESR() {
-    super(EnderIO.blockSoulFuser);
+    super(blockSoulBinder.getBlock());
   }
 
   @Override

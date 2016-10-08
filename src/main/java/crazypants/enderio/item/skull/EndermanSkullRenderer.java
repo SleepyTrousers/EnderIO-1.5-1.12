@@ -12,10 +12,12 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 
+import static crazypants.enderio.ModObject.blockEndermanSkull;
+
 public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
 
   public EndermanSkullRenderer() {
-    super(EnderIO.blockEndermanSkull);
+    super(blockEndermanSkull.getBlock());
   }
 
   @Override

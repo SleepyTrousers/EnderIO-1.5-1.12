@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
@@ -84,7 +85,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         ContainerDarkSteelAnvil.this.maximumCost = 0;
         IBlockState iblockstate = world.getBlockState(blockPosIn);
 
-        if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == EnderIO.blockDarkSteelAnvil
+        if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == blockDarkSteelAnvil.getBlock()
             && playerIn.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
           int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
           ++l;
@@ -105,6 +106,6 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   @Override
   public boolean canInteractWith(EntityPlayer player) {
-    return player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() == EnderIO.blockDarkSteelAnvil;
+    return player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() == blockDarkSteelAnvil.getBlock();
   }
 }
