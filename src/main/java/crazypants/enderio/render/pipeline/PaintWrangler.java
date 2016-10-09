@@ -45,8 +45,9 @@ public class PaintWrangler {
     if (!memory.doPaint) {
       return false;
     }
+    PaintedBlockAccessWrapper fakeWorld = null;
     if (memory.doActualState || memory.doExtendedState) {
-      final PaintedBlockAccessWrapper fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
+      fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
       if (memory.doActualState) {
         try {
           extendedPaintSource = actualPaintSource = paintSource.getActualState(fakeWorld, pos);
@@ -63,11 +64,13 @@ public class PaintWrangler {
           memory.doExtendedState = false;
         }
       }
-      fakeWorld.free();
     }
 
     IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
     if (paintModel == null) {
+      if (fakeWorld != null) {
+        fakeWorld.free();
+      }
       return false;
     }
 
@@ -81,11 +84,17 @@ public class PaintWrangler {
           memory.doPaint = false;
           Log.error("Failed to use block " + paintSource.getBlock() + " as paint. Error(s) while rendering: " + errors);
           ForgeHooksClient.setRenderLayer(oldRenderLayer);
+          if (fakeWorld != null) {
+            fakeWorld.free();
+          }
           return false;
         }
       }
     }
     ForgeHooksClient.setRenderLayer(oldRenderLayer);
+    if (fakeWorld != null) {
+      fakeWorld.free();
+    }
     return true;
   }
 
