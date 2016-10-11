@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
+import crazypants.enderio.block.BlockDecoration;
+import crazypants.enderio.block.BlockDecorationFacing;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -16,6 +18,7 @@ import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
+import crazypants.enderio.machine.gauge.BlockGauge;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -53,6 +56,8 @@ import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
+import crazypants.enderio.material.BlockDarkIronBars;
+import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
@@ -65,6 +70,7 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public enum ModObject implements IModObject {
   // Enderface
@@ -127,7 +133,12 @@ public enum ModObject implements IModObject {
       block = BlockPaintedFusedQuartz.create();
     }
   },
-  blockDarkIronBars,
+  blockDarkIronBars {
+    @Override
+    protected void create() {
+      block = BlockDarkIronBars.create();
+    }
+  },
 
   // Machines
   blockStirlingGenerator {
@@ -178,7 +189,6 @@ public enum ModObject implements IModObject {
       block = BlockSagMill.create();
     }
   },
-  blockHyperCube,
   blockPowerMonitor {
     @Override
     protected void create() {
@@ -332,7 +342,6 @@ public enum ModObject implements IModObject {
       block = BlockLightNode.create();
     }
   },
-  blockLight,
 
   //Blocks
   blockDarkSteelAnvil {
@@ -353,15 +362,30 @@ public enum ModObject implements IModObject {
       block = BlockReinforcedObsidian.create();
     }
   },
-  blockIngotStorage,
+  blockIngotStorage {
+    @Override
+    protected void create() {
+      block = BlockIngotStorage.create();
+    }
+  },
   blockSelfResettingLever {
     @Override
     protected void create() {
       BlockSelfResettingLever.create();
     }
   },
-  blockDecoration1,
-  blockDecoration2,
+  blockDecoration1 {
+    @Override
+    protected void create() {
+      block = BlockDecoration.create();
+    }
+  },
+  blockDecoration2 {
+    @Override
+    protected void create() {
+      block = BlockDecorationFacing.create();
+    }
+  },
 
   // Painter
   blockPainter {
@@ -376,7 +400,12 @@ public enum ModObject implements IModObject {
       block = BlockPaintedFence.create();
     }
   },
-  blockPaintedStoneFence,
+  blockPaintedStoneFence {
+    @Override
+    protected void create() {
+      block = BlockPaintedFence.create_stone();
+    }
+  },
   blockPaintedFenceGate {
     @Override
     protected void create() {
@@ -395,23 +424,52 @@ public enum ModObject implements IModObject {
       block = BlockPaintedStairs.create();
     }
   },
-  blockPaintedStoneStair,
+  blockPaintedStoneStair {
+    @Override
+    protected void create() {
+      block = BlockPaintedStairs.create_stone();
+    }
+  },
   blockPaintedSlab {
     @Override
     protected void create() {
-      block = BlockPaintedSlab.create();
+      BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
+      blockPaintedSlab.block = slabs[0];
+      blockPaintedDoubleSlab.block = slabs[1];
+      blockPaintedStoneSlab.block = slabs[2];
+      blockPaintedStoneDoubleSlab.block = slabs[3];
     }
   },
-  blockPaintedStoneSlab,
-  blockPaintedDoubleSlab,
-  blockPaintedStoneDoubleSlab,
+  blockPaintedDoubleSlab {
+    @Override
+    protected void create() {
+      // see blockPaintedSlab
+    }
+  },
+  blockPaintedStoneSlab {
+    @Override
+    protected void create() {
+      // see blockPaintedSlab
+    }
+  },
+  blockPaintedStoneDoubleSlab {
+    @Override
+    protected void create() {
+      // see blockPaintedSlab
+    }
+  },
   blockPaintedGlowstone {
     @Override
     protected void create() {
       block = BlockPaintedGlowstone.create();
     }
   },
-  blockPaintedGlowstoneSolid,
+  blockPaintedGlowstoneSolid {
+    @Override
+    protected void create() {
+      block = BlockPaintedGlowstone.create_solid();
+    }
+  },
   blockPaintedCarpet {
     @Override
     protected void create() {
@@ -492,7 +550,12 @@ public enum ModObject implements IModObject {
   // },
   
   itemEnderFood,
-  blockGauge,
+  blockGauge {
+    @Override
+    protected void create() {
+      block = BlockGauge.create();
+    }
+  },
   itemRemoteInvAccess,
   blockInventoryPanelSensor {
     @Override
@@ -524,9 +587,10 @@ public enum ModObject implements IModObject {
   }
 
   protected void create() {
+    Log.info(this + ".create() missing");
   }
 
-  public static void preinit() {
+  public static void preInit(FMLPreInitializationEvent event) {
     for (ModObject elem : values()) {
       elem.create();
     }

@@ -9,14 +9,10 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
-import crazypants.enderio.block.BlockDecoration;
-import crazypants.enderio.block.BlockDecorationFacing;
-import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
@@ -38,17 +34,13 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
-import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.MachineRecipes;
-import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.gauge.BlockGauge;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
@@ -57,8 +49,6 @@ import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import crazypants.enderio.material.BlockDarkIronBars;
-import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemMachinePart;
@@ -78,7 +68,6 @@ import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -93,7 +82,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
@@ -131,8 +119,6 @@ public class EnderIO {
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
-  public static BlockIngotStorage blockIngotStorage;
-  public static BlockDarkIronBars blockDarkIronBars;
   public static ItemEnderFood itemEnderFood;
 
   // // Enderface
@@ -157,13 +143,7 @@ public class EnderIO {
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
   public static ItemFunctionUpgrade itemFunctionUpgrade;
 
-  // Machines
-
-  public static BlockGauge blockGauge;
-
   // Blocks
-  public static BlockDecoration blockDecoration1, blockDecoration2;
-
   public static Fluids fluids;
 
   // Items
@@ -187,7 +167,7 @@ public class EnderIO {
 
     PowerHandlerUtil.create();
 
-    Config.load(event);
+    Config.preInit(event);
 
     proxy.loadIcons();
 
@@ -198,7 +178,7 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    ModObject.preinit();
+    ModObject.preInit(event);
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
@@ -232,51 +212,33 @@ public class EnderIO {
     itemXpTransfer = ItemXpTransfer.create();
     itemSoulVessel = ItemSoulVessel.create();
 
-    blockIngotStorage = BlockIngotStorage.create();
-
-    blockDarkIronBars = BlockDarkIronBars.create();
-
     itemEnderFood = ItemEnderFood.create();
-
-    blockGauge = BlockGauge.create();
 
     itemRemoteInvAccess = ItemRemoteInvAccess.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
 
-    blockDecoration1 = BlockDecoration.create();
-    blockDecoration2 = BlockDecorationFacing.create();
-
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.integration.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
 
-    proxy.preInit();
+    proxy.preInit(event);
   }
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-    Things.enterInit();
+    Things.init(event);
 
-    Config.init();
+    Config.init(event);
 
     instance = this;
 
-    PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.init(event);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
-    MinecraftForge.EVENT_BUS.register(this);
 
     MaterialRecipes.registerDependantOresInDictionary();
-
-    if (Config.recipeLevel >= 0) {
-      MaterialRecipes.addRecipes();
-      ConduitRecipes.addRecipes();
-      MachineRecipes.addRecipes();
-      ItemRecipes.addRecipes();
-    }
 
     proxy.init();
   }

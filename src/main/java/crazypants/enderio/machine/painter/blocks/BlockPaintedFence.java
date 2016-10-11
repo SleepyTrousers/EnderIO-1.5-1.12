@@ -67,13 +67,17 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
         Blocks.OAK_FENCE, Blocks.ACACIA_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE, Blocks.JUNGLE_FENCE, Blocks.DARK_OAK_FENCE));
 
+    return woodFence;
+  }
+
+  public static BlockPaintedFence create_stone() {
     BlockPaintedFence stoneFence = new BlockPaintedFence(Material.ROCK, MapColor.NETHERRACK, ModObject.blockPaintedStoneFence.getUnlocalisedName(), SoundType.STONE);
     stoneFence.setHardness(2.0F).setResistance(10.0F);
     stoneFence.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
         Blocks.NETHER_BRICK_FENCE));
 
-    return woodFence;
+    return stoneFence;
   }
 
   private final String name;

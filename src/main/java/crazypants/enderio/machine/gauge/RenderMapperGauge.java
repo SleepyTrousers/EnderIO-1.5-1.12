@@ -19,6 +19,8 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 
+import static crazypants.enderio.ModObject.blockGauge;
+
 public class RenderMapperGauge implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
 
   public static final RenderMapperGauge instance = new RenderMapperGauge();
@@ -52,7 +54,7 @@ public class RenderMapperGauge implements IItemRenderMapper.IItemStateMapper, II
 
   @Override
   public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
-    return Collections.singletonList(Pair.of(EnderIO.blockGauge.getDefaultState(), stack));
+    return Collections.singletonList(Pair.of(blockGauge.getBlock().getDefaultState(), stack));
   }
 
 }

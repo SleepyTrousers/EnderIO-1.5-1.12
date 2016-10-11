@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -43,7 +44,7 @@ public class Things {
 
   private static boolean inPreInit = true;
 
-  public static void enterInit() {
+  public static void init(FMLInitializationEvent event) {
     inPreInit = false;
     for (Things element : values) {
       element.bake();

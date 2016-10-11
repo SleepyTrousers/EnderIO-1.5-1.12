@@ -50,11 +50,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
 
   public static BlockPaintedGlowstone create() {
+    BlockPaintedGlowstone result = new BlockPaintedGlowstoneNonSolid(ModObject.blockPaintedGlowstone.getUnlocalisedName());
+    result.init();
+    return result;
+  }
+
+  public static BlockPaintedGlowstone create_solid() {
     BlockPaintedGlowstone result = new BlockPaintedGlowstoneSolid(ModObject.blockPaintedGlowstoneSolid.getUnlocalisedName());
     result.init();
-
-    BlockPaintedGlowstone result2 = new BlockPaintedGlowstoneNonSolid(ModObject.blockPaintedGlowstone.getUnlocalisedName());
-    result2.init();
     return result;
   }
 

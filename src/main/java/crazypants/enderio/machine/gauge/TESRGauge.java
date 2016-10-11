@@ -18,10 +18,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.ModObject.blockGauge;
+
 public class TESRGauge extends ManagedTESR<TileGauge> {
 
   public TESRGauge() {
-    super(EnderIO.blockGauge);
+    super(blockGauge.getBlock());
   }
 
   @Override

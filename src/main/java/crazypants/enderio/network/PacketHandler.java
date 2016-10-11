@@ -1,13 +1,17 @@
 package crazypants.enderio.network;
 
+import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.PacketRedstoneMode;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler {
 
@@ -31,4 +35,10 @@ public class PacketHandler {
   public static void sendTo(IMessage message, EntityPlayerMP player) {
     INSTANCE.sendTo(message, player);
   }
+
+  public static void init(FMLInitializationEvent event) {
+    INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
+  }
+
 }

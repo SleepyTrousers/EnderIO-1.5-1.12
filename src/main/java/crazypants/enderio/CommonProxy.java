@@ -8,12 +8,16 @@ import javax.xml.stream.XMLStreamException;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeFactory;
 import crazypants.enderio.config.recipes.xml.Recipes;
 import crazypants.enderio.diagnostics.DebugCommand;
+import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.machine.MachineRecipes;
+import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +33,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -58,7 +63,7 @@ public class CommonProxy {
   public void loadIcons() {
   }
   
-  public void preInit() {
+  public void preInit(FMLPreInitializationEvent event) {
     if (Loader.isModLoaded("theoneprobe")) {
       FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.integration.top.TOPCompatibility");
     }
@@ -72,6 +77,11 @@ public class CommonProxy {
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
 
     if (Config.registerRecipes) {
+      MaterialRecipes.addRecipes();
+      ConduitRecipes.addRecipes();
+      MachineRecipes.addRecipes();
+      ItemRecipes.addRecipes();
+
       for (String filename : RECIPE_FILES) {
         try {
           Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);

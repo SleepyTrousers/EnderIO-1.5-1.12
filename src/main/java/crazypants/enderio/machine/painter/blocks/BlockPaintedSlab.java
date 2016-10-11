@@ -61,7 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
-  public static BlockPaintedSlab create() {
+  public static BlockPaintedSlab[] create() {
     BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.WOOD, ModObject.blockPaintedSlab.getUnlocalisedName(), SoundType.WOOD);
     woodHalfSlab.setHardness(2.0F).setResistance(5.0F);
     woodHalfSlab.init();
@@ -89,7 +89,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.TileEntityTwicePaintedBlock.class, ModObject.blockPaintedSlab.getUnlocalisedName() + "TileEntity");
 
-    return woodHalfSlab;
+    return new BlockPaintedSlab[] { woodHalfSlab, woodDoubleSlab, rockHalfSlab, rockDoubleSlab };
   }
 
   public static class BlockPaintedHalfSlab extends BlockPaintedSlab {

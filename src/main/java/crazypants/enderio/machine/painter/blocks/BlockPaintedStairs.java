@@ -63,13 +63,17 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
         Blocks.OAK_STAIRS, Blocks.ACACIA_STAIRS, Blocks.SPRUCE_STAIRS, Blocks.BIRCH_STAIRS, Blocks.JUNGLE_STAIRS, Blocks.DARK_OAK_STAIRS));
 
+    return woodStairs;
+  }
+
+  public static BlockPaintedStairs create_stone() {
     BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.STONE_STAIRS, ModObject.blockPaintedStoneStair.getUnlocalisedName());
     stoneStairs.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
         Blocks.STONE_STAIRS, Blocks.BRICK_STAIRS, Blocks.STONE_BRICK_STAIRS, Blocks.NETHER_BRICK_STAIRS, Blocks.SANDSTONE_STAIRS, Blocks.QUARTZ_STAIRS,
         Blocks.RED_SANDSTONE_STAIRS));
 
-    return woodStairs;
+    return stoneStairs;
   }
 
   private final String name;

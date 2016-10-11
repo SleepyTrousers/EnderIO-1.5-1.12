@@ -23,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -557,7 +558,7 @@ public final class Config {
   public static String leversEnabled = "10,30,60,300";
 
   
-  public static void load(FMLPreInitializationEvent event) {
+  public static void preInit(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
@@ -591,7 +592,7 @@ public final class Config {
     if (event.getModID().equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
-      init();
+      init(null);
       postInit();
     }
   }
@@ -602,7 +603,7 @@ public final class Config {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
-      init();
+      init(null);
       postInit();
     }
   }
@@ -662,7 +663,7 @@ public final class Config {
         .getInt(painterEnergyPerTaskRF);
 
     recipeLevel = config.get(sectionRecipe.name, "recipeLevel", recipeLevel,
-        "How expensive should the crafting recipes be? -1=don't register any crafting/smelting recipes, 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(
+        "How expensive should the crafting recipes be? 0=cheapest, 1=cheaper, 2=normal, 3=expensive").getInt(
         recipeLevel);
 
     registerRecipes = config
@@ -1513,7 +1514,7 @@ public final class Config {
     }
   }
 
-  public static void init() {
+  public static void init(FMLInitializationEvent event) {
   }
 
   public static void postInit() {

@@ -82,12 +82,16 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockCapBank;
+import static crazypants.enderio.ModObject.blockDarkIronBars;
 import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
 import static crazypants.enderio.ModObject.blockDarkSteelLadder;
+import static crazypants.enderio.ModObject.blockDecoration1;
+import static crazypants.enderio.ModObject.blockDecoration2;
 import static crazypants.enderio.ModObject.blockDialingDevice;
 import static crazypants.enderio.ModObject.blockElectricLight;
 import static crazypants.enderio.ModObject.blockEnchanter;
@@ -95,6 +99,7 @@ import static crazypants.enderio.ModObject.blockEnderIo;
 import static crazypants.enderio.ModObject.blockEndermanSkull;
 import static crazypants.enderio.ModObject.blockExitRail;
 import static crazypants.enderio.ModObject.blockFarmStation;
+import static crazypants.enderio.ModObject.blockIngotStorage;
 import static crazypants.enderio.ModObject.blockKillerJoe;
 import static crazypants.enderio.ModObject.blockReinforcedObsidian;
 import static crazypants.enderio.ModObject.blockReservoir;
@@ -142,8 +147,8 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void preInit() {
-    super.preInit();
+  public void preInit(FMLPreInitializationEvent event) {
+    super.preInit(event);
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());
@@ -162,8 +167,8 @@ public class ClientProxy extends CommonProxy {
     SmartModelAttacher.registerBlockItemModels();
 
     // Blocks
-    if (EnderIO.blockDarkIronBars != null) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(EnderIO.blockDarkIronBars), ModObject.blockDarkIronBars.getUnlocalisedName());
+    if (blockDarkIronBars.getBlock() != null) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(blockDarkIronBars.getBlock()), ModObject.blockDarkIronBars.getUnlocalisedName());
     }
     registerRenderers((IHaveRenderers) blockDarkSteelAnvil.getBlock());
     if (blockDarkSteelLadder.getBlock() != null) {
@@ -172,11 +177,11 @@ public class ClientProxy extends CommonProxy {
     for (BlockSelfResettingLever b : BlockSelfResettingLever.getBlocks()) {
       ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
     }
-    registerRenderers(EnderIO.blockIngotStorage);
+    registerRenderers((IHaveRenderers) blockIngotStorage.getBlock());
     registerRenderers((IHaveRenderers) blockEndermanSkull.getBlock());
     registerRenderers((IHaveRenderers) blockElectricLight.getBlock());
-    registerRenderers(EnderIO.blockDecoration1);
-    registerRenderers(EnderIO.blockDecoration2);
+    registerRenderers((IHaveRenderers) blockDecoration1.getBlock());
+    registerRenderers((IHaveRenderers) blockDecoration2.getBlock());
 
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockTravelAnchor.getBlock());
     ClientUtil.registerDefaultItemRenderer((BlockEnder<?>) blockWirelessCharger.getBlock());

@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.ModObject.blockIngotStorage;
+
 public enum Alloy implements IStringSerializable {
 
   ELECTRICAL_STEEL("electricalSteel", 6.0f),
@@ -79,7 +81,7 @@ public enum Alloy implements IStringSerializable {
   }
 
   public @Nonnull ItemStack getStackBlock(int size) {
-    return new ItemStack(EnderIO.blockIngotStorage, size, ordinal());
+    return new ItemStack(blockIngotStorage.getBlock(), size, ordinal());
   }
 
   public @Nonnull String getOreIngot() {
