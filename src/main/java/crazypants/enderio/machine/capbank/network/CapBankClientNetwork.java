@@ -332,7 +332,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
       vOff++;
     }
 
-    if(isIOType(xOrg+left.getFrontOffsetZ(), yOrg, zOrg+left.getFrontOffsetZ(), dir, type)) {
+    if (isIOType(xOrg + left.getFrontOffsetX(), yOrg, zOrg + left.getFrontOffsetZ(), dir, type)) {
       // not a rectangle
       return IOInfo.SINGLE;
     }
