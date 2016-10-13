@@ -74,27 +74,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public enum ModObject implements IModObject {
   // Enderface
-  blockEnderIo {
-    @Override
-    protected void create() {
-      block = BlockEnderIO.create();
-    }
-  },
+  blockEnderIo(BlockEnderIO.class),
   itemEnderface,
 
   // Conduits
-  blockConduitBundle {
-    @Override
-    protected void create() {
-      block = BlockConduitBundle.create();
-    }
-  },
-  blockConduitFacade {
-    @Override
-    protected void create() {
-      block = BlockConduitFacade.create();
-    }
-  },
+  blockConduitBundle(BlockConduitBundle.class),
+  blockConduitFacade(BlockConduitFacade.class),
   itemConduitFacade,
   itemRedstoneConduit,
   itemItemConduit,
@@ -127,309 +112,63 @@ public enum ModObject implements IModObject {
       BlockColoredFusedQuartz.create();
     }
   },
-  blockPaintedFusedQuartz {
-    @Override
-    protected void create() {
-      block = BlockPaintedFusedQuartz.create();
-    }
-  },
-  blockDarkIronBars {
-    @Override
-    protected void create() {
-      block = BlockDarkIronBars.create();
-    }
-  },
+  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
+  blockDarkIronBars(BlockDarkIronBars.class),
 
   // Machines
-  blockStirlingGenerator {
-    @Override
-    protected void create() {
-      block = BlockStirlingGenerator.create();
-    }
-  },
-  blockCombustionGenerator {
-    @Override
-    protected void create() {
-      block = BlockCombustionGenerator.create();
-    }
-  },
-  blockZombieGenerator {
-    @Override
-    protected void create() {
-      block = BlockZombieGenerator.create();
-    }
-  },
-  blockReservoir {
-    @Override
-    protected void create() {
-      block = BlockReservoir.create();
-    }
-  },
-  blockAlloySmelter {
-    @Override
-    protected void create() {
-      block = BlockAlloySmelter.create();
-    }
-  },
-  blockSolarPanel {
-    @Override
-    protected void create() {
-      block = BlockSolarPanel.create();
-    }
-  },
-  blockCapBank {
-    @Override
-    protected void create() {
-      block = BlockCapBank.create();
-    }
-  },
-  blockSagMill {
-    @Override
-    protected void create() {
-      block = BlockSagMill.create();
-    }
-  },
-  blockPowerMonitor {
-    @Override
-    protected void create() {
-      block = BlockPowerMonitor.createPowerMonitor();
-    }
-  },
-  blockPowerMonitorv2 {
-    @Override
-    protected void create() {
-      block = BlockPowerMonitor.createAdvancedPowerMonitor();
-    }
-  },
-  blockVat {
-    @Override
-    protected void create() {
-      block = BlockVat.create();
-    }
-  },
-  blockFarmStation {
-    @Override
-    protected void create() {
-      block = BlockFarmStation.create();
-    }
-  },
-  blockTank {
-    @Override
-    protected void create() {
-      block = BlockTank.create();
-    }
-  },
-  blockCrafter {
-    @Override
-    protected void create() {
-      block = BlockCrafter.create();
-    }
-  },
-  blockVacuumChest {
-    @Override
-    protected void create() {
-      block = BlockVacuumChest.create();
-    }
-  },
-  blockWirelessCharger {
-    @Override
-    protected void create() {
-      block = BlockWirelessCharger.create();
-    }
-  },
-  blockEnchanter {
-    @Override
-    protected void create() {
-      block = BlockEnchanter.create();
-    }
-  },
-  blockSoulBinder {
-    @Override
-    protected void create() {
-      block = BlockSoulBinder.create();
-    }
-  },
-  blockSliceAndSplice {
-    @Override
-    protected void create() {
-      block = BlockSliceAndSplice.create();
-    }
-  },
-  blockAttractor {
-    @Override
-    protected void create() {
-      block = BlockAttractor.create();
-    }
-  },
-  blockSpawnGuard {
-    @Override
-    protected void create() {
-      block = BlockAversionObelisk.create();
-    }
-  },
-  blockSpawnRelocator {
-    @Override
-    protected void create() {
-      block = BlockRelocatorObelisk.create();
-    }
-  },
-  blockExperienceObelisk {
-    @Override
-    protected void create() {
-      block = BlockExperienceObelisk.create();
-    }
-  },
-  blockWeatherObelisk {
-    @Override
-    protected void create() {
-      block = BlockWeatherObelisk.create();
-    }
-  },
-  blockInhibitorObelisk {
-    @Override
-    protected void create() {
-      block = BlockInhibitorObelisk.create();
-    }
-  },
-  blockTransceiver {
-    @Override
-    protected void create() {
-      block = BlockTransceiver.create();
-    }
-  },
-  blockBuffer {
-    @Override
-    protected void create() {
-      block = BlockBuffer.create();
-    }
-  },
-  blockInventoryPanel {
-    @Override
-    protected void create() {
-      block = BlockInventoryPanel.create();
-    }
-  },
+  blockStirlingGenerator(BlockStirlingGenerator.class),
+  blockCombustionGenerator(BlockCombustionGenerator.class),
+  blockZombieGenerator(BlockZombieGenerator.class),
+  blockReservoir(BlockReservoir.class),
+  blockAlloySmelter(BlockAlloySmelter.class),
+  blockSolarPanel(BlockSolarPanel.class),
+  blockCapBank(BlockCapBank.class),
+  blockSagMill(BlockSagMill.class),
+  blockPowerMonitor(BlockPowerMonitor.class, "createPowerMonitor"),
+  blockPowerMonitorv2(BlockPowerMonitor.class, "createAdvancedPowerMonitor"),
+  blockVat(BlockVat.class),
+  blockFarmStation(BlockFarmStation.class),
+  blockTank(BlockTank.class),
+  blockCrafter(BlockCrafter.class),
+  blockVacuumChest(BlockVacuumChest.class),
+  blockWirelessCharger(BlockWirelessCharger.class),
+  blockEnchanter(BlockEnchanter.class),
+  blockSoulBinder(BlockSoulBinder.class),
+  blockSliceAndSplice(BlockSliceAndSplice.class),
+  blockAttractor(BlockAttractor.class),
+  blockSpawnGuard(BlockAversionObelisk.class),
+  blockSpawnRelocator(BlockRelocatorObelisk.class),
+  blockExperienceObelisk(BlockExperienceObelisk.class),
+  blockWeatherObelisk(BlockWeatherObelisk.class),
+  blockInhibitorObelisk(BlockInhibitorObelisk.class),
+  blockTransceiver(BlockTransceiver.class),
+  blockBuffer(BlockBuffer.class),
+  blockInventoryPanel(BlockInventoryPanel.class),
 
-  blockPoweredSpawner {
-    @Override
-    protected void create() {
-      block = BlockPoweredSpawner.create();
-    }
-  },
-  itemBrokenSpawner {
-    @Override
-    protected void create() {
-      item = ItemBrokenSpawner.create();
-    }
-  },
+  blockPoweredSpawner(BlockPoweredSpawner.class),
+  itemBrokenSpawner(ItemBrokenSpawner.class),
+  blockKillerJoe(BlockKillerJoe.class),
 
-  blockKillerJoe {
-    @Override
-    protected void create() {
-      block = BlockKillerJoe.create();
-    }
-  },
-
-  blockElectricLight {
-    @Override
-    protected void create() {
-      block = BlockElectricLight.create();
-    }
-  },
-  blockLightNode {
-    @Override
-    protected void create() {
-      block = BlockLightNode.create();
-    }
-  },
+  blockElectricLight(BlockElectricLight.class),
+  blockLightNode(BlockLightNode.class),
 
   //Blocks
-  blockDarkSteelAnvil {
-    @Override
-    protected void create() {
-      block = BlockDarkSteelAnvil.create();
-    }
-  },
-  blockDarkSteelLadder {
-    @Override
-    protected void create() {
-      block = BlockDarkSteelLadder.create();
-    }
-  },
-  blockReinforcedObsidian {
-    @Override
-    protected void create() {
-      block = BlockReinforcedObsidian.create();
-    }
-  },
-  blockIngotStorage {
-    @Override
-    protected void create() {
-      block = BlockIngotStorage.create();
-    }
-  },
-  blockSelfResettingLever {
-    @Override
-    protected void create() {
-      BlockSelfResettingLever.create();
-    }
-  },
-  blockDecoration1 {
-    @Override
-    protected void create() {
-      block = BlockDecoration.create();
-    }
-  },
-  blockDecoration2 {
-    @Override
-    protected void create() {
-      block = BlockDecorationFacing.create();
-    }
-  },
+  blockDarkSteelAnvil(BlockDarkSteelAnvil.class),
+  blockDarkSteelLadder(BlockDarkSteelLadder.class),
+  blockReinforcedObsidian(BlockReinforcedObsidian.class),
+  blockIngotStorage(BlockIngotStorage.class),
+  blockSelfResettingLever(BlockSelfResettingLever.class),
+  blockDecoration1(BlockDecoration.class),
+  blockDecoration2(BlockDecorationFacing.class),
 
   // Painter
-  blockPainter {
-    @Override
-    protected void create() {
-      block = BlockPainter.create();
-    }
-  },
-  blockPaintedFence {
-    @Override
-    protected void create() {
-      block = BlockPaintedFence.create();
-    }
-  },
-  blockPaintedStoneFence {
-    @Override
-    protected void create() {
-      block = BlockPaintedFence.create_stone();
-    }
-  },
-  blockPaintedFenceGate {
-    @Override
-    protected void create() {
-      block = BlockPaintedFenceGate.create();
-    }
-  },
-  blockPaintedWall {
-    @Override
-    protected void create() {
-      block = BlockPaintedWall.create();
-    }
-  },
-  blockPaintedStair {
-    @Override
-    protected void create() {
-      block = BlockPaintedStairs.create();
-    }
-  },
-  blockPaintedStoneStair {
-    @Override
-    protected void create() {
-      block = BlockPaintedStairs.create_stone();
-    }
-  },
+  blockPainter(BlockPainter.class),
+  blockPaintedFence(BlockPaintedFence.class),
+  blockPaintedStoneFence(BlockPaintedFence.class, "create_stone"),
+  blockPaintedFenceGate(BlockPaintedFenceGate.class),
+  blockPaintedWall(BlockPaintedWall.class),
+  blockPaintedStair(BlockPaintedStairs.class),
+  blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
   blockPaintedSlab {
     @Override
     protected void create() {
@@ -458,125 +197,64 @@ public enum ModObject implements IModObject {
       // see blockPaintedSlab
     }
   },
-  blockPaintedGlowstone {
-    @Override
-    protected void create() {
-      block = BlockPaintedGlowstone.create();
-    }
-  },
-  blockPaintedGlowstoneSolid {
-    @Override
-    protected void create() {
-      block = BlockPaintedGlowstone.create_solid();
-    }
-  },
-  blockPaintedCarpet {
-    @Override
-    protected void create() {
-      block = BlockPaintedCarpet.create();
-    }
-  },
-  blockPaintedPressurePlate {
-    @Override
-    protected void create() {
-      block = BlockPaintedPressurePlate.create();
-    }
-  },
-  blockPaintedRedstone {
-    @Override
-    protected void create() {
-      block = BlockPaintedRedstone.create();
-    }
-  },
+  blockPaintedGlowstone(BlockPaintedGlowstone.class),
+  blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
+  blockPaintedCarpet(BlockPaintedCarpet.class),
+  blockPaintedPressurePlate(BlockPaintedPressurePlate.class),
+  blockPaintedRedstone(BlockPaintedRedstone.class),
   blockPaintedRedstoneSolid,
-  blockExitRail {
-    @Override
-    protected void create() {
-      block = BlockExitRail.create();
-    }
-  },
+  blockExitRail(BlockExitRail.class),
 
   itemConduitProbe,
   itemYetaWrench,
   itemXpTransfer,
 
-  blockTravelAnchor {
-    @Override
-    protected void create() {
-      block = BlockTravelAnchor.create();
-    }
-  },
-  blockTelePad {
-    @Override
-    protected void create() {
-      block = BlockTelePad.createTelepad();
-    }
-  },
-  blockDialingDevice {
-    @Override
-    protected void create() {
-      block = BlockDialingDevice.create();
-    }
-  },
-  itemCoordSelector {
-    @Override
-    protected void create() {
-      item = ItemCoordSelector.create();
-    }
-  },
+  blockTravelAnchor(BlockTravelAnchor.class),
+  blockTelePad(BlockTelePad.class, "createTelepad"),
+  blockDialingDevice(BlockDialingDevice.class),
+  itemCoordSelector(ItemCoordSelector.class),
   itemTravelStaff,
   itemRodOfReturn,
   itemMagnet,
   itemGliderWing,
-  blockEndermanSkull {
-    @Override
-    protected void create() {
-      block = BlockEndermanSkull.create();
-    }
-  },
+  blockEndermanSkull(BlockEndermanSkull.class),
   itemSoulVessel,
-  itemFrankenSkull {
-    @Override
-    protected void create() {
-      item = ItemFrankenSkull.create();
-    }
-  },
+  itemFrankenSkull(ItemFrankenSkull.class),
   
-  // blockEnderRail {
-  // @Override
-  // protected void create() {
-  // block = BlockEnderRail.create();
-  // }
-  // },
+  // blockEnderRail(BlockEnderRail.class),
   
   itemEnderFood,
-  blockGauge {
-    @Override
-    protected void create() {
-      block = BlockGauge.create();
-    }
-  },
+  blockGauge(BlockGauge.class),
   itemRemoteInvAccess,
-  blockInventoryPanelSensor {
-    @Override
-    protected void create() {
-      block = BlockInventoryPanelSensor.create();
-    }
-  };
+  blockInventoryPanelSensor(BlockInventoryPanelSensor.class);
 
   private final @Nonnull String unlocalisedName;
 
+
+  protected Block block;
+  protected Item item;
+  
+  protected final Class<?> clazz;
+  protected final String methodName;
+  
   private ModObject() {
-    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()");
+    this(null);
   }
 
+  ModObject(Class<?> clazz) {
+    this(clazz, "create");
+  }
+  
+  ModObject(Class<?> clazz, String methodName) {
+    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()");
+    this.clazz = clazz;
+    this.methodName = methodName;
+  }
+  
   @Override
   public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
-
-  protected Block block;
-  protected Item item;
 
   public Block getBlock() {
     return block;
@@ -587,7 +265,23 @@ public enum ModObject implements IModObject {
   }
 
   protected void create() {
-    Log.info(this + ".create() missing");
+    if(clazz == null) {
+      Log.info(this + ".create() missing");
+      return;
+    }
+    Object obj = null;
+    try {
+      obj = clazz.getDeclaredMethod(methodName, (Class<?>[])null).invoke(null, (Object[])null);
+    } catch (Exception e) {
+      String str = "ModObject:create: Could not create instance for " + clazz + " using method " + methodName;
+      Log.error(str + " Exception: " + e);
+      throw new RuntimeException(str, e);
+    }
+    if(obj instanceof Item) {
+      item = (Item)obj;
+    } else {
+      block = (Block)obj;
+    }
   }
 
   public static void preInit(FMLPreInitializationEvent event) {
