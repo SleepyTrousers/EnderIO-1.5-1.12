@@ -94,7 +94,7 @@
     <recipe name="Redstone Alloy" energyCost="10000" >
       <input>
         <itemStack modID="minecraft" itemName="redstone" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" /> <!-- Silicon -->
+        <itemStack oreDictionary="itemSilicon" />
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="3" exp="0.5" />
