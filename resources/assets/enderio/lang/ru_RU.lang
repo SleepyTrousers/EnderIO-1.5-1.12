@@ -129,6 +129,7 @@ enderio.silicon.name=Кремний
 enderio.conduitBinder.name=Связующий элемент труб
 enderio.binderComposite.name=Составной связующий элемент
 enderio.pulsatingIronNugget.name=Пульсирующий железный самородок
+enderio.nutritiousStick.name=Питательная палка
 tile.blockDarkIronBars.name=Решётка из тёмного железа
 tile.blockEndermanSkull.name=Череп Эндермена
 tile.blockEndermanSkull.base.name=Голова Эндермена
@@ -155,6 +156,10 @@ item.bucketNutrient_distillation.name=Ведро питательного дис
 fluid.ender_distillation=Роса пустоты
 tile.fluid.ender_distillation.name=Роса пустоты
 item.bucketEnder_distillation.name=Ведро росы пустоты
+
+fluid.vapor_of_levity=Пар левитации
+tile.vapor_of_levity.name=Пар левитации
+item.bucketVapor_of_levity.name=Ведро пара левитации
 
 fluid.hootch=Самогон
 tile.fluid.hootch.name=Самогон
@@ -203,6 +208,8 @@ enderio.vibrantCrystal.name=Вибрирующий кристалл
 enderio.vibrantPowder.name=Вибрирующий порошок
 enderio.enderCrystal.name=Эндер-кристалл
 enderio.enderCrystalPowder.name=Крупинки Энда
+enderio.precientCrystal.name=Провидческий кристалл
+enderio.precientPowder.name=Крупинки предвидения
 enderio.attractorCrystal.name=Привлекающий кристалл
 enderio.weatherCrystal.name=Погодный кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
@@ -611,6 +618,15 @@ enderio.gui.inventorypanel.tooltip.sync.jei.line2=Текст, введённый
 
 enderio.machine.tooltip.configured=(Настроен)
 
+tile.blockInventoryPanelSensor.name=Инвентарный датчик
+tile.blockInventoryPanelSensor.tooltip.detailed.line1=Выдаёт сигнал редстоуна основываясь
+tile.blockInventoryPanelSensor.tooltip.detailed.line2=на количестве доступных предметов
+tile.blockInventoryPanelSensor.tooltip.detailed.line3=в сети инвентарной панели
+
+enderio.gui.inventorySensor.control1=Включается, когда < 
+enderio.gui.inventorySensor.control2=Выключается, когда >=
+
+
 //Blocks
 tile.blockPaintedPressurePlate.wood.name=Деревянная нажимная плита
 tile.blockPaintedPressurePlate.wood.tooltip.detailed.line1=Может быть покрашена в покрасочном механизме,
@@ -727,6 +743,11 @@ tile.blockTelePad.tooltip.detailed.line1=Использует энергию д�
 tile.blockTelePad.tooltip.detailed.line2=сущностей в указанную позицию и измерение.
 tile.blockTelePad.tooltip.detailed.line3=Должен быть размещён в виде мультиблока 3x1x3.
 enderio.gui.telepad.teleport=Телепортироваться!
+enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
+
+tile.blockDialingDevice.name=Наборное устройство
+tile.blockDialingDevice.tooltip.detailed.line1=Располагается рядом с телепортом
+tile.blockDialingDevice.tooltip.detailed.line2=Хранит и устанавливает места назначения.
 
 item.itemTravelStaff.name=Посох путешествия
 item.itemTravelStaff.tooltip.detailed.line1=Когда якори путешествия и EnderIO экипированы
@@ -739,15 +760,19 @@ enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 item.itemLocationPrintout.name=Распечаток местонахождения
 item.itemLocationPrintout.tooltip.detailed.line1=Создан с использованием настройщика координат
 item.itemLocationPrintout.tooltip.detailed.line2=Используется для добавления мест назначения к телепорту
+item.itemLocationPrintout.chat.setTarget=Цель установлена на
+item.itemLocationPrintout.chat.addTarget=Добавлена цель
+item.itemLocationPrintout.chat.noPaper=Нет бумаги в инвентаре
 
 item.itemRodOfReturn.name=Стержень возвращения
 item.itemRodOfReturn.tooltip.detailed.line1=Возвращает игрока на телепорт
 item.itemRodOfReturn.tooltip.detailed.line2=Shift-ПКМ для синхронизации с телепортом
-item.itemRodOfReturn.tooltip.detailed.line3=Требует RF и росу пустоты
+item.itemRodOfReturn.tooltip.detailed.line3=Требует RF и %s
 enderio.itemRodOfReturn.chat.notEnoughPower=Недостаточно энергии
 enderio.itemRodOfReturn.chat.notEnoughFluid=Недостаточно жидкости
 enderio.itemRodOfReturn.chat.targetNotSet=Место назначения не установлено
-enderio.itemRodOfReturn.chat.sync=Синхронизирован с телепортом
+enderio.itemRodOfReturn.chat.sync=Синхронизирован с местонахождением 
+enderio.itemRodOfReturn.chat.sync.telepad= Синхронизирован с телепортом
 
 item.itemCoordSelector.name=Настройщик координат
 item.itemCoordSelector.tooltip.detailed.line1=Печатает координаты блока.
@@ -756,11 +781,6 @@ item.itemCoordSelector.tooltip.detailed.line3=блок рядом с этой с
 item.itemCoordSelector.tooltip.detailed.line4=Shift-ПКМ по блоку, чтобы
 item.itemCoordSelector.tooltip.detailed.line5=выбрать конкретный блок.
 item.itemCoordSelector.tooltip.detailed.line6=Можно выбирать блоки на расстоянии.
-enderio.itemCoordSelector.chat.newCoords=Новые координаты: %s
-enderio.itemCoordSelector.chat.setCoords=Выбранные координаты: %s
-enderio.itemCoordSelector.chat.newDimension=Новое измерение: %s%s
-enderio.itemCoordSelector.chat.setDimension=Выбранное измерение: %s%s
-enderio.itemCoordSelector.chat.alreadySet=Расположение уже установлено
 
 //Painter
 tile.blockPainter.name=Покрасочный механизм
@@ -838,6 +858,7 @@ skullZombieController.name=Зомби-контроллер
 skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Эндера
 skullSentientEnder.name=Разумный Эндер
+skullSkeletalContractor.name=Скелетный подрядчик
 
 item.itemSpawnEggEnderIO.name=Яйцо призыва - 
 
@@ -850,6 +871,7 @@ item.darkSteel_sword.name=Энд
 item.darkSteel_pickaxe.name=Тёмная кирка
 item.darkSteel_axe.name=Тёмный топор
 item.darkSteel_shears.name=Тёмные ножницы
+item.darkSteelBow.name=Тёмный лук
 
 enderio.item.darkSteel.tooltip.lvs=уровней
 
@@ -1204,7 +1226,7 @@ enderio.gui.conduit.item.functionupgrade.line1=Возможные функцио
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
 enderio.gui.conduit.redstone.signalStrengh=Сильный сигнал
-enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильный сигнал редстоуна
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Выдаёт сильный сигнал редстоуна
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
@@ -1217,7 +1239,7 @@ enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 enderio.gui.weather.task.clear=Ясная погода
 enderio.gui.weather.task.rain=Дождливая погода
 enderio.gui.weather.task.storm=Гроза
-enderio.gui.weather.requiredfluid=Требуется жидкость: %s мБ
+enderio.gui.weather.requiredfluid=Требуется жидкость: %s мВ
 enderio.weatherObelisk.fuelTank=Барометрический флаксовый резервуар
 
 //Enchants
@@ -1328,7 +1350,7 @@ enderio.top.progress.outofpower=Нет энергии
 enderio.top.redstone.header=Сейчас: %s
 enderio.top.redstone.true=Вкл
 enderio.top.redstone.false=Выкл
-enderio.top.tank.content=%s/%sмБ
+enderio.top.tank.content=%s/%sмВ
 enderio.top.tank.content.empty=Пустой
 enderio.top.tank.header.input=Вход резервуара: %s
 enderio.top.tank.header.output=Выход резервуара: %s
@@ -1340,12 +1362,12 @@ enderio.top.tank.header.storage=%s
 # Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
 # machines baffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
 # green=Farming Station area, red=Stirling Generator power generation
-enderio.loot.capacitor.smelting=Smelting %s
+enderio.loot.capacitor.smelting=Плавильный %s
 enderio.loot.capacitor.intake=Голодный %s
 enderio.loot.capacitor.buffer=Ненасытный %s
-enderio.loot.capacitor.crafting=Crafty %s
+enderio.loot.capacitor.crafting=Хитрый %s
 enderio.loot.capacitor.area=Большой %s
-enderio.loot.capacitor.green=Planting %s
+enderio.loot.capacitor.green=Засаживающий %s
 enderio.loot.capacitor.red=Горячий %s
 enderio.loot.capacitor.mobby=Злодейский %s
 
@@ -1368,31 +1390,31 @@ enderio.loot.capacitor.level.42=Невероятный %s
 enderio.loot.capacitor.level.45=Нестабильный %s
 
 enderio.loot.capacitor.entry.count=8
-enderio.loot.capacitor.entry.0=An attached note describes this as "%s"
-enderio.loot.capacitor.entry.1=You can decipher ancient runes that translate roughly as "%s". Odd...
-enderio.loot.capacitor.entry.2=By the power of Enderskull, I have the %s!
-enderio.loot.capacitor.entry.3=If you had to describe this, "%s" would be a good name.
-enderio.loot.capacitor.entry.4=If you had to describe this, "%s" would be a bad name.
-enderio.loot.capacitor.entry.5=This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
-enderio.loot.capacitor.entry.6=This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
-enderio.loot.capacitor.entry.7=Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
+enderio.loot.capacitor.entry.0=Прилагаемая записка описывает это как "%s"
+enderio.loot.capacitor.entry.1=Вы смогли расшифровать древние руны, которые переводились примерно как "%s". Странно...
+enderio.loot.capacitor.entry.2=Из-за силы Головы Эндермена, у меня появился %s!
+enderio.loot.capacitor.entry.3=Если бы вам пришлось описать это, "%s" было бы хорошим именем.
+enderio.loot.capacitor.entry.4=Если бы вам пришлось описать это, "%s" было бы плохим именем.
+enderio.loot.capacitor.entry.5=Этот "%s" является собственностью Рэндальфа Тинкерера. Неразрешенное удаление не разрешено!
+enderio.loot.capacitor.entry.6=Этот "%s" является собственностью Рэндальфа Экс-Тинкерера. Неразрешенное удаление приветствуется!
+enderio.loot.capacitor.entry.7=Ваш "%s" теперь может быть повышен в заряде до "Конденсатор 1". Нажмите OK или отмените, чтобы сделать это.
 
 enderio.loot.capacitor.title.count=15
-enderio.loot.capacitor.title.0=Remarkable Capacitor
-enderio.loot.capacitor.title.1=Unremarkable Capacitor
-enderio.loot.capacitor.title.2=Found Capacitor
-enderio.loot.capacitor.title.3=Lost Capacitor
-enderio.loot.capacitor.title.4=Ancient Capacitor
-enderio.loot.capacitor.title.5=Magic Capacitor
-enderio.loot.capacitor.title.6=Capacitor of Holding
-enderio.loot.capacitor.title.7=Capacitor of the Southern Winds
-enderio.loot.capacitor.title.8=Capacitor of What is This Doing Here
-enderio.loot.capacitor.title.9=Modified Power Holding Device
-enderio.loot.capacitor.title.10=A Mystery wrapped in tin foil
-enderio.loot.capacitor.title.11=Something wonderful
-enderio.loot.capacitor.title.12=A Capacitor. Maybe
-enderio.loot.capacitor.title.13=Heaven Cent
-enderio.loot.capacitor.title.14=Don't turn it on, take it apart!
+enderio.loot.capacitor.title.0=Примечательный конденсатор
+enderio.loot.capacitor.title.1=Не примечательный конденсатор
+enderio.loot.capacitor.title.2=Найденный конденсатор
+enderio.loot.capacitor.title.3=Потерянный конденсатор
+enderio.loot.capacitor.title.4=Древний конденсатор
+enderio.loot.capacitor.title.5=Магический конденсатор
+enderio.loot.capacitor.title.6=Конденсатор удержания
+enderio.loot.capacitor.title.7=Конденсатор южных ветров
+enderio.loot.capacitor.title.8=Конденсатор "Что это здесь делает?"
+enderio.loot.capacitor.title.9=Модифицированная мощность удерживающего устройства
+enderio.loot.capacitor.title.10=Тайна, завёрнутая в фольгу
+enderio.loot.capacitor.title.11=Что-то замечательное
+enderio.loot.capacitor.title.12=Конденсатор. Возможно
+enderio.loot.capacitor.title.13=Небесный цент
+enderio.loot.capacitor.title.14=Не включайте его, лучше разберите!
 
 enderio.color.black=Чёрный
 enderio.color.red=Красный
@@ -1424,14 +1446,21 @@ enderio.remoteinv.chat.error=ОШИБКА: Техническая ошибка, 
 item.itemRemoteInvAccessbasic.name=Беспроводная инвентарная панель
 item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели на растоянии 5 чанков.
 item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessadvanced.name=Улучшенная беспроводная инвентарная панель
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки этого измерения.
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessender.name=Беспроводная эндер-инвентарная панель
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллятор для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+
+tile.blockExitRail.name=Выездные рельсы
+
+tile.blockSelfResettingLever10.name=Рычаг с самовозвратом (10 секунд)
+tile.blockSelfResettingLever30.name=Рычаг с самовозвратом (30 секунд)
+tile.blockSelfResettingLever60.name=Рычаг с самовозвратом (1 минута)
+tile.blockSelfResettingLever300.name=Рычаг с самовозвратом (5 минут)
