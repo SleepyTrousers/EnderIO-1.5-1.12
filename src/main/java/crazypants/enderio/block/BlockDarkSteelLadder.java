@@ -3,8 +3,10 @@ package crazypants.enderio.block;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;
@@ -18,8 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider {
+public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDarkSteelLadder create() {
     BlockDarkSteelLadder res = new BlockDarkSteelLadder();
@@ -69,6 +73,12 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockDarkSteelLadder);
   }
 
 }

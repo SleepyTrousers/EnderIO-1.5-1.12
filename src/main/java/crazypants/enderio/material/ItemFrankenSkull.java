@@ -3,19 +3,20 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFrankenSkull extends Item {
+public class ItemFrankenSkull extends Item implements IHaveRenderers {
 
   public static ItemFrankenSkull create() {
     ItemFrankenSkull alloy = new ItemFrankenSkull();
@@ -35,6 +36,7 @@ public class ItemFrankenSkull extends Item {
     GameRegistry.register(this);
   }
   
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     List<ResourceLocation> names = FrankenSkull.resources();    

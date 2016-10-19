@@ -5,6 +5,7 @@ import java.util.Random;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -116,6 +117,12 @@ public class ClientUtil {
   
   public static void regRenderer(Item item, int meta, ResourceLocation loc) {
     ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(loc, "inventory"));
+  }
+
+  public static void registerDefaultItemRenderer(ModObject mo) {
+    if (mo.getItem() != null) {
+      regRenderer(mo.getItem(), 0, mo.getUnlocalisedName());
+    }
   }
 
   public static void registerDefaultItemRenderer(BlockEnder<?> block) {

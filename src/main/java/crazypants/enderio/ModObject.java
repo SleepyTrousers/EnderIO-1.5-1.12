@@ -10,6 +10,7 @@ import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
+import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
@@ -81,7 +82,7 @@ public enum ModObject implements IModObject {
   blockConduitBundle(BlockConduitBundle.class),
   blockConduitFacade(BlockConduitFacade.class),
   itemConduitFacade,
-  itemRedstoneConduit,
+  itemRedstoneConduit(ItemRedstoneConduit.class),
   itemItemConduit,
   itemGasConduit,
   itemMEConduit,
@@ -281,6 +282,7 @@ public enum ModObject implements IModObject {
       item = (Item)obj;
     } else {
       block = (Block)obj;
+      item = Item.getItemFromBlock(block);
     }
   }
 

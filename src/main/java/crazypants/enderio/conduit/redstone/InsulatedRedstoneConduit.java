@@ -19,7 +19,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -55,6 +54,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockConduitBundle;
+import static crazypants.enderio.ModObject.itemRedstoneConduit;
 
 public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent {
 
@@ -352,7 +352,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
+    return new ItemStack(itemRedstoneConduit.getItem(), 1, 0);
   }
 
   @Override

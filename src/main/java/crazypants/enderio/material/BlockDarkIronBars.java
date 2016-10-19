@@ -1,13 +1,17 @@
 package crazypants.enderio.material;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkIronBars extends BlockPane {
+public class BlockDarkIronBars extends BlockPane implements IHaveRenderers {
   
   public static BlockDarkIronBars create() {
     BlockDarkIronBars res = new BlockDarkIronBars();
@@ -28,6 +32,12 @@ public class BlockDarkIronBars extends BlockPane {
   protected void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemDarkIronBars(this, ModObject.blockDarkIronBars.getUnlocalisedName()));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockDarkIronBars);
   }
 
 }

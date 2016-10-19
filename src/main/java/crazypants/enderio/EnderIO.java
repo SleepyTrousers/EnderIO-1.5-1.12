@@ -25,7 +25,6 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.enderface.ItemEnderface;
@@ -130,7 +129,6 @@ public class EnderIO {
   public static ItemLocationPrintout itemlocationPrintout;
   
   // // Conduits
-  public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
@@ -180,7 +178,6 @@ public class EnderIO {
 
     ModObject.preInit(event);
 
-    itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();

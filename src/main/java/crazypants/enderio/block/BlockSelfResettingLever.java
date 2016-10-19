@@ -7,12 +7,16 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.util.ClientUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -20,10 +24,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.config.Config.leversEnabled;
 
-public class BlockSelfResettingLever extends BlockLever {
+public class BlockSelfResettingLever extends BlockLever implements IHaveRenderers {
 
   private static List<Integer> delays = null;
   private static List<BlockSelfResettingLever> blocks = null;
@@ -46,7 +52,7 @@ public class BlockSelfResettingLever extends BlockLever {
     setRegistryName(name);
   }
 
-  public static void create() {
+  public static Block create() {
     getLevers();
     blocks = new ArrayList<BlockSelfResettingLever>();
     for (Integer value : delays) {
@@ -55,6 +61,7 @@ public class BlockSelfResettingLever extends BlockLever {
       GameRegistry.register(new ItemBlock(GameRegistry.register(lever)).setRegistryName(name));
       blocks.add(lever);
     }
+    return blocks.isEmpty() ? null : blocks.get(0);
   }
 
   public static List<Integer> getLevers() {
@@ -100,6 +107,14 @@ public class BlockSelfResettingLever extends BlockLever {
   public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
     if (!world.isRemote && state.getValue(POWERED)) {
       super.onBlockActivated(world, pos, state, null, EnumHand.MAIN_HAND, null, EnumFacing.DOWN, 0f, 0f, 0f);
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    for (BlockSelfResettingLever b : blocks) {
+      ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
     }
   }
 
