@@ -13,7 +13,6 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
@@ -33,6 +32,8 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
+
+import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -115,7 +116,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, FILTER_SLOT_X, FILTER_SLOT_Y));
+    slots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), FILTER_SLOT_X, FILTER_SLOT_Y));
   }
 
   @Override

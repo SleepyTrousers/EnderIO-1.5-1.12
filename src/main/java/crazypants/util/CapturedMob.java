@@ -43,6 +43,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
+import static crazypants.enderio.ModObject.itemSoulVessel;
+
 public class CapturedMob {
 
   public static final String SKELETON_ENTITY_NAME = "Skeleton";
@@ -140,7 +142,7 @@ public class CapturedMob {
   public @Nonnull ItemStack toStack(Item item, int meta, int amount) {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
-    if (item == EnderIO.itemSoulVessel && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
       stack.getTagCompound().setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
     }
     return stack;

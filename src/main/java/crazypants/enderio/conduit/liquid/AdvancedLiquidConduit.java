@@ -6,7 +6,6 @@ import java.util.Map;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -26,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemLiquidConduit;
 
 public class AdvancedLiquidConduit extends AbstractTankConduit implements IConduitComponent {
 
@@ -120,7 +121,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemLiquidConduit, 1, 1);
+    return new ItemStack(itemLiquidConduit.getItem(), 1, 1);
   }
 
   @Override

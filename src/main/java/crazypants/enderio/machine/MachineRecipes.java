@@ -1,21 +1,21 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
-import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
-
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
+
 public class MachineRecipes {
 
   public static void addRecipes() {
-    ItemStack capacitor2 = new ItemStack(itemBasicCapacitor, 1, 1);
-    ItemStack capacitor3 = new ItemStack(itemBasicCapacitor, 1, 2);
+    ItemStack capacitor2 = new ItemStack(itemBasicCapacitor.getItem(), 1, 1);
+    ItemStack capacitor3 = new ItemStack(itemBasicCapacitor.getItem(), 1, 2);
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = VIBRANT_ALLOY.getOreIngot();
     String vibCry = VIBRANT_CYSTAL.oreDict;

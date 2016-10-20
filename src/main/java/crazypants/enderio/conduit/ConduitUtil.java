@@ -37,6 +37,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.itemConduitProbe;
+
 public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
@@ -224,7 +226,7 @@ public class ConduitUtil {
     if (equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemConduitProbe;
+    return equipped.getItem() == itemConduitProbe.getItem();
   }
 
   public static <T extends IConduit> T getConduit(World world, int x, int y, int z, Class<T> type) {

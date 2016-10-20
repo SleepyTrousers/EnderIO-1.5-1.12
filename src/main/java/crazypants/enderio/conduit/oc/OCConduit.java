@@ -13,7 +13,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -46,6 +45,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemOCConduit;
 
 public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
 
@@ -159,7 +160,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemOCConduit, 1, 0);
+    return new ItemStack(itemOCConduit.getItem(), 1, 0);
   }
 
   @Override

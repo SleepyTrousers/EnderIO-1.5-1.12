@@ -11,7 +11,6 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -33,6 +32,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemLiquidConduit;
 
 public class LiquidConduit extends AbstractTankConduit implements IConduitComponent {
 
@@ -332,7 +333,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemLiquidConduit, 1, 0);
+    return new ItemStack(itemLiquidConduit.getItem(), 1, 0);
   }
 
   @Override

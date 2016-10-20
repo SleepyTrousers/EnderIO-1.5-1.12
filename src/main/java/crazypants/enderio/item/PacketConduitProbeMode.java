@@ -1,11 +1,12 @@
 package crazypants.enderio.item;
 
-import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import static crazypants.enderio.ModObject.itemConduitProbe;
 
 public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketConduitProbeMode, IMessage>  {
 
@@ -23,7 +24,7 @@ public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketC
   @Override
   public IMessage onMessage(PacketConduitProbeMode message, MessageContext ctx) {    
     ItemStack stack = ctx.getServerHandler().playerEntity.inventory.getCurrentItem();    
-    if(stack != null && stack.getItem() == EnderIO.itemConduitProbe) {
+    if (stack != null && stack.getItem() == itemConduitProbe.getItem()) {
       int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
       stack.setItemDamage(newMeta);      
     }

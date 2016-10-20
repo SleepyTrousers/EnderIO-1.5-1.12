@@ -9,13 +9,13 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import crazypants.enderio.EnderIO;
 import crazypants.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.ModObject.blockIngotStorage;
+import static crazypants.enderio.ModObject.itemAlloy;
 
 public enum Alloy implements IStringSerializable {
 
@@ -73,7 +73,7 @@ public enum Alloy implements IStringSerializable {
   }
 
   public @Nonnull ItemStack getStackIngot(int size) {
-    return new ItemStack(EnderIO.itemAlloy, size, ordinal());
+    return new ItemStack(itemAlloy.getItem(), size, ordinal());
   }
 
   public @Nonnull ItemStack getStackBlock() {

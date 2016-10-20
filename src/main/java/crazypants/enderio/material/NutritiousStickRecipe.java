@@ -6,7 +6,6 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+
+import static crazypants.enderio.ModObject.itemMaterial;
 
 public class NutritiousStickRecipe implements IRecipe {
 
@@ -61,7 +62,7 @@ public class NutritiousStickRecipe implements IRecipe {
 
   @Override
   public ItemStack getCraftingResult(InventoryCrafting inv) {
-    return new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal());
+    return new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal());
   }
 
   @Override
@@ -71,7 +72,7 @@ public class NutritiousStickRecipe implements IRecipe {
 
   @Override
   public ItemStack getRecipeOutput() {
-    return new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal());
+    return new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal());
   }
 
   @Override

@@ -30,9 +30,9 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ItemLocationPrintout extends Item implements IGuiHandler {
+import static crazypants.enderio.ModObject.itemLocationPrintout;
 
-  public static final String NAME = "itemLocationPrintout";
+public class ItemLocationPrintout extends Item implements IGuiHandler {
 
   public static ItemLocationPrintout create() {
 
@@ -48,8 +48,8 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
 
   protected ItemLocationPrintout() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(NAME);
-    setRegistryName(NAME);
+    setUnlocalizedName(itemLocationPrintout.getUnlocalisedName());
+    setRegistryName(itemLocationPrintout.getUnlocalisedName());
     setMaxStackSize(1);
   }
 

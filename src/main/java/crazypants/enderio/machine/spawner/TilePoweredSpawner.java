@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -33,6 +32,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.itemSoulVessel;
 import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
@@ -77,7 +77,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (getStackInSlot(0) == null || getStackInSlot(1) != null || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toStack(EnderIO.itemSoulVessel, 1, 1);
+        ItemStack res = capturedMob.toStack(itemSoulVessel.getItem(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }
@@ -107,7 +107,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       return false;
     }
     if (slotDefinition.isInputSlot(i)) {
-      return itemstack.getItem() == EnderIO.itemSoulVessel && !CapturedMob.containsSoul(itemstack);
+      return itemstack.getItem() == itemSoulVessel.getItem() && !CapturedMob.containsSoul(itemstack);
     }
     return false;
   }

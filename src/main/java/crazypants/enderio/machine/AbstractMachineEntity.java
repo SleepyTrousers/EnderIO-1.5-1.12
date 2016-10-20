@@ -49,6 +49,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
+import static crazypants.enderio.ModObject.itemBasicCapacitor;
+
 @Storable
 public abstract class AbstractMachineEntity extends TileEntityEio
     implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
@@ -197,7 +199,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
     if (slotDefinition.isUpgradeSlot(i)) {
       final ICapacitorData capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(itemstack);
-      return (itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0) || capacitorData != null; // TODO level
+      return (itemstack.getItem() == itemBasicCapacitor.getItem() && itemstack.getItemDamage() > 0) || capacitorData != null; // TODO level
     }
     return isMachineItemValidForSlot(i, itemstack);
   }

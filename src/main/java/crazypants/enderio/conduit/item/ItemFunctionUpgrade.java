@@ -62,7 +62,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
     }
   }
 
-  public FunctionUpgrade getFunctionUpgrade(ItemStack par1ItemStack) {
+  public static FunctionUpgrade getFunctionUpgrade(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, UPGRADES.length - 1);
     return UPGRADES[i];
   }

@@ -12,6 +12,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
@@ -58,7 +59,8 @@ import static crazypants.util.NbtValue.REMOTE_X;
 import static crazypants.util.NbtValue.REMOTE_Y;
 import static crazypants.util.NbtValue.REMOTE_Z;
 
-public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem {
+public class ItemRemoteInvAccess extends Item
+    implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem, IInternalPoweredItem, IHaveRenderers {
 
   public static ItemRemoteInvAccess create() {
     ClientRemoteGuiManager.create();
@@ -80,6 +82,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
     GameRegistry.register(this);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {

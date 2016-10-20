@@ -7,13 +7,13 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.ModObject.itemSoulVessel;
 
 public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
 
@@ -76,7 +76,7 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, getSlotFromInventory(getInv(), 0)));
+    slots.add(new GhostBackgroundItemSlot(itemSoulVessel.getItem(), getSlotFromInventory(getInv(), 0)));
     slots.add(new GhostBackgroundItemSlot(itemBrokenSpawner.getItem(), getSlotFromInventory(getInv(), 1)));
   }
 

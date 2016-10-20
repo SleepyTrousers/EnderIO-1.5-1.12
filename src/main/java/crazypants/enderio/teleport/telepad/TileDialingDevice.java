@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
@@ -19,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import static crazypants.enderio.ModObject.itemLocationPrintout;
 
 public class TileDialingDevice extends TileEntityEio implements IInternalPowerReceiver, IItemHandlerModifiable{
 
@@ -142,7 +143,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-    if(slot != 0 || inventory[0] != null || stack == null || stack.getItem() != EnderIO.itemlocationPrintout) {
+    if (slot != 0 || inventory[0] != null || stack == null || stack.getItem() != itemLocationPrintout.getItem()) {
       return stack;
     }
     if(!simulate) {

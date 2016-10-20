@@ -2,7 +2,6 @@ package crazypants.enderio.item;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -11,6 +10,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import static crazypants.enderio.ModObject.itemConduitProbe;
 
 public class ConduitProbeOverlayRenderer {
 
@@ -30,7 +31,7 @@ public class ConduitProbeOverlayRenderer {
 
   private ItemStack getEquippedProbe() {
     ItemStack equipped = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
-    if(equipped != null && equipped.getItem() == EnderIO.itemConduitProbe) {
+    if (equipped != null && equipped.getItem() == itemConduitProbe.getItem()) {
       return equipped;
     }
     return null;

@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.material.Material;
@@ -26,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import static crazypants.enderio.ModObject.blockTank;
+import static crazypants.enderio.ModObject.itemMaterial;
 
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {
@@ -57,7 +57,7 @@ public class JeiPlugin extends BlankModPlugin {
     List<ItemStack> inputs = new ArrayList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(Buckets.itemBucketNutrientDistillation.copy());
-    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
     
     ItemStack tank = new ItemStack(blockTank.getBlock());
@@ -66,7 +66,7 @@ public class JeiPlugin extends BlankModPlugin {
     inputs = new ArrayList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(tank);
-    res = new ShapelessRecipes(new ItemStack(EnderIO.itemMaterial, 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    res = new ShapelessRecipes(new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
     
   }

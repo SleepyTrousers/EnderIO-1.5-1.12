@@ -11,10 +11,10 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +25,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+
+import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.ModObject.itemExtractSpeedUpgrade;
+import static crazypants.enderio.ModObject.itemFunctionUpgrade;
 
 public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 
@@ -60,13 +64,13 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       y = 47;
       slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotOutputFilterUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), slotOutputFilterUpgrades));
 
       x = 10;
       y = 47;
       slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotInputFilterUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), slotInputFilterUpgrades));
 
       x = 28;
       y = 47;
@@ -82,7 +86,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemExtractSpeedUpgrade, slotSpeedUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemExtractSpeedUpgrade.getItem(), slotSpeedUpgrades));
 
       x = 10;
       y = 65;
@@ -98,7 +102,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
       });
       slotLocations.add(new Point(x, y));
-      bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemFunctionUpgrade, slotFunctionUpgrades));
+      bgSlots.add(new GhostBackgroundItemSlot(itemFunctionUpgrade.getItem(), slotFunctionUpgrades));
     }
   }
 
@@ -179,8 +183,8 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   }
 
   private void setSpeedUpgradeSlotLimit(ItemStack st) {
-    if(st != null && st.getItem() == EnderIO.itemExtractSpeedUpgrade) {
-      SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(st);
+    if (st != null && st.getItem() == itemExtractSpeedUpgrade.getItem()) {
+      SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(st);
       speedUpgradeSlotLimit = speedUpgrade.maxStackSize;
     }
   }

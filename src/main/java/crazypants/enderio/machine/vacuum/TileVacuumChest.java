@@ -10,7 +10,6 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -41,6 +40,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
 
 @Storable
 public class TileVacuumChest extends TileEntityEio
@@ -230,7 +231,7 @@ public class TileVacuumChest extends TileEntityEio
   }
 
   public boolean isItemValidForFilter(ItemStack itemstack) {
-    return itemstack != null && itemstack.getItem() == EnderIO.itemBasicFilterUpgrade && itemstack.getItemDamage() == 0;
+    return itemstack != null && itemstack.getItem() == itemBasicFilterUpgrade.getItem() && itemstack.getItemDamage() == 0;
   }
 
   private int limitRange(int rangeIn) {

@@ -7,11 +7,12 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+
+import static crazypants.enderio.ModObject.itemMaterial;
 
 public enum Material {
 
@@ -71,6 +72,6 @@ public enum Material {
   }
   
   public @Nonnull ItemStack getStack(int size) {
-    return new ItemStack(EnderIO.itemMaterial, size, ordinal());
+    return new ItemStack(itemMaterial.getItem(), size, ordinal());
   }
 }

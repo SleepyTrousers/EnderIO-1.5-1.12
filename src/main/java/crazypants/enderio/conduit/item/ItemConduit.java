@@ -11,7 +11,6 @@ import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -44,6 +43,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+
+import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
+import static crazypants.enderio.ModObject.itemItemConduit;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent {
 
@@ -146,7 +148,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     for (Entry<EnumFacing, IItemFilter> entry : sourceFilters.entrySet()) {
       if(entry.getValue() != null) {
         IItemFilter f = entry.getValue();
-        ItemStack up = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, filterMeta);
+        ItemStack up = new ItemStack(itemBasicFilterUpgrade.getItem(), 1, filterMeta);
         FilterRegister.writeFilterToStack(f, up);
         converted.put(entry.getKey(), up);
       }
@@ -305,7 +307,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean hasInventoryPanelUpgrade(EnumFacing dir) {
     ItemStack upgrade = functionUpgrades.get(dir);
-    return upgrade != null && EnderIO.itemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL;
+    return upgrade != null && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL;
   }
 
   @Override
@@ -394,7 +396,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     if(stack == null) {
       return SpeedUpgrade.BASE_MAX_EXTRACTED;
     }
-    SpeedUpgrade speedUpgrade = EnderIO.itemExtractSpeedUpgrade.getSpeedUpgrade(stack);
+    SpeedUpgrade speedUpgrade = ItemExtractSpeedUpgrade.getSpeedUpgrade(stack);
     return speedUpgrade.getMaximumExtracted(stack.stackSize);
   }
 
@@ -532,7 +534,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public ItemStack createItem() {
-    ItemStack result = new ItemStack(EnderIO.itemItemConduit, 1, metaData);
+    ItemStack result = new ItemStack(itemItemConduit.getItem(), 1, metaData);
     return result;
   }
 

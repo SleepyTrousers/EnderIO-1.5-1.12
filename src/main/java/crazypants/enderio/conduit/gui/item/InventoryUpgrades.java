@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.gui.item;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +11,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import static crazypants.enderio.ModObject.itemExtractSpeedUpgrade;
+import static crazypants.enderio.ModObject.itemFunctionUpgrade;
 
 public class InventoryUpgrades implements IInventory {
 
@@ -136,9 +138,9 @@ public class InventoryUpgrades implements IInventory {
     }
     switch (slot) {
     case 0:
-      return item.getItem() == EnderIO.itemExtractSpeedUpgrade;
+      return item.getItem() == itemExtractSpeedUpgrade.getItem();
     case 1:
-      return item.getItem() == EnderIO.itemFunctionUpgrade;
+      return item.getItem() == itemFunctionUpgrade.getItem();
     case 2:
     case 3:
       return item.getItem() instanceof IItemFilterUpgrade;

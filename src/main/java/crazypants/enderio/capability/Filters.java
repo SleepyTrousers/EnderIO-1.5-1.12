@@ -3,16 +3,16 @@ package crazypants.enderio.capability;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.util.CapturedMob;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.ModObject.itemSoulVessel;
 
 public class Filters {
 
@@ -43,14 +43,14 @@ public class Filters {
   public static final Predicate<ItemStack> ONLY_SOUL_VIALS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() == EnderIO.itemSoulVessel;
+      return input.getItem() == itemSoulVessel.getItem();
     }
   };
 
   public static final Predicate<ItemStack> ONLY_FILLED_SOUL_VIALS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() == EnderIO.itemSoulVessel && CapturedMob.containsSoul(input);
+      return input.getItem() == itemSoulVessel.getItem() && CapturedMob.containsSoul(input);
     }
   };
 

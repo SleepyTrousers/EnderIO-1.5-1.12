@@ -89,6 +89,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockConduitFacade;
 import static crazypants.enderio.ModObject.blockTank;
+import static crazypants.enderio.ModObject.itemYetaWrench;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -629,7 +630,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
     ItemStack equipped = player.getHeldItemMainhand();
-    if (!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+    if (!player.isSneaking() || equipped == null || equipped.getItem() != itemYetaWrench.getItem()) {
       return;
     }
     ConduitUtil.openConduitGui(world, pos, player);

@@ -5,12 +5,14 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider {
+public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockEnderIO create() {
 
@@ -117,5 +119,11 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockEnderIo);
   }
 }

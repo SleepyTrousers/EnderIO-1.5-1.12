@@ -1,6 +1,5 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Items;
@@ -11,6 +10,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static crazypants.enderio.ModObject.blockEndermanSkull;
 import static crazypants.enderio.ModObject.blockFusedQuartz;
+import static crazypants.enderio.ModObject.itemMachinePart;
+import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.ModObject.itemPowderIngot;
 import static crazypants.util.RecipeUtil.addShaped;
 import static crazypants.util.RecipeUtil.addShapeless;
 
@@ -21,7 +23,7 @@ public class MaterialRecipes {
     // mod exists
     for (PowderIngot powder : PowderIngot.values()) {
       if (powder.hasDependancy() && powder.isDependancyMet()) {
-        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
         powder.setRegistered();
       }
     }
@@ -31,7 +33,7 @@ public class MaterialRecipes {
     // Ore Dictionary Registration
     for (PowderIngot powder : PowderIngot.values()) {
       if (!powder.hasDependancy()) {
-        OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
+        OreDictionary.registerOre(powder.oreDictName, new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
       }
     }
 
@@ -44,8 +46,8 @@ public class MaterialRecipes {
       }
     }
 
-    OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_IRON_NUGGET.ordinal()));
-    OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(itemMaterial.getItem(), 1, Material.PULSATING_IRON_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(itemMaterial.getItem(), 1, Material.VIBRANT_NUGGET.ordinal()));
 
     ItemStack pureGlass = new ItemStack(blockFusedQuartz.getBlock(), 1, FusedQuartzType.FUSED_GLASS.ordinal());
     OreDictionary.registerOre("blockGlass", pureGlass);
@@ -75,8 +77,8 @@ public class MaterialRecipes {
     OreDictionary.registerOre("itemSkull", skull);
     OreDictionary.registerOre("itemSkull", new ItemStack(blockEndermanSkull.getBlock()));
 
-    Material.registerOres(EnderIO.itemMaterial);
-    MachinePart.registerOres(EnderIO.itemMachinePart);
+    Material.registerOres(itemMaterial.getItem());
+    MachinePart.registerOres(itemMachinePart.getItem());
   }
 
   public static void addRecipes() {

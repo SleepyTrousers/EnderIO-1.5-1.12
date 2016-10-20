@@ -34,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import static crazypants.enderio.ModObject.blockAlloySmelter;
 import static crazypants.enderio.ModObject.blockCapBank;
 import static crazypants.enderio.ModObject.blockPowerMonitor;
+import static crazypants.enderio.ModObject.itemPowerConduit;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
@@ -403,7 +404,7 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     }
 
     RenderHelper.enableGUIStandardItemLighting();
-    itemRender.renderItemIntoGUI(new ItemStack(EnderIO.itemPowerConduit, 1, 2), x, y);
+    itemRender.renderItemIntoGUI(new ItemStack(itemPowerConduit.getItem(), 1, 2), x, y);
     tooltipConduitStorage.setBounds(new Rectangle(TEXT_MARGIN_LEFT, TEXT_MARGIN_TOP, TEXT_WIDTH, 16));
 
     ItemStack capBankStack = new ItemStack(blockCapBank.getBlock(), 1, 3);

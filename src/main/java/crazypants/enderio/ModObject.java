@@ -10,8 +10,23 @@ import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.conduit.item.ItemItemConduit;
+import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
+import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
+import crazypants.enderio.conduit.oc.ItemOCConduit;
+import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
+import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.item.ItemConduitProbe;
+import crazypants.enderio.item.ItemEnderFood;
+import crazypants.enderio.item.ItemSoulVessel;
+import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
@@ -24,6 +39,7 @@ import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
+import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
@@ -35,6 +51,7 @@ import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
+import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedFence;
@@ -59,15 +76,23 @@ import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockIngotStorage;
+import crazypants.enderio.material.ItemAlloy;
+import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFrankenSkull;
+import crazypants.enderio.material.ItemMachinePart;
+import crazypants.enderio.material.ItemMaterial;
+import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.rail.BlockExitRail;
+import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockDialingDevice;
 import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
+import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
+import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -76,36 +101,36 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public enum ModObject implements IModObject {
   // Enderface
   blockEnderIo(BlockEnderIO.class),
-  itemEnderface,
+  itemEnderface(ItemEnderface.class),
 
   // Conduits
   blockConduitBundle(BlockConduitBundle.class),
   blockConduitFacade(BlockConduitFacade.class),
   itemConduitFacade,
   itemRedstoneConduit(ItemRedstoneConduit.class),
-  itemItemConduit,
+  itemItemConduit(ItemItemConduit.class),
   itemGasConduit,
   itemMEConduit,
-  itemOCConduit,
-  itemBasicFilterUpgrade,
-  itemExistingItemFilter,
-  itemModItemFilter,
-  itemPowerItemFilter,
-  itemExtractSpeedUpgrade,
-  itemFunctionUpgrade,
+  itemOCConduit(ItemOCConduit.class),
+  itemBasicFilterUpgrade(ItemBasicItemFilter.class),
+  itemExistingItemFilter(ItemExistingItemFilter.class),
+  itemModItemFilter(ItemModItemFilter.class),
+  itemPowerItemFilter(ItemPowerItemFilter.class),
+  itemExtractSpeedUpgrade(ItemExtractSpeedUpgrade.class),
+  itemFunctionUpgrade(ItemFunctionUpgrade.class),
 
   // Power
-  itemPowerConduit,
+  itemPowerConduit(ItemPowerConduit.class),
 
   // Liquid
-  itemLiquidConduit,
+  itemLiquidConduit(ItemLiquidConduit.class),
 
   // Materials
-  itemBasicCapacitor,
-  itemAlloy,
-  itemMaterial,
-  itemMachinePart,
-  itemPowderIngot,
+  itemBasicCapacitor(ItemCapacitor.class),
+  itemAlloy(ItemAlloy.class),
+  itemMaterial(ItemMaterial.class),
+  itemMachinePart(ItemMachinePart.class),
+  itemPowderIngot(ItemPowderIngot.class),
   blockFusedQuartz {
     @Override
     protected void create() {
@@ -206,27 +231,28 @@ public enum ModObject implements IModObject {
   blockPaintedRedstoneSolid,
   blockExitRail(BlockExitRail.class),
 
-  itemConduitProbe,
-  itemYetaWrench,
-  itemXpTransfer,
+  itemConduitProbe(ItemConduitProbe.class),
+  itemYetaWrench(ItemYetaWrench.class),
+  itemXpTransfer(ItemXpTransfer.class),
 
   blockTravelAnchor(BlockTravelAnchor.class),
   blockTelePad(BlockTelePad.class, "createTelepad"),
   blockDialingDevice(BlockDialingDevice.class),
   itemCoordSelector(ItemCoordSelector.class),
-  itemTravelStaff,
-  itemRodOfReturn,
+  itemLocationPrintout(ItemLocationPrintout.class),
+  itemTravelStaff(ItemTravelStaff.class),
+  itemRodOfReturn(ItemRodOfReturn.class),
   itemMagnet,
   itemGliderWing,
   blockEndermanSkull(BlockEndermanSkull.class),
-  itemSoulVessel,
+  itemSoulVessel(ItemSoulVessel.class),
   itemFrankenSkull(ItemFrankenSkull.class),
   
   // blockEnderRail(BlockEnderRail.class),
   
-  itemEnderFood,
+  itemEnderFood(ItemEnderFood.class),
   blockGauge(BlockGauge.class),
-  itemRemoteInvAccess,
+  itemRemoteInvAccess(ItemRemoteInvAccess.class),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class);
 
   private final @Nonnull String unlocalisedName;

@@ -60,7 +60,6 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
-import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
 import crazypants.enderio.teleport.telepad.render.TelePadSpecialRenderer;
@@ -207,7 +206,6 @@ public class ClientProxy extends CommonProxy {
     }
     if (blockEnderIo.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, new EnderIoRenderer());
-      ClientUtil.registerRenderer(Item.getItemFromBlock(blockEnderIo.getBlock()), ModObject.blockEnderIo.getUnlocalisedName());
     }
     if (blockReservoir.getBlock() != null) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) blockReservoir.getBlock()));
@@ -236,35 +234,8 @@ public class ClientProxy extends CommonProxy {
     new ConduitProbeOverlayRenderer();
 
     // Items
-    ClientUtil.registerRenderer(EnderIO.itemYetaWench, ModObject.itemYetaWrench.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemEnderface, ModObject.itemEnderface.getUnlocalisedName());
-    EnderIO.itemAlloy.registerRenderers();
-    EnderIO.itemBasicCapacitor.registerRenderers();
-    EnderIO.itemPowderIngot.registerRenderers();
-    registerRenderers(EnderIO.itemMachinePart);
-    registerRenderers(EnderIO.itemMaterial);
-    registerRenderers(EnderIO.itemEnderFood);
-    registerRenderers(EnderIO.itemBasicFilterUpgrade);
-    registerRenderers(EnderIO.itemExtractSpeedUpgrade);
-    registerRenderers(EnderIO.itemFunctionUpgrade);
-    registerRenderers(EnderIO.itemFunctionUpgrade);
-    registerRenderers(EnderIO.itemSoulVessel);
-    registerRenderers(EnderIO.itemConduitProbe);
-    registerRenderers(EnderIO.itemPowerConduit);
-    registerRenderers(EnderIO.itemLiquidConduit);
-    registerRenderers(EnderIO.itemItemConduit);
-    registerRenderers(EnderIO.itemOCConduit);
-    ClientUtil.registerRenderer(EnderIO.itemlocationPrintout, ItemLocationPrintout.NAME);
-    ClientUtil.registerRenderer(EnderIO.itemTravelStaff, ModObject.itemTravelStaff.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemRodOfReturn, ModObject.itemRodOfReturn.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemXpTransfer, ModObject.itemXpTransfer.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemExistingItemFilter, ModObject.itemExistingItemFilter.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemModItemFilter, ModObject.itemModItemFilter.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemPowerItemFilter, ModObject.itemPowerItemFilter.getUnlocalisedName());
-    ClientUtil.registerRenderer(EnderIO.itemConduitProbe, ModObject.itemConduitProbe.getUnlocalisedName());
     DarkSteelItems.onClientPreInit();
     Buckets.registerRenderers();
-    EnderIO.itemRemoteInvAccess.registerRenderers();
 
     // Item Models
     ItemModelRegistry.create();

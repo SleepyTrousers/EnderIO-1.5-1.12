@@ -6,6 +6,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
@@ -45,7 +46,7 @@ import static crazypants.util.NbtValue.REMOTE_X;
 import static crazypants.util.NbtValue.REMOTE_Y;
 import static crazypants.util.NbtValue.REMOTE_Z;
 
-public class ItemCapacitor extends Item implements ICapacitorDataItem {
+public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRenderers {
 
   public static ItemCapacitor create() {
     ItemCapacitor result = new ItemCapacitor();
@@ -66,6 +67,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem {
     GameRegistry.register(this);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     final ResourceLocation[] resourceLocations = DefaultCapacitorData.getResourceLocations();

@@ -3,6 +3,7 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemAlloy extends Item {
+public class ItemAlloy extends Item implements IHaveRenderers {
 
   static final boolean useNuggets = false;
 
@@ -42,6 +43,7 @@ public class ItemAlloy extends Item {
     GameRegistry.register(this);
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     int numAlloys = Alloy.values().length;

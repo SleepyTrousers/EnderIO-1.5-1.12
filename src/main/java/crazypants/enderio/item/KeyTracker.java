@@ -40,6 +40,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
+import static crazypants.enderio.ModObject.itemConduitProbe;
 import static crazypants.enderio.config.Config.allowFovControlsInSurvivalMode;
 
 public class KeyTracker {
@@ -200,7 +201,7 @@ public class KeyTracker {
         ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
         ConduitDisplayMode.setDisplayMode(equipped, newMode);
         PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
-      } else if (equipped.getItem() == EnderIO.itemConduitProbe) {
+      } else if (equipped.getItem() == itemConduitProbe.getItem()) {
         int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
         equipped.setItemDamage(newMeta);
         PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());

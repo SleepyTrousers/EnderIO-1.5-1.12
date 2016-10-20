@@ -61,7 +61,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
     }
   }
 
-  public SpeedUpgrade getSpeedUpgrade(ItemStack par1ItemStack) {
+  public static SpeedUpgrade getSpeedUpgrade(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, UPGRADES.length - 1);
     return UPGRADES[i];
   }

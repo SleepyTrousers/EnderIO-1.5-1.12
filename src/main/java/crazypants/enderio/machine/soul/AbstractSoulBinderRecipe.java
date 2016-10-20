@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.xp.XpUtil;
 import crazypants.util.CapturedMob;
+import net.minecraft.entity.EntityList;
+import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.ModObject.itemSoulVessel;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -92,7 +93,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
       return new ResultStack[0];
     }
     ItemStack resultStack = getOutputStack(inputItem, mobType);
-    ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);    
+    ItemStack soulVessel = new ItemStack(itemSoulVessel.getItem());
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
   }
 
@@ -111,7 +112,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     ItemStack item = input.item;
     if (slot == 0) {
       CapturedMob mobType = CapturedMob.create(item);
-      return mobType != null && item.getItem() == EnderIO.itemSoulVessel && isValidInputSoul(mobType);
+      return mobType != null && item.getItem() == itemSoulVessel.getItem() && isValidInputSoul(mobType);
     } 
     if(slot == 1) {
       return isValidInputItem(item);

@@ -58,6 +58,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
+import static crazypants.enderio.ModObject.itemLocationPrintout;
+
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
@@ -716,7 +718,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-    if (slot != 0 || inventory[0] != null || stack == null || stack.getItem() != EnderIO.itemlocationPrintout) {
+    if (slot != 0 || inventory[0] != null || stack == null || stack.getItem() != itemLocationPrintout.getItem()) {
       return stack;
     }
     if (!simulate) {

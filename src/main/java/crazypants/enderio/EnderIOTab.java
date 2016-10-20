@@ -2,12 +2,13 @@ package crazypants.enderio;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.EnderIO.MODID;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
 
@@ -41,7 +42,7 @@ public class EnderIOTab extends CreativeTabs {
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull Item getTabIconItem() {
-    return EnderIO.itemEnderface;
+    return itemEnderface.getItem();
   }
 
 }

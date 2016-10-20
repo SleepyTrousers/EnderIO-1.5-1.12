@@ -35,6 +35,7 @@ import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.ModObject.blockSoulBinder;
 import static crazypants.enderio.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.ModObject.itemSoulVessel;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
@@ -60,8 +61,8 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      ingredients.setInputs(ItemStack.class, Arrays.asList(new ItemStack(EnderIO.itemSoulVessel), recipe.getInputStack()));
-      ingredients.setOutputs(ItemStack.class, Arrays.asList(recipe.getOutputStack(), new ItemStack(EnderIO.itemSoulVessel)));
+      ingredients.setInputs(ItemStack.class, Arrays.asList(new ItemStack(itemSoulVessel.getItem()), recipe.getInputStack()));
+      ingredients.setOutputs(ItemStack.class, Arrays.asList(recipe.getOutputStack(), new ItemStack(itemSoulVessel.getItem())));
     }
     
     @Override
@@ -160,7 +161,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
     List<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
     final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
     for (CapturedMob soul : souls) {
-      soulStacks.add(soul.toStack(EnderIO.itemSoulVessel, 1, 1));
+      soulStacks.add(soul.toStack(itemSoulVessel.getItem(), 1, 1));
     }
     guiItemStacks.set(0, soulStacks);
 
@@ -178,7 +179,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
       guiItemStacks.set(2, outputStack);
     }
 
-    guiItemStacks.set(3, new ItemStack(EnderIO.itemSoulVessel));
+    guiItemStacks.set(3, new ItemStack(itemSoulVessel.getItem()));
   }
   
 }

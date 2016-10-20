@@ -13,7 +13,6 @@ import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -48,6 +47,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.ModObject.itemPowerConduit;
+
 public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 
   static final Map<String, TextureAtlasSprite> ICONS = new HashMap<String, TextureAtlasSprite>();
@@ -55,7 +56,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
 
   static ItemStack createItemStackForSubtype(int subtype) {
-    ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
+    ItemStack result = new ItemStack(itemPowerConduit.getItem(), 1, subtype);
     return result;
   }
 

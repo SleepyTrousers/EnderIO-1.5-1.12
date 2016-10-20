@@ -23,6 +23,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static crazypants.enderio.ModObject.itemAlloy;
+import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.ModObject.itemConduitProbe;
+import static crazypants.enderio.ModObject.itemTravelStaff;
+
 public class LootManager {
 
 //Add this code to an item (e.g. ItemAlloy) to easily test generation of loot
@@ -71,10 +76,10 @@ public class LootManager {
     if (evt.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
 
       if (Config.lootDarkSteel) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25));
       }
       if (Config.lootItemConduitProbe) {
-        lp.addItem(createLootEntry(EnderIO.itemConduitProbe, 0.10));
+        lp.addItem(createLootEntry(itemConduitProbe.getItem(), 0.10));
       }
       if (Config.lootQuartz) {
         lp.addItem(createLootEntry(Items.QUARTZ, 3, 16, 0.25));
@@ -98,19 +103,19 @@ public class LootManager {
     } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
 
       if (Config.lootElectricSteel) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20));
       }
       if (Config.lootRedstoneAlloy) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35));
       }
       if (Config.lootDarkSteel) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35));
       }
       if (Config.lootPhasedIron) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3));
       }
       if (Config.lootPhasedGold) {
-        lp.addItem(createLootEntry(EnderIO.itemAlloy, Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2));
+        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2));
       }
       if (Config.lootTheEnder) {
         lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25));
@@ -126,7 +131,7 @@ public class LootManager {
         lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 0.2));
       }
       if (Config.lootTravelStaff) {
-        lp.addItem(createLootEntry(EnderIO.itemTravelStaff, 0.1));
+        lp.addItem(createLootEntry(itemTravelStaff.getItem(), 0.1));
       }
       lp.addItem(createLootCapacitor(25));
 
@@ -136,7 +141,7 @@ public class LootManager {
         lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25));
       }
       if (Config.lootTravelStaff) {
-        lp.addItem(createLootEntry(EnderIO.itemTravelStaff, 1, 1, 0.1));
+        lp.addItem(createLootEntry(itemTravelStaff.getItem(), 1, 1, 0.1));
       }
       lp.addItem(createLootCapacitor(0.25));
       lp.addItem(createLootCapacitor(0.25));
@@ -169,7 +174,7 @@ public class LootManager {
   private static class CapItem extends LootItem {
 
     public CapItem(double chance) {
-      super(new ItemStack(EnderIO.itemBasicCapacitor, 1, 3), chance);
+      super(new ItemStack(itemBasicCapacitor.getItem(), 1, 3), chance);
     }
 
     @Override

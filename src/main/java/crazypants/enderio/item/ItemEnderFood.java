@@ -3,19 +3,6 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -27,6 +14,20 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemEnderFood;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider, IHaveRenderers {
 
@@ -111,7 +112,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
     }
 
     public ItemStack getStack(int size) {
-      return new ItemStack(EnderIO.itemEnderFood, size, ordinal());
+      return new ItemStack(itemEnderFood.getItem(), size, ordinal());
     }
 
     public static EnderFood get(ItemStack stack) {

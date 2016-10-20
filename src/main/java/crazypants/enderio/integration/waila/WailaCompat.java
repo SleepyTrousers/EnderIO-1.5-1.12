@@ -47,6 +47,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fluids.FluidStack;
 
+import static crazypants.enderio.ModObject.itemLiquidConduit;
+import static crazypants.enderio.ModObject.itemPowerConduit;
 import static crazypants.enderio.integration.waila.IWailaInfoProvider.BIT_BASIC;
 import static crazypants.enderio.integration.waila.IWailaInfoProvider.BIT_COMMON;
 import static crazypants.enderio.integration.waila.IWailaInfoProvider.BIT_DETAILED;
@@ -252,7 +254,7 @@ public class WailaCompat implements IWailaDataProvider {
       return;
     }
 
-    if(itemStack.getItem() == EnderIO.itemPowerConduit) {
+    if (itemStack.getItem() == itemPowerConduit.getItem()) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
       if(nbtRoot.hasKey("storedEnergyRF")) {
         int stored = nbtRoot.getInteger("storedEnergyRF");
@@ -265,7 +267,7 @@ public class WailaCompat implements IWailaDataProvider {
         currenttip.add(String.format("%s %s %s", "Max", PowerDisplayUtil.formatPower(max), PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr()));
       }
 
-    } else if(itemStack.getItem() == EnderIO.itemLiquidConduit) {
+    } else if (itemStack.getItem() == itemLiquidConduit.getItem()) {
       NBTTagCompound nbtRoot = _accessor.getNBTData();
       if(nbtRoot.hasKey("fluidLocked") && nbtRoot.hasKey("FluidName")) {
         boolean fluidTypeLocked = nbtRoot.getBoolean("fluidLocked");
