@@ -181,6 +181,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     return list;
   }
 
+  @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, IBlockState paint) {
     return PaintRegistry.getModel(IBakedModel.class, "carpet", paint, null);
   }

@@ -299,7 +299,7 @@ public enum ModObject implements IModObject {
     Object obj = null;
     try {
       obj = clazz.getDeclaredMethod(methodName, (Class<?>[])null).invoke(null, (Object[])null);
-    } catch (Exception e) {
+    } catch (Throwable e) {
       String str = "ModObject:create: Could not create instance for " + clazz + " using method " + methodName;
       Log.error(str + " Exception: " + e);
       throw new RuntimeException(str, e);
