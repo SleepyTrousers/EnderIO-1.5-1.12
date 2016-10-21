@@ -55,17 +55,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-  // @formatter:off
-  public static int[][] sideAndFacingToSpriteOffset = new int[][] {
-    { 3, 2, 0, 0, 0, 0 },
-    { 2, 3, 1, 1, 1, 1 },
-    { 1, 1, 3, 2, 5, 4 },
-    { 0, 0, 2, 3, 4, 5 },
-    { 4, 5, 4, 5, 3, 2 },
-    { 5, 4, 5, 4, 2, 3 }
-  };
-  // @formatter:on
-
   @Override
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;

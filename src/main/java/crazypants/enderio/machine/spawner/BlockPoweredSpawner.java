@@ -141,24 +141,28 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
             if(entityName != null && !isBlackListed(entityName)) {
               SkeletonType type = null;
               if(CapturedMob.SKELETON_ENTITY_NAME.equals(entityName)) {
-                type = SkeletonType.NORMAL;                
+                type = SkeletonType.NORMAL;
                 Biome biome = tile.getWorld().getBiomeForCoordsBody(tile.getPos());
                 if(BiomeDictionary.isBiomeOfType(biome, Type.NETHER)) {
                   type = SkeletonType.WITHER;
                 } else if(BiomeDictionary.isBiomeOfType(biome, Type.SNOWY)) {
                   if(Math.random() > 0.2) {
                     type = SkeletonType.STRAY;
-                  }                  
-                }              
+                  }
+                }
               }
-              ItemStack drop = CapturedMob.create(entityName, type).toStack(itemBrokenSpawner.getItem(), 0, 1);
-              dropCache.put(new BlockCoord(evt.getPos()), drop);
+              final CapturedMob capturedMob = CapturedMob.create(entityName, type);
+              if (capturedMob != null) {
+                ItemStack drop = capturedMob.toStack(itemBrokenSpawner.getItem(), 0, 1);
+                dropCache.put(new BlockCoord(evt.getPos()), drop);
 
-              for (int i = (int) (Math.random() * 7); i > 0; i--) {
-                setSpawnDelay(logic);
-                logic.updateSpawner();
+                for (int i = (int) (Math.random() * 7); i > 0; i--) {
+                  setSpawnDelay(logic);
+                  logic.updateSpawner();
+                }
+              } else {
+                dropCache.put(new BlockCoord(evt.getPos()), null);
               }
-
             }
           }
         }
@@ -176,6 +180,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
         ItemStack stack = dropCache.get(bc);
         if (stack != null) {
           evt.getDrops().add(stack);
+          dropCache.put(bc, null);
         }
       } else {
         // A spawner was broken---but not by a player. The TE has been
@@ -191,7 +196,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                 if (logic != null) {
                   String entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    evt.getDrops().add(CapturedMob.create(entityName, null).toStack(itemBrokenSpawner.getItem(), 0, 1));
+                    final CapturedMob capturedMob = CapturedMob.create(entityName, null);
+                    if (capturedMob != null) {
+                      evt.getDrops().add(capturedMob.toStack(itemBrokenSpawner.getItem(), 0, 1));
+                    }
                   }
                 }
               }
@@ -352,6 +360,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return IWailaInfoProvider.BIT_DETAILED;
   }
 
+  @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {

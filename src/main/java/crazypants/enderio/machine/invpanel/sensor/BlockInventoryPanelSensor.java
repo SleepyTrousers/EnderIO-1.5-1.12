@@ -2,6 +2,8 @@ package crazypants.enderio.machine.invpanel.sensor;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.ModObject;
@@ -68,7 +70,8 @@ IPaintable.IWrenchHideablePaint {
   }
 
   @Override
-  protected void setBlockStateWrapperCache(IBlockStateWrapper blockStateWrapper, IBlockAccess world, BlockPos pos, TileInventoryPanelSensor tileEntity) {
+  protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      @Nonnull TileInventoryPanelSensor tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
     blockStateWrapper.addCacheKey(tileEntity.isActive());
   }

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -29,12 +28,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -159,24 +159,26 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     // Internal conectors between conduits
-    List<CollidableComponent> connectors = bundle.getConnectors();    
+    List<CollidableComponent> connectors = bundle.getConnectors();
     for (CollidableComponent component : connectors) {
-      if (component != null && component.conduitType != null) {
-        IConduit conduit = bundle.getConduit(component.conduitType);
-        if (conduit != null) {
-          if (ConduitUtil.renderConduit(player, component.conduitType)) {                   
-            BakedQuadBuilder.addBakedQuads(quads, component.bound, conduit.getTextureForState(component));
-          } else {
-            addWireBounds(wireBounds, component);
+      if (component != null) {
+        if (component.conduitType != null) {
+          IConduit conduit = bundle.getConduit(component.conduitType);
+          if (conduit != null) {
+            if (ConduitUtil.renderConduit(player, component.conduitType)) {
+              BakedQuadBuilder.addBakedQuads(quads, component.bound, conduit.getTextureForState(component));
+            } else {
+              addWireBounds(wireBounds, component);
+            }
           }
-        }
 
-      } else if (ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
-        TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
+        } else if (ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
+          TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
+          BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
+        }
       }
     }
-    
+
     // render these after the 'normal' conduits so help with proper blending
     for (BoundingBox wireBound : wireBounds) {
       BakedQuadBuilder.addBakedQuads(quads, wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon());

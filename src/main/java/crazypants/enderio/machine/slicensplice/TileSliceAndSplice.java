@@ -2,9 +2,7 @@ package crazypants.enderio.machine.slicensplice;
 
 import java.util.List;
 
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -22,6 +20,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -34,7 +36,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockSliceAndSplice.getUnlocalisedName();
   }
 

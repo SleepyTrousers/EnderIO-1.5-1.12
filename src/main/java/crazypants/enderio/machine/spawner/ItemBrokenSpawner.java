@@ -44,6 +44,7 @@ public class ItemBrokenSpawner extends Item {
     GameRegistry.register(this);
   }
 
+  @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {

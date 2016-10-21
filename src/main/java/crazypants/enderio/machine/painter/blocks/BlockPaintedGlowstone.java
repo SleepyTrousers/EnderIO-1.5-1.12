@@ -3,6 +3,7 @@ package crazypants.enderio.machine.painter.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
@@ -223,7 +224,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   }
 
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }

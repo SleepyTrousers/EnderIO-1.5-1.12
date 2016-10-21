@@ -163,12 +163,10 @@ public class PlantableFarmer implements IFarmerJoe {
     float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, bc.getBlockPos(), meta, fortune, 1.0F, false, fakePlayer);
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
-    boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
         if (stack != null && stack.stackSize > 0 && worldObj.rand.nextFloat() <= chance) {
-          if (!removed && isPlantableForBlock(stack, block)) {
-            removed = true;
+          if (removedPlantable == null && isPlantableForBlock(stack, block)) {
             removedPlantable = stack.copy();
             removedPlantable.stackSize = 1;
             stack.stackSize--;
@@ -192,7 +190,7 @@ public class PlantableFarmer implements IFarmerJoe {
       }
     }
 
-    if(removed) {
+    if (removedPlantable != null) {
       if(!plant(farm, worldObj, bc, (IPlantable) removedPlantable.getItem())) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, removedPlantable.copy()));
         worldObj.setBlockState(bc.getBlockPos(), Blocks.AIR.getDefaultState(), 1 | 2);

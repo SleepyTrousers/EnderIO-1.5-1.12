@@ -2,6 +2,8 @@ package crazypants.enderio.machine.painter;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.ModObject;
@@ -24,7 +26,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return "Auto Painter";
   }
 
@@ -58,7 +60,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockPainter.getUnlocalisedName();
   }
 

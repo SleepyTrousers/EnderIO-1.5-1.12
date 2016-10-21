@@ -52,8 +52,9 @@ public class ServerChannelRegister extends ChannelRegister {
       }
     }
 
+    JsonReader reader = null;
     try {
-      JsonReader reader = new JsonReader(new FileReader(getDataFile()));
+      reader = new JsonReader(new FileReader(getDataFile()));
       reader.beginArray();
       while (reader.hasNext()) {
         String name = null;
@@ -90,9 +91,15 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
       reader.endArray();
-      reader.close();
     } catch (Exception e) {
       Log.error("Could not read Dimensional Transceiver channels from " + getDataFile().getAbsolutePath() + " : " + e);
+    } finally {
+      try {
+        if (reader != null) {
+          reader.close();
+        }
+      } catch (Throwable e) {
+      }
     }
   }
 
@@ -154,21 +161,27 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   protected static void doWriteFile(ListMultimap<ChannelType, Channel> channels, File dataFile) throws IOException {
-    JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
-    writer.setIndent("  ");
-    writer.beginArray();
-    for (Channel chan : channels.values()) {
-      writer.beginObject();
-      writer.name("name").value(chan.getName());
-      if (chan.getUser() != null && chan.getUser() != UserIdent.nobody) {
-        writer.name("uuid").value(chan.getUser().getUUIDString());
-        writer.name("playername").value(chan.getUser().getPlayerName());
+    JsonWriter writer = null;
+    try {
+      writer = new JsonWriter(new FileWriter(dataFile, false));
+      writer.setIndent("  ");
+      writer.beginArray();
+      for (Channel chan : channels.values()) {
+        writer.beginObject();
+        writer.name("name").value(chan.getName());
+        if (chan.getUser() != null && chan.getUser() != UserIdent.nobody) {
+          writer.name("uuid").value(chan.getUser().getUUIDString());
+          writer.name("playername").value(chan.getUser().getPlayerName());
+        }
+        writer.name("type").value(chan.getType().ordinal());
+        writer.endObject();
       }
-      writer.name("type").value(chan.getType().ordinal());
-      writer.endObject();
+      writer.endArray();
+    } finally {
+      if (writer != null) {
+        writer.close();
+      }
     }
-    writer.endArray();
-    writer.close();
   }
 
   private static File getDataFile() {

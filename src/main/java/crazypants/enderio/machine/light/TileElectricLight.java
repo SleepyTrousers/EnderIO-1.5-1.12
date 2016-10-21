@@ -321,7 +321,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
     if(isLightNode(offset)) {
       TileLightNode te = (TileLightNode) worldObj.getTileEntity(new BlockPos(x, y, z));
-      if (te.parent != null && !getPos().equals(te.parent)) {
+      if (te != null && te.parent != null && !getPos().equals(te.parent)) {
         // its somebody else's so leave it alone
         return;
       }

@@ -214,7 +214,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     signals.clear();
     boolean signalsChanged = false;
     for (Entry<SignalSource, Signal> s : oldSignals.entries()) {
-      if (world.isBlockLoaded(s.getKey().getPos())) {
+      if (world != null && world.isBlockLoaded(s.getKey().getPos())) {
         signals.put(s.getKey(), s.getValue());
       } else {
         signalsChanged = true;
@@ -223,7 +223,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     if(signalsChanged) {
       //broadcast out a change 
       notifyNeigborsOfSignalUpdate();
-    }           
+    }
   }
 
 }

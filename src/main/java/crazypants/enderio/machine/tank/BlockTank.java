@@ -68,7 +68,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER, EnumTankType.KIND });
   }
 
@@ -93,7 +93,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  public TileEntity createTileEntity(World world, IBlockState bs) {
+  public @Nonnull TileEntity createTileEntity(World world, IBlockState bs) {
     return new TileTank(getMetaFromState(bs));
   }
   

@@ -39,8 +39,8 @@ public class TreeHarvestUtil {
     harvestUp(world, bc, res, new HarvestTarget(wood));
   }
 
-  private void harvest(World world, BlockCoord origin, BlockPos bc, HarvestResult res, boolean ignoreMeta) {
-    this.origin = new BlockCoord(origin);
+  private void harvest(World world, BlockCoord originIn, BlockPos bc, HarvestResult res, boolean ignoreMeta) {
+    this.origin = new BlockCoord(originIn);
     IBlockState wood = world.getBlockState(bc);
     if (ignoreMeta) {
       harvestUp(world, bc, res, new BaseHarvestTarget(wood.getBlock()));
@@ -112,12 +112,10 @@ public class TreeHarvestUtil {
 
   private static final class HarvestTarget extends BaseHarvestTarget {
 
-    IBlockState bs;
     EnumType variant;
 
     HarvestTarget(IBlockState bs) {
       super(bs.getBlock());
-      this.bs = bs;
       variant = getVariant(bs);
     }
 
