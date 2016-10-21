@@ -7,8 +7,8 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.IModObject;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;

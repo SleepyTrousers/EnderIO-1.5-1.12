@@ -8,19 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
@@ -32,16 +19,32 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
+import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
+    implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockTransceiver create() {
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
@@ -196,6 +199,12 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> impl
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileTransceiver tileEntity) {
     blockStateWrapper.addCacheKey(0);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, new TransceiverRenderer());
   }
 
 }

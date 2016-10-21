@@ -6,12 +6,12 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

@@ -17,6 +17,8 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveRenderers;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -34,6 +36,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
+import crazypants.util.ClientUtil;
 import crazypants.util.UserIdent;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -52,12 +55,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider,
-    ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers, IHaveTESR {
 
   public static BlockTravelAnchor<TileTravelAnchor> create() {
     PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -304,5 +308,17 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockTravelAnchor);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer<TileTravelAnchor>());
+  }
 
 }

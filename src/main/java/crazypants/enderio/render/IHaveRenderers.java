@@ -1,4 +1,4 @@
-package crazypants.enderio;
+package crazypants.enderio.render;
 
 public interface IHaveRenderers {
 

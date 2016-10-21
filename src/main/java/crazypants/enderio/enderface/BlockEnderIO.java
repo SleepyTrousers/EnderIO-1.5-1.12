@@ -5,10 +5,11 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IHaveRenderers;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
@@ -24,10 +25,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider, IHaveRenderers {
+public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTooltipProvider, IHaveRenderers, IHaveTESR {
 
   public static BlockEnderIO create() {
 
@@ -126,4 +128,11 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
   public void registerRenderers() {
     ClientUtil.registerDefaultItemRenderer(ModObject.blockEnderIo);
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, new EnderIoRenderer());
+  }
+
 }

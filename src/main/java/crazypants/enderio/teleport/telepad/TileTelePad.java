@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.google.common.collect.Lists;
@@ -60,7 +62,8 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import static crazypants.enderio.ModObject.itemLocationPrintout;
 
-public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {
+public class TileTelePad extends TileTravelAnchor
+    implements IInternalPowerReceiver, ITelePad, IProgressTile, IItemHandlerModifiable, ITankAccess.IExtendedTankAccess {
 
   private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   private final ICapacitorKey maxEnergyRecieved = new DefaultCapacitorKey(ModObject.blockTelePad, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER,
@@ -782,15 +785,17 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return fluidType;
   }
 
+  @SuppressWarnings("null")
   @Override
-  public List<ITankData> getTankDisplayData() {
+  public @Nonnull List<ITankData> getTankDisplayData() {
     if(inNetwork()) {
       return getMaster().createDisplayData();
     }
     return Collections.emptyList();
   }
   
-  private List<ITankData> createDisplayData() {
+  @SuppressWarnings("null")
+  private @Nonnull List<ITankData> createDisplayData() {
     ITankData data = new TankData();
     return Collections.singletonList(data);
   }
@@ -798,7 +803,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
   private class TankData implements ITankData {
 
     @Override
-    public EnumTankType getTankType() {
+    public @Nonnull EnumTankType getTankType() {
       return EnumTankType.INPUT;
     }
 
@@ -811,7 +816,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     public int getCapacity() {
       return tank.getCapacity();
     }
-    
+
   }
 
 }

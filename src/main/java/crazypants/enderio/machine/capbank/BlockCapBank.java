@@ -32,9 +32,11 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.machine.capbank.render.CapBankBlockRenderMapper;
 import crazypants.enderio.machine.capbank.render.CapBankItemRenderMapper;
+import crazypants.enderio.machine.capbank.render.CapBankRenderer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
@@ -67,6 +69,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,7 +77,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.ModObject.blockCapBank;
 
 public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
-    ISmartRenderAwareBlock {
+    ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
   private static CapBankItemRenderMapper CAPBANK_RENDER_MAPPER;
@@ -586,6 +589,12 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       }
     }
     throw new RuntimeException("Hey, leave our enums alone!");
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileCapBank.class, new CapBankRenderer());
   }
 
 }

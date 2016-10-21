@@ -3,9 +3,9 @@ package crazypants.enderio.block;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;

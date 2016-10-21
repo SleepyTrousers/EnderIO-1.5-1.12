@@ -10,6 +10,8 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.render.IHaveRenderers;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -29,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IWailaInfoProvider {
+public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IWailaInfoProvider, IHaveRenderers {
 
   public static BlockReinforcedObsidian create() {
     BlockReinforcedObsidian result = new BlockReinforcedObsidian();
@@ -120,6 +122,12 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_BASIC;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockReinforcedObsidian);
   }
 
 }

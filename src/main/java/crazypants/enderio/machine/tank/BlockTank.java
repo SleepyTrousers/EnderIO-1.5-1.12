@@ -16,6 +16,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
@@ -36,11 +37,12 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+    IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockTank create() {
     PacketHandler.INSTANCE.registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
@@ -218,6 +220,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileTank tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(blockStateWrapper.getValue(EnumTankType.KIND));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
   }
 
 }

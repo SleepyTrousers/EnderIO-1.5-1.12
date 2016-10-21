@@ -5,8 +5,9 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveRenderers;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.util.ClientUtil;
 import crazypants.util.NullHelper;
 import net.minecraft.block.material.Material;
@@ -26,12 +27,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers { //TODO: Mod Thaumcraft IInfusionStabiliser
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers, IHaveTESR { // TODO: Mod Thaumcraft IInfusionStabiliser
 
   public enum SkullType implements IStringSerializable {
 
@@ -165,6 +167,12 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
       }
     }
     return super.getSelectedBoundingBox(bs, worldIn, pos);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
   }
 
   //TODO: Mod Thaumcraft

@@ -15,6 +15,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -22,6 +23,7 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumRenderMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -43,7 +45,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock,
-    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create() {
     PacketHandler.INSTANCE.registerMessage(PacketVaccumChest.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
@@ -266,5 +268,11 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockVacuumChest);
+  }
 
 }

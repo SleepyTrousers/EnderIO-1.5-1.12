@@ -12,13 +12,13 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredItem;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;

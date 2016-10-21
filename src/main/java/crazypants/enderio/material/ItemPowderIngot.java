@@ -3,8 +3,8 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.creativetab.CreativeTabs;

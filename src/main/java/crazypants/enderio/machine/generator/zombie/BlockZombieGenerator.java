@@ -12,6 +12,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.killera.KillerJoeRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.registry.TextureRegistry;
@@ -30,10 +31,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
+public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> implements IHaveTESR {
 
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/zombieGen_head");
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/zombieGen_head2");
@@ -149,4 +151,9 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     return true;
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, new ZombieGeneratorRenderer());
+  }
 }

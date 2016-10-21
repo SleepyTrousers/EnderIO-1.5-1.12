@@ -6,9 +6,9 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

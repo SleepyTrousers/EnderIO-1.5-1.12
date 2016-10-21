@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.property.EnumDecoBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

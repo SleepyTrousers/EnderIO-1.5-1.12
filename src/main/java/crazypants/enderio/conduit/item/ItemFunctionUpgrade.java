@@ -5,8 +5,8 @@ import java.util.List;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

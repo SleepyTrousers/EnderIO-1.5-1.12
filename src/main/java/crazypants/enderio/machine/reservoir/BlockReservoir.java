@@ -14,6 +14,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
@@ -41,10 +42,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
+import static crazypants.enderio.ModObject.blockReservoir;
+
+public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
@@ -238,6 +242,12 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) blockReservoir.getBlock()));
   }
 
 }

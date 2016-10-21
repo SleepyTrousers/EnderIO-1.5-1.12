@@ -8,6 +8,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.registry.TextureRegistry;
@@ -30,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -37,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * Name proudly created by Xaw4
  */
-public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
+public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implements IHaveTESR {
 
   static final String USERNAME = "KillerJoe";
   public static final TextureSupplier textureHead1 = TextureRegistry.registerTexture("blocks/killerJoe_head");
@@ -140,4 +142,9 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return true;
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
+  }
 }

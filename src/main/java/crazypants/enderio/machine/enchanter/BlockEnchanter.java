@@ -9,20 +9,28 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.ITESRItemBlock;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider, ITESRItemBlock {
+import static crazypants.enderio.ModObject.blockEnchanter;
+
+public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
 
   public static BlockEnchanter create() {
     BlockEnchanter res = new BlockEnchanter();
@@ -128,6 +136,13 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, new EnchanterModelRenderer());
+    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(blockEnchanter.getBlock()), 0, TileEnchanter.class);
   }
 
 }

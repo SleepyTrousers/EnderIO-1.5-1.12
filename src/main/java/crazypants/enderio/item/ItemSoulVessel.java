@@ -10,9 +10,9 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
 import net.minecraft.client.resources.I18n;

@@ -6,9 +6,9 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

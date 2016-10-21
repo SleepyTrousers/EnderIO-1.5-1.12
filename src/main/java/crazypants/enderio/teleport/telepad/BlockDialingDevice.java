@@ -7,9 +7,11 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.teleport.telepad.gui.GuiDialingDevice;
 import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
+import crazypants.util.ClientUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,8 +26,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider {
+public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create() {
     
@@ -64,6 +67,9 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (world == null) {
+      return null;
+    }
     TileDialingDevice te = getTileEntity(world, new BlockPos(x,y,z));
     if(te == null) {
       return null;
@@ -73,6 +79,9 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (world == null) {
+      return null;
+    }
     TileDialingDevice te = getTileEntity(world, new BlockPos(x,y,z));
     if(te == null) {
       return null;
@@ -95,6 +104,9 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
 
   @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    if (worldIn == null || pos == null) {
+      return state;
+    }
     TileDialingDevice tile = getTileEntitySafe(worldIn, pos);
     if (tile != null) {
       DialerFacing facing = tile.getFacing();
@@ -127,6 +139,12 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    ClientUtil.registerDefaultItemRenderer(ModObject.blockDialingDevice);
   }
 
 }

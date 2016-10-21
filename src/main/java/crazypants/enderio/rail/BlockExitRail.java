@@ -1,7 +1,7 @@
 package crazypants.enderio.rail;
 
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.IProperty;

@@ -6,7 +6,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IHaveRenderers;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
@@ -14,6 +13,7 @@ import crazypants.enderio.capacitor.ICapacitorDataItem;
 import crazypants.enderio.enderface.PacketOpenServerGUI;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
 import net.minecraft.client.renderer.block.model.ModelBakery;

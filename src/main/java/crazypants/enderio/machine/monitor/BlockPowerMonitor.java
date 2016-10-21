@@ -15,6 +15,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,11 +29,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements IAdvancedTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+    IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockPowerMonitor advancedInstance;
 
@@ -71,6 +73,9 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    if (world == null) {
+      return null;
+    }
     TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
     if (!(te instanceof TilePowerMonitor)) {
       return null;
@@ -80,10 +85,12 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
-    final InventoryPlayer inventory = player.inventory;
-    if (te instanceof TilePowerMonitor && inventory != null) {
-      return new GuiPowerMonitor(inventory, (TilePowerMonitor) te);
+    if (world != null) {
+      TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
+      final InventoryPlayer inventory = player.inventory;
+      if (te instanceof TilePowerMonitor && inventory != null) {
+        return new GuiPowerMonitor(inventory, (TilePowerMonitor) te);
+      }
     }
     return null;
   }
@@ -128,18 +135,22 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   @Override
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, pos, state, player, stack);
-    TilePowerMonitor te = getTileEntity(world, pos);
-    if (te != null) {
-      te.setAdvanced(this == advancedInstance);
+    if (world != null && pos != null) {
+      TilePowerMonitor te = getTileEntity(world, pos);
+      if (te != null) {
+        te.setAdvanced(this == advancedInstance);
+      }
     }
   }
 
   @Deprecated
   @Override
   public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-    TilePowerMonitor te = getTileEntity(blockAccess, pos);
-    if (te != null) {
-      return te.getRedstoneLevel();
+    if (blockAccess != null && pos != null) {
+      TilePowerMonitor te = getTileEntity(blockAccess, pos);
+      if (te != null) {
+        return te.getRedstoneLevel();
+      }
     }
     return super.getWeakPower(blockState, blockAccess, pos, side);
   }
@@ -151,9 +162,11 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-    TilePowerMonitor te = getTileEntitySafe(world, pos);
-    if (te != null) {
-      return te.isEngineControlEnabled();
+    if (world != null && pos != null) {
+      TilePowerMonitor te = getTileEntitySafe(world, pos);
+      if (te != null) {
+        return te.isEngineControlEnabled();
+      }
     }
     return super.canConnectRedstone(state, world, pos, side);
   }
@@ -164,11 +177,10 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     if (!super.shouldSideBeRendered(bs, worldIn, pos, side)) {
       return false;
     }
-    if (advancedInstance != this) {
+    if (advancedInstance != this || worldIn == null || pos == null) {
       return true;
     }
-    BlockPos myPos = pos;
-    TilePowerMonitor tileEntity = getTileEntitySafe(worldIn, myPos);
+    TilePowerMonitor tileEntity = getTileEntitySafe(worldIn, pos);
     if (tileEntity == null) {
       return true;
     }
@@ -179,6 +191,12 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
       return true;
     }
     return false;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TilePowerMonitor.class, new TESRPowerMonitor());
   }
 
 }

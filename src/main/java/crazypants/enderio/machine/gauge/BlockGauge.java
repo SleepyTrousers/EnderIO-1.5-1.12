@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.registry.SmartModelAttacher;
@@ -30,8 +31,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
+public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   public static final TextureSupplier gaugeIcon = TextureRegistry.registerTexture("blocks/blockGaugeOverlay");
 
@@ -140,6 +144,12 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileGauge.class, new TESRGauge());
   }
 
 }

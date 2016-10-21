@@ -11,6 +11,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
@@ -24,10 +25,12 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
+    implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
   public static BlockSoulBinder create() {
     PacketDrainPlayerXP.register();
@@ -116,6 +119,12 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> implem
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileSoulBinder tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isWorking());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileSoulBinder.class, new SoulBinderTESR());
   }
 
 }

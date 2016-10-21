@@ -13,6 +13,7 @@ import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
@@ -29,6 +30,7 @@ import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
+import crazypants.enderio.teleport.telepad.render.TelePadSpecialRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -46,10 +48,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, IWailaInfoProvider {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, IWailaInfoProvider, IHaveTESR {
 
   
   public static BlockTelePad createTelepad() {
@@ -313,7 +316,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    if(Config.telepadFluidUse <= 0) {
+    if (Config.telepadFluidUse <= 0 || world == null) {
       return;
     }
     TileTelePad te = getTileEntity(world, new BlockPos(x, y, z));
@@ -329,5 +332,11 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
   }
-  
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
+  }
+
 }
