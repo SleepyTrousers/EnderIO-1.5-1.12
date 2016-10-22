@@ -101,7 +101,7 @@ public class CommonProxy {
       }
     }
 
-    registerCommands();
+    // registerCommands(); // debug command disabled because it is not needed at the moment
   }
 
   private void recipeError(String filename, String message) {
