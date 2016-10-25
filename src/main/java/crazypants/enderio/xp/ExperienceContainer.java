@@ -166,7 +166,7 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public boolean canFill(EnumFacing from, Fluid fluidIn) {
-    return fluidIn != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
+    return canFill() && fluidIn != null && Fluids.fluidXpJuice != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
   }
   
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {

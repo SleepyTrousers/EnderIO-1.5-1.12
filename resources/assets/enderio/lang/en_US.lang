@@ -1502,3 +1502,5 @@ tile.blockDecoration2_type12.name=Pressurized Fluid Tank (decoration block)
 tile.blockDecoration2_type13.name=Travel Anchor (decoration block)
 tile.blockDecoration2_type14.name=Vacuum Chest (decoration block)
 tile.blockDecoration2_type15.name=Wireless Charger (decoration block)
+
+tile.blockXPVacuum.name=XP Sink (WIP)

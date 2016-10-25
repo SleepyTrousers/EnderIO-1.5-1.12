@@ -72,6 +72,7 @@ import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.BlockDarkIronBars;
@@ -157,6 +158,7 @@ public enum ModObject implements IModObject {
   blockTank(BlockTank.class),
   blockCrafter(BlockCrafter.class),
   blockVacuumChest(BlockVacuumChest.class),
+  blockXPVacuum(BlockXPVacuum.class),
   blockWirelessCharger(BlockWirelessCharger.class),
   blockEnchanter(BlockEnchanter.class),
   blockSoulBinder(BlockSoulBinder.class),
