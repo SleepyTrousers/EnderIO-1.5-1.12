@@ -15,7 +15,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.ICreeperTarget;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
@@ -72,8 +71,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
-public class TileKillerJoe extends AbstractMachineEntity
-    implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
+public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
 
   public static class ZombieCache {
 
@@ -285,7 +283,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
     double maxDist = Config.killerJoeHooverXpLength;
 
-    List<EntityXPOrb> xp = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
+    List<EntityXPOrb> xp = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
 
     for (EntityXPOrb entity : xp) {
       double xDist = (getPos().getX() + 0.5D - entity.posX);
@@ -296,7 +294,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
       if (totalDistance < 1.5) {
         hooverXP(entity);
-      } else {
+      } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
         double speed = 0.01 + (d * 0.02);
 
@@ -341,11 +339,6 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   private int xpToDurability(int xp) {
     return xp * 2;
-  }
-
-  @Override
-  public boolean apply(@Nullable EntityXPOrb input) {
-    return MagnetUtil.shouldAttract(getPos(), input);
   }
 
   // ------------------------------- Weapon stuffs
@@ -552,18 +545,8 @@ public class TileKillerJoe extends AbstractMachineEntity
   }
 
   @Override
-  public boolean equals(@Nullable Object obj) {
-    return super.equals(obj);
-  }
-
-  @Override
   public boolean shouldRenderInPass(int pass) {
     return true;
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
   }
 
   private boolean showingRange = false;
