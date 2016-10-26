@@ -446,8 +446,6 @@ tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
-tile.blockKillerJoe.tooltip.detailed.line4=Experience can be drained as
-tile.blockKillerJoe.tooltip.detailed.line5=Liquid XP using fluid conduits
 
 enderio.killerJoe.fuelTank=Nutrient Tank
 enderio.killerJoe.giveXp.tooltip=Take XP
@@ -1503,4 +1501,7 @@ tile.blockDecoration2_type13.name=Travel Anchor (decoration block)
 tile.blockDecoration2_type14.name=Vacuum Chest (decoration block)
 tile.blockDecoration2_type15.name=Wireless Charger (decoration block)
 
-tile.blockXPVacuum.name=XP Sink (WIP)
+tile.blockXPVacuum.name=XP Vacuum
+tile.blockXPVacuum.tooltip.detailed.line1=Pulls nearby XP orbs and pushes
+tile.blockXPVacuum.tooltip.detailed.line2=them into adjacent tanks/conduits.
+tile.blockXPVacuum.tooltip.detailed.line3=Needs to be activated with liquid XP.

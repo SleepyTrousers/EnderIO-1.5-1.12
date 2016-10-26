@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.vacuum;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
@@ -32,7 +30,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private static final int IO_MB_TICK = 1000;
 
-  private int range = Config.vacuumChestRange * 3;
+  private double range = Config.xpVacuumRange;
 
   @Store
   private boolean formed = false;
@@ -80,25 +78,27 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     return MagnetUtil.shouldAttract(getPos(), entity);
   }
 
-  private void doHoover() {
-    int rangeSqr = range * range;
-    List<EntityXPOrb> interestingItems = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this);
+  private static final double speed = 0.03;
 
-    for (EntityXPOrb entity : interestingItems) {
+  private void doHoover() {
+    for (EntityXPOrb entity : worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) {
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
       double z = (pos.getZ() + 0.5D - entity.posZ);
 
       double distance = Math.sqrt(x * x + y * y + z * z);
-      if (distance < 1.55) {
+      if (distance < 1.25) {
         hooverEntity(entity);
       } else {
-        double speed = 0.03;
-        double distScale = 1.0 - Math.min(0.9, distance / rangeSqr);
+        double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / range));
         distScale *= distScale;
 
         entity.motionX += x / distance * distScale * speed;
-        entity.motionY += y / distance * distScale * 0.2;
+        if (entity.posY < pos.getY()) {
+          entity.motionY += y / distance * distScale * speed + .03;
+        } else {
+          entity.motionY += y / distance * distScale * speed;
+        }
         entity.motionZ += z / distance * distScale * speed;
       }
     }
@@ -149,10 +149,10 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   // RANGE
 
   public BoundingBox getBounds() {
-    return new BoundingBox(getPos()).expand(getRange() + (range == 0 ? 1 / 32f : 0));
+    return new BoundingBox(getPos()).expand(getRange());
   }
 
-  public float getRange() {
+  public double getRange() {
     return range;
   }
 

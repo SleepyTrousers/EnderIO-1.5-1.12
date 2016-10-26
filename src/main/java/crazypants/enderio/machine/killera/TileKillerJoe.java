@@ -34,10 +34,6 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.XpUtil;
 import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -77,7 +73,7 @@ import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
 public class TileKillerJoe extends AbstractMachineEntity
-    implements IHaveExperience, ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
+    implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, Predicate<EntityXPOrb>, IRanged {
 
   public static class ZombieCache {
 
@@ -120,23 +116,11 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   private float prevSwingProgress;
 
-  @Store
-  private final ExperienceContainer xpCon;
-
   private boolean hadSword;
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
-    
-    int maxXP;
-    if(Config.killerJoeMaxXpLevel <= 0) {
-      maxXP = Integer.MAX_VALUE;
-    } else {
-      maxXP = XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel);
-    }
-    xpCon = new ExperienceContainer(maxXP);
-    xpCon.setTileEntity(this);
-    xpCon.setCanFill(false);
+
     if (zCache == null) {
       zCache = new ZombieCache();
       MinecraftForge.EVENT_BUS.register(zCache);
@@ -166,7 +150,9 @@ public class TileKillerJoe extends AbstractMachineEntity
   @Override
   public void doUpdate() {
     updateArmSwingProgress();
-    hooverXP();
+    if (needsMending()) {
+      hooverXP();
+    }
     if (!worldObj.isRemote) {
       getAttackera().onUpdate();
       if (inventory[0] != null != hadSword) {
@@ -175,11 +161,6 @@ public class TileKillerJoe extends AbstractMachineEntity
       }
     }
     super.doUpdate();
-  }
-
-  @Override
-  public ExperienceContainer getContainer() {
-    return xpCon;
   }
 
   private static final @Nonnull int[] slots = new int[1];
@@ -208,10 +189,6 @@ public class TileKillerJoe extends AbstractMachineEntity
       if (tanksDirty) {
         PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
         tanksDirty = false;
-      }
-      if (xpCon.isDirty()) {
-        PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
-        xpCon.setDirty(false);
       }
     }
 
@@ -304,10 +281,6 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   // ------------------------------- XP
 
-  public ExperienceContainer getXpContainer() {
-    return xpCon;
-  }
-
   private void hooverXP() {
 
     double maxDist = Config.killerJoeHooverXpLength;
@@ -334,27 +307,32 @@ public class TileKillerJoe extends AbstractMachineEntity
           entity.motionY = 0.12;
         }
 
+        // force client sync because this movement is server-side only
+        boolean silent = entity.isSilent();
+        entity.setSilent(!silent);
+        entity.setSilent(silent);
       }
     }
   }
 
   private void hooverXP(EntityXPOrb entity) {
-    if (!worldObj.isRemote) {
-      if (!entity.isDead) {
-        int xpValue = entity.getXpValue();
-        if (Config.killerMendingEnabled && inventory[0] != null && inventory[0].isItemDamaged()
-            && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0) {
-          int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
-          xpValue -= durabilityToXp(i);
-          inventory[0].setItemDamage(inventory[0].getItemDamage() - i);
-          markDirty();
-        }
-        if (xpValue > 0) {
-          xpCon.addExperience(xpValue);
-        }
+    if (!worldObj.isRemote && !entity.isDead && needsMending()) {
+      int xpValue = entity.getXpValue();
+      int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
+      xpValue -= durabilityToXp(i);
+      inventory[0].setItemDamage(inventory[0].getItemDamage() - i);
+      markDirty();
+      if (xpValue > 0) {
+        entity.xpValue = xpValue;
+      } else {
         entity.setDead();
       }
     }
+  }
+
+  private boolean needsMending() {
+    return Config.killerMendingEnabled && inventory[0] != null && inventory[0].isItemDamaged()
+        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[0]) > 0;
   }
   
   private int durabilityToXp(int durability) {
@@ -366,8 +344,8 @@ public class TileKillerJoe extends AbstractMachineEntity
   }
 
   @Override
-  public boolean apply(@Nullable EntityXPOrb input) {  
-    return MagnetUtil.shouldAttract(getPos(), input);        
+  public boolean apply(@Nullable EntityXPOrb input) {
+    return MagnetUtil.shouldAttract(getPos(), input);
   }
 
   // ------------------------------- Weapon stuffs
@@ -505,17 +483,6 @@ public class TileKillerJoe extends AbstractMachineEntity
     return res;
   }
 
-  @Override
-  protected boolean doPush(@Nullable EnumFacing dir) {
-    boolean res = super.doPush(dir);
-    if (dir != null && xpCon.getFluidAmount() > 0) {
-      if (FluidWrapper.transfer(xpCon, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
-        setTanksDirty();
-      }
-    }
-    return res;
-  }
-
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
 
@@ -571,7 +538,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   @Override
   public FluidTank[] getOutputTanks() {
-    return new FluidTank[] { xpCon };
+    return new FluidTank[] {};
   }
 
   @Override
@@ -653,7 +620,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
   protected SmartTankFluidHandler getSmartTankFluidHandler() {
     if (smartTankFluidHandler == null) {
-      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank, xpCon);
+      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
     }
     return smartTankFluidHandler;
   }

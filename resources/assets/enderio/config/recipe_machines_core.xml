@@ -409,6 +409,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="XP Vacuum" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="enderio:itemXpTransfer" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="PULSATING_CRYSTAL" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:blockXPVacuum" />
+    </crafting>
+  </recipe>
+
   <recipe name="Soul Binder" required="true">
     <crafting>
       <level maxlevel="1" />

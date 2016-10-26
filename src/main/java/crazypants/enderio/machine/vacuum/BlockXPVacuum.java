@@ -3,6 +3,8 @@ package crazypants.enderio.machine.vacuum;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.paint.IPaintable;
@@ -33,7 +35,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockXPVacuum extends BlockEio<TileXPVacuum> implements ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
+public class BlockXPVacuum extends BlockEio<TileXPVacuum>
+    implements ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IResourceTooltipProvider {
 
   public static BlockXPVacuum create() {
     BlockXPVacuum res = new BlockXPVacuum();
@@ -211,5 +214,10 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum> implements ISmartRende
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName();
+  }
 
 }

@@ -430,6 +430,8 @@ public final class Config {
   public static boolean killerMendingEnabled = true;
   public static boolean killerProvokesCreeperExpolosions = false;
 
+  public static double xpVacuumRange = 10;
+
   public static boolean allowTileEntitiesAsPaintSource = true;
 
   public static boolean isGasConduitEnabled = true;
@@ -1319,6 +1321,9 @@ public final class Config {
 
     killerProvokesCreeperExpolosions = config.get(sectionKiller.name, "killerProvokesCreeperExpolosions", killerProvokesCreeperExpolosions,
         "If enabled, Creepers will explode for the Killer Joe just like for any player.").getBoolean();
+
+    xpVacuumRange = config.get(sectionAdvanced.name, "xpVacuumRange", xpVacuumRange, "The distance from which XP will be gathered by the XP vacuum.")
+        .getDouble(xpVacuumRange);
 
     // Add deprecated comment
     config.getString("isGasConduitEnabled", sectionItems.name, "auto", "Deprecated option. Use boolean \"gasConduitsEnabled\" below.");
