@@ -261,7 +261,10 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     drawTexturedModalRect(sx, sy, 0, 0, xSize - 21, ySize);
 
     if (container.hasBaublesSlots()) {
-      drawTexturedModalRect(sx + 194, sy + 6, 221, 78, 24, 82);
+      drawTexturedModalRect(sx + 194, sy + 6, 221, 78, 24, 39);
+      for (int i = 1; i < container.baubles.getSizeInventory(); i++) {
+        drawTexturedModalRect(sx + 194, sy + 11 + i * 18, 221, 137, 24, 23);
+      }
       RenderUtil.bindTexture(baublesBackground);
       for (int i = 0; i < container.baubles.getSizeInventory(); i++) {
         if (container.baubles.getStackInSlot(i) == null) {
