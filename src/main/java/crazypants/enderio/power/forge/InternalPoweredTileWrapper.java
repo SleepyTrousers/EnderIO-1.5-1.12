@@ -49,7 +49,7 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
 
   @Override
   public int getMaxEnergyStored() {
-    return tile.getEnergyStored(from);
+    return tile.getMaxEnergyStored(from);
   }
   
   @Override
