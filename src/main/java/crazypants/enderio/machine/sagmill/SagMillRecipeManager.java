@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
@@ -23,6 +20,8 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SagMillRecipeManager {
 
@@ -154,8 +153,9 @@ public class SagMillRecipeManager {
     if (input == null) {
       return null;
     }
+    final MachineRecipeInput machineRecipeInput = new MachineRecipeInput(0, input);
     for (Recipe recipe : recipes) {
-      if (recipe.isInputForRecipe(new MachineRecipeInput(0, input))) {
+      if (recipe.isInputForRecipe(machineRecipeInput)) {
         return recipe;
       }
     }
