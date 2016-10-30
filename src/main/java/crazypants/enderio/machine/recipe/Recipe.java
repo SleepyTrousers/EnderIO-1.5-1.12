@@ -37,10 +37,17 @@ public class Recipe implements IRecipe {
       return false;
     }
 
+    // fail fast check
+    for (MachineRecipeInput realInput : machineInputs) {
+      if (realInput == null || (realInput.fluid == null && realInput.item == null) || !isAnyInput(realInput)) {
+        return false;
+      }
+    }
+
     List<RecipeInput> requiredInputs = new ArrayList<RecipeInput>();
     for(RecipeInput input : inputs) { 
       if(input.getFluidInput() != null || input.getInput() != null) {
-        requiredInputs.add(input.copy());
+        requiredInputs.add(input.copy()); // expensive (has ItemStack.copy() inside)
       }
     }
     
@@ -73,6 +80,15 @@ public class Recipe implements IRecipe {
       }
     }
     return true;
+  }
+
+  private boolean isAnyInput(MachineRecipeInput realInput) {
+    for (RecipeInput recipeInput : inputs) {
+      if ((recipeInput.isInput(realInput.item)) || recipeInput.isInput(realInput.fluid)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected int getMinNumInputs() {
