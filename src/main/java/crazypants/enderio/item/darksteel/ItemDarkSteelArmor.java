@@ -7,7 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider2;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
@@ -65,7 +65,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
-    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
+    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider2, IArmorApiarist, IArmorNaturalist {
   //TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
 
   public static final ArmorMaterial MATERIAL = createMaterial();
@@ -397,10 +397,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   }
 
   @Override
-  public boolean isElytraFlying(EntityLivingBase entity, ItemStack itemstack) {
+  public boolean isElytraFlying(EntityLivingBase entity, ItemStack itemstack, boolean shouldStop) {
     if (entity instanceof EntityPlayer && DarkSteelController.instance.isElytraUpgradeEquipped(itemstack)
         && DarkSteelController.instance.isElytraActive((EntityPlayer) entity)) {
-      if (entity.onGround && !entity.worldObj.isRemote) {
+      if (shouldStop && !entity.worldObj.isRemote) {
         DarkSteelController.instance.setActive((EntityPlayer) entity, Type.ELYTRA, false);
         PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.worldObj.provider.getDimension());
       }
