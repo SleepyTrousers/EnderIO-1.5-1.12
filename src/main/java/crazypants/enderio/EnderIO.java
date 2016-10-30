@@ -114,10 +114,10 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    ModObject.preInit(event);
-
     fluids = new Fluids();
     fluids.registerFluids();
+
+    ModObject.preInit(event);
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
