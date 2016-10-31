@@ -30,6 +30,8 @@
 *~
 ## most Windows editors
 *.bak
+## OSX
+.DS_Store
 
 ## translation reports
 resources/assets/enderio/lang/*.lang.txt
