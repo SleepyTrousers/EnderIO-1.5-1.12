@@ -39,7 +39,7 @@ public class Recipe implements IRecipe {
 
     // fail fast check
     for (MachineRecipeInput realInput : machineInputs) {
-      if (realInput == null || (realInput.fluid == null && realInput.item == null) || !isAnyInput(realInput)) {
+      if (realInput != null && (realInput.fluid != null || realInput.item != null) && !isAnyInput(realInput)) {
         return false;
       }
     }
@@ -84,7 +84,7 @@ public class Recipe implements IRecipe {
 
   private boolean isAnyInput(MachineRecipeInput realInput) {
     for (RecipeInput recipeInput : inputs) {
-      if ((recipeInput.isInput(realInput.item)) || recipeInput.isInput(realInput.fluid)) {
+      if (recipeInput != null && ((recipeInput.isInput(realInput.item)) || recipeInput.isInput(realInput.fluid))) {
         return true;
       }
     }
