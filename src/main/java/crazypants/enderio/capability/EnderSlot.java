@@ -36,6 +36,7 @@ public class EnderSlot extends SlotItemHandler {
         x++;
         if (x >= cols) {
           y++;
+          x = 0;
           if (y >= rows) {
             return result;
           }
