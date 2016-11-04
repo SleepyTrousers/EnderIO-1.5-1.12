@@ -211,6 +211,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   protected boolean trySpawnEntity() {
     Entity entity = createEntity(worldObj.getDifficultyForLocation(getPos()), true);
     if (!(entity instanceof EntityLiving)) {
+      cleanupUnspawnedEntity(entity);
       return false;
     }
     EntityLiving entityliving = (EntityLiving) entity;
@@ -220,6 +221,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     if (Config.poweredSpawnerMaxNearbyEntities > 0) {
       int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange)).size();
       if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
+        cleanupUnspawnedEntity(entity);
         return false;
       }
     }
@@ -246,14 +248,20 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       }
     }
 
-    final Entity ridingEntity = entity.getRidingEntity();
-    if (ridingEntity != null) {
-      ridingEntity.setDead();
-    }
-    for (Entity passenger : entity.getPassengers()) {
-      passenger.setDead();
-    }
+    cleanupUnspawnedEntity(entity);
     return false;
+  }
+
+  private void cleanupUnspawnedEntity(Entity entity) {
+    if (entity != null) {
+      final Entity ridingEntity = entity.getRidingEntity();
+      if (ridingEntity != null) {
+        ridingEntity.setDead();
+      }
+      for (Entity passenger : entity.getPassengers()) {
+        passenger.setDead();
+      }
+    }
   }
 
   public String getEntityName() {
