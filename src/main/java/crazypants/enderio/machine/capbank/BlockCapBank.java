@@ -45,6 +45,7 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.BaublesUtil;
 import crazypants.util.NullHelper;
 import info.loenwind.autosave.Reader;
 import net.minecraft.block.Block;
@@ -55,6 +56,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -115,6 +117,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK, this);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES4, this);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES7, this);
     setLightOpacity(255);
     SmartModelAttacher.register(this, EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.DEFAULTS, EnumMergingBlockRenderMode.AUTO);
   }
@@ -281,19 +285,36 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     if (!world.isRemote) {
-      final EnderIO instance2 = EnderIO.instance;
-      if (instance2 != null) {
-        entityPlayer.openGui(instance2, GuiHandler.GUI_ID_CAP_BANK, world, pos.getX(), pos.getY(), pos.getZ());
-      }
+      entityPlayer.openGui(EnderIO.instance, baublesToGuiId(BaublesUtil.instance().getBaubles(entityPlayer)), world, pos.getX(), pos.getY(), pos.getZ());
     }
     return true;
+  }
+
+  private static int baublesToGuiId(IInventory baubles) {
+    if (baubles != null && baubles.getSizeInventory() == 4) {
+      return GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES4;
+    } else if (baubles != null && baubles.getSizeInventory() == 7) {
+      return GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES7;
+    } else {
+      return GuiHandler.GUI_ID_CAP_BANK;
+    }
+  }
+
+  private static int guiIdToBaublesSize(int ID) {
+    if (ID == GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES4) {
+      return 4;
+    } else if (ID == GuiHandler.GUI_ID_CAP_BANK_WITH_BAUBLES7) {
+      return 7;
+    } else {
+      return 0;
+    }
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileCapBank te = getTileEntity(NullHelper.notnullF(world, "getServerGuiElement() was called without a world"), new BlockPos(x, y, z));
     if (te != null) {
-      return new ContainerCapBank(player.inventory, te);
+      return ContainerCapBank.create(player.inventory, te, guiIdToBaublesSize(ID));
     }
     return null;
   }
@@ -302,7 +323,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileCapBank te = getTileEntity(NullHelper.notnullF(world, "getClientGuiElement() was called without a world"), new BlockPos(x, y, z));
     if (te != null) {
-      return new GuiCapBank(player, player.inventory, te);
+      return new GuiCapBank(player, player.inventory, te, ContainerCapBank.create(player.inventory, te, guiIdToBaublesSize(ID)));
     }
     return null;
   }

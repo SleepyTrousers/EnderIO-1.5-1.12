@@ -5,6 +5,7 @@ import java.awt.Point;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.ArrayInventory;
 
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
 import crazypants.util.BaublesUtil;
@@ -12,16 +13,18 @@ import crazypants.util.ShadowInventory;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.EntityEquipmentSlot.Type;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerCapBank extends ContainerEnder<TileCapBank> {
+public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
   private final static int SIDE_SLOT_Y_OFFSET = 12;
 
@@ -35,12 +38,23 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   // server is a bad idea as Baubles does some very bad things...
   protected IInventory baubles;
 
-  public ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
+  public static ContainerCapBank create(InventoryPlayer playerInv, TileCapBank cb, final int baublesSize) {
+    return new ContainerCapBank(playerInv, cb) {
+      @Override
+      protected int getBaublesSize() {
+        return baublesSize;
+      }
+    };
+  }
+
+  private ContainerCapBank(InventoryPlayer playerInv, TileCapBank cb) {
     super(playerInv, cb);
   }
 
+  protected abstract int getBaublesSize();
+
   public boolean hasBaublesSlots() {
-    return baubles != null;
+    return getBaublesSize() > 0;
   }
 
   @Override
@@ -55,6 +69,31 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
     if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
+    }
+
+    if (hasBaublesSlots() && (baubles == null || baubles.getSizeInventory() != getBaublesSize())) {
+      baubles = new ArrayInventory(getBaublesSize()) {
+        @Override
+        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+          return false;
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+          return new ItemStack(Blocks.BARRIER);
+        }
+
+        @Override
+        public ItemStack decrStackSize(int slot, int amount) {
+          return null;
+        }
+
+        @Override
+        public ItemStack removeStackFromSlot(int index) {
+          return null;
+        }
+
+      };
     }
 
     int armorOffset = 21, baublesOffset = 196;
@@ -106,6 +145,15 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
             return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
           }
+
+          @Override
+          public boolean canTakeStack(EntityPlayer playerIn) {
+            ItemStack stackInSlot = inventory.getStackInSlot(getSlotIndex());
+            if (stackInSlot != null && stackInSlot.getItem() == Item.getItemFromBlock(Blocks.BARRIER)) {
+              return false;
+            }
+            return super.canTakeStack(playerIn);
+          }
         });
       }
     }
@@ -128,7 +176,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
     int otherSlots = 4 + 5; // charging + armor + off-hand
     int startBaublesSlot = otherSlots;
-    int endBaublesSlot = baubles == null ? 0 : startBaublesSlot + baubles.getSizeInventory();
+    int endBaublesSlot = hasBaublesSlots() ? 0 : startBaublesSlot + getBaublesSize();
 
     ItemStack copystack = null;
     Slot slot = inventorySlots.get(slotIndex);

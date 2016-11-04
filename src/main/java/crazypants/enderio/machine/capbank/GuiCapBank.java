@@ -78,10 +78,10 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private final ContainerCapBank container;
 
-  public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te) {
-    super(new ContainerCapBank(playerInv, te), "capacitorBank");
+  public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te, ContainerCapBank container) {
+    super(container, "capacitorBank");
     capBank = te;
-    container = (ContainerCapBank) inventorySlots;
+    this.container = (ContainerCapBank) inventorySlots;
 
     updateState();
 
@@ -268,7 +268,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       RenderUtil.bindTexture(baublesBackground);
       for (int i = 0; i < container.baubles.getSizeInventory(); i++) {
         if (container.baubles.getStackInSlot(i) == null) {
-          drawTexturedModalRect(sx + 196, sy + 12 + i * 18, 77, 8 + i * 18, 16, 16);
+          final int textureX = 77 + (i / 4) * 19;
+          final int textureY = 8 + (i % 4) * 18;
+          drawTexturedModalRect(sx + 196, sy + 12 + i * 18, textureX, textureY, 16, 16);
         }
       }
       bindGuiTexture();

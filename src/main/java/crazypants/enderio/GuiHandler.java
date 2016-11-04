@@ -64,6 +64,8 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_LOCATION_PRINTOUT_CREATE = 207;
 
   public static final int GUI_ID_CAP_BANK = 142; // leave room for more machines
+  public static final int GUI_ID_CAP_BANK_WITH_BAUBLES4 = 143;
+  public static final int GUI_ID_CAP_BANK_WITH_BAUBLES7 = 144;
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 
