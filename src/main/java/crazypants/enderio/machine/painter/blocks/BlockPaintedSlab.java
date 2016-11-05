@@ -65,10 +65,11 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.WOOD, ModObject.blockPaintedSlab.getUnlocalisedName(), SoundType.WOOD);
     woodHalfSlab.setHardness(2.0F).setResistance(5.0F);
     woodHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab,
-        Blocks.WOODEN_SLAB));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+        new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab, Blocks.WOODEN_SLAB));
 
-    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.WOOD, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab, SoundType.WOOD);
+    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.WOOD, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab,
+        SoundType.WOOD);
     woodDoubleSlab.setHardness(2.0F).setResistance(5.0F);
     woodDoubleSlab.init();
 
@@ -77,11 +78,11 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.ROCK, ModObject.blockPaintedStoneSlab.getUnlocalisedName(), SoundType.WOOD);
     rockHalfSlab.setHardness(2.0F).setResistance(5.0F);
     rockHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab,
-        Blocks.STONE_SLAB, Blocks.STONE_SLAB));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+        new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab, Blocks.STONE_SLAB, Blocks.STONE_SLAB));
 
-    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.ROCK, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(),
-        rockHalfSlab, SoundType.WOOD);
+    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.ROCK, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(), rockHalfSlab,
+        SoundType.WOOD);
     rockDoubleSlab.setHardness(2.0F).setResistance(5.0F);
     rockDoubleSlab.init();
 
@@ -103,7 +104,6 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
       return false;
     }
 
-    
   }
 
   public static class BlockPaintedDoubleSlab extends BlockPaintedSlab {
@@ -148,7 +148,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   public Comparable<?> getTypeForItem(ItemStack stack) {
     throw new NotImplementedException("This method is only used by ItemSlab for vanilla slabs.");
   }
-  
+
   @Override
   public TileEntity createNewTileEntity(World world, int metadata) {
     return new TileEntityPaintedBlock.TileEntityTwicePaintedBlock();
@@ -163,7 +163,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
-      world.notifyBlockUpdate(pos, state, state, 3);      
+      world.notifyBlockUpdate(pos, state, state, 3);
     }
   }
 
@@ -218,23 +218,31 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {    
+  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
     return new ItemStack(Item.getItemFromBlock(halfVariant));
   }
 
   @Override
   public IProperty<?> getVariantProperty() {
     return null;
-  } 
+  }
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState();
+    if (this.isDouble()) {
+      return getDefaultState();
+    } else {
+      return getDefaultState().withProperty(HALF, (meta & 8) == 0 ? EnumBlockHalf.BOTTOM : EnumBlockHalf.TOP);
+    }
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
-    return 0;
+    if (this.isDouble()) {
+      return 0;
+    } else {
+      return state.getValue(HALF) == EnumBlockHalf.TOP ? 8 : 0;
+    }
   }
 
   @Override
