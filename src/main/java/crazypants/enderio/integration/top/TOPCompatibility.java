@@ -30,9 +30,11 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.spawner.TilePoweredSpawner;
 import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.util.CapturedMob;
@@ -105,6 +107,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
         mkRfLine(mode, eiobox, data);
 
+        mkRfIOLine(mode, eiobox, data);
+
         mkXPLine(mode, eiobox, data);
 
         mkRedstoneLine(mode, eiobox, data);
@@ -148,6 +152,10 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
     public ILayoutStyle center() {
       return probeinfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER);
+    }
+
+    public ILayoutStyle right() {
+      return probeinfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_BOTTOMRIGHT);
     }
 
     public void addMore() {
@@ -238,17 +246,37 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   private void mkRfLine(ProbeMode mode, EioBox eiobox, Data data) {
     if (data.hasRF) {
       if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
-        final IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
+        IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
+        if (data.hasRFIO) {
+          rfLine = rfLine.vertical();
+        }
         if (data.isPowered) {
           rfLine.progress(data.rf, data.maxrf, eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf"))
               .filledColor(0xffd63223).alternateFilledColor(0xffd63223));
         } else {
           rfLine.text(TextFormatting.DARK_RED + EnderIO.lang.localize("top.machine.outofpower"));
         }
+        if (data.hasRFIO) {
+          rfLine = rfLine.horizontal();
+          rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))//
+              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.avg"))
+              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.maxin"))
+              .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.rf.header.maxout"));
+
+          String line1 = EnderIO.lang.localize("top.rf.value",
+              (data.avgRF == 0 ? TextFormatting.WHITE : data.avgRF > 0 ? TextFormatting.GREEN + "+" : TextFormatting.RED)
+                  + PowerDisplayUtil.formatPower(data.avgRF));
+          String line2 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + PowerDisplayUtil.formatPower(data.maxRFIn));
+          String line3 = EnderIO.lang.localize("top.rf.value", TextFormatting.WHITE + PowerDisplayUtil.formatPower(data.maxRFOut));
+          rfLine = rfLine.vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(line1).text(line2).text(line3);
+        }
       } else {
         eiobox.addMore();
       }
     }
+  }
+
+  private void mkRfIOLine(ProbeMode mode, EioBox eiobox, Data data) {
   }
 
   private void mkXPLine(ProbeMode mode, EioBox eiobox, Data data) {
@@ -322,10 +350,11 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       NO_PROGRESS_IDLE;
     }
 
-    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP;
+    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP, hasRFIO;
     boolean isActive, isPowered, redstoneControlStatus;
     float progress;
-    int rf, maxrf, experienceLevel, xpBarScaled;
+    long rf, maxrf;
+    int experienceLevel, xpBarScaled, maxRFIn, maxRFOut, avgRF;
     String redstoneTooltip, sideName, mobAction;
     IWidgetIcon redstoneIcon;
     IoMode ioMode;
@@ -342,7 +371,17 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         hasStatus = true;
       }
 
-      if (tileEntity instanceof IInternalPoweredTile) {
+      if (tileEntity instanceof IPowerStorage) {
+        IPowerStorage te = (IPowerStorage) tileEntity;
+        maxrf = te.getMaxEnergyStoredL();
+        rf = te.getEnergyStoredL();
+        te.getMaxInput();
+        hasRFIO = isPowered = hasRF = maxrf > 0;
+
+        maxRFIn = te.getMaxInput();
+        maxRFOut = te.getMaxOutput();
+        avgRF = te.getAverageIOPerTick();
+      } else if (tileEntity instanceof IInternalPoweredTile) {
         IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
         if (te.displayPower()) {
           maxrf = te.getMaxEnergyStored(null);

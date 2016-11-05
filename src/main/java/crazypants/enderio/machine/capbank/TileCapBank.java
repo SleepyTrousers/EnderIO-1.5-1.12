@@ -525,6 +525,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   @Override
+  public int getAverageIOPerTick() {
+    return network == null ? 0 : network.getAverageIOPerTick();
+  }
+
+  @Override
   public boolean isOutputEnabled(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();

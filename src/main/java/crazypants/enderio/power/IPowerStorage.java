@@ -30,6 +30,8 @@ public interface IPowerStorage {
 
   int getMaxInput();
 
+  int getAverageIOPerTick();
+
   void addEnergy(int amount);
 
   boolean isCreative();

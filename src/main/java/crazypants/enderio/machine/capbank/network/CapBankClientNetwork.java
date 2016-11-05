@@ -469,4 +469,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
   }
 
+  @Override
+  public int getAverageIOPerTick() {
+    return Math.round(getAverageChangePerTick());
+  }
+
 }

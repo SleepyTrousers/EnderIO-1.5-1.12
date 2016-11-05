@@ -349,6 +349,11 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
+  public int getAverageIOPerTick() {
+    return Math.round(getAverageChangePerTick());
+  }
+
+  @Override
   public float getAverageInputPerTick() {
     return powerTrackerIn.getAverage();
   }
