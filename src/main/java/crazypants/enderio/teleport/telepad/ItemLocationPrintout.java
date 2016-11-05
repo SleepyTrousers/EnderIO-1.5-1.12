@@ -11,6 +11,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.gui.GuiLocationPrintout;
 import crazypants.enderio.teleport.telepad.packet.PacketUpdateLocationPrintout;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -60,7 +61,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
 
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-    if (player.isSneaking()) {
+    if (player.isSneaking() && TelepadTarget.readFromNBT(stack) != null) {
       player.openGui(EnderIO.instance, GuiHandler.GUI_ID_LOCATION_PRINTOUT, world, hand.ordinal(), 0, 0);
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
@@ -129,16 +130,16 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
     if (ID == GuiHandler.GUI_ID_LOCATION_PRINTOUT_CREATE) {
 
       boolean foundPaper = false;
-      for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && !foundPaper; paperIndex++) {      
+      for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && !foundPaper; paperIndex++) {
         ItemStack invItem = player.inventoryContainer.inventorySlots.get(paperIndex).getStack();
-        if (invItem != null && invItem.getItem() == Items.PAPER) {          
+        if (invItem != null && invItem.getItem() == Items.PAPER) {
           player.inventoryContainer.inventorySlots.get(paperIndex).decrStackSize(1);
           player.inventoryContainer.detectAndSendChanges();
           foundPaper = true;
         }
       }
-      if (!foundPaper) {        
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.noPaper")));        
+      if (!foundPaper) {
+        player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.noPaper")));
         return null;
       }
 
@@ -151,6 +152,11 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       EntityEquipmentSlot slot = hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND;
       return new GuiLocationPrintout(player, slot);
     }
+  }
+
+  @Override
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    return;
   }
 
 }
