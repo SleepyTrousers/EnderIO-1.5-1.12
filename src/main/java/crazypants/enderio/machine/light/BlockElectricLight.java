@@ -33,8 +33,8 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   public static final PropertyEnum<LightType> TYPE = PropertyEnum.<LightType> create("type", LightType.class);
   public static final PropertyBool ACTIVE = PropertyBool.create("active");
-  public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);  
-  
+  public static final PropertyEnum<EnumFacing> FACING = PropertyEnum.<EnumFacing> create("face", EnumFacing.class);
+
   public static BlockElectricLight create() {
     BlockElectricLight result = new BlockElectricLight();
     result.init();
@@ -43,13 +43,13 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   public BlockElectricLight() {
     super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
-    setLightOpacity(0);    
+    setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
 
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-    
+
     EnumFacing onFace = EnumFacing.DOWN;
     TileEntity te = source.getTileEntity(pos);
     if (te instanceof TileElectricLight) {
@@ -89,8 +89,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
       break;
     }
 
-    return new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);    
-      //return new AxisAlignedBB(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
+    return new AxisAlignedBB(min.x, min.y, min.z, max.x, max.y, max.z);
   }
 
   @Override
@@ -100,14 +99,14 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, TYPE, ACTIVE, FACING);
+    return new BlockStateContainer(this, TYPE, ACTIVE, FACING);
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
     boolean active = state.getValue(ACTIVE).booleanValue();
     int type = state.getValue(TYPE).getMetadata();
-    if(active) {
+    if (active) {
       type |= 8;
     }
     return type;
@@ -115,14 +114,14 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    LightType type = LightType.fromMetadata(meta);
+    LightType type = LightType.fromMetadata(meta & 7);
     return getDefaultState().withProperty(TYPE, type).withProperty(ACTIVE, meta > 7);
   }
 
   @Override
   public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
     TileElectricLight te = getTileEntitySafe(world, pos);
-    return state.withProperty(FACING, te == null ? EnumFacing.DOWN : te.getFace());    
+    return state.withProperty(FACING, te == null ? EnumFacing.DOWN : te.getFace());
   }
 
   @Override
@@ -132,27 +131,25 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {    
-    Item item = Item.getItemFromBlock(this);    
+  public void registerRenderers() {
+    Item item = Item.getItemFromBlock(this);
     int numTypes = LightType.values().length;
-    for (int i = 0; i < numTypes; i++) {     
+    for (int i = 0; i < numTypes; i++) {
       ClientUtil.regRenderer(item, i, name);
     }
   }
-  
-  
+
   @Override
-  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {    
+  public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos) {
     Block block = bs.getBlock();
     if (block != null && block != this) {
       return block.getLightValue(bs, world, pos);
-    } 
+    }
     return bs.getValue(ACTIVE) ? 15 : 0;
   }
-  
+
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
-    
     return true;
   }
 
@@ -165,7 +162,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   public boolean isOpaqueCube(IBlockState bs) {
     return false;
   }
-  
+
   @Override
   public boolean isFullCube(IBlockState bs) {
     return false;
