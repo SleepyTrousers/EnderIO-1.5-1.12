@@ -37,7 +37,12 @@ public class QuadCollector {
       if (table[key] == null) {
         table[key] = new ArrayList<BakedQuad>(quads);
       } else {
+        if (!(table[key] instanceof ArrayList)) {
+          // don't want to add if we have a CompositeList or a Collections.emptyList()
+          table[key] = new ArrayList<BakedQuad>(table[key]);
+        }
         table[key].addAll(quads);
+        ((ArrayList<BakedQuad>) table[key]).trimToSize();
       }
     }
   }
