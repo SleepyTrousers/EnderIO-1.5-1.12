@@ -2,6 +2,8 @@ package crazypants.enderio.enderface;
 
 import java.util.List;
 
+import crazypants.enderio.GuiID;
+import crazypants.enderio.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,9 +13,6 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
 
 public class ItemEnderface extends Item implements IGuiHandler {
   
@@ -32,7 +31,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
   protected void init() {
     GameRegistry.register(this);    
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_ENDERFACE, this);
   }
 
   @Override

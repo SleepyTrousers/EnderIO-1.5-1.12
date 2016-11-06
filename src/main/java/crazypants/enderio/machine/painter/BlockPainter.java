@@ -2,6 +2,13 @@ package crazypants.enderio.machine.painter;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.GuiID;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.EveryPaintableRecipe;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -9,13 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.recipe.EveryPaintableRecipe;
-import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.render.IBlockStateWrapper;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -57,8 +57,8 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_PAINTER;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_PAINTER;
   }
 
   @Override

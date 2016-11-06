@@ -12,7 +12,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
@@ -379,10 +379,11 @@ public class ConduitUtil {
       return;
     }
     if (cons.size() == 1) {
-      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
+      EnumFacing facing = cons.iterator().next();
+      GuiID.facing2guiid(facing).openGui(world, new BlockPos(x, y, z), player, facing);
       return;
     }
-    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
+    GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.openClientGui(world, new BlockPos(x, y, z), player, null);
   }
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {

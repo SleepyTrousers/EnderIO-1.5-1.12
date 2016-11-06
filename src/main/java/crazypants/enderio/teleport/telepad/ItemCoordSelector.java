@@ -7,9 +7,8 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,7 +70,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
       bc = bc.getLocation(dir);
     }
     
-    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_LOCATION_PRINTOUT_CREATE, world, bc.x, bc.y, bc.z);
+    GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.openClientGui(world, player, bc.x, bc.y, bc.z);
 
     return true;
   }

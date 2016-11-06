@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
@@ -45,7 +45,7 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_SPAWN_RELOCATOR;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_SPAWN_RELOCATOR;
   }
 }

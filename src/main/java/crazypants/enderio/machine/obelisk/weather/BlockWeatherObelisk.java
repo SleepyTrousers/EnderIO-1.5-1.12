@@ -3,7 +3,7 @@ package crazypants.enderio.machine.obelisk.weather;
 import java.util.Random;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.network.PacketHandler;
@@ -43,8 +43,8 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_WEATHER_OBELISK;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_WEATHER_OBELISK;
   }
 
   @Override

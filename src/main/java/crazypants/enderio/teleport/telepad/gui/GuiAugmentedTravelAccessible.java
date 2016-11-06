@@ -1,7 +1,7 @@
 package crazypants.enderio.teleport.telepad.gui;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ContainerTravelAccessable;
@@ -38,7 +38,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   @Override
   public void switchGui() {
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, te.getTileEntity().getPos().getX(), te.getTileEntity().getPos().getY(), te.getTileEntity().getPos().getZ());
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD));
+    GuiID.GUI_ID_TELEPAD.openClientGui(world, te.getTileEntity().getPos(), mc.thePlayer, null);
+    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD));
   }
 }

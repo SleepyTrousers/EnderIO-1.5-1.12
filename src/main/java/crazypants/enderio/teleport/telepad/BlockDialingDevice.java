@@ -3,8 +3,7 @@ package crazypants.enderio.teleport.telepad;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IHaveRenderers;
@@ -52,7 +51,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   @Override
   protected final void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD_DIALING_DEVICE, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD_DIALING_DEVICE, this);
   }
 
   @Override
@@ -91,9 +90,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice> implements I
   
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
-    if (!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_DIALING_DEVICE, world, pos.getX(), pos.getY(), pos.getZ());
-    }
+    GuiID.GUI_ID_TELEPAD_DIALING_DEVICE.openGui(world, pos, entityPlayer, side);
     return true;
   }
 

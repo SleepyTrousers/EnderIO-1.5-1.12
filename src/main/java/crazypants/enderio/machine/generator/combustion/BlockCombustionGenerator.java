@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -68,8 +68,8 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_COMBUSTION_GEN;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_COMBUSTION_GEN;
   }
 
   @Override

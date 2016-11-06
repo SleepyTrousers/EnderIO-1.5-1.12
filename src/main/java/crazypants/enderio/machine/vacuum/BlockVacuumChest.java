@@ -6,8 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.network.PacketHandler;
@@ -79,7 +78,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_VACUUM_CHEST, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_VACUUM_CHEST, this);
     registerInSmartModelAttacher();
   }
 
@@ -145,9 +144,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
-    if (!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, pos.getX(), pos.getY(), pos.getZ());
-    }
+    GuiID.GUI_ID_VACUUM_CHEST.openGui(world, pos, entityPlayer, side);
     return true;
   }
 

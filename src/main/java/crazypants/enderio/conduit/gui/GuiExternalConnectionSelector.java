@@ -10,10 +10,8 @@ import java.util.Set;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
@@ -21,7 +19,6 @@ import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -92,10 +89,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   private void go(EnumFacing dir) {
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    BlockCoord loc = cb.getLocation();
     PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
-    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 
   protected void findBlockDataForDirection(EnumFacing direction) {

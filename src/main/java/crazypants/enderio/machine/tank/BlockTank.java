@@ -9,7 +9,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -127,8 +127,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_TANK;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_TANK;
   }
 
   @Override

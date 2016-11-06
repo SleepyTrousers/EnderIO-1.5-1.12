@@ -6,7 +6,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.gui.GuiLocationPrintout;
@@ -40,8 +40,8 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
     PacketHandler.INSTANCE.registerMessage(PacketUpdateLocationPrintout.class, PacketUpdateLocationPrintout.class, PacketHandler.nextID(), Side.SERVER);
 
     ItemLocationPrintout result = new ItemLocationPrintout();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_LOCATION_PRINTOUT, result);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_LOCATION_PRINTOUT_CREATE, result);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT, result);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE, result);
 
     GameRegistry.register(result);
     return result;
@@ -62,7 +62,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (player.isSneaking() && TelepadTarget.readFromNBT(stack) != null) {
-      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_LOCATION_PRINTOUT, world, hand.ordinal(), 0, 0);
+      GuiID.GUI_ID_LOCATION_PRINTOUT.openClientGui(world, player, hand.ordinal(), 0, 0);
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
     return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
@@ -127,7 +127,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    if (ID == GuiHandler.GUI_ID_LOCATION_PRINTOUT_CREATE) {
+    if (GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.is(ID)) {
 
       boolean foundPaper = false;
       for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && !foundPaper; paperIndex++) {

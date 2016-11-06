@@ -2,8 +2,7 @@ package crazypants.enderio.conduit.gui;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -49,8 +48,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity tile = message.getWorld(ctx).getTileEntity(message.getPos());
-    player
-        .openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ());
+    GuiID.facing2guiid(message.dir).openGui(player.worldObj, tile.getPos(), player, message.dir);
     return null;
   }
 

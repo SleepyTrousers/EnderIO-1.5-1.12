@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
@@ -45,7 +45,7 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_SPAWN_GUARD;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_SPAWN_GUARD;
   }
 }

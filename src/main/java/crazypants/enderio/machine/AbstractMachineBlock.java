@@ -10,7 +10,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.network.PacketHandler;
@@ -84,7 +84,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
+    GuiID.registerGuiHandler(getGuiId(), this);
     registerInSmartModelAttacher();
   }
   
@@ -142,9 +142,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {   
-    if(!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, getGuiId(), world, pos.getX(), pos.getY(), pos.getZ());
+  protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+    GuiID guiId = getGuiId();
+    if (guiId != null) {
+      guiId.openGui(world, pos, entityPlayer, side);
     }
     return true;
   }
@@ -227,7 +228,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  protected abstract int getGuiId();
+  protected abstract GuiID getGuiId();
 
   protected boolean isActive(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos) {
     AbstractMachineEntity te = getTileEntitySafe(blockAccess, pos);

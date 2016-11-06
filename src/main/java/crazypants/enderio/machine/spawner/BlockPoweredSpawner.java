@@ -14,7 +14,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -312,8 +312,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_POWERED_SPAWNER;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_POWERED_SPAWNER;
   }
 
   @Override

@@ -14,7 +14,7 @@ import com.enderio.core.common.util.Util;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
@@ -250,8 +250,8 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   @Override
   public void switchGui() {
     BlockPos pos = te.getLocation().getBlockPos();
-    mc.thePlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD_TRAVEL, te.getWorld(), pos.getX(), pos.getY(), pos.getZ());
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiHandler.GUI_ID_TELEPAD_TRAVEL));
+    GuiID.GUI_ID_TELEPAD_TRAVEL.openClientGui(te.getWorld(), pos, mc.thePlayer, null);
+    PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD_TRAVEL));
   }
 
   @Override

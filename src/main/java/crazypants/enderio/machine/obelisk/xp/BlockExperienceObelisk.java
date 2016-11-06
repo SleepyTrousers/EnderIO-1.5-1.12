@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
@@ -58,8 +58,8 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_XP_OBELISK;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_XP_OBELISK;
   }
 
   @Override

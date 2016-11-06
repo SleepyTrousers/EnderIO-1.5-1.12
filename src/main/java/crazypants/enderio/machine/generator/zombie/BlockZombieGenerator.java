@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -77,8 +77,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_ZOMBIE_GEN;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_ZOMBIE_GEN;
   }
 
   @Override

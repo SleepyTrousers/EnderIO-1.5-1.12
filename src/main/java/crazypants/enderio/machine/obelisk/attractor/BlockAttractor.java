@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
@@ -44,7 +44,7 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_ATTRACTOR;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_ATTRACTOR;
   }
 }

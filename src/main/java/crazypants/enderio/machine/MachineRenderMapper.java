@@ -55,9 +55,6 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();
-    if (facing == null) {
-      facing = EnumFacing.SOUTH;
-    }
     boolean active = tileEntity.isActive();
 
     if (body != null) {

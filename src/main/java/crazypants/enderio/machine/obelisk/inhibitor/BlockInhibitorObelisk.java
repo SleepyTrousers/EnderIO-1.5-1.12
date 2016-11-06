@@ -7,7 +7,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
@@ -37,29 +37,25 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    if (ID == getGuiId()) {
-      TileInhibitorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
-      if (te != null) {
-        return new ContainerInhibitorObelisk(player.inventory, te);
-      }
+    TileInhibitorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new ContainerInhibitorObelisk(player.inventory, te);
     }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    if (ID == getGuiId()) {
-      TileInhibitorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
-      if (te != null) {
-        return new GuiRangedObelisk(player.inventory, te, new ContainerInhibitorObelisk(player.inventory, te), "inhibitor");
-      }
+    TileInhibitorObelisk te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
+      return new GuiRangedObelisk(player.inventory, te, new ContainerInhibitorObelisk(player.inventory, te), "inhibitor");
     }
     return null;
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_INHIBITOR;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_INHIBITOR;
   }
 
 

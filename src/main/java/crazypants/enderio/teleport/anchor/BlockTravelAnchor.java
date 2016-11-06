@@ -8,7 +8,7 @@ import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.config.Config;
@@ -101,8 +101,8 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   }
 
   protected void registerGuiHandlers() {
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_TRAVEL_ACCESSABLE, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_TRAVEL_AUTH, this);
   }
 
   protected void registerInSmartModelAttacher() {
@@ -178,7 +178,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
         TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         IBlockState bs = PainterUtil2.getSourceBlock(stack);
-        ta.setPaintSource(bs);              
+        ta.setPaintSource(bs);
         te.getWorld().notifyBlockUpdate(pos, state, state, 3);
       }
     }
@@ -190,7 +190,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
     if (!world.isRemote && te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if (ta.canUiBeAccessed(entityPlayer)) {
-        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, pos.getX(), pos.getY(), pos.getZ());
+        GuiID.GUI_ID_TRAVEL_ACCESSABLE.openGui(world, pos, entityPlayer, side);
       } else {
         sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }
@@ -209,7 +209,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof ITravelAccessable) {
-      if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+      if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
         return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
         return new ContainerTravelAuth(player.inventory);
@@ -222,7 +222,7 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof ITravelAccessable) {
-      if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+      if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
         return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
         return new GuiTravelAuth(player, (ITravelAccessable) te, world);

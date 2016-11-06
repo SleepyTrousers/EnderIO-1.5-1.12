@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
+import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -44,7 +45,12 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ClientHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ServerHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorConfig.ServerHandler.class, PacketPowerMonitorConfig.class, PacketHandler.nextID(), Side.SERVER);
-    advancedInstance = new BlockPowerMonitor(ModObject.blockPowerMonitorv2);
+    advancedInstance = new BlockPowerMonitor(ModObject.blockPowerMonitorv2) {
+      @Override
+      protected GuiID getGuiId() {
+        return GuiID.GUI_ID_POWER_MONITOR_ADVANCED;
+      }
+    };
     advancedInstance.init();
     return advancedInstance;
   }
@@ -101,8 +107,8 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   }
 
   @Override
-  protected int getGuiId() {
-    return crazypants.enderio.GuiHandler.GUI_ID_POWER_MONITOR;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_POWER_MONITOR;
   }
 
   @Override

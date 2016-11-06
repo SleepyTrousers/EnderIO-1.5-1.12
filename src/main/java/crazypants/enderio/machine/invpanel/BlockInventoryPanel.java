@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
@@ -138,8 +138,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_INVENTORY_PANEL;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_INVENTORY_PANEL;
   }
 
   @Override

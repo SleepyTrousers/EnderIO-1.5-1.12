@@ -1,8 +1,8 @@
 package crazypants.enderio.teleport.packet;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -39,7 +39,8 @@ public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAu
 
   @Override
   public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
-    ctx.getServerHandler().playerEntity.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, ctx.getServerHandler().playerEntity.worldObj, message.x, message.y, message.z);
+    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.worldObj, new BlockPos(message.x, message.y, message.z),
+        ctx.getServerHandler().playerEntity, null);
     return null;
   }
 }

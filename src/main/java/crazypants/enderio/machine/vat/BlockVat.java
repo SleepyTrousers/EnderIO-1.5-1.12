@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
@@ -76,8 +76,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_STILL;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_VAT;
   }
 
   @Override

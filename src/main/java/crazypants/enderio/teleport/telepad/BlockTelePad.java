@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.config.Config;
@@ -82,8 +82,8 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
     
   @Override
   protected void registerGuiHandlers() {
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD, this);
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TELEPAD_TRAVEL, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_TELEPAD_TRAVEL, this);
   }
   
   @Override
@@ -172,7 +172,7 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
 
       // from here out we know that we are connected and are the master
       if(tp.canBlockBeAccessed(entityPlayer)) {
-        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TELEPAD, world, pos.getX(), pos.getY(), pos.getZ());
+        GuiID.GUI_ID_TELEPAD.openGui(world, pos, entityPlayer, side);
       } else {
         sendPrivateChatMessage(entityPlayer, tp.getOwner());
       }
@@ -184,12 +184,11 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileTelePad) {
-      switch (ID) {
-      case GuiHandler.GUI_ID_TELEPAD:
+      if (GuiID.GUI_ID_TELEPAD.is(ID)) {
         return new ContainerTelePad(player.inventory, (TileTelePad)te);
-      case GuiHandler.GUI_ID_TELEPAD_TRAVEL:
+      } else if (GuiID.GUI_ID_TELEPAD_TRAVEL.is(ID)) {
         return new ContainerTravelAccessable(player.inventory, (ITelePad) te, world);
-      default:
+      } else {
         return new ContainerTravelAuth(player.inventory);
       }
     }
@@ -200,12 +199,11 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if(te instanceof TileTelePad) {
-      switch (ID) {
-      case GuiHandler.GUI_ID_TELEPAD:
+      if (GuiID.GUI_ID_TELEPAD.is(ID)) {
         return new GuiTelePad(player.inventory, (TileTelePad) te);
-      case GuiHandler.GUI_ID_TELEPAD_TRAVEL:
+      } else if (GuiID.GUI_ID_TELEPAD_TRAVEL.is(ID)) {
         return new GuiAugmentedTravelAccessible(player.inventory, (TileTelePad) te, world);
-      default:
+      } else {
         return new GuiTravelAuth(player, (ITelePad) te, world);
       }
     }

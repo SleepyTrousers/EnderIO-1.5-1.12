@@ -55,7 +55,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
@@ -83,8 +82,6 @@ public class EnderIO {
   public static CommonProxy proxy;
 
   public static final PacketHandler packetPipeline = new PacketHandler();
-
-  public static GuiHandler guiHandler = new GuiHandler();
 
   public static final Lang lang = new Lang("enderio");
 
@@ -139,7 +136,7 @@ public class EnderIO {
 
     PacketHandler.init(event);
 
-    NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
+    GuiID.init();
 
     MaterialRecipes.registerDependantOresInDictionary();
 

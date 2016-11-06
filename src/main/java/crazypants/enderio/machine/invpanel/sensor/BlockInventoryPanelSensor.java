@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
@@ -65,8 +66,8 @@ IPaintable.IWrenchHideablePaint {
   }
 
   @Override
-  protected int getGuiId() {
-    return crazypants.enderio.GuiHandler.GUI_ID_INVENTORY_PANEL_SENSOR;
+  protected GuiID getGuiId() {
+    return crazypants.enderio.GuiID.GUI_ID_INVENTORY_PANEL_SENSOR;
   }
 
   @Override

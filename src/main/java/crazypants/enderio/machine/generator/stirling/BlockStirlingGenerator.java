@@ -4,21 +4,21 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> implements IPaintable.ISolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
@@ -47,8 +47,8 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_STIRLING_GEN;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_STIRLING_GEN;
   }
 
   @Override

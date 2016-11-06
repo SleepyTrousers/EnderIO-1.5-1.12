@@ -16,7 +16,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
@@ -150,9 +150,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   protected void init() {
     super.init();
     for (EnumFacing dir : EnumFacing.VALUES) {
-      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
+      GuiID.registerGuiHandler(GuiID.facing2guiid(dir), this);
     }
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
     SmartModelAttacher.registerNoProps(this);
   }
 
@@ -700,7 +700,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         }
       } else {
         if (!world.isRemote) {
-          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
+          GuiID.facing2guiid(closest.component.dir).openGui(world, pos, player, side);
         }
         return true;
       }
@@ -833,14 +833,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-    if (id == GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR) {
+    if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
       return null;
     }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof IConduitBundle) {
-      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, EnumFacing.values()[id - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, GuiID.guiid2facing(GuiID.byID(id)));
     }
     return null;
   }
@@ -849,10 +849,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof IConduitBundle) {
-      if (id == GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR) {
+      if (GuiID.GUI_ID_EXTERNAL_CONNECTION_SELECTOR.is(id)) {
         return new GuiExternalConnectionSelector((IConduitBundle) te);
       }
-      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, EnumFacing.values()[id - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, GuiID.guiid2facing(GuiID.byID(id)));
     }
     return null;
   }

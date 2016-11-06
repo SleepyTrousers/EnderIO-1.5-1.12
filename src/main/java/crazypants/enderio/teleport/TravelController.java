@@ -13,7 +13,7 @@ import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
@@ -371,8 +371,7 @@ public class TravelController {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower, hand);
           PacketHandler.INSTANCE.sendToServer(p);
         }
-        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
-            target.y, target.z);
+        GuiID.GUI_ID_ENDERFACE.openGui(world, target.getBlockPos(), player, null);
       }
     } else {
       player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));

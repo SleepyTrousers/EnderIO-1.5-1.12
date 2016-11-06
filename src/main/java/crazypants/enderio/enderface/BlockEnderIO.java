@@ -3,8 +3,7 @@ package crazypants.enderio.enderface;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.network.PacketHandler;
@@ -73,7 +72,7 @@ public class BlockEnderIO extends BlockEio<TileEnderIO> implements IResourceTool
     if (te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if (ta.canUiBeAccessed(entityPlayer)) {
-        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, pos.getX(), pos.getY(), pos.getZ());
+        GuiID.GUI_ID_TRAVEL_ACCESSABLE.openGui(world, pos, entityPlayer, side);
       } else {
         BlockTravelAnchor.sendPrivateChatMessage(entityPlayer, ta.getOwner());
       }

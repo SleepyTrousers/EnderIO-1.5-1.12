@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
@@ -100,8 +100,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_BUFFER;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_BUFFER;
   }
 
   @Override

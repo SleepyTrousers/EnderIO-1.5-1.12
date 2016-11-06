@@ -6,8 +6,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.ITESRItemBlock;
@@ -46,7 +45,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   @Override
   protected void init() {
     super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_ENCHANTER, this);
     SmartModelAttacher.registerItemOnly(this);
   }
 
@@ -71,9 +70,7 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
 
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
-    if (!world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, pos.getX(), pos.getY(), pos.getZ());
-    }
+    GuiID.GUI_ID_ENCHANTER.openGui(world, pos, entityPlayer, side);
     return true;
   }
   

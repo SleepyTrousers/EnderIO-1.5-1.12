@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
@@ -61,8 +61,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_FARM_STATATION;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_FARM_STATATION;
   }
 
   @Override

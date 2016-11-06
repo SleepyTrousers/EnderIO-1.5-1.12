@@ -5,9 +5,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.event.AnvilMaxCostEvent;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.IHaveRenderers;
@@ -59,7 +58,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     item.setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());    
     GameRegistry.register(item);
     
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ANVIL, new IGuiHandler() {
+    GuiID.registerGuiHandler(GuiID.GUI_ID_ANVIL, new IGuiHandler() {
 
       @Override
       public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -97,7 +96,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem,
       EnumFacing side,
       float hitX, float hitY, float hitZ) {
-    playerIn.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+    GuiID.GUI_ID_ANVIL.openGui(worldIn, pos, playerIn, side);
     return true;
   }
 

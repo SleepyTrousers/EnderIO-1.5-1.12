@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.GuiHandler;
+import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.paint.IPaintable;
@@ -63,8 +63,8 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
   }
 
   @Override
-  protected int getGuiId() {
-    return GuiHandler.GUI_ID_SOUL_BINDER;
+  protected GuiID getGuiId() {
+    return GuiID.GUI_ID_SOUL_BINDER;
   }
 
   @Override
