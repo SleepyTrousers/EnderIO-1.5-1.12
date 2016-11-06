@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -600,6 +601,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return getEnderIcon();
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+    return null;
   }
 
   @Override

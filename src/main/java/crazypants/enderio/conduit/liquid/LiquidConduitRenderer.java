@@ -8,10 +8,8 @@ import java.util.WeakHashMap;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.conduit.IConduit;
@@ -56,7 +54,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void addTransmissionQuads(TextureAtlasSprite tex, IConduit conduit, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, IConduit conduit, CollidableComponent component, float selfIllum,
+      List<BakedQuad> quads) {
     // Handled in dynamic render
   }
 
@@ -79,7 +78,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum) {
+  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, Vector4f color, CollidableComponent component, float selfIllum) {
 
     if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
       return;
@@ -88,11 +87,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     if (isNSEWUD(component.dir)) {
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {
-        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.dir, true);
       }
 
     } else {
-      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.dir, true);
     }
   }
 
@@ -128,6 +127,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     if (texture == null) {
       return data;
     }
+    int color = fluid.getColor();
+    Vector4f colorv = new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
+
     BoundingBox bbb;
 
     double width = outlineWidth;
@@ -148,7 +150,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       if (face != component.dir && face != component.dir.getOpposite()) {
         List<Vertex> corners = bbb.getCornersWithUvForFace(face, texture.getMinU(), texture.getMaxU(), texture.getMinV(), texture.getMaxV());
         for (Vertex corner : corners) {
-          data.add(new CachableRenderStatement.AddVertexWithUV(corner.x(), corner.y(), corner.z(), corner.uv.x, corner.uv.y));
+          data.add(new CachableRenderStatement.AddVertexWithUV(corner.x(), corner.y(), corner.z(), corner.uv.x, corner.uv.y, colorv));
         }
       }
     }
@@ -160,18 +162,20 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
     static class AddVertexWithUV implements CachableRenderStatement {
       private final double x, y, z, u, v;
+      private final Vector4f color;
 
-      private AddVertexWithUV(double x, double y, double z, double u, double v) {
+      private AddVertexWithUV(double x, double y, double z, double u, double v, Vector4f color) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.u = u;
         this.v = v;
+        this.color = color;
       }
 
       @Override
       public void execute() {
-        Tessellator.getInstance().getBuffer().pos(x, y, z).tex(u, v).endVertex();
+        Tessellator.getInstance().getBuffer().pos(x, y, z).tex(u, v).color(color.x, color.y, color.z, color.w).endVertex();
       }
     }
   }

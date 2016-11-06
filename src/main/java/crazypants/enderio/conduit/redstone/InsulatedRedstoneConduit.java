@@ -15,6 +15,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -670,6 +671,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     return Config.redstoneConduitsShowState && isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+    return null;
   }
 
   @Override

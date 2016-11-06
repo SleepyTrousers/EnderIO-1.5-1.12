@@ -86,7 +86,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
             Tessellator tessellator = Tessellator.getInstance();
             VertexBuffer tes = tessellator.getBuffer();
-            tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
             
           }
           renderer.renderDynamicEntity(this, bundle, con, x, y, z, partialTick, brightness);

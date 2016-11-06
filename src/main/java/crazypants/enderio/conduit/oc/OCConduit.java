@@ -12,6 +12,7 @@ import java.util.Set;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -538,6 +539,12 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
     return null;
   }
 

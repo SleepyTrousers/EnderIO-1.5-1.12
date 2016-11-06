@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -13,9 +14,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -108,6 +109,9 @@ public interface IConduit {
 
   @SideOnly(Side.CLIENT)
   TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component);
+
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component);
 
   float getTransmitionGeometryScale();
 

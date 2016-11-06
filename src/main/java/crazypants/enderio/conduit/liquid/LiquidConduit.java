@@ -10,6 +10,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -396,6 +397,16 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return RenderUtil.getStillTexture(tank.getFluid());
+    }
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+    if (tank.getFluid() != null && tank.getFluid().getFluid() != null) {
+      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
+      return new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
     }
     return null;
   }

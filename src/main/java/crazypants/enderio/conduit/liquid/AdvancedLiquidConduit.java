@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -229,6 +230,16 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
     if(isActive() && tank.containsValidLiquid()) {
       return RenderUtil.getStillTexture(tank.getFluid());
+    }
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
+    if (isActive() && tank.containsValidLiquid()) {
+      int color = tank.getFluid().getFluid().getColor(tank.getFluid());
+      return new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
     }
     return null;
   }

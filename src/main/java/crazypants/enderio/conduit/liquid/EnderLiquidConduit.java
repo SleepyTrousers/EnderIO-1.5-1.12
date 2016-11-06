@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -176,6 +177,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
     return null;
   }
 

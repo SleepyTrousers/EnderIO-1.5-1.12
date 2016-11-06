@@ -12,6 +12,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -492,6 +493,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public TextureAtlasSprite getTransmitionTextureForState(CollidableComponent component) {
+    return null;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Vector4f getTransmitionTextureColorForState(CollidableComponent component) {
     return null;
   }
 
