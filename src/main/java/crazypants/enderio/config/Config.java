@@ -328,9 +328,7 @@ public final class Config {
       "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe", "MekanismTools:GlowstoneHoe",
       "MekanismTools:SteelHoe",
       "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold",
-      "Railcraft:tool.steel.hoe",
       "TConstruct:mattock",
-      "appliedenergistics2:item.ToolCertusQuartzHoe", "appliedenergistics2:item.ToolNetherQuartzHoe",
       "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire",
       "ProjRed|Exploration:projectred.exploration.hoeperidot",
       "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe", "magicalcrops:magicalcrops_ImperioHoe",
@@ -350,7 +348,13 @@ public final class Config {
       "actuallyadditions:itemHoeQuartz", "actuallyadditions:itemHoeEmerald", "actuallyadditions:itemHoeObsidian",
       "actuallyadditions:itemHoeCrystalRed", "actuallyadditions:itemHoeCrystalBlue", "actuallyadditions:itemHoeCrystalLightBlue",
       "actuallyadditions:itemHoeCrystalBlack", "actuallyadditions:itemHoeCrystalGreen", "actuallyadditions:itemHoeCrystalWhite", "silentgems:Hoe",
-      "ic2:bronze_hoe" // IC2exp
+      "ic2:bronze_hoe", // IC2exp 1.10
+      "appliedenergistics2:nether_quartz_hoe", "appliedenergistics2:certus_quartz_hoe", // AE2 1.10
+      "railcraft:tool_hoe_steel", // Railcraft 1.10
+      // new in 1.10:
+      "calculator:ReinforcedHoe", "calculator:EnrichedGoldHoe", "calculator:ReinforcedIronHoe", "calculator:RedstoneHoe", "calculator:WeakenedDiamondHoe",
+      "calculator:FlawlessDiamondHoe", "calculator:FireDiamondHoe", "calculator:ElectricHoe", "embers:hoeDawnstone", "embers:hoeCopper", "embers:hoeSilver",
+      "embers:hoeLead", "roots:livingHoe"
   };
   public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
