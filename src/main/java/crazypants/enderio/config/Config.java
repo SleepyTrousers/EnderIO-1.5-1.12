@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -21,7 +22,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -86,6 +89,7 @@ public final class Config {
   public static final Section sectionMisc = new Section("Misc", "misc");
   public static final Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final Section sectionTOP = new Section("The One Probe integration", "top");
+  public static final Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -1223,8 +1227,32 @@ public final class Config {
     farmHarvestJungleWhenCocoa = config.get(sectionFarm.name, "farmHarvestJungleWhenCocoa", farmHarvestJungleWhenCocoa,
         "If this is enabled the farm will harvest jungle wood even if it has cocoa beans in its inventory.").getBoolean();
 
-    hoeStrings = config.get(sectionFarm.name, "farmHoes", hoeStrings,
-        "Use this to specify items that can be hoes in the farming station. Use the registry name (eg. modid:name).").getStringList();
+    // START Hoes
+
+    ConfigCategory hoes = config.getCategory(sectionHoes.name);
+    hoes.setComment("Each value of this category is an item that could be a hoe. You can add more values.");
+
+    for (String hoe : hoeStrings) {
+      config.get(sectionHoes.name, hoe, true, "Is this item a hoe that can be used in the farming station?");
+    }
+
+    final Property hoeProp = config.get(sectionFarm.name, "farmHoes", new String[0],
+        "Use this to add items that can be hoes in the farming station. They will be moved to the proper config section. Use the registry name (eg. modid:name).");
+    for (String hoe : hoeProp.getStringList()) {
+      if (!config.hasKey(sectionHoes.name, hoe)) {
+        config.get(sectionHoes.name, hoe, true, "Is this item a hoe that can be used in the farming station? (user added value)");
+      }
+    }
+    hoeProp.set(new String[0]);
+
+    farmHoes = new Things();
+    for (Entry<String, Property> entry : hoes.entrySet()) {
+      if (entry.getValue().getBoolean()) {
+        farmHoes.add(entry.getKey());
+      }
+    }
+
+    // END Hoes
 
     farmSaplingReserveAmount = config.get(sectionFarm.name, "farmSaplingReserveAmount", farmSaplingReserveAmount,
         "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
@@ -1527,10 +1555,6 @@ public final class Config {
   }
 
   public static void postInit() {
-    farmHoes = new Things();
-    for (String hoe : hoeStrings) {
-      farmHoes.add(hoe);
-    }
     if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 4) {
       throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 4 values");
     }
