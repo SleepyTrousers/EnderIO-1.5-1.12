@@ -30,19 +30,19 @@
         "top":      "enderio:blocks/machineTop",
         "side":     "enderio:blocks/machineBack"
       }, "model":   "enderio:sidedCube" },
-      "type07":             { "textures": { "all": "enderio:blocks/blockSoulMachineBlank" } },
+      "type07":             { "textures": { "all": "enderio:blocks/blockSoulMachineBottom" } },
       "type08":             { "textures": { "all": "enderio:blocks/blockSoulMachineTop" } },
       "type09":             { "textures": { "all": "enderio:blocks/blockSoulMachineSide" } },
       "type10":             { "textures": { "all": "enderio:blocks/blockSoulMachineBack" } },
       "type11":             { "textures": {
-        "particle": "enderio:blocks/blockSoulMachineBlank",
-        "bottom":   "enderio:blocks/blockSoulMachineBlank",
+        "particle": "enderio:blocks/blockSoulMachineBottom",
+        "bottom":   "enderio:blocks/blockSoulMachineBottom",
         "top":      "enderio:blocks/blockSoulMachineTop",
         "side":     "enderio:blocks/blockSoulMachineSide"
       }, "model":   "enderio:sidedCube" },
       "type12":             { "textures": {
-        "particle": "enderio:blocks/blockSoulMachineBlank",
-        "bottom":   "enderio:blocks/blockSoulMachineBlank",
+        "particle": "enderio:blocks/blockSoulMachineBottom",
+        "bottom":   "enderio:blocks/blockSoulMachineBottom",
         "top":      "enderio:blocks/blockSoulMachineTop",
         "side":     "enderio:blocks/blockSoulMachineBack"
       }, "model":   "enderio:sidedCube" },

@@ -5,7 +5,7 @@
         "side": "enderio:blocks/endermanSkullSide",
         "front": "enderio:blocks/endermanSkullFront",
         "top": "enderio:blocks/endermanSkullTop",
-        "bolt": "enderio:blocks/blockSoulMachineBlank"
+        "bolt": "enderio:blocks/blockSoulMachineBottom"
     },
     "elements": [
         {

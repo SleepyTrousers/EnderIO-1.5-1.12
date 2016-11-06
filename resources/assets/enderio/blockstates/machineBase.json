@@ -62,10 +62,10 @@
                 },
                 "model":"enderio:paint_overlay"
             },
-            "soul_frame":{          "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":180 } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBlank", "1": "enderio:blocks/blockSoulMachineTop" } },
-            "soul_frame_east":{     "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":270 } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBlank", "1": "enderio:blocks/blockSoulMachineTop" } },
-            "soul_frame_south":{    "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":0   } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBlank", "1": "enderio:blocks/blockSoulMachineTop" } },
-            "soul_frame_west":{     "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":90  } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBlank", "1": "enderio:blocks/blockSoulMachineTop" } }
+            "soul_frame":{          "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":180 } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBottom", "1": "enderio:blocks/blockSoulMachineTop" } },
+            "soul_frame_east":{     "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":270 } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBottom", "1": "enderio:blocks/blockSoulMachineTop" } },
+            "soul_frame_south":{    "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":0   } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBottom", "1": "enderio:blocks/blockSoulMachineTop" } },
+            "soul_frame_west":{     "submodel":{ "frame":{ "model":"enderio:blockSoulBinder_frame", "y":90  } }, "textures":{  "0": "enderio:blocks/blockSoulMachineBottom", "1": "enderio:blocks/blockSoulMachineTop" } }
         }
     }
 }

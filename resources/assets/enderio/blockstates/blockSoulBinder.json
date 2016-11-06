@@ -2,8 +2,8 @@
     "forge_marker":1,
     "defaults":{
 			"textures": {
-			    "particle": "enderio:blocks/blockSoulMachineBlank",
-			    "0": "enderio:blocks/blockSoulMachineBlank",
+			    "particle": "enderio:blocks/blockSoulMachineBottom",
+			    "0": "enderio:blocks/blockSoulMachineBottom",
 			    "1": "enderio:blocks/blockSoulMachineTop",
 			    "2": "enderio:blocks/endermanSkullFront",
 			    "3": "enderio:blocks/skullSkeleton",

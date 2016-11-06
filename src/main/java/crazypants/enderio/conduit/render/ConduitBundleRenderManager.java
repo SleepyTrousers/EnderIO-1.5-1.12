@@ -32,7 +32,7 @@ public class ConduitBundleRenderManager {
 
   public static final TextureSupplier connectorIconExternal = TextureRegistry.registerTexture("blocks/conduitConnector");
 
-  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduitConnectorExternal");
+  public static final TextureSupplier connectorIcon = TextureRegistry.registerTexture("blocks/conduitConnector"); // TODO: is this even used?
 
   public static final TextureSupplier wireFrameIcon = TextureRegistry.registerTexture("blocks/wireFrame");
 
