@@ -1355,6 +1355,10 @@ enderio.top.tank.header.input=Вход резервуара: %s
 enderio.top.tank.header.output=Выход резервуара: %s
 enderio.top.tank.header.storage=%s
 enderio.top.xp.levels= уровней
+enderio.top.rf.header.maxin=Макс. вход:
+enderio.top.rf.header.maxout=Макс. выход:
+enderio.top.rf.header.avg=I/O:
+enderio.top.rf.value=%s RF/тик
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
@@ -1505,3 +1509,5 @@ tile.blockXPVacuum.name=Вакуум опыта
 tile.blockXPVacuum.tooltip.detailed.line1=Втягивает ближайшие сферы опыта и выталкивает
 tile.blockXPVacuum.tooltip.detailed.line2=их в прилегающие резервуары/трубы.
 tile.blockXPVacuum.tooltip.detailed.line3=Должен быть активирован с помощью жидкого опыта.
+
+enderio.gui.permission.denied=Доступ запрещён
