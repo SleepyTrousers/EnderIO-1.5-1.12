@@ -42,6 +42,7 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -416,9 +417,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return result;
       }
     }
-    Collection<IConduit> conduits = con.getConduits();
-    for (IConduit conduit : conduits) {
-      result += conduit.getLightValue();
+    if (Config.fluidConduitDynamicLighting) {
+      Collection<IConduit> conduits = con.getConduits();
+      for (IConduit conduit : conduits) {
+        result += conduit.getLightValue();
+      }
     }
     return result > 15 ? 15 : result;
   }

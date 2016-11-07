@@ -138,6 +138,8 @@ public final class Config {
   public static int fluidConduitExtractRate = 50;
   public static int fluidConduitMaxIoRate = 200;
 
+  public static boolean fluidConduitDynamicLighting = true;
+  
   public static int gasConduitExtractRate = 200;
   public static int gasConduitMaxIoRate = 800;
 
@@ -740,6 +742,9 @@ public final class Config {
     fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
         "Number of millibuckets per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
 
+    fluidConduitDynamicLighting = config.get(sectionEfficiency.name, "fluidConduitDynamicLighting", fluidConduitDynamicLighting,
+        "If enabled, conduits will change their light levels based on their contents.").getBoolean(false);
+    
     fluidConduitMaxIoRate = config.get(sectionEfficiency.name, "fluidConduitMaxIoRate", fluidConduitMaxIoRate,
         "Number of millibuckets per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
 
