@@ -365,7 +365,7 @@ enderio.capbank.iodisplay.input=Вход
 enderio.capbank.iodisplay.output=Выход
 
 tile.blockWirelessCharger.name=Беспроводной зарядник
-tile.blockWirelessCharger.tooltip.detailed.line1=Заряжает ближайшие предметы 
+tile.blockWirelessCharger.tooltip.detailed.line1=Заряжает ближайшие предметы
 tile.blockWirelessCharger.tooltip.detailed.line2=в инвентарях игроков
 
 tile.blockSagMill.name=Дробитель
@@ -446,8 +446,6 @@ tile.blockKillerJoe.name=Киллер Джо
 tile.blockKillerJoe.tooltip.detailed.line1=Атакует ближайших существ, если
 tile.blockKillerJoe.tooltip.detailed.line2=снабжён мечом и
 tile.blockKillerJoe.tooltip.detailed.line3=питательным дистиллятом
-tile.blockKillerJoe.tooltip.detailed.line4=Опыт можно слить как
-tile.blockKillerJoe.tooltip.detailed.line5=жидкий опыт, используя жидкостные трубы
 
 enderio.killerJoe.fuelTank=Питательный резервуар
 enderio.killerJoe.giveXp.tooltip=Использует опыт
@@ -515,6 +513,7 @@ tile.blockPoweredSpawner.tooltip.detailed.line1=Подайте энергию, �
 tile.blockPoweredSpawner.tooltip.detailed.line2=активировать
 tile.blockPoweredSpawner.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить
 tile.blockPoweredSpawner.tooltip.detailed.line4=скорость и хранилище энергии
+enderio.blockPoweredSpawner.action=Spawns
 
 item.itemBrokenSpawner.name=Сломанный спаунер
 item.itemBrokenSpawner.tooltip.detailed.line1=Объедините с электрическим спаунером
@@ -1355,6 +1354,11 @@ enderio.top.tank.content.empty=Пустой
 enderio.top.tank.header.input=Вход резервуара: %s
 enderio.top.tank.header.output=Выход резервуара: %s
 enderio.top.tank.header.storage=%s
+enderio.top.xp.levels= уровней
+enderio.top.rf.header.maxin=Макс. вход:
+enderio.top.rf.header.maxout=Макс. выход:
+enderio.top.rf.header.avg=I/O:
+enderio.top.rf.value=%s RF/тик
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
@@ -1386,7 +1390,7 @@ enderio.loot.capacitor.level.25=Хороший %s
 enderio.loot.capacitor.level.30=Отличный %s
 enderio.loot.capacitor.level.35=Усиленный %s
 enderio.loot.capacitor.level.40=Премиумный %s
-enderio.loot.capacitor.level.42=Невероятный %s 
+enderio.loot.capacitor.level.42=Невероятный %s
 enderio.loot.capacitor.level.45=Нестабильный %s
 
 enderio.loot.capacitor.entry.count=8
@@ -1440,23 +1444,23 @@ enderio.remoteinv.chat.invalidtargetworld=ОШИБКА: Цель находит�
 enderio.remoteinv.chat.notloaded=ОШИБКА: Цель не загружена
 enderio.remoteinv.chat.invalidtarget=ОШИБКА: Цель не найдена
 enderio.remoteinv.chat.outofpower=ОШИБКА: Нет энергии
-enderio.remoteinv.chat.outoffluid=ОШИБКА: Нет питательного дистиллята
+enderio.remoteinv.chat.outoffluid=ОШИБКА: Нет {FLUIDNAME}
 enderio.remoteinv.chat.error=ОШИБКА: Техническая ошибка, смотрите лог
 
 item.itemRemoteInvAccessbasic.name=Беспроводная инвентарная панель
 item.itemRemoteInvAccessbasic.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели на растоянии 5 чанков.
 item.itemRemoteInvAccessbasic.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessbasic.tooltip.detailed.line3=Использует {FLUIDNAME} для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessadvanced.name=Улучшенная беспроводная инвентарная панель
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки этого измерения.
 item.itemRemoteInvAccessadvanced.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessadvanced.tooltip.detailed.line3=Использует {FLUIDNAME} для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 item.itemRemoteInvAccessender.name=Беспроводная эндер-инвентарная панель
 item.itemRemoteInvAccessender.tooltip.detailed.line1=Позволяет вам получить доступ к инвентарной панели из любой точки.
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
-item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует питательный дистиллят для того, чтобы открыть соединение и передавать RF, и держать его открытым.
+item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует {FLUIDNAME} для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
 tile.blockExitRail.name=Выездные рельсы
 
@@ -1464,3 +1468,46 @@ tile.blockSelfResettingLever10.name=Рычаг с самовозвратом (10
 tile.blockSelfResettingLever30.name=Рычаг с самовозвратом (30 секунд)
 tile.blockSelfResettingLever60.name=Рычаг с самовозвратом (1 минута)
 tile.blockSelfResettingLever300.name=Рычаг с самовозвратом (5 минут)
+
+enderio.chassiParts.name=Корпусные пластины
+
+tile.blockDecoration1_type00.name=Корпус механизма (декоративный блок)
+tile.blockDecoration1_type01.name=Пустой механизм (декоративный блок)
+tile.blockDecoration1_type02.name=Верхняя сторона механизма (декоративный блок)
+tile.blockDecoration1_type03.name=Боковая сторона механизма (декоративный блок)
+tile.blockDecoration1_type04.name=Задняя сторона механизма (декоративный блок)
+tile.blockDecoration1_type05.name=Механизм с боковыми сторонами (декоративный блок)
+tile.blockDecoration1_type06.name=Механизм с задними сторонами (декоративный блок)
+tile.blockDecoration1_type07.name=Пустой механизм душ (декоративный блок)
+tile.blockDecoration1_type08.name=Верхняя сторона механизма душ (декоративный блок)
+tile.blockDecoration1_type09.name=Боковая сторона механизма душ (декоративный блок)
+tile.blockDecoration1_type10.name=Задняя сторона механизма душ (декоративный блок)
+tile.blockDecoration1_type11.name=Механизм душ с боковыми сторонами (декоративный блок)
+tile.blockDecoration1_type12.name=Механизм душ с задними сторонами (декоративный блок)
+tile.blockDecoration1_type13.name=Красный механизм (декоративный блок)
+tile.blockDecoration1_type14.name=Сломанный спаунер (декоративный блок)
+tile.blockDecoration1_type15.name=Невидимый блок (декоративный блок)
+
+tile.blockDecoration2_type00.name=Завод сплавов (декоративный блок)
+tile.blockDecoration2_type01.name=Предметный буфер (декоративный блок)
+tile.blockDecoration2_type02.name=Энергетический буфер (декоративный блок)
+tile.blockDecoration2_type03.name=Универсальный буфер (декоративный блок)
+tile.blockDecoration2_type04.name=Творческий буфер (декоративный блок)
+tile.blockDecoration2_type05.name=Создатель (декоративный блок)
+tile.blockDecoration2_type06.name=Покрасочный механизм (декоративный блок)
+tile.blockDecoration2_type07.name=Индикатор энергии (декоративный блок)
+tile.blockDecoration2_type08.name=Дробитель (декоративный блок)
+tile.blockDecoration2_type09.name=«Отрубатель и сращиватель» (декоративный блок)
+tile.blockDecoration2_type10.name=Генератор Стирлинга (декоративный блок)
+tile.blockDecoration2_type11.name=Жидкостный резервуар (декоративный блок)
+tile.blockDecoration2_type12.name=Жидкостный резервуар под давлением (декоративный блок)
+tile.blockDecoration2_type13.name=Якорь путешествия (декоративный блок)
+tile.blockDecoration2_type14.name=Вакуумный сундук (декоративный блок)
+tile.blockDecoration2_type15.name=Беспроводной зарядник (декоративный блок)
+
+tile.blockXPVacuum.name=Вакуум опыта
+tile.blockXPVacuum.tooltip.detailed.line1=Втягивает ближайшие сферы опыта и выталкивает
+tile.blockXPVacuum.tooltip.detailed.line2=их в прилегающие резервуары/трубы.
+tile.blockXPVacuum.tooltip.detailed.line3=Должен быть активирован с помощью жидкого опыта.
+
+enderio.gui.permission.denied=Доступ запрещён
