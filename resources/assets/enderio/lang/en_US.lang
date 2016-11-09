@@ -1511,3 +1511,4 @@ tile.blockXPVacuum.tooltip.detailed.line2=them into adjacent tanks/conduits.
 tile.blockXPVacuum.tooltip.detailed.line3=Needs to be activated with liquid XP.
 
 enderio.gui.permission.denied=Permission denied
+enderio.wrench.permission.denied=Permission denied

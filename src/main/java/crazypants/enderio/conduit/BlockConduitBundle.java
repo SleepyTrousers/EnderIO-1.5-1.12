@@ -76,6 +76,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -83,10 +84,13 @@ import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.BlockPosContext;
 
 import static crazypants.enderio.ModObject.blockConduitFacade;
 import static crazypants.enderio.ModObject.blockTank;
@@ -744,7 +748,17 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       BlockPos pos = new BlockPos(x, y, z);
       if (tool.canUse(player.getHeldItem(hand), player, pos)) {
         if (!world.isRemote) {
-          removedByPlayer(world.getBlockState(pos), world, pos, player, true);
+          IBlockState bs = world.getBlockState(pos);
+          if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionNodeWrenching, new BlockPosContext(player, pos, bs, null))) {
+            player.addChatMessage(new TextComponentString(EnderIO.lang.localize("wrench.permission.denied")));
+            return false;
+          }
+          BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, bs, player);
+          event.setExpToDrop(0);
+          if (MinecraftForge.EVENT_BUS.post(event)) {
+            return false;
+          }
+          removedByPlayer(bs, world, pos, player, true);
           tool.used(player.getHeldItem(hand), player, new BlockPos(x, y, z));
         }
         return true;
