@@ -19,28 +19,37 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
-  protected final String permissionNodeWrenching;
+  protected String permissionNodeWrenching;
 
   protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass) {
     super(name, teClass);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    permissionNodeWrenching = makePermissionNodeWrenching(name);
   }
 
-  private String makePermissionNodeWrenching(String name) {
-    return PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+  /**
+   * Stuff that has to be done in the preInit phase (as opposed to init/postInit)
+   */
+  public void preInit(FMLPreInitializationEvent event) {
+  }
+
+  /**
+   * Stuff that has to be done in the init phase (as opposed to preInit/postInit)
+   */
+  public void init(FMLInitializationEvent event) {
+    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
         "Permission to wrench-break the block " + name + " of Ender IO");
   }
 
   protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(name, teClass, mat);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    permissionNodeWrenching = makePermissionNodeWrenching(name);
   }
 
   @Override

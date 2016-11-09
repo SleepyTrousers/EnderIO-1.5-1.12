@@ -134,6 +134,8 @@ public class EnderIO {
 
     instance = this;
 
+    ModObject.init(event);
+
     PacketHandler.init(event);
 
     GuiID.init();

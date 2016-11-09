@@ -97,6 +97,7 @@ import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public enum ModObject implements IModObject {
@@ -134,7 +135,7 @@ public enum ModObject implements IModObject {
   itemPowderIngot(ItemPowderIngot.class),
   blockFusedQuartz {
     @Override
-    protected void create() {
+    protected void preInitElem(FMLPreInitializationEvent event) {
       block = BlockFusedQuartz.create();
       BlockColoredFusedQuartz.create();
     }
@@ -199,7 +200,7 @@ public enum ModObject implements IModObject {
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
   blockPaintedSlab {
     @Override
-    protected void create() {
+    protected void preInitElem(FMLPreInitializationEvent event) {
       BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
       blockPaintedSlab.block = slabs[0];
       blockPaintedDoubleSlab.block = slabs[1];
@@ -209,19 +210,19 @@ public enum ModObject implements IModObject {
   },
   blockPaintedDoubleSlab {
     @Override
-    protected void create() {
+    protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
   blockPaintedStoneSlab {
     @Override
-    protected void create() {
+    protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
   blockPaintedStoneDoubleSlab {
     @Override
-    protected void create() {
+    protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
@@ -293,9 +294,9 @@ public enum ModObject implements IModObject {
     return item;
   }
 
-  protected void create() {
+  protected void preInitElem(FMLPreInitializationEvent event) {
     if(clazz == null) {
-      Log.info(this + ".create() missing");
+      Log.debug(this + ".preInitElem() missing");
       return;
     }
     Object obj = null;
@@ -312,11 +313,26 @@ public enum ModObject implements IModObject {
       block = (Block)obj;
       item = Item.getItemFromBlock(block);
     }
+    if (block instanceof BlockEio<?>) {
+      ((BlockEio<?>) block).preInit(event);
+    }
+  }
+
+  protected void initElem(FMLInitializationEvent event) {
+    if (block instanceof BlockEio<?>) {
+      ((BlockEio<?>) block).init(event);
+    }
   }
 
   public static void preInit(FMLPreInitializationEvent event) {
     for (ModObject elem : values()) {
-      elem.create();
+      elem.preInitElem(event);
+    }
+  }
+
+  public static void init(FMLInitializationEvent event) {
+    for (ModObject elem : values()) {
+      elem.initElem(event);
     }
   }
 
