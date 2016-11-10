@@ -1,7 +1,10 @@
 package crazypants.enderio.machine;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,38 +22,46 @@ public class ClearConfigRecipe implements IRecipe {
     RecipeSorter.register("EnderIO:clearConfig", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
 
-  private ItemStack output;
-  
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
-    int count = 0;
+    return match(inv) != null;
+  }
+
+  private ItemStack match(InventoryCrafting inv) {
     ItemStack input = null;
-    
+
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null && Block.getBlockFromItem(checkStack.getItem()) instanceof AbstractMachineBlock) {
-        count++;
+      if (checkStack != null) {
+        if (input != null) {
+          return null;
+        }
+        input = checkStack;
       }
-      input = count == 1 && checkStack != null ? checkStack : input;
     }
-    
-    if (count == 1 && input != null && input.getTagCompound() != null && input.getTagCompound().getBoolean("eio.abstractMachine")) {
-      ItemStack out = input.copy();
-      NBTTagCompound stackTagCompound = new NBTTagCompound();
-      stackTagCompound.setBoolean("clearedConfig", true);
-      out.setTagCompound(stackTagCompound);
-      out.stackSize = 1;
-      output = out;
-    } else {
-      output = null;
+    if (input != null && Block.getBlockFromItem(input.getItem()) instanceof AbstractMachineBlock && input.hasTagCompound()
+        && input.getTagCompound().getBoolean("eio.abstractMachine")) {
+      return input;
     }
-    
-    return count == 1 && output != null;
+    if (input != null && input.getItem() instanceof BlockItemCapBank && input.hasTagCompound() && !input.getTagCompound().hasNoTags()) {
+      return input;
+    }
+    return null;
   }
+
+  private ItemStack lastOutput = null;
 
   @Override
   public ItemStack getCraftingResult(InventoryCrafting inv) {
-    return output.copy();
+    ItemStack input = match(inv);
+    if (input == null) {
+      lastOutput = null;
+    } else {
+      lastOutput = input.copy();
+      lastOutput.setTagCompound(new NBTTagCompound());
+      lastOutput.stackSize = 1;
+    }
+    return lastOutput;
   }
 
   @Override
@@ -60,13 +71,18 @@ public class ClearConfigRecipe implements IRecipe {
 
   @Override
   public ItemStack getRecipeOutput() {
-    return output;
+    return null;
   }
   
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (output != null && ItemStack.areItemStacksEqual(output, event.getItemStack())) {
-      event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
+    if (lastOutput != null && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
+      if ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
+          && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
+          || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
+              && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())) {
+          event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
+      }
     }
   }
 
