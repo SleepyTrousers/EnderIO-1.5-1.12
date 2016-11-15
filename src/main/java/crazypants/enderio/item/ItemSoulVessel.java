@@ -19,6 +19,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,14 +29,26 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.TargetContext;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
+
+  private static String permissionPickupOwned = null;
+
+  public static void initPhase() {
+    permissionPickupOwned = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup_owned", DefaultPermissionLevel.OP,
+        "Permission to pickup an entity that is owned by another player with Ender IO's soul vessel");
+    ;
+  }
 
   public static ItemSoulVessel create() {
     ItemSoulVessel result = new ItemSoulVessel();
@@ -127,11 +140,19 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       return false;
     }
 
+    // first check if that entity can be picked up at all
     CapturedMob capturedMob = CapturedMob.create(entity);
     if (capturedMob == null) {
       return false;
     }
 
+    // then check for reasons this specific one cannot
+    if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
+        && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
+      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      return false;
+    }
+    
     ItemStack capturedMobVessel = capturedMob.toStack(this, 1, 1);
 
     player.swingArm(hand);

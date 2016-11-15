@@ -248,7 +248,12 @@ public enum ModObject implements IModObject {
   itemMagnet,
   itemGliderWing,
   blockEndermanSkull(BlockEndermanSkull.class),
-  itemSoulVessel(ItemSoulVessel.class),
+ itemSoulVessel(ItemSoulVessel.class) {
+		@Override
+		protected void initElem(FMLInitializationEvent event) {
+			ItemSoulVessel.initPhase();
+		}
+	},
   itemFrankenSkull(ItemFrankenSkull.class),
   
   // blockEnderRail(BlockEnderRail.class),
