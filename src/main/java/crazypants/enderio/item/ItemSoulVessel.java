@@ -38,16 +38,22 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.BlockPosContext;
 import net.minecraftforge.server.permission.context.TargetContext;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
 
   private static String permissionPickupOwned = null;
+  private static String permissionPickup = null;
+  private static String permissionPlace = null;
 
   public static void initPhase() {
     permissionPickupOwned = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup_owned", DefaultPermissionLevel.OP,
         "Permission to pickup an entity that is owned by another player with Ender IO's soul vessel");
-    ;
+    permissionPickup = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup", DefaultPermissionLevel.ALL,
+        "Permission to pickup an entity with Ender IO's soul vessel");
+    permissionPlace = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.place", DefaultPermissionLevel.ALL,
+        "Permission to place down an entity with Ender IO's soul vessel");
   }
 
   public static ItemSoulVessel create() {
@@ -109,6 +115,11 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       return EnumActionResult.SUCCESS;
     }
 
+    if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPlace, new BlockPosContext(player, pos, null, side))) {
+      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      return EnumActionResult.SUCCESS;
+    }
+
     if (!capturedMob.spawn(world, pos, side, true)) {
       return EnumActionResult.SUCCESS;
     }
@@ -149,6 +160,10 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
     // then check for reasons this specific one cannot
     if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
         && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
+      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.owned.denied")));
+      return false;
+    }
+    if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPickup, new TargetContext(player, entity))) {
       player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
       return false;
     }
