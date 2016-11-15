@@ -479,6 +479,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
           continue SIDE;
         }
       }
+      for(ISignalProvider provider : SIGNAL_PROVIDERS) {
+        if(provider != null && provider.connectsToNetwork(world, loc.getBlockPos(), dir.getOpposite())) {
+          temp.put(dir, true);
+		  continue SIDE;
+        }
+      }
       temp.put(dir, false);
     }
     specialConnections = temp; // atomic assign for threading so no thread ever sees a half-filled map

@@ -8,6 +8,7 @@ import java.util.Set;
 
 public interface ISignalProvider {
 
-	Set<Signal> getNetworkInputs(World world, BlockPos pos, EnumFacing side);
+  boolean connectsToNetwork(World world, BlockPos pos, EnumFacing side);
 
+  Set<Signal> getNetworkInputs(World world, BlockPos pos, EnumFacing side);
 }
