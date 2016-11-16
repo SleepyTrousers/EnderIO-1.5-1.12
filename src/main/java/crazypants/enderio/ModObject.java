@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.block.BlockDarkIronBars;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDecoration;
@@ -75,7 +76,6 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
-import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;

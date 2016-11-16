@@ -1,4 +1,4 @@
-package crazypants.enderio.material;
+package crazypants.enderio.block;
 
 import java.util.List;
 

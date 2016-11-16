@@ -1,4 +1,4 @@
-package crazypants.enderio.material;
+package crazypants.enderio.block;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
