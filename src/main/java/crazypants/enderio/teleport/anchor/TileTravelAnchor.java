@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.PlayerUtil;
 
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -49,13 +48,21 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
+  private boolean isAuthorisedUser(UserIdent ident) {
+    return authorisedUsers.contains(ident);
+  }
+
+  private boolean isOwnerUser(UserIdent ident) {
+    return owner.equals(ident);
+  }
+
   @Override
   public boolean canBlockBeAccessed(EntityPlayer playerName) {
     if(accessMode == AccessMode.PUBLIC) {
       return true;
     }
     // Covers protected and private access modes
-    return owner.equals(playerName.getGameProfile()) || authorisedUsers.contains(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
 
   }
 
@@ -86,7 +93,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   public boolean getRequiresPassword(EntityPlayer playerName) {
     return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName)
-        && !authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+        && !isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
@@ -100,7 +107,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   @Override
   public boolean canUiBeAccessed(EntityPlayer playerName) {
-    return owner.equals(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
@@ -108,7 +115,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return owner.equals(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override

@@ -5,16 +5,13 @@ import java.awt.Color;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.network.MessageTileNBT;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class GuiTravelAuth extends GuiContainerBaseEIO {
@@ -48,9 +45,6 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
   protected void actionPerformed(GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
     if(ta.authoriseUser(player, poo.getInv().getInventory())) {
-      TileEntity te = ((TileEntity) ta);
-      PacketHandler.INSTANCE.sendToServer(new MessageTileNBT(te));
-
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();
     } else {

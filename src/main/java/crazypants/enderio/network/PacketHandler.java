@@ -1,6 +1,5 @@
 package crazypants.enderio.network;
 
-import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
@@ -37,7 +36,6 @@ public class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
-    INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
   }
 
