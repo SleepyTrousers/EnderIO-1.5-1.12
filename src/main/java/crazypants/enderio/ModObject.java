@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
+import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -112,7 +113,7 @@ public enum ModObject implements IModObject {
   itemRedstoneConduit(ItemRedstoneConduit.class),
   itemItemConduit(ItemItemConduit.class),
   itemGasConduit,
-  itemMEConduit,
+  itemMEConduit(ItemMEConduit.class),
   itemOCConduit(ItemOCConduit.class),
   itemBasicFilterUpgrade(ItemBasicItemFilter.class),
   itemExistingItemFilter(ItemExistingItemFilter.class),

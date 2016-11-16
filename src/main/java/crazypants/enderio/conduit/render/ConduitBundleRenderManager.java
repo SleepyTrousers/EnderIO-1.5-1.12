@@ -10,6 +10,7 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
+import crazypants.enderio.conduit.me.MEConduit;
 import crazypants.enderio.conduit.oc.OCConduit;
 import crazypants.enderio.conduit.oc.OCConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduit;
@@ -45,6 +46,7 @@ public class ConduitBundleRenderManager {
     EnderLiquidConduit.initIcons();
     ItemConduit.initIcons();
     OCConduit.initIcons();
+    MEConduit.initIcons();
             
     cbr.registerRenderer(new AdvancedLiquidConduitRenderer());
     cbr.registerRenderer(LiquidConduitRenderer.create());

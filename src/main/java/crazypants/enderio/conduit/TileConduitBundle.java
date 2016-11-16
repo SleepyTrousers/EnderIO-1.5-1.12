@@ -11,6 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEPartLocation;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 
@@ -24,6 +27,7 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -791,6 +795,49 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     serial++;
   }
 
+  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public IGridNode getGridNode(AEPartLocation loc) {
+    if (loc == null || loc == AEPartLocation.INTERNAL) {
+      return (IGridNode) node;
+    } else {
+      IMEConduit cond = getConduit(IMEConduit.class);
+      if (cond != null) {
+        if (cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
+          return (IGridNode) node;
+        } else {
+          return null;
+        }
+      }
+    }
+    return (IGridNode) node;
+  }
+
+  @SuppressWarnings("cast")
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void setGridNode(Object node) {
+    this.node = (IGridNode) node;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public AECableType getCableConnectionType(AEPartLocation loc) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond == null || loc == AEPartLocation.INTERNAL) {
+      return AECableType.NONE;
+    } else {
+      return cond.isConnectedTo(loc.getFacing()) ? AECableType.SMART : AECableType.NONE;
+    }
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void securityBreak() {
+  }
+
   /**
    * @return An integer value that is guaranteed to change whenever the conduit bundle's rendering changes.
    */
@@ -883,6 +930,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
   }
 
-  
+
 
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import appeng.api.networking.IGridHost;
 import com.enderio.core.common.util.BlockCoord;
 
 import cofh.api.energy.IEnergyReceiver;
@@ -34,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI|energy")
 })
-public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver {
+public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
 
   TileEntity getEntity();
 
@@ -114,4 +115,6 @@ public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, I
    * Safe to call server-side, but ignored there.
    */
   void geometryChanged();
+
+  void setGridNode(Object node);
 }
