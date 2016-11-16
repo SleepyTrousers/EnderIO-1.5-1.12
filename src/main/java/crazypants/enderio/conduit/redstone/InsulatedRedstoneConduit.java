@@ -83,6 +83,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       Blocks.TRAPPED_CHEST, Blocks.PISTON, Blocks.STICKY_PISTON, Blocks.NOTEBLOCK);
 
   private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
+  private static final List<ISignalProvider> SIGNAL_PROVIDERS = new ArrayList<ISignalProvider>();
 
   public static void addConnectableBlock(NBTTagCompound nbt) {
     if (nbt == null) {
@@ -140,6 +141,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       }
     }
     return CONNECTABLE_CLASSES;
+  }
+
+  public static void addSignalProvider(ISignalProvider provider) {
+    SIGNAL_PROVIDERS.add(provider);
   }
 
   // --------------------------------- Class Start
@@ -474,6 +479,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
           continue SIDE;
         }
       }
+      for(ISignalProvider provider : SIGNAL_PROVIDERS) {
+        if(provider != null && provider.connectsToNetwork(world, loc.getBlockPos(), dir.getOpposite())) {
+          temp.put(dir, true);
+		  continue SIDE;
+        }
+      }
       temp.put(dir, false);
     }
     specialConnections = temp; // atomic assign for threading so no thread ever sees a half-filled map
@@ -537,7 +548,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return Collections.emptySet();
     }
     Collection<Signal> allSigs = network.getSignals().values();
-    if (allSigs.isEmpty()) {
+    if (allSigs.isEmpty() || isSpecialConnection(side)) {
       return allSigs;
     }
 
@@ -558,15 +569,24 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       network.setNetworkEnabled(false);
     }
 
-    Set<Signal> res = new HashSet<Signal>();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      if ((side == null || dir == side) && acceptSignalsForDir(dir)) {
-        int input = getExternalPowerLevel(dir);
-        if (input > 1) { // need to degrade external signals by one as they
-                         // enter
-          BlockCoord loc = getLocation().getLocation(dir);
-          Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, getSignalColor(dir));
-          res.add(signal);
+    HashSet<Signal> signals = new HashSet<Signal>();
+    if(acceptSignalsForDir(side)) {
+      if(isSpecialConnection(side)) {
+        BlockCoord loc = getLocation().getLocation(side);
+        World world = getBundle().getEntity().getWorld();
+        for(ISignalProvider provider : SIGNAL_PROVIDERS) {
+          Set<Signal> inputs = provider.getNetworkInputs(world, loc.getBlockPos(), side.getOpposite());
+          if(inputs != null) {
+            signals.addAll(inputs);
+          }
+        }
+      } else {
+        int input = getExternalPowerLevel(side);
+        if(input > 1) { // need to degrade external signals by one as they
+                        // enter
+          BlockCoord loc = getLocation().getLocation(side);
+          Signal signal = new Signal(loc.x, loc.y, loc.z, side, input - 1, getSignalColor(side));
+          signals.add(signal);
         }
       }
     }
@@ -575,7 +595,14 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       network.setNetworkEnabled(true);
     }
 
-    return res;
+    Map<DyeColor, Signal> res = new HashMap<DyeColor, Signal>();
+    for(Signal signal : signals) {
+      if(signal != null && (!res.containsKey(signal.color) || signal.strength > res.get(signal.color).strength)) {
+        res.put(signal.color, signal);
+      }
+    }
+
+    return new HashSet<Signal>(res.values());
   }
 
   protected int getExternalPowerLevel(EnumFacing dir) {
