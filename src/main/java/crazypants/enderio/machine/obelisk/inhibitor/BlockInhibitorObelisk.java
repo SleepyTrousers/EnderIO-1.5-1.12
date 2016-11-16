@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObelisk> {
@@ -61,17 +62,44 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
 
   public Map<BlockCoord, BoundingBox> activeInhibitors = Maps.newHashMap();
 
+  // Ender IO's teleporting
   @SubscribeEvent
   public void onTeleport(TeleportEntityEvent event) {
-    Vec3d pos = new Vec3d(event.targetX,event.targetY,event.targetZ);
-    for (Entry<BlockCoord, BoundingBox> e : activeInhibitors.entrySet()) {
-      if (e.getValue().isVecInside(pos)) {
-        BlockCoord bc = e.getKey();
-        TileEntity te = bc.getTileEntity(event.getEntity().worldObj);
-        if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && te.getWorld().provider.getDimension() == event.dimension) {
-          event.setCanceled(true);
+    if (isTeleportPrevented(event.getEntity().worldObj, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
+      event.setCanceled(true);
+    }
+    if (isTeleportPrevented(event.getEntity().worldObj, event.targetX, event.targetY, event.targetZ)) {
+      event.setCanceled(true);
+    }
+  }
+
+  // Forge's event for endermen and enderpearl teleporting
+  @SubscribeEvent
+  public void onEnderTeleport(EnderTeleportEvent event) {
+    if (isTeleportPrevented(event.getEntity().worldObj, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
+      event.setCanceled(true);
+    }
+    if (isTeleportPrevented(event.getEntity().worldObj, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
+      event.setCanceled(true);
+    }
+  }
+
+  private boolean isTeleportPrevented(World entityWorld, double d, double f, double g) {
+    if (!activeInhibitors.isEmpty()) {
+      Vec3d pos = new Vec3d(d, f, g);
+      for (Entry<BlockCoord, BoundingBox> e : activeInhibitors.entrySet()) {
+        if (e.getValue().isVecInside(pos)) {
+          BlockCoord bc = e.getKey();
+          if (entityWorld.isBlockLoaded(bc.getBlockPos())) {
+            TileEntity te = bc.getTileEntity(entityWorld);
+            if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && ((TileInhibitorObelisk) te).getBounds().isVecInside(pos)) {
+              return true;
+            }
+          }
         }
       }
     }
+    return false;
   }
+
 }
