@@ -11,12 +11,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import appeng.api.networking.IGridNode;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEPartLocation;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEPartLocation;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
@@ -795,24 +795,27 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     serial++;
   }
 
+  /**
+   * @return An integer value that is guaranteed to change whenever the conduit bundle's rendering changes.
+   */
+  public int getSerial() {
+    return serial;
+  }
+
+  // AE2
+
   private Object node; // IGridNode object, untyped to avoid crash w/o AE2
 
   @Override
   @Method(modid = "appliedenergistics2")
   public IGridNode getGridNode(AEPartLocation loc) {
-    if (loc == null || loc == AEPartLocation.INTERNAL) {
-      return (IGridNode) node;
-    } else {
-      IMEConduit cond = getConduit(IMEConduit.class);
-      if (cond != null) {
-        if (cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
-          return (IGridNode) node;
-        } else {
-          return null;
-        }
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      if (loc == null || loc == AEPartLocation.INTERNAL || cond.getConnectionMode(loc.getOpposite().getFacing()) == ConnectionMode.IN_OUT) {
+        return (IGridNode) node;
       }
     }
-    return (IGridNode) node;
+    return null;
   }
 
   @SuppressWarnings("cast")
@@ -836,13 +839,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   @Method(modid = "appliedenergistics2")
   public void securityBreak() {
-  }
-
-  /**
-   * @return An integer value that is guaranteed to change whenever the conduit bundle's rendering changes.
-   */
-  public int getSerial() {
-    return serial;
   }
 
   // OpenComputers

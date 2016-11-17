@@ -19,12 +19,13 @@ public class ItemMEConduit extends AbstractItemConduit {
   };
 
   public static ItemMEConduit create() {
-    ItemMEConduit result = new ItemMEConduit();
     if (MEUtil.isMEEnabled()) {
+      ItemMEConduit result = new ItemMEConduit();
       result.init();
       ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(IMEConduit.class, IconEIO.WRENCH_OVERLAY_ME, IconEIO.WRENCH_OVERLAY_ME_OFF));
+      return result;
     }
-    return result;
+    return null;
   }
 
   protected ItemMEConduit() {
