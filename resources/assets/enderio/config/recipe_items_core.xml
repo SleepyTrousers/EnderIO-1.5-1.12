@@ -605,6 +605,9 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <alias name="ME_CONDUIT" item="enderio:itemMEConduit:0">
+    <dependency item="enderio:itemMEConduit:0" reverse="false"/>
+  </alias>
   <alias name="ME_CONDUIT" item="minecraft:stone:0">
     <!-- prevent log messages from the output tags using this -->
     <dependency item="enderio:itemMEConduit:0" reverse="true"/>
@@ -616,7 +619,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="crystalFluix" /><item name="AEApi.instance().parts().partQuartzFiber.stack(1).copy() ???" /><item name="crystalFluix" />
+        <item name="crystalFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="ME_CONDUIT" amount="12">
@@ -637,7 +640,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="crystalPureFluix" /><item name="AEApi.instance().parts().partQuartzFiber.stack(1).copy() ???" /><item name="crystalPureFluix" />
+        <item name="crystalPureFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalPureFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="ME_CONDUIT" amount="12">
@@ -652,6 +655,9 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <alias name="ME_CONDUIT_DENSE" item="enderio:itemMEConduit:1">
+    <dependency item="enderio:itemMEConduit:1" reverse="false"/>
+  </alias>
   <alias name="ME_CONDUIT_DENSE" item="minecraft:stone:0">
     <!-- prevent log messages from the output tags using this -->
     <dependency item="enderio:itemMEConduit:1" reverse="true"/>

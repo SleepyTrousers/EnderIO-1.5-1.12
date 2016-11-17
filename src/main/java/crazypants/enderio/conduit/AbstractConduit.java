@@ -23,6 +23,8 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEConduitNetwork;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.oc.OCConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -616,8 +618,8 @@ public abstract class AbstractConduit implements IConduit {
       return new ItemConduitNetwork();
 //    } else if (IGasConduit.class.isAssignableFrom(type)) {
 //      return new GasConduitNetwork();
-//    } else if (IMEConduit.class.isAssignableFrom(type)) {
-//      return new MEConduitNetwork();
+    } else if (IMEConduit.class.isAssignableFrom(type)) {
+      return new MEConduitNetwork();
     } else if (IOCConduit.class.isAssignableFrom(type)) {
       return new OCConduitNetwork();
     } else {
