@@ -20,6 +20,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -87,7 +88,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
 
   @Override
   public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
-    return !(entity instanceof EntityWither);
+    return !(entity instanceof EntityWither) && !(entity instanceof EntityWitherSkull);
   }
 
   @Override
