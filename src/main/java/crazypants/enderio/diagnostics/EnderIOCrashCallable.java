@@ -1,4 +1,4 @@
-package crazypants.enderio.tool;
+package crazypants.enderio.diagnostics;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,14 +33,14 @@ public class EnderIOCrashCallable implements ICrashCallable {
         apiVersionString = "";
       }
       if ("appliedenergistics2|API".equals(modContainer.getModId())) {
-        if ("rv1".equals(apiVersionString)) {
+        if ("rv1".equals(apiVersionString) || "rv2".equals(apiVersionString) || "rv3".equals(apiVersionString)) {
           result.add(" * An unsupportted old AE2 API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO was build against API version rv2 and will NOT work with older versions.");
-        } else if (!"rv2".equals(apiVersionString)) {
+          result.add("   Ender IO was build against API version rv4 and will NOT work with older versions.");
+        } else if (!"rv4".equals(apiVersionString)) {
           result.add(" * An unknown AE2 API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO was build against API version rv2 and may or may not work with a newer version.");
+          result.add("   Ender IO was build against API version rv4 and may or may not work with a newer version.");
         }
       } else if ("CoFHAPI|energy".equals(modContainer.getModId())) {
         if ("1.8-BuildCraft-Testing".equals(apiVersionString) || apiVersionString.contains("1.7")) {
