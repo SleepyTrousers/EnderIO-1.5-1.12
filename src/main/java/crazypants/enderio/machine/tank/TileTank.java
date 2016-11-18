@@ -13,6 +13,7 @@ import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -20,8 +21,11 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.tool.SmartTank;
+import crazypants.enderio.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -111,9 +115,9 @@ public class TileTank extends AbstractMachineEntity implements ITankAccess.IExte
       return false;
     }
     if (i == 0) {      
-      return FluidUtil.getFluidTypeFromItem(item) != null;      
+      return FluidUtil.getFluidTypeFromItem(item) != null;
     } else if (i == 1) {
-      return FluidUtil.hasEmptyCapacity(item);
+      return FluidUtil.hasEmptyCapacity(item) || canBeMended(item);
     } else if (i == 2 && canVoidItems()) {
       return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidUtil.isFluidContainer(item));
     }
@@ -191,11 +195,57 @@ public class TileTank extends AbstractMachineEntity implements ITankAccess.IExte
     if(!shouldDoWorkThisTick(20)) {
       return false;
     }
-    if (canVoidItems()) {
+    if (inventory[2] != null && canVoidItems()) {
       inventory[2] = null;
       markDirty();
     }
-    return drainFullContainer() || fillEmptyContainer();
+    return drainFullContainer() || fillEmptyContainer() || mendItem();
+  }
+
+  private boolean canBeMended(ItemStack stack) {
+    return stack != null && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && !tank.isEmpty()
+        && tank.getFluid().getFluid() == Fluids.fluidXpJuice;
+  }
+
+  private boolean mendItem() {
+    final int output = getSlotDefinition().getMaxOutputSlot();
+    final int input = getSlotDefinition().getMinInputSlot() + 1;
+    if (inventory[output] != null || inventory[input] == null || !inventory[input].isItemDamaged()
+        || tank.isEmpty() || EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, inventory[input]) <= 0) {
+      return false;
+    }
+
+    if (tank.getFluid().getFluid() != Fluids.fluidXpJuice) {
+      inventory[output] = inventory[input];
+      inventory[input] = null;
+      markDirty();
+      return true;
+    }
+
+    int damageMendable = Math.min(xpToDurability(XpUtil.liquidToExperience(tank.getFluidAmount())), inventory[input].getItemDamage());
+    if (damageMendable < 1) {
+      return false;
+    }
+    inventory[input].setItemDamage(inventory[input].getItemDamage() - damageMendable);
+    tank.drainInternal(XpUtil.experienceToLiquid(durabilityToXp(damageMendable)), true);
+    ItemStack stack1 = inventory[input];
+
+    if (!stack1.isItemDamaged()) {
+      inventory[output] = inventory[input];
+      inventory[input] = null;
+    }
+
+    markDirty();
+
+    return true;
+  }
+
+  private int durabilityToXp(int durability) {
+    return durability / 2;
+  }
+
+  private int xpToDurability(int xp) {
+    return xp * 2;
   }
 
   private boolean fillEmptyContainer() {
