@@ -72,11 +72,11 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 
       @Override
       public int compare(IConduit o1, IConduit o2) {
-        Integer int1 = TAB_ORDER.get(o1.getBaseConduitType());
+        Integer int1 = (o1 instanceof IConduit.IHasTabOrder) ? ((IConduit.IHasTabOrder) o1).getTabOrderForConduit(o1) : TAB_ORDER.get(o1.getBaseConduitType());
         if(int1 == null) {
           return 1;
         }
-        Integer int2 = TAB_ORDER.get(o2.getBaseConduitType());
+        Integer int2 = (o2 instanceof IConduit.IHasTabOrder) ? ((IConduit.IHasTabOrder) o2).getTabOrderForConduit(o2) : TAB_ORDER.get(o2.getBaseConduitType());
         if(int2 == null) {
           return 1;
         }

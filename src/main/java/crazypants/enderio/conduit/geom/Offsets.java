@@ -2,16 +2,62 @@ package crazypants.enderio.conduit.geom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.util.EnumFacing;
 
 public class Offsets {
+
+  /**
+   * Registers a set of offsets for a new conduit. (API method)
+   * 
+   * @param type
+   *          The class of the conduit
+   * @param none
+   *          The offset for the node
+   * @param x
+   *          The offset for conduit arms on the X axis
+   * @param y
+   *          The offset for conduit arms on the Y axis
+   * @param z
+   *          The offset for conduit arms on the Z axis
+   * @return true if the offset was registered. false if the conduit already is registered of if one of the axis are already in use.
+   */
+  public static boolean registerOffsets(Class<? extends IConduit> type, Offset none, Offset x, Offset y, Offset z) {
+    OffsetKey keyNone = key(type, Axis.NONE);
+    OffsetKey keyX = key(type, Axis.X);
+    OffsetKey keyY = key(type, Axis.Y);
+    OffsetKey keyZ = key(type, Axis.Z);
+    if (OFFSETS.containsKey(keyNone) || OFFSETS.containsKey(keyX) || OFFSETS.containsKey(keyY) || OFFSETS.containsKey(keyZ)) {
+      return false;
+    }
+    for (Entry<OffsetKey, Offset> elem : OFFSETS.entrySet()) {
+      if (elem.getKey().axis == Axis.NONE && elem.getValue() == none) {
+        return false;
+      }
+      if (elem.getKey().axis == Axis.X && elem.getValue() == x) {
+        return false;
+      }
+      if (elem.getKey().axis == Axis.Y && elem.getValue() == y) {
+        return false;
+      }
+      if (elem.getKey().axis == Axis.Z && elem.getValue() == z) {
+        return false;
+      }
+    }
+    OFFSETS.put(keyNone, none);
+    OFFSETS.put(keyX, x);
+    OFFSETS.put(keyY, y);
+    OFFSETS.put(keyZ, z);
+    return true;
+  }
 
   private static Map<OffsetKey, Offset> OFFSETS = new HashMap<OffsetKey, Offset>();
 
@@ -40,11 +86,11 @@ public class Offsets {
 //    OFFSETS.put(key(IGasConduit.class, Axis.X), Offset.NORTH_UP);
 //    OFFSETS.put(key(IGasConduit.class, Axis.Y), Offset.NORTH_WEST);
 //    OFFSETS.put(key(IGasConduit.class, Axis.Z), Offset.WEST_UP);
-//    
-//    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
-//    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
-//    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
-//    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
+
+    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
+    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
+    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
+    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
 
     OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
     OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);

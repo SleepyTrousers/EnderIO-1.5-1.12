@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.geom;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.util.EnumHelper;
 
 /**
  * Offset vectors are based on Y up.
@@ -49,6 +50,28 @@ public enum Offset {
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.zOffset = zOffset;
+  }
+
+  /**
+   * Adds a new offset. (API method)
+   * 
+   * @param name
+   *          The name of the new enum constant to create
+   * @param xOffset
+   *          The X offset
+   * @param yOffset
+   *          The Y offset
+   * @param zOffset
+   *          The Z offset
+   * @return The new enum constant of null if it would collide with an existing offset
+   */
+  public static Offset addOffset(String name, int xOffset, int yOffset, int zOffset) {
+    for (Offset offset : values()) {
+      if (offset.xOffset == xOffset && offset.yOffset == yOffset && offset.zOffset == zOffset) {
+        return null;
+      }
+    }
+    return EnumHelper.addEnum(Offset.class, name, new Class<?>[] { int.class, int.class, int.class }, xOffset, yOffset, zOffset);
   }
 
 }

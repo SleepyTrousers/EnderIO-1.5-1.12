@@ -4,11 +4,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.sun.istack.internal.Nullable;
 
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +26,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IConduit {
+
+  interface IHasTabPanel {
+    @SideOnly(Side.CLIENT)
+    ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con);
+  }
+
+  interface IHasTabOrder {
+    @SideOnly(Side.CLIENT)
+    @Nullable
+    Integer getTabOrderForConduit(IConduit con);
+  }
 
   // Base functionality
   Class<? extends IConduit> getBaseConduitType();
