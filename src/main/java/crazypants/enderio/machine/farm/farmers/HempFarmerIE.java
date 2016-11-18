@@ -48,17 +48,7 @@ public class HempFarmerIE implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState state) {
-    HarvestResult result = new HarvestResult();        
-    addResult(result, stemFarmer.harvestBlock(farm, bc, block, state));
-    addResult(result, seedFarmer.harvestBlock(farm, bc, block, state));
-    return result;
-  }
-  
-  private void addResult(HarvestResult result, IHarvestResult res) {
-    if(res != null) {
-      result.drops.addAll(res.getDrops());
-      result.harvestedBlocks.addAll(res.getHarvestedBlocks());
-    }
+    return stemFarmer.harvestBlock(farm, bc, block, state);
   }
 
 }
