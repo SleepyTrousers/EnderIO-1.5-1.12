@@ -116,6 +116,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.
 
   private boolean hadSword;
 
+  private boolean isMending = false;
+
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
 
@@ -148,10 +150,13 @@ public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.
   @Override
   public void doUpdate() {
     updateArmSwingProgress();
-    if (needsMending()) {
-      hooverXP();
-    }
     if (!worldObj.isRemote) {
+      if (doMending()) {
+        hooverXP();
+        if (!needsMending()) {
+          endMending();
+        }
+      }
       getAttackera().onUpdate();
       if (inventory[0] != null != hadSword) {
         updateBlock();
@@ -159,6 +164,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.
       }
     }
     super.doUpdate();
+  }
+
+  private void endMending() {
+    isMending = false;
   }
 
   private static final @Nonnull int[] slots = new int[1];
@@ -294,6 +303,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.
 
       if (totalDistance < 1.5) {
         hooverXP(entity);
+        if (!needsMending()) {
+          return;
+        }
       } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
         double speed = 0.01 + (d * 0.02);
@@ -322,9 +334,21 @@ public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.
       markDirty();
       if (xpValue > 0) {
         entity.xpValue = xpValue;
+        MagnetUtil.release(entity);
       } else {
         entity.setDead();
       }
+    }
+  }
+
+  private boolean doMending() {
+    if (!needsMending()) {
+      endMending();
+      return false;
+    } else if (isMending) {
+      return true;
+    } else {
+      return isMending = inventory[0].getItem().getDurabilityForDisplay(inventory[0]) > .1;
     }
   }
 

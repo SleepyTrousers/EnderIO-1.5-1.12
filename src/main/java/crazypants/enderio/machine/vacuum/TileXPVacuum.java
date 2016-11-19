@@ -89,7 +89,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
       double distance = Math.sqrt(x * x + y * y + z * z);
       if (distance < 1.25) {
         hooverEntity(entity);
-      } else {
+      } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
         double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / range));
         distScale *= distScale;
 
