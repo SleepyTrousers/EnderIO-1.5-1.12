@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.recipe;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 
@@ -45,6 +49,11 @@ public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
 
   public boolean isValidRecipeComponents(ItemStack[] resultInv) {
     return recipeManager.isValidRecipeComponents(resultInv);
+  }
+
+  @Nonnull
+  public List<IManyToOneRecipe> getRecipesThatHaveTheseAsValidRecipeComponents(ItemStack[] resultInv) {
+    return recipeManager.getRecipesThatHaveTheseAsValidRecipeComponents(resultInv);
   }
 
 }

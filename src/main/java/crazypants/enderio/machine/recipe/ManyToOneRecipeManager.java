@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
@@ -174,6 +176,19 @@ public class ManyToOneRecipeManager {
       }
     }
     return false;
+  }
+
+  @Nonnull
+  public List<IManyToOneRecipe> getRecipesThatHaveTheseAsValidRecipeComponents(ItemStack[] inputs) {
+    List<IManyToOneRecipe> result = new ArrayList<IManyToOneRecipe>();
+    if (inputs != null && inputs.length > 0) {
+      for (IManyToOneRecipe recipe : recipes) {
+        if (recipe.isValidRecipeComponents(inputs)) {
+          result.add(recipe);
+        }
+      }
+    }
+    return result;
   }
 
   public float getExperianceForOutput(ItemStack output) {
