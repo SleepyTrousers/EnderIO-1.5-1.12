@@ -227,9 +227,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     }
 
     while (remainingSpawnTries-- > 0) {
-      double x = getPos().getX() + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double x = getPos().getX() + .5 + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
       double y = getPos().getY() + worldObj.rand.nextInt(3) - 1;
-      double z = getPos().getZ() + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double z = getPos().getZ() + .5 + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
 
       entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
