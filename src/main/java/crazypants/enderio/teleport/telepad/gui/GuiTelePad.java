@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -47,17 +49,18 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
   private TextFieldEnder xTF, yTF, zTF, dimTF;
 
-  private int powerX = 8;
-  private int powerY = 9;
+  private static final int powerX = 8;
+  private static final int powerY = 9;
   private int powerScale = Config.telepadFluidUse > 0 ? 57 : 120;
 
-  private int progressX = 26;
-  private int progressY = 110;
-  private int progressScale = 124;
+  private static final int progressX = 26;
+  private static final int progressY = 110;
+  private static final int progressScale = 124;
 
-  private int fluidX = 8;
-  private int fluidY = 71;
-  private int fluidScale = 58;
+  private static final int fluidX = 8;
+  private static final int fluidY = 71;
+  private static final int fluidScale = 58;
+  private static final Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
 
   public static int SWITCH_X = 155, SWITCH_Y = 5;
 
@@ -83,7 +86,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
     });
 
     if (Config.telepadFluidUse > 0) {
-      addToolTip(new GuiToolTip(new Rectangle(fluidX, fluidY, 10, fluidScale), "") {
+      addToolTip(new GuiToolTip(RECTANGLE_TANK, "") {
         @Override
         protected void updateText() {
           text.clear();
@@ -122,6 +125,15 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
 
     switchButton = new ToggleTravelButton(this, ID_SWITCH_BUTTON, SWITCH_X, SWITCH_Y, IconEIO.IO_WHATSIT);
     switchButton.setToolTip(EnderIO.lang.localize("gui.telepad.configure.travel"));
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_TANK.contains(mouseX, mouseY)) {
+      return te.getTank().getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   private String getPowerOutputLabel() {

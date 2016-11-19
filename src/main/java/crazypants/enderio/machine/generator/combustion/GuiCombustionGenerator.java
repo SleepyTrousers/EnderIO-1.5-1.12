@@ -3,6 +3,8 @@ package crazypants.enderio.machine.generator.combustion;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -19,10 +21,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
+  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(48, 21, 15, 47);
+  private static final Rectangle RECTANGLE_COOLANT_TANK = new Rectangle(114, 21, 15, 47);
+
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
     super(te, new ContainerCombustionEngine(par1InventoryPlayer, te), "combustionGen");
 
-    addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_COOLANT_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -37,7 +42,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
 
     });
 
-    addToolTip(new GuiToolTip(new Rectangle(48, 21, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -52,6 +57,18 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
 
     });
 
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_COOLANT_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().getCoolantTank().getFluid();
+    }
+    if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().getFuelTank().getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   @Override

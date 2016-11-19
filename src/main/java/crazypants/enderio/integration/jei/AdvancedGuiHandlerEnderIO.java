@@ -6,8 +6,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import mezz.jei.api.gui.IAdvancedGuiHandler;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
+import mezz.jei.api.gui.IAdvancedGuiHandler;
 
 public class AdvancedGuiHandlerEnderIO implements IAdvancedGuiHandler<GuiContainerBaseEIO> {
 
@@ -24,6 +24,12 @@ public class AdvancedGuiHandlerEnderIO implements IAdvancedGuiHandler<GuiContain
   @Nullable
   public List<Rectangle> getGuiExtraAreas(GuiContainerBaseEIO guiContainer) {
     return guiContainer.getBlockingAreas();
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(GuiContainerBaseEIO guiContainer, int mouseX, int mouseY) {
+    return guiContainer.getIngredientUnderMouse(mouseX - guiContainer.getGuiLeft(), mouseY - guiContainer.getGuiTop());
   }
 
 }

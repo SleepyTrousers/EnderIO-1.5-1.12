@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -25,6 +27,10 @@ import net.minecraftforge.fluids.Fluid;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
+  private static final Rectangle RECTANGLE_OUTPUT_TANK = new Rectangle(132, 12, 15, 47);
+
+  private static final Rectangle RECTANGLE_INPUT_TANK = new Rectangle(30, 12, 15, 47);
+
   private static final String GUI_TEXTURE = "vat";
 
   private final IconButton dump1, dump2;
@@ -32,7 +38,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te), GUI_TEXTURE);
 
-    addToolTip(new GuiToolTip(new Rectangle(30, 12, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_INPUT_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -47,7 +53,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     });
 
-    addToolTip(new GuiToolTip(new Rectangle(132, 12, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_OUTPUT_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -68,6 +74,18 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
     dump2.setToolTip(EnderIO.lang.localize("gui.machine.vat.dump.2"));
 
     addProgressTooltip(81, 63, 14, 14);
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_INPUT_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().inputTank.getFluid();
+    }
+    if (RECTANGLE_OUTPUT_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().outputTank.getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   @Override

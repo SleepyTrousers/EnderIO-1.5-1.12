@@ -57,6 +57,15 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
     return new ArrayList<Rectangle>(tabAreas);
   }
 
+  /**
+   * See {@link mezz.jei.api.gui.IAdvancedGuiHandler#getIngredientUnderMouse}
+   * 
+   */
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    return null;
+  }
+
   public void startTabs() {
     tabAreas.clear();
   }

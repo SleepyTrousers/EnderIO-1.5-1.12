@@ -53,6 +53,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
+  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(36, 133, 16, 47);
+
   private static final Rectangle inventoryArea = new Rectangle(24+107, 27, 108, 90);
 
   private static final Rectangle btnRefill = new Rectangle(24+85, 32, 20, 20);
@@ -215,7 +217,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.setToolTip(list.toArray(new String[list.size()]));
 
     if (!Config.inventoryPanelFree) {
-      addToolTip(new GuiToolTip(new Rectangle(36, 133, 16, 47), "") {
+      addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
         @Override
         protected void updateText() {
           text.clear();
@@ -228,6 +230,19 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.addrecipe.line");
     addToolTip(new GuiToolTip(btnAddStoredRecipe, list));
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().fuelTank.getFluid();
+    }
+    GhostSlot slot = getGhostSlot(mouseX + getGuiLeft(), mouseY + getGuiTop());
+    if (slot instanceof InvSlot || slot instanceof RecipeSlot) {
+      return slot.getStack();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   public void syncSettingsChange() {

@@ -3,6 +3,8 @@ package crazypants.enderio.machine.generator.zombie;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -19,10 +21,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
+  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
+
   public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
     
-    addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -36,6 +40,15 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
       }
     });
 
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().tank.getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   @Override

@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -21,12 +23,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
+  private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(18, 11, 15, 47);
   private ToggleButton showRangeB;
 
   public GuiKillerJoe(InventoryPlayer inventory, final TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity), "killerJoe");
 
-    addToolTip(new GuiToolTip(new Rectangle(18, 11, 15, 47), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -61,6 +64,15 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
       }
     });
 
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().tank.getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   @Override

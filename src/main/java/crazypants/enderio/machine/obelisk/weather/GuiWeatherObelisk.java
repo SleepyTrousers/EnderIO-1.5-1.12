@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
@@ -22,6 +24,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
   
+  private static final Rectangle RECTANGLE_TANK = new Rectangle(22, 11, 16, 63);
   private IconButton buttonStart;
   
   public GuiWeatherObelisk(InventoryPlayer inventory, TileWeatherObelisk tileEntity) {
@@ -29,7 +32,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     
     addProgressTooltip(79, 29, 18, 31);
     
-    addToolTip(new GuiToolTip(new Rectangle(22, 11, 16, 63), "") {
+    addToolTip(new GuiToolTip(RECTANGLE_TANK, "") {
 
       @Override
       protected void updateText() {
@@ -43,6 +46,15 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
         text.add(Fluids.toCapactityString(getTileEntity().getInputTank()));
       }
     });
+  }
+
+  @Override
+  @Nullable
+  public Object getIngredientUnderMouse(int mouseX, int mouseY) {
+    if (RECTANGLE_TANK.contains(mouseX, mouseY)) {
+      return getTileEntity().getInputTank().getFluid();
+    }
+    return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   @Override
