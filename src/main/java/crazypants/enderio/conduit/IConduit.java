@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.sun.istack.internal.Nullable;
 
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
