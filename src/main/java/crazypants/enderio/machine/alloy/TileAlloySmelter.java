@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.alloy;
 
-import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
-
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -16,6 +15,9 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
@@ -46,8 +48,12 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     mode = Mode.ALL;
   }
 
+  protected TileAlloySmelter(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return "Alloy Smelter";
   }
 
@@ -91,7 +97,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockAlloySmelter.getUnlocalisedName();
   }
 

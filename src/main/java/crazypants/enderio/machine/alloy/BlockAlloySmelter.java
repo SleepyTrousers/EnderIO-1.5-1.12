@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
@@ -10,6 +12,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +41,14 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
+  }
+
+  protected BlockAlloySmelter(@Nonnull IModObject mo, @Nullable Class<TileAlloySmelter> teClass, @Nonnull Material mat) {
+    super(mo, teClass, mat);
+  }
+
+  protected BlockAlloySmelter(@Nonnull IModObject mo, @Nullable Class<TileAlloySmelter> teClass) {
+    super(mo, teClass);
   }
 
   @Override
