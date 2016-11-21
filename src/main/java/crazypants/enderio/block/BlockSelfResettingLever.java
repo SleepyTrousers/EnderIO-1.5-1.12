@@ -31,8 +31,8 @@ import static crazypants.enderio.config.Config.leversEnabled;
 
 public class BlockSelfResettingLever extends BlockLever implements IHaveRenderers {
 
-  private static List<Integer> delays = null;
-  private static List<BlockSelfResettingLever> blocks = null;
+  private static List<Integer> delays = new ArrayList<Integer>();
+  private static List<BlockSelfResettingLever> blocks = new ArrayList<BlockSelfResettingLever>();;
 
   private final int delay;
   private final String name;
@@ -54,7 +54,7 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
 
   public static Block create() {
     getLevers();
-    blocks = new ArrayList<BlockSelfResettingLever>();
+    blocks.clear();
     for (Integer value : delays) {
       final String name = ModObject.blockSelfResettingLever.getUnlocalisedName() + value;
       final BlockSelfResettingLever lever = new BlockSelfResettingLever(name, value * 20);
@@ -66,7 +66,7 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
 
   public static List<Integer> getLevers() {
     if (delays == null) {
-      delays = new ArrayList<Integer>();
+      delays.clear();
       String s = leversEnabled;
       s = s.replaceAll("[^0-9,]", "");
       String[] split = s.split(",");

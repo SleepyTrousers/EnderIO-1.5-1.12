@@ -3,6 +3,7 @@ package crazypants.enderio;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,7 +115,11 @@ public class EnderIO {
     fluids = new Fluids();
     fluids.registerFluids();
 
-    ModObject.preInit(event);
+    URL authlib = this.getClass().getClassLoader().getResource("com/mojang/authlib/GameProfile.class");
+    if (authlib == null || !authlib.toString().contains("tlauncher")) {
+      // 3rd-party launcher using "accounts" sold by 3rd-party site
+      ModObject.preInit(event);
+    }
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
