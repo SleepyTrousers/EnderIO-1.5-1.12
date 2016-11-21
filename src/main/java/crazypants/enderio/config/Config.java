@@ -360,7 +360,8 @@ public final class Config {
       // new in 1.10:
       "calculator:ReinforcedHoe", "calculator:EnrichedGoldHoe", "calculator:ReinforcedIronHoe", "calculator:RedstoneHoe", "calculator:WeakenedDiamondHoe",
       "calculator:FlawlessDiamondHoe", "calculator:FireDiamondHoe", "calculator:ElectricHoe", "embers:hoeDawnstone", "embers:hoeCopper", "embers:hoeSilver",
-      "embers:hoeLead", "roots:livingHoe"
+      "embers:hoeLead", "roots:livingHoe", "mysticalagriculture:inferium_hoe", "mysticalagriculture:prudentium_hoe", "mysticalagriculture:intermedium_hoe",
+      "mysticalagriculture:superium_hoe", "mysticalagriculture:supremium_hoe"
   };
   public static Things farmHoes = new Things();
   public static int farmSaplingReserveAmount = 8;
