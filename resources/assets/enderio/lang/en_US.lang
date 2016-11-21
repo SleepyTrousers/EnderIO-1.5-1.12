@@ -799,12 +799,13 @@ tile.blockPaintedGlowstone.name=Painted Glowstone
 tile.blockPaintedGlowstoneSolid.name=Painted Glowstone
 tile.blockPaintedRedstone.name=Painted Redstone
 tile.blockPaintedRedstoneSolid.name=Painted Redstone
+tile.blockPaintedStone.name=Painted Cobblestone
 tile.blockPaintedCarpet.name=Painted Carpet
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
-tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
-tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
+tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences, Gates,
+tile.blockPainter.tooltip.detailed.line3=Slabs, Cobblestone, Cobblestone Walls,
 tile.blockPainter.tooltip.detailed.line4=Glowstone, Carpet, Pressure Plates,
 tile.blockPainter.tooltip.detailed.line5=Quite Clear Glass, Fused Quartz,
 tile.blockPainter.tooltip.detailed.line6=and most machines
