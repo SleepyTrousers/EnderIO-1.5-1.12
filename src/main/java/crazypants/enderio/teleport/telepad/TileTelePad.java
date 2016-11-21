@@ -183,8 +183,6 @@ public class TileTelePad extends TileTravelAnchor
 
   @Override
   public void doUpdate() {
-    super.doUpdate();
-
     if (!isMaster()) {
       return;
     }

@@ -116,7 +116,8 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public void doUpdate() {
-    if(worldObj.isRemote) {
+    if (worldObj.isRemote) {
+      super.doUpdate(); // disable ticking on the client
       return;
     }
 

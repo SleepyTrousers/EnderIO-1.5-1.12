@@ -1,7 +1,10 @@
 package crazypants.enderio;
 
+import java.util.List;
+
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.config.Config;
 import info.loenwind.autosave.Reader;
@@ -10,6 +13,10 @@ import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public abstract class TileEntityEio extends TileEntityBase {
 
@@ -79,6 +86,33 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     Writer.write(StoreFor.ITEM, nbtRoot, this);
+  }
+
+  private final static List<TileEntity> notTickingTileEntities = Lists.<TileEntity> newArrayList();
+  /**
+   * Called on each tick. Do not call super from any subclass, that will disable ticking this TE again.
+   */
+  @Override
+  protected void doUpdate() {
+    notTickingTileEntities.add(this);
+  }
+
+  static {
+    MinecraftForge.EVENT_BUS.register(TileEntityEio.class);
+  }
+
+  @SubscribeEvent
+  public static void onServerTick(TickEvent.ServerTickEvent event) {
+    for (TileEntity te : notTickingTileEntities) {
+      te.getWorld().tickableTileEntities.remove(te);
+    }
+  }
+
+  @SubscribeEvent
+  public static void onClientTick(TickEvent.ClientTickEvent event) {
+    for (TileEntity te : notTickingTileEntities) {
+      te.getWorld().tickableTileEntities.remove(te);
+    }
   }
 
 }

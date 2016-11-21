@@ -41,9 +41,8 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   
   @Override
   public void doUpdate() {
-    super.doUpdate();
-    
     if (worldObj.isRemote) {
+      super.doUpdate(); // disable ticking on the client
       return;
     }
     

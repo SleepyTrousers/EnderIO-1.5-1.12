@@ -136,7 +136,11 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote || tank == null) {
+    if (worldObj.isRemote) {
+      super.doUpdate(); // disable ticking on the client
+      return;
+    }
+    if (tank == null) {
       return;
     }
 

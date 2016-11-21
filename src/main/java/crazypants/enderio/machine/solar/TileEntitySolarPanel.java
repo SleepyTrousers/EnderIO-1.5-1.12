@@ -69,6 +69,9 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   @Override
   public void doUpdate() {
     if (!hasWorldObj() || worldObj.isRemote) {
+      if (worldObj.isRemote) {
+        super.doUpdate(); // disable ticking on the client
+      }
       return;
     }
 
