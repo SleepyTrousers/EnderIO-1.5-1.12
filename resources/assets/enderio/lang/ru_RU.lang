@@ -33,8 +33,6 @@ enderio.itemPowerConduit.name=Энергетическая труба
 enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
 enderio.itemPowerConduitEnder.name=Энергетическая Эндер-труба
 
-enderio.itemRedstoneConduit.name=Красная труба
-enderio.itemRedstoneConduitSwitch.name=Переключатель труб
 enderio.itemRedstoneConduitInsulated.name=Изолированная красная труба
 
 enderio.itemLiquidConduit.name=Жидкостная труба
@@ -61,24 +59,24 @@ enderio.filterUpgradeAdvanced.name=Продвинутый предметный �
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
 
 enderio.itemConduitFilterUpgrade.configured=Настроенный
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетку создания, чтобы очистить
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Поместите в сетку создания, чтобы очистить
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
 
 item.itemExistingItemFilter.name=Существующий предметный фильтр
 item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
-item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
-item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
+item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает только предметы
+item.itemExistingItemFilter.tooltip.detailed.line2=находящиеся в инвентаре
 item.itemExistingItemFilter.tooltip.detailed.line3=ПКМ, сидя, по инвентарю,
 item.itemExistingItemFilter.tooltip.detailed.line4=чтобы добавить
 item.itemExistingItemFilter.tooltip.detailed.line5=содержимое в фильтр
 
-enderio.item.itemExistingItemFilter.filterUpdated=Новые предметы добавлены в список
-enderio.item.itemExistingItemFilter.filterNotUpdated=Список уже содержит все предметы инвентаря
+enderio.item.itemExistingItemFilter.filterUpdated=Новые предметы добавлены в список фильтра
+enderio.item.itemExistingItemFilter.filterNotUpdated=Список фильтра уже содержит все предметы инвентаря
 
 item.itemModItemFilter.name=Фильтр по предметам модификаций
 item.itemModItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemModItemFilter.tooltip.detailed.line1=Выбирает предметы только для определённой(-ых)
-item.itemModItemFilter.tooltip.detailed.line2=модификации/модификаций
+item.itemModItemFilter.tooltip.detailed.line2=модификации(-ий)
 
 item.itemPowerItemFilter.name=Фильтр по заряжаемым предметам
 item.itemPowerItemFilter.tooltip.basic.line1=Улучшение для предметных труб
@@ -165,13 +163,13 @@ fluid.liquid_sunshine=Жидкий солнечный свет
 tile.fluid.liquid_sunshine.name=Жидкий солнечный свет
 item.bucketLiquid_sunshine.name=Ведро жидкого солнечного света
 
-fluid.cloud_seed=Cloud Seed
-tile.fluid.cloud_seed.name=Cloud Seed
-item.bucketCloud_seed.name=Cloud Seed Bucket
+fluid.cloud_seed=Облако семян
+tile.fluid.cloud_seed.name=Облако семян
+item.bucketCloud_seed.name=Ведро облака семян
 
-fluid.cloud_seed_concentrated=Concentrated Cloud Seed
-tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
-item.bucketCloud_seed_concentrated.name=Concentrated Cloud Seed Bucket
+fluid.cloud_seed_concentrated=Концентрированное облако семян
+tile.fluid.cloud_seed_concentrated.name=Концентрированное облако семян
+item.bucketCloud_seed_concentrated.name=Ведро концентрированного облака семян
 
 fluid.eio.xpjuice=Жидкий опыт
 tile.fluid.eio.xpjuice.name=Жидкий опыт
@@ -263,8 +261,8 @@ enderio.machine.tooltip.clearConfig=Это очистит всю хранящу�
 //Machines
 tile.blockStirlingGenerator.name=Генератор Стирлинга
 tile.blockStirlingGenerator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
-tile.blockStirlingGenerator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить выход
-tile.blockStirlingGenerator.tooltip.detailed.line3=и эффективность
+tile.blockStirlingGenerator.tooltip.detailed.line2=Может быть улучшен конденсаторами,
+tile.blockStirlingGenerator.tooltip.detailed.line3=чтобы увеличить выход и эффективность
 
 tile.blockReservoir.name=Резервуар
 tile.blockReservoir.tooltip.detailed.line1=При подключении с другим резервуаром:
@@ -322,7 +320,7 @@ item.itemWirelessLightInverted.tooltip.detailed.line4=Может получат�
 
 tile.blockCapacitorBank.name=Блок конденсаторов (Устаревший)
 tile.blockCapacitorBank.creative.name=Творческий блок конденсаторов (Устаревший)
-tile.blockCapacitorBank.tooltip.detailed.line1=Переделайте в новый блок, положив
+tile.blockCapacitorBank.tooltip.detailed.line1=Переделайте в новый блок, поместив
 tile.blockCapacitorBank.tooltip.detailed.line2=в сетку создания.
 tile.blockCapacitorBank.tooltipPrefix=Содержит
 
@@ -332,7 +330,7 @@ tile.blockCapBank.activated.name=Блок конденсаторов
 tile.blockCapBank.vibrant.name=Вибрирующий блок конденсаторов
 tile.blockCapBank.tooltip.detailed.line1=Мульти-блок для хранения энергии.
 tile.blockCapBank.tooltip.detailed.line2=Может заряжать RF-предметы.
-tile.blockCapBank.tooltip.detailed.line3=Shift-ПКМ, по экрану пустой рукой,
+tile.blockCapBank.tooltip.detailed.line3=SHIFT+ПКМ, по экрану пустой рукой,
 tile.blockCapBank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
 tile.blockCapBank.tooltip.hasItems=Предметов в инвентаре: {0,number,integer} {0,choice,1#item|1<items}
 tile.blockCapBank.tooltipPrefix=Содержит
@@ -360,7 +358,7 @@ tile.blockSagMill.tooltip.detailed.line5=скорость и хранилище 
 tile.blockSagMill.tooltipPrefix=Содержит
 
 tile.blockHyperCube.name=Пространственный приёмопередатчик (Устаревший)
-tile.blockHyperCube.tooltip.detailed.line1=Переделайте под новую модель, положив
+tile.blockHyperCube.tooltip.detailed.line1=Переделайте под новую модель, поместив
 tile.blockHyperCube.tooltip.detailed.line2=в сетку создания
 
 tile.blockTransceiver.name=Пространственный приёмопередатчик
@@ -373,7 +371,7 @@ tile.blockEnderRail.tooltip.detailed.line1=Телепортирует вагон
 tile.blockEnderRail.tooltip.detailed.line2=на пространственный приёмопередатчик
 tile.blockEnderRail.tooltip.detailed.line3=Установите направления, используя
 tile.blockEnderRail.tooltip.detailed.line4=вкладку "рельс" в приёмопередатчике
-tile.blockEnderRail.tooltip.detailed.line5=Установите направление с помощью Shift-ПКМ
+tile.blockEnderRail.tooltip.detailed.line5=Установите направление с помощью SHIFT+ПКМ
 tile.blockEnderRail.tooltip.detailed.line6=ключом
 
 enderio.trans.showChannels=<Shift, чтобы увидеть каналы>
@@ -386,24 +384,24 @@ enderio.trans.rail=Рельс
 enderio.trans.receiving=Получение
 enderio.trans.sending=Отправка
 
-tile.blockPowerMonitor.name=Индикатор мощности
-tile.blockPowerMonitor.tooltip.detailed.line1=Показывает сведения о затратах энергии
+tile.blockPowerMonitor.name=Индикатор энергии
+tile.blockPowerMonitor.tooltip.detailed.line1=Отображает сведения о затратах энергии
 tile.blockPowerMonitor.tooltip.detailed.line2=и хранилище
 tile.blockPowerMonitor.tooltip.detailed.line3=Может быть использован для излучения красного камня
 tile.blockPowerMonitor.tooltip.detailed.line4=на основе хранимой энергии
 tile.blockPowerMonitor.tooltip.detailed.line5=Должен быть присоединён к трубе
 tile.blockPowerMonitor.tooltip.detailed.line6=EnderIO
 
-tile.blockPowerMonitorv2.name=Графический монитор мощности
-tile.blockPowerMonitorv2.tooltip.detailed.line1=Displays details of power use and
-tile.blockPowerMonitorv2.tooltip.detailed.line2=storage
-tile.blockPowerMonitorv2.tooltip.detailed.line3=Can be used to emit redstone
-tile.blockPowerMonitorv2.tooltip.detailed.line4=based on stored power levels
-tile.blockPowerMonitorv2.tooltip.detailed.line5=Must be attached to an EnderIO
-tile.blockPowerMonitorv2.tooltip.detailed.line6=conduit
+tile.blockPowerMonitorv2.name=Графический индикатор энергии
+tile.blockPowerMonitorv2.tooltip.detailed.line1=Отображает сведения о затратах энергии
+tile.blockPowerMonitorv2.tooltip.detailed.line2=и хранилище
+tile.blockPowerMonitorv2.tooltip.detailed.line3=Может быть использован для излучения красного камня
+tile.blockPowerMonitorv2.tooltip.detailed.line4=на основе хранимой энергии
+tile.blockPowerMonitorv2.tooltip.detailed.line5=Должен быть присоединён к трубе
+tile.blockPowerMonitorv2.tooltip.detailed.line6=EnderIO
 
 tile.blockGauge.name=Измеритель RF
-tile.blockGauge.tooltip.detailed.line1=Показывает уровень RF в
+tile.blockGauge.tooltip.detailed.line1=Отображает уровень RF в
 tile.blockGauge.tooltip.detailed.line2=прилегающих блоках.
 
 tile.blockVat.name=Чан
@@ -453,7 +451,7 @@ enderio.farm.note.outputFull=Выход полон
 enderio.farm.note.noSeeds=Нет семян
 enderio.farm.note.noAxe=Нет топора
 enderio.farm.note.noHoe=Нет мотыги
-enderio.farm.note.noPower=Нет питания
+enderio.farm.note.noPower=Нет энергии
 enderio.farm.gui.baseUse=Основное использование:
 
 tile.blockTank.name=Жидкостный резервуар
@@ -480,8 +478,8 @@ enderio.gui.void.mode.never.desc=Слот удаления не принимае
 tile.blockCrafter.name=Создатель
 tile.blockCrafter.tooltip.detailed.line1=Электрический авто-создатель
 tile.blockCrafter.tooltip.detailed.line2=Потребляет энергию за операцию
-tile.blockCrafter.tooltip.detailed.line3=Может быть улучшен, чтобы увеличить скорость
-tile.blockCrafter.tooltip.detailed.line4=и хранилище энергии с помощью конденсаторов
+tile.blockCrafter.tooltip.detailed.line3=Может быть улучшен конденсаторами, чтобы
+tile.blockCrafter.tooltip.detailed.line4=увеличить скорость и хранилище энергии
 
 tile.blockVacuumChest.name=Вакуумный сундук
 tile.blockVacuumChest.tooltip.detailed.line1=Втягивает ближайшие предметы
@@ -492,7 +490,7 @@ tile.blockPoweredSpawner.tooltip.empty=Пустой
 enderio.tile.blockPoweredSpawner.tooltip.none=Нет
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Объедините со сломанным
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=спаунером в наковальне
-tile.blockPoweredSpawner.tooltip.detailed.line1=Подайте питание, чтобы
+tile.blockPoweredSpawner.tooltip.detailed.line1=Подайте энергию, чтобы
 tile.blockPoweredSpawner.tooltip.detailed.line2=активировать
 tile.blockPoweredSpawner.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить
 tile.blockPoweredSpawner.tooltip.detailed.line4=скорость и хранилище энергии
@@ -508,16 +506,19 @@ tile.blockSoulBinder.tooltip.detailed.line2=типа сломанного спа
 tile.blockAttractor.name=Притягивающий обелиск
 tile.blockAttractor.tooltip.detailed.line1=Притягивает мобов к себе
 tile.blockAttractor.tooltip.detailed.line2=Укажите мобов для притягивания,
-tile.blockAttractor.tooltip.detailed.line3=положив их души
+tile.blockAttractor.tooltip.detailed.line3=поместив их души
 tile.blockAttractor.tooltip.detailed.line4=внутрь механизма
+enderio.blockAttractor.action=Attracts
 
 tile.blockSpawnGuard.name=Обелиск отвращения
 tile.blockSpawnGuard.tooltip.detailed.line1=Запрещает мобам появляться
 tile.blockSpawnGuard.tooltip.detailed.line2=в пределах действия обелиска
+enderio.blockSpawnGuard.action=Prevents spawning
 
 tile.blockSpawnRelocator.name=Обелиск релокации
 tile.blockSpawnRelocator.tooltip.detailed.line1=Перемещает мобов, появившихся
 tile.blockSpawnRelocator.tooltip.detailed.line2=в пределах действия обелиска
+enderio.blockSpawnRelocator.action=Relocates
 
 tile.blockExperienceObelisk.name=Обелиск опыта
 tile.blockExperienceObelisk.tooltip.detailed.line1=Содержит опыт
@@ -534,7 +535,7 @@ tile.blockInhibitorObelisk.tooltip.detailed.line1=Запрещает телеп�
 tile.blockInhibitorObelisk.tooltip.detailed.line2=в пределах действия обелиска
 
 tile.blockBuffer.item.name=Предметный буфер
-tile.blockBuffer.power.name=Энергобуфер
+tile.blockBuffer.power.name=Энергетический буфер
 tile.blockBuffer.omni.name=Универсальный буфер
 tile.blockBuffer.creative.name=Творческий буфер
 
@@ -557,9 +558,9 @@ enderio.gui.inventorypanel.tooltip.return.line5=Click to change into storage are
 enderio.gui.inventorypanel.tooltip.storage.line1=Область хранения предметов
 enderio.gui.inventorypanel.tooltip.storage.line2=Small temporary item storage area.
 enderio.gui.inventorypanel.tooltip.storage.line3=Click to change into return area
-enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
-enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
-enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Слот для фильтра
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Поместите настроенный предметный фильтр,
+enderio.gui.inventorypanel.tooltip.filterslot.line3=чтобы выбрать, какие предметы будут отображаться.
 enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Сортировка предметов по названию
 enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Сортировка предметов по названию
 enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Начиная с конца алфавита
@@ -573,10 +574,10 @@ enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Начиная с на�
 enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Сортировать предметы по их количеству
 enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Начиная с одиночным количеством
 enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid
-enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
-enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
-enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
-enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
+enderio.gui.inventorypanel.tooltip.refill.line2=Обычное нажатие поместит предметы
+enderio.gui.inventorypanel.tooltip.refill.line3=для одной операции крафта,
+enderio.gui.inventorypanel.tooltip.refill.line4=в то время как при нажатии SHIFT попытается
+enderio.gui.inventorypanel.tooltip.refill.line5=заполнить сетку крафта.
 enderio.gui.inventorypanel.tooltip.setrecipe.line1=Learn the current crafting recipe
 enderio.gui.inventorypanel.tooltip.setrecipe.line2=Allows the refilling for the
 enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the network.
@@ -584,12 +585,12 @@ enderio.gui.inventorypanel.tooltip.clear.line1=Очистить сетку со�
 enderio.gui.inventorypanel.tooltip.clear.line2=Переместить все предметы в область возврата
 enderio.gui.inventorypanel.tooltip.fuelTank=Питательный резервуар
 enderio.gui.inventorypanel.tooltip.itemsstored=Хранится предметов: %s
-enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
-enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
-enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
-enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
-enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
-enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Сохраняет текущий рецепт крафта
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=Максимум могут быть сохранены 6 рецептов.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Нажатие ЛКМ по сохранённому рецепту попытается поместить
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=предметы для одной операции в сетку крафта.
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Нажатие SHIFT+ЛКМ попытается заполнить сетку
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=крафта до максимума.
 enderio.gui.inventorypanel.tooltip.addrecipe.line7=ПКМ по хранящемуся рецепту, чтобы удалить его.
 enderio.gui.inventorypanel.tooltip.sync=Синхронизация с NEI
 
@@ -716,7 +717,7 @@ item.itemTravelStaff.name=Посох путешествия
 item.itemTravelStaff.tooltip.detailed.line1=Когда якори путешествия и EnderIO экипированы
 item.itemTravelStaff.tooltip.detailed.line2=блоки становятся видимыми и могут быть
 item.itemTravelStaff.tooltip.detailed.line3=активированы ПКМ
-item.itemTravelStaff.tooltip.detailed.line4=Shift-ПКМ телепортирует
+item.itemTravelStaff.tooltip.detailed.line4=SHIFT+ПКМ телепортирует
 item.itemTravelStaff.tooltip.detailed.line5=игрока на короткую дистанцию
 enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 
@@ -724,7 +725,7 @@ item.itemCoordSelector.name=Настройщик координат
 item.itemCoordSelector.tooltip.detailed.line1=Сохраняет координаты блока.
 item.itemCoordSelector.tooltip.detailed.line2=ПКМ по блоку, чтобы выбрать
 item.itemCoordSelector.tooltip.detailed.line3=блок рядом с этой стороной.
-item.itemCoordSelector.tooltip.detailed.line4=Shift-ПКМ по блоку, чтобы
+item.itemCoordSelector.tooltip.detailed.line4=SHIFT+ПКМ по блоку, чтобы
 item.itemCoordSelector.tooltip.detailed.line5=выбрать конкретный блок.
 item.itemCoordSelector.tooltip.detailed.line6=Можно выбирать блоки на расстоянии.
 enderio.itemCoordSelector.chat.newCoords=Новые координаты: %s
@@ -761,26 +762,26 @@ tile.blockPainter.tooltip.detailed.line6=и большинства машин
 //Items
 item.itemYetaWrench.name=Гаечный ключ Yeta
 item.itemYetaWrench.tooltip.detailed.line1=Скрывает фасады труб, когда в руке
-item.itemYetaWrench.tooltip.detailed.line2=Shift-ПКМ, чтобы моментально демонтировать
+item.itemYetaWrench.tooltip.detailed.line2=SHIFT+ПКМ, чтобы моментально демонтировать
 item.itemYetaWrench.tooltip.detailed.line3=механизм или трубы
-item.itemYetaWrench.tooltip.detailed.line4=Shift-ЛКМ по трубе, чтобы
+item.itemYetaWrench.tooltip.detailed.line4=SHIFT+ЛКМ по трубе, чтобы
 item.itemYetaWrench.tooltip.detailed.line5=открыть интерфейс настроек
-item.itemYetaWrench.tooltip.detailed.line6=Используйте Shift-колёсико мыши или '%s', чтобы
+item.itemYetaWrench.tooltip.detailed.line6=Используйте SHIFT+колёсико мыши или '%s', чтобы
 item.itemYetaWrench.tooltip.detailed.line7=отображать только один вид труб
 
 item.itemMagnet.name=Электромагнит
 item.itemMagnet.tooltip.detailed.line1=Тянет ближайшие к Вам предметы
-item.itemMagnet.tooltip.detailed.line2=Shift-ПКМ, чтобы включить/выключить
-item.itemMagnet.tooltip.detailed.line3=Должен быть запитан, активен и находиться на
+item.itemMagnet.tooltip.detailed.line2=SHIFT+ПКМ, чтобы включить/выключить
+item.itemMagnet.tooltip.detailed.line3=Должен быть запитан энергией, активен и находиться на
 item.itemMagnet.tooltip.detailed.line4=панели быстрого доступа (или в слоте Baubles) для функционирования
 
 item.enderio.itemConduitProbe.name=Зонд для труб
 item.enderio.itemConduitProbe.tooltip.detailed.line1=ПКМ по трубе, чтобы отобразить
 item.enderio.itemConduitProbe.tooltip.detailed.line2=детали о её сети
-item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift-ПКМ по трубе, чтобы
+item.enderio.itemConduitProbe.tooltip.detailed.line3=SHIFT+ПКМ по трубе, чтобы
 item.enderio.itemConduitProbe.tooltip.detailed.line4=получить доступ к её параметрам подключения
 item.enderio.itemConduitProbe.tooltip.detailed.line5=ПКМ, чтобы вставить их
-item.enderio.itemConduitProbe.tooltip.detailed.line6=Используйте Shift-колёсико мыши или 'Y', чтобы изменить режим
+item.enderio.itemConduitProbe.tooltip.detailed.line6=Используйте SHIFT+колёсико мыши или 'Y', чтобы изменить режим
 
 item.itemSoulVessel.name=Флакон для душ
 enderio.item.itemSoulVessel.tooltip.health=Здоровье:
@@ -794,7 +795,7 @@ item.itemSoulVessel.tooltip.detailed.line3=Нажмите ПКМ снова, ч�
 item.itemXpTransfer.name=Стержень опыта
 item.itemXpTransfer.tooltip.detailed.line1=ПКМ по резервуару, содержащему
 item.itemXpTransfer.tooltip.detailed.line2=жидкий опыт, чтобы получить его
-item.itemXpTransfer.tooltip.detailed.line3=Shift-ПКМ, чтобы передать опыт
+item.itemXpTransfer.tooltip.detailed.line3=SHIFT+ПКМ, чтобы передать опыт
 item.itemXpTransfer.tooltip.detailed.line4=в резервуар
 
 skullZombieElectrode.name=Зомби-электрод
@@ -803,7 +804,7 @@ skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Эндера
 skullSentientEnder.name=Разумный Эндер
 
-item.itemSpawnEggEnderIO.name=Призвать существо - 
+item.itemSpawnEggEnderIO.name=Яйцо призыва - 
 
 //Dark Steel
 item.darkSteel_helmet.name=Тёмный шлем
@@ -817,23 +818,23 @@ item.darkSteel_shears.name=Тёмные ножницы
 
 enderio.item.darkSteel.tooltip.lvs=уровней
 
-enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при питании
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при заряде энергии
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
 enderio.item.darkSteel_pickaxe.tooltip.cost=стоит
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
 
-enderio.item.darkSteel_shears.tooltip.multiHarvest=Стригут несколько блоков/овец, если запитаны
+enderio.item.darkSteel_shears.tooltip.multiHarvest=Стригут несколько блоков/овец, если запитаны энергией
 
 enderio.item.darkSteel_sword.tooltip.line1=Увеличено выпадение черепов и Эндер-жемчугов.
 enderio.item.darkSteel_sword.tooltip.line2=Эндермен не может телепортироваться после удара.
-enderio.item.darkSteel_sword.tooltip.line3=+1 Урон, при питании
+enderio.item.darkSteel_sword.tooltip.line3=+2 Урона при заряде энергии
 
-enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты,
-enderio.item.darkSteel_armor.tooltip.line2=если есть питание
+enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты
+enderio.item.darkSteel_armor.tooltip.line2=при заряде энергии
 
-enderio.item.darkSteel_boots.tooltip.line1=Урон от падения поглощается,
-enderio.item.darkSteel_boots.tooltip.line2=если есть питание
+enderio.item.darkSteel_boots.tooltip.line1=Урон от падения поглощается
+enderio.item.darkSteel_boots.tooltip.line2=при заряде энергии
 
 enderio.darksteel.upgrade.empowered_one.name=Усиление
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
@@ -856,7 +857,7 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Поглощае
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=энергией
 
 enderio.darksteel.upgrade.travel.name=Путешествие
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите Shift-ПКМ, для телепортации или
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите SHIFT+ПКМ, для телепортации или
 enderio.darksteel.upgrade.travel.tooltip.detailed.line2=активации якоря путешествия, или Эндер-интерфейс
 
 enderio.darksteel.upgrade.spoon.name=Ложка
@@ -880,7 +881,7 @@ enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Магия раскрыва
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Магия скрыта от обычного взгляда
 
 enderio.darksteel.upgrade.naturalistEye.name=Глаз натуралиста
-enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Показывает опылённую листву
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Отображает опылённую листву
 
 enderio.darksteel.upgrade.apiaristArmor.helmet.name=Шапка пчеловода
 enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Защита от пчёл
@@ -975,7 +976,7 @@ enderio.gui.machine.tooltip.retrievelevels=уровней опыта игрок�
 enderio.gui.machine.button.retrieveall=Забрать все
 enderio.gui.machine.tooltip.retrieveall=уровни опыта игрока
 enderio.gui.machine.ioMode.overlay.tooltip=Настроить вход/выход
-enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift-клик, чтобы сбросить все стороны
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=SHIFT+ЛКМ, чтобы сбросить все стороны
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=на настройки по-умолчанию
 enderio.gui.machine.ioMode.none=Нет
 enderio.gui.machine.ioMode.pull=Тянуть
@@ -1017,10 +1018,10 @@ enderio.gui.powerMonitor.monHeading2=Энергия в блоке конденс
 enderio.gui.powerMonitor.monHeading3=Энергия в механизме
 enderio.gui.powerMonitor.monHeading4=Средний выход за 5 секунд
 enderio.gui.powerMonitor.monHeading5=Средний вход за 5 секунд
-enderio.gui.powerMonitor.noNetworkError=Нет соединения с сетью. Индикатор мощности должен быть подключён к сети для считывания информации.
+enderio.gui.powerMonitor.noNetworkError=Нет соединения с сетью. Индикатор энергии должен быть подключён к сети для считывания информации.
 
 //MJ Reader
-enderio.gui.mjReader.networkHeading=Силовая сеть
+enderio.gui.mjReader.networkHeading=Энергетическая сеть
 enderio.gui.mjReader.conduitBuffer=Встроенный буфер
 enderio.gui.mjReader.requestRange=Диапазон запросов за тик
 enderio.gui.mjReader.currentRequest=Текущее потребление
@@ -1174,7 +1175,7 @@ enderio.gui.weather.task.clear=Ясная погода
 enderio.gui.weather.task.rain=Дождливая погода
 enderio.gui.weather.task.storm=Гроза
 enderio.gui.weather.requireditem=Требуется предмет: %s
-enderio.weatherObelisk.fuelTank=Barometric Flux Tank
+enderio.weatherObelisk.fuelTank=Барометрический флаксовый резервуар
 
 //Enchants
 enchantment.soulBound=Печать души
@@ -1251,14 +1252,62 @@ enderio.tooltip.uid=UID:
 enderio.tooltip.anvilupgrades=Улучшения на наковальне:
 enderio.waila.config.hiddenfacades=Скрытые фасады
 
-enderio.config.capacitor.alloy_smelter_power_buffer=Alloy Smelter: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.alloy_smelter_power_intake=Alloy Smelter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.alloy_smelter_power_use=Alloy Smelter: Power use per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.buffer_power_buffer=Energy/Omni Buffer: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.buffer_power_intake=Energy/Omni Buffer: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_power_buffer=Crafter: Internal power buffer size (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_power_intake=Crafter: Maximum power intake per tick (will be scaled by the used upgrade capacitor)
-enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (will be scaled by the used upgrade capacitor)
+enderio.config.capacitor.alloy_smelter_power_buffer=Завод сплавов: Размер внутреннего буфера энергии (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.alloy_smelter_power_intake=Завод сплавов: Максимальная энергия, потребляемая за тик (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.alloy_smelter_power_use=Завод сплавов: Power use per tick (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.buffer_power_buffer=Энергетический/универсальный буфер: Размер внутреннего буфера энергии (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.buffer_power_intake=Энергетический/универсальный буфер: Максимальная энергия, потребляемая за тик (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.crafter_power_buffer=Создатель: Размер внутреннего буфера энергии (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.crafter_power_intake=Создатель: Максимальная энергия, потребляемая за тик (будет масштабироваться при использовании конденсатора)
+enderio.config.capacitor.crafter_ticks=Создатель: Тиков за операцию крафта (будет масштабироваться при использовании конденсатора)
 
-// There's a 1% change that a soul vial containing a pig is names this:
+// There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
+
+// These are used for the "The One Probe" integration
+enderio.top.action.header=%s:
+enderio.top.action.none=nothing
+enderio.top.machine.active=active
+enderio.top.machine.idle=idle
+enderio.top.progress.idle=idle
+enderio.top.suffix.percent=%
+enderio.top.suffix.rf=RF
+enderio.top.range.header=Диапазон: %s
+enderio.top.range=%sx%sx%sx
+enderio.top.machine.outofpower=Нет энергии
+enderio.top.progress.outofpower=Out of Power
+enderio.top.redstone.header=Currently: %s
+enderio.top.redstone.true=Вкл
+enderio.top.redstone.false=Выкл
+
+// Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
+// "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
+
+// Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
+// machines baffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
+// green=Farming Station area, red=Stirling Generator power generation
+enderio.loot.capacitor.smelting=Smelting %s
+enderio.loot.capacitor.intake=Голодный %s
+enderio.loot.capacitor.buffer=Ненасытный %s
+enderio.loot.capacitor.crafting=Crafty %s
+enderio.loot.capacitor.area=Большой %s
+enderio.loot.capacitor.green=Planting %s
+enderio.loot.capacitor.red=Горячий %s
+
+// Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
+// This is the general level of the capacitor
+enderio.loot.capacitor.baselevel.10=%s Dud
+enderio.loot.capacitor.baselevel.15=%s
+enderio.loot.capacitor.baselevel.25=Усиленный %s
+enderio.loot.capacitor.baselevel.35=Изумительный %s
+enderio.loot.capacitor.baselevel.45=Невозможный %s
+
+// As above but for the special attribute
+enderio.loot.capacitor.level.10=Неудачный %s
+enderio.loot.capacitor.level.15=Простой %s
+enderio.loot.capacitor.level.25=Хороший %s
+enderio.loot.capacitor.level.30=Отличный %s
+enderio.loot.capacitor.level.35=Усиленный %s
+enderio.loot.capacitor.level.40=Премиумный %s
+enderio.loot.capacitor.level.42=Невероятный %s 
+enderio.loot.capacitor.level.45=Нестабильный %s
