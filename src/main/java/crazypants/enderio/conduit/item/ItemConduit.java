@@ -859,4 +859,20 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     hashCodes.addEnum(inputColors);
   }
 
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    if (network != null) {
+      final BlockPos pos = bundle.getEntity().getPos();
+      for (EnumFacing direction : externalConnections) {
+        try {
+          BlockPos p = pos.offset(direction);
+          network.inventoryRemoved(this, p.getX(), p.getY(), p.getZ());
+        } catch (Throwable t) {
+          // silent
+        }
+      }
+    }
+  }
+
 }

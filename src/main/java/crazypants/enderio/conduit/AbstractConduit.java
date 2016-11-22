@@ -638,4 +638,7 @@ public abstract class AbstractConduit implements IConduit {
     hashCodes.add(conduitConnections, externalConnections, conectionModes);
   }
 
+  @Override
+  public void invalidate() {
+  }
 }

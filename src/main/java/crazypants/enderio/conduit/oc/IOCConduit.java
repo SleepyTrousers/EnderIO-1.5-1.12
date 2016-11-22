@@ -15,8 +15,6 @@ public interface IOCConduit extends IConduit, Environment, SidedEnvironment {
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  void invalidate();
-
   public abstract void setSignalColor(EnumFacing dir, DyeColor col);
 
   public abstract DyeColor getSignalColor(EnumFacing dir);

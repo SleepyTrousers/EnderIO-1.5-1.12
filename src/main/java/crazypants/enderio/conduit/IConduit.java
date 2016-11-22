@@ -167,4 +167,6 @@ public interface IConduit {
    */
   boolean shouldMirrorTexture();
 
+  void invalidate();
+
 }

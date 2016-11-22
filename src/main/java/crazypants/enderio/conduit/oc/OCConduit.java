@@ -517,10 +517,6 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public void invalidate() {
-  }
-
-  @Override
   public TextureAtlasSprite getTextureForState(CollidableComponent component) {
     if (Config.enableOCConduitsAnimatedTexture) {
       if (component.dir == null) {

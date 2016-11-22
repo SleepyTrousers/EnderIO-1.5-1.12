@@ -907,9 +907,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public void invalidate() {
     super.invalidate();
-    IOCConduit cond = getConduit(IOCConduit.class);
-    if (cond != null) {
-      cond.invalidate();
+    if (worldObj.isRemote) {
+      return;
+    }
+    List<IConduit> copy = new ArrayList<IConduit>(conduits);
+    for (IConduit con : copy) {
+      con.invalidate();
     }
   }
 
