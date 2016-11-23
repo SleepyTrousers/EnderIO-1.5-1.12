@@ -1,6 +1,14 @@
 package crazypants.enderio;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.block.BlockDarkIronBars;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
@@ -99,8 +107,10 @@ import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public enum ModObject implements IModObject {
   // Enderface
@@ -268,25 +278,34 @@ public enum ModObject implements IModObject {
 
   private final @Nonnull String unlocalisedName;
 
-
   protected Block block;
   protected Item item;
   
   protected final Class<?> clazz;
-  protected final String methodName;
+  protected final @Nonnull String methodName;
+  protected final @Nullable Class<? extends TileEntity> teClazz;
   
   private ModObject() {
     this(null);
   }
 
   ModObject(Class<?> clazz) {
-    this(clazz, "create");
+    this(clazz, "create", null);
+  }
+
+  ModObject(Class<?> clazz, Class<? extends TileEntity> teClazz) {
+    this(clazz, "create", teClazz);
   }
   
-  ModObject(Class<?> clazz, String methodName) {
+  ModObject(Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, methodName, null);
+  }
+
+  ModObject(Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
     unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()");
     this.clazz = clazz;
     this.methodName = methodName;
+    this.teClazz = teClazz;
   }
   
   @Override
@@ -332,10 +351,37 @@ public enum ModObject implements IModObject {
     }
   }
 
+  private static void registerTeClasses() {
+    Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
+
+    for (ModObject elem : values()) {
+      if (elem.teClazz != null) {
+        if (!clazzes.containsKey(elem.teClazz)) {
+          clazzes.put(elem.teClazz, new ArrayList<String>());
+        }
+        clazzes.get(elem.teClazz).add(elem.unlocalisedName + "TileEntity");
+      }
+    }
+
+    for (Entry<Class<? extends TileEntity>, List<String>> entry : clazzes.entrySet()) {
+      if (entry.getValue().size() == 1) {
+        GameRegistry.registerTileEntity(entry.getKey(), entry.getValue().get(0));
+      } else {
+        Collections.sort(entry.getValue());
+        String[] params = new String[entry.getValue().size() - 1];
+        for (int i = 0; i < params.length; i++) {
+          params[i] = entry.getValue().get(i + 1);
+        }
+        GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), entry.getValue().get(0), params);
+      }
+    }
+  }
+
   public static void preInit(FMLPreInitializationEvent event) {
     for (ModObject elem : values()) {
       elem.preInitElem(event);
     }
+    registerTeClasses();
   }
 
   public static void init(FMLInitializationEvent event) {
