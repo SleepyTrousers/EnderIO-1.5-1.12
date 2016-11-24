@@ -65,7 +65,7 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
   }
 
   public static List<Integer> getLevers() {
-    if (delays == null) {
+    if (delays == null || delays.isEmpty()) {
       delays.clear();
       String s = leversEnabled;
       s = s.replaceAll("[^0-9,]", "");
