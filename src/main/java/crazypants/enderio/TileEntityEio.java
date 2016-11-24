@@ -1,10 +1,10 @@
 package crazypants.enderio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.config.Config;
 import info.loenwind.autosave.Reader;
@@ -88,13 +88,18 @@ public abstract class TileEntityEio extends TileEntityBase {
     Writer.write(StoreFor.ITEM, nbtRoot, this);
   }
 
-  private final static List<TileEntity> notTickingTileEntities = Lists.<TileEntity> newArrayList();
+  private final static List<TileEntity> notTickingTileEntitiesS = new ArrayList<TileEntity>();
+  private final static List<TileEntity> notTickingTileEntitiesC = new ArrayList<TileEntity>();
   /**
    * Called on each tick. Do not call super from any subclass, that will disable ticking this TE again.
    */
   @Override
   protected void doUpdate() {
-    notTickingTileEntities.add(this);
+    if (worldObj.isRemote) {
+      notTickingTileEntitiesC.add(this);
+    } else {
+      notTickingTileEntitiesS.add(this);
+    }
   }
 
   static {
@@ -103,16 +108,18 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   @SubscribeEvent
   public static void onServerTick(TickEvent.ServerTickEvent event) {
-    for (TileEntity te : notTickingTileEntities) {
+    for (TileEntity te : notTickingTileEntitiesS) {
       te.getWorld().tickableTileEntities.remove(te);
     }
+    notTickingTileEntitiesS.clear();
   }
 
   @SubscribeEvent
   public static void onClientTick(TickEvent.ClientTickEvent event) {
-    for (TileEntity te : notTickingTileEntities) {
+    for (TileEntity te : notTickingTileEntitiesC) {
       te.getWorld().tickableTileEntities.remove(te);
     }
+    notTickingTileEntitiesC.clear();
   }
 
 }
