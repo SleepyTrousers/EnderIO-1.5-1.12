@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableList;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
@@ -17,8 +18,8 @@ import crazypants.enderio.machine.painter.ContainerPainter;
 import crazypants.enderio.machine.painter.GuiPainter;
 import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import mezz.jei.Internal;
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -29,6 +30,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -142,14 +144,15 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
   }
  
   @SuppressWarnings("null")
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
-    registry.addRecipeCategories(new PainterRecipeCategory(guiHelper));
+  public static void register(IModRegistry registry, IJeiHelpers jeiHelpers) {
+    registry.addRecipeCategories(new PainterRecipeCategory(jeiHelpers));
     registry.addRecipeHandlers(new BaseRecipeHandler<PainterRecipeWrapper>(PainterRecipeWrapper.class, PainterRecipeCategory.UID));
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(blockPainter.getBlock()), PainterRecipeCategory.UID);
 
+    ImmutableList<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
     registry.addRecipes(
-        splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.getUnlocalisedName()).values(), ItemHelper.getValidItems()));
+        splitRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockPainter.getUnlocalisedName()).values(), validItems));
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerPainter.class, PainterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
@@ -162,12 +165,16 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
   private final static int yOff = 28;
   
   @Nonnull
+  private final IStackHelper stackHelper;
+  @Nonnull
   private final IDrawable background;
 
   @Nonnull
   protected final IDrawableAnimated arror;
   
-  public PainterRecipeCategory(IGuiHelper guiHelper) {
+  public PainterRecipeCategory(IJeiHelpers jeiHelpers) {
+    stackHelper = jeiHelpers.getStackHelper();
+    IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("painter");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 120, 50);
 
@@ -220,18 +227,18 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
             for (int i = 0; i < currentRecipe.paints.size(); i++) {
               ItemStack resultStack = currentRecipe.results.get(i);
               ItemStack paintStack = currentRecipe.paints.get(i);
-              if (Internal.getStackHelper().isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
+              if (stackHelper.isEquivalent(focused, resultStack) && SOURCE_BLOCK.getString(focused).equals(SOURCE_BLOCK.getString(resultStack))
                   && SOURCE_META.getInt(focused) == SOURCE_META.getInt(resultStack)) {
                 paints.add(paintStack);
                 results.add(resultStack);
               }
             }
-          } else if (!Internal.getStackHelper().isEquivalent(focused, currentRecipe.target)) {
+          } else if (!stackHelper.isEquivalent(focused, currentRecipe.target)) {
             // JEI is focusing on the paint. Limit the output items to things that are painted with this paint.
             for (int i = 0; i < currentRecipe.paints.size(); i++) {
               ItemStack resultStack = currentRecipe.results.get(i);
               ItemStack paintStack = currentRecipe.paints.get(i);
-              if (Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+              if (stackHelper.isEquivalent(focused, paintStack)) {
                 paints.add(paintStack);
                 results.add(resultStack);
               }
@@ -242,7 +249,7 @@ public class PainterRecipeCategory extends BlankRecipeCategory<PainterRecipeCate
             for (int i = 0; i < currentRecipe.paints.size(); i++) {
               ItemStack resultStack = currentRecipe.results.get(i);
               ItemStack paintStack = currentRecipe.paints.get(i);
-              if (!Internal.getStackHelper().isEquivalent(focused, paintStack)) {
+              if (!stackHelper.isEquivalent(focused, paintStack)) {
                 paints.add(paintStack);
                 results.add(resultStack);
               }

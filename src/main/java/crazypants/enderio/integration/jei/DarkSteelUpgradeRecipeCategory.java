@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Triple;
 
 import crazypants.enderio.Log;
@@ -64,14 +65,30 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
   } // -------------------------------------
 
   
-  public static List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes() {
+  public static List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes(List<ItemStack> validItems) {
     List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
     Set<String> seen = new HashSet<String>();
-    List<ItemStack> items = DarkSteelRecipeManager.instance.getRecipes(seen, list, ItemHelper.getValidItems());
+    List<ItemStack> items = DarkSteelRecipeManager.instance.getRecipes(seen, list, validItems);
     while (!items.isEmpty()) {
       items = DarkSteelRecipeManager.instance.getRecipes(seen, list, items);
     }
     return list;
+  }
+
+  private static final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = getAllRecipes(ItemHelper.getValidItems());
+
+  public static void registerSubtypes(ISubtypeRegistry subtypeRegistry) {
+    DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
+    Set<Item> items = new HashSet<Item>();
+    for (Triple<ItemStack, ItemStack, ItemStack> rec : allRecipes) {
+      items.add(rec.getLeft().getItem());
+      items.add(rec.getRight().getItem());
+    }
+    for (Item item : items) {
+      subtypeRegistry.registerNbtInterpreter(item, dsusi);
+    }
+
+    Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade subtypes to JEI.", allRecipes.size()));
   }
   
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
@@ -81,21 +98,6 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
     registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.ANVIL), DarkSteelUpgradeRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlock()), DarkSteelUpgradeRecipeCategory.UID);
 
-    long start = System.nanoTime();
-    final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = getAllRecipes();
-    long end = System.nanoTime();
-
-    Set<Item> items = new HashSet<Item>();
-    for (Triple<ItemStack, ItemStack, ItemStack> rec : allRecipes) {
-      items.add(rec.getLeft().getItem());
-      items.add(rec.getRight().getItem());
-    }
-    ISubtypeRegistry subtypeRegistry = registry.getJeiHelpers().getSubtypeRegistry();
-    DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
-    for (Item item : items) {
-      subtypeRegistry.registerNbtInterpreter(item, dsusi);
-    }
-
     List<DarkSteelUpgradeRecipeWrapper> result = new ArrayList<DarkSteelUpgradeRecipeWrapper>();
     for (Triple<ItemStack, ItemStack, ItemStack> rec : allRecipes) {
       result.add(new DarkSteelUpgradeRecipeWrapper(rec));
@@ -104,8 +106,7 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerRepair.class, DarkSteelUpgradeRecipeCategory.UID, 0, 2, 3, 4 * 9);
 
-    Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes to JEI in %.3f seconds.", allRecipes.size(),
-        (end - start) / 1000000000d));
+    Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes to JEI.", allRecipes.size()));
   }
 
   // ------------ Category

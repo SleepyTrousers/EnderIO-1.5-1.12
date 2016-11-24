@@ -16,12 +16,11 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
-import mezz.jei.transfer.BasicRecipeTransferInfo;
-import mezz.jei.util.StackHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -29,9 +28,7 @@ import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.ModObject.blockInventoryPanel;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_RECIPE_SLOT;
 
 /**
  * Notes:
@@ -47,17 +44,14 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
 
   public static void register(IModRegistry registry) {
     IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
-    recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler(registry));
+    recipeTransferRegistry.addRecipeTransferHandler(new InventoryPanelRecipeTransferHandler(registry), VanillaRecipeCategoryUid.CRAFTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(blockInventoryPanel.getBlock()), VanillaRecipeCategoryUid.CRAFTING);
   }
  
   private final IModRegistry registry;
-  private final @Nonnull BasicRecipeTransferInfo transferInfo;
 
   private InventoryPanelRecipeTransferHandler(IModRegistry registry) {
     this.registry = registry;
-    transferInfo = new BasicRecipeTransferInfo(InventoryPanelContainer.class, VanillaRecipeCategoryUid.CRAFTING, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-
   }
 
   @Override
@@ -122,9 +116,18 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
     return registry.getJeiHelpers().recipeTransferHandlerHelper().createUserErrorForSlots(EnderIO.lang.localizeExact("jei.tooltip.error.recipe.transfer.missing"), missingItemSlots);
   }
 
+  private static List<Slot> getInventorySlots(InventoryPanelContainer invPanelContainer) {
+    List<Slot> slots = new ArrayList<Slot>();
+    for (int i = FIRST_INVENTORY_SLOT; i < FIRST_INVENTORY_SLOT + NUM_INVENTORY_SLOT; i++) {
+      Slot slot = invPanelContainer.getSlot(i);
+      slots.add(slot);
+    }
+    return slots;
+  }
+
   private boolean containerContainsIngredient(InventoryPanelContainer invPanelContainer, List<ItemStack> allIng) {
     
-    List<Slot> slots = transferInfo.getInventorySlots(invPanelContainer);
+    List<Slot> slots = getInventorySlots(invPanelContainer);
     List<ItemStack> available = new ArrayList<ItemStack>();
     for (Slot slot : slots) {
       if (slot.getHasStack()) {
@@ -132,7 +135,7 @@ public class InventoryPanelRecipeTransferHandler implements IRecipeTransferHandl
       } 
     }
     
-    StackHelper sh = (StackHelper)registry.getJeiHelpers().getStackHelper();
+    IStackHelper sh = registry.getJeiHelpers().getStackHelper();
     return sh.containsAnyStack(available, allIng) != null;
   }
 
