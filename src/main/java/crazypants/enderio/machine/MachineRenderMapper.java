@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -40,13 +41,24 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
   @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
                                           QuadCollector quadCollector) {
-    TileEntity tileEntity = state.getTileEntity();
+    TileEntity tileEntity = getTileEntity(state, pos);
     Block block = state.getBlock();
 
     if ((tileEntity instanceof AbstractMachineEntity) && (block instanceof AbstractMachineBlock)) {
       return render(state.getState(), world, pos, blockLayer, (AbstractMachineEntity) tileEntity, (AbstractMachineBlock<?>) block);
     }
     return null;
+  }
+
+  private TileEntity getTileEntity(IBlockStateWrapper state, BlockPos pos) {
+    IBlockAccess world = state.getWorld();
+    if (world instanceof PaintedBlockAccessWrapper) {
+      TileEntity te = ((PaintedBlockAccessWrapper) world).getRealTileEntity(pos);
+      if (te instanceof AbstractMachineEntity) {
+        return te;
+      }
+    }
+    return state.getTileEntity();
   }
 
   @SideOnly(Side.CLIENT)

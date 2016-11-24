@@ -17,6 +17,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.model.CollectedQuadBakedBlockModel;
@@ -157,7 +158,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   @Override
   public @Nonnull IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey) {
     super.addCacheKey(addlCacheKey);
-    doCaching = true;
+    doCaching = !(world instanceof PaintedBlockAccessWrapper);
     return this;
   }
 

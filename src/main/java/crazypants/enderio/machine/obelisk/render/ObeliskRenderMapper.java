@@ -6,6 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.util.ItemQuadCollector;
 import crazypants.enderio.render.util.QuadCollector;
@@ -39,7 +40,7 @@ public class ObeliskRenderMapper extends MachineRenderMapper {
   @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
-    TileEntity tileEntity = state.getTileEntity();
+    TileEntity tileEntity = getTileEntity(state, pos);
 
     boolean isActive = tileEntity instanceof AbstractMachineEntity ? ((AbstractMachineEntity) tileEntity).isActive() : true;
 
@@ -47,6 +48,17 @@ public class ObeliskRenderMapper extends MachineRenderMapper {
         ObeliskBakery.bake(isActive ? ObeliskRenderManager.INSTANCE.getActiveTextures() : ObeliskRenderManager.INSTANCE.getTextures()));
 
     return null;
+  }
+
+  private TileEntity getTileEntity(IBlockStateWrapper state, BlockPos pos) {
+    IBlockAccess world = state.getWorld();
+    if (world instanceof PaintedBlockAccessWrapper) {
+      TileEntity te = ((PaintedBlockAccessWrapper) world).getRealTileEntity(pos);
+      if (te instanceof AbstractMachineEntity) {
+        return te;
+      }
+    }
+    return state.getTileEntity();
   }
 
 }
