@@ -156,6 +156,17 @@ public class PainterUtil2 {
     }
   }
 
+  public static ItemStack getPaintAsStack(IBlockState state) {
+    if (state != null) {
+      Block block = state.getBlock();
+      Item itemFromBlock = Item.getItemFromBlock(block);
+      if (itemFromBlock != null) {
+        return new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
+      }
+    }
+    return null;
+  }
+
   public interface IWithPaintName {
     String getPaintName(ItemStack stack);
   }

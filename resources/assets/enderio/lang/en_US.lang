@@ -1360,6 +1360,7 @@ enderio.top.rf.header.maxin=Max Input:
 enderio.top.rf.header.maxout=Max Output:
 enderio.top.rf.header.avg=I/O:
 enderio.top.rf.value=%s RF/t
+enderio.top.paint.header=Painted with:
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"

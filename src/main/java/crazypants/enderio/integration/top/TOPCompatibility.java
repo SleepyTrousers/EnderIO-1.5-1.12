@@ -1,16 +1,9 @@
 package crazypants.enderio.integration.top;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
-import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
@@ -19,24 +12,9 @@ import com.google.common.base.Function;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.ContinuousTask;
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
-import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.spawner.TilePoweredSpawner;
-import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.IPowerStorage;
-import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.enderio.xp.IHaveExperience;
+import crazypants.enderio.paint.IPaintable;
 import crazypants.util.CapturedMob;
 import crazypants.util.NbtValue;
 import mcjty.theoneprobe.api.ElementAlignment;
@@ -96,18 +74,18 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   @Override
   public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData hitData) {
-    if (probeInfo != null && world != null && blockState != null && hitData != null && blockState.getBlock() instanceof BlockEio) {
+    if (probeInfo != null && world != null && blockState != null && hitData != null && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
       TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, hitData.getPos());
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
 
-        Data data = new Data(tileEntity, hitData);
+        TOPData data = new TOPData(tileEntity, hitData);
+
+        mkPaint(mode, eiobox, data);
 
         mkProgressLine(mode, eiobox, data);
 
         mkRfLine(mode, eiobox, data);
-
-        mkRfIOLine(mode, eiobox, data);
 
         mkXPLine(mode, eiobox, data);
 
@@ -175,7 +153,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, Data data) {
+  private void mkMobsBox(ProbeMode mode, EioBox mobbox, World world, TOPData data) {
     if (data.hasMobs) {
       if (mode != ProbeMode.NORMAL || topShowMobsByDefault) {
         mobbox.get().text(TextFormatting.YELLOW + EnderIO.lang.localize("top.action.header", data.mobAction));
@@ -203,7 +181,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkRangeLine(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkRangeLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRange) {
       if (mode != ProbeMode.NORMAL || topShowRangeByDefault) {
         int sizeX = (int) data.bounds.sizeX();
@@ -218,7 +196,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkSideConfigLine(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkSideConfigLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasIOMode) {
       if (mode != ProbeMode.NORMAL || topShowSideConfigByDefault) {
         addIcon(eiobox.get().horizontal(eiobox.center()), IconEIO.IO_CONFIG_UP).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
@@ -231,7 +209,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkRedstoneLine(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkRedstoneLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRedstone) {
       if (mode != ProbeMode.NORMAL || topShowRedstoneByDefault) {
         addIcon(eiobox.get().horizontal(eiobox.center()), data.redstoneIcon).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
@@ -243,7 +221,20 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkRfLine(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkPaint(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.isPainted) {
+      IProbeInfo info = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.PAINTING))
+          .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(TextFormatting.YELLOW + EnderIO.lang.localize("top.paint.header"));
+      if (data.paint2 != null) {
+        info.horizontal(eiobox.center()).item(data.paint2).text(data.paint2.getDisplayName());
+      }
+      if (data.paint1 != null) {
+        info.horizontal(eiobox.center()).item(data.paint1).text(data.paint1.getDisplayName());
+      }
+    }
+  }
+
+  private void mkRfLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRF) {
       if (mode != ProbeMode.NORMAL || topShowPowerByDefault) {
         IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.REDSTONE));
@@ -276,10 +267,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkRfIOLine(ProbeMode mode, EioBox eiobox, Data data) {
-  }
-
-  private void mkXPLine(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkXPLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasXP) {
       if (mode != ProbeMode.NORMAL || topShowXPByDefault) {
         // We need to put the number of levels in as "current" value for it to be displayed as text. To make the progress bar scale to the partial level, we set
@@ -295,7 +283,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkTankLines(ProbeMode mode, EioBox eiobox, Data data) {
+  private void mkTankLines(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.tankData != null && !data.tankData.isEmpty()) {
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
         for (ITankData tank : data.tankData) {
@@ -339,155 +327,12 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
   }
 
 
-  private static class Data {
-    static enum ProgressResult {
-      NONE,
-      PROGRESS,
-      PROGRESS_ACTIVE,
-      PROGRESS_NO_POWER,
-      PROGRESS_IDLE,
-      NO_PROGRESS_ACTIVE,
-      NO_PROGRESS_IDLE;
-    }
-
-    boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP, hasRFIO;
-    boolean isActive, isPowered, redstoneControlStatus;
-    float progress;
-    long rf, maxrf;
-    int experienceLevel, xpBarScaled, maxRFIn, maxRFOut, avgRF;
-    String redstoneTooltip, sideName, mobAction;
-    IWidgetIcon redstoneIcon;
-    IoMode ioMode;
-    BoundingBox bounds;
-    List<CapturedMob> mobs;
-    Data.ProgressResult progressResult = Data.ProgressResult.NONE;
-    List<ITankData> tankData = null;
-
-    public Data(TileEntity tileEntity, IProbeHitData hitData) {
-
-      if (tileEntity instanceof AbstractMachineEntity) {
-        AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;
-        isActive = te.isActive();
-        hasStatus = true;
-      }
-
-      if (tileEntity instanceof IPowerStorage) {
-        IPowerStorage te = (IPowerStorage) tileEntity;
-        maxrf = te.getMaxEnergyStoredL();
-        rf = te.getEnergyStoredL();
-        te.getMaxInput();
-        hasRFIO = isPowered = hasRF = maxrf > 0;
-
-        maxRFIn = te.getMaxInput();
-        maxRFOut = te.getMaxOutput();
-        avgRF = te.getAverageIOPerTick();
-      } else if (tileEntity instanceof IInternalPoweredTile) {
-        IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
-        if (te.displayPower()) {
-          maxrf = te.getMaxEnergyStored(null);
-          rf = te.getEnergyStored(null);
-          isPowered = rf > 0;
-          hasRF = maxrf > 0;
-        }
-      }
-
-      if (tileEntity instanceof IProgressTile) {
-        IProgressTile progressTile = (IProgressTile) tileEntity;
-        progress = progressTile.getProgress();
-        hasProgress = true;
-        if (tileEntity instanceof AbstractPoweredTaskEntity) {
-          AbstractPoweredTaskEntity te = (AbstractPoweredTaskEntity) tileEntity;
-          if (te.getCurrentTask() instanceof ContinuousTask) {
-            hasProgress = false;
-          }
-        } else if (tileEntity instanceof IConduitBundle) {
-          hasProgress = false;
-        }
-      }
-
-      if (tileEntity instanceof IRedstoneModeControlable) {
-        IRedstoneModeControlable te = (IRedstoneModeControlable) tileEntity;
-        RedstoneControlMode redstoneControlMode = te.getRedstoneControlMode();
-        redstoneControlStatus = te.getRedstoneControlStatus();
-        IconHolder iconHolder = RedstoneControlMode.IconHolder.getFromMode(redstoneControlMode);
-        redstoneIcon = iconHolder.getIcon();
-        redstoneTooltip = iconHolder.getTooltip();
-        hasRedstone = true;
-      }
-
-      if (tileEntity instanceof IIoConfigurable) {
-        IIoConfigurable te = (IIoConfigurable) tileEntity;
-        sideName = hitData.getSideHit().name().toLowerCase(Locale.US);
-        ioMode = te.getIoMode(hitData.getSideHit());
-        hasIOMode = true;
-      }
-
-      if (tileEntity instanceof IRanged) {
-        IRanged te = (IRanged) tileEntity;
-        bounds = te.getBounds();
-        hasRange = bounds != null;
-      }
-
-      if (tileEntity instanceof AbstractMobObelisk) {
-        AbstractMobObelisk te = (AbstractMobObelisk) tileEntity;
-        mobs = te.getMobsInFilter();
-        mobAction = te.getSpawnObeliskAction().getActionString();
-        hasMobs = true;
-      }
-
-      if (tileEntity instanceof TilePoweredSpawner) {
-        if (((TilePoweredSpawner) tileEntity).hasEntity()) {
-          mobs = Collections.singletonList(((TilePoweredSpawner) tileEntity).getEntity());
-          mobAction = AbstractMobObelisk.SpawnObeliskAction.SPAWN.getActionString();
-          hasMobs = true;
-        }
-      }
-
-      if (tileEntity instanceof ITankAccess.IExtendedTankAccess) {
-        tankData = ((ITankAccess.IExtendedTankAccess) tileEntity).getTankDisplayData();
-      }
-
-      if (tileEntity instanceof IHaveExperience) {
-        ExperienceContainer experienceContainer = ((IHaveExperience) tileEntity).getContainer();
-        if (experienceContainer != null) {
-          hasXP = true;
-          experienceLevel = experienceContainer.getExperienceLevel();
-          xpBarScaled = experienceContainer.getXpBarScaled(100);
-        }
-      }
-
-      calculateProgress();
-    }
-
-    private void calculateProgress() {
-      if (hasProgress) {
-        if (progress > 0) {
-          if (hasRF && !isPowered) {
-            progressResult = ProgressResult.PROGRESS_NO_POWER;
-          } else {
-            progressResult = ProgressResult.PROGRESS;
-          }
-        } else if (hasStatus && isActive) {
-          progressResult = ProgressResult.PROGRESS_ACTIVE;
-        } else {
-          progressResult = ProgressResult.PROGRESS_IDLE;
-        }
-      } else if (hasStatus) {
-        if (isActive) {
-          progressResult = ProgressResult.NO_PROGRESS_ACTIVE;
-        } else {
-          progressResult = ProgressResult.NO_PROGRESS_IDLE;
-        }
-      }
-    }
-  }
-
   /**
    * @return true if some information was hidden
    */
-  private void mkProgressLine(ProbeMode mode, EioBox eiobox, Data data) {
-    if (data.progressResult != Data.ProgressResult.NONE) {
-      if (mode != ProbeMode.NORMAL || topShowProgressByDefault || data.progressResult == Data.ProgressResult.PROGRESS_NO_POWER) {
+  private void mkProgressLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.progressResult != TOPData.ProgressResult.NONE) {
+      if (mode != ProbeMode.NORMAL || topShowProgressByDefault || data.progressResult == TOPData.ProgressResult.PROGRESS_NO_POWER) {
         final IProbeInfo progressLine = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.CLOCK));
         switch (data.progressResult) {
         case PROGRESS:
