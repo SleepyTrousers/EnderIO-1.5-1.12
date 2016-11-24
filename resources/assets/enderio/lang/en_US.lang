@@ -806,8 +806,8 @@ enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
 tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences, Gates,
 tile.blockPainter.tooltip.detailed.line3=Slabs, Cobblestone, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=Glowstone, Carpet, Pressure Plates,
-tile.blockPainter.tooltip.detailed.line5=Quite Clear Glass, Fused Quartz,
+tile.blockPainter.tooltip.detailed.line4=Glowstone, Redstone, Carpet, Pressure
+tile.blockPainter.tooltip.detailed.line5=Plates, Quite Clear Glass, Fused Quartz,
 tile.blockPainter.tooltip.detailed.line6=and most machines
 
 //Items
