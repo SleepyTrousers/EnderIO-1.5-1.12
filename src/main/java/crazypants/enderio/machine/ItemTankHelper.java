@@ -1,10 +1,10 @@
 package crazypants.enderio.machine;
 
+import crazypants.enderio.fluid.SmartTank;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.tool.SmartTank;
 
 public class ItemTankHelper {
 

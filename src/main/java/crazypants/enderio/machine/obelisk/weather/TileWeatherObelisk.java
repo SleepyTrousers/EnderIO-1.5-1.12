@@ -12,12 +12,12 @@ import com.enderio.core.api.common.util.ITankAccess;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.SmartTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;

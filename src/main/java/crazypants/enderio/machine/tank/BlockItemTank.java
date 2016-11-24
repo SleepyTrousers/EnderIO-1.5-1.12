@@ -8,9 +8,9 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

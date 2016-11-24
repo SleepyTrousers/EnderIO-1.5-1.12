@@ -1,13 +1,13 @@
-package crazypants.enderio.tool;
+package crazypants.util;
 
 import java.lang.reflect.Array;
 
-public class ArrayMappingTool<T extends Object> {
+public class ArrayMapper<T extends Object> {
 
   private final byte[] from_mapping;
   private final byte[] to_mapping;
 
-  public ArrayMappingTool(String from_mapping, String to_mapping) {
+  public ArrayMapper(String from_mapping, String to_mapping) {
     this.from_mapping = from_mapping.getBytes();
     this.to_mapping = to_mapping.getBytes();
   }

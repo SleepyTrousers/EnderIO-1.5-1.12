@@ -1,4 +1,4 @@
-package crazypants.enderio.tool;
+package crazypants.enderio.fluid;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;

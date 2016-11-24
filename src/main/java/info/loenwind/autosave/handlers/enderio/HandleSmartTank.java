@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.tool.SmartTank;
+import crazypants.enderio.fluid.SmartTank;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;

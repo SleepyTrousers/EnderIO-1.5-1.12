@@ -13,9 +13,9 @@ import com.enderio.core.common.fluid.FluidWrapper;
 
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidReservoirHandler;
-import crazypants.enderio.tool.SmartTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
