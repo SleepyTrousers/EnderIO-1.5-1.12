@@ -111,4 +111,6 @@ XML editor will display that as tooltips when editing this file.
   <alias name="PPP_SOULARIUM_SILENT" item="enderio:blockPaintedPressurePlate:11" />
   <alias name="PPP_TUNED_SILENT" item="enderio:blockPaintedPressurePlate:13" />
 
+  <alias name="ADVANCED_FILTER" item="enderio:itemBasicFilterUpgrade:1" />
+
 </enderio:recipes>

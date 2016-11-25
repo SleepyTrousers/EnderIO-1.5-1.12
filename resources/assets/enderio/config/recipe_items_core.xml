@@ -721,7 +721,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="oredict:paper" /><item name="ZOMBIE_CONTROLLER" /><item name="oredict:paper" />
         <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
       </grid>
-      <output name="enderio:itemBasicFilterUpgrade:1" />
+      <output name="ADVANCED_FILTER" />
     </crafting>
   </recipe>
 
@@ -755,6 +755,15 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="oredict:paper" /><item/>
       </grid>
       <output name="enderio:itemPowerItemFilter:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Species" required="false">
+    <crafting>
+      <grid size="3x1">
+        <item name="forestry:propolis" /><item name="ADVANCED_FILTER" /><item name="forestry:propolis" />
+      </grid>
+      <output name="enderio:itemSpeciesItemFilter:0" />
     </crafting>
   </recipe>
 

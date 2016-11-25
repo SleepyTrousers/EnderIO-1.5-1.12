@@ -57,7 +57,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     this.yOffset = yOffset;
     this.buttonIdOffset = buttonIdOffset;
 
-    filter = filterContainer.getItemFilter();
+    filter = (ItemFilter) filterContainer.getItemFilter();
     
     isAdvanced = filter.isAdvanced();
     

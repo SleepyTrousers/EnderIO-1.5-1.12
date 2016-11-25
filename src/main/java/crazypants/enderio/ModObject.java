@@ -24,6 +24,7 @@ import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemSpeciesItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
@@ -108,6 +109,7 @@ import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -130,6 +132,14 @@ public enum ModObject implements IModObject {
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),
+  itemSpeciesItemFilter(ItemSpeciesItemFilter.class) {
+    @Override
+    protected void preInitElem(FMLPreInitializationEvent event) {
+      if (Loader.isModLoaded("forestry")) {
+        super.preInitElem(event);
+      }
+    }
+  },
   itemExtractSpeedUpgrade(ItemExtractSpeedUpgrade.class),
   itemFunctionUpgrade(ItemFunctionUpgrade.class),
 
