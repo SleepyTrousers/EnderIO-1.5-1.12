@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class MagnetUtil {
 
+  private static final String PREVENT_REMOTE_MOVEMENT = "PreventRemoteMovement";
   public static final String EIO_PULLER_TAG = "EIOpuller";
 
   public static boolean shouldAttract(@Nullable BlockPos pullerPos, @Nullable Entity entity) {
@@ -22,7 +23,11 @@ public class MagnetUtil {
 
     NBTTagCompound data = entity.getEntityData();
 
-    if (!data.hasKey(EIO_PULLER_TAG)) {
+    if (isReservedByOthers(data)) {
+      return false;
+    }
+
+    if (!isReservedByEnderIO(data)) {
       // if it is not being pulled already, pull it
       if (pullerPos != null) {
         data.setLong(EIO_PULLER_TAG, pullerPos.toLong());
@@ -32,7 +37,7 @@ public class MagnetUtil {
 
     if (pullerPos == null) {
       // it is already being pulled, so with no further info we are done
-      return true;
+      return false;
     }
 
     long posL = data.getLong(EIO_PULLER_TAG);
@@ -58,6 +63,18 @@ public class MagnetUtil {
       NBTTagCompound data = entity.getEntityData();
       data.removeTag(EIO_PULLER_TAG);
     }
+  }
+
+  public static boolean isReserved(Entity entity) {
+    return isReservedByEnderIO(entity.getEntityData()) || isReservedByOthers(entity.getEntityData());
+  }
+
+  public static boolean isReservedByEnderIO(NBTTagCompound data) {
+    return data.hasKey(EIO_PULLER_TAG);
+  }
+
+  public static boolean isReservedByOthers(NBTTagCompound data) {
+    return data.hasKey(PREVENT_REMOTE_MOVEMENT);
   }
 
 }

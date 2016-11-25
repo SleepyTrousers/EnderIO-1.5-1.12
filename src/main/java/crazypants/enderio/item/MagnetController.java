@@ -160,7 +160,7 @@ public class MagnetController {
                   isValidTarget = true;
                 }
               }
-              isValidTarget = isValidTarget && !entity.getEntityData().hasKey(MagnetUtil.EIO_PULLER_TAG);               
+              isValidTarget = isValidTarget && !MagnetUtil.isReserved(entity);
               if (isValidTarget) {
                 if (arraylist == null) {
                   arraylist = new ArrayList<Entity>(Config.magnetMaxItems > 0 ? Config.magnetMaxItems : 20);
