@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
@@ -89,8 +90,10 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
     Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
 
+    ImmutableList<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
+
     List<TankRecipeWrapper> result = new ArrayList<TankRecipeWrapper>();
-    for (ItemStack stack : ItemHelper.getValidItems()) {
+    for (ItemStack stack : validItems) {
       ItemStack drainedStack = stack.copy();
       IFluidHandler fluidHandler = FluidUtil.getFluidHandler(drainedStack);
       if (fluidHandler != null) {
@@ -191,15 +194,4 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       fluidStacks.set(0, recipeWrapper.fluidInput);
     }
   }
-
-  public static class DarkSteelUpgradeSubtypeInterpreter implements ISubtypeInterpreter {
-
-    @Override
-    @Nullable
-    public String getSubtypeInfo(@Nonnull ItemStack itemStack) {
-      return DarkSteelRecipeManager.instance.getUpgradesAsString(itemStack);
-    }
-
-  }
-
 }

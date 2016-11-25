@@ -60,6 +60,7 @@ enderio.itemItemConduit.name=Item Conduit
 
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
+enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 
 enderio.itemConduitFilterUpgrade.configured=Configured
@@ -1217,6 +1218,10 @@ enderio.gui.conduit.item.fuzzy.fuzzy_25=Fuzzy match for 25% damage
 enderio.gui.conduit.item.fuzzy.fuzzy_50=Fuzzy match for 50% damage
 enderio.gui.conduit.item.fuzzy.fuzzy_75=Fuzzy match for 75% damage
 enderio.gui.conduit.item.fuzzy.fuzzy_99=Fuzzy match for any damage
+
+enderio.gui.conduit.item.species.both=Match primary and secondary species
+enderio.gui.conduit.item.species.primary=Match primary species only
+enderio.gui.conduit.item.species.secondary=Match secondary species only
 
 enderio.gui.conduit.item.filterupgrade=Insert Item Filter
 enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade

@@ -1,10 +1,10 @@
 package crazypants.enderio.conduit.gui.item;
 
-import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public interface IItemFilterContainer {
 
-  ItemFilter getItemFilter();
+  IItemFilter getItemFilter();
 
   void onFilterChanged();
 

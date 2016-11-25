@@ -16,6 +16,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,11 @@ public class JeiPlugin extends BlankModPlugin {
   private static IJeiRuntime jeiRuntime = null;
 
   @Override
+  public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+    DarkSteelUpgradeRecipeCategory.registerSubtypes(subtypeRegistry);
+  }
+
+  @Override
   public void register(@Nonnull IModRegistry registry) {
 
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
@@ -43,7 +49,7 @@ public class JeiPlugin extends BlankModPlugin {
     EnchanterRecipeCategory.register(registry,guiHelper);
     SliceAndSpliceRecipeCategory.register(registry,guiHelper);
     SoulBinderRecipeCategory.register(registry, guiHelper);
-    PainterRecipeCategory.register(registry, guiHelper);
+    PainterRecipeCategory.register(registry, jeiHelpers);
     VatRecipeCategory.register(registry, guiHelper);
     DarkSteelUpgradeRecipeCategory.register(registry, guiHelper);
     TankRecipeCategory.register(registry, guiHelper);
