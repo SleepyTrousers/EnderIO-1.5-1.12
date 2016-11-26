@@ -10,6 +10,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.DebugCommand;
+import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
@@ -206,6 +207,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public void stopWithErrorScreen(String... message) {
+    EnderIOCrashCallable.registerStopScreenMessage(message);
     List<String> lines = new ArrayList<String>();
     for (String string : message) {
       Log.error(string);

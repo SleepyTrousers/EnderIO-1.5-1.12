@@ -1,18 +1,14 @@
 package crazypants.enderio;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.xml.stream.XMLStreamException;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.config.recipes.RecipeFactory;
-import crazypants.enderio.config.recipes.xml.Recipes;
+import crazypants.enderio.config.recipes.RecipeLoader;
 import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
@@ -69,8 +65,6 @@ public class CommonProxy {
     }
   }
   
-  private static final String[] RECIPE_FILES = { "aliases", "materials", "items", "machines" };
-
   public void init() {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
@@ -81,51 +75,10 @@ public class CommonProxy {
       ConduitRecipes.addRecipes();
       MachineRecipes.addRecipes();
       ItemRecipes.addRecipes();
-
-      for (String filename : RECIPE_FILES) {
-        try {
-          Recipes recipes = RecipeFactory.readFile(new Recipes(), "recipes", "recipe_" + filename);
-          if (recipes.isValid()) {
-            recipes.enforceValidity();
-            recipes.register();
-          } else {
-            recipeError(filename, "File is empty or invalid");
-          }
-        } catch (InvalidRecipeConfigException e) {
-          recipeError(filename, e.getMessage());
-        } catch (IOException e) {
-          recipeError(filename, "IO error while reading file:" + e.getMessage());
-        } catch (XMLStreamException e) {
-          recipeError(filename, "File has malformed XML:" + e.getMessage());
-        }
-      }
+      RecipeLoader.addRecipes();
     }
 
     // registerCommands(); // debug command disabled because it is not needed at the moment
-  }
-
-  private void recipeError(String filename, String message) {
-    stopWithErrorScreen( //
-        "=======================================================================", //
-        "== ENDER IO FATAL ERROR ==", //
-        "=======================================================================", //
-        "Cannot register recipes as configured. This means that either", //
-        "your custom config file has an error or another mod does bad", //
-        "things to vanilla items or the Ore Dictionary.", //
-        "=======================================================================", //
-        "== Bad file ==", //
-        "recipe_" + filename + "_core.xml or recipe_" + filename + "_user.xml", //
-        "=======================================================================", //
-        "== Error Message ==", //
-        message, //
-        "=======================================================================", //
-        "", //
-        "=======================================================================", //
-        "Note: To start the game anyway, you can disable recipe loading in the", //
-        "Ender IO config file. However, then all of Ender IO's crafting recipes", //
-        "will be missing.", //
-        "=======================================================================" //
-    );
   }
 
   public void stopWithErrorScreen(String... message) {

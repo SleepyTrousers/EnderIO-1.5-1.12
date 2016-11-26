@@ -128,6 +128,11 @@ public class EnderIOCrashCallable implements ICrashCallable {
     for (String string : teslaDiagnostics()) {
       msg += "                 " + string + "\n";
     }
+    if (stopScreenMessage != null) {
+      for (String s : stopScreenMessage) {
+        msg += s + "\n";
+      }
+    }
     return msg;
   }
 
@@ -205,4 +210,9 @@ public class EnderIOCrashCallable implements ICrashCallable {
     }
   }
 
+  private static String[] stopScreenMessage = null;
+
+  public static void registerStopScreenMessage(String... message) {
+    stopScreenMessage = message;
+  }
 }
