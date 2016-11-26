@@ -35,6 +35,7 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.util.ClientUtil;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -197,7 +198,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public CreativeTabs getCreativeTab(ItemStack stack) {
-    return stack == null || stack.getItem() == null ? null : stack.getItem().getCreativeTab();
+    return Prep.isInvalid(stack) ? null : stack.getItem().getCreativeTab();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package crazypants.enderio.capacitor;
 
+import crazypants.util.Prep;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,13 +11,10 @@ public class CapacitorHelper {
   }
 
   public static ICapacitorData getCapacitorDataFromItemStack(ItemStack stack) {
-    if (stack == null) {
+    if (Prep.isInvalid(stack)) {
       return null;
     }
     final Item item = stack.getItem();
-    if (item == null) {
-      return null;
-    }
     final ICapacitorData capData = getNBTCapacitorDataFromItemStack(stack, item);
     if (capData != null) {
       return capData;

@@ -9,6 +9,7 @@ import crazypants.enderio.capacitor.LootSelector;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.Prep;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -239,7 +240,7 @@ public class LootManager {
       for (LootItem entry : items) {
         if (rand.nextDouble() < entry.chance) {
           ItemStack stack = entry.createStack(rand);
-          if (stack != null) {
+          if (Prep.isValid(stack)) {
 //            System.out.println("LootManager.InnerPool.generateLoot: Added " + stack.getDisplayName() + " " + stack);
             stacks.add(stack);
           }

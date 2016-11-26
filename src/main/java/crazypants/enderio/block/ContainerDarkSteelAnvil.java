@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.config.Config;
+import crazypants.util.Prep;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,19 +68,19 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
           playerIn.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
         }
 
-        inputSlots.setInventorySlotContents(0, (ItemStack) null);
+        inputSlots.setInventorySlotContents(0, Prep.getEmpty());
 
         if (materialCost > 0) {
           ItemStack itemstack1 = inputSlots.getStackInSlot(1);
 
-          if (itemstack1 != null && itemstack1.stackSize > materialCost) {
+          if (Prep.isValid(itemstack1) && itemstack1.stackSize > materialCost) {
             itemstack1.stackSize -= materialCost;
             inputSlots.setInventorySlotContents(1, itemstack1);
           } else {
-            inputSlots.setInventorySlotContents(1, (ItemStack) null);
+            inputSlots.setInventorySlotContents(1, Prep.getEmpty());
           }
         } else {
-          inputSlots.setInventorySlotContents(1, (ItemStack) null);
+          inputSlots.setInventorySlotContents(1, Prep.getEmpty());
         }
 
         ContainerDarkSteelAnvil.this.maximumCost = 0;
