@@ -652,6 +652,7 @@ public class BlockFluidEio extends BlockFluidClassic {
       }
     }
 
+    // see https://github.com/MinecraftForge/MinecraftForge/issues/698
     @Override
     public float getFluidHeightForRender(IBlockAccess world, BlockPos pos) {
       IBlockState up = world.getBlockState(pos.up());
