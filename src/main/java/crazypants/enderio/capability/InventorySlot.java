@@ -1,18 +1,24 @@
 package crazypants.enderio.capability;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.base.Predicate;
 
+import crazypants.util.Prep;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.items.IItemHandler;
+
 public class InventorySlot implements IItemHandler {
 
   private ItemStack itemStack;
-  private final Predicate<ItemStack> filterIn, filterOut;
-  private final Callback<ItemStack> callback;
+  private final @Nonnull Predicate<ItemStack> filterIn, filterOut;
+  private final @Nonnull Callback<ItemStack> callback;
   private final int limit;
+  private @Nullable TileEntity owner;
 
   public InventorySlot() {
     this(null, null, null, null, -1);
@@ -92,6 +98,10 @@ public class InventorySlot implements IItemHandler {
     return slot == 0 ? itemStack : null;
   }
 
+  public boolean isItemValidForSlot(ItemStack stack) {
+    return Prep.isValid(stack) && filterIn.apply(stack);
+  }
+
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
     if (slot == 0 && filterIn.apply(stack)) {
@@ -102,13 +112,13 @@ public class InventorySlot implements IItemHandler {
         }
         if (stack.stackSize <= max) {
           if (!simulate) {
-            callback.onChange(null, itemStack);
+            onChange(null, itemStack);
           }
           return null;
         }
         if (!simulate) {
           itemStack.stackSize = max;
-          callback.onChange(null, itemStack);
+          onChange(null, itemStack);
         }
         ItemStack result = stack.copy();
         result.stackSize -= max;
@@ -121,14 +131,14 @@ public class InventorySlot implements IItemHandler {
           if (!simulate) {
             ItemStack oldStack = itemStack.copy();
             itemStack.stackSize = target;
-            callback.onChange(oldStack, itemStack);
+            onChange(oldStack, itemStack);
           }
           return null;
         }
         if (!simulate) {
           ItemStack oldStack = itemStack.copy();
           itemStack.stackSize = max;
-          callback.onChange(oldStack, itemStack);
+          onChange(oldStack, itemStack);
         }
         ItemStack result = stack.copy();
         result.stackSize -= max - target;
@@ -144,20 +154,27 @@ public class InventorySlot implements IItemHandler {
       ItemStack result = itemStack.copy();
       if (amount >= itemStack.stackSize) {
         if (!simulate) {
-          callback.onChange(itemStack, null);
+          onChange(itemStack, null);
           itemStack = null;
         }
       } else {
         if (!simulate) {
           ItemStack oldStack = itemStack.copy();
           itemStack.stackSize -= amount;
-          callback.onChange(oldStack, itemStack);
+          onChange(oldStack, itemStack);
         }
         result.stackSize = amount;
       }
       return result;
     }
     return null;
+  }
+
+  private void onChange(ItemStack oldStack, ItemStack newStack) {
+    callback.onChange(oldStack, newStack);
+    if (owner != null) {
+      owner.markDirty();
+    }
   }
 
   public void writeToNBT(NBTTagCompound tag) {
@@ -176,6 +193,14 @@ public class InventorySlot implements IItemHandler {
 
   public void set(ItemStack stack) {
     itemStack = stack;
+  }
+
+  public int getMaxStackSize() {
+    return limit;
+  }
+
+  void setOwner(TileEntity owner) {
+    this.owner = owner;
   }
 
 }

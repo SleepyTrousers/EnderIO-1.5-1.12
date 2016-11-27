@@ -3,12 +3,14 @@ package crazypants.enderio.capability;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 
 public class EnderInventory implements IItemHandler {
@@ -96,6 +98,12 @@ public class EnderInventory implements IItemHandler {
     }
   }
 
+  public void setOwner(TileEntity owner) {
+    for (InventorySlot slot : allSlots) {
+      slot.setOwner(owner);
+    }
+  }
+
   @Override
   public int getSlots() {
     return allSlots.getSlots();
@@ -116,7 +124,7 @@ public class EnderInventory implements IItemHandler {
     return allSlots.extractItem(slot, amount, simulate);
   }
 
-  public class View implements IItemHandler {
+  public class View implements IItemHandler, Iterable<InventorySlot> {
 
     private final EnderInventory.Type type;
 
@@ -167,6 +175,24 @@ public class EnderInventory implements IItemHandler {
         }
       }
       return null;
+    }
+
+    @Override
+    public Iterator<InventorySlot> iterator() {
+      return new Iterator<InventorySlot>() {
+
+        int i = 0;
+
+        @Override
+        public boolean hasNext() {
+          return i < getSlots();
+        }
+
+        @Override
+        public InventorySlot next() {
+          return getSlot(i++);
+        }
+      };
     }
 
   }
