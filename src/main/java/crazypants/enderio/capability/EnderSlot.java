@@ -3,6 +3,7 @@ package crazypants.enderio.capability;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -51,6 +52,26 @@ public class EnderSlot extends SlotItemHandler {
   public void putStack(ItemStack stack) {
     ((InventorySlot) getItemHandler()).set(stack);
     this.onSlotChanged();
+  }
+
+  @Override
+  public boolean isItemValid(ItemStack stack) {
+    return ((InventorySlot) getItemHandler()).isItemValidForSlot(stack);
+  }
+
+  @Override
+  public int getItemStackLimit(ItemStack stack) {
+    return getSlotStackLimit();
+  }
+
+  @Override
+  public int getSlotStackLimit() {
+    return ((InventorySlot) getItemHandler()).getMaxStackSize();
+  }
+
+  @Override
+  public boolean isSameInventory(Slot other) {
+    return other instanceof EnderSlot && ((InventorySlot) ((EnderSlot) other).getItemHandler()).getOwner() == ((InventorySlot) getItemHandler()).getOwner();
   }
 
 }

@@ -203,4 +203,8 @@ public class InventorySlot implements IItemHandler {
     this.owner = owner;
   }
 
+  TileEntity getOwner() {
+    return owner;
+  }
+
 }
