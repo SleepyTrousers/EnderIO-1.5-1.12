@@ -20,7 +20,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
@@ -45,7 +45,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileInventoryPanel extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
+public class TileInventoryPanel extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
   public static final int SLOT_CRAFTING_START = 0;
   public static final int SLOT_CRAFTING_RESULT = 9;

@@ -25,7 +25,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
 @Storable
-public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
+public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements IInternalPoweredTile {
 
   // Power
   protected ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;

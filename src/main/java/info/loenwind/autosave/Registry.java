@@ -11,6 +11,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleBlockCoord;
 import info.loenwind.autosave.handlers.enderio.HandleCapturedMob;
+import info.loenwind.autosave.handlers.enderio.HandleEnderInventory;
 import info.loenwind.autosave.handlers.enderio.HandleExperienceContainer;
 import info.loenwind.autosave.handlers.enderio.HandleIMachineRecipe;
 import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
@@ -92,6 +93,7 @@ public class Registry {
     GLOBAL_REGISTRY.register(new HandleExperienceContainer());
     GLOBAL_REGISTRY.register(new HandleStatCollector());
     GLOBAL_REGISTRY.register(new HandleUserIdent());
+    GLOBAL_REGISTRY.register(new HandleEnderInventory());
   }
 
   @Nonnull

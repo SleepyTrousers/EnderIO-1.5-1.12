@@ -40,7 +40,7 @@ public class EnderInventory implements IItemHandler {
     if (idents.containsKey(ident)) {
       throw new RuntimeException("Duplicate slot '" + ident + "'");
     }
-    if (type == EnderInventory.Type.INOUT || type == EnderInventory.Type.ALL) {
+    if (type == EnderInventory.Type.ALL) {
       throw new RuntimeException("Invalid type '" + type + "'");
     }
     idents.put(ident, slot);
@@ -48,6 +48,10 @@ public class EnderInventory implements IItemHandler {
     slots.get(EnderInventory.Type.ALL).add(slot);
     if (type == EnderInventory.Type.INPUT || type == EnderInventory.Type.OUTPUT) {
       slots.get(EnderInventory.Type.INOUT).add(slot);
+    }
+    if (type == EnderInventory.Type.INOUT) {
+      slots.get(EnderInventory.Type.INPUT).add(slot);
+      slots.get(EnderInventory.Type.OUTPUT).add(slot);
     }
   }
 

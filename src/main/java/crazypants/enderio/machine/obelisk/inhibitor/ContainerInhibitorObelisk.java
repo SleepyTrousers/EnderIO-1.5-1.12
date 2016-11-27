@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 
-public class ContainerInhibitorObelisk extends AbstractMachineContainer<AbstractMachineEntity> {
+public class ContainerInhibitorObelisk extends AbstractMachineContainer<AbstractInventoryMachineEntity> {
 
-  public ContainerInhibitorObelisk(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerInhibitorObelisk(InventoryPlayer playerInv, AbstractInventoryMachineEntity te) {
     super(playerInv, te);
   }
 

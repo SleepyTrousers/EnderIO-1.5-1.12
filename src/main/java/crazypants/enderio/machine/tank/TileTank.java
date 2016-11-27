@@ -17,7 +17,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileTank extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
+public class TileTank extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
 
   private static int IO_MB_TICK = 100;
 

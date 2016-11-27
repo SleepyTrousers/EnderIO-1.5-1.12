@@ -20,7 +20,7 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import net.minecraft.client.gui.GuiButton;
@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
-public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBaseEIO {
+public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> extends GuiContainerBaseEIO {
 
   public static final Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
   public static final Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);

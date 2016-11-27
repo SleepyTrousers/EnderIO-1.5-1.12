@@ -24,7 +24,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
@@ -71,7 +71,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
-public class TileKillerJoe extends AbstractMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
+public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
 
   public static class ZombieCache {
 

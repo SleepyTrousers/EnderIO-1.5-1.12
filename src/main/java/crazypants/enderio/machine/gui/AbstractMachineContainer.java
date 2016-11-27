@@ -11,14 +11,14 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> extends ContainerEnder<T> {
+public abstract class AbstractMachineContainer<T extends AbstractInventoryMachineEntity> extends ContainerEnder<T> {
  
   protected Slot upgradeSlot;
 

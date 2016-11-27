@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.generator.combustion;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class ContainerCombustionEngine extends AbstractMachineContainer<AbstractMachineEntity> {
+public class ContainerCombustionEngine extends AbstractMachineContainer<AbstractInventoryMachineEntity> {
 
-  public ContainerCombustionEngine(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerCombustionEngine(InventoryPlayer playerInv, AbstractInventoryMachineEntity te) {
     super(playerInv, te);
   }
 
