@@ -14,6 +14,7 @@ import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -197,6 +198,7 @@ public class EnderIO {
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
     ServerChannelRegister.store();
+    ConduitNetworkTickHandler.instance.flush();
   }
 
   @EventHandler

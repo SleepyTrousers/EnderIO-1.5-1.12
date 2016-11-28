@@ -38,6 +38,11 @@ public class ConduitNetworkTickHandler {
   public void unregisterNetwork(AbstractConduitNetwork<?,?> cn) {
     networks.remove(cn);
   }
+  
+  public void flush() {
+    listeners.clear();
+    networks.clear();
+  }
 
   @SubscribeEvent
   public void onServerTick(TickEvent.ServerTickEvent event) {
