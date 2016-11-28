@@ -117,7 +117,7 @@ public class EnderIO {
     fluids.registerFluids();
 
     URL authlib = this.getClass().getClassLoader().getResource("com/mojang/authlib/GameProfile.class");
-    if (authlib == null || !authlib.toString().contains("tlauncher")) {
+    if (authlib == null || !authlib.toString().contains("/tlauncher/")) {
       // 3rd-party launcher using "accounts" sold by 3rd-party site
       ModObject.preInit(event);
     }
