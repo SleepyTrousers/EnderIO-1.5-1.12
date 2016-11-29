@@ -94,6 +94,8 @@ public class MaterialRecipes {
           addShaped(new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
               new ItemStack(Items.DYE, 1, color.getDyeDamage()));
         } else {
+          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "GCG", "GGG", 'G',
+              new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage()));
           addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
               new ItemStack(Items.DYE, 1, color.getDyeDamage()));
         }
