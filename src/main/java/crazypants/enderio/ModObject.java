@@ -24,9 +24,9 @@ import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemSpeciesItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemSpeciesItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
@@ -50,6 +50,7 @@ import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.invpanel.BlockInventoryPanel;
+import crazypants.enderio.machine.invpanel.chest.BlockInventoryChest;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.sensor.BlockInventoryPanelSensor;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
@@ -195,6 +196,7 @@ public enum ModObject implements IModObject {
   blockTransceiver(BlockTransceiver.class),
   blockBuffer(BlockBuffer.class),
   blockInventoryPanel(BlockInventoryPanel.class),
+  blockInventoryChest(BlockInventoryChest.class),
 
   blockPoweredSpawner(BlockPoweredSpawner.class),
   itemBrokenSpawner(ItemBrokenSpawner.class),

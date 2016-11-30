@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +29,7 @@ public class EnderInventory implements IItemHandler {
   private final Map<String, InventorySlot> idents = new HashMap<String, InventorySlot>();
   private final EnumMap<EnderInventory.Type, List<InventorySlot>> slots = new EnumMap<EnderInventory.Type, List<InventorySlot>>(EnderInventory.Type.class);
   private final View allSlots = new View(EnderInventory.Type.ALL);
+  private @Nullable TileEntity owner = null;
 
   public EnderInventory() {
     for (EnderInventory.Type type : EnderInventory.Type.values()) {
@@ -55,6 +58,7 @@ public class EnderInventory implements IItemHandler {
       slots.get(EnderInventory.Type.INPUT).add(slot);
       slots.get(EnderInventory.Type.OUTPUT).add(slot);
     }
+    slot.setOwner(owner);
   }
 
   public InventorySlot getSlot(Enum<?> ident) {
@@ -81,7 +85,9 @@ public class EnderInventory implements IItemHandler {
   public void writeToNBT(NBTTagCompound tag) {
     for (Entry<String, InventorySlot> entry : idents.entrySet()) {
       if (entry.getValue() != null) {
-        entry.getValue().writeToNBT(tag.getCompoundTag(entry.getKey()));
+        NBTTagCompound subTag = new NBTTagCompound();
+        entry.getValue().writeToNBT(subTag);
+        tag.setTag(entry.getKey(), subTag);
       }
     }
   }
@@ -99,6 +105,7 @@ public class EnderInventory implements IItemHandler {
   }
 
   public void setOwner(TileEntity owner) {
+    this.owner = owner;
     for (InventorySlot slot : allSlots) {
       slot.setOwner(owner);
     }

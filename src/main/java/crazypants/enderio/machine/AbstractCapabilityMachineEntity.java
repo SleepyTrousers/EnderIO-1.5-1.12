@@ -20,18 +20,28 @@ import net.minecraftforge.items.CapabilityItemHandler;
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
 
   @Store
-  protected final EnderInventory inventory = new EnderInventory();
-  private final View upgradeSlots = inventory.getView(EnderInventory.Type.UPGRADE);
-  private final View inputSlots = inventory.getView(EnderInventory.Type.INPUT);
-  private final View outputSlots = inventory.getView(EnderInventory.Type.OUTPUT);
+  private final EnderInventory inventory = new EnderInventory();
+  private final EnderInventory inventoryDelegate;
+  private final View upgradeSlots, inputSlots, outputSlots;
 
-  public AbstractCapabilityMachineEntity(SlotDefinition slotDefinition) {
-    super();
-    inventory.setOwner(this);
+  protected AbstractCapabilityMachineEntity() {
+    this(null);
   }
 
-  public EnderInventory getEnderInventory() {
-    return inventory;
+  /**
+   * If an inventory is given, it will NOT be stored to nbt/client/save. The subclass must handle that itself.
+   */
+  protected AbstractCapabilityMachineEntity(EnderInventory subclassInventory) {
+    super();
+    this.inventoryDelegate = subclassInventory != null ? subclassInventory : this.inventory;
+    upgradeSlots = inventoryDelegate.getView(EnderInventory.Type.UPGRADE);
+    inputSlots = inventoryDelegate.getView(EnderInventory.Type.INPUT);
+    outputSlots = inventoryDelegate.getView(EnderInventory.Type.OUTPUT);
+    inventoryDelegate.setOwner(this);
+  }
+
+  public EnderInventory getInventory() {
+    return inventoryDelegate;
   }
 
   public boolean isValidUpgrade(@Nonnull ItemStack itemstack) {
@@ -108,16 +118,16 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       if (facingIn == null) {
-        return (T) inventory.getView(EnderInventory.Type.INTERNAL);
+        return (T) getInventory().getView(EnderInventory.Type.INTERNAL);
       }
       switch (getIoMode(facingIn)) {
       case NONE:
       case PUSH_PULL:
-        return (T) inventory.getView(EnderInventory.Type.INOUT);
+        return (T) getInventory().getView(EnderInventory.Type.INOUT);
       case PULL:
-        return (T) inventory.getView(EnderInventory.Type.INPUT);
+        return (T) getInventory().getView(EnderInventory.Type.INPUT);
       case PUSH:
-        return (T) inventory.getView(EnderInventory.Type.OUTPUT);
+        return (T) getInventory().getView(EnderInventory.Type.OUTPUT);
       case DISABLED:
       default:
         return null;
