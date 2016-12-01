@@ -17,7 +17,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.ContainerPainter;
 import crazypants.enderio.machine.painter.GuiPainter;
 import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerDisplayUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;

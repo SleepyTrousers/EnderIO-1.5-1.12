@@ -6,7 +6,7 @@ import java.util.List;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;

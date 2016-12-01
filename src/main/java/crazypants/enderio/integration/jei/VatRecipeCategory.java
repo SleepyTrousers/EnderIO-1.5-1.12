@@ -11,12 +11,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.vat.ContainerVat;
 import crazypants.enderio.machine.vat.GuiVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
+import crazypants.enderio.power.PowerDisplayUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

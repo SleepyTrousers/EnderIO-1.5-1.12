@@ -2,7 +2,6 @@ package crazypants.enderio.machine.monitor;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +20,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -35,8 +34,8 @@ import static crazypants.enderio.ModObject.blockAlloySmelter;
 import static crazypants.enderio.ModObject.blockCapBank;
 import static crazypants.enderio.ModObject.blockPowerMonitor;
 import static crazypants.enderio.ModObject.itemPowerConduit;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
+import static crazypants.enderio.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.power.PowerDisplayUtil.formatPowerFloat;
 
 public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
@@ -56,8 +55,6 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
     }
 
   }
-
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
   protected Tab tab = Tab.GRAPH;
 
@@ -170,8 +167,8 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 
       if (engineControlStart_value == null) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = INT_NF.format(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = INT_NF.format(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100));
       }
 
       if (engineControlEnabled_value != engineControlEnabled.isSelected() || !engineControlStart_value.equals(engineControlStart.getText())
@@ -184,11 +181,11 @@ public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
       }
 
       if (engineControlEnabled_value != getTileEntity().isEngineControlEnabled()
-          || !engineControlStart_value.equals(INT_NF.format(getTileEntity().getStartLevel() * 100))
-          || !engineControlStop_value.equals(INT_NF.format(getTileEntity().getStopLevel() * 100))) {
+          || !engineControlStart_value.equals(PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100))
+          || !engineControlStop_value.equals(PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100))) {
         engineControlEnabled.setSelected(engineControlEnabled_value = getTileEntity().isEngineControlEnabled());
-        engineControlStart.setText(engineControlStart_value = INT_NF.format(getTileEntity().getStartLevel() * 100));
-        engineControlStop.setText(engineControlStop_value = INT_NF.format(getTileEntity().getStopLevel() * 100));
+        engineControlStart.setText(engineControlStart_value = PowerDisplayUtil.formatInteger(getTileEntity().getStartLevel() * 100));
+        engineControlStop.setText(engineControlStop_value = PowerDisplayUtil.formatInteger(getTileEntity().getStopLevel() * 100));
       }
 
       break;

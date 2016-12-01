@@ -13,8 +13,8 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.telepad.TelepadTarget;
 import crazypants.enderio.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.teleport.telepad.TileTelePad;

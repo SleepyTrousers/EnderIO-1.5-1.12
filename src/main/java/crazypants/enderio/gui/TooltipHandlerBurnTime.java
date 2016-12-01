@@ -15,7 +15,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerDisplayUtil;
 
 public class TooltipHandlerBurnTime implements ITooltipCallback {
   

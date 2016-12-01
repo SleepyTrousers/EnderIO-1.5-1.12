@@ -18,7 +18,7 @@ import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.machine.generator.combustion.GuiCombustionGenerator;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerDisplayUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

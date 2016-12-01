@@ -8,13 +8,13 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.machine.sagmill.ContainerSagMill;
 import crazypants.enderio.machine.sagmill.GrindingBall;
 import crazypants.enderio.machine.sagmill.GuiSagMill;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
+import crazypants.enderio.power.PowerDisplayUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;

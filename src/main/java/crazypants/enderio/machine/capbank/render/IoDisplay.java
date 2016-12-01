@@ -14,7 +14,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -214,11 +214,11 @@ public class IoDisplay implements IInfoRenderer {
 
   protected String getChangeText(float average, FontRenderer fr) {
     int change = Math.round(Math.abs(average));
-    String txt = PowerDisplayUtil.INT_NF.format(change);
+    String txt = PowerDisplayUtil.formatInteger(change);
     int width = fr.getStringWidth(txt);
     if(width > 38 && change > 1000) {
       change = change / 1000;
-      txt = PowerDisplayUtil.INT_NF.format(change) + "K";
+      txt = PowerDisplayUtil.formatInteger(change) + "K";
     }
     return txt;
   }
