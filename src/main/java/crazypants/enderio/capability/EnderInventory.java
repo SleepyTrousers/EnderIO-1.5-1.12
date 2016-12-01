@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -106,7 +107,7 @@ public class EnderInventory implements IItemHandler {
 
   public void setOwner(TileEntity owner) {
     this.owner = owner;
-    for (InventorySlot slot : allSlots) {
+    for (InventorySlot slot : idents.values()) {
       slot.setOwner(owner);
     }
   }
@@ -159,7 +160,7 @@ public class EnderInventory implements IItemHandler {
           return inventorySlot.getStackInSlot(0);
         }
       }
-      return null;
+      return Prep.getEmpty();
     }
 
     @Override
@@ -181,7 +182,7 @@ public class EnderInventory implements IItemHandler {
           return inventorySlot.extractItem(0, amount, simulate);
         }
       }
-      return null;
+      return Prep.getEmpty();
     }
 
     @Override
