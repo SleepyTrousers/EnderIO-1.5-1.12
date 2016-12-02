@@ -31,7 +31,7 @@ public class BlockDarkIronBars extends BlockPane implements IHaveRenderers {
   
   protected void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemDarkIronBars(this, ModObject.blockDarkIronBars.getUnlocalisedName()));
+    GameRegistry.register(new BlastResistantItemBlock(this, ModObject.blockDarkIronBars.getUnlocalisedName()));
   }
 
   @Override

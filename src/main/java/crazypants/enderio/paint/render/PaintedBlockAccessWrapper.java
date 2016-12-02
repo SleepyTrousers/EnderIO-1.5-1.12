@@ -56,7 +56,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   public TileEntity getTileEntity(BlockPos pos) {
     IBlockState paintSource = getPaintSource(pos);
     if (paintSource != null && paintSource != super.getBlockState(pos)) {
-      return createTileEntity(paintSource, pos);
+      return createTileEntity(paintSource, pos.toImmutable());
     }
     return super.getTileEntity(pos);
   }

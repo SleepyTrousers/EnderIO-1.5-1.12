@@ -426,6 +426,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Steel Trap Door" required="true">
+    <crafting>
+      <grid size="2x2">
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="enderio:blockDarkSteelTrapdoor" amount="1"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Bread" required="true">
     <smelting exp="0.35">
       <input name="dustWheat"/>

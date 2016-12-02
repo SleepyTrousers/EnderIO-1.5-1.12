@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.block.BlockDarkIronBars;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
+import crazypants.enderio.block.BlockDarkSteelTrapDoor;
 import crazypants.enderio.block.BlockDecoration;
 import crazypants.enderio.block.BlockDecorationFacing;
 import crazypants.enderio.block.BlockReinforcedObsidian;
@@ -24,9 +25,9 @@ import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemSpeciesItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemSpeciesItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
@@ -164,6 +165,7 @@ public enum ModObject implements IModObject {
   },
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
   blockDarkIronBars(BlockDarkIronBars.class),
+  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
 
   // Machines
   blockStirlingGenerator(BlockStirlingGenerator.class),

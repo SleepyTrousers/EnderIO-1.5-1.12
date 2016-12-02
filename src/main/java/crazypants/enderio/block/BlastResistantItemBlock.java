@@ -10,13 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockItemDarkIronBars extends ItemBlock {
+public class BlastResistantItemBlock extends ItemBlock {
 
-  public BlockItemDarkIronBars(Block block, String name) {
-    super(block);    
+  public BlastResistantItemBlock(Block block, String name) {
+    super(block);
     setRegistryName(name);
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {

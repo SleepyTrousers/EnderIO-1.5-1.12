@@ -1521,3 +1521,5 @@ enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied
 enderio.soulvial.owned.denied=Permission denied - only owners may pickup owned animals
+
+tile.blockDarkSteelTrapdoor.name=Dark Steel Trap Door
