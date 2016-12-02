@@ -74,6 +74,7 @@ import crazypants.enderio.machine.painter.blocks.BlockPaintedRedstone;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStairs;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedStone;
+import crazypants.enderio.machine.painter.blocks.BlockPaintedTrapDoor;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedWall;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
@@ -257,6 +258,10 @@ public enum ModObject implements IModObject {
   blockPaintedRedstone(BlockPaintedRedstone.class),
   blockPaintedRedstoneSolid,
   blockPaintedStone(BlockPaintedStone.class),
+  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
+  blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),
+  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark"),
+
   blockExitRail(BlockExitRail.class),
 
   itemConduitProbe(ItemConduitProbe.class),
@@ -325,10 +330,12 @@ public enum ModObject implements IModObject {
     return unlocalisedName;
   }
 
+  @Override
   public Block getBlock() {
     return block;
   }
 
+  @Override
   public Item getItem() {
     return item;
   }

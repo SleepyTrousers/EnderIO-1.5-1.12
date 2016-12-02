@@ -20,7 +20,7 @@ public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IHaveRender
     return res;
   }
 
-  private final IModObject modObject;
+  protected final IModObject modObject;
 
   public BlockDarkSteelTrapDoor(IModObject modObject, Material materialIn, boolean isBlastResistant) {
     super(materialIn);

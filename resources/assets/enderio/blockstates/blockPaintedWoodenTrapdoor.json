@@ -1,0 +1,16 @@
+{
+    "forge_marker":1,
+     "defaults":{
+        "textures":{
+            "particle":"blocks/trapdoor"
+        },
+        "model":"trapdoor_bottom"
+    },
+    "variants": {
+        "inventory": [{}],
+        "half":{
+	        "top": { },
+            "bottom": { }
+        }
+    }
+}

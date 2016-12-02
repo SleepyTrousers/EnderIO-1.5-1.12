@@ -802,6 +802,10 @@ tile.blockPaintedRedstone.name=Painted Redstone
 tile.blockPaintedRedstoneSolid.name=Painted Redstone
 tile.blockPaintedStone.name=Painted Cobblestone
 tile.blockPaintedCarpet.name=Painted Carpet
+tile.blockPaintedWoodenTrapdoor.name=Painted Wooden Trapdoor
+tile.blockPaintedIronTrapdoor.name=Painted Iron Trapdoor
+tile.blockPaintedDarkSteelTrapdoor.name=Painted Dark Steel Trapdoor
+
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
@@ -809,7 +813,7 @@ tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences, Gates,
 tile.blockPainter.tooltip.detailed.line3=Slabs, Cobblestone, Cobblestone Walls,
 tile.blockPainter.tooltip.detailed.line4=Glowstone, Redstone, Carpet, Pressure
 tile.blockPainter.tooltip.detailed.line5=Plates, Quite Clear Glass, Fused Quartz,
-tile.blockPainter.tooltip.detailed.line6=and most machines
+tile.blockPainter.tooltip.detailed.line6=Trapdoors, and most machines
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench
@@ -1522,4 +1526,4 @@ enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied
 enderio.soulvial.owned.denied=Permission denied - only owners may pickup owned animals
 
-tile.blockDarkSteelTrapdoor.name=Dark Steel Trap Door
+tile.blockDarkSteelTrapdoor.name=Dark Steel Trapdoor
