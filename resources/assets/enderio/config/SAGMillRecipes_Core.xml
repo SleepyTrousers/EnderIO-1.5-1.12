@@ -2988,6 +2988,17 @@
     </recipe>
   </recipeGroup>
 
+  <recipeGroup name="ActuallyAdditions" >
+    <recipe name="Dark Quartz" energyCost="1200" >
+      <input>
+        <itemStack oreDictionary="oreQuartzBlack" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustQuartzBlack" number="2" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
   <grindingBalls>
     <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
       <itemStack oreDictionary="itemFlint" />
