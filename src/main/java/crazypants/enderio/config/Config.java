@@ -627,7 +627,7 @@ public final class Config {
             sectionRecipe.name,
             "crateSyntheticRecipes",
             crateSyntheticRecipes,
-            "Automatically create alloy smelter recipes with double and tripple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
+            "Automatically create alloy smelter recipes with double and triple inputs and different slot allocations (1+1+1, 2+1, 1+2, 3 and 2) for single-input recipes.")
         .getBoolean(crateSyntheticRecipes);
 
     allowExternalTickSpeedup = config.get(sectionMisc.name, "allowExternalTickSpeedup", allowExternalTickSpeedup,
