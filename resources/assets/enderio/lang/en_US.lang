@@ -1141,3 +1141,7 @@ enderio.tooltip.meta=Meta:
 enderio.tooltip.uid=UID:
 enderio.tooltip.anvilupgrades=Anvil Upgrades:
 enderio.waila.config.hiddenfacades=Sneaky Facades
+
+enderio.gui.notification.poweredSpawner.bad_entity=BAD SOUL
+enderio.gui.notification.poweredSpawner.area_full=TOO MANY MOBS
+enderio.gui.notification.poweredSpawner.no_location=NO VIABLE SPACE
