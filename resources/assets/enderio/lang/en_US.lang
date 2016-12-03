@@ -1517,6 +1517,16 @@ tile.blockXPVacuum.tooltip.detailed.line1=Pulls nearby XP orbs and pushes
 tile.blockXPVacuum.tooltip.detailed.line2=them into adjacent tanks/conduits.
 tile.blockXPVacuum.tooltip.detailed.line3=Needs to be activated with liquid XP.
 
+tile.blockInventoryChest_tiny.name=Tiny Inventory System Storage
+tile.blockInventoryChest_small.name=Small Inventory System Storage
+tile.blockInventoryChest_medium.name=Medium Inventory System Storage
+tile.blockInventoryChest_big.name=Big Inventory System Storage
+tile.blockInventoryChest_large.name=Large Inventory System Storage
+tile.blockInventoryChest_huge.name=Huge Inventory System Storage
+tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
+tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
+tile.blockInventoryChest_warehouse13.name= Inventory System Storage Extended Warehouse
+
 enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied

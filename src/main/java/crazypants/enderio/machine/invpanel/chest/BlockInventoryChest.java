@@ -9,13 +9,13 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import crazypants.enderio.render.property.EnumRenderMode;
-import crazypants.enderio.teleport.telepad.render.TelePadRenderMapper;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -47,6 +47,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
     initDefaultState();
   }
 
+  @Override
   protected void initDefaultState() {
     setDefaultState(
         this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(EnumChestSize.SIZE, EnumChestSize.TINY));
@@ -75,18 +76,19 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileInventoryChest tileEntity) {
-    blockStateWrapper.addCacheKey(0);
+    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(blockStateWrapper.getValue(EnumChestSize.SIZE));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IItemRenderMapper getItemRenderMapper() {
-    return TelePadRenderMapper.instance;
+    return RenderMappers.FRONT_MAPPER;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return TelePadRenderMapper.instance;
+    return RenderMappers.FRONT_MAPPER;
   }
 
   // NO GUI
@@ -117,7 +119,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   @Override
-  public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+  public int getComparatorInputOverride(IBlockState blockStateIn, World worldIn, BlockPos pos) {
     TileInventoryChest te = getTileEntitySafe(worldIn, pos);
     if (te != null) {
       return te.getComparatorInputOverride();
