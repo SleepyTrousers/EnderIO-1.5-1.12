@@ -150,8 +150,9 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity(world, x, y, z));
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return Math.min(super.getLightOpacity(world, x, y, z), sourceBlock.getLightOpacity());
       }
     }
     return super.getLightOpacity(world, x, y, z);
@@ -168,8 +169,12 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      return tef.getSourceBlock() == null ? null : tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, tef.getSourceBlockMetadata());
+      } else {
+        return null;
+      }
     } else {
       System.out.println("BlockCustFence: No tile entity.");
     }

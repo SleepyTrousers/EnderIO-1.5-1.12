@@ -3,6 +3,9 @@ package crazypants.enderio.machine.painter;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -86,8 +89,9 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      final Block sourceBlock = tef.getSourceBlock();
+      if(sourceBlock != null) {
+        return sourceBlock.colorMultiplier(world, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);
@@ -181,8 +185,9 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
@@ -225,8 +230,11 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   protected void processDrop(World world, int x, int y, int z, TileEntityEnder te, ItemStack drop) {
     TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
     if(tef != null) {
-      ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
-      drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        ItemStack itemStack = createItemStackForSourceBlock(sourceBlock, tef.getSourceBlockMetadata());
+        drop.stackTagCompound = (NBTTagCompound) itemStack.stackTagCompound.copy();
+      }
     }
   }
 
@@ -291,6 +299,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
+  @Nonnull
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if (te instanceof IPaintableTileEntity) {
@@ -303,6 +312,7 @@ public class BlockPaintedGlowstone extends BlockEio implements ITileEntityProvid
   }
 
   @Override
+  @Nonnull
   public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return getFacade(world, x, y, z, side.ordinal());
   }

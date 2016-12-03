@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker;
 import mods.immibis.core.api.multipart.IMultipartSystem;
 import net.minecraft.block.Block;
@@ -1018,6 +1020,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  @Nonnull
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
@@ -1032,6 +1035,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  @Nonnull
   public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return getFacade(world, x, y, z, side.ordinal());
   }

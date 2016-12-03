@@ -2,6 +2,12 @@ package crazypants.enderio.teleport.anchor;
 
 import javax.annotation.Nullable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -259,6 +265,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
+  @Nonnull
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if (te instanceof IPaintableTileEntity) {
@@ -271,6 +278,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   @Override
+  @Nonnull
   public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return getFacade(world, x, y, z, side.ordinal());
   }

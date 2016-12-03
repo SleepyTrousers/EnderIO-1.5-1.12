@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.buffer;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -102,8 +104,9 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileBuffer) {
       TileBuffer tef = (TileBuffer) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      final Block sourceBlock = tef.getSourceBlock();
+      if (sourceBlock != null) {
+        return sourceBlock.getIcon(blockSide, tef.getSourceBlockMetadata());
       } else if(blockSide > 1) {
         return textures[world.getBlockMetadata(x, y, z)];
       }
@@ -165,6 +168,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
+  @Nonnull
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if (te instanceof IPaintableTileEntity) {
@@ -177,6 +181,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
+  @Nonnull
   public Block getVisualBlock(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return getFacade(world, x, y, z, side.ordinal());
   }
