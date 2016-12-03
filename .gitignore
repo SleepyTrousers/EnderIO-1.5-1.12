@@ -8,6 +8,10 @@
 ## ForgeGradle
 /run
 
+## NetBeans
+/.nb-gradle
+/.nb-gradle-properties
+
 ## eclipse
 /eclipse
 /.settings

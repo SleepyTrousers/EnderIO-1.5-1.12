@@ -1,11 +1,53 @@
+# Tell Travis which branches to build.
+branches:
+  except:
+    - /^(?i:dev)-.*$/
+
+# Tell Travis this is a Java project.
 language: java
-jdk:
-  - oraclejdk8
-  - openjdk7
+
+# Tell Travis this is a Java 7+8 project.
+matrix:
+  include:
+    - jdk: openjdk7
+    - jdk: oraclejdk8
+
+# Tell Travis we want container-based builds.
 sudo: false
+
+# Use the gradle wrapper for 2.7 instead of default 2.2
+before_install:
+  - chmod +x gradlew
+
+# Prepare the workspace.
+install:
+  - ./gradlew setupCIWorkspace -S
+
+# Build the Project.
+script:
+  - ./gradlew build -S
+
+# Push success to CurseForge for release.
+# after_success:
+#  - ./gradlew curse -S
+# Removed for ForgeGradle 2
+
+# Clean up after Gradle
+env:
+  global:
+    TERM=dumb
+
+# So the cache doesn't get rebuilt every time.
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f $HOME/.gradle/caches/minecraft/ForgeVersion.json
+  - rm -f $HOME/.gradle/caches/minecraft/ForgeVersion.json.etag
+  - rm -rf $HOME/.gradle/caches/minecraft/deobfedDeps
+
+# Cache libs, as to improve speed.
 cache:
   directories:
-    - '$HOME/.m2'
-    - '$HOME/.gradle'
-before_cache:
-    - rm -f $HOME/.gradle/caches/*/*.lock
+    - ./libs
+    - $HOME/.gradle/caches
+    # So gradle isn't downloaded every time.
+    - $HOME/.gradle/wrapper

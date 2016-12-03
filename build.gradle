@@ -69,11 +69,11 @@ dependencies {
     compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
         transitive = false
     }
-    
+
     // WAILA ships really old CCC/CCL versions, so we force the new versions
     compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
     compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
-    
+
     compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
 }
 
@@ -194,7 +194,7 @@ String getChangelogText() {
 
 curse {
     dependsOn 'reobf'
-    
+
     onlyIf {
         return project.hasProperty('curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
     }
@@ -214,7 +214,7 @@ task checkTranslations << {
         if (value1 == null || value2 == null) {return}
         mapen.put(value1, value2)
     }
-    
+
     new File('resources/assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
         if (!langfile.getName().contains("en_US")) {
 	        Map<String, String> map = new HashMap<String, String>()
@@ -227,7 +227,7 @@ task checkTranslations << {
 	            map.put(value1, value2)
 	            return !mapen.containsKey(value1)
 	        }
-	        
+
 	        outwriter.append("\n// Missing translations:\n")
 	        for (e in mapen) {
 	            if (!map.containsKey(e.key)) {
@@ -237,4 +237,11 @@ task checkTranslations << {
         println "Created translation report ${outfile}"
         }
     }
+}
+
+runClient {
+	if( project.hasProperty('minecraft_username') && project.hasProperty('minecraft_password') ) {
+		args "--username=${project.minecraft_username}"
+		args "--password=${project.minecraft_password}"
+	}
 }
