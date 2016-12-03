@@ -10,7 +10,7 @@
             "frontframe": "enderio:blocks/machineSide",
             "chest": "entity/chest/normal",
             "bars": "enderio:blocks/blockReinforcedObsidian",
-            "color": "enderio:blocks/blockPMonColor",
+            "color": "enderio:blocks/zombieGen_lid",
             "con": "enderio:blocks/inventory_chest_connectors",
             "canvas": "enderio:blocks/machineBottom"
         }
@@ -23,10 +23,10 @@
             "front_east":{     "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":270 },
             "front_south":{    "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":0   },
             "front_west":{     "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":90  },
-            "front_on":{       "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":180 },
-            "front_on_east":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":270 },
-            "front_on_south":{ "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":0   },
-            "front_on_west":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":90  }
+            "front_on":{       "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":180, "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_east":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":270, "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_south":{ "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":0  , "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_west":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":90 , "textures": { "color": "enderio:blocks/blockPMonColor" } }
         },
         "size": {
           "tiny": {            "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_1" } } },

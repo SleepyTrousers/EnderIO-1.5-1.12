@@ -170,7 +170,7 @@ public class EnergyTank implements IEnergyStorage {
 
   public boolean useEnergy() {
     int toUse = maxEnergyUsed.get(capacitorData);
-    if (toUse < getEnergyStored()) {
+    if (toUse <= getEnergyStored()) {
       setEnergyStored(getEnergyStored() - toUse);
       return true;
     }

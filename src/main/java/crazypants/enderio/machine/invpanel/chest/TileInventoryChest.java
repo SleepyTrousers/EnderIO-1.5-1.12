@@ -142,7 +142,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   @Override
   public boolean isActive() {
-    return false;
+    return hasPower();
   }
 
   private boolean lastState = false;

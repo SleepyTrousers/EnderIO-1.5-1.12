@@ -1,11 +1,13 @@
 package crazypants.enderio.config.recipes.xml;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.config.recipes.GenericUpgradeRecipe;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -18,6 +20,8 @@ public class Crafting extends AbstractCrafting {
 
   private Shapeless shapeless;
 
+  private boolean upgrade = false;
+
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
@@ -28,6 +32,9 @@ public class Crafting extends AbstractCrafting {
         }
         valid = valid && grid.isValid();
       } else if (shapeless != null) {
+        if (upgrade) {
+          throw new InvalidRecipeConfigException("Upgrade recipes for <shapeless> are not yet supported");
+        }
         valid = valid && shapeless.isValid();
       } else {
         throw new InvalidRecipeConfigException("Missing <grid> and <shapeless>");
@@ -52,8 +59,13 @@ public class Crafting extends AbstractCrafting {
   public void register() {
     if (valid && active) {
       if (grid != null) {
-        Log.debug("Registering ShapedOreRecipe: "+getOutput().getItemStack()+": "+Arrays.toString(grid.getElements()));        
-        GameRegistry.addRecipe(new ShapedOreRecipe(getOutput().getItemStack(), grid.getElements()));
+        if (upgrade) {
+          Log.debug("Registering GenericUpgradeRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
+          GameRegistry.addRecipe(new GenericUpgradeRecipe(getOutput().getItemStack(), grid.getElements()));
+        } else {
+          Log.debug("Registering ShapedOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(grid.getElements()));
+          GameRegistry.addRecipe(new ShapedOreRecipe(getOutput().getItemStack(), grid.getElements()));
+        }
       } else {
         Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
         GameRegistry.addRecipe(new ShapelessOreRecipe(getOutput().getItemStack(), shapeless.getElements()));
@@ -65,6 +77,11 @@ public class Crafting extends AbstractCrafting {
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
+    if ("upgrade".equals(name)) {
+      upgrade = value != null && value.trim().length() > 0 && !"no".equals(value.toLowerCase(Locale.ENGLISH))
+          && !"false".equals(value.toLowerCase(Locale.ENGLISH));
+      return true;
+    }
     return super.setAttribute(factory, name, value);
   }
 

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel.chest;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 
@@ -76,7 +77,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileInventoryChest tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(blockStateWrapper.getValue(EnumChestSize.SIZE));
+    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive()).addCacheKey(blockStateWrapper.getValue(EnumChestSize.SIZE));
   }
 
   @Override
@@ -111,6 +112,14 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   @Override
   protected boolean openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
     return false;
+  }
+
+  // NO SMOKING
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+
   }
 
   @Override

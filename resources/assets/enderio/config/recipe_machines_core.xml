@@ -858,4 +858,103 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Inventory Chest 1" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item name="itemChassiParts" /><item name="enderio:itemFunctionUpgrade:0" /><item name="itemChassiParts" />
+        <item name="chestWood" /><item name="CHASSIS" /><item name="chestWood" />
+        <item name="enderio:blockDarkIronBars" /><item name="chestWood" /><item name="enderio:blockDarkIronBars" />
+      </grid>
+      <output name="enderio:blockInventoryChest:0" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 2" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:0" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:1" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 3" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:1" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:2" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 4" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:2" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 5" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:3" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:4" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 6" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:4" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:5" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 7" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:5" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:6" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 8" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:6" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:7" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Chest 9" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:blockDarkIronBars" /><item />
+        <item name="itemChassiParts" /><item name="chestWood" /><item name="itemChassiParts" />
+        <item /><item name="enderio:blockInventoryChest:7" /><item />
+      </grid>
+      <output name="enderio:blockInventoryChest:8" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>

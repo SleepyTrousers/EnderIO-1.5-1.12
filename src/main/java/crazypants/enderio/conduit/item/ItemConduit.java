@@ -26,6 +26,7 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -308,7 +309,23 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean hasInventoryPanelUpgrade(EnumFacing dir) {
     ItemStack upgrade = functionUpgrades.get(dir);
-    return upgrade != null && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL;
+    return (upgrade != null && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
+  }
+
+  private boolean isConnectedToNetworkAwareBlock(EnumFacing dir) {
+    if (!externalConnections.contains(dir)) {
+      return false;
+    }
+    World world = getBundle().getBundleWorldObj();
+    if (world == null) {
+      return false;
+    }
+    BlockPos loc = getLocation().getLocation(dir).getBlockPos();
+    if (!world.isBlockLoaded(loc)) {
+      return false;
+    }
+    TileEntity tileEntity = world.getTileEntity(loc);
+    return tileEntity instanceof TileInventoryChest;
   }
 
   @Override
@@ -845,7 +862,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos) {
-    if (neighbourPos != null && network != null && network.hasDatabase() && !functionUpgrades.isEmpty()) {
+    if (neighbourPos != null && network != null && network.hasDatabase()) {
       network.getDatabase().onNeighborChange(neighbourPos);
     }
     return super.onNeighborChange(world, pos, neighbourPos);
