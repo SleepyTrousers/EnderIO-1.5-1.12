@@ -1,0 +1,53 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "enderio:blocks/machineTemplate",
+            "particle": "enderio:blocks/machineTemplate",
+            "texture": "enderio:blocks/blockReinforcedObsidian"
+        }
+    },
+	"variants": {
+        "render":{
+            "defaults":{ "model":"enderio:transform/block" },
+            "auto":{ "model":"enderio:null" },
+            "front":{
+                "submodel":{
+                     "s1":{ "model":"enderio:blockReinforcedObsidianSide", "y":0 },
+                     "s2":{ "model":"enderio:blockReinforcedObsidianSide", "y":90 },
+                     "s3":{ "model":"enderio:blockReinforcedObsidianSide", "y":180 },
+                     "s4":{ "model":"enderio:blockReinforcedObsidianSide", "y":270 },
+                     "s5":{ "model":"enderio:blockReinforcedObsidianTop", "x":90 },
+                     "s6":{ "model":"enderio:blockReinforcedObsidianTop", "x":270 }
+                 }
+            },
+            "front_east":{     "submodel":{ "na":{ "model":"minecraft:cube_all" } } },
+            "front_south":{
+                "submodel":{
+                     "s1":{ "model":"enderio:blockReinforcedObsidianSide", "y":0 },
+                     "s2":{ "model":"enderio:blockReinforcedObsidianSide", "y":90 },
+                     "s3":{ "model":"enderio:blockReinforcedObsidianSide", "y":180 },
+                     "s4":{ "model":"enderio:blockReinforcedObsidianSide", "y":270 },
+                     "s5":{ "model":"enderio:blockReinforcedObsidianTop", "x":90 },
+                     "s6":{ "model":"enderio:blockReinforcedObsidianTop", "x":270 }
+                 }
+            },
+            "front_west":{     "submodel":{ "na":{ "model":"minecraft:cube_all" } } },
+            "front_on":{       "submodel":{ "na":{ "model":"minecraft:cube_all" } } },
+            "front_on_east":{  "submodel":{ "na":{ "model":"minecraft:cube_all" } } },
+            "front_on_south":{ "submodel":{ "na":{ "model":"minecraft:cube_all" } } },
+            "front_on_west":{  "submodel":{ "na":{ "model":"minecraft:cube_all" } } }
+        },
+        "size": {
+          "tiny": {        "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "small": {       "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "medium": {      "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "big": {         "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "large": {       "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "huge": {        "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "enormous": {    "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "warehouse": {   "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } },
+          "warehouse13": { "submodel":{ "core":{ "model":"enderio:blockInventoryChestCore" } } }
+        }
+	}
+}
