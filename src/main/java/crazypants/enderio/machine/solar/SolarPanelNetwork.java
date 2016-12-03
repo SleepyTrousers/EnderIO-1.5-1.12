@@ -1,18 +1,22 @@
 package crazypants.enderio.machine.solar;
 
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 
+import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
 
 public class SolarPanelNetwork {
 
-  private List<TileEntitySolarPanel> panels;
+  private List<BlockCoord> panels;
+  private World world;
   private boolean empty = true;
 
   private EnergyStorage energy;
@@ -22,35 +26,59 @@ public class SolarPanelNetwork {
   public static final EnumSet<ForgeDirection> VALID_CONS = EnumSet.of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
 
   public SolarPanelNetwork() {
+    this((World) null);
+  }
+
+  public SolarPanelNetwork(World world) {
     panels = Lists.newArrayList();
     energy = new EnergyStorage(ENERGY_PER);
+    this.world = world;
   }
 
   SolarPanelNetwork(TileEntitySolarPanel initial) {
-    this();
-    panels.add(initial);
+    this(initial.getWorldObj());
+    panels.add(initial.getLocation());
+    energy.setEnergyStored(initial.getEnergyStored());
     empty = false;
   }
 
   void onUpdate(TileEntitySolarPanel panel) {
+    if (world == null) {
+      world = panel.getWorldObj();
+    }
+  }
+
+  boolean contains(TileEntitySolarPanel panel) {
+    if (world == null) {
+      world = panel.getWorldObj();
+    }
+    return panels.contains(panel.getLocation());
   }
 
   boolean addToNetwork(TileEntitySolarPanel panel) {
-    if(panel.network == this && panel.network.isValid() && panels.contains(panel)) {
+    if (world == null) {
+      world = panel.getWorldObj();
+    }
+    if (panel.network == this && isValid() && panels.contains(panel.getLocation())) {
       return false;
     }
 
+    cleanupMemberlist();
+
     if(panel.network == null || !panel.network.isValid() || panel.network == this) {
-      if (!panels.contains(panel)) {
-        panels.add(panel);
+      if (!panels.contains(panel.getLocation())) {
+        panels.add(panel.getLocation());
       }
       panel.setNetwork(this);
       updateEnergy();
     } else {
       SolarPanelNetwork other = panel.network;
-      for (TileEntitySolarPanel otherPanel : other.panels) {
-        panels.add(otherPanel);
-        otherPanel.setNetwork(this);
+      for (BlockCoord otherPanel : other.panels) {
+        TileEntity tileEntity = otherPanel.getTileEntity(world);
+        if (tileEntity instanceof TileEntitySolarPanel) {
+          panels.add(otherPanel);
+          ((TileEntitySolarPanel) tileEntity).setNetwork(this);
+        }
       }
       updateEnergy();
       this.energy.setEnergyStored(energy.getEnergyStored() + other.energy.getEnergyStored());
@@ -61,21 +89,53 @@ public class SolarPanelNetwork {
     return true;
   }
 
+  void cleanupMemberlist() {
+    if (!panels.isEmpty()) {
+      int energyPerPanel = energy.getEnergyStored() / panels.size();
+      Iterator<BlockCoord> iterator = panels.iterator();
+      while (iterator.hasNext()) {
+        BlockCoord panel = iterator.next();
+        boolean isGood = false;
+        if (world.blockExists(panel.x, panel.y, panel.z)) {
+          TileEntity tileEntity = panel.getTileEntity(world);
+          if (tileEntity instanceof TileEntitySolarPanel) {
+            if (((TileEntitySolarPanel) tileEntity).network == this) {
+              isGood = true;
+            }
+          }
+        }
+        if (!isGood) {
+          iterator.remove();
+          energy.extractEnergy(energyPerPanel, false);
+          // The missing panel should have saved its energy (nbt). So try not to
+          // dupe it. Which won't work at all because panels in different chunks
+          // will be saved at different times.
+        }
+      }
+    }
+  }
+
   void removeFromNetwork(TileEntitySolarPanel panel) {
+    if (world == null) {
+      world = panel.getWorldObj();
+    }
     // build list of formerly connected neighbors
     List<TileEntitySolarPanel> neighbors = Lists.newArrayList();
     for (ForgeDirection dir : VALID_CONS) {
-      TileEntity te = panel.getLocation().getLocation(dir).getTileEntity(panel.getWorldObj());
+      TileEntity te = panel.getLocation().getLocation(dir).getTileEntity(world);
       if(te != null && te instanceof TileEntitySolarPanel) {
         neighbors.add((TileEntitySolarPanel) te);
       }
     }
 
-    // distribute power from split networks evenly to neighbors
-    for (TileEntitySolarPanel te : neighbors) {
+    if (!neighbors.isEmpty()) {
+      // distribute power from split networks evenly to neighbors
       int dist = energy.getEnergyStored() / neighbors.size();
-      te.destroyedNetworkBuffer = new EnergyStorage(dist);
-      te.destroyedNetworkBuffer.setEnergyStored(dist);
+      for (TileEntitySolarPanel te : neighbors) {
+        te.destroyedNetworkBuffer = new EnergyStorage(dist);
+        te.destroyedNetworkBuffer.setEnergyStored(dist);
+      }
+      energy.setEnergyStored(0);
     }
 
     // allow solars to reform networks
@@ -92,8 +152,11 @@ public class SolarPanelNetwork {
    * network for each panel on this current one.
    */
   void destroyNetwork() {
-    for (TileEntitySolarPanel te : panels) {
-      te.setNetwork(new SolarPanelNetwork());
+    for (BlockCoord panel : panels) {
+      TileEntity tileEntity = panel.getTileEntity(world);
+      if (tileEntity instanceof TileEntitySolarPanel) {
+        ((TileEntitySolarPanel) tileEntity).setNetwork(new SolarPanelNetwork(world));
+      }
     }
     invalidate();
   }
@@ -138,12 +201,8 @@ public class SolarPanelNetwork {
     energy.receiveEnergy(destroyedNetworkBuffer.getEnergyStored(), false);
   }
 
-  TileEntitySolarPanel getMaster() {
-    return panels.get(0);
-  }
-
   boolean shouldSave(TileEntitySolarPanel panel) {
-    return getMaster() == panel;
+    return panels.size() > 0;
   }
 
   public int size() {
@@ -151,14 +210,23 @@ public class SolarPanelNetwork {
   }
 
   void writeToNBT(NBTTagCompound tag) {
-    tag.setBoolean("validSolar", true);
-    energy.writeToNBT(tag);
+    tag.setInteger("Energy", energy.getEnergyStored() / panels.size());
+  }
+
+  void writeToNBTAll(NBTTagCompound tag) {
+    tag.setInteger("Energy", energy.getEnergyStored());
   }
 
   void readFromNBT(TileEntitySolarPanel panel, NBTTagCompound tag) {
-    if(tag.getBoolean("validSolar")) {
-      energy.readFromNBT(tag);
+    if (tag.hasKey("Energy")) {
       addToNetwork(panel);
+      int amount = tag.getInteger("Energy");
+      energy.receiveEnergy(amount, false);
     }
+  }
+
+  @Override
+  public String toString() {
+    return super.toString() + " [size=" + size() + "]";
   }
 }

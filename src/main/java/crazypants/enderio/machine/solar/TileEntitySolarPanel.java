@@ -86,6 +86,8 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     network.setEnergyStored(stored);
   }
 
+  private boolean forceNetworkSearch = true;
+
   @Override
   public void doUpdate() {
     if (worldObj.isRemote) {
@@ -102,8 +104,10 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
       network.onUpdate(this);
     }
     
-    if (!network.isValid() || (shouldDoWorkThisTick(20, 1) && network.addToNetwork(this))) {
+    if (forceNetworkSearch
+        || ((!network.isValid() || !network.contains(this)) && shouldDoWorkThisTick(60, 1) && network.addToNetwork(this))) {
       findNetwork();
+      forceNetworkSearch = false;
     }
   }
   
@@ -115,11 +119,14 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private void findNetwork() {
     for (ForgeDirection dir : SolarPanelNetwork.VALID_CONS) {
-      TileEntity te = new BlockCoord(this).getLocation(dir).getTileEntity(worldObj);
-      if(te != null && te instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) te).canConnect(this)) {
-        SolarPanelNetwork network = ((TileEntitySolarPanel) te).network;
-        if(network != null) {
-          network.addToNetwork(this);
+      final BlockCoord location = new BlockCoord(this).getLocation(dir);
+      if (worldObj.blockExists(location.x, location.y, location.z)) {
+        TileEntity te = location.getTileEntity(worldObj);
+        if (te != null && !te.isInvalid() && te instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) te).canConnect(this)) {
+          SolarPanelNetwork network = ((TileEntitySolarPanel) te).network;
+          if (network != null) {
+            network.addToNetwork(this);
+          }
         }
       }
     }
@@ -139,8 +146,9 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
         float fromSun = calculateLightRatio();
         lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
       }
-      if(lastCollectionValue > 0) {
-        network.setEnergyStored(Math.min(lastCollectionValue + network.getEnergyStored(), network.getMaxEnergyStored()));
+      if (lastCollectionValue > 0 && network.getEnergyStored() < network.getMaxEnergyStored()) {
+        network.setEnergyStored(lastCollectionValue + network.getEnergyStored());
+        markDirty();
       }
     }
   }
@@ -248,6 +256,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   @Override
   public void readCustomNBT(NBTTagCompound tag) {
     network.readFromNBT(this, tag);
+    forceNetworkSearch = true;
   }
 
   @Override
@@ -279,14 +288,16 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     this.network = network;
   }
   
-  public boolean isMaster() {
-    return network.getMaster() == this;
-  }
-
   @Override
   public void getData(NBTTagCompound tag) {
     if (network.isValid()) {
-      network.getMaster().writeToNBT(tag);
+      writeToNBT(tag);
+      network.writeToNBTAll(tag);
     }
+  }
+
+  @Override
+  public String toString() {
+    return super.toString() + " [Coord=" + xCoord + "/" + yCoord + "/" + zCoord + ", network=" + network + "]";
   }
 }
