@@ -1,6 +1,6 @@
 package crazypants.enderio.capacitor;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 
 public interface ICapacitorKey {
 
@@ -20,7 +20,7 @@ public interface ICapacitorKey {
    */
   float getFloat(ICapacitorData capacitor);
 
-  ModObject getOwner();
+  IModObject getOwner();
 
   CapacitorKeyType getValueType();
 

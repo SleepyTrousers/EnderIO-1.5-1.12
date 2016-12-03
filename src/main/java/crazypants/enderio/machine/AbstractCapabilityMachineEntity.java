@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
@@ -117,23 +118,57 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      if (facingIn == null) {
-        return (T) getInventory().getView(EnderInventory.Type.INTERNAL);
-      }
-      switch (getIoMode(facingIn)) {
-      case NONE:
-      case PUSH_PULL:
-        return (T) getInventory().getView(EnderInventory.Type.INOUT);
-      case PULL:
-        return (T) getInventory().getView(EnderInventory.Type.INPUT);
-      case PUSH:
-        return (T) getInventory().getView(EnderInventory.Type.OUTPUT);
-      case DISABLED:
-      default:
-        return null;
-      }
+      return (T) new Side(facingIn);
     }
     return super.getCapability(capability, facingIn);
   }
 
+  private class Side implements IItemHandler {
+
+    private final EnumFacing side;
+
+    protected Side(EnumFacing side) {
+      this.side = side;
+    }
+
+    private @Nonnull IItemHandler getView() {
+      if (side == null) {
+        return getInventory().getView(EnderInventory.Type.INTERNAL);
+      }
+      switch (getIoMode(side)) {
+      case NONE:
+      case PUSH_PULL:
+        return getInventory().getView(EnderInventory.Type.INOUT);
+      case PULL:
+        return getInventory().getView(EnderInventory.Type.INPUT);
+      case PUSH:
+        return getInventory().getView(EnderInventory.Type.OUTPUT);
+      case DISABLED:
+      default:
+        return EnderInventory.OFF;
+      }
+
+    }
+
+    @Override
+    public int getSlots() {
+      return getView().getSlots();
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+      return getView().getStackInSlot(slot);
+    }
+
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      return getView().insertItem(slot, stack, simulate);
+    }
+
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      return getView().extractItem(slot, amount, simulate);
+    }
+
+  }
 }

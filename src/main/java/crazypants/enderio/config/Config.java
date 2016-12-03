@@ -563,6 +563,7 @@ public final class Config {
   public static boolean topShowMobsByDefault = true;
   public static boolean topShowTanksByDefault = true;
   public static boolean topShowXPByDefault = true;
+  public static boolean topShowItemCountDefault = true;
   
   public static boolean paintedGlowstoneRequireSilkTouch = false;
   
@@ -1540,6 +1541,8 @@ public final class Config {
         "If true, the tank content will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
     topShowXPByDefault = config.getBoolean("topShowXPByDefault", sectionTOP.name, topShowXPByDefault,
         "If true, the XP level will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
+    topShowItemCountDefault = config.getBoolean("topShowItemCountDefault", sectionTOP.name, topShowItemCountDefault,
+        "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
     allowFovControlsInSurvivalMode = config.getBoolean("allowFovControlsInSurvivalMode", sectionMisc.name, allowFovControlsInSurvivalMode,
         "If true, the FOV keyboard controls can be used in survival and advanture mode. Otherwise they are limited to create and spectator modes.");

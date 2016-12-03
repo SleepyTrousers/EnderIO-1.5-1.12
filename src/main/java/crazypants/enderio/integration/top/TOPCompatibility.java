@@ -30,6 +30,7 @@ import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -40,6 +41,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.enderio.ModObject.blockTank;
 import static crazypants.enderio.config.Config.topEnabled;
+import static crazypants.enderio.config.Config.topShowItemCountDefault;
 import static crazypants.enderio.config.Config.topShowMobsByDefault;
 import static crazypants.enderio.config.Config.topShowPowerByDefault;
 import static crazypants.enderio.config.Config.topShowProgressByDefault;
@@ -97,6 +99,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
         mkTankLines(mode, eiobox, data);
 
+        mkItemFillLevelLine(mode, eiobox, data);
+
         eiobox.finish();
 
         EioBox mobbox = new EioBox(probeInfo);
@@ -132,6 +136,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       return probeinfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER);
     }
 
+    @SuppressWarnings("unused")
     public ILayoutStyle right() {
       return probeinfo.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_BOTTOMRIGHT);
     }
@@ -275,8 +280,21 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         // should be empty but we do have at least one level in, there will be a small error, as (levels/Integer.MAX_VALUE) > 0.
         int scalemax = data.xpBarScaled > 0 ? data.experienceLevel * 100 / data.xpBarScaled : Integer.MAX_VALUE;
         eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.EXPERIENCE_BOTTLE)).progress(data.experienceLevel, scalemax,
-            eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.xp.levels")).filledColor(0xff00FF0F).alternateFilledColor(0xff00AA0A)
-                .borderColor(0xff00AA0A));
+            eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.levels")).filledColor(0xff00FF0F)
+                .alternateFilledColor(0xff00AA0A).borderColor(0xff00AA0A));
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
+  private void mkItemFillLevelLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.hasItemFillLevel) {
+      if (mode != ProbeMode.NORMAL || topShowItemCountDefault) {
+        eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.CHEST)).progress(data.fillCur, data.fillMax,
+            eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.items")).filledColor(0xfff8f83c)
+                .alternateFilledColor(0xffcfac0b)
+                .borderColor(0xffcfac0b));
       } else {
         eiobox.addMore();
       }

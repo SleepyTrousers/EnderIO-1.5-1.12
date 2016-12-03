@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.util.Prep;
@@ -31,6 +32,29 @@ public class EnderInventory implements IItemHandler {
   private final EnumMap<EnderInventory.Type, List<InventorySlot>> slots = new EnumMap<EnderInventory.Type, List<InventorySlot>>(EnderInventory.Type.class);
   private final View allSlots = new View(EnderInventory.Type.ALL);
   private @Nullable TileEntity owner = null;
+  public static final @Nonnull IItemHandler OFF = new IItemHandler() {
+  
+    @Override
+    public int getSlots() {
+      return 0;
+    }
+  
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+      return Prep.getEmpty();
+    }
+  
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      return stack;
+    }
+  
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      return Prep.getEmpty();
+    }
+  
+  };
 
   public EnderInventory() {
     for (EnderInventory.Type type : EnderInventory.Type.values()) {
@@ -73,6 +97,7 @@ public class EnderInventory implements IItemHandler {
     return idents.get(ident);
   }
 
+  @Nonnull
   public View getView(EnderInventory.Type type) {
     return new View(type);
   }

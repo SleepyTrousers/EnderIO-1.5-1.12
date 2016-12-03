@@ -85,7 +85,7 @@ public class InventorySlot implements IItemHandler {
     this.filterIn = filterIn != null ? filterIn : Filters.ALWAYS_TRUE;
     this.filterOut = filterOut != null ? filterOut : Filters.ALWAYS_TRUE;
     this.callback = callback != null ? callback : Filters.NO_CALLBACK;
-    this.limit = limit > 0 ? limit : Integer.MAX_VALUE;
+    this.limit = limit > 0 ? limit : 64;
   }
 
   @Override
