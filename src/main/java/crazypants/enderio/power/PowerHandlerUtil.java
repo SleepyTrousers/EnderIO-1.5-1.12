@@ -16,8 +16,8 @@ public class PowerHandlerUtil {
   public static IPowerInterface create(Object o) {
     if (o instanceof TileCapBank) {
       return new CapBankPI((TileCapBank) o);
-    } else if (o instanceof IEnergyHandler) {
-      return new EnergyHandlerPI((IEnergyHandler) o);
+    } else if (o instanceof IEnergyHandler || (o instanceof IEnergyProvider && o instanceof IEnergyReceiver)) {
+      return new EnergyHandlerPI((IEnergyReceiver) o);
     } else if (o instanceof IEnergyProvider) {
       return new EnergyProviderPI((IEnergyProvider) o);
     } else if(o instanceof IEnergyReceiver) {

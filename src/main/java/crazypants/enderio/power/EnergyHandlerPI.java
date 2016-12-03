@@ -1,12 +1,10 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
 public class EnergyHandlerPI extends EnergyReceiverPI {
 
-  private IEnergyHandler rfPower;
-
-  public EnergyHandlerPI(IEnergyHandler powerReceptor) {
+  public EnergyHandlerPI(IEnergyReceiver powerReceptor) {
     super(powerReceptor);
   }
 
