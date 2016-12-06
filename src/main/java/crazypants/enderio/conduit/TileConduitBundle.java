@@ -832,7 +832,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (cond == null || loc == AEPartLocation.INTERNAL) {
       return AECableType.NONE;
     } else {
-      return cond.isConnectedTo(loc.getFacing()) ? AECableType.SMART : AECableType.NONE;
+      return cond.isConnectedTo(loc.getFacing()) ? cond.isDense() ? AECableType.DENSE : AECableType.SMART : AECableType.NONE;
     }
   }
 
