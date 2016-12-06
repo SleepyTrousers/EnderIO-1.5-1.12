@@ -93,8 +93,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
 
   @Override
   public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-    this.dropBlockAsItem(world, pos, world.getBlockState(pos), 0);
-    return true;
+    return false;
   }
 
   @Override
