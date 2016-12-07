@@ -11,6 +11,7 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPiston;
@@ -30,7 +31,13 @@ public class PainterUtil2 {
     boolean solidPaint = false;
     boolean textureOnly = false;
     if (paintSource != null) {
+      if (!PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
+        return false;
+      }
       Block block = getBlockFromItem(paintSource);
+      if (block == null || block == Blocks.AIR) {
+        return false;
+      }
       IBlockState bs = Block$getBlockFromItem_stack$getItem___$getStateFromMeta_stack$getMetadata___(paintSource, block);
       solidPaint = bs.isOpaqueCube();
       if (!shouldHaveModel(block)) {

@@ -13,7 +13,6 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.paint.PaintSourceValidator;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 
@@ -43,9 +42,6 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
     ItemStack paint = i == 0 ? inventory[1] : itemStack;
     ItemStack targt = i == 0 ? itemStack : inventory[0];
 
-    if (paint != null && !PaintSourceValidator.instance.isValidSourceDefault(paint)) {
-      return false;
-    }
 
     Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {
