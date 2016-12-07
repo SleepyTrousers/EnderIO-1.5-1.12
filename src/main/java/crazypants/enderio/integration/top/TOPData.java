@@ -10,7 +10,11 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
 
+import crazypants.enderio.capability.EnderInventory;
+import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.AbstractCapabilityMachineEntity;
+import crazypants.enderio.machine.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
@@ -19,17 +23,20 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.RedstoneControlMode.IconHolder;
+import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.spawner.TilePoweredSpawner;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.power.EnergyTank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.util.CapturedMob;
+import crazypants.util.Prep;
 import mcjty.theoneprobe.api.IProbeHitData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -45,10 +52,10 @@ class TOPData {
     NO_PROGRESS_IDLE;
   }
 
-  boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP, hasRFIO;
+  boolean hasStatus, hasProgress, hasRF, hasRedstone, hasIOMode, hasRange, hasMobs, hasXP, hasRFIO, hasItemFillLevel;
   boolean isActive, isPowered, redstoneControlStatus, isPainted;
   float progress;
-  long rf, maxrf;
+  long rf, maxrf, fillMax, fillCur;
   int experienceLevel, xpBarScaled, maxRFIn, maxRFOut, avgRF;
   String redstoneTooltip, sideName, mobAction;
   IWidgetIcon redstoneIcon;
@@ -86,6 +93,12 @@ class TOPData {
         isPowered = rf > 0;
         hasRF = maxrf > 0;
       }
+    } else if (tileEntity instanceof AbstractCapabilityPoweredMachineEntity) {
+      EnergyTank energy = ((AbstractCapabilityPoweredMachineEntity) tileEntity).getEnergy();
+      maxrf = energy.getMaxEnergyStored();
+      rf = energy.getEnergyStored();
+      isPowered = rf > 0;
+      hasRF = maxrf > 0;
     }
 
     if (tileEntity instanceof IProgressTile) {
@@ -159,6 +172,19 @@ class TOPData {
         paint2 = PainterUtil2.getPaintAsStack(((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
       }
       isPainted = paint1 != null || paint2 != null;
+    }
+
+    if (tileEntity instanceof TileInventoryChest) {
+      fillMax = fillCur = 0L;
+      for (InventorySlot slot : ((AbstractCapabilityMachineEntity) tileEntity).getInventory().getView(EnderInventory.Type.INOUT)) {
+        if (Prep.isValid(slot.getStackInSlot(0))) {
+          fillMax += Math.min(slot.getMaxStackSize(), slot.getStackInSlot(0).getMaxStackSize());
+          fillCur += slot.getStackInSlot(0).stackSize;
+        } else {
+          fillMax += slot.getMaxStackSize();
+        }
+      }
+      hasItemFillLevel = true;
     }
 
     calculateProgress();

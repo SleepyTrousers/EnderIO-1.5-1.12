@@ -14,7 +14,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class InventorySlot implements IItemHandler {
 
-  private ItemStack itemStack;
+  private ItemStack itemStack = Prep.getEmpty();
   private final @Nonnull Predicate<ItemStack> filterIn, filterOut;
   private final @Nonnull Callback<ItemStack> callback;
   private final int limit;
@@ -85,7 +85,7 @@ public class InventorySlot implements IItemHandler {
     this.filterIn = filterIn != null ? filterIn : Filters.ALWAYS_TRUE;
     this.filterOut = filterOut != null ? filterOut : Filters.ALWAYS_TRUE;
     this.callback = callback != null ? callback : Filters.NO_CALLBACK;
-    this.limit = limit > 0 ? limit : Integer.MAX_VALUE;
+    this.limit = limit > 0 ? limit : 64;
   }
 
   @Override
@@ -95,7 +95,7 @@ public class InventorySlot implements IItemHandler {
 
   @Override
   public ItemStack getStackInSlot(int slot) {
-    return slot == 0 ? itemStack : null;
+    return slot == 0 ? itemStack : Prep.getEmpty();
   }
 
   public boolean isItemValidForSlot(ItemStack stack) {
@@ -105,20 +105,20 @@ public class InventorySlot implements IItemHandler {
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
     if (slot == 0 && filterIn.apply(stack)) {
-      if (itemStack == null) {
+      if (Prep.isInvalid(itemStack)) {
         int max = Math.min(limit, stack.getMaxStackSize());
         if (!simulate) {
           itemStack = stack.copy();
         }
         if (stack.stackSize <= max) {
           if (!simulate) {
-            onChange(null, itemStack);
+            onChange(Prep.getEmpty(), itemStack);
           }
-          return null;
+          return Prep.getEmpty();
         }
         if (!simulate) {
           itemStack.stackSize = max;
-          onChange(null, itemStack);
+          onChange(Prep.getEmpty(), itemStack);
         }
         ItemStack result = stack.copy();
         result.stackSize -= max;
@@ -133,15 +133,16 @@ public class InventorySlot implements IItemHandler {
             itemStack.stackSize = target;
             onChange(oldStack, itemStack);
           }
-          return null;
+          return Prep.getEmpty();
         }
+        int tomove = max - itemStack.stackSize;
         if (!simulate) {
           ItemStack oldStack = itemStack.copy();
           itemStack.stackSize = max;
           onChange(oldStack, itemStack);
         }
         ItemStack result = stack.copy();
-        result.stackSize -= max - target;
+        result.stackSize -= tomove;
         return result;
       }
     }
@@ -150,24 +151,32 @@ public class InventorySlot implements IItemHandler {
 
   @Override
   public ItemStack extractItem(int slot, int amount, boolean simulate) {
-    if (slot == 0 && itemStack != null && filterOut.apply(itemStack)) {
-      ItemStack result = itemStack.copy();
+    if (slot == 0 && Prep.isValid(itemStack) && filterOut.apply(itemStack)) {
       if (amount >= itemStack.stackSize) {
         if (!simulate) {
-          onChange(itemStack, null);
-          itemStack = null;
+          ItemStack oldStack = itemStack;
+          itemStack = Prep.getEmpty();
+          ;
+          onChange(oldStack, itemStack);
+          return oldStack;
+        } else {
+          return itemStack.copy();
         }
       } else {
         if (!simulate) {
           ItemStack oldStack = itemStack.copy();
           itemStack.stackSize -= amount;
           onChange(oldStack, itemStack);
+          oldStack.stackSize = amount;
+          return oldStack;
+        } else {
+          ItemStack result = itemStack.copy();
+          result.stackSize = amount;
+          return result;
         }
-        result.stackSize = amount;
       }
-      return result;
     }
-    return null;
+    return Prep.getEmpty();
   }
 
   private void onChange(ItemStack oldStack, ItemStack newStack) {
@@ -178,7 +187,7 @@ public class InventorySlot implements IItemHandler {
   }
 
   public void writeToNBT(NBTTagCompound tag) {
-    if (itemStack != null) {
+    if (Prep.isValid(itemStack)) {
       itemStack.writeToNBT(tag);
     }
   }
@@ -188,7 +197,7 @@ public class InventorySlot implements IItemHandler {
   }
 
   public void clear() {
-    itemStack = null;
+    itemStack = Prep.getEmpty();
   }
 
   public void set(ItemStack stack) {

@@ -1,15 +1,15 @@
 package crazypants.enderio.capacitor;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 
 public class DefaultCapacitorKey implements ICapacitorKey {
 
-  private final ModObject owner;
+  private final IModObject owner;
   private final CapacitorKeyType valueType;
   private final Scaler scaler;
   private final int baseValue;
 
-  public DefaultCapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, int baseValue) {
+  public DefaultCapacitorKey(IModObject owner, CapacitorKeyType valueType, Scaler scaler, int baseValue) {
     this.owner = owner;
     this.valueType = valueType;
     this.scaler = scaler;
@@ -27,7 +27,7 @@ public class DefaultCapacitorKey implements ICapacitorKey {
   }
 
   @Override
-  public ModObject getOwner() {
+  public IModObject getOwner() {
     return owner;
   }
 

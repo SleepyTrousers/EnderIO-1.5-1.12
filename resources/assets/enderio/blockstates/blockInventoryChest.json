@@ -1,0 +1,43 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "particle": "enderio:blocks/machineBottom",
+            "top": "enderio:blocks/machineTop",
+            "bottom": "enderio:blocks/machineBottom",
+            "side": "enderio:blocks/machineSide",
+            "back": "enderio:blocks/machineBack",
+            "frontframe": "enderio:blocks/machineSide",
+            "chest": "entity/chest/normal",
+            "bars": "enderio:blocks/blockReinforcedObsidian",
+            "color": "enderio:blocks/zombieGen_lid",
+            "con": "enderio:blocks/inventory_chest_connectors",
+            "canvas": "enderio:blocks/machineBottom"
+        }
+    },
+	"variants": {
+        "render":{
+            "defaults":{                            "model":"enderio:transform/block" },
+            "auto":{                                "model":"enderio:null" },
+            "front":{          "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":180 },
+            "front_east":{     "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":270 },
+            "front_south":{    "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":0   },
+            "front_west":{     "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":90  },
+            "front_on":{       "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":180, "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_east":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":270, "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_south":{ "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":0  , "textures": { "color": "enderio:blocks/blockPMonColor" } },
+            "front_on_west":{  "submodel":{ "all":{ "model":"enderio:block_inventory_chest" } }, "y":90 , "textures": { "color": "enderio:blocks/blockPMonColor" } }
+        },
+        "size": {
+          "tiny": {            "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_1" } } },
+          "small": {           "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_2" } } },
+          "medium": {          "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_3" } } },
+          "big": {             "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_4" } } },
+          "large": {           "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_5" } } },
+          "huge": {            "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_6" } } },
+          "enormous": {        "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_7" } } },
+          "warehouse": {       "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_8" } } },
+          "warehouse13": {     "submodel":{ "thg":{ "model":"enderio:block_inventory_chest_9" } } }
+        }
+	}
+}

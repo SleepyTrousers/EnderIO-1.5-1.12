@@ -15,23 +15,34 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
 
   @Store
-  protected final EnderInventory inventory = new EnderInventory();
-  private final View upgradeSlots = inventory.getView(EnderInventory.Type.UPGRADE);
-  private final View inputSlots = inventory.getView(EnderInventory.Type.INPUT);
-  private final View outputSlots = inventory.getView(EnderInventory.Type.OUTPUT);
+  private final EnderInventory inventory = new EnderInventory();
+  private final EnderInventory inventoryDelegate;
+  private final View upgradeSlots, inputSlots, outputSlots;
 
-  public AbstractCapabilityMachineEntity(SlotDefinition slotDefinition) {
-    super();
-    inventory.setOwner(this);
+  protected AbstractCapabilityMachineEntity() {
+    this(null);
   }
 
-  public EnderInventory getEnderInventory() {
-    return inventory;
+  /**
+   * If an inventory is given, it will NOT be stored to nbt/client/save. The subclass must handle that itself.
+   */
+  protected AbstractCapabilityMachineEntity(EnderInventory subclassInventory) {
+    super();
+    this.inventoryDelegate = subclassInventory != null ? subclassInventory : this.inventory;
+    upgradeSlots = inventoryDelegate.getView(EnderInventory.Type.UPGRADE);
+    inputSlots = inventoryDelegate.getView(EnderInventory.Type.INPUT);
+    outputSlots = inventoryDelegate.getView(EnderInventory.Type.OUTPUT);
+    inventoryDelegate.setOwner(this);
+  }
+
+  public EnderInventory getInventory() {
+    return inventoryDelegate;
   }
 
   public boolean isValidUpgrade(@Nonnull ItemStack itemstack) {
@@ -107,23 +118,57 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      if (facingIn == null) {
-        return (T) inventory.getView(EnderInventory.Type.INTERNAL);
-      }
-      switch (getIoMode(facingIn)) {
-      case NONE:
-      case PUSH_PULL:
-        return (T) inventory.getView(EnderInventory.Type.INOUT);
-      case PULL:
-        return (T) inventory.getView(EnderInventory.Type.INPUT);
-      case PUSH:
-        return (T) inventory.getView(EnderInventory.Type.OUTPUT);
-      case DISABLED:
-      default:
-        return null;
-      }
+      return (T) new Side(facingIn);
     }
     return super.getCapability(capability, facingIn);
   }
 
+  private class Side implements IItemHandler {
+
+    private final EnumFacing side;
+
+    protected Side(EnumFacing side) {
+      this.side = side;
+    }
+
+    private @Nonnull IItemHandler getView() {
+      if (side == null) {
+        return getInventory().getView(EnderInventory.Type.INTERNAL);
+      }
+      switch (getIoMode(side)) {
+      case NONE:
+      case PUSH_PULL:
+        return getInventory().getView(EnderInventory.Type.INOUT);
+      case PULL:
+        return getInventory().getView(EnderInventory.Type.INPUT);
+      case PUSH:
+        return getInventory().getView(EnderInventory.Type.OUTPUT);
+      case DISABLED:
+      default:
+        return EnderInventory.OFF;
+      }
+
+    }
+
+    @Override
+    public int getSlots() {
+      return getView().getSlots();
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+      return getView().getStackInSlot(slot);
+    }
+
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      return getView().insertItem(slot, stack, simulate);
+    }
+
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      return getView().extractItem(slot, amount, simulate);
+    }
+
+  }
 }

@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +31,30 @@ public class EnderInventory implements IItemHandler {
   private final Map<String, InventorySlot> idents = new HashMap<String, InventorySlot>();
   private final EnumMap<EnderInventory.Type, List<InventorySlot>> slots = new EnumMap<EnderInventory.Type, List<InventorySlot>>(EnderInventory.Type.class);
   private final View allSlots = new View(EnderInventory.Type.ALL);
+  private @Nullable TileEntity owner = null;
+  public static final @Nonnull IItemHandler OFF = new IItemHandler() {
+  
+    @Override
+    public int getSlots() {
+      return 0;
+    }
+  
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+      return Prep.getEmpty();
+    }
+  
+    @Override
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      return stack;
+    }
+  
+    @Override
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+      return Prep.getEmpty();
+    }
+  
+  };
 
   public EnderInventory() {
     for (EnderInventory.Type type : EnderInventory.Type.values()) {
@@ -55,6 +83,7 @@ public class EnderInventory implements IItemHandler {
       slots.get(EnderInventory.Type.INPUT).add(slot);
       slots.get(EnderInventory.Type.OUTPUT).add(slot);
     }
+    slot.setOwner(owner);
   }
 
   public InventorySlot getSlot(Enum<?> ident) {
@@ -68,6 +97,7 @@ public class EnderInventory implements IItemHandler {
     return idents.get(ident);
   }
 
+  @Nonnull
   public View getView(EnderInventory.Type type) {
     return new View(type);
   }
@@ -81,7 +111,9 @@ public class EnderInventory implements IItemHandler {
   public void writeToNBT(NBTTagCompound tag) {
     for (Entry<String, InventorySlot> entry : idents.entrySet()) {
       if (entry.getValue() != null) {
-        entry.getValue().writeToNBT(tag.getCompoundTag(entry.getKey()));
+        NBTTagCompound subTag = new NBTTagCompound();
+        entry.getValue().writeToNBT(subTag);
+        tag.setTag(entry.getKey(), subTag);
       }
     }
   }
@@ -99,7 +131,8 @@ public class EnderInventory implements IItemHandler {
   }
 
   public void setOwner(TileEntity owner) {
-    for (InventorySlot slot : allSlots) {
+    this.owner = owner;
+    for (InventorySlot slot : idents.values()) {
       slot.setOwner(owner);
     }
   }
@@ -152,7 +185,7 @@ public class EnderInventory implements IItemHandler {
           return inventorySlot.getStackInSlot(0);
         }
       }
-      return null;
+      return Prep.getEmpty();
     }
 
     @Override
@@ -174,7 +207,7 @@ public class EnderInventory implements IItemHandler {
           return inventorySlot.extractItem(0, amount, simulate);
         }
       }
-      return null;
+      return Prep.getEmpty();
     }
 
     @Override
