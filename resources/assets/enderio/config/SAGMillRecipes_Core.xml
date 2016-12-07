@@ -811,16 +811,16 @@
   <recipeGroup name="Applied Energistics 2" >
     <recipe name="ChargedCertusQuartzOre" energyCost="2400" >
       <input>
-        <itemStack modID="appliedenergistics2" itemName="tile.OreQuartzCharged" />
+        <itemStack oreDictionary="oreChargedCertusQuartz" />
       </input>
       <output>
-        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1" number="2" />
+        <itemStack modID="appliedenergistics2" itemName="material" itemMeta="1" number="2" />
         <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
     <recipe name="CertusQuartzOre" energyCost="2400" >
       <input>
-        <itemStack modID="appliedenergistics2" itemName="tile.OreQuartz" />
+        <itemStack oreDictionary="oreCertusQuartz" />
       </input>
       <output>
         <itemStack oreDictionary="crystalCertusQuartz" number="2" />
@@ -837,7 +837,7 @@
     </recipe>
    	<recipe name="ChargedCertusQuartzCrystal" energyCost="800" >
       <input>
-        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1" />
+        <itemStack modID="appliedenergistics2" itemName="material" itemMeta="1" />
       </input>
       <output>
         <itemStack oreDictionary="dustCertusQuartz" />
