@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.gui;
 
 import java.awt.Rectangle;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,7 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.TextUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -178,7 +178,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   protected String formatProgressTooltip(int scaledProgress, float progress) {
-    return MessageFormat.format(EnderIO.lang.localize("gui.progress"), scaledProgress);
+    return TextUtil.format(EnderIO.lang.localize("gui.progress"), scaledProgress);
   }
 
   protected int scaleProgressForTooltip(float progress) {

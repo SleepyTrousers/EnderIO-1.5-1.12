@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 import crazypants.enderio.EnderIO;
+import crazypants.util.TextUtil;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -66,11 +67,7 @@ public class PowerDisplayUtil {
   }
 
   public static String formatPower(long amount) {
-    String str = INT_NF.format(amount);
-    if(REPLACE_NBSP) {
-      str = str.replace(NBSP, ' ');
-    }
-    return str;
+    return TextUtil.fix(INT_NF.format(amount));
   }
 
   
@@ -83,11 +80,7 @@ public class PowerDisplayUtil {
   }
 
   public static String formatPower(int powerRF) {
-    String str = INT_NF.format(powerRF);
-    if(REPLACE_NBSP) {
-      str = str.replace(NBSP, ' ');
-    }
-    return str;
+    return TextUtil.fix(INT_NF.format(powerRF));
   }
   
   public static String formatPowerFloat(float averageRfTickSent) {

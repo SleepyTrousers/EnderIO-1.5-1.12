@@ -1,6 +1,5 @@
 package crazypants.enderio.integration.jei;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import crazypants.enderio.machine.sagmill.GrindingBall;
 import crazypants.enderio.machine.sagmill.GuiSagMill;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.util.TextUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -170,7 +170,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     float chance = output.getChance();
     if(chance > 0 && chance < 1) {
       int chanceInt = (int) (chance * 100);
-      tooltip.add(TextFormatting.GRAY + MessageFormat.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
+      tooltip.add(TextFormatting.GRAY + TextUtil.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
     }    
   }
   

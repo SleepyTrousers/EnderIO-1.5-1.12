@@ -1,12 +1,6 @@
 package crazypants.enderio.gui;
 
-import java.text.MessageFormat;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
@@ -16,6 +10,11 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.util.TextUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class TooltipHandlerBurnTime implements ITooltipCallback {
   
@@ -25,7 +24,7 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
     TileEntityStirlingGenerator gen = getStirlingGen(itemstack);
     if (isStirlingGen(itemstack, gen)) {
       int rate = gen.getPowerUsePerTick();
-      String msg = MessageFormat.format(EnderIO.lang.localize("power.generates"),
+      String msg = TextUtil.format(EnderIO.lang.localize("power.generates"),
           PowerDisplayUtil.formatPower((long)gen.getBurnTime(itemstack) * rate),
           PowerDisplayUtil.abrevation(),
           PowerDisplayUtil.formatPower(rate),
@@ -34,7 +33,7 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
 
       list.add(msg);
     } else if (Config.addFurnaceFuelTootip && (time = TileEntityFurnace.getItemBurnTime(itemstack)) > 0) {
-      list.add(MessageFormat.format(EnderIO.lang.localize("tooltip.burntime"), time));
+      list.add(TextUtil.format(EnderIO.lang.localize("tooltip.burntime"), time));
     }
   }
 
