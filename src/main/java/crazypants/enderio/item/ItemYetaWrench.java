@@ -49,9 +49,7 @@ import static crazypants.enderio.ModObject.blockConduitBundle;
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench {
 
   public static ItemYetaWrench create() {
-    if (Config.useSneakMouseWheelYetaWrench) {
-      PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
-    }
+    PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
     ItemYetaWrench result = new ItemYetaWrench();
     GameRegistry.register(result);
     return result;
