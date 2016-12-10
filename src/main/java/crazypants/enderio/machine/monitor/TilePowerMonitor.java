@@ -135,7 +135,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
 
   private void broadcastSignal() {
     initialized = true;
-    worldObj.notifyNeighborsOfStateChange(getPos(), worldObj.getBlockState(getPos()).getBlock());
+    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
   }
 
   private static final long bit62 = Integer.MAX_VALUE;

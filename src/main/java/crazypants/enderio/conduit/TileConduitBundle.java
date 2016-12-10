@@ -271,7 +271,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     worldObj.checkLight(getPos());
     IBlockState bs = worldObj.getBlockState(pos);
     worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-    worldObj.notifyNeighborsOfStateChange(getPos(), blockConduitBundle.getBlock());
+    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
     facadeChanged = false;
   }
 

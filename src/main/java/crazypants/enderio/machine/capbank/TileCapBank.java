@@ -313,7 +313,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       IBlockState bs = worldObj.getBlockState(pos);
       worldObj.notifyBlockUpdate(pos, bs, bs, 3);
       worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
-      worldObj.notifyNeighborsOfStateChange(pos, blockType);
+      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
     }
   }
 

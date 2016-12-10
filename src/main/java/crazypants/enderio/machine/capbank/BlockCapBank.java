@@ -265,7 +265,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         } else {
           final Block blockCapBank2 = blockCapBank.getBlock();
           if (blockCapBank2 != null) {
-            world.notifyNeighborsOfStateChange(pos, blockCapBank2);
+            world.notifyNeighborsOfStateChange(pos, this);
           }
           world.notifyBlockUpdate(pos, bs, bs, 3);
         }

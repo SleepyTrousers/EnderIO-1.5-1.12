@@ -500,7 +500,7 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if (!externalConnections.isEmpty()) {
-      world.notifyNeighborsOfStateChange(te.getPos(), blockConduitBundle.getBlock());
+      world.notifyNeighborsOfStateChange(te.getPos(), te.getBlockType());
     }
     externalConnections.clear();
 

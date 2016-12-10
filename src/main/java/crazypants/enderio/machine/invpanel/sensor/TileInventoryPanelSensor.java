@@ -124,7 +124,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   private void broadcastSignal() {
-    worldObj.notifyNeighborsOfStateChange(getPos(), worldObj.getBlockState(getPos()).getBlock());
+    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
   }
 
   @Override
