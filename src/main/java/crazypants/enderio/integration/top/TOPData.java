@@ -37,6 +37,7 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.util.CapturedMob;
 import crazypants.util.Prep;
+import crazypants.util.UserIdent;
 import mcjty.theoneprobe.api.IProbeHitData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -66,6 +67,7 @@ class TOPData {
   List<ITankData> tankData = null;
   ItemStack paint1 = null;
   ItemStack paint2 = null;
+  UserIdent owner = null;
 
   public TOPData(TileEntity tileEntity, IProbeHitData hitData) {
 
@@ -73,6 +75,7 @@ class TOPData {
       AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;
       isActive = te.isActive();
       hasStatus = true;
+      owner = te.getOwner();
     }
 
     if (tileEntity instanceof IPowerStorage) {

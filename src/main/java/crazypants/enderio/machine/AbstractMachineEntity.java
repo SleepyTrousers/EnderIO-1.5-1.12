@@ -19,6 +19,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.util.ResettingFlag;
+import crazypants.util.UserIdent;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
@@ -27,6 +28,7 @@ import info.loenwind.autosave.annotations.Store.StoreFor;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -67,6 +69,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @SideOnly(Side.CLIENT)
   private MachineSound sound;
+
+  @Store(StoreFor.SAVE)
+  protected @Nullable UserIdent owner;
 
   private final ResourceLocation soundRes;
 
@@ -427,5 +432,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   // ///////////////////////////////////////////////////////////////////////
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
+
+  void setOwner(EntityPlayer player) {
+    this.owner = UserIdent.create(player.getGameProfile());
+  }
+
+  public UserIdent getOwner() {
+    return owner;
+  }
 
 }

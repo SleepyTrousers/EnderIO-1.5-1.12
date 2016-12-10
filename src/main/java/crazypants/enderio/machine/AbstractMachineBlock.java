@@ -174,8 +174,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       AbstractMachineEntity te = getTileEntity(world, pos);
       if (te != null) {
         te.readFromItemStack(stack);
-        if (player != null) {          
+        if (player != null) {
           te.setFacing(getFacingForHeading(player));
+          if (player instanceof EntityPlayer && !world.isRemote) {
+            te.setOwner((EntityPlayer) player);
+          }
         }
       }
       if (world.isRemote) {

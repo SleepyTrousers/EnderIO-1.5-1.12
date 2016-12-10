@@ -33,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -82,6 +83,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         EioBox eiobox = new EioBox(probeInfo);
 
         TOPData data = new TOPData(tileEntity, hitData);
+
+        mkOwner(mode, eiobox, data);
 
         mkPaint(mode, eiobox, data);
 
@@ -236,6 +239,17 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       if (data.paint1 != null) {
         info.horizontal(eiobox.center()).item(data.paint1).text(data.paint1.getDisplayName());
       }
+    }
+  }
+
+  private void mkOwner(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (mode == ProbeMode.DEBUG && data.owner != null) {
+      ItemStack skull = new ItemStack(Items.SKULL, 1, 2);
+      NBTTagCompound nbt = new NBTTagCompound();
+      nbt.setString("SkullOwner", data.owner.getPlayerName());
+      skull.setTagCompound(nbt);
+      eiobox.get().horizontal(eiobox.center()).item(skull).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
+          .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.owner.header")).text(data.owner.getPlayerName());
     }
   }
 

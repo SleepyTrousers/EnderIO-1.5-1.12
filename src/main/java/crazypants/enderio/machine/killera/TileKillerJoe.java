@@ -414,6 +414,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   Attackera getAttackera() {
     if (attackera == null) {
       attackera = new Attackera();
+      attackera.setOwner(owner);
     }
     return attackera;
   }

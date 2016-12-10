@@ -27,7 +27,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
 @Storable
 public class TileAttractor extends AbstractMobObelisk {
 
-  private FakePlayer target;
+  private Target target;
   private int maxMobsAttracted = 20;
 
   private Map<EntityLiving, IMobAttractionHandler> tracking = new HashMap<EntityLiving, IMobAttractionHandler>();
@@ -131,6 +131,7 @@ public class TileAttractor extends AbstractMobObelisk {
   FakePlayer getTarget() {
     if (target == null) {
       target = new Target();
+      target.setOwner(owner);
     }
     return target;
   }

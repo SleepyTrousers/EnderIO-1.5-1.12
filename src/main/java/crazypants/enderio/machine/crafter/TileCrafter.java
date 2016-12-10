@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
 
@@ -24,7 +26,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_BUFFER;
@@ -45,7 +46,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   private long ticksSinceLastCraft = 0;
 
-  private FakePlayer playerInst;
+  private FakePlayerEIO playerInst;
 
   public TileCrafter() {
     super(new SlotDefinition(9, 1), CRAFTER_POWER_INTAKE, CRAFTER_POWER_BUFFER, null);
@@ -53,7 +54,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockCrafter.getUnlocalisedName();
   }
 
@@ -174,11 +175,12 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     if (output != null) {
       if (playerInst == null) {
         playerInst = new FakePlayerEIO(worldObj, getLocation(), DUMMY_PROFILE);
+        playerInst.setOwner(owner);
       }
       MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
 
       ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(inv, worldObj);
-      
+
       // (3a) ... remove the used up items and ...
       for (int i = 0; i < 9; i++) {
         for (int j = 0; j < usedItems[i] && inventory[i] != null; j++) {

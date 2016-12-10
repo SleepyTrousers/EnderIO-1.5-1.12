@@ -129,7 +129,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private BlockPos lastScanned;
-  private EntityPlayerMP farmerJoe;
+  private FakePlayerEIO farmerJoe;
   private static GameProfile FARMER_PROFILE = new GameProfile(UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d"), "[EioFarmer]");
 
   public static final int NUM_TOOL_SLOTS = 3;
@@ -303,7 +303,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     
     boolean canDamage = canDamage(tool);
     if(type == ToolType.AXE) {
-      
       tool.getItem().onBlockDestroyed(tool, worldObj, bs, bc.getBlockPos(), farmerJoe);
     } else if(type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
@@ -478,8 +477,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     Block block = bs.getBlock();
     
     if(farmerJoe == null) {
-      //farmerJoe = new FakeFarmPlayer(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
       farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
+      farmerJoe.setOwner(owner);
     }
 
     if(isOpen(bc)) {
