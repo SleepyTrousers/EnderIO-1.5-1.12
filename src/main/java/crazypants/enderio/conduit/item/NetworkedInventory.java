@@ -17,6 +17,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
+import crazypants.util.Prep;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +27,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
 public class NetworkedInventory {
+
+  private static final boolean SIMULATE = true;
+  private static final boolean EXECUTE = false;
 
   IItemConduit con;
   EnumFacing conDir;
@@ -133,21 +137,17 @@ public class NetworkedInventory {
       return false;
     }
     
-    ItemStack extractItem = null;
     int maxExtracted = con.getMaximumExtracted(conDir);
 
     int slot = -1;
     int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
     for (int i = 0; i < slotChecksPerTick; i++) {
-      slot = nextSlot(numSlots);      
-      ItemStack item = inventory.getStackInSlot(slot);
-      if(canExtractItem(item)) {
-        extractItem = item.copy();        
-        if (inventory.extractItem(slot, extractItem.stackSize, true) != null) {
-          if(doTransfer(extractItem, slot, maxExtracted)) {
+      slot = nextSlot(numSlots);
+      ItemStack item = inventory.extractItem(slot, maxExtracted, SIMULATE);
+      if (Prep.isValid(item) && canExtractItem(item)) {
+        if (doTransfer(inventory, item, slot)) {
             setNextStartingSlot(slot);
             return true;
-          }
         }
       }
     }
@@ -165,36 +165,18 @@ public class NetworkedInventory {
     return filter.doesItemPassFilter(this, itemStack);
   }
 
-  private boolean doTransfer(ItemStack extractedItem, int slot, int maxExtract) {
-    if(extractedItem == null || extractedItem.getItem() == null) {
-      return false;
-    }
-    ItemStack toExtract = extractedItem.copy();
-    toExtract.stackSize = Math.min(maxExtract, toExtract.stackSize);
-    int numInserted = insertIntoTargets(toExtract);
+  private boolean doTransfer(IItemHandler inventory, ItemStack extractedItem, int slot) {
+    int numInserted = insertIntoTargets(extractedItem.copy());
     if(numInserted <= 0) {
       return false;
     }
-    itemExtracted(slot, numInserted);
-    return true;
-
-  }
-
-  // TODO: what should this do? Need to handle error cases, I think.
-  public void itemExtracted(int slot, int numInserted) {
-    IItemHandler inventory = getInventory();
-    if (inventory != null) {
-      ItemStack curStack = inventory.getStackInSlot(slot);
-      if (curStack != null) {
-        ItemStack extracted = inventory.extractItem(slot, numInserted, false);
-        if (extracted == null || extracted.stackSize != numInserted) {
-          Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + curStack.getDisplayName() + " but only removed "
-              + (extracted == null ? "null" : extracted.stackSize));
-        }
-      }
+    ItemStack extracted = inventory.extractItem(slot, numInserted, EXECUTE);
+    if (Prep.isInvalid(extracted) || extracted.stackSize != numInserted || extracted.getItem() != extractedItem.getItem()) {
+      Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
+          + (Prep.isInvalid(extracted) ? "null" : extracted.stackSize + " " + extracted.getDisplayName()) + " from " + inventory + " at " + location);
     }
-    con.itemsExtracted(numInserted, slot);
-    tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
+    onItemExtracted(slot, numInserted);
+    return true;
   }
 
   public void onItemExtracted(int slot, int numInserted) {
@@ -203,7 +185,7 @@ public class NetworkedInventory {
   }
 
   int insertIntoTargets(ItemStack toExtract) {
-    if(toExtract == null) {
+    if (Prep.isInvalid(toExtract)) {
       return 0;
     }
 
