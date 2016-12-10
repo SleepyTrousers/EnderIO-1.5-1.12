@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/machineBottom"
+            "particle":"enderio:blocks/blockSoulMachineBottom"
         }
     },
     "variants":{
