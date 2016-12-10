@@ -85,8 +85,11 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public void sendBlockUpdatesForEntireNetwork() {
     for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      IBlockState bs = te.getWorld().getBlockState(te.getPos());
-      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);      
+      if (te.getWorld().isBlockLoaded(te.getPos())) {
+        IBlockState bs = te.getWorld().getBlockState(te.getPos());
+        te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
+        te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType());
+      }
     }
   }
 

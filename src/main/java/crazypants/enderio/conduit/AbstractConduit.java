@@ -456,6 +456,9 @@ public abstract class AbstractConduit implements IConduit {
     BlockCoord pos = getLocation();
     if (getNetwork() == null && world.isBlockLoaded(pos.getBlockPos())) {
       ConduitUtil.ensureValidNetwork(this);
+      if (getNetwork() != null) {
+        getNetwork().sendBlockUpdatesForEntireNetwork();
+      }
     }
   }
 
