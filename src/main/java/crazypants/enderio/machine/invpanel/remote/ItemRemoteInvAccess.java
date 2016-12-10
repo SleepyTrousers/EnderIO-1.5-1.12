@@ -206,7 +206,7 @@ public class ItemRemoteInvAccess extends Item
   }
 
   public void tick(ItemStack stack, EntityPlayer player) {
-    if (EnderIO.proxy.getTickCount() % 10 == 0) {
+    if (EnderIO.proxy.getServerTickCount() % 10 == 0) {
       ItemRemoteInvAccessType type = ItemRemoteInvAccessType.fromStack(stack);
       extractInternal(stack, type.getRfPerTick() * 10);
     }

@@ -96,6 +96,10 @@ public class CommonProxy {
     return serverTickCount;
   }
 
+  public long getServerTickCount() {
+    return serverTickCount;
+  }
+
   public boolean isAnEiInstalled() {
     return false;
   }

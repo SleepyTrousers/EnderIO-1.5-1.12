@@ -34,7 +34,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class CapBankNetwork implements ICapBankNetwork {
+public class CapBankNetwork implements ICapBankNetwork, TickListener {
 
   private static final int IO_CAP = 2000000000;
 
@@ -70,8 +70,6 @@ public class CapBankNetwork implements ICapBankNetwork {
   private boolean inputRedstoneConditionMet = true;
   private boolean outputRedstoneConditionMet = true;
 
-  private final TickListener tickListener = new TickReciever();
-
   private final PerTickIntAverageCalculator powerTrackerIn = new PerTickIntAverageCalculator(2);
   private final PerTickIntAverageCalculator powerTrackerOut = new PerTickIntAverageCalculator(2);
 
@@ -101,6 +99,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     }
     setNetwork(world, cap);
     addEnergy(0); // ensure energy level is within bounds
+    ConduitNetworkTickHandler.instance.addListener(this);
   }
 
 
@@ -131,6 +130,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public void destroyNetwork() {
+    ConduitNetworkTickHandler.instance.removeListener(this);
     distributeEnergyToBanks();
     TileCapBank cap = null;
     for (TileCapBank cb : capBanks) {
@@ -209,22 +209,10 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public void onUpdateEntity(TileCapBank tileCapBank) {
-    World world = tileCapBank.getWorld();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-    long curTime = world.getTotalWorldTime();
-    if(curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      ConduitNetworkTickHandler.instance.addListener(tickListener);
-    }
   }
 
-  private void doNetworkTick() {
-
+  @Override
+  public void tickEnd(TickEvent.ServerTickEvent evt) {
     chargeItems(inventory.getStacks());
     transmitEnergy();
 
@@ -554,19 +542,10 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   }
 
-  private class TickReciever implements TickListener {
 
     @Override
     public void tickStart(ServerTickEvent evt) {
     }
-
-    @Override
-    public void tickEnd(TickEvent.ServerTickEvent evt) {
-      doNetworkTick();
-      
-    }
-
-  }
 
   @Override
   public IPowerStorage getController() {

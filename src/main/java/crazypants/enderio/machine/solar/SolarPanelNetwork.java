@@ -153,7 +153,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
   private int rfMax = -1;
 
   private void updateEnergy() {
-    long tick = EnderIO.proxy.getTickCount();
+    long tick = EnderIO.proxy.getServerTickCount();
     if (tick != lastTick && world != null) {
       lastTick = tick;
       if (tick > nextCollectTick) {

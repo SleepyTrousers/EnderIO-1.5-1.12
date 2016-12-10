@@ -63,7 +63,6 @@ public class ConduitNetworkTickHandler {
     for (TickListener h : listeners) {
       h.tickEnd(event);
     }
-    listeners.clear();
     for(AbstractConduitNetwork<?,?> cn : networks.keySet()) {
       cn.doNetworkTick();
     }

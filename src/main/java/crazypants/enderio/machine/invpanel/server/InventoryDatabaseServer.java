@@ -239,7 +239,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     }
 
     int currentInventoryIn = currentInventory;
-    long now = EnderIO.proxy.getTickCount();
+    long now = EnderIO.proxy.getServerTickCount();
 
     do {
       AbstractInventory inv = inventories[currentInventory];
