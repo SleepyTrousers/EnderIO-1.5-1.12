@@ -81,7 +81,7 @@ public final class Config {
   public static final Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
   public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
   public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
-  public static final Section sectionRailConfig = new Section("Rail", "railconfig");
+  // public static final Section sectionRailConfig = new Section("Rail", "railconfig");
   public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final Section sectionWeather = new Section("Weather", "weather");
   public static final Section sectionTelepad = new Section("Telepad", "telepad");
@@ -463,8 +463,8 @@ public final class Config {
   public static int soulBinderPrecientCystalLevels = 8;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 4;
-  public static int soulBinderEnderRailRF = 100000;
-  public static int soulBinderEnderRailLevels = 4;
+  // public static int soulBinderEnderRailRF = 100000;
+  // public static int soulBinderEnderRailLevels = 4;
   public static int soulBinderTunedPressurePlateLevels = 2;
   public static int soulBinderTunedPressurePlateRF = 250000;
   public static int soulBinderMaxXpLevel = 40;
@@ -498,12 +498,12 @@ public final class Config {
 
   public static boolean dumpMobNames = false;
 
-  public static boolean enderRailEnabled = true;
-  public static int enderRailPowerRequireCrossDimensions = 10000;
-  public static int enderRailPowerRequiredPerBlock = 10;
-  public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
-  public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
-  public static boolean enderRailTeleportPlayers = false;
+  // public static boolean enderRailEnabled = true;
+  // public static int enderRailPowerRequireCrossDimensions = 10000;
+  // public static int enderRailPowerRequiredPerBlock = 10;
+  // public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
+  // public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
+  // public static boolean enderRailTeleportPlayers = false;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
   public static String xpJuiceName = "xpjuice";
@@ -1389,8 +1389,8 @@ public final class Config {
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
     soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
-    soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
-        "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
+    // soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
+    // "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
     soulBinderTunedPressurePlateRF = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF,
         "The number of RF required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateRF);
     soulBinderPrecientCystalRF = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF,
@@ -1406,8 +1406,8 @@ public final class Config {
         "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
-    soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
-        "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);
+    // soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
+    // "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);
     soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
@@ -1439,16 +1439,20 @@ public final class Config {
     lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
     lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
 
-    enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Whether Ender Rails are enabled");
-    enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions,
-        "The amount of power required to transport a cart across dimensions").getInt(enderRailPowerRequireCrossDimensions);
-    enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock,
-        "The amount of power required to teleport a cart per block in the same dimension").getInt(enderRailPowerRequiredPerBlock);
-    enderRailCapSameDimensionPowerAtCrossDimensionCost = config.getBoolean("enderRailCapSameDimensionPowerAtCrossDimensionCost", sectionRailConfig.name, enderRailCapSameDimensionPowerAtCrossDimensionCost,
-        "When set to true the RF cost of sending a cart within the same dimension will be capped to the cross dimension cost");
-    enderRailTicksBeforeForceSpawningLinkedCarts = config.get(sectionRailConfig.name, "enderRailTicksBeforeForceSpawningLinkedCarts", enderRailTicksBeforeForceSpawningLinkedCarts,
-        "The number of ticks to wait for the track to clear before force spawning the next cart in a (RailCraft) linked set").getInt(enderRailTicksBeforeForceSpawningLinkedCarts);
-    enderRailTeleportPlayers = config.getBoolean("enderRailTeleportPlayers", sectionRailConfig.name, enderRailTeleportPlayers, "If true player in minecarts will be teleported. WARN: WIP, seems to cause a memory leak.");
+    // enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Whether Ender Rails are enabled");
+    // enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions,
+    // "The amount of power required to transport a cart across dimensions").getInt(enderRailPowerRequireCrossDimensions);
+    // enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock,
+    // "The amount of power required to teleport a cart per block in the same dimension").getInt(enderRailPowerRequiredPerBlock);
+    // enderRailCapSameDimensionPowerAtCrossDimensionCost = config.getBoolean("enderRailCapSameDimensionPowerAtCrossDimensionCost", sectionRailConfig.name,
+    // enderRailCapSameDimensionPowerAtCrossDimensionCost,
+    // "When set to true the RF cost of sending a cart within the same dimension will be capped to the cross dimension cost");
+    // enderRailTicksBeforeForceSpawningLinkedCarts = config.get(sectionRailConfig.name, "enderRailTicksBeforeForceSpawningLinkedCarts",
+    // enderRailTicksBeforeForceSpawningLinkedCarts,
+    // "The number of ticks to wait for the track to clear before force spawning the next cart in a (RailCraft) linked
+    // set").getInt(enderRailTicksBeforeForceSpawningLinkedCarts);
+    // enderRailTeleportPlayers = config.getBoolean("enderRailTeleportPlayers", sectionRailConfig.name, enderRailTeleportPlayers, "If true player in minecarts
+    // will be teleported. WARN: WIP, seems to cause a memory leak.");
 
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames,
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");

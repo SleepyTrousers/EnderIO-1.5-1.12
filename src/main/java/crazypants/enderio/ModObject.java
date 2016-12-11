@@ -287,9 +287,6 @@ public enum ModObject implements IModObject {
 		}
 	},
   itemFrankenSkull(ItemFrankenSkull.class),
-  
-  // blockEnderRail(BlockEnderRail.class),
-  
   itemEnderFood(ItemEnderFood.class),
   blockGauge(BlockGauge.class),
   itemRemoteInvAccess(ItemRemoteInvAccess.class),
