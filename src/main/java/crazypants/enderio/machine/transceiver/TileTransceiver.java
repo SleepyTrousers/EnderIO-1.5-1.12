@@ -30,7 +30,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
-import crazypants.enderio.rail.EnderRailController;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,8 +62,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   private PowerDistributor powerDistributor;
 
-  private final @Nonnull EnderRailController railController;
-
   private boolean inFluidFill = false;
   private boolean inGetTankInfo = false;
 
@@ -77,14 +74,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     super(new SlotDefinition(8, 8, 0), TRANSCEIVER_POWER_INTAKE, TRANSCEIVER_POWER_BUFFER, TRANSCEIVER_POWER_USE);
 
     currentTask = new ContinuousTask(getPowerUsePerTick());
-    railController = new EnderRailController(this);
 
     sendItemFilter = new ItemFilter(true);
     recieveItemFilter = new ItemFilter(true);
-  }
-
-  public EnderRailController getRailController() {
-    return railController;
   }
 
   public boolean isRedstoneChecksPassed() {
@@ -120,7 +112,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     super.doUpdate();
 
     if (!worldObj.isRemote) {
-      railController.doTick();
       if (sendChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
         sendChannelsDirty = false;
@@ -227,14 +218,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    railController.readFromNBT(nbtRoot);
     currentTask = new ContinuousTask(getPowerUsePerTick());
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    railController.writeToNBT(nbtRoot);
   }
 
   @Override
@@ -461,20 +445,20 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return true;
     }
-    return super.hasCapability(capability, facing);
+    return super.hasCapability(capability, facingIn);
   }
   
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T)new FluidCap(facing);
+      return (T) new FluidCap(facingIn);
     }
-    return super.getCapability(capability, facing);
+    return super.getCapability(capability, facingIn);
   }
 
   private class FluidCap implements IFluidHandler {

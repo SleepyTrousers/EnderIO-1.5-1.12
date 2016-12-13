@@ -32,7 +32,6 @@ import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -74,17 +73,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getPortalIcon() {
     return portalIcon.get(TextureAtlasSprite.class);
-  }
-
-  @Override
-  public boolean removedByPlayer(IBlockState blockState, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-    if (!world.isRemote) {
-      TileEntity te = world.getTileEntity(pos);
-      if (te instanceof TileTransceiver) {
-        ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
-      }
-    }
-    return super.removedByPlayer(blockState, world, pos, player, willHarvest);
   }
 
   @Override
