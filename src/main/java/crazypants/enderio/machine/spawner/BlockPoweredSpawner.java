@@ -25,6 +25,7 @@ import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
+import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.util.CapturedMob;
@@ -52,6 +53,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -62,7 +64,7 @@ import static crazypants.enderio.ModObject.blockPoweredSpawner;
 import static crazypants.enderio.ModObject.itemBrokenSpawner;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
-    IPaintable.IWrenchHideablePaint {
+    IPaintable.IWrenchHideablePaint, IHaveTESR {
  
   public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
 
@@ -70,12 +72,13 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.getUnlocalisedName(), new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketMode.class, PacketMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
     //Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();
 
     BlockPoweredSpawner res = new BlockPoweredSpawner();
-    MinecraftForge.EVENT_BUS.register(res);    
+    MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
   }
@@ -388,6 +391,12 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TilePoweredSpawner tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void bindTileEntitySpecialRenderer() {
+    ClientRegistry.bindTileEntitySpecialRenderer(TilePoweredSpawner.class, new PoweredSpawnerSpecialRenderer());
   }
 
 }

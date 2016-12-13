@@ -261,7 +261,7 @@ public class CapturedMob {
   }
 
   @SuppressWarnings("null")
-  public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, DifficultyInstance difficulty, boolean clone) {
+  public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, @Nullable DifficultyInstance difficulty, boolean clone) {
     Entity entity = null;
     if (world != null) {
       if ((isStub || !clone) && entityId != null) {

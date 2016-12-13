@@ -1539,3 +1539,9 @@ enderio.soulvial.denied=Permission denied
 enderio.soulvial.owned.denied=Permission denied - only owners may pickup owned animals
 
 tile.blockDarkSteelTrapdoor.name=Dark Steel Trapdoor
+
+enderio.spawner.note.areaFull=Too many mobs
+enderio.spawner.note.noLocationFound=No space found
+enderio.spawner.note.noLocationAtAll=No viable space
+enderio.spawner.note.badSoul=Bad soul, cannot create entity
+enderio.spawner.note.noPlayer=No player in range
