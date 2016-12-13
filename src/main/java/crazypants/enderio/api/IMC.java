@@ -99,9 +99,13 @@ public final class IMC {
   public static final String SOUL_VIAL_BLACKLIST = "soulVial:blacklist:add";
 
   /**
-   * Key for an NBT message to register a fluid fuel. Calls
-   * {@link FluidFuelRegister#addFuel(net.minecraft.nbt.NBTTagCompound)} with
-   * the NBT value of the message.
+   * Key for a string message to add an entity to the Spawner "clone instead of spawn".
+   */
+  public static final String SOUL_VIAL_UNSPAWNABLELIST = "soulVial:unspawnablelist:add";
+
+  /**
+   * Key for an NBT message to register a fluid fuel. Calls {@link FluidFuelRegister#addFuel(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the
+   * message.
    */
   public static final String FLUID_FUEL_ADD = "fluidFuel:add";
 

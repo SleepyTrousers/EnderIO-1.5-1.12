@@ -56,6 +56,7 @@ public class CapturedMob {
   public static final String VARIANT_KEY = "isVariant";
 
   private final static List<String> blacklist = new ArrayList<String>();
+  private final static List<String> unspawnablelist = new ArrayList<String>();
 
   private final NBTTagCompound entityNbt;
   private final String entityId;
@@ -145,6 +146,25 @@ public class CapturedMob {
     if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
       stack.getTagCompound().setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
     }
+    return stack;
+  }
+
+  public @Nonnull ItemStack toGenericStack(Item item, int meta, int amount) {
+    NBTTagCompound data = new NBTTagCompound();
+    if (entityId != null) {
+      data.setString(ENTITY_ID_KEY, entityId);
+    } else if (entityNbt != null && entityNbt.hasKey("id")) {
+      data.setString(ENTITY_ID_KEY, entityNbt.getString("id"));
+    }
+    data.setBoolean(IS_STUB_KEY, isStub);
+    if (variant != null) {
+      data.setShort(VARIANT_KEY, (short) variant.ordinal());
+    }
+    if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
+      data.setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
+    }
+    ItemStack stack = new ItemStack(item, amount, meta);
+    stack.setTagCompound(data);
     return stack;
   }
 
@@ -264,7 +284,7 @@ public class CapturedMob {
   public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, @Nullable DifficultyInstance difficulty, boolean clone) {
     Entity entity = null;
     if (world != null) {
-      if ((isStub || !clone) && entityId != null) {
+      if (entityId != null && (isStub || !clone) && (!isUnspawnable(entityId) || entityNbt == null)) {
         entity = EntityList.createEntityByName(entityId, world);
       } else if (entityNbt != null) {
         if (clone) {
@@ -425,6 +445,14 @@ public class CapturedMob {
 
   public static void addToBlackList(String entityName) {
     blacklist.add(entityName);
+  }
+
+  public static void addToUnspawnableList(String entityName) {
+    unspawnablelist.add(entityName);
+  }
+
+  private boolean isUnspawnable(String entityName) {
+    return Config.soulVesselUnspawnableList.contains(entityId) || unspawnablelist.contains(entityName);
   }
 
   public @Nullable String getEntityName() {

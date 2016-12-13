@@ -89,7 +89,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1)) || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toStack(itemSoulVessel.getItem(), 1, 1);
+        ItemStack res = capturedMob.toGenericStack(itemSoulVessel.getItem(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }

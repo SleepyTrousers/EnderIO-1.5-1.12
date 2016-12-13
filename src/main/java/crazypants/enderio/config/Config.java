@@ -451,6 +451,10 @@ public final class Config {
   public static boolean enableOCConduitsAnimatedTexture = true;
 
   public static List<String> soulVesselBlackList = Collections.<String> emptyList();
+  public static List<String> soulVesselUnspawnableList = new ArrayList<String>();
+  static {
+    soulVesselUnspawnableList.add("chickens.ChickensChicken");
+  }
   public static boolean soulVesselCapturesBosses = false;
 
   public static int soulBinderBrokenSpawnerRF = 2500000;
@@ -463,8 +467,6 @@ public final class Config {
   public static int soulBinderPrecientCystalLevels = 8;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 4;
-  // public static int soulBinderEnderRailRF = 100000;
-  // public static int soulBinderEnderRailLevels = 4;
   public static int soulBinderTunedPressurePlateLevels = 2;
   public static int soulBinderTunedPressurePlateRF = 250000;
   public static int soulBinderMaxXpLevel = 40;
@@ -571,7 +573,6 @@ public final class Config {
 
   public static String leversEnabled = "10,30,60,300";
 
-  
   public static void preInit(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -1373,9 +1374,12 @@ public final class Config {
         "Allows OC conduits. Only has an effect with OpenComputers installed.");
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
-    
+
     soulVesselBlackList = Arrays.asList(config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList.toArray(new String[0]),
         "Entities listed here will can not be captured in a Soul Vial"));
+    soulVesselUnspawnableList = Arrays
+        .asList(config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, soulVesselUnspawnableList.toArray(new String[0]),
+            "Entities listed here cannot be spawned and must be cloned from a captured entity instead (Attention: Possibility of item duping!)"));
 
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial. Note: The Ender Dragon can not "

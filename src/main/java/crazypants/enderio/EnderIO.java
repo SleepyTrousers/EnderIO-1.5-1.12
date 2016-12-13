@@ -229,6 +229,8 @@ public class EnderIO {
             TRAVEL_BLACKLIST.add(value);
           } else if (IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel.getItem() != null) {
             CapturedMob.addToBlackList(value);
+          } else if (IMC.SOUL_VIAL_UNSPAWNABLELIST.equals(key)) {
+            CapturedMob.addToUnspawnableList(value);
           } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
