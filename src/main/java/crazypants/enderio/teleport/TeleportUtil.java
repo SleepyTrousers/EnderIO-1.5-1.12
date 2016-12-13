@@ -6,7 +6,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.rail.TeleporterEIO;
 import crazypants.enderio.sound.SoundHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -121,5 +121,37 @@ public class TeleportUtil {
     return true;
   }
   
-  
+  private static class TeleporterEIO extends Teleporter {
+
+    public TeleporterEIO(WorldServer p_i1963_1_) {
+      super(p_i1963_1_);
+    }
+
+    @Override
+    public boolean makePortal(Entity p_makePortal_1_) {
+      return true;
+    }
+
+    @Override
+    public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
+      return true;
+    }
+
+    @Override
+    public void placeInPortal(Entity entity, float rotationYaw) {
+      int x = MathHelper.floor_double(entity.posX);
+      int y = MathHelper.floor_double(entity.posY) - 1;
+      int z = MathHelper.floor_double(entity.posZ);
+
+      entity.setLocationAndAngles(x, y, z, entity.rotationPitch, entity.rotationYaw);
+      entity.motionX = 0;
+      entity.motionY = 0;
+      entity.motionZ = 0;
+    }
+
+    @Override
+    public void removeStalePortalLocations(long p_removeStalePortalLocations_1_) {
+    }
+
+  }
 }
