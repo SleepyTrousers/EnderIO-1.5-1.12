@@ -208,10 +208,6 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
   //--------- Tick Handling
 
   @Override
-  public void onUpdateEntity(TileCapBank tileCapBank) {
-  }
-
-  @Override
   public void tickEnd(TickEvent.ServerTickEvent evt) {
     chargeItems(inventory.getStacks());
     transmitEnergy();

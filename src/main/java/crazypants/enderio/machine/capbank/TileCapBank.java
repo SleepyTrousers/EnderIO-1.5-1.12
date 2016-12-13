@@ -51,7 +51,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -199,9 +198,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       }
       return;
     }
-    updateNetwork(worldObj);
+
     if (network == null) {
-      return;
+      NetworkUtil.ensureValidNetwork(this);
+      if (network == null) {
+        return;
+      }
     }
 
     if (redstoneStateDirty) {
@@ -232,16 +234,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     doDropItems();
-  }
-
-  private void updateNetwork(World world) {
-    if (getNetwork() == null) {
-      NetworkUtil.ensureValidNetwork(this);
-    }
-    if (getNetwork() != null) {
-      getNetwork().onUpdateEntity(this);
-    }
-
   }
 
   // ---------- IO
@@ -584,10 +576,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     for (EnumFacing dir : EnumFacing.values()) {
       IPowerInterface pi = getReceptorForFace(NullHelper.notnullJ(dir, "Enum.values()"));
       if (pi != null) {
-        EnergyReceptor er = new EnergyReceptor(this, pi, NullHelper.notnullJ(dir, "Enum.values()"));
-        validateModeForReceptor(er);
         IoMode ioMode = getIoMode(NullHelper.notnullJ(dir, "Enum.values()"));
         if (ioMode != IoMode.DISABLED && ioMode != IoMode.PULL) {
+          EnergyReceptor er = new EnergyReceptor(this, pi, NullHelper.notnullJ(dir, "Enum.values()"));
+          validateModeForReceptor(er);
           receptors.add(er);
         }
       }

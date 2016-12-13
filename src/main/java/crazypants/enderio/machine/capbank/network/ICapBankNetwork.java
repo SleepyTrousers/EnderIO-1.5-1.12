@@ -20,8 +20,6 @@ public interface ICapBankNetwork extends IPowerStorage {
 
   NetworkState getState();
 
-  void onUpdateEntity(TileCapBank tileCapBank);
-
 
   //------ Energy
 

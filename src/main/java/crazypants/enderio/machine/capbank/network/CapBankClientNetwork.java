@@ -222,10 +222,6 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public void onUpdateEntity(TileCapBank tileCapBank) {
-  }
-
-  @Override
   public void addEnergy(int energy) {
   }
 
