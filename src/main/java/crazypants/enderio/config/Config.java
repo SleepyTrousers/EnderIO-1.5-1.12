@@ -254,8 +254,8 @@ public final class Config {
   public static int darkSteelShearsDurabilityFactor = 5;
   public static int darkSteelShearsPowerUsePerDamagePoint = 250;
   public static float darkSteelShearsEffeciencyBoostWhenPowered = 2.0f;
-  public static int darkSteelShearsBlockAreaBoostWhenPowered = 2;
-  public static float darkSteelShearsEntityAreaBoostWhenPowered = 3.0f;
+  public static int darkSteelShearsBlockAreaBoostWhenPowered = 4;
+  public static float darkSteelShearsEntityAreaBoostWhenPowered = 5.0f;
 
   public static int darkSteelUpgradeVibrantCost = 4;
   public static int darkSteelUpgradePowerOneCost = 6;

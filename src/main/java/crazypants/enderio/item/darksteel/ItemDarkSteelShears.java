@@ -18,7 +18,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.material.Alloy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -122,7 +121,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       return super.onBlockStartBreak(itemstack, pos, player);
     }
 
-    HarvestResult res = new HarvestResult(null, pos);
+    List<BlockPos> res = new ArrayList<BlockPos>();
 
     int x = pos.getX();
     int y = pos.getY();
@@ -133,13 +132,13 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
         for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
           Block block2 = player.worldObj.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
           if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.worldObj, new BlockPos(x + dx, y + dy, z + dz))) {
-            res.getHarvestedBlocks().add(new BlockPos(x + dx, y + dy, z + dz));
+            res.add(new BlockPos(x + dx, y + dy, z + dz));
           }
         }
       }
     }
 
-    List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res.getHarvestedBlocks());
+    List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res);
     harvestComparator.refPoint = pos;
     Collections.sort(sortedTargets, harvestComparator);
 
