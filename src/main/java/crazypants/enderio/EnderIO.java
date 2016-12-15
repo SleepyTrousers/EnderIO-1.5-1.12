@@ -28,6 +28,7 @@ import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.machine.painter.paint.PaintRegister;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
@@ -103,6 +104,8 @@ public class EnderIO {
     PowerHandlerUtil.create();
 
     Config.preInit(event);
+
+    PaintRegister.register();
 
     proxy.loadIcons();
 
