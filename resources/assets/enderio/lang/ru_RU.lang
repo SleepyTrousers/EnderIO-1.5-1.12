@@ -60,6 +60,7 @@ enderio.itemItemConduit.name=Предметная труба
 
 enderio.filterUpgradeBasic.name=Основной предметный фильтр
 enderio.filterUpgradeAdvanced.name=Продвинутый предметный фильтр
+enderio.filterUpgradeSpecies.name=Предметный фильтр видов Forestry
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
 
 enderio.itemConduitFilterUpgrade.configured=Настроенный
@@ -799,15 +800,20 @@ tile.blockPaintedGlowstone.name=Покрашенный светящийся ка
 tile.blockPaintedGlowstone2.name=Покрашенный светящийся камень
 tile.blockPaintedRedstone.name=Покрашенный редстоун
 tile.blockPaintedRedstoneSolid.name=Покрашенный редстоун
+tile.blockPaintedStone.name=Покрашенный булыжник
 tile.blockPaintedCarpet.name=Покрашенный ковёр
+tile.blockPaintedWoodenTrapdoor.name=Покрашенный люк
+tile.blockPaintedIronTrapdoor.name=Покрашенный железный люк
+tile.blockPaintedDarkSteelTrapdoor.name=Покрашенный люк из тёмной стали
+
 enderio.painter.tooltip.wasPainted=§oКак Вы думаете, что оно будет делать?
 
 tile.blockPainter.tooltip.detailed.line1=Используется для покраски:
-tile.blockPainter.tooltip.detailed.line2=Фасадов труб, ступенек, заборов,
-tile.blockPainter.tooltip.detailed.line3=гейтов, плит, булыжниковых стен,
-tile.blockPainter.tooltip.detailed.line4=стеклянных рамок, светящегося камня, коврика,
-tile.blockPainter.tooltip.detailed.line5=тёмных нажимных плит,
-tile.blockPainter.tooltip.detailed.line6=и большинства машин
+tile.blockPainter.tooltip.detailed.line2=Фасадов труб, ступенек, заборов, гейтов,
+tile.blockPainter.tooltip.detailed.line3=плит, булыжника, булыжной ограды,
+tile.blockPainter.tooltip.detailed.line4=светокамня, редстоуна, ковра, нажимных
+tile.blockPainter.tooltip.detailed.line5=плит, почти прозрачного стекла, расплавленного кварца,
+tile.blockPainter.tooltip.detailed.line6=люков, и большинства машин
 
 //Items
 item.itemYetaWrench.name=Гаечный ключ Йэта
@@ -1217,6 +1223,10 @@ enderio.gui.conduit.item.fuzzy.fuzzy_50=Нечёткое совпадение н
 enderio.gui.conduit.item.fuzzy.fuzzy_75=Нечёткое совпадение на 75% урона
 enderio.gui.conduit.item.fuzzy.fuzzy_99=Нечёткое совпадение при любом уроне
 
+enderio.gui.conduit.item.species.both=Совпадение по первичным и вторичным видам
+enderio.gui.conduit.item.species.primary=Совпадение только по первичным видам
+enderio.gui.conduit.item.species.secondary=Совпадение только по вторичным видам
+
 enderio.gui.conduit.item.filterupgrade=Вставить предметный фильтр
 enderio.gui.conduit.item.speedupgrade=Вставить улучшения скорости/понижение скорости
 enderio.gui.conduit.item.speedupgrade2=Макс. кол-во улучшений 15; Макс. кол-во понижений 1
@@ -1340,8 +1350,10 @@ enderio.top.action.none=nothing
 enderio.top.machine.active=Активный
 enderio.top.machine.idle=Бездействующий
 enderio.top.progress.idle=Бездействующий
-enderio.top.suffix.percent=%
-enderio.top.suffix.rf=RF
+enderio.top.suffix.percent= %
+enderio.top.suffix.rf= RF
+enderio.top.suffix.levels= уровней
+enderio.top.suffix.items= предметов
 enderio.top.range.header=Диапазон: %s
 enderio.top.range=%sx%sx%sx
 enderio.top.machine.outofpower=Нет энергии
@@ -1354,11 +1366,12 @@ enderio.top.tank.content.empty=Пустой
 enderio.top.tank.header.input=Вход резервуара: %s
 enderio.top.tank.header.output=Выход резервуара: %s
 enderio.top.tank.header.storage=%s
-enderio.top.xp.levels= уровней
 enderio.top.rf.header.maxin=Макс. вход:
 enderio.top.rf.header.maxout=Макс. выход:
 enderio.top.rf.header.avg=I/O:
 enderio.top.rf.value=%s RF/тик
+enderio.top.paint.header=Покрашено в:
+enderio.top.owner.header=Владелец:
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
@@ -1510,4 +1523,25 @@ tile.blockXPVacuum.tooltip.detailed.line1=Втягивает ближайшие 
 tile.blockXPVacuum.tooltip.detailed.line2=их в прилегающие резервуары/трубы.
 tile.blockXPVacuum.tooltip.detailed.line3=Должен быть активирован с помощью жидкого опыта.
 
+tile.blockInventoryChest_tiny.name=Tiny Inventory System Storage
+tile.blockInventoryChest_small.name=Small Inventory System Storage
+tile.blockInventoryChest_medium.name=Medium Inventory System Storage
+tile.blockInventoryChest_big.name=Big Inventory System Storage
+tile.blockInventoryChest_large.name=Large Inventory System Storage
+tile.blockInventoryChest_huge.name=Huge Inventory System Storage
+tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
+tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
+tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
+
 enderio.gui.permission.denied=Доступ запрещён
+enderio.wrench.permission.denied=Доступ запрещён
+enderio.soulvial.denied=Доступ запрещён
+enderio.soulvial.owned.denied=Доступ запрещён - только владельцы могут подбирать этих животных
+
+tile.blockDarkSteelTrapdoor.name=Люк из тёмной стали
+
+enderio.spawner.note.areaFull=Слишком много мобов
+enderio.spawner.note.noLocationFound=Не достаточно пространства
+enderio.spawner.note.noLocationAtAll=Нет жизнеспособного пространства
+enderio.spawner.note.badSoul=Плохая душа не может создать существо
+enderio.spawner.note.noPlayer=Нет игроков в диапазоне
