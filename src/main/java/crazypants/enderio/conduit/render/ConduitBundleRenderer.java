@@ -14,7 +14,6 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -23,6 +22,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -60,13 +60,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-    if (bundle.hasFacade() && bundle.getPaintSource().isOpaqueCube() && !ConduitUtil.isFacadeHidden(bundle, player)) {
+    if (bundle.hasFacade() && bundle.getPaintSource().isOpaqueCube() && !YetaUtil.isFacadeHidden(bundle, player)) {
       return;
     }
     float brightness = -1;
     boolean hasDynamic = false;
     for (IConduit con : bundle.getConduits()) {
-      if (ConduitUtil.renderConduit(player, con)) {
+      if (YetaUtil.renderConduit(player, con)) {
         ConduitRenderer renderer = getRendererForConduit(con);
         if (renderer.isDynamic()) {
           if (!hasDynamic) {
@@ -122,26 +122,24 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
     
     // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
-    addConduitQuads(bundle, brightness, result);
+    addConduitQuads(state, bundle, brightness, result);
 
     return result;
   }
 
-  private void addConduitQuads(IConduitBundle bundle, float brightness, List<BakedQuad> quads) {
+  private void addConduitQuads(IBlockStateWrapper state, IConduitBundle bundle, float brightness, List<BakedQuad> quads) {
 
     // Conduits
     Set<EnumFacing> externals = new HashSet<EnumFacing>();
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-
     List<BoundingBox> wireBounds = new ArrayList<BoundingBox>();
-    
-    if(bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {      
+
+    if (bundle.hasFacade() && state.getYetaDisplayMode().isHideFacades()) {
       wireBounds.add(BoundingBox.UNIT_CUBE);
-    }    
+    }
 
     for (IConduit con : bundle.getConduits().toArray(new IConduit[0])) {
 
-      if (ConduitUtil.renderConduit(player, con)) {
+      if (state.getYetaDisplayMode().renderConduit(con)) {
         ConduitRenderer renderer = getRendererForConduit(con);
         renderer.addBakedQuads(this, bundle, con, brightness, quads);
         Set<EnumFacing> extCons = con.getExternalConnections();
@@ -165,14 +163,14 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         if (component.conduitType != null) {
           IConduit conduit = bundle.getConduit(component.conduitType);
           if (conduit != null) {
-            if (ConduitUtil.renderConduit(player, component.conduitType)) {
+            if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               BakedQuadBuilder.addBakedQuads(quads, component.bound, conduit.getTextureForState(component));
             } else {
               addWireBounds(wireBounds, component);
             }
           }
 
-        } else if (ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
+        } else if (state.getYetaDisplayMode().getDisplayMode() == ConduitDisplayMode.ALL) {
           TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
           BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
         }
@@ -187,6 +185,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     // External connection terminations
     for (EnumFacing dir : externals) {
       addQuadsForExternalConnection(dir, quads);
+    }
+
+    if (quads.isEmpty()) {
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.50), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.75), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE, ConduitBundleRenderManager.instance.getWireFrameIcon());
     }
 
   }

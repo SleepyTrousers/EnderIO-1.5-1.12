@@ -31,6 +31,7 @@ import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -542,8 +543,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(hashCodes);
+  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(wrapper, hashCodes);
     if (subtype != 1) {
       hashCodes.add(subtype);
     }

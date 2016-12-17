@@ -17,6 +17,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.paint.YetaUtil.YetaDisplayMode;
 import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
@@ -63,6 +64,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   protected boolean doCaching = false;
 
   private IBakedModel model = null;
+
+  @Nonnull
+  private final YetaDisplayMode yetaDisplayMode = YetaUtil.getYetaDisplayMode();
 
   public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
     this.state = notnull(state);
@@ -172,7 +176,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     boolean hasPaintRendered = false;
     String cacheResult;
 
-    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacadesClient())) {
+    if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !getYetaDisplayMode().isHideFacades())) {
       hasPaintRendered = PaintWrangler.wrangleBakedModel(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos), paintQuads);
     }
 
@@ -445,6 +449,11 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   @Override
   public boolean func_189884_a(Entity p_189884_1_) {
     return state.func_189884_a(p_189884_1_);
+  }
+
+  @Override
+  public YetaDisplayMode getYetaDisplayMode() {
+    return yetaDisplayMode;
   }
 
 }

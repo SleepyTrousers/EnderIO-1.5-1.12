@@ -18,7 +18,6 @@ import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.paint.YetaUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -148,56 +147,10 @@ public class ConduitUtil {
     if (!bundle.hasFacade()) {
       return FacadeRenderState.NONE;
     }
-    if (isFacadeHidden(bundle, player)) {
+    if (YetaUtil.isFacadeHidden(bundle, player)) {
       return FacadeRenderState.WIRE_FRAME;
     }
     return FacadeRenderState.FULL;
-  }
-
-  public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.hasFacade() && !isFacadeHidden(bundle, player);
-  }
-
-  public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
-    if (bundle.getPaintSource() == null) {
-      return false;
-    }
-    if (player == null || player.worldObj.isRemote) {
-      return YetaUtil.shouldHeldItemHideFacadesClient();
-    }
-    return YetaUtil.shouldHeldItemHideFacades(player);
-  }
-
-  public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if (player == null) {
-      return ConduitDisplayMode.ALL;
-    }
-    ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null) {
-      return ConduitDisplayMode.ALL;
-    }
-
-    ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
-    if (result == null) {
-      return ConduitDisplayMode.ALL;
-    }
-    return result;
-  }
-
-  public static boolean renderConduit(EntityPlayer player, IConduit con) {
-    if (player == null || con == null) {
-      return true;
-    }
-    return renderConduit(player, con.getBaseConduitType());
-  }
-
-  public static boolean renderConduit(EntityPlayer player, Class<? extends IConduit> conduitType) {
-    if (player == null || conduitType == null) {
-      return true;
-    }
-    ConduitDisplayMode mode = getDisplayMode(player);
-    return mode.renderConduit(conduitType);
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {

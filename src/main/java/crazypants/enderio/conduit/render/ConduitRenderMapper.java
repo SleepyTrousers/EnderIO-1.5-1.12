@@ -4,7 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
@@ -30,7 +29,7 @@ public class ConduitRenderMapper implements IRenderMapper.IBlockRenderMapper.IRe
     if (tileEntity instanceof TileConduitBundle) {
       IBlockState paintSource = ((TileConduitBundle) tileEntity).getPaintSource();
       if (paintSource != null && (paintSource.isOpaqueCube() || ((TileConduitBundle) tileEntity).getFacadeType().isTransparent())
-          && !YetaUtil.shouldHeldItemHideFacadesClient()) {
+          && !state.getYetaDisplayMode().isHideFacades()) {
         return null;
       }
       List<BakedQuad> quads = ConduitBundleRenderManager.instance.getConduitBundleRenderer().getGeneralQuads(state, blockLayer);

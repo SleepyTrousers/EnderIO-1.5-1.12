@@ -27,6 +27,7 @@ import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -870,8 +871,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(hashCodes);
+  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(wrapper, hashCodes);
     hashCodes.addEnum(outputColors);
     hashCodes.addEnum(inputColors);
   }

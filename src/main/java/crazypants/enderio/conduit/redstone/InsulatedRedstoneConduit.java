@@ -34,6 +34,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -823,8 +824,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    super.hashCodeForModelCaching(hashCodes);
+  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    super.hashCodeForModelCaching(wrapper, hashCodes);
     hashCodes.addEnum(signalColors);
     if (specialConnections == null) {
       computeSpecialConnections();

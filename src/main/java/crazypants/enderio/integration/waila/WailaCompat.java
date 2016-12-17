@@ -11,7 +11,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -23,6 +22,7 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
+import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerDisplayUtil;
 import mcp.mobius.waila.api.ITaggedList;
@@ -129,7 +129,7 @@ public class WailaCompat implements IWailaDataProvider {
     if(config.getConfig("facades.hidden")) {
       if (accessor.getBlock() instanceof IBlockPaintableBlock) {
         // If facades are hidden, we need to ignore it
-        if(accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
+        if(accessor.getTileEntity() instanceof IConduitBundle && YetaUtil.isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
           return null;
         }
         IBlockPaintableBlock bundle = (IBlockPaintableBlock) accessor.getBlock();

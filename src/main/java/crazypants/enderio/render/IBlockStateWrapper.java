@@ -3,6 +3,7 @@ package crazypants.enderio.render;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.paint.YetaUtil.YetaDisplayMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -31,5 +32,7 @@ public interface IBlockStateWrapper extends IBlockState, ICacheKey {
   IBlockStateWrapper addCacheKey(@Nullable Object addlCacheKey);
 
   void bakeModel();
+
+  YetaDisplayMode getYetaDisplayMode();
 
 }

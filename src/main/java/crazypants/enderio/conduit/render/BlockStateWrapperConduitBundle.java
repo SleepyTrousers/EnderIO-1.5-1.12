@@ -43,13 +43,7 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
 
   @Override
   protected QuadCollector getFromCache() {
-    final QuadCollector data = cache.getIfPresent(cachekey);
-    // if (data != null) {
-    // System.out.println("cache HIT " + this.pos + " " + cachekey);
-    // } else {
-    // System.out.println("cache MISS " + this.pos + " " + cachekey);
-    // }
-    return data;
+    return cache.getIfPresent(cachekey);
   }
 
   public static void invalidate() {
@@ -60,7 +54,7 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
   protected void addCacheKeyInternal(@Nonnull Object addlCacheKey) {
     super.addCacheKeyInternal(addlCacheKey);
     if (addlCacheKey instanceof IConduitComponent) {
-      ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(cachekey);
+      ((IConduitComponent) addlCacheKey).hashCodeForModelCaching(this, cachekey);
     } else if (addlCacheKey instanceof IBlockState) {      
       cachekey.add(Block.BLOCK_STATE_IDS.get((IBlockState) addlCacheKey));
     } else {

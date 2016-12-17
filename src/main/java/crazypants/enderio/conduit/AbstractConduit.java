@@ -32,6 +32,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -636,7 +637,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @SideOnly(Side.CLIENT)
-  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(this.getClass());
     hashCodes.add(conduitConnections, externalConnections, conectionModes);
   }

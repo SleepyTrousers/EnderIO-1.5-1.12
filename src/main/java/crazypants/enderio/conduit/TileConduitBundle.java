@@ -34,11 +34,12 @@ import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.render.IBlockStateWrapper;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -97,7 +98,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public boolean shouldRenderInPass(int arg0) {
-    if(facade != null && facade.isOpaqueCube() && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
+    if(facade != null && facade.isOpaqueCube() && !YetaUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
       return false;
     }
     return super.shouldRenderInPass(arg0);
@@ -126,7 +127,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
+  public synchronized void readCustomNBT(NBTTagCompound nbtRoot) {
     short nbtVersion = nbtRoot.getShort("nbtVersion");
 
     conduits.clear();
@@ -918,11 +919,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
-    hashCodes.add(facadeType.ordinal() << 16 | getFacadeRenderedAs().ordinal() << 8 | ConduitUtil.getDisplayMode(Minecraft.getMinecraft().thePlayer).ordinal());
+  public void hashCodeForModelCaching(IBlockStateWrapper wrapper, BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
+    hashCodes.add(facadeType.ordinal() << 16 | getFacadeRenderedAs().ordinal() << 8 | wrapper.getYetaDisplayMode().getDisplayMode().ordinal() << 1
+        | (wrapper.getYetaDisplayMode().isHideFacades() ? 1 : 0));
     for (IConduit conduit : conduits) {
       if (conduit instanceof IConduitComponent) {
-        ((IConduitComponent) conduit).hashCodeForModelCaching(hashCodes);
+        ((IConduitComponent) conduit).hashCodeForModelCaching(wrapper, hashCodes);
       } else {
         hashCodes.add(conduit);
       }
