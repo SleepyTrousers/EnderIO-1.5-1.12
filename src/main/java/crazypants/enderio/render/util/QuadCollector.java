@@ -27,6 +27,19 @@ public class QuadCollector {
   private final List<BakedQuad>[] table = new List[mkKey(EnumFacing.values()[EnumFacing.values().length - 1],
       BlockRenderLayer.values()[BlockRenderLayer.values().length - 1]) + 1];
 
+  @Override
+  public String toString() {
+    String a = "";
+    for (int i = 0; i < table.length; i++) {
+      if (table[i] == null) {
+        a += "- ";
+      } else {
+        a += table[i].size() + " ";
+      }
+    }
+    return "QuadCollector@" + Integer.toHexString(hashCode()) + " [table=" + a + "]";
+  }
+
   private static Integer mkKey(EnumFacing side, BlockRenderLayer pass) {
     return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == null ? 0 : pass.ordinal());
   }

@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.render;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +27,17 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
   private final static Cache<ConduitCacheKey, QuadCollector> cache = CacheBuilder.newBuilder().maximumSize(500).expireAfterAccess(10, TimeUnit.MINUTES)
       .<ConduitCacheKey, QuadCollector> build();
 
+  @Override
+  public String toString() {
+    String r = "BlockStateWrapperConduitBundle@" + Integer.toHexString(hashCode()) + " [cache=";
+
+    for (Entry<ConduitCacheKey, QuadCollector> e : cache.asMap().entrySet()) {
+      r += "(" + e.getKey() + "=" + e.getValue().toString() + ") ";
+    }
+
+    return r + "]";
+  }
+
   public BlockStateWrapperConduitBundle(IBlockState state, IBlockAccess world, BlockPos pos, IBlockRenderMapper renderMapper) {
     super(state, world, pos, renderMapper);
   }
@@ -35,6 +47,10 @@ public class BlockStateWrapperConduitBundle extends BlockStateWrapperBase {
   }
 
   private final @Nonnull ConduitCacheKey cachekey = new ConduitCacheKey();
+
+  public ConduitCacheKey getCachekey() {
+    return cachekey;
+  }
 
   @Override
   protected void putIntoCache(QuadCollector quads) {

@@ -32,6 +32,7 @@ import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
@@ -920,6 +921,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  public String toString() {
+    BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(worldObj.getBlockState(pos), worldObj, pos, ConduitRenderMapper.instance);
+    bsw.addCacheKey(this);
+    return "TileConduitBundle [pos=" + pos + ", facade=" + facade + ", facadeType=" + facadeType + ", conduits=" + conduits + ", cachekey=" + bsw.getCachekey()
+        + ", bsw=" + bsw + "]";
+  }
 
 
 }
