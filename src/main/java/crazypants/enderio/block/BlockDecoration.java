@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -66,16 +65,12 @@ public class BlockDecoration extends Block implements IHaveRenderers {
 
   protected void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new ItemBlock(this) {
+    GameRegistry.register(new ItemBlockDecoration(this, getName()) {
       @Override
       public String getUnlocalizedName(ItemStack stack) {
         return EnumDecoBlock.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
-      @Override
-      public int getMetadata(int damage) {
-        return damage;
-      }
-    }.setRegistryName(getName()).setHasSubtypes(true));
+    });
   }
 
   @Nonnull
