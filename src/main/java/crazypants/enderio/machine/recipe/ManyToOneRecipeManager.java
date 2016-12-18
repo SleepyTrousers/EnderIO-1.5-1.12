@@ -37,6 +37,7 @@ public class ManyToOneRecipeManager {
       }
     } else {
       Log.error("Could not load recipes for " + managerName + ".");
+      throw new RuntimeException("Could not load recipes for " + managerName + ". See logfile for more information.");
     }
   }
 
