@@ -1,7 +1,6 @@
 package crazypants.util;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -13,6 +12,7 @@ import com.enderio.core.common.util.EntityUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import info.loenwind.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -325,12 +325,10 @@ public class CapturedMob {
             skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
             skel.setCombatTask();
 
-            Calendar calendar = world.getCurrentDate();
-
-            if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && Math.random() < 0.25) {
+            if (Celeb.H31.isOn() && Math.random() < 0.25) {
               skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
               skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-            } else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 6 && Math.random() < 0.25) {
+            } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
               skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
             } else if (Math.random() < 0.1) {
               skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));

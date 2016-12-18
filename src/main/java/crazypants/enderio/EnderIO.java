@@ -44,6 +44,8 @@ import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
 import crazypants.util.Things;
+import info.loenwind.scheduler.Celeb;
+import info.loenwind.scheduler.Scheduler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -182,6 +184,9 @@ public class EnderIO {
       dumpMobNamesToFile();
     }
     addModIntegration();
+
+    Celeb.create();
+    Scheduler.instance.start();
   }
 
   @EventHandler
