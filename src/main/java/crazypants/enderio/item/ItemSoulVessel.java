@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.input.Keyboard;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
@@ -15,6 +18,9 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -41,7 +47,7 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHaveRenderers {
+public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IHaveRenderers, IOverlayRenderAware {
 
   private static String permissionPickupOwned = null;
   private static String permissionPickup = null;
@@ -261,6 +267,33 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider,IHa
       } else {
         par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
       }
+  }
+
+  @Override
+  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    doItemOverlayIntoGUI(stack, xPosition, yPosition);
+  }
+
+  @SideOnly(Side.CLIENT)
+  public static void doItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+    if (EnderIO.proxy.getClientPlayer().isSneaking() || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+      CapturedMob capturedMob = CapturedMob.create(stack);
+      if (capturedMob != null) {
+        String name = capturedMob.getDisplayName();
+        int idx = (int) ((EnderIO.proxy.getTickCount() / 4) % name.length());
+        name = (name + " " + name).substring(idx, idx + 3);
+
+        FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.disableBlend();
+        GlStateManager.enableBlend();
+        fr.drawStringWithShadow(name, xPosition + 8 - fr.getStringWidth(name) / 2, yPosition + 5, 0xFF0030B0);
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.enableBlend();
+      }
+    }
   }
 
 }

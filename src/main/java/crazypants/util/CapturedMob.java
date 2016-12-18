@@ -378,13 +378,13 @@ public class CapturedMob {
       baseName = EntityUtil.getDisplayNameForEntity(entityNbt.getString("id"));
     }
     if (baseName == null || baseName.trim().isEmpty()) {
-      if (customName != null) {
-        return customName;
+      if (customName != null && !customName.trim().isEmpty()) {
+        return customName + "";
       } else {
         return "???";
       }
     } else {
-      if (customName != null) {
+      if (customName != null && !customName.trim().isEmpty()) {
         return customName + " (" + baseName + ")";
       } else {
         return baseName;
