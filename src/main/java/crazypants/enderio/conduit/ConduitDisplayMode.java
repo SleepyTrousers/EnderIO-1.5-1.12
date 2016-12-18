@@ -28,9 +28,11 @@ import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER_OFF;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE;
 import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
+import static crazypants.enderio.gui.IconEIO.YETA_GEAR;
 
 public class ConduitDisplayMode {
 
+  public static final ConduitDisplayMode NEUTRAL = new ConduitDisplayMode("neutral", YETA_GEAR, YETA_GEAR);
   public static final ConduitDisplayMode ALL = new ConduitDisplayMode("all", TICK, TICK);
   public static final ConduitDisplayMode NONE = new ConduitDisplayMode("none", CROSS, CROSS);
   
@@ -44,7 +46,8 @@ public class ConduitDisplayMode {
         new ConduitDisplayMode(IItemConduit.class, WRENCH_OVERLAY_ITEM, WRENCH_OVERLAY_ITEM_OFF), 
         new ConduitDisplayMode(ILiquidConduit.class, WRENCH_OVERLAY_FLUID, WRENCH_OVERLAY_FLUID_OFF), 
         new ConduitDisplayMode(IPowerConduit.class, WRENCH_OVERLAY_POWER, WRENCH_OVERLAY_POWER_OFF), 
-        new ConduitDisplayMode(IRedstoneConduit.class, WRENCH_OVERLAY_REDSTONE, WRENCH_OVERLAY_REDSTONE_OFF)
+        new ConduitDisplayMode(IRedstoneConduit.class, WRENCH_OVERLAY_REDSTONE, WRENCH_OVERLAY_REDSTONE_OFF),
+        NEUTRAL
      );
   }
   // @formatter:on
@@ -104,7 +107,7 @@ public class ConduitDisplayMode {
   }
 
   public boolean renderConduit(Class<? extends IConduit> conduitTypeIn) {
-    if (this == ALL) {
+    if (this == ALL || this == NEUTRAL) {
       return true;
     } else if (this == NONE) {
       return false;
@@ -207,6 +210,10 @@ public class ConduitDisplayMode {
     return previous(this);
   }
 
+  public boolean isAll() {
+    return this == ALL || this == NEUTRAL;
+  }
+
   public static int registrySize() {
     return registrar.size() - 2;
   }
@@ -215,7 +222,7 @@ public class ConduitDisplayMode {
     return FluentIterable.from(registrar).filter(new Predicate<ConduitDisplayMode>() {
       @Override
       public boolean apply(@Nullable ConduitDisplayMode input) {
-        return input != ALL && input != NONE;
+        return input != ALL && input != NONE;// && input != NEUTRAL;
       }
 
       @Override

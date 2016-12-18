@@ -303,14 +303,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       if(!ConduitUtil.forceSkylightRecalculation(worldObj, getPos())) {
         markForUpdate = true;
       }
-    } else { //can do the else as only need to update once
-      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getHeldItemMainhand());
-      if(curMode != lastMode) {
-        markForUpdate = true;
-        lastMode = curMode;
-      }
-
     }
+    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getHeldItemMainhand());
+    if (curMode != lastMode && !(lastMode.isAll() && curMode.isAll())) {
+      markForUpdate = true;
+    }
+    lastMode = curMode;
+
     if(markForUpdate) {
       geometryChanged(); // Q&D
       IBlockState bs = worldObj.getBlockState(pos);
@@ -789,18 +788,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return new BlockCoord(getPos());
   }
 
-  private int serial = 0;
-
   @Override
   public void geometryChanged() {
-    serial++;
-  }
-
-  /**
-   * @return An integer value that is guaranteed to change whenever the conduit bundle's rendering changes.
-   */
-  public int getSerial() {
-    return serial;
   }
 
   // AE2

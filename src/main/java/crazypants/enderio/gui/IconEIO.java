@@ -137,7 +137,9 @@ public enum IconEIO implements IWidgetIcon {
   SHOW_RANGE(144, 176),
   HIDE_RANGE(160, 176),
 
-  MODE_BACKGROUND(0, 98, 16, 10);
+  MODE_BACKGROUND(0, 98, 16, 10),
+
+  YETA_GEAR(48, 224);
 
   // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;

@@ -1067,7 +1067,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       ConduitDisplayMode mode = YetaUtil.getDisplayMode(player);
       Collection<CollidableComponent> components = new ArrayList<CollidableComponent>(bundle.getCollidableComponents());
       for (CollidableComponent component : components) {
-        if ((component.conduitType != null || mode == ConduitDisplayMode.ALL) && YetaUtil.renderConduit(player, component.conduitType)) {
+        if ((component.conduitType != null || mode.isAll()) && YetaUtil.renderConduit(player, component.conduitType)) {
           setBlockBounds(component.bound.minX, component.bound.minY, component.bound.minZ, component.bound.maxX, component.bound.maxY, component.bound.maxZ);
           RayTraceResult hitPos = super.collisionRayTrace(bs, world, pos, origin, direction);
           if (hitPos != null) {

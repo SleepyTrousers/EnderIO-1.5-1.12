@@ -13,7 +13,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -170,7 +169,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             }
           }
 
-        } else if (state.getYetaDisplayMode().getDisplayMode() == ConduitDisplayMode.ALL) {
+        } else if (state.getYetaDisplayMode().getDisplayMode().isAll()) {
           TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
           BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
         }

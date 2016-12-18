@@ -171,7 +171,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
     ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(stack);
-    return curMode != ConduitDisplayMode.NONE;
+    return curMode != ConduitDisplayMode.NONE && curMode != ConduitDisplayMode.NEUTRAL;
   }
 
   @Override
