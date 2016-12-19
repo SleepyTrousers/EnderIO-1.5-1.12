@@ -124,6 +124,32 @@ public class HalfBakedQuad {
       store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmin, (float) vmax, tex, color));
     }
 
+    /**
+     * Upside-down textures are used for fluids that are gaseous.
+     *
+     */
+    public void add(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color,
+        boolean upsidedown) {
+      if (upsidedown) {
+        store.add(new HalfBakedQuad(bb, face, umin, umax, vmax, vmin, tex, color));
+      } else {
+        store.add(new HalfBakedQuad(bb, face, umin, umax, vmin, vmax, tex, color));
+      }
+    }
+
+    /**
+     * Upside-down textures are used for fluids that are gaseous.
+     *
+     */
+    public void add(BoundingBox bb, EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex, Vector4f color,
+        boolean upsidedown) {
+      if (upsidedown) {
+        store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmax, (float) vmin, tex, color));
+      } else {
+        store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmin, (float) vmax, tex, color));
+      }
+    }
+
     public void transform(VertexTransform... xforms) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.transform(xforms);
