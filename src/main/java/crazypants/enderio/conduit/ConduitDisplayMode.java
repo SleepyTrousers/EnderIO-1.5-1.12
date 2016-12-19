@@ -107,7 +107,7 @@ public class ConduitDisplayMode {
   }
 
   public boolean renderConduit(Class<? extends IConduit> conduitTypeIn) {
-    if (this == ALL || this == NEUTRAL) {
+    if (this == ALL || this == NEUTRAL || conduitTypeIn == null) {
       return true;
     } else if (this == NONE) {
       return false;
