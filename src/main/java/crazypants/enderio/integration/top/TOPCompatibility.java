@@ -8,6 +8,7 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.google.common.base.Function;
+import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
@@ -34,6 +35,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -246,7 +248,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (mode == ProbeMode.DEBUG && data.owner != null) {
       ItemStack skull = new ItemStack(Items.SKULL, 1, 2);
       NBTTagCompound nbt = new NBTTagCompound();
-      nbt.setString("SkullOwner", data.owner.getPlayerName());
+      nbt.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), new GameProfile(data.owner.getUUID(), data.owner.getPlayerName())));
       skull.setTagCompound(nbt);
       eiobox.get().horizontal(eiobox.center()).item(skull).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1))
           .text(TextFormatting.YELLOW + EnderIO.lang.localize("top.owner.header")).text(data.owner.getPlayerName());
