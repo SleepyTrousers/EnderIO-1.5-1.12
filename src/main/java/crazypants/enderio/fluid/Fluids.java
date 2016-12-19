@@ -111,7 +111,7 @@ public class Fluids {
     
     
     f = new Fluid(Fluids.VAPOR_OF_LEVITY_NAME, getStill(Fluids.VAPOR_OF_LEVITY_NAME), getFlowing(Fluids.VAPOR_OF_LEVITY_NAME))
-        .setDensity(-10).setViscosity(100).setTemperature(5);
+        .setDensity(-10).setViscosity(100).setTemperature(5).setGaseous(true);
     FluidRegistry.registerFluid(f);
     fluidVaporOfLevity = FluidRegistry.getFluid(f.getName());
     blockVaporOfLevity = BlockFluidEio.create(fluidVaporOfLevity, Material.WATER, 0x41716a);
