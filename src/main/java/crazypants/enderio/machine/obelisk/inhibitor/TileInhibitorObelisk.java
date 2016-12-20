@@ -29,7 +29,7 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   @Override
   public boolean isActive() {
-    return hasPower();
+    return hasPower() && redstoneCheckPassed;
   }
 
   @Override
