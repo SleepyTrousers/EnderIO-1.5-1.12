@@ -158,10 +158,10 @@ public enum ModObject implements IModObject {
   itemMaterial(ItemMaterial.class),
   itemMachinePart(ItemMachinePart.class),
   itemPowderIngot(ItemPowderIngot.class),
-  blockFusedQuartz {
+  blockFusedQuartz(BlockFusedQuartz.class) {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
-      block = BlockFusedQuartz.create();
+      super.preInitElem(event);
       BlockColoredFusedQuartz.create();
     }
   },
@@ -229,7 +229,8 @@ public enum ModObject implements IModObject {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
-      blockPaintedSlab.block = slabs[0];
+      block = slabs[0];
+      item = Item.getItemFromBlock(block);
       blockPaintedDoubleSlab.block = slabs[1];
       blockPaintedStoneSlab.block = slabs[2];
       blockPaintedStoneDoubleSlab.block = slabs[3];
@@ -239,18 +240,21 @@ public enum ModObject implements IModObject {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
+      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedStoneSlab {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
+      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedStoneDoubleSlab {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
+      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedGlowstone(BlockPaintedGlowstone.class),
@@ -280,12 +284,12 @@ public enum ModObject implements IModObject {
   itemMagnet,
   itemGliderWing,
   blockEndermanSkull(BlockEndermanSkull.class),
- itemSoulVessel(ItemSoulVessel.class) {
-		@Override
-		protected void initElem(FMLInitializationEvent event) {
-			ItemSoulVessel.initPhase();
-		}
-	},
+  itemSoulVessel(ItemSoulVessel.class) {
+    @Override
+    protected void initElem(FMLInitializationEvent event) {
+      ItemSoulVessel.initPhase();
+    }
+  },
   itemFrankenSkull(ItemFrankenSkull.class),
   itemEnderFood(ItemEnderFood.class),
   blockGauge(BlockGauge.class),

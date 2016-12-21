@@ -118,32 +118,4 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
     return state.getValue(BlockColored.COLOR).getMapColor().colorValue;
   }
 
-  // @Override
-  // @Nullable
-  // public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-  // return Item.getItemFromBlock(state.getValue(FusedQuartzType.KIND).getBlock());
-  // }
-  //
-  // @Override
-  // @Nullable
-  // public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-  // return createStackedBlock(state);
-  // }
-  //
-  // @Override
-  // @Nullable
-  // protected ItemStack createStackedBlock(IBlockState state) {
-  // return new ItemStack(getItemDropped(state, null, 0), 1, this.damageDropped(state));
-  // }
-  //
-  // @Override
-  // public int damageDropped(IBlockState state) {
-  // return 0;
-  // }
-  //
-  // @Override
-  // @SideOnly(Side.CLIENT)
-  // public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-  // }
-
 }

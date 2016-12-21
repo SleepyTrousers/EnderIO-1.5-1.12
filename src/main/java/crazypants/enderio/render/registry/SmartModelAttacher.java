@@ -9,6 +9,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.render.ICustomItemResourceLocation;
 import crazypants.enderio.render.ITintedBlock;
 import crazypants.enderio.render.ITintedItem;
 import crazypants.enderio.render.model.RelayingBakedModel;
@@ -21,11 +22,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -96,7 +97,9 @@ public class SmartModelAttacher {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
       if (item != null) {
-        ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
+        final ResourceLocation registryName = item instanceof ICustomItemResourceLocation
+            ? ((ICustomItemResourceLocation) item).getRegistryNameForCustomModelResourceLocation() : item.getRegistryName();
+        ModelResourceLocation location = new ModelResourceLocation(registryName, "inventory");
         if (item.getHasSubtypes()) {
           List<ItemStack> list = new ArrayList<ItemStack>();
           item.getSubItems(item, EnderIOTab.tabNoTab, list);
@@ -107,7 +110,7 @@ public class SmartModelAttacher {
           ModelLoader.setCustomModelResourceLocation(item, 0, location);
         }
       } else {
-        Log.debug("Block " + block + " has no item, is is intended?");
+        Log.debug("Block " + block + " has no item, is it intended?");
       }
     }
   }
@@ -145,7 +148,7 @@ public class SmartModelAttacher {
   public void bakeModels(ModelBakeEvent event) {
     for (RegistrationHolder holder : blocks) {
       Block block = holder.block;
-      Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(block);
+      Map<IBlockState, ModelResourceLocation> locations = event.getModelManager().getBlockModelShapes().getBlockStateMapper().getVariants(block);
 
       if (holder.property != null && block.getDefaultState().getPropertyNames().contains(holder.property)) {
         IBlockState defaultState = block.getDefaultState().withProperty(holder.property, holder.defaultsValue);

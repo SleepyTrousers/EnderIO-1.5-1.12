@@ -2,6 +2,7 @@ package crazypants.enderio.material.fusedQuartz;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
@@ -173,8 +174,9 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     return PainterUtil2.getSourceBlock(stack);
   }
 
+  @SuppressWarnings("null")
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }

@@ -6,10 +6,12 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.render.ICustomItemResourceLocation;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -22,6 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -127,7 +130,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     return "enderio.blockFusedQuartz." + type.getUnlocalisedName();
   }
 
-  public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock {
+  public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock implements ICustomItemResourceLocation {
 
     public BlockItemFusedQuartzBase(Block block, String name) {
       super(block, name);
@@ -137,8 +140,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
       super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-      int meta = par1ItemStack.getItemDamage();
-      FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
+      FusedQuartzType type = determineQuartzType(par1ItemStack);
       if (type.isBlastResistant()) {
         par3List.add(EnderIO.lang.localize("blastResistant"));
       }
@@ -148,6 +150,20 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
       if (type.getLightOpacity() > 0) {
         par3List.add(EnderIO.lang.localize("lightBlocker"));
       }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected FusedQuartzType determineQuartzType(ItemStack par1ItemStack) {
+      int meta = par1ItemStack.getItemDamage();
+      FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
+      return type;
+    }
+
+    @SuppressWarnings("null")
+    @Override
+    @Nonnull
+    public ResourceLocation getRegistryNameForCustomModelResourceLocation() {
+      return ModObject.blockFusedQuartz.getItem().getRegistryName();
     }
 
   }

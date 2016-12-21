@@ -6,25 +6,7 @@
     }
   },
   "variants":{
-    "color":{
-        "white": { },
-        "orange": { },
-        "magenta": { },
-        "light_blue": { },
-        "yellow": { },
-        "lime": { },
-        "pink": { },
-        "gray": { },
-        "silver": { },
-        "cyan": { },
-        "purple": { },
-        "blue": { },
-        "brown": { },
-        "green": { },
-        "red": { },
-        "black": { }
-    },
-  	"kind":{
+    "kind":{
       "fused_quartz":             { "textures": { "side": "enderio:blocks/fusedQuartzItem" } },
       "fused_glass":              { "textures": { "side": "enderio:blocks/fusedGlassItem" } },
       "enlightened_fused_quartz": { "textures": { "side": "enderio:blocks/fusedQuartzItem" } },
@@ -34,7 +16,7 @@
     },
     "render":{
       "auto":{ "model":"enderio:null" },
-      
+
       "defaults":{ "model":"enderio:transform/block" },
 
       "sides":{
@@ -45,7 +27,7 @@
           "west_east":{ "model":"enderio:merging_block_faces", "y":90 }
         }
       },
-      
+
       "north_west_up":{ "model":"enderio:merging_block_north_west_up" },
 
       "north_east_up":{ "model":"enderio:merging_block_north_west_up", "y":90 },

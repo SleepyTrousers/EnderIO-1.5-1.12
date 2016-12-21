@@ -26,6 +26,7 @@ import crazypants.enderio.item.darksteel.upgrade.UpgradeRenderDispatcher;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machine.ranged.MarkerParticle;
+import crazypants.enderio.material.fusedQuartz.EnderIOGlassesStateMapper;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.IHaveRenderers;
@@ -94,6 +95,9 @@ public class ClientProxy extends CommonProxy {
 
     // Fluids
     EnderIO.fluids.registerRenderers();
+
+    // Custom state mappers
+    EnderIOGlassesStateMapper.create();
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();

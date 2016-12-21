@@ -5,14 +5,12 @@ import java.util.List;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
 import crazypants.enderio.render.ITintedItem;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -79,7 +77,7 @@ public class BlockColoredFusedQuartz extends BlockFusedQuartz {
     return new BlockItemFusedQuartzColored(this, getName());
   }
 
-  public static class BlockItemFusedQuartzColored extends BlockItemPaintedBlock implements ITintedItem, IWithPaintName {
+  public static class BlockItemFusedQuartzColored extends BlockFusedQuartzBase.BlockItemFusedQuartzBase implements ITintedItem, IWithPaintName {
 
     public BlockItemFusedQuartzColored(BlockColoredFusedQuartz block, String name) {
       super(block, name);
@@ -92,18 +90,8 @@ public class BlockColoredFusedQuartz extends BlockFusedQuartz {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-      super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-      FusedQuartzType type = ((BlockColoredFusedQuartz) block).glasstype;
-      if (type.isBlastResistant()) {
-        par3List.add(EnderIO.lang.localize("blastResistant"));
-      }
-      if (type.isEnlightened()) {
-        par3List.add(EnderIO.lang.localize("lightEmitter"));
-      }
-      if (type.getLightOpacity() > 0) {
-        par3List.add(EnderIO.lang.localize("lightBlocker"));
-      }
+    protected FusedQuartzType determineQuartzType(ItemStack par1ItemStack) {
+      return ((BlockColoredFusedQuartz) block).glasstype;
     }
 
     @Override
@@ -112,16 +100,5 @@ public class BlockColoredFusedQuartz extends BlockFusedQuartz {
     }
 
   }
-
-  // @Override
-  // @Nullable
-  // public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-  // return Item.getItemFromBlock(this);
-  // }
-  //
-  // @Override
-  // public int damageDropped(IBlockState state) {
-  // return getMetaFromState(state);
-  // }
 
 }
