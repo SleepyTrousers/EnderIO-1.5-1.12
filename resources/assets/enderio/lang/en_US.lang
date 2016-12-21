@@ -932,7 +932,7 @@ enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
 enderio.darksteel.upgrade.elytra.name=Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables flying
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
 enderio.darksteel.upgrade.elytra.enabled=Elytra Active
 enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
 
