@@ -194,7 +194,7 @@ artifacts {
 
 
 task checkTranslations << {
-    Map<String, String> mapen = new HashMap<String, String>()
+    Map<String, String> mapen = new LinkedHashMap<String, String>()
     (new File('resources/assets/enderio/lang/en_US.lang')).eachLine {
         def (value1, value2) = it.tokenize( '=' )
         if (value1 == null || value2 == null) {return}
@@ -203,7 +203,7 @@ task checkTranslations << {
     
     new File('resources/assets/enderio/lang/').eachFileMatch( ~".*\\.lang\$" ) { langfile ->
         if (!langfile.getName().contains("en_US")) {
-	        Map<String, String> map = new HashMap<String, String>()
+	        Map<String, String> map = new LinkedHashMap<String, String>()
 	        File outfile = new File("${langfile}.txt")
 	        Writer outwriter = outfile.newWriter("UTF8")
 	        outwriter.write("\n// Additional translations:\n")
