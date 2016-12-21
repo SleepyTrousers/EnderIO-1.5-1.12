@@ -75,7 +75,6 @@ public class LootManager {
         lp.addEntry(createLootCapacitor(15, true));
         lp.addEntry(createLootCapacitor(15, true));
         lp.addEntry(createLootCapacitor(15, true));
-        //175
     } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
     	
         lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 20, Config.lootElectricSteel));
@@ -86,7 +85,6 @@ public class LootManager {
         lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 25, Config.lootTheEnder));
         lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1, 1, 25, Config.lootDarkSteelBoots));
         lp.addEntry(createLootCapacitor(10, true));
-        //200
     } else if (evt.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
 
         lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 20, Config.lootTheEnder));
@@ -112,7 +110,7 @@ public class LootManager {
     return createLootEntry(item, 0, minSize, maxSize, chance, enabled);
   }
 
-  /**If enabled is true, an empty loot entry of the same weight is added.
+  /**If enabled is false, an empty loot entry of the same weight is added.
    *This maintains the generation probabilities of other EIO loot.
    * Without this, disabling loot in the config would change the generation probabilities of other loot. 
    **/
@@ -130,7 +128,7 @@ public class LootManager {
   }
   
   int capCount = 0; //Each loot entry in a pool must have a unique name
-  /**If enabled is true an empty loot entry of the same weight is added.
+  /**If enabled is false an empty loot entry of the same weight is added.
   *This maintains the generation probabilities of other EIO loot.
   * Without this, disabling loot in the config would change the generation probabilities of other loot. 
   **/
