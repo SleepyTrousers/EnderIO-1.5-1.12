@@ -1,10 +1,12 @@
 package crazypants.enderio.loot;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.CapturedMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -124,6 +126,17 @@ public class LootManager {
         lp.addEntry(createDarkSteelLootEntry(DarkSteelItems.itemDarkSteelBoots, 0.1F));
       }
       lp.addEntry(createLootCapacitor(0.15F));
+
+    } else if (evt.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
+
+      final CapturedMob polarBear = CapturedMob.create("PolarBear", null);
+      if (polarBear != null) {
+        lp.addEntry(
+            new LootEntryItem(ModObject.itemSoulVessel.getItem(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) },
+                new LootCondition[] { new RandomChance(.2F) }, "PolarBearSoulVial"));
+      }
+      lp.addEntry(createLootEntry(ModObject.itemSoulVessel.getItem(), 1, 3, 0.5F));
+      lp.addEntry(createLootCapacitor(0.05F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER)) {
 

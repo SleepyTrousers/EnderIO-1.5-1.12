@@ -130,7 +130,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
       }
 
       // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
-      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER);
+      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_IGLOO_CHEST);
       loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
       return EnumActionResult.PASS;
     }
