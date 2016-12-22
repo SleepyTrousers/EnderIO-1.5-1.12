@@ -33,7 +33,9 @@ public enum Material {
   NUTRITIOUS_STICK("nutritiousStick", false),
   PRECIENT_CRYSTAL("precientCrystal", true),
   PRECIENT_POWDER("precientPowder", true),
-  CHASSIPARTS("chassiParts", false);
+  CHASSIPARTS("chassiParts", false),
+  PLANTGREEN("plantgreen", false),
+  PLANTBROWN("plantbrown", false);
 
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);

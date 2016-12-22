@@ -1545,3 +1545,6 @@ enderio.spawner.note.noLocationFound=No space found
 enderio.spawner.note.noLocationAtAll=No viable space
 enderio.spawner.note.badSoul=Bad soul, cannot create entity
 enderio.spawner.note.noPlayer=No player in range
+
+enderio.plantgreen.name=Plant clippings and trimmings
+enderio.plantbrown.name=Loose twigs and prunings

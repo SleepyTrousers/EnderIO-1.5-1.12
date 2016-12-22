@@ -2999,6 +2999,277 @@
     </recipe>
   </recipeGroup>
 
+  <recipeGroup name="Vanilla Plants" >
+    <recipe name="Spider Web" energyCost="5000" >
+      <input>
+        <itemStack modID="minecraft" itemName="web" />
+      </input>
+      <output>
+        <itemStack oreDictionary="string" number="2" />
+        <itemStack oreDictionary="string" chance="0.6" />
+        <itemStack oreDictionary="string" chance="0.3" />
+      </output>
+    </recipe>
+    <recipe name="Yellow Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="yellow_flower" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeYellow" chance="0.8" />
+        <itemStack oreDictionary="dyeYellow" chance="0.6" />
+        <itemStack oreDictionary="dyeYellow" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Red Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeRed" chance="0.8" />
+        <itemStack oreDictionary="dyeRed" chance="0.6" />
+        <itemStack oreDictionary="dyeRed" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Blue Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeLightBlue" chance="0.8" />
+        <itemStack oreDictionary="dyeLightBlue" chance="0.6" />
+        <itemStack oreDictionary="dyeLightBlue" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Magenta Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeMagenta" chance="0.8" />
+        <itemStack oreDictionary="dyeMagenta" chance="0.6" />
+        <itemStack oreDictionary="dyeMagenta" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Light Gray Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeLightGray" chance="0.8" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.6" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Red Tulip" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeRed" chance="0.8" />
+        <itemStack oreDictionary="dyeRed" chance="0.6" />
+        <itemStack oreDictionary="dyeRed" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Orange Tulip" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeOrange" chance="0.8" />
+        <itemStack oreDictionary="dyeOrange" chance="0.6" />
+        <itemStack oreDictionary="dyeOrange" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Light Gray Tulip" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeLightGray" chance="0.8" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.6" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Pink Flower" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyePink" chance="0.8" />
+        <itemStack oreDictionary="dyePink" chance="0.6" />
+        <itemStack oreDictionary="dyePink" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Daisy" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="red_flower" itemMeta="8" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeLightGray" chance="0.8" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.6" />
+        <itemStack oreDictionary="dyeLightGray" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Tall Grass" energyCost="1200" >
+      <input>
+        <itemStack modID="minecraft" itemName="tallgrass" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" chance="0.6" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Tall Grass 2" energyCost="1200" >
+      <input>
+        <itemStack modID="minecraft" itemName="tallgrass" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" chance="0.6" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Dead Bush" energyCost="1200" >
+      <input>
+        <itemStack modID="minecraft" itemName="deadbush" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantbrown" chance="0.2" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Leaves" energyCost="600" >
+      <input>
+        <itemStack oreDictionary="treeLeaves" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.025" />
+      </output>
+    </recipe>
+    <recipe name="Vines" energyCost="800" >
+      <input>
+        <itemStack oreDictionary="vine" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" chance="0.15" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Cactus" energyCost="2000" >
+      <input>
+        <itemStack oreDictionary="cactus" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" number="3" />
+        <itemStack oreDictionary="itemPlantgreen" number="3" chance="0.75" />
+        <itemStack oreDictionary="itemPlantgreen" number="3" chance="0.5" />
+        <itemStack oreDictionary="itemPlantgreen" number="3" chance="0.25" />
+      </output>
+    </recipe>
+    <recipe name="Water Lily" energyCost="800" >
+      <input>
+        <itemStack modID="minecraft" itemName="waterlily" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" chance="0.15" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+    <recipe name="Double Plant Yellow" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="double_plant" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeYellow" number="2" chance="0.8" />
+        <itemStack oreDictionary="dyeYellow" chance="0.6" />
+        <itemStack oreDictionary="dyeYellow" number="2" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.2" />
+      </output>
+    </recipe>
+    <recipe name="Double Plant Red" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="double_plant" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyeRed" number="2" chance="0.8" />
+        <itemStack oreDictionary="dyeRed" chance="0.6" />
+        <itemStack oreDictionary="dyeRed" number="2" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.2" />
+      </output>
+    </recipe>
+    <recipe name="Double Plant Pink" energyCost="900" >
+      <input>
+        <itemStack modID="minecraft" itemName="double_plant" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dyePink" number="2" chance="0.8" />
+        <itemStack oreDictionary="dyePink" chance="0.6" />
+        <itemStack oreDictionary="dyePink" number="2" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.2" />
+      </output>
+    </recipe>
+    <recipe name="Double Tall Grass" energyCost="1200" >
+      <input>
+        <itemStack modID="minecraft" itemName="double_plant" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" number="2" chance="0.6" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" number="2" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.15" />
+      </output>
+    </recipe>
+    <recipe name="Double Tall Grass 2" energyCost="1200" >
+      <input>
+        <itemStack modID="minecraft" itemName="double_plant" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemPlantgreen" number="2" chance="0.6" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.3" />
+        <itemStack oreDictionary="itemPlantgreen" number="2" chance="0.1" />
+        <itemStack oreDictionary="itemPlantbrown" chance="0.16" />
+      </output>
+    </recipe>
+    <recipe name="Flower Pot" energyCost="2000" >
+      <input>
+        <itemStack modID="minecraft" itemName="flower_pot" />
+      </input>
+      <output>
+        <itemStack oreDictionary="itemClay" chance="0.9" />
+        <itemStack oreDictionary="itemClay" chance="0.3" />
+        <itemStack oreDictionary="itemClay" chance="0.1" />
+        <itemStack oreDictionary="dustCoal" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Sugar" energyCost="2000" >
+      <input>
+        <itemStack oreDictionary="sugarcane" />
+      </input>
+      <output>
+        <itemStack modID="minecraft" itemName="sugar" />
+        <itemStack modID="minecraft" itemName="sugar" chance="0.5" />
+        <itemStack modID="minecraft" itemName="sugar" chance="0.5" />
+        <itemStack oreDictionary="itemPlantgreen" chance="0.1" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
   <grindingBalls>
     <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
       <itemStack oreDictionary="itemFlint" />
