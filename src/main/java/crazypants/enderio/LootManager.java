@@ -1,25 +1,14 @@
 package crazypants.enderio;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
 import crazypants.enderio.capacitor.LootSelector;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Alloy;
-import crazypants.util.Prep;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.RandomValueRange;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.functions.*;
+import net.minecraft.world.storage.loot.conditions.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,7 +46,7 @@ public class LootManager {
 //  return EnumActionResult.PASS;
 //}
 
-  
+  private static final LootCondition[] NO_CONDITIONS = new LootCondition[0];
   private static LootManager INSTANCE = new LootManager();
 
   public static void register() {
@@ -72,181 +61,122 @@ public class LootManager {
 
     LootTable table = evt.getTable();
 
-    InnerPool lp = new InnerPool();
+    LootPool lp = new LootPool(new LootEntry[0], NO_CONDITIONS, new RandomValueRange(1, 3), new RandomValueRange(0, 0), EnderIO.MOD_NAME);
 
     if (evt.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
 
-      if (Config.lootDarkSteel) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25));
-      }
-      if (Config.lootItemConduitProbe) {
-        lp.addItem(createLootEntry(itemConduitProbe.getItem(), 0.10));
-      }
-      if (Config.lootQuartz) {
-        lp.addItem(createLootEntry(Items.QUARTZ, 3, 16, 0.25));
-      }
-      if (Config.lootNetherWart) {
-        lp.addItem(createLootEntry(Items.NETHER_WART, 1, 4, 0.20));
-      }
-      if (Config.lootEnderPearl) {
-        lp.addItem(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.30));
-      }
-      if (Config.lootTheEnder) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 0.1));
-      }
-      if (Config.lootDarkSteelBoots) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 0.1));
-      }
-      lp.addItem(createLootCapacitor(0.15));
-      lp.addItem(createLootCapacitor(0.15));
-      lp.addItem(createLootCapacitor(0.15));
-
-    } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
-
-      if (Config.lootElectricSteel) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20));
-      }
-      if (Config.lootRedstoneAlloy) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35));
-      }
-      if (Config.lootDarkSteel) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35));
-      }
-      if (Config.lootPhasedIron) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3));
-      }
-      if (Config.lootPhasedGold) {
-        lp.addItem(createLootEntry(itemAlloy.getItem(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2));
-      }
-      if (Config.lootTheEnder) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25));
-      }
-      if (Config.lootDarkSteelBoots) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1, 1, 0.25));
-      }
-      lp.addItem(createLootCapacitor(0.1));
-
-    } else if (evt.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
-
-      if (Config.lootTheEnder) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 0.2));
-      }
-      if (Config.lootTravelStaff) {
-        lp.addItem(createLootEntry(itemTravelStaff.getItem(), 0.1));
-      }
-      lp.addItem(createLootCapacitor(25));
-
-    } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
-
-      if (Config.lootTheEnder) {
-        lp.addItem(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25));
-      }
-      if (Config.lootTravelStaff) {
-        lp.addItem(createLootEntry(itemTravelStaff.getItem(), 1, 1, 0.1));
-      }
-      lp.addItem(createLootCapacitor(0.25));
-      lp.addItem(createLootCapacitor(0.25));
-    }
-    if (!lp.isEmpty()) {
-      table.addPool(lp);
-    }
-    
-  }
-
-  private LootItem createLootEntry(Item item, double chance) {
-    return new LootItem(new ItemStack(item), chance, 1, 1);
-  }
-
-  private LootItem createLootEntry(Item item, int minSize, int maxSize, double chance) {
-    return new LootItem(new ItemStack(item), chance, minSize, maxSize);
-  }
-
-  private LootItem createLootEntry(Item item, int ordinal, int minStackSize, int maxStackSize, double chance) {
-    return new LootItem(new ItemStack(item, 1, ordinal), chance, minStackSize, maxStackSize);
-  }
-
-  private LootItem createLootCapacitor(double weight) {
-    return new CapItem(weight);
-  }
-
-
-  private static LootSelector ls = new LootSelector(new LootCondition[0]);
-
-  private static class CapItem extends LootItem {
-
-    public CapItem(double chance) {
-      super(new ItemStack(itemBasicCapacitor.getItem(), 1, 3), chance);
-    }
-
-    @Override
-    public ItemStack createStack(Random rnd) {
-      ItemStack res = item.copy();
-      ls.apply(res, rnd, null);
-      return res;
-    }
-  }
-
-  private static class LootItem {
-
-    ItemStack item;
-    double chance;
-    int minSize;
-    int maxSize;
-
-    public LootItem(ItemStack item, double chance) {
-      this(item, chance, 1, 1);
-    }
-
-    public LootItem(ItemStack item, double chance, int minSize, int maxSize) {
-      this.item = item;
-      this.chance = chance;
-      this.minSize = minSize;
-      this.maxSize = maxSize;
-    }
-
-    public ItemStack createStack(Random rnd) {
-      int size = minSize;
-      if (maxSize > minSize) {
-        size += rnd.nextInt(maxSize - minSize + 1);
-      }
-
-      ItemStack result = item.copy();
-      result.stackSize = size;
-      return result;
-    }
-  }
-
-  private static class InnerPool extends LootPool {
-
-    private final List<LootItem> items = new ArrayList<LootItem>();
-
-    public InnerPool() {
-      super(new LootEntry[0], new LootCondition[0], new RandomValueRange(0, 0), new RandomValueRange(0, 0), EnderIO.MOD_NAME);
-    }
-
-    public boolean isEmpty() {
-      return items.isEmpty();
-    }
-
-    public void addItem(LootItem entry) {
-      if (entry != null) {
-        items.add(entry);
-      }
-
-    }
-
-    @Override
-    public void generateLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {
-      for (LootItem entry : items) {
-        if (rand.nextDouble() < entry.chance) {
-          ItemStack stack = entry.createStack(rand);
-          if (Prep.isValid(stack)) {
-//            System.out.println("LootManager.InnerPool.generateLoot: Added " + stack.getDisplayName() + " " + stack);
-            stacks.add(stack);
-          }
+        if (Config.lootDarkSteel) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25F));
         }
+        if (Config.lootItemConduitProbe) {
+          lp.addEntry(createLootEntry(itemConduitProbe.getItem(), 0.10F));
+        }
+        if (Config.lootQuartz) {
+          lp.addEntry(createLootEntry(Items.QUARTZ, 3, 16, 0.25F));
+        }
+        if (Config.lootNetherWart) {
+          lp.addEntry(createLootEntry(Items.NETHER_WART, 1, 4, 0.20F));
+        }
+        if (Config.lootEnderPearl) {
+          lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.30F));
+        }
+        if (Config.lootTheEnder) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 0.1F));
+        }
+        if (Config.lootDarkSteelBoots) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 0.1F));
+        }
+        lp.addEntry(createLootCapacitor(0.15F));
+        lp.addEntry(createLootCapacitor(0.15F));
+        lp.addEntry(createLootCapacitor(0.15F));
+
+      } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
+
+        if (Config.lootElectricSteel) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20F));
+        }
+        if (Config.lootRedstoneAlloy) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35F));
+        }
+        if (Config.lootDarkSteel) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35F));
+        }
+        if (Config.lootPhasedIron) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3F));
+        }
+        if (Config.lootPhasedGold) {
+          lp.addEntry(createLootEntry(itemAlloy.getItem(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2F));
+        }
+        if (Config.lootTheEnder) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25F));
+        }
+        if (Config.lootDarkSteelBoots) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelBoots, 1, 1, 0.25F));
+        }
+        lp.addEntry(createLootCapacitor(0.1F));
+
+      } else if (evt.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
+
+        if (Config.lootTheEnder) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 0.2F));
+        }
+        if (Config.lootTravelStaff) {
+          lp.addEntry(createLootEntry(itemTravelStaff.getItem(), 0.1F));
+        }
+        lp.addEntry(createLootCapacitor(25));
+
+      } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
+
+        if (Config.lootTheEnder) {
+          lp.addEntry(createLootEntry(DarkSteelItems.itemDarkSteelSword, 1, 1, 0.25F));
+        }
+        if (Config.lootTravelStaff) {
+          lp.addEntry(createLootEntry(itemTravelStaff.getItem(), 1, 1, 0.1F));
+        }
+        lp.addEntry(createLootCapacitor(0.25F));
+        lp.addEntry(createLootCapacitor(0.25F));
       }
-    }
+    table.addPool(lp); 
+  }
+  
+  private LootEntry createLootEntry(Item item, float chance) {
+	  return createLootEntry(item, 1, 1, chance);
   }
 
+  private LootEntry createLootEntry(Item item, int minSize, int maxSize, float chance) {
+    return createLootEntry(item, 0, minSize, maxSize, chance);
+  }
+  
+  /*
+   * All loot entries are given the same weight, the generation probabilities depend on the RandomChance condition. 
+   */
+  private LootEntry createLootEntry(Item item, int ordinal, int minStackSize, int maxStackSize, float chance) {
+	  LootCondition[] chanceCond = new LootCondition[]{new RandomChance(chance)};
+	  if(item.isDamageable()) {
+		  return new LootEntryItem(item, 1, 1, new LootFunction[]{setCount(minStackSize, maxStackSize), setDamage(ordinal)}, chanceCond, item.getRegistryName().toString() + ":" + ordinal);
+	  }
+	  else {
+		  return new LootEntryItem(item, 1, 1, new LootFunction[]{setCount(minStackSize, maxStackSize), setMetadata(ordinal)}, chanceCond, item.getRegistryName().toString() + ":" + ordinal);  
+	  }
+  }
+  
+  int capCount = 0; //Each loot entry in a pool must have a unique name
+  private LootEntry createLootCapacitor(float chance) {
+	  capCount++;
+	  return new LootEntryItem(itemBasicCapacitor.getItem(), 1, 1, new LootFunction[]{ls, setMetadata(3)}, new LootCondition[]{new RandomChance(chance)}, itemBasicCapacitor.getItem().getRegistryName().toString() + capCount);
+  }
+	
+  private SetCount setCount(int min, int max) {
+	  return new SetCount(NO_CONDITIONS, new RandomValueRange(min, min));
+  }
+  
+  private SetDamage setDamage(int damage) {
+	  return new SetDamage(NO_CONDITIONS, new RandomValueRange(damage));
+  }
+  
+  private SetMetadata setMetadata(int meta) {
+	  return new SetMetadata(NO_CONDITIONS, new RandomValueRange(meta));
+  }
+
+  private static LootSelector ls = new LootSelector(NO_CONDITIONS);
 }
