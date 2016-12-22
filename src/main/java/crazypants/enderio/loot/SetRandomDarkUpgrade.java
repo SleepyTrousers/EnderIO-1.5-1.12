@@ -10,6 +10,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class SetRandomDarkUpgrade extends LootFunction {
   public static class Serializer extends LootFunction.Serializer<SetRandomDarkUpgrade> {
 
     protected Serializer() {
-      super(new ResourceLocation("set_random_dark_upgrade"), SetRandomDarkUpgrade.class);
+      super(new ResourceLocation(EnderIO.DOMAIN, "set_random_dark_upgrade"), SetRandomDarkUpgrade.class);
     }
 
     @Override

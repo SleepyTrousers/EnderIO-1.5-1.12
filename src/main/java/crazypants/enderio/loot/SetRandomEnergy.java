@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -45,7 +46,7 @@ public class SetRandomEnergy extends LootFunction {
   public static class Serializer extends LootFunction.Serializer<SetRandomEnergy> {
 
     protected Serializer() {
-      super(new ResourceLocation("set_random_energy"), SetRandomEnergy.class);
+      super(new ResourceLocation(EnderIO.DOMAIN, "set_random_energy"), SetRandomEnergy.class);
     }
 
     @Override

@@ -166,7 +166,7 @@ public class LootSelector extends LootFunction {
 
   public static class Serializer extends LootFunction.Serializer<LootSelector> {
     public Serializer() {
-      super(new ResourceLocation("set_capacitor"), LootSelector.class);
+      super(new ResourceLocation(EnderIO.DOMAIN, "set_capacitor"), LootSelector.class);
     }
 
     @Override
