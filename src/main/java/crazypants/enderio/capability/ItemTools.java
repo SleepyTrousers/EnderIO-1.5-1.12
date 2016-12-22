@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
+import crazypants.util.Prep;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -76,16 +77,16 @@ public class ItemTools {
           if (targetHandler != null && hasFreeSpace(targetHandler)) {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
-              if (removable != null && removable.stackSize > 0) {
+              if (Prep.isValid(removable) && removable.stackSize > 0) {
                 ItemStack unacceptable = ItemHandlerHelper.insertItemStacked(targetHandler, removable, true);
-                int movable = removable.stackSize - (unacceptable == null ? 0 : unacceptable.stackSize);
+                int movable = removable.stackSize - (Prep.isInvalid(unacceptable) ? 0 : unacceptable.stackSize);
                 if (movable > 0) {
                   ItemStack removed = sourceHandler.extractItem(i, movable, false);
-                  if (removed != null && removed.stackSize > 0) {
+                  if (Prep.isValid(removed) && removed.stackSize > 0) {
                     ItemStack targetRejected = ItemHandlerHelper.insertItemStacked(targetHandler, removed, false);
-                    if (targetRejected != null && targetRejected.stackSize > 0) {
+                    if (Prep.isValid(targetRejected) && targetRejected.stackSize > 0) {
                       ItemStack sourceRejected = ItemHandlerHelper.insertItemStacked(sourceHandler, removed, false);
-                      if (sourceRejected != null && sourceRejected.stackSize > 0) {
+                      if (Prep.isValid(sourceRejected) && sourceRejected.stackSize > 0) {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
                         source.getWorld().spawnEntityInWorld(drop);
@@ -122,19 +123,19 @@ public class ItemTools {
    * @return the number inserted
    */
   public static int doInsertItem(IItemHandler inventory, ItemStack item) {
-    if(inventory == null || item == null) {
+    if (inventory == null || Prep.isInvalid(item)) {
       return 0;
     }
     int startSize = item.stackSize;
     ItemStack res = ItemHandlerHelper.insertItemStacked(inventory, item.copy(), false);
-    int val = res == null ? startSize : startSize - res.stackSize;
+    int val = Prep.isInvalid(res) ? startSize : startSize - res.stackSize;
     return val;
   }
 
   public static boolean hasFreeSpace(IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (stack == null || (stack.isStackable() == stack.stackSize < stack.getMaxStackSize())) {
+      if (Prep.isInvalid(stack) || (stack.isStackable() == stack.stackSize < stack.getMaxStackSize())) {
         return true;
       }
     }
@@ -144,7 +145,7 @@ public class ItemTools {
   public static boolean hasItems(IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (stack != null && stack.stackSize > 0) {
+      if (Prep.isValid(stack) && stack.stackSize > 0) {
         return true;
       }
     }

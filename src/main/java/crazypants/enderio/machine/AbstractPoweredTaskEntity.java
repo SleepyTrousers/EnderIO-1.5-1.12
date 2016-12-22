@@ -13,6 +13,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
@@ -168,6 +169,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return usePower(getPowerUsePerTick());
   }
   
+  @Override
   public int getEnergyStored() {
     return getEnergyStored(null);
   }
@@ -195,40 +197,40 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected void mergeResults(ResultStack[] results) {
-    List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
-    if(slotDefinition.getNumOutputSlots() > 0) {
+    final int numOutputSlots = slotDefinition.getNumOutputSlots();
+    if(numOutputSlots > 0) {
+
+      List<ItemStack> outputStacks = new ArrayList<ItemStack>(numOutputSlots);
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack it = inventory[i];
-        if(it != null) {
+        if (Prep.isValid(it)) {
           it = it.copy();
         }
         outputStacks.add(it);
       }
-    }
 
-    for (ResultStack result : results) {
-      if(result.item != null) {
-        int numMerged = mergeItemResult(result.item, outputStacks);
-        if(numMerged > 0) {
-          result.item.stackSize -= numMerged;
+      for (ResultStack result : results) {
+        if (Prep.isValid(result.item)) {
+          int numMerged = mergeItemResult(result.item, outputStacks);
+          if (numMerged > 0) {
+            result.item.stackSize -= numMerged;
+          }
+        } else if (result.fluid != null) {
+          mergeFluidResult(result);
         }
-      } else if(result.fluid != null) {
-        mergeFluidResult(result);
       }
-    }
 
-    if(slotDefinition.getNumOutputSlots() > 0) {
       int listIndex = 0;
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack st = outputStacks.get(listIndex);
-        if(st != null) {
+        if (Prep.isValid(st)) {
           st = st.copy();
         }
         inventory[i] = st;
         listIndex++;
       }
-    }
 
+    }
     cachedNextRecipe = null;
   }
 
@@ -245,25 +247,30 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected int mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
 
     ItemStack copy = item.copy();
-    //try to add it to existing stacks first
-    for (ItemStack outStack : outputStacks) {
-      if(outStack != null && copy != null) {
+    if (Prep.isInvalid(copy)) {
+      return 0;
+    }
+    int firstFreeSlot = -1;
+
+    // try to add it to existing stacks first
+    for (int i = 0; i < outputStacks.size(); i++) {
+      ItemStack outStack = outputStacks.get(i);
+      if (Prep.isValid(outStack)) {
         int num = getNumCanMerge(outStack, copy);
         outStack.stackSize += num;
         copy.stackSize -= num;
-        if(copy.stackSize <= 0) {
+        if (copy.stackSize <= 0) {
           return item.stackSize;
         }
+      } else if (firstFreeSlot < 0) {
+        firstFreeSlot = i;
       }
     }
 
-    //Try and add it to an empty slot
-    for (int i = 0; i < outputStacks.size(); i++) {
-      ItemStack outStack = outputStacks.get(i);
-      if(outStack == null) {
-        outputStacks.set(i, copy);
-        return item.stackSize;
-      }
+    // Try and add it to an empty slot
+    if (firstFreeSlot >= 0) {
+      outputStacks.set(firstFreeSlot, copy);
+      return item.stackSize;
     }
 
     return 0;
@@ -297,34 +304,38 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
 
+    final int numOutputSlots = slotDefinition.getNumOutputSlots();
+    if (numOutputSlots <= 0) {
+      return false;
+    }
+
     ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
-    List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
-    if(slotDefinition.getNumOutputSlots() > 0) {
-      boolean allFull = true;
-      for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-        ItemStack st = inventory[i];
-        if(st != null) {
-          st = st.copy();
-          if(allFull && st.stackSize < st.getMaxStackSize()) {
-            allFull = false;
-          }
-        } else {
+    List<ItemStack> outputStacks = new ArrayList<ItemStack>(numOutputSlots);
+    boolean allFull = true;
+
+    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+      ItemStack st = inventory[i];
+      if (Prep.isValid(st)) {
+        st = st.copy();
+        if (allFull && st.stackSize < st.getMaxStackSize()) {
           allFull = false;
         }
-        outputStacks.add(st);
+      } else {
+        allFull = false;
       }
-      if(allFull) {
-        return false;
-      }
+      outputStacks.add(st);
+    }
+    if (allFull) {
+      return false;
     }
 
     for (ResultStack result : nextResults) {
-      if(result.item != null) {
-        if(mergeItemResult(result.item, outputStacks) == 0) {
+      if (Prep.isValid(result.item)) {
+        if (mergeItemResult(result.item, outputStacks) == 0) {
           return false;
         }
-      } else if(result.fluid != null) {
-        if(!canInsertResultFluid(result)) {
+      } else if (result.fluid != null) {
+        if (!canInsertResultFluid(result)) {
           return false;
         }
       }
