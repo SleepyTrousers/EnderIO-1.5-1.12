@@ -1,8 +1,8 @@
-package crazypants.enderio.capacitor;
+package crazypants.enderio.loot;
 
 import net.minecraft.util.WeightedRandom;
 
-class WeightedInteger extends WeightedRandom.Item {
+public class WeightedInteger extends WeightedRandom.Item {
   private final int i;
 
   public WeightedInteger(int weight, int i) {

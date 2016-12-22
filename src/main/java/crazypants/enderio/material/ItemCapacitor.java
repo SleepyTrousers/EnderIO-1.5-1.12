@@ -10,9 +10,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorDataItem;
-import crazypants.enderio.enderface.PacketOpenServerGUI;
-import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
@@ -23,15 +20,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -40,11 +34,6 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.util.NbtValue.REMOTE_D;
-import static crazypants.util.NbtValue.REMOTE_X;
-import static crazypants.util.NbtValue.REMOTE_Y;
-import static crazypants.util.NbtValue.REMOTE_Z;
 
 public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRenderers {
 
@@ -129,6 +118,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
     if (world.isRemote || System.getProperty("INDEV") == null) {
       return EnumActionResult.PASS;
     }
+
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof TileEntityChest) {
       TileEntityChest chest = (TileEntityChest) te;
@@ -139,38 +129,13 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
         lootcontext$builder.withLuck(player.getLuck());
       }
 
-      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+      // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER);
       loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
       return EnumActionResult.PASS;
     }
-    if (player.isSneaking() && te instanceof TileInventoryPanel) {
-      REMOTE_X.setInt(stack, te.getPos().getX());
-      REMOTE_Y.setInt(stack, te.getPos().getY());
-      REMOTE_Z.setInt(stack, te.getPos().getZ());
-      REMOTE_D.setInt(stack, te.getWorld().provider.getDimension());
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("foobar")));
-      return EnumActionResult.SUCCESS;
-    }
+
     return EnumActionResult.PASS;
-  }
-
-  @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
-    if (!player.isSneaking() && REMOTE_X.hasTag(equipped)) {
-      int x = REMOTE_X.getInt(equipped);
-      int y = REMOTE_Y.getInt(equipped);
-      int z = REMOTE_Z.getInt(equipped);
-      int d = REMOTE_D.getInt(equipped);
-
-      Vec3d relativeHit = new Vec3d(0, 0, 0);
-      PacketOpenServerGUI p = new PacketOpenServerGUI(x, y, z, EnumFacing.UP, relativeHit);
-      PacketHandler.INSTANCE.sendToServer(p);
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("barfoo")));
-
-      player.swingArm(hand);
-      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
-    }
-    return super.onItemRightClick(equipped, world, player, hand);
   }
 
 }

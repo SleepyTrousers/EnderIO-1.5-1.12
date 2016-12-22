@@ -1,6 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -244,6 +245,16 @@ public class DarkSteelRecipeManager {
       }
     }
     return output;
+  }
+
+  public static List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes(List<ItemStack> validItems) {
+    List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
+    Set<String> seen = new HashSet<String>();
+    List<ItemStack> items = instance.getRecipes(seen, list, validItems);
+    while (!items.isEmpty()) {
+      items = instance.getRecipes(seen, list, items);
+    }
+    return list;
   }
 
 }

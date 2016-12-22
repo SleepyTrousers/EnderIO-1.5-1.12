@@ -25,6 +25,8 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.loot.Loot;
+import crazypants.enderio.loot.LootManager;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.FarmersRegistry;
@@ -130,6 +132,8 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.integration.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
+
+    Loot.create();
 
     proxy.preInit(event);
   }

@@ -1,4 +1,4 @@
-package crazypants.enderio.capacitor;
+package crazypants.enderio.loot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import com.google.gson.JsonSerializationContext;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
 import crazypants.util.NbtValue;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,6 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 
 public class LootSelector extends LootFunction {
   public LootSelector(LootCondition[] conditionsIn) {
@@ -162,10 +162,6 @@ public class LootSelector extends LootFunction {
 
   private WeightedUpgrade getUpgrade(Random rand) {
     return WeightedRandom.getRandomItem(rand, WeightedUpgrade.getWeightedupgrades()).getUpgrade();
-  }
-
-  static {
-    LootFunctionManager.registerFunction(new Serializer());
   }
 
   public static class Serializer extends LootFunction.Serializer<LootSelector> {

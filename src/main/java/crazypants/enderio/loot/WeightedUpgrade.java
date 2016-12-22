@@ -1,8 +1,10 @@
-package crazypants.enderio.capacitor;
+package crazypants.enderio.loot;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
 import net.minecraft.util.WeightedRandom;
 
@@ -18,9 +20,9 @@ public enum WeightedUpgrade {
 
   ;
 
-  final SetType setType;
-  final CapacitorKey capacitorKey;
-  final String langKey;
+  public final SetType setType;
+  public final CapacitorKey capacitorKey;
+  public final String langKey;
 
   private WeightedUpgrade(SetType setType, CapacitorKey capacitorKey, String langKey, int weight) {
     this.setType = setType;

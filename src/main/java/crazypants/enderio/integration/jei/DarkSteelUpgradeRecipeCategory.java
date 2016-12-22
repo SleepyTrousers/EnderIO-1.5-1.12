@@ -65,17 +65,7 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
   } // -------------------------------------
 
   
-  public static List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes(List<ItemStack> validItems) {
-    List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
-    Set<String> seen = new HashSet<String>();
-    List<ItemStack> items = DarkSteelRecipeManager.instance.getRecipes(seen, list, validItems);
-    while (!items.isEmpty()) {
-      items = DarkSteelRecipeManager.instance.getRecipes(seen, list, items);
-    }
-    return list;
-  }
-
-  private static final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = getAllRecipes(ItemHelper.getValidItems());
+  private static final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
 
   public static void registerSubtypes(ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
