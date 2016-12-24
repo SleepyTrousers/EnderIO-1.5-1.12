@@ -32,6 +32,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumParticleTypes;
@@ -76,6 +77,13 @@ public class BlockFluidEio extends BlockFluidClassic {
     } else {
       res = new BlockFluidEio(fluid, material, fogColor);
     }
+    res.init();
+    fluid.setBlock(res);
+    return res;
+  }
+
+  public static BlockFluidEio createMetal(Fluid fluid, Material material, int fogColor) {
+    BlockFluidEio res = new MoltenMetal(fluid, material, fogColor);
     res.init();
     fluid.setBlock(res);
     return res;
@@ -661,6 +669,38 @@ public class BlockFluidEio extends BlockFluidClassic {
         return 0.995F;
       }
     }
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  // Molten Metal
+  /////////////////////////////////////////////////////////////////////////
+
+  private static class MoltenMetal extends BlockFluidEio {
+
+    protected MoltenMetal(Fluid fluid, Material material, int fogColor) {
+      super(fluid, material, fogColor);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+      if (!world.isRemote && !entity.isImmuneToFire()) {
+        entity.attackEntityFrom(DamageSource.lava, 4.0F);
+        entity.setFire(15);
+      }
+      super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    @Override
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos blockpos, IBlockState iblockstate, Entity entity, double yToTest, Material materialIn,
+        boolean testingHead) {
+      if (materialIn == Material.LAVA || materialIn == this.blockMaterial) {
+        return Boolean.TRUE;
+      }
+      // Note: There's no callback for Entity.isInLava(), so just pretend we're also WATER. It has some drawbacks, but we don't really expect people to go
+      // swimming in molten metals, do we?
+      return super.isEntityInsideMaterial(world, blockpos, iblockstate, entity, yToTest, materialIn, testingHead);
+    }
+
   }
 
 }

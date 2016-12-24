@@ -1536,7 +1536,7 @@ tile.blockInventoryChest_warehouse13.name= Inventory System Storage Extended War
 enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied
-enderio.soulvial.owned.denied=Permission denied - only owners may pickup owned animals
+enderio.soulvial.owned.denied=Permission denied - only owners may pick up owned animals
 
 tile.blockDarkSteelTrapdoor.name=Dark Steel Trapdoor
 
@@ -1548,3 +1548,12 @@ enderio.spawner.note.noPlayer=No player in range
 
 enderio.plantgreen.name=Plant clippings and trimmings
 enderio.plantbrown.name=Loose twigs and prunings
+
+fluid.electricalsteel=Molten Electrical Steel
+fluid.energeticalloy=Molten Energetic Alloy
+fluid.vibrantalloy=Molten Vibrant Alloy
+fluid.redstonealloy=Molten Redstone Alloy
+fluid.conductiveiron=Molten Conductive Iron
+fluid.pulsatingiron=Molten Pulsating Iron
+fluid.darksteel=Molten Dark Steel
+fluid.soularium=Molten Soularium

@@ -8,6 +8,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.SoundType;
@@ -43,6 +44,14 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
     setSoundType(SoundType.METAL);
   }
   
+  @Override
+  protected void init() {
+    super.init();
+    for (Alloy alloy : Alloy.values()) {
+      TicProxy.registerMetal(alloy);
+    }
+  }
+
   @Override
   protected ItemBlock createItemBlock() {
     return new BlockItemIngotStorage(this, getName());

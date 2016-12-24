@@ -133,6 +133,13 @@ public class Recipe extends AbstractConditional {
       craftings.add(factory.read(new Smelting(), startElement));
       return true;
     }
+    if ("casting".equals(name)) {
+      if (craftings == null) {
+        craftings = new ArrayList<AbstractCrafting>();
+      }
+      craftings.add(factory.read(new Casting(), startElement));
+      return true;
+    }
 
     return super.setElement(factory, name, startElement);
   }

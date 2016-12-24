@@ -10,6 +10,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.machine.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 
@@ -117,8 +118,15 @@ public class ManyToOneRecipeManager {
         Log.info("Created 6 synthetic recipes for " + in.getInput() + " => " + out.getOutput());
       } else {
         addRecipe(new BasicManyToOneRecipe(rec));
+        if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
+          ItemStack[] ins = new ItemStack[rec.getInputs().length];
+          for (int i = 0; i < rec.getInputs().length; i++) {
+            ins[i] = rec.getInputs()[i].getInput();
+          }
+          TicProxy.registerAlloyRecipe(rec.getOutputs()[0].getOutput(), ins);
+        }
       }
-    }    
+    }
     Log.info("Finished processing " + managerName + " recipes. " + recipes.size() + " recipes avaliable.");
   }
 

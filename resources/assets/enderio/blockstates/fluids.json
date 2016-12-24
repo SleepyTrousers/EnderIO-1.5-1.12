@@ -36,6 +36,38 @@
         "vapor_of_levity": {
             "model": "forge:fluid",
             "custom": { "fluid": "vapor_of_levity" }            
+        },
+        "electricalsteel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "electricalsteel" }
+        },
+        "energeticalloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "energeticalloy" }
+        },
+        "vibrantalloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "vibrantalloy" }
+        },
+        "redstonealloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "redstonealloy" }
+        },
+        "conductiveiron": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "conductiveiron" }
+        },
+        "pulsatingiron": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "pulsatingiron" }
+        },
+        "darksteel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "darksteel" }
+        },
+        "soularium": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "soularium" }
         }
     }
 }

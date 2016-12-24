@@ -216,6 +216,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Grinding Ball Casting" required="true">
+  <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <level maxlevel="1"/>
+      <input name="DARK_STEEL" amount="0.8"/>
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="DARK_GRINDING_BALL"/>
+    </casting>
+    <casting>
+      <level minlevel="2" maxlevel="2"/>
+      <input name="DARK_STEEL" amount="1"/>
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="DARK_GRINDING_BALL"/>
+    </casting>
+    <casting>
+      <level minlevel="3"/>
+      <input name="DARK_STEEL" amount="1.6"/>
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="DARK_GRINDING_BALL"/>
+    </casting>
+  </recipe>
+
   <recipe name="Iron Dust, Smelting" required="true">
     <smelting>
       <input name="enderio:itemPowderIngot:1"/>
@@ -463,6 +485,13 @@ XML editor will display that as tooltips when editing this file.
     <smelting>
       <input name="enderio:itemPowderIngot:4"/>
       <output name="ingotTin"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Obsidian Smelting" required="false">
+    <smelting vanilla="false" tinkers="true">
+      <input name="enderio:itemPowderIngot:7" amount="4"/>
+      <output name="item:obsidian"/>
     </smelting>
   </recipe>
 

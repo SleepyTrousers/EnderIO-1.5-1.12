@@ -23,6 +23,7 @@ import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
+import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.loot.Loot;
@@ -45,6 +46,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
+import crazypants.util.NullHelper;
 import crazypants.util.Things;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
@@ -72,7 +74,7 @@ import static crazypants.util.Things.TRAVEL_BLACKLIST;
 public class EnderIO {
 
   public static final @Nonnull String MODID = "EnderIO";
-  public static final @Nonnull String DOMAIN = MODID.toLowerCase(Locale.US);
+  public static final @Nonnull String DOMAIN = NullHelper.notnullJ(MODID.toLowerCase(Locale.US), "String.toLowerCase()");
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
   
@@ -119,6 +121,8 @@ public class EnderIO {
 
     fluids = new Fluids();
     fluids.registerFluids();
+
+    TicProxy.init(event);
 
     URL authlib = this.getClass().getClassLoader().getResource("com/mojang/authlib/GameProfile.class");
     if (authlib == null || !authlib.toString().contains("/tlauncher/")) {
@@ -188,6 +192,8 @@ public class EnderIO {
       dumpMobNamesToFile();
     }
     addModIntegration();
+
+    TicProxy.init(event);
 
     Celeb.create();
     Scheduler.instance.start();
