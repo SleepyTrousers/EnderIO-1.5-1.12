@@ -27,6 +27,7 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -293,18 +294,19 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
     boolean chargedItem = false;
     int available = getEnergyAvailableForTick(getMaxIO());
     for (ItemStack item : items) {
-      if(item != null && available > 0 && item.stackSize == 1 && PowerHandlerUtil.getCapability(item, null) != null) {
-        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
-        int max = chargable.getMaxEnergyStored();
-        int cur = chargable.getEnergyStored();
-        if(cur < max) {
-          int canUse = Math.min(available, max - cur);
-          int used = chargable.receiveEnergy(canUse, false);
-          if(used > 0) {
-            
-            addEnergy(-used);
-            chargedItem = true;
-            available -= used;
+      if (Prep.isValid(item) && available > 0 && item.stackSize == 1) {
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item);
+        if (chargable != null) {
+          int max = chargable.getMaxEnergyStored();
+          int cur = chargable.getEnergyStored();
+          if (cur < max) {
+            int canUse = Math.min(available, max - cur);
+            int used = chargable.receiveEnergy(canUse, false);
+            if (used > 0) {
+              addEnergy(-used);
+              chargedItem = true;
+              available -= used;
+            }
           }
         }
       }
