@@ -17,6 +17,8 @@ import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -251,6 +253,13 @@ public class TicProxy {
       itemStack.stackSize = 1;
       Object melting = getMelting.invoke(null, itemStack);
       if (melting == null) {
+        // For some reason this recipe isn't yet available in postInit...
+        if (itemStack.getItem() == Item.getItemFromBlock(Blocks.OBSIDIAN)) {
+          Fluid fluid = FluidRegistry.getFluid("obsidian");
+          if (fluid != null) {
+            return new FluidStack(fluid, 288 * input.stackSize);
+          }
+        }
         return null;
       }
       Object meltingResult = getResult.invoke(melting);
