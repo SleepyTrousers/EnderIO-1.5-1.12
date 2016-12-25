@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.FluidWrapper;
@@ -34,6 +36,7 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.MagnetUtil;
+import crazypants.util.UserIdent;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -413,8 +416,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   Attackera getAttackera() {
     if (attackera == null) {
-      attackera = new Attackera();
-      attackera.setOwner(owner);
+      attackera = new Attackera(owner);
     }
     return attackera;
   }
@@ -502,14 +504,16 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
-  private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioKillera]");
+  private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[Killer Joe]");
 
   private class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
     ItemStack prevWeapon;
 
-    public Attackera() {
-      super(getWorld(), getLocation(), DUMMY_PROFILE);
+    public Attackera(UserIdent owner) {
+      super(getWorld(), getLocation(), (owner == null || owner == UserIdent.nobody || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
+          : new GameProfile(uuid, "[" + owner.getPlayerName() + "'s Killer Joe]"));
+      setOwner(owner);
     }
 
     @Override
