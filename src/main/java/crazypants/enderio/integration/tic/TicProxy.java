@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -15,6 +17,7 @@ import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -29,14 +32,15 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class TicProxy {
 
-  private static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
-  private static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
+  static final ResourceLocation TEX_STILL = new ResourceLocation("tconstruct:blocks/fluids/molten_metal_flow");
+  static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
   private static boolean isLoaded = false;
   private static Class<Object> TinkerRegistry;
   private static Method getMelting;
   private static Method registerAlloy;
   private static Method registerTableCasting;
   private static Method registerMelting;
+  private static Method registerBasinCasting;
   private static Class<Object> MeltingRecipe;
   private static Method getResult;
 
@@ -49,11 +53,15 @@ public class TicProxy {
         registerTableCasting = ReflectionHelper.findMethod(TinkerRegistry, null, new String[] { "registerTableCasting" }, ItemStack.class, ItemStack.class,
             Fluid.class, int.class); // void
         registerMelting = ReflectionHelper.findMethod(TinkerRegistry, null, new String[] { "registerMelting" }, ItemStack.class, Fluid.class, int.class); // void
+        registerBasinCasting = ReflectionHelper.findMethod(TinkerRegistry, null, new String[] { "registerBasinCasting" }, ItemStack.class, ItemStack.class,
+            Fluid.class, int.class); // void
 
         MeltingRecipe = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.smeltery.MeltingRecipe");
         getResult = ReflectionHelper.findMethod(MeltingRecipe, null, new String[] { "getResult" }); // FluidStack
 
         isLoaded = true;
+
+        AdditionalFluid.init(event);
       } catch (RuntimeException e) {
         Log.error("Failed to load Tinker's Construct integration. Reason:");
         e.printStackTrace();
@@ -101,6 +109,7 @@ public class TicProxy {
       throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     FluidStack fluidResult = getFluidForItems(alloy.getLeft());
     if (fluidResult == null) {
+      tryBasinAloying(alloy.getLeft(), alloy.getRight());
       return;
     }
 
@@ -116,8 +125,51 @@ public class TicProxy {
     Log.debug("Tinkers.registerAlloy: " + fluidResult + ", " + fluids);
   }
 
+  private static void tryBasinAloying(ItemStack result, ItemStack... inputs) {
+    if (Prep.isInvalid(result) || result.stackSize != 1 || !(result.getItem() instanceof ItemBlock) || inputs.length != 2 || Prep.isInvalid(inputs[0])
+        || Prep.isInvalid(inputs[1])) {
+      return;
+    }
+    FluidStack a = getFluidForItems(inputs[0]);
+    FluidStack b = getFluidForItems(inputs[1]);
+    if ((a == null) == (b == null)) {
+      return;
+    }
+    if (a == null && !(inputs[0].stackSize == 1 && inputs[0].getItem() instanceof ItemBlock)) {
+      return;
+    }
+    if (b == null && !(inputs[1].stackSize == 1 && inputs[1].getItem() instanceof ItemBlock)) {
+      return;
+    }
+
+    if (a == null) {
+      registerBasinCasting(result, inputs[0], b.getFluid(), b.amount);
+    } else {
+      registerBasinCasting(result, inputs[1], a.getFluid(), a.amount);
+    }
+  }
+
   public static void init(FMLPostInitializationEvent event) {
+    AdditionalFluid.init(event);
     try {
+      if (smeltQueue != null) { // 1st because it may provide fluids for later
+        for (SmeltQueue smelt : smeltQueue) {
+          if (smelt.fluidOutput == null) {
+            FluidStack fluid = getFluidForItems(smelt.output);
+            if (fluid == null) {
+              Log.warn("Item used in Smeltery recipe '" + smelt.output + "' doesn't smelt into a fluid");
+            } else {
+              smelt.fluidOutput = fluid.getFluid();
+              smelt.amount *= fluid.amount;
+            }
+          }
+          if (smelt.fluidOutput != null) {
+            registerMelting.invoke(null, smelt.input, smelt.fluidOutput, (int) Math.max(1, Math.floor(smelt.amount)));
+            Log.debug("Tinkers.registerMelting: " + smelt.input + ", " + smelt.fluidOutput.getName() + ", " + smelt.amount);
+          }
+        }
+        smeltQueue = null;
+      }
       if (alloyQueue != null) {
         for (Pair<ItemStack, ItemStack[]> alloy : alloyQueue) {
           registerAlloyRecipe(alloy);
@@ -126,28 +178,35 @@ public class TicProxy {
       }
       if (castQueue != null) {
         for (CastQueue cast : castQueue) {
-          FluidStack fluid = getFluidForItems(cast.item);
-          if (fluid == null) {
+          if (cast.fluid == null) {
+            FluidStack fluid = getFluidForItems(cast.item);
+            cast.fluid = fluid.getFluid();
+            cast.amount *= fluid.amount;
+          }
+          if (cast.fluid == null) {
             Log.warn("Item used in cast recipe '" + cast.item + "' doesn't smelt into a fluid");
           } else {
-            fluid.amount = (int) Math.ceil(fluid.amount * cast.amount);
-            registerTableCasting.invoke(null, cast.result, cast.cast, fluid.getFluid(), fluid.amount);
-            Log.debug("Tinkers.registerTableCasting: " + cast.result + ", " + cast.cast + ", " + fluid.getFluid().getName() + ", " + fluid.amount);
+            registerTableCasting.invoke(null, cast.result, cast.cast, cast.fluid, (int) Math.ceil(cast.amount));
+            Log.debug("Tinkers.registerTableCasting: " + cast.result + ", " + cast.cast + ", " + cast.fluid.getName() + ", " + cast.amount);
           }
         }
         castQueue = null;
       }
-      if (smeltQueue != null) {
-        for (SmeltQueue smelt : smeltQueue) {
-          FluidStack fluid = getFluidForItems(smelt.output);
-          if (fluid == null) {
-            Log.warn("Item used in Smeltery recipe '" + smelt.output + "' doesn't smelt into a fluid");
-          } else {
-            registerMelting.invoke(null, smelt.input, fluid.getFluid(), (int) (fluid.amount * smelt.amount));
-            Log.debug("Tinkers.registerMelting: " + smelt.input + ", " + fluid.getFluid().getName() + ", " + (int) (fluid.amount * smelt.amount));
+      if (basinQueue != null) {
+        for (BasinQueue basin : basinQueue) {
+          if (basin.fluid == null) {
+            FluidStack fluid = getFluidForItems(basin.fluidItem);
+            if (fluid != null) {
+              basin.fluid = fluid.getFluid();
+              basin.amount *= fluid.amount;
+            }
+          }
+          if (basin.fluid != null) {
+            registerBasinCasting.invoke(null, basin.output, basin.cast, basin.fluid, basin.amount);
+            Log.debug("Tinkers.registerBasinCasting: " + basin.output + ", " + basin.cast + ", " + basin.fluid.getName() + ", " + basin.amount);
           }
         }
-        smeltQueue = null;
+        basinQueue = null;
       }
     } catch (IllegalAccessException e) {
       Log.error("Failed to access Tinker's Construct integration. Reason:");
@@ -249,6 +308,7 @@ public class TicProxy {
     ItemStack result;
     ItemStack cast;
     ItemStack item;
+    Fluid fluid;
     float amount;
 
     CastQueue(ItemStack result, ItemStack cast, ItemStack item, float amount) {
@@ -256,6 +316,15 @@ public class TicProxy {
       this.result = result;
       this.cast = cast;
       this.item = item;
+      this.fluid = null;
+      this.amount = amount;
+    }
+
+    CastQueue(ItemStack result, ItemStack cast, Fluid fluid, float amount) {
+      this.result = result;
+      this.cast = cast;
+      this.item = null;
+      this.fluid = fluid;
       this.amount = amount;
     }
   }
@@ -292,15 +361,36 @@ public class TicProxy {
     return null;
   }
 
+  public static void registerTableCast(ItemStack result, ItemStack cast, Fluid fluid, float amount) {
+    if (!isLoaded || Prep.isInvalid(result) || Prep.isInvalid(cast) || fluid == null) {
+      return;
+    }
+
+    if (castQueue == null) {
+      castQueue = new ArrayList<CastQueue>();
+    }
+    castQueue.add(new CastQueue(result, cast, fluid, amount));
+  }
+
   private static class SmeltQueue {
     ItemStack input;
     ItemStack output;
+    Fluid fluidOutput;
     float amount;
 
     public SmeltQueue(ItemStack input, ItemStack output, float amount) {
       super();
       this.input = input;
       this.output = output;
+      this.fluidOutput = null;
+      this.amount = amount;
+    }
+
+    public SmeltQueue(ItemStack input, Fluid fluidOutput, float amount) {
+      super();
+      this.input = input;
+      this.output = null;
+      this.fluidOutput = fluidOutput;
       this.amount = amount;
     }
   }
@@ -315,6 +405,63 @@ public class TicProxy {
       smeltQueue = new ArrayList<SmeltQueue>();
     }
     smeltQueue.add(new SmeltQueue(input, output, amount));
+  }
+
+  public static void registerSmelterySmelting(ItemStack input, Fluid output, float amount) {
+    if (!isLoaded || Prep.isInvalid(input) || output == null) {
+      return;
+    }
+    if (smeltQueue == null) {
+      smeltQueue = new ArrayList<SmeltQueue>();
+    }
+    smeltQueue.add(new SmeltQueue(input, output, amount));
+  }
+
+  private static class BasinQueue {
+    ItemStack output;
+    @Nullable
+    ItemStack cast;
+    Fluid fluid;
+    ItemStack fluidItem;
+    int amount;
+
+    public BasinQueue(ItemStack output, ItemStack cast, ItemStack fluidItem, int amount) {
+      this.output = output;
+      this.cast = cast;
+      this.fluid = null;
+      this.fluidItem = fluidItem;
+      this.amount = amount;
+    }
+
+    public BasinQueue(ItemStack output, ItemStack cast, Fluid fluid, int amount) {
+      this.output = output;
+      this.cast = cast;
+      this.fluid = fluid;
+      this.fluidItem = null;
+      this.amount = amount;
+    }
+  }
+
+  private static List<BasinQueue> basinQueue;
+
+  public static void registerBasinCasting(ItemStack output, @Nullable ItemStack cast, ItemStack fluid, int amount) {
+    if (!isLoaded || Prep.isInvalid(output) || Prep.isInvalid(fluid)) {
+      return;
+    }
+    if (basinQueue == null) {
+      basinQueue = new ArrayList<BasinQueue>();
+    }
+    basinQueue.add(new BasinQueue(output, cast, fluid, amount));
+  }
+
+  public static void registerBasinCasting(ItemStack output, @Nullable ItemStack cast, Fluid fluid, int amount) {
+    if (!isLoaded || Prep.isInvalid(output) || fluid == null) {
+      return;
+    }
+    if (basinQueue == null) {
+      basinQueue = new ArrayList<BasinQueue>();
+    }
+    basinQueue.add(new BasinQueue(output, cast, fluid, amount));
   }
 
 }

@@ -68,6 +68,18 @@
         "soularium": {
             "model": "forge:fluid",
             "custom": { "fluid": "soularium" }
+        },
+        "glowstone": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "glowstone" }
+        },
+        "redstone": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "redstone" }
+        },
+        "ender": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "ender" }
         }
     }
 }

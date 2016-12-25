@@ -1531,7 +1531,7 @@ tile.blockInventoryChest_large.name=Large Inventory System Storage
 tile.blockInventoryChest_huge.name=Huge Inventory System Storage
 tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
 tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
-tile.blockInventoryChest_warehouse13.name= Inventory System Storage Extended Warehouse
+tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
 
 enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
@@ -1557,3 +1557,6 @@ fluid.conductiveiron=Molten Conductive Iron
 fluid.pulsatingiron=Molten Pulsating Iron
 fluid.darksteel=Molten Dark Steel
 fluid.soularium=Molten Soularium
+fluid.glowstone=Glowgas
+fluid.redstone=Molten Redstone
+fluid.ender=Liquidfied Ender Pearls

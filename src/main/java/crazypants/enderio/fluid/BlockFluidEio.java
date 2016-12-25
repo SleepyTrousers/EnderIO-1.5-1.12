@@ -703,4 +703,58 @@ public class BlockFluidEio extends BlockFluidClassic {
 
   }
 
+  /////////////////////////////////////////////////////////////////////////
+  // Molten Glowstone
+  /////////////////////////////////////////////////////////////////////////
+
+  public static class MoltenGlowstone extends BlockFluidEio {
+
+    public MoltenGlowstone(Fluid fluid, Material material, int fogColor) { // 0xffbc5e
+      super(fluid, material, fogColor);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+      if (entity instanceof EntityPlayer || (!world.isRemote && entity instanceof EntityLivingBase)) {
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 200, 0, true, true));
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 2400, 0, true, true));
+      }
+      super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    @Override
+    public void init() {
+      super.init();
+    }
+
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  // Molten Redstone
+  /////////////////////////////////////////////////////////////////////////
+
+  public static class MoltenRedstone extends BlockFluidEio {
+
+    public MoltenRedstone(Fluid fluid, Material material, int fogColor) { // 0xff0000
+      super(fluid, material, fogColor);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+      if (entity instanceof EntityPlayer || (!world.isRemote && entity instanceof EntityLivingBase)) {
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HASTE, 20 * 60, 0, true, true));
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20 * 60, 0, true, true));
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SPEED, 20 * 60, 0, true, true));
+        ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 20 * 60, 0, true, true));
+      }
+      super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    @Override
+    public void init() {
+      super.init();
+    }
+
+  }
+
 }
