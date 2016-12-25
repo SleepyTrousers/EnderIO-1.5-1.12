@@ -20,7 +20,9 @@ public enum PowderIngot {
   POWDER_ENDER("powderEnder", "nuggetEnderpearl", "nuggetEnderpearl", true), // "nugget" because it is 1/9th pearl
   INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM, "ingotEnderiumBase"), //
   POWDER_OBSIDIAN("powderObsidian", null, "dustObsidian"), //
-  FLOUR("dustWheat", null);
+  FLOUR("dustWheat", null), //
+  POWDER_ARDITE("powderArdite", "oreArdite", "dustArdite"), //
+  POWDER_COBALT("powderCobalt", "oreCobalt", "dustCobalt");
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),

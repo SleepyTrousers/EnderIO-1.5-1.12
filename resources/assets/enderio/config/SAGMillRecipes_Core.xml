@@ -419,6 +419,7 @@
       <output>
         <itemStack modID="minecraft" itemName="diamond" number="1" />
         <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
         <itemStack oreDictionary="dustCoal" number="1" chance="0.05" />
       </output>
     </recipe>
@@ -429,6 +430,7 @@
       <output>
         <itemStack modID="minecraft" itemName="emerald" number="1" />
         <itemStack modID="minecraft" itemName="emerald" number="1" chance="0.25" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
     <recipe name="LapisLazuliOre" energyCost="3000" >
@@ -2386,6 +2388,7 @@
       </input>
       <output>
         <itemStack oreDictionary="dustArdite" number="2" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
     <recipe name="CobaltOre" energyCost="3600" >
@@ -2394,6 +2397,7 @@
       </input>
       <output>
         <itemStack oreDictionary="dustCobalt" number="2" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.15" />
       </output>
     </recipe>
     <!-- Alloys and Ingots -->

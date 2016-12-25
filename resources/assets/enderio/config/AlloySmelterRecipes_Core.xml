@@ -436,6 +436,18 @@
     </recipe>
   </recipeGroup>
 
+  <recipeGroup name="Tinkers" >
+    <recipe name="Manyullyn Ingot" energyCost="10000" >
+      <input>
+        <itemStack oreDictionary="ingotArdite" />
+        <itemStack oreDictionary="ingotCobalt" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotManyullyn" number="1" exp="0.25" />
+      </output>
+    </recipe>
+</recipeGroup>
+
   <vanillaFurnaceRecipes enabled="true" />
 
 </AlloySmelterRecipes>

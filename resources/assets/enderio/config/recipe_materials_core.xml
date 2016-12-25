@@ -488,9 +488,24 @@ XML editor will display that as tooltips when editing this file.
     </smelting>
   </recipe>
 
+  <recipe name="Ardite" required="false">
+    <smelting>
+      <input name="enderio:itemPowderIngot:9"/>
+      <output name="ingotArdite"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Cobalt" required="false">
+    <smelting>
+      <input name="enderio:itemPowderIngot:10"/>
+      <output name="ingotCobalt"/>
+    </smelting>
+  </recipe>
+
   <recipe name="Obsidian Smelting" required="false">
     <smelting vanilla="false" tinkers="true">
-      <input name="enderio:itemPowderIngot:7" amount="4"/>
+      <!-- Note: With Dark Steel Balls, one obsidian block will sagmill to 6 powders, so we need to make them smelt that way to avoid duping. -->
+      <input name="enderio:itemPowderIngot:7" amount="6"/>
       <output name="item:obsidian"/>
     </smelting>
   </recipe>
