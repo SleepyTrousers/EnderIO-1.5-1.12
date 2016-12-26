@@ -11,6 +11,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -30,13 +31,13 @@ public class TreeFarmer implements IFarmerJoe {
   protected Block sapling;
   protected ItemStack saplingItem;
   protected Block[] woods;
-  
+
   protected TreeHarvestUtil harvester = new TreeHarvestUtil();
   private boolean ignoreMeta;
 
   public TreeFarmer(Block sapling, Block... wood) {
     this.sapling = sapling;
-    if(sapling != null) {
+    if (sapling != null) {
       saplingItem = new ItemStack(sapling);
       FarmStationContainer.slotItemsSeeds.add(saplingItem);
     }
@@ -47,7 +48,7 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   public TreeFarmer(boolean ignoreMeta, Block sapling, Block... wood) {
-    this(sapling,wood);
+    this(sapling, wood);
     this.ignoreMeta = ignoreMeta;
   }
 
@@ -61,8 +62,8 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   protected boolean isWood(Block block) {
-    for(Block wood : woods) {
-      if(block == wood) {
+    for (Block wood : woods) {
+      if (block == wood) {
         return true;
       }
     }
@@ -76,7 +77,7 @@ public class TreeFarmer implements IFarmerJoe {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-    if(block == sapling) {
+    if (block == sapling) {
       return true;
     }
     return plantFromInventory(farm, bc, block, meta);
@@ -84,9 +85,9 @@ public class TreeFarmer implements IFarmerJoe {
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
     World worldObj = farm.getWorld();
-    if(canPlant(worldObj, bc)) {
+    if (canPlant(worldObj, bc)) {
       ItemStack seed = farm.takeSeedFromSupplies(saplingItem, bc, false);
-      if(seed != null) {
+      if (seed != null) {
         return plant(farm, worldObj, bc, seed);
       }
     }
@@ -96,18 +97,17 @@ public class TreeFarmer implements IFarmerJoe {
   protected boolean canPlant(World worldObj, BlockCoord bc) {
     BlockPos grnPos = bc.getBlockPos().down();
     IBlockState bs = worldObj.getBlockState(grnPos);
-    Block ground =bs.getBlock(); 
+    Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) sapling;
-    if(sapling.canPlaceBlockAt(worldObj, bc.getBlockPos()) &&        
-        ground.canSustainPlant(bs, worldObj, grnPos, EnumFacing.UP, plantable)) {
+    if (sapling.canPlaceBlockAt(worldObj, bc.getBlockPos()) && ground.canSustainPlant(bs, worldObj, grnPos, EnumFacing.UP, plantable)) {
       return true;
     }
     return false;
   }
 
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, ItemStack seed) {    
+  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, ItemStack seed) {
     worldObj.setBlockToAir(bc.getBlockPos());
-    if(canPlant(worldObj, bc)) {            
+    if (canPlant(worldObj, bc)) {
       worldObj.setBlockState(bc.getBlockPos(), sapling.getStateFromMeta(seed.getItemDamage()), 1 | 2);
       farm.actionPerformed(false);
       return true;
@@ -120,7 +120,7 @@ public class TreeFarmer implements IFarmerJoe {
 
     boolean hasAxe = farm.hasAxe();
 
-    if(!hasAxe) {
+    if (!hasAxe) {
       farm.setNotification(FarmNotification.NO_AXE);
       return null;
     }
@@ -159,7 +159,7 @@ public class TreeFarmer implements IFarmerJoe {
         wasAxed = true;
       }
 
-      if(drops != null) {
+      if (drops != null) {
         for (ItemStack drop : drops) {
           if (worldObj.rand.nextFloat() <= chance) {
             res.drops.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
@@ -172,18 +172,18 @@ public class TreeFarmer implements IFarmerJoe {
       }
 
       farm.actionPerformed(wasWood || wasSheared);
-      if(wasAxed) {
+      if (wasAxed) {
         farm.damageAxe(blk, new BlockCoord(coord));
         hasAxe = farm.hasAxe();
       } else if (wasSheared) {
         farm.damageShears(blk, new BlockCoord(coord));
         hasShears = farm.hasShears();
       }
-      
+
       farm.getWorld().setBlockToAir(coord);
       actualHarvests.add(coord);
     }
-    
+
     ItemStack[] inv = fakePlayer.inventory.mainInventory;
     for (int slot = 0; slot < inv.length; slot++) {
       ItemStack stack = inv[slot];
@@ -197,22 +197,35 @@ public class TreeFarmer implements IFarmerJoe {
     if (!hasAxe) {
       farm.setNotification(FarmNotification.NO_AXE);
     }
-    
+
     res.harvestedBlocks.clear();
     res.harvestedBlocks.addAll(actualHarvests);
-    
-    //try replant    
-    for(EntityItem drop : res.drops) {
-      if(canPlant(drop.getEntityItem()) && plant(farm, worldObj, bc, drop.getEntityItem())) {     
-        res.drops.remove(drop);
-        break;
-      }
-    }    
+
+    tryReplanting(farm, worldObj, bc, res);
+
     return res;
   }
 
-  public boolean getIgnoreMeta()
-  {
+  protected void tryReplanting(TileFarmStation farm, World worldObj, BlockCoord bc, HarvestResult res) {
+    ItemStack allowedSeed = null;
+    int supplySlotForCoord = farm.getSupplySlotForCoord(bc.getBlockPos());
+    if (farm.isSlotLocked(supplySlotForCoord)) {
+      ItemStack seedTypeInSuppliesFor = farm.getSeedTypeInSuppliesFor(supplySlotForCoord);
+      if (Prep.isValid(seedTypeInSuppliesFor)) {
+        allowedSeed = seedTypeInSuppliesFor;
+      }
+    }
+    for (EntityItem drop : res.drops) {
+      if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getEntityItem())) {
+        if (canPlant(drop.getEntityItem()) && plant(farm, worldObj, bc, drop.getEntityItem())) {
+          res.drops.remove(drop);
+          break;
+        }
+      }
+    }
+  }
+
+  public boolean getIgnoreMeta() {
     return ignoreMeta;
   }
 
@@ -220,10 +233,10 @@ public class TreeFarmer implements IFarmerJoe {
 
     @Override
     public int compare(BlockPos o1, BlockPos o2) {
-      return compare(o2.getY(), o1.getY()); //reverse order
+      return compare(o2.getY(), o1.getY()); // reverse order
     }
 
-    //same as 1.7 Integer.compare
+    // same as 1.7 Integer.compare
     public static int compare(int x, int y) {
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }

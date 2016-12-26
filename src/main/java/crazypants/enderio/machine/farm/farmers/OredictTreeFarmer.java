@@ -80,11 +80,15 @@ public class OredictTreeFarmer extends TreeFarmer {
 
   @Override
   protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, ItemStack seed) {    
-    worldObj.setBlockToAir(bc.getBlockPos());
-    final Item item = seed.getItem();
-    worldObj.setBlockState(bc.getBlockPos(), Block.getBlockFromItem(item).getStateFromMeta(item.getMetadata(seed.getMetadata())), 1 | 2);
-    farm.actionPerformed(false);
-    return true;
+    if (canPlant(worldObj, bc, seed)) {
+      worldObj.setBlockToAir(bc.getBlockPos());
+      final Item item = seed.getItem();
+      worldObj.setBlockState(bc.getBlockPos(), Block.getBlockFromItem(item).getStateFromMeta(item.getMetadata(seed.getMetadata())), 1 | 2);
+      farm.actionPerformed(false);
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
