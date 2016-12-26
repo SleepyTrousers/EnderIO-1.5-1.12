@@ -294,6 +294,23 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
   }
 
+  @Override
+  public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+    if(super.canExtractItem(slot, itemstack, side)) {
+      return true;
+    }
+    //allow almost completely broken tools from Tinkers Construct to be extracted to get them repaired/recharged
+    if(slot >= minToolSlot && slot <= maxToolSlot && itemstack.getItemDamage() >= 95) {
+      Class<?> c = itemstack.getItem().getClass();
+      do {
+        if(c.getName().equals("tconstruct.library.tools.HarvestTool"))
+          return true;
+        c = c.getSuperclass();
+      } while(c != null);
+    }
+    return false;
+  }
+
   public EntityPlayerMP getFakePlayer() {
     return farmerJoe;
   }

@@ -119,7 +119,16 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof ItemSword;
+    if(itemstack.getItem() instanceof ItemSword)
+      return true;
+    
+    Class<?> c = itemstack.getItem().getClass();
+    do {
+      if(c.getName().equals("tconstruct.library.tools.Weapon"))
+        return true;
+      c = c.getSuperclass();
+    } while(c != null);
+    return false;
   }
 
   @Override
