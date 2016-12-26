@@ -17,6 +17,7 @@ import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -230,6 +231,15 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         listIndex++;
       }
 
+    } else {
+      for (ResultStack result : results) {
+        if (Prep.isValid(result.item)) {
+          Block.spawnAsEntity(worldObj, pos, result.item);
+          result.item.stackSize = 0;
+        } else if (result.fluid != null) {
+          mergeFluidResult(result);
+        }
+      }
     }
     cachedNextRecipe = null;
   }
@@ -303,35 +313,35 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
+    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
+    List<ItemStack> outputStacks = null;
 
     final int numOutputSlots = slotDefinition.getNumOutputSlots();
-    if (numOutputSlots <= 0) {
-      return false;
-    }
+    if (numOutputSlots > 0) {
 
-    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
-    List<ItemStack> outputStacks = new ArrayList<ItemStack>(numOutputSlots);
-    boolean allFull = true;
+      outputStacks = new ArrayList<ItemStack>(numOutputSlots);
+      boolean allFull = true;
 
-    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-      ItemStack st = inventory[i];
-      if (Prep.isValid(st)) {
-        st = st.copy();
-        if (allFull && st.stackSize < st.getMaxStackSize()) {
+      for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+        ItemStack st = inventory[i];
+        if (Prep.isValid(st)) {
+          st = st.copy();
+          if (allFull && st.stackSize < st.getMaxStackSize()) {
+            allFull = false;
+          }
+        } else {
           allFull = false;
         }
-      } else {
-        allFull = false;
+        outputStacks.add(st);
       }
-      outputStacks.add(st);
-    }
-    if (allFull) {
-      return false;
+      if (allFull) {
+        return false;
+      }
     }
 
     for (ResultStack result : nextResults) {
       if (Prep.isValid(result.item)) {
-        if (mergeItemResult(result.item, outputStacks) == 0) {
+        if (outputStacks == null || mergeItemResult(result.item, outputStacks) == 0) {
           return false;
         }
       } else if (result.fluid != null) {
