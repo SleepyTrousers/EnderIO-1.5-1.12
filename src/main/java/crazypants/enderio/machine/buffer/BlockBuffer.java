@@ -19,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -120,6 +121,16 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileBuffer tileEntity) {
     blockStateWrapper.addCacheKey(blockStateWrapper.getValue(BufferType.TYPE));
+  }
+
+  @Override
+  public boolean hasComparatorInputOverride(IBlockState state) {
+    return state.getValue(BufferType.TYPE).hasInventory;
+  }
+
+  @Override
+  public int getComparatorInputOverride(IBlockState blockState1, World worldIn, BlockPos pos) {
+    return Container.calcRedstone(getTileEntity(worldIn, pos));
   }
 
 }

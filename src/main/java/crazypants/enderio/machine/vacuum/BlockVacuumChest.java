@@ -30,6 +30,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -212,8 +213,9 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
+  @SuppressWarnings("null")
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }
@@ -270,6 +272,16 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     ClientUtil.registerDefaultItemRenderer(ModObject.blockVacuumChest);
+  }
+
+  @Override
+  public boolean hasComparatorInputOverride(IBlockState state) {
+    return true;
+  }
+
+  @Override
+  public int getComparatorInputOverride(IBlockState blockState1, World worldIn, BlockPos pos) {
+    return Container.calcRedstone(getTileEntity(worldIn, pos));
   }
 
 }
