@@ -171,12 +171,13 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
     if (player instanceof EntityPlayer && isActive(itemstack) && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
       controller.doHoover((EntityPlayer) player);
       if (!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
-        ItemMagnet.drainPerSecondPower(itemstack);
+        ItemStack changedStack = itemstack.copy();
+        ItemMagnet.drainPerSecondPower(changedStack);
         IInventory baubles = BaublesUtil.instance().getBaubles((EntityPlayer) player);
         if (baubles != null) {
           for (int i = 0; i < baubles.getSizeInventory(); i++) {
             if (baubles.getStackInSlot(i) == itemstack) {
-              baubles.setInventorySlotContents(i, itemstack);
+              baubles.setInventorySlotContents(i, changedStack);
             }
           }
         }
