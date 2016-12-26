@@ -149,6 +149,9 @@ public class EnderInventory implements IItemHandler {
 
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+    if (Prep.isInvalid(stack)) {
+      return Prep.getEmpty();
+    }
     return allSlots.insertItem(slot, stack, simulate);
   }
 
@@ -190,6 +193,9 @@ public class EnderInventory implements IItemHandler {
 
     @Override
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      if (Prep.isInvalid(stack)) {
+        return Prep.getEmpty();
+      }
       if (slot >= 0 && slot < getSlots()) {
         InventorySlot inventorySlot = slots.get(type).get(slot);
         if (inventorySlot != null) {

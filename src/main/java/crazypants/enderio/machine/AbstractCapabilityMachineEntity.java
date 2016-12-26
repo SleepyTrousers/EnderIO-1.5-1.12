@@ -162,6 +162,9 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
 
     @Override
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+      if (Prep.isInvalid(stack)) {
+        return Prep.getEmpty();
+      }
       return getView().insertItem(slot, stack, simulate);
     }
 

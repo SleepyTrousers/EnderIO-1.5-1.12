@@ -104,6 +104,9 @@ public class InventorySlot implements IItemHandler {
 
   @Override
   public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+    if (Prep.isInvalid(stack)) {
+      return Prep.getEmpty();
+    }
     if (slot == 0 && filterIn.apply(stack)) {
       if (Prep.isInvalid(itemStack)) {
         int max = Math.min(limit, stack.getMaxStackSize());
