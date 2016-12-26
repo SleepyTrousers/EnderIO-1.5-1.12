@@ -8,9 +8,10 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capacitor.CapacitorHelper;
-import crazypants.enderio.capacitor.ICapacitorData;
+import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -21,8 +22,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
-
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
 
 @Storable
 public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity implements ISidedInventory {
@@ -78,12 +77,11 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemstack == null || itemstack.getItem() == null) {
+    if (Prep.isInvalid(itemstack)) {
       return false;
     }
     if (slotDefinition.isUpgradeSlot(i)) {
-      final ICapacitorData capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(itemstack);
-      return (itemstack.getItem() == itemBasicCapacitor.getItem() && itemstack.getItemDamage() > 0) || capacitorData != null; // TODO level
+      return CapacitorHelper.isValidUpgrade(itemstack);
     }
     return isMachineItemValidForSlot(i, itemstack);
   }
@@ -133,20 +131,20 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+  public boolean hasCapability(Capability<?> capability, EnumFacing facing1) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return true;
     }
-    return super.hasCapability(capability, facing);
+    return super.hasCapability(capability, facing1);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+  public <T> T getCapability(Capability<T> capability, EnumFacing facing1) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return (T) new SidedInvWrapper(this, facing);
+      return (T) new SidedInvWrapper(this, facing1);
     }
-    return super.getCapability(capability, facing);
+    return super.getCapability(capability, facing1);
   }
 
   @Override
@@ -176,15 +174,18 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return Util.decrStackSize(this, slot, amount);
   }
 
+  @SuppressWarnings("null")
   @Override
   public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
-    if (contents == null) {
-      inventory[slot] = contents;
+    if (Prep.isInvalid(contents)) {
+      inventory[slot] = Prep.getEmpty();
     } else {
       inventory[slot] = contents.copy();
-    }
-    if (contents != null && contents.stackSize > getInventoryStackLimit(slot)) {
-      contents.stackSize = getInventoryStackLimit(slot);
+      if (inventory[slot].stackSize > getInventoryStackLimit(slot)) {
+        inventory[slot].stackSize = getInventoryStackLimit(slot);
+        contents.stackSize -= getInventoryStackLimit(slot);
+        Block.spawnAsEntity(worldObj, pos, contents);
+      }
     }
     markDirty();
   }
@@ -200,7 +201,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   @Override
   public ItemStack removeStackFromSlot(int index) {
     ItemStack res = inventory[index];
-    inventory[index] = null;
+    inventory[index] = Prep.getEmpty();
     markDirty();
     return res;
   }

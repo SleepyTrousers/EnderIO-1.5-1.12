@@ -1,9 +1,10 @@
 package crazypants.enderio.capacitor;
 
 import crazypants.util.Prep;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import static crazypants.enderio.ModObject.itemBasicCapacitor;
 
 public class CapacitorHelper {
 
@@ -14,18 +15,34 @@ public class CapacitorHelper {
     if (Prep.isInvalid(stack)) {
       return null;
     }
-    final Item item = stack.getItem();
-    final ICapacitorData capData = getNBTCapacitorDataFromItemStack(stack, item);
+    final ICapacitorData capData = getNBTCapacitorDataFromItemStack(stack);
     if (capData != null) {
       return capData;
     }
-    if (item instanceof ICapacitorDataItem) {
-      return ((ICapacitorDataItem) item).getCapacitorData(stack);
+    if (stack.getItem() instanceof ICapacitorDataItem) {
+      return ((ICapacitorDataItem) stack.getItem()).getCapacitorData(stack);
     }
     return null;
   }
 
-  protected static ICapacitorData getNBTCapacitorDataFromItemStack(ItemStack stack, final Item item) {
+  public static boolean isValidUpgrade(ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
+      return false;
+    }
+    final ICapacitorData capData = getNBTCapacitorDataFromItemStack(stack);
+    if (capData != null) {
+      return true;
+    }
+    if (stack.getItem() == itemBasicCapacitor.getItem()) {
+      return stack.getItemDamage() > 0;
+    }
+    if (stack.getItem() instanceof ICapacitorDataItem) {
+      return true;
+    }
+    return false;
+  }
+
+  protected static ICapacitorData getNBTCapacitorDataFromItemStack(ItemStack stack) {
     final NBTTagCompound nbtRoot = stack.getTagCompound();
     if (nbtRoot == null) {
       return null;
@@ -41,7 +58,7 @@ public class CapacitorHelper {
     if (capLevel <= 0 || capLevel > 99) {
       return null;
     }
-    return new NBTCapacitorData(item.getUnlocalizedName(stack), capLevel, nbtTag);
+    return new NBTCapacitorData(stack.getItem().getUnlocalizedName(stack), capLevel, nbtTag);
   }
 
   public static enum SetType {
