@@ -7,8 +7,6 @@ import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.PacketFarmAction;
@@ -19,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
@@ -76,12 +75,12 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
                 && (worldObj.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
-              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
+              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
                   new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               mob.setPositionAndUpdate(x - dx / 2, y, z - dz / 2);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
-              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockCoord(mob.posX, mob.posY, mob.posZ)),
+              PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
                   new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               iterator.remove();
             }

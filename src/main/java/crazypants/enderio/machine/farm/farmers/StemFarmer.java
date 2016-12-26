@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -28,16 +27,16 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-    if(plantedBlock == block) {
+  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+    if (plantedBlock == block) {
       return true;
     }
     return plantFromInventory(farm, bc);
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-    BlockCoord up = bc.getLocation(EnumFacing.UP);
+  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+    BlockPos up = bc.up();
     Block upBLock = farm.getBlock(up);
     return upBLock == plantedBlock;
   }
@@ -48,38 +47,36 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
-
-    
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     World worldObj = farm.getWorld();
     final EntityPlayerMP fakePlayer = farm.getFakePlayer();
     final int fortune = farm.getMaxLootingValue();
     HarvestResult result = new HarvestResult();
-    BlockPos harvestCoord = bc.getBlockPos();
+    BlockPos harvestCoord = bc;
     boolean done = false;
-    do{
+    do {
       harvestCoord = harvestCoord.offset(EnumFacing.UP);
       boolean hasHoe = farm.hasHoe();
-      if(plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
+      if (plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
         result.harvestedBlocks.add(harvestCoord);
         List<ItemStack> drops = plantedBlock.getDrops(worldObj, harvestCoord, meta, fortune);
         float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, harvestCoord, meta, fortune, 1.0F, false, fakePlayer);
-        if(drops != null) {
-          for(ItemStack drop : drops) {
+        if (drops != null) {
+          for (ItemStack drop : drops) {
             if (worldObj.rand.nextFloat() <= chance) {
-              result.drops.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+              result.drops.add(new EntityItem(worldObj, harvestCoord.getX() + 0.5, harvestCoord.getY() + 0.5, harvestCoord.getZ() + 0.5, drop.copy()));
             }
           }
         }
-        farm.damageHoe(1, new BlockCoord(harvestCoord));
+        farm.damageHoe(1, harvestCoord);
         farm.actionPerformed(false);
 
         ItemStack[] inv = fakePlayer.inventory.mainInventory;
         for (int slot = 0; slot < inv.length; slot++) {
           ItemStack stack = inv[slot];
-          if (stack != null) {
-            inv[slot] = null;
-            EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+          if (Prep.isValid(stack)) {
+            inv[slot] = Prep.getEmpty();
+            EntityItem entityitem = new EntityItem(worldObj, harvestCoord.getX() + 0.5, harvestCoord.getY() + 1, harvestCoord.getZ() + 0.5, stack);
             result.drops.add(entityitem);
           }
         }
@@ -91,7 +88,7 @@ public class StemFarmer extends CustomSeedFarmer {
         }
         done = true;
       }
-    } while(!done);
+    } while (!done);
 
     List<BlockPos> toClear = new ArrayList<BlockPos>(result.getHarvestedBlocks());
     Collections.sort(toClear, COMP);
@@ -103,9 +100,9 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
+  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc) {
     World worldObj = farm.getWorld();
-    if (canPlant(farm, worldObj, bc) && farm.takeSeedFromSupplies(seeds, bc) != null) {
+    if (canPlant(farm, worldObj, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
       return plant(farm, worldObj, bc);
     }
     return false;

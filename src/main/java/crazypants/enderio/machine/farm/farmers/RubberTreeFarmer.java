@@ -3,12 +3,11 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -25,29 +24,29 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   public RubberTreeFarmer(Block sapling, Block wood, Item treetap, ItemStack resin) {
     super(sapling, wood);
-    crazypants.enderio.machine.farm.TileFarmStation.TREETAPS.add(treetap);
+    TileFarmStation.TREETAPS.add(treetap);
     stickyResin = resin;
     FarmStationContainer.slotItemsProduce.add(stickyResin);
   }
 
   public boolean isValid() {
-    return woods != null && woods.length > 0 && sapling != null && saplingItem != null && stickyResin != null;
+    return woods != null && woods.length > 0 && sapling != null && Prep.isValid(saplingItem) && Prep.isValid(stickyResin);
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block blockIn, IBlockState meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block blockIn, IBlockState meta) {
     if (canPlant(farm.getSeedTypeInSuppliesFor(bc))) {
       // we'll lose some spots in the center, but we can plant in the outer ring, which gives a net gain
-      if (Math.abs(farm.getPos().getX() - bc.x) % 2 == 0) {
+      if (Math.abs(farm.getPos().getX() - bc.getX()) % 2 == 0) {
         return true;
       }
-      if (Math.abs(farm.getPos().getZ() - bc.z) % 2 == 0) {
+      if (Math.abs(farm.getPos().getZ() - bc.getZ()) % 2 == 0) {
         return true;
       }
       final World world = farm.getWorld();
       for (int x = -1; x < 2; x++) {
         for (int z = -1; z < 2; z++) {
-          final BlockPos pos = new BlockPos(bc.x + x, bc.y, bc.z + z);
+          final BlockPos pos = bc.add(x, 0, z);
           final IBlockState state = world.getBlockState(pos);
           final Block block = state.getBlock();
           if (!(block.isLeaves(state, world, pos) || block.isAir(state, world, pos) || block.canBeReplacedByLeaves(state, world, pos))) {
@@ -61,12 +60,11 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos pos, Block block, IBlockState meta) {
     HarvestResult res = new HarvestResult();
     final World world = farm.getWorld();
-    BlockPos pos = bc.getBlockPos();
 
-    int noShearingPercentage = farm.isLowOnSaplings(bc);
+    int noShearingPercentage = farm.isLowOnSaplings(pos);
     int shearCount = 0;
 
     while (pos.getY() <= 255) {
@@ -75,7 +73,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
         if (canHarvest(world, pos)) {
           if (farm.hasTool(ToolType.TREETAP)) {
             harvest(res, world, pos);
-            farm.damageTool(ToolType.TREETAP, woods[0], bc, 1);
+            farm.damageTool(ToolType.TREETAP, woods[0], pos, 1);
           } else {
             farm.setNotification(FarmNotification.NO_TREETAP);
           }
@@ -100,10 +98,10 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
       if (state.getBlock() instanceof IShearable && farm.hasShears() && ((shearCount / (res.harvestedBlocks.size() + 1) + noShearingPercentage) < 100)) {
         drops = ((IShearable) state.getBlock()).onSheared(null, farm.getWorld(), pos, 0);
         shearCount += 100;
-        farm.damageShears(state.getBlock(), new BlockCoord(pos));
+        farm.damageShears(state.getBlock(), pos);
       } else if (farm.hasHoe()) {
         drops = state.getBlock().getDrops(farm.getWorld(), pos, state, farm.getAxeLootingValue());
-        farm.damageHoe(1, new BlockCoord(pos));
+        farm.damageHoe(1, pos);
       } else {
         return shearCount;
       }

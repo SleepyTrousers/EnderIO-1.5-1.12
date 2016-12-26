@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
@@ -24,11 +22,6 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
 
   public PacketFarmAction(List<BlockPos> coords) {
     this.coords = coords;
-  }
-
-  public PacketFarmAction(BlockCoord bc) {
-    this.coords = new ArrayList<BlockPos>(1);
-    this.coords.add(bc.getBlockPos());
   }
 
   public PacketFarmAction(BlockPos bc) {
@@ -64,4 +57,5 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
     }
     return null;
   }
+
 }

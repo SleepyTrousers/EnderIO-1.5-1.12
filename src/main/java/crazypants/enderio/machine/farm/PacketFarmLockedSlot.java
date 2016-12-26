@@ -1,23 +1,24 @@
 package crazypants.enderio.machine.farm;
 
+import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.enderio.core.common.network.MessageTileEntity;
-
 public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation> implements IMessageHandler<PacketFarmLockedSlot, IMessage> {
 
-  public PacketFarmLockedSlot() {}
-  
+  public PacketFarmLockedSlot() {
+  }
+
   private int buttonID;
-    
+
   public PacketFarmLockedSlot(TileFarmStation tile, int buttonID) {
     super(tile);
     this.buttonID = buttonID;
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);

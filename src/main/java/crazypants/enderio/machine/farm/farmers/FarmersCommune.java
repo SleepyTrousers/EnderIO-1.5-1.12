@@ -3,12 +3,12 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 
 public class FarmersCommune implements IFarmerJoe {
 
@@ -16,27 +16,27 @@ public class FarmersCommune implements IFarmerJoe {
   private static List<ItemStack> disableTrees = new ArrayList<ItemStack>();
 
   public static void joinCommune(IFarmerJoe joe) {
-    if (joe instanceof CustomSeedFarmer)
-    {
+    if (joe instanceof CustomSeedFarmer) {
       CustomSeedFarmer customSeedFarmer = (CustomSeedFarmer) joe;
-      if (customSeedFarmer.doesDisableTreeFarm()) disableTrees.add(customSeedFarmer.getSeeds());
+      if (customSeedFarmer.doesDisableTreeFarm())
+        disableTrees.add(customSeedFarmer.getSeeds());
     }
     instance.farmers.add(joe);
   }
 
-  public static void leaveCommune(IFarmerJoe joe) {    
+  public static void leaveCommune(IFarmerJoe joe) {
     throw new UnsupportedOperationException("As if this would be implemented. The commune is for life!");
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
-    
+
   private FarmersCommune() {
   }
-  
+
   @Override
-  public boolean canHarvest(TileFarmStation farm,  BlockCoord bc, Block block, IBlockState meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
-      if(joe.canHarvest(farm, bc, block, meta)) {
+      if (joe.canHarvest(farm, bc, block, meta)) {
         return true;
       }
     }
@@ -44,10 +44,9 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
-      if (ignoreTreeHarvest(farm, bc, joe)) continue;
-      if (joe.canHarvest(farm, bc, block, meta)) {
+      if (!ignoreTreeHarvest(farm, bc, joe) && joe.canHarvest(farm, bc, block, meta)) {
         return joe.harvestBlock(farm, bc, block, meta);
       }
     }
@@ -55,9 +54,9 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     for (IFarmerJoe joe : farmers) {
-      if(joe.prepareBlock(farm, bc, block, meta)) {
+      if (joe.prepareBlock(farm, bc, block, meta)) {
         return true;
       }
     }
@@ -67,20 +66,21 @@ public class FarmersCommune implements IFarmerJoe {
   @Override
   public boolean canPlant(ItemStack stack) {
     for (IFarmerJoe joe : farmers) {
-      if(joe.canPlant(stack)) {
+      if (joe.canPlant(stack)) {
         return true;
       }
     }
     return false;
   }
 
-  private boolean ignoreTreeHarvest(TileFarmStation farm, BlockCoord bc, IFarmerJoe joe)
-  {
+  private boolean ignoreTreeHarvest(TileFarmStation farm, BlockPos bc, IFarmerJoe joe) {
     ItemStack stack = farm.getSeedTypeInSuppliesFor(bc);
-    if (!(joe instanceof TreeFarmer) || stack == null) return false;
-    for (ItemStack disableTreeStack : disableTrees)
-    {
-      if (disableTreeStack.isItemEqual(stack)) return true;
+    if (!(joe instanceof TreeFarmer) || Prep.isInvalid(stack)) {
+      return false;
+    }
+    for (ItemStack disableTreeStack : disableTrees) {
+      if (disableTreeStack.isItemEqual(stack))
+        return true;
     }
     return false;
   }

@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
@@ -28,18 +26,18 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     return block == getPlantedBlock() && meta.getValue(BlockCocoa.AGE) == 2;
   }
 
   @Override
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc) {
+  protected boolean plant(TileFarmStation farm, World worldObj, BlockPos bc) {
     EnumFacing dir = getPlantDirection(worldObj, bc);
     if (dir == null) {
       return false;
     }
     IBlockState iBlockState = getPlantedBlock().getDefaultState().withProperty(FACING, dir);
-    if (worldObj.setBlockState(bc.getBlockPos(), iBlockState, 1 | 2)) {
+    if (worldObj.setBlockState(bc, iBlockState, 1 | 2)) {
       farm.actionPerformed(false);
       return true;
     }
@@ -47,17 +45,17 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockCoord bc) {
+  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockPos bc) {
     return getPlantDirection(worldObj, bc) != null;
   }
 
-  private EnumFacing getPlantDirection(World worldObj, BlockCoord bc) {
-    if (!worldObj.isAirBlock(bc.getBlockPos())) {
+  private EnumFacing getPlantDirection(World worldObj, BlockPos bc) {
+    if (!worldObj.isAirBlock(bc)) {
       return null;
     }
 
     for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-      BlockPos p = bc.getBlockPos().offset(dir);
+      BlockPos p = bc.offset(dir);
       if (validBlock(worldObj.getBlockState(p)))
         return dir;
     }

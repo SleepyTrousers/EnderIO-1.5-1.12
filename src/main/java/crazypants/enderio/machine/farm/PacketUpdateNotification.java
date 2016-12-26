@@ -45,9 +45,10 @@ public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation>
   @Override
   public IMessage onMessage(PacketUpdateNotification message, MessageContext ctx) {
     TileFarmStation te = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if(te != null) {
+    if (te != null) {
       te.notification = message.notification;
     }
     return null;
   }
+
 }

@@ -26,6 +26,7 @@ import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -292,12 +293,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
-    if (world == null || pos == null) {
-      throw new NullPointerException("Hey, how should I get you a block state without a world or position?");
-    }
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+    NullHelper.notnull(world, "Hey, how should I get you a block state without a world or position?");
+    NullHelper.notnull(pos, "Hey, how should I get you a block state without a world or position?");
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
-    return paintSource != null ? paintSource : world.getBlockState(pos);
+    return paintSource != null ? paintSource : NullHelper.notnullM(world.getBlockState(pos), "world.getBlockState(pos)");
   }
 
   public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {

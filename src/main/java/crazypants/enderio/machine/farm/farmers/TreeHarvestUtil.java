@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.Things;
 import net.minecraft.block.Block;
@@ -15,12 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TreeHarvestUtil {
-  
+
   private final static Things LEAVES = new Things("treeLeaves");
- 
+
   private int horizontalRange;
   private int verticalRange;
-  private BlockCoord origin;
+  private BlockPos origin;
 
   public TreeHarvestUtil() {
   }
@@ -28,19 +26,19 @@ public class TreeHarvestUtil {
   public void harvest(TileFarmStation farm, TreeFarmer farmer, BlockPos bc, HarvestResult res) {
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
-    harvest(farm.getWorld(), farm.getLocation(), bc, res, farmer.getIgnoreMeta());
+    harvest(farm.getWorld(), farm.getPos(), bc, res, farmer.getIgnoreMeta());
   }
 
   public void harvest(World world, BlockPos bc, HarvestResult res) {
     horizontalRange = 12;
     verticalRange = 30;
-    origin = new BlockCoord(bc);
+    origin = bc.toImmutable();
     IBlockState wood = world.getBlockState(bc);
     harvestUp(world, bc, res, new HarvestTarget(wood));
   }
 
-  private void harvest(World world, BlockCoord originIn, BlockPos bc, HarvestResult res, boolean ignoreMeta) {
-    this.origin = new BlockCoord(originIn);
+  private void harvest(World world, BlockPos originIn, BlockPos bc, HarvestResult res, boolean ignoreMeta) {
+    this.origin = originIn.toImmutable();
     IBlockState wood = world.getBlockState(bc);
     if (ignoreMeta) {
       harvestUp(world, bc, res, new BaseHarvestTarget(wood.getBlock()));
@@ -50,11 +48,10 @@ public class TreeHarvestUtil {
   }
 
   protected void harvestUp(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
-
     if (!isInHarvestBounds(bc) || res.harvestedBlocks.contains(bc)) {
       return;
     }
-    IBlockState bs = world.getBlockState(bc);    
+    IBlockState bs = world.getBlockState(bc);
     boolean isLeaves = isLeaves(bs);
     if (target.isTarget(bs) || isLeaves) {
       res.harvestedBlocks.add(bc);
@@ -68,10 +65,9 @@ public class TreeHarvestUtil {
       harvestAdjacentWood(world, bc, res, target);
       // and another check for large oaks, where wood can be surrounded by
       // leaves
-      
-      for(EnumFacing dir : EnumFacing.HORIZONTALS) {
+      for (EnumFacing dir : EnumFacing.HORIZONTALS) {
         BlockPos loc = bc.offset(dir);
-        IBlockState locBS = world.getBlockState(loc);        
+        IBlockState locBS = world.getBlockState(loc);
         if (isLeaves(locBS)) {
           harvestAdjacentWood(world, loc, res, target);
         }
@@ -84,10 +80,10 @@ public class TreeHarvestUtil {
     return bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock());
   }
 
-  private void harvestAdjacentWood(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {    
-    for(EnumFacing dir : EnumFacing.HORIZONTALS) {
+  private void harvestAdjacentWood(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
+    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
       BlockPos targ = bc.offset(dir);
-      if(target.isTarget(world.getBlockState(targ))) {
+      if (target.isTarget(world.getBlockState(targ))) {
         harvestUp(world, targ, res, target);
       }
     }
@@ -95,15 +91,15 @@ public class TreeHarvestUtil {
 
   private boolean isInHarvestBounds(BlockPos bc) {
 
-    int dist = Math.abs(origin.x - bc.getX());
+    int dist = Math.abs(origin.getX() - bc.getX());
     if (dist > horizontalRange) {
       return false;
     }
-    dist = Math.abs(origin.z - bc.getZ());
+    dist = Math.abs(origin.getZ() - bc.getZ());
     if (dist > horizontalRange) {
       return false;
     }
-    dist = Math.abs(origin.y - bc.getY());
+    dist = Math.abs(origin.getY() - bc.getY());
     if (dist > verticalRange) {
       return false;
     }
@@ -112,26 +108,23 @@ public class TreeHarvestUtil {
 
   private static final class HarvestTarget extends BaseHarvestTarget {
 
-    EnumType variant;
+    final EnumType variant;
 
     HarvestTarget(IBlockState bs) {
       super(bs.getBlock());
       variant = getVariant(bs);
     }
 
-    public static EnumType getVariant(IBlockState bs) {
-      EnumType v = null;
+    static EnumType getVariant(IBlockState bs) {
       try {
-        v = bs.getValue(BlockNewLog.VARIANT);
-      } catch(Exception e) {        
+        return bs.getValue(BlockNewLog.VARIANT);
+      } catch (Exception e) {
       }
-      if (v == null) {
-        try {
-          v = bs.getValue(BlockOldLog.VARIANT);
-        } catch(Exception e) {        
-        }
+      try {
+        return bs.getValue(BlockOldLog.VARIANT);
+      } catch (Exception e) {
       }
-      return v;
+      return null;
     }
 
     @Override

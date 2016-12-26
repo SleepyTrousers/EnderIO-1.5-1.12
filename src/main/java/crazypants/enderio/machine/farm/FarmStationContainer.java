@@ -14,6 +14,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.util.Prep;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -39,7 +40,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
     for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
-    }    
+    }
     for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
@@ -74,13 +75,13 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   private static final int COL_OUTPUT = 107;
 
   private static final int SLOT_SIZE = 18;
-  private static final int ONE   = 0 * SLOT_SIZE;
-  private static final int TWO   = 1 * SLOT_SIZE;
+  private static final int ONE = 0 * SLOT_SIZE;
+  private static final int TWO = 1 * SLOT_SIZE;
   private static final int THREE = 2 * SLOT_SIZE;
 
   private static final SlotPoint[] points = new SlotPoint[] { //
 
-  new SlotPoint(COL_TOOLS + ONE, ROW_TOOLS, slotItemsStacks1), //
+      new SlotPoint(COL_TOOLS + ONE, ROW_TOOLS, slotItemsStacks1), //
       new SlotPoint(COL_TOOLS + TWO, ROW_TOOLS, slotItemsStacks2), //
       new SlotPoint(COL_TOOLS + THREE, ROW_TOOLS, slotItemsStacks3),
 
@@ -106,7 +107,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    int i=0;
+    int i = 0;
     for (SlotPoint p : points) {
       final int slot = i;
       i++;
@@ -117,7 +118,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
         }
 
         @Override
-        public int getSlotStackLimit() {             
+        public int getSlotStackLimit() {
           return getInv().getInventoryStackLimit(slot);
         }
       });
@@ -128,8 +129,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
   private static void clean(List<ItemStack> list) {
     Iterator<ItemStack> iterator = list.iterator();
     while (iterator.hasNext()) {
-      final ItemStack o = iterator.next();
-      if (o == null || o.getItem() == null) {
+      if (Prep.isInvalid(iterator.next())) {
         iterator.remove();
       }
     }
@@ -150,12 +150,12 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
   @Override
   public Point getPlayerInventoryOffset() {
-    return new Point(8,87);
+    return new Point(8, 87);
   }
 
   @Override
   public Point getUpgradeOffset() {
-    return new Point(12,63);
+    return new Point(12, 63);
   }
 
   private static class SlotPoint {

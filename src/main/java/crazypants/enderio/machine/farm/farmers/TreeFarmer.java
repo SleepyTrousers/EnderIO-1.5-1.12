@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.FarmStationContainer;
@@ -57,7 +55,7 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, IBlockState bs) {
+  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState bs) {
     return isWood(block);
   }
 
@@ -72,43 +70,43 @@ public class TreeFarmer implements IFarmerJoe {
 
   @Override
   public boolean canPlant(ItemStack stack) {
-    return stack != null && stack.getItem() == saplingItem.getItem();
+    return Prep.isValid(stack) && stack.getItem() == saplingItem.getItem();
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     if (block == sapling) {
       return true;
     }
     return plantFromInventory(farm, bc, block, meta);
   }
 
-  protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
     World worldObj = farm.getWorld();
     if (canPlant(worldObj, bc)) {
       ItemStack seed = farm.takeSeedFromSupplies(saplingItem, bc, false);
-      if (seed != null) {
+      if (Prep.isValid(seed)) {
         return plant(farm, worldObj, bc, seed);
       }
     }
     return false;
   }
 
-  protected boolean canPlant(World worldObj, BlockCoord bc) {
-    BlockPos grnPos = bc.getBlockPos().down();
+  protected boolean canPlant(World worldObj, BlockPos bc) {
+    BlockPos grnPos = bc.down();
     IBlockState bs = worldObj.getBlockState(grnPos);
     Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) sapling;
-    if (sapling.canPlaceBlockAt(worldObj, bc.getBlockPos()) && ground.canSustainPlant(bs, worldObj, grnPos, EnumFacing.UP, plantable)) {
+    if (sapling.canPlaceBlockAt(worldObj, bc) && ground.canSustainPlant(bs, worldObj, grnPos, EnumFacing.UP, plantable)) {
       return true;
     }
     return false;
   }
 
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, ItemStack seed) {
-    worldObj.setBlockToAir(bc.getBlockPos());
+  protected boolean plant(TileFarmStation farm, World worldObj, BlockPos bc, ItemStack seed) {
+    worldObj.setBlockToAir(bc);
     if (canPlant(worldObj, bc)) {
-      worldObj.setBlockState(bc.getBlockPos(), sapling.getStateFromMeta(seed.getItemDamage()), 1 | 2);
+      worldObj.setBlockState(bc, sapling.getStateFromMeta(seed.getItemDamage()), 1 | 2);
       farm.actionPerformed(false);
       return true;
     }
@@ -116,7 +114,7 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
 
     boolean hasAxe = farm.hasAxe();
 
@@ -129,7 +127,7 @@ public class TreeFarmer implements IFarmerJoe {
     final EntityPlayerMP fakePlayer = farm.getFakePlayer();
     final int fortune = farm.getMaxLootingValue();
     HarvestResult res = new HarvestResult();
-    harvester.harvest(farm, this, bc.getBlockPos(), res);
+    harvester.harvest(farm, this, bc, res);
     Collections.sort(res.harvestedBlocks, comp);
 
     List<BlockPos> actualHarvests = new ArrayList<BlockPos>();
@@ -162,7 +160,7 @@ public class TreeFarmer implements IFarmerJoe {
       if (drops != null) {
         for (ItemStack drop : drops) {
           if (worldObj.rand.nextFloat() <= chance) {
-            res.drops.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+            res.drops.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, drop.copy()));
           }
         }
       }
@@ -173,10 +171,10 @@ public class TreeFarmer implements IFarmerJoe {
 
       farm.actionPerformed(wasWood || wasSheared);
       if (wasAxed) {
-        farm.damageAxe(blk, new BlockCoord(coord));
+        farm.damageAxe(blk, new BlockPos(coord));
         hasAxe = farm.hasAxe();
       } else if (wasSheared) {
-        farm.damageShears(blk, new BlockCoord(coord));
+        farm.damageShears(blk, new BlockPos(coord));
         hasShears = farm.hasShears();
       }
 
@@ -187,9 +185,9 @@ public class TreeFarmer implements IFarmerJoe {
     ItemStack[] inv = fakePlayer.inventory.mainInventory;
     for (int slot = 0; slot < inv.length; slot++) {
       ItemStack stack = inv[slot];
-      if (stack != null) {
-        inv[slot] = null;
-        EntityItem entityitem = new EntityItem(worldObj, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
+      if (Prep.isValid(stack)) {
+        inv[slot] = Prep.getEmpty();
+        EntityItem entityitem = new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 1, bc.getZ() + 0.5, stack);
         res.drops.add(entityitem);
       }
     }
@@ -206,9 +204,9 @@ public class TreeFarmer implements IFarmerJoe {
     return res;
   }
 
-  protected void tryReplanting(TileFarmStation farm, World worldObj, BlockCoord bc, HarvestResult res) {
-    ItemStack allowedSeed = null;
-    int supplySlotForCoord = farm.getSupplySlotForCoord(bc.getBlockPos());
+  protected void tryReplanting(TileFarmStation farm, World worldObj, BlockPos bc, HarvestResult res) {
+    ItemStack allowedSeed = Prep.getEmpty();
+    int supplySlotForCoord = farm.getSupplySlotForCoord(bc);
     if (farm.isSlotLocked(supplySlotForCoord)) {
       ItemStack seedTypeInSuppliesFor = farm.getSeedTypeInSuppliesFor(supplySlotForCoord);
       if (Prep.isValid(seedTypeInSuppliesFor)) {
@@ -219,7 +217,7 @@ public class TreeFarmer implements IFarmerJoe {
       if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getEntityItem())) {
         if (canPlant(drop.getEntityItem()) && plant(farm, worldObj, bc, drop.getEntityItem())) {
           res.drops.remove(drop);
-          break;
+          return;
         }
       }
     }
