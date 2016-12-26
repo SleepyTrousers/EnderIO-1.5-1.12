@@ -28,7 +28,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 @Storable
 public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb>, IPaintable.IPaintableTileEntity, ITankAccess {
 
-  private static final int IO_MB_TICK = 1000;
+  private static final int IO_MB_TICK = 10000; // no need to speed down the vacuum any more than necessary, let the limit be the piping
 
   private double range = Config.xpVacuumRange;
 
@@ -81,6 +81,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   private static final double speed = 0.03;
 
   private void doHoover() {
+    boolean pickUpThisTick = xpCon.getFluidAmount() == 0;
     for (EntityXPOrb entity : worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) {
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
@@ -88,7 +89,9 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
       double distance = Math.sqrt(x * x + y * y + z * z);
       if (distance < 1.25) {
-        hooverEntity(entity);
+        if (pickUpThisTick) {
+          hooverEntity(entity);
+        }
       } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
         double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / range));
         distScale *= distScale;
@@ -105,7 +108,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   }
 
   private void hooverEntity(EntityXPOrb entity) {
-    if (!worldObj.isRemote && !entity.isDead && xpCon.getFluidAmount() == 0) {
+    if (!worldObj.isRemote && !entity.isDead) {
       int xpValue = entity.getXpValue();
       xpCon.addExperience(xpValue);
       entity.setDead();
