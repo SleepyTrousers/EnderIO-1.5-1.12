@@ -186,7 +186,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       addQuadsForExternalConnection(dir, quads);
     }
 
-    if (quads.isEmpty()) {
+    if (quads.isEmpty() && !bundle.hasFacade()) {
       BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
       BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.50), ConduitBundleRenderManager.instance.getWireFrameIcon());
       BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.75), ConduitBundleRenderManager.instance.getWireFrameIcon());
