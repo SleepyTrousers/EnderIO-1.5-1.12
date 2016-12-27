@@ -85,7 +85,7 @@ public class ItemTools {
                   if (Prep.isValid(removed) && removed.stackSize > 0) {
                     ItemStack targetRejected = ItemHandlerHelper.insertItemStacked(targetHandler, removed, false);
                     if (Prep.isValid(targetRejected) && targetRejected.stackSize > 0) {
-                      ItemStack sourceRejected = ItemHandlerHelper.insertItemStacked(sourceHandler, removed, false);
+                      ItemStack sourceRejected = ItemHandlerHelper.insertItemStacked(sourceHandler, targetRejected, false);
                       if (Prep.isValid(sourceRejected) && sourceRejected.stackSize > 0) {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
