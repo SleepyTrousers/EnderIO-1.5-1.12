@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.material.PowderIngot;
 import crazypants.util.Things;
 import net.minecraft.init.Blocks;
@@ -41,7 +42,7 @@ public class AdditionalFluid {
 
   private static boolean registerVanillaRecipesForEnder = false;
 
-  private static void glowstone(FMLPreInitializationEvent event) {
+  private static Fluid glowstone(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("glowstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -73,10 +74,15 @@ public class AdditionalFluid {
 
       registerVanillaRecipesForGlowstone = true;
     }
+    return f;
   }
 
   private static void glowstone(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid("glowstone");
+    if (f == null) {
+      Log.warn("Thermal Foundation fluid 'glowstone' is unexpectedly missing. Late registering our own.");
+      f = glowstone((FMLPreInitializationEvent) null);
+    }
     if (registerVanillaRecipesForGlowstone) {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.GLOWSTONE_DUST), f, 250);
@@ -85,7 +91,7 @@ public class AdditionalFluid {
     }
   }
 
-  private static void redstone(FMLPreInitializationEvent event) {
+  private static Fluid redstone(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("redstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -116,10 +122,15 @@ public class AdditionalFluid {
 
       registerVanillaRecipesForRedstone = true;
     }
+    return f;
   }
 
   private static void redstone(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid("redstone");
+    if (f == null) {
+      Log.warn("Thermal Foundation fluid 'redstone' is unexpectedly missing. Late registering our own.");
+      f = redstone((FMLPreInitializationEvent) null);
+    }
     if (registerVanillaRecipesForRedstone) {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.REDSTONE), f, 100);
@@ -128,7 +139,7 @@ public class AdditionalFluid {
     }
   }
 
-  private static void ender(FMLPreInitializationEvent event) {
+  private static Fluid ender(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("ender", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -159,10 +170,15 @@ public class AdditionalFluid {
 
       registerVanillaRecipesForEnder = true;
     }
+    return f;
   }
 
   private static void ender(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid("ender");
+    if (f == null) {
+      Log.warn("Thermal Foundation fluid 'ender' is unexpectedly missing. Late registering our own.");
+      f = ender((FMLPreInitializationEvent) null);
+    }
     if (registerVanillaRecipesForEnder) {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.ENDER_PEARL), f, 250);
