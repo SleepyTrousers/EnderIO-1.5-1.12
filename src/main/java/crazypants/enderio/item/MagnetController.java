@@ -8,6 +8,7 @@ import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BaublesUtil;
 import crazypants.util.MagnetUtil;
+import crazypants.util.Prep;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -190,7 +191,7 @@ public class MagnetController {
   }
 
   public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
-    ItemStack stack = null;
+    ItemStack stack = Prep.getEmpty();
     IInventory baubles = null;
     int dropOff = -1;
     switch (type) {
@@ -203,16 +204,20 @@ public class MagnetController {
       baubles = BaublesUtil.instance().getBaubles(player);
       if (baubles != null) {
         stack = baubles.getStackInSlot(slot);
+        if (Prep.isValid(stack)) {
+          // mustn't change the item that is in the slot or Baubles will ignore the change
+          stack = stack.copy();
+        }
       }
       break;
     }
-    if (stack == null || stack.getItem() == null || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
+    if (Prep.isInvalid(stack) || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
     if (!Config.magnetAllowDeactivatedInBaublesSlot && type == SlotType.BAUBLES && !isActive) {
       ItemStack[] inv = player.inventory.mainInventory;
       for (int i = 0; i < inv.length && dropOff < 0; i++) {
-        if (inv[i] == null) {
+        if (Prep.isInvalid(inv[i])) {
           dropOff = i;
         }
       }
@@ -233,7 +238,7 @@ public class MagnetController {
         if (dropOff < 0) {
           baubles.setInventorySlotContents(slot, stack);
         } else {
-          baubles.setInventorySlotContents(slot, null);
+          baubles.setInventorySlotContents(slot, Prep.getEmpty());
           player.inventory.setInventorySlotContents(dropOff, stack);
         }
         player.inventory.markDirty();

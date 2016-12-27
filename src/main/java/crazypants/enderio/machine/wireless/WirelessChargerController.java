@@ -8,6 +8,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
+import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -111,9 +112,13 @@ public class WirelessChargerController {
       ItemStack[] item = new ItemStack[1];
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         item[0] = baubles.getStackInSlot(i);
-        if(capBank.chargeItems(item)) {
-          baubles.setInventorySlotContents(i, item[0]);
-          res = true;
+        if (Prep.isValid(item[0])) {
+          // mustn't change the item that is in the slot or Baubles will ignore the change
+          item[0] = item[0].copy();
+          if (capBank.chargeItems(item)) {
+            baubles.setInventorySlotContents(i, item[0]);
+            res = true;
+          }
         }
       }
     }
