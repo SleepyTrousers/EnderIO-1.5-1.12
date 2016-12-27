@@ -68,6 +68,10 @@ public enum Alloy implements IStringSerializable {
     return baseName;
   }
 
+  public @Nonnull String getFluidName() {
+    return NullHelper.notnullJ(baseName.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
+  }
+
   public float getHardness() {
     return hardness;
   }

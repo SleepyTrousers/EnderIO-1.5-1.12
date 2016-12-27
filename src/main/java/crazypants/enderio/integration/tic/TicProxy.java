@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -144,10 +143,10 @@ public class TicProxy {
       return;
     }
 
-    if (a == null) {
-      registerBasinCasting(result, inputs[0], b.getFluid(), b.amount);
-    } else {
+    if (a != null) {
       registerBasinCasting(result, inputs[1], a.getFluid(), a.amount);
+    } else if (b != null) {
+      registerBasinCasting(result, inputs[0], b.getFluid(), b.amount);
     }
   }
 
@@ -287,7 +286,7 @@ public class TicProxy {
       return;
     }
 
-    Fluid f = new Fluid(alloy.getBaseName().toLowerCase(Locale.ENGLISH), TEX_FLOWING, TEX_STILL) {
+    Fluid f = new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | alloy.getColor();

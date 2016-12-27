@@ -1,7 +1,5 @@
 package crazypants.enderio.integration.bigreactors;
 
-import java.util.Locale;
-
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.material.Alloy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -31,12 +29,12 @@ public class BRRegistrations {
     BRProxy.registerBlock(Alloy.DARK_STEEL.getOreBlock(), 0.50f, 0.78f, 1.42f, conductivityIron);
     BRProxy.registerBlock(Alloy.SOULARIUM.getOreBlock(), 0.45f, 0.95f, 1.8f, conductivityGold);
 
-    BRProxy.registerFluid(Alloy.ELECTRICAL_STEEL.getBaseName().toLowerCase(Locale.ENGLISH), 0.50f, 0.78f, 1.40f, conductivitySilver);
-    BRProxy.registerFluid(Alloy.ENERGETIC_ALLOY.getBaseName().toLowerCase(Locale.ENGLISH), 0.66f, 0.75f, 1.40f, conductivityGold);
-    BRProxy.registerFluid(Alloy.VIBRANT_ALLOY.getBaseName().toLowerCase(Locale.ENGLISH), 0.80f, 0.70f, 1.38f, conductivityEmerald);
-    BRProxy.registerFluid(Alloy.CONDUCTIVE_IRON.getBaseName().toLowerCase(Locale.ENGLISH), 0.52f, 0.75f, 1.40f, conductivityIron);
-    BRProxy.registerFluid(Alloy.DARK_STEEL.getBaseName().toLowerCase(Locale.ENGLISH), 0.50f, 0.78f, 1.42f, conductivityIron);
-    BRProxy.registerFluid(Alloy.SOULARIUM.getBaseName().toLowerCase(Locale.ENGLISH), 0.45f, 0.95f, 1.8f, conductivityGold);
+    BRProxy.registerFluid(Alloy.ELECTRICAL_STEEL.getFluidName(), 0.50f, 0.78f, 1.40f, conductivitySilver);
+    BRProxy.registerFluid(Alloy.ENERGETIC_ALLOY.getFluidName(), 0.66f, 0.75f, 1.40f, conductivityGold);
+    BRProxy.registerFluid(Alloy.VIBRANT_ALLOY.getFluidName(), 0.80f, 0.70f, 1.38f, conductivityEmerald);
+    BRProxy.registerFluid(Alloy.CONDUCTIVE_IRON.getFluidName(), 0.52f, 0.75f, 1.40f, conductivityIron);
+    BRProxy.registerFluid(Alloy.DARK_STEEL.getFluidName(), 0.50f, 0.78f, 1.42f, conductivityIron);
+    BRProxy.registerFluid(Alloy.SOULARIUM.getFluidName(), 0.45f, 0.95f, 1.8f, conductivityGold);
 
     BRProxy.registerFluid(Fluids.NUTRIENT_DISTILLATION_NAME, 0.50f, 0.65f, 1.44f, conductivityIron);
     BRProxy.registerFluid(Fluids.ENDER_DISTILLATION_NAME, 0.50f, 0.65f, 1.44f, conductivityGold);
