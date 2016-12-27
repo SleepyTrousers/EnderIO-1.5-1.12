@@ -22,6 +22,7 @@ import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.DarkSteelController;
@@ -138,6 +139,8 @@ public class EnderIO {
     MaterialRecipes.registerOresInDictionary();
 
     Loot.create();
+
+    BRProxy.init(event);
 
     proxy.preInit(event);
   }
