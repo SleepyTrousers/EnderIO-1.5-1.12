@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -21,16 +22,26 @@ import static crazypants.enderio.ModObject.itemPowderIngot;
 public class AdditionalFluid {
 
   static void init(FMLPreInitializationEvent event) {
+    if (!Loader.isModLoaded("ThermalFoundation")) {
+      glowstone(event);
+      redstone(event);
+      ender(event);
+    }
+  }
+
+  static void init(FMLPostInitializationEvent event) {
     glowstone(event);
     redstone(event);
     ender(event);
   }
 
-  static void init(FMLPostInitializationEvent event) {
-    ender(event);
-  }
+  private static boolean registerVanillaRecipesForGlowstone = false;
 
-  public static void glowstone(FMLPreInitializationEvent event) {
+  private static boolean registerVanillaRecipesForRedstone = false;
+
+  private static boolean registerVanillaRecipesForEnder = false;
+
+  private static void glowstone(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("glowstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -60,6 +71,13 @@ public class AdditionalFluid {
       tag.setBoolean("toolforge", true);
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
+      registerVanillaRecipesForGlowstone = true;
+    }
+  }
+
+  private static void glowstone(FMLPostInitializationEvent event) {
+    Fluid f = FluidRegistry.getFluid("glowstone");
+    if (registerVanillaRecipesForGlowstone) {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.GLOWSTONE_DUST), f, 250);
       TicProxy.registerSmelterySmelting(new ItemStack(Blocks.GLOWSTONE), f, 1000);
@@ -67,7 +85,7 @@ public class AdditionalFluid {
     }
   }
 
-  public static void redstone(FMLPreInitializationEvent event) {
+  private static void redstone(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("redstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -96,6 +114,13 @@ public class AdditionalFluid {
       tag.setBoolean("toolforge", true);
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
+      registerVanillaRecipesForRedstone = true;
+    }
+  }
+
+  private static void redstone(FMLPostInitializationEvent event) {
+    Fluid f = FluidRegistry.getFluid("redstone");
+    if (registerVanillaRecipesForRedstone) {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.REDSTONE), f, 100);
       TicProxy.registerSmelterySmelting(new ItemStack(Blocks.REDSTONE_BLOCK), f, 900);
@@ -103,7 +128,7 @@ public class AdditionalFluid {
     }
   }
 
-  public static void ender(FMLPreInitializationEvent event) {
+  private static void ender(FMLPreInitializationEvent event) {
     Fluid f = new Fluid("ender", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
@@ -133,18 +158,14 @@ public class AdditionalFluid {
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
       registerVanillaRecipesForEnder = true;
-      // Note: We match the old TE amounts
-      TicProxy.registerSmelterySmelting(new ItemStack(Items.ENDER_PEARL), f, 250);
     }
-    f = FluidRegistry.getFluid(f.getName());
   }
 
-  static boolean registerVanillaRecipesForEnder = false;
-
-  public static void ender(FMLPostInitializationEvent event) {
+  private static void ender(FMLPostInitializationEvent event) {
     Fluid f = FluidRegistry.getFluid("ender");
-
     if (registerVanillaRecipesForEnder) {
+      // Note: We match the old TE amounts
+      TicProxy.registerSmelterySmelting(new ItemStack(Items.ENDER_PEARL), f, 250);
       // Need to do this later because of the cast
       Things cast = new Things("tconstruct:cast_custom:2");
       List<ItemStack> casts = cast.getItemStacks();
