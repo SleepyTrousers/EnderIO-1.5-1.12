@@ -896,17 +896,21 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Deprecated
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
-    TileConduitBundle conduit = getTileEntity(world, pos);
-    if (conduit != null) {
-      conduit.onNeighborBlockChange(neighborBlock);
+    if (neighborBlock != this) {
+      TileConduitBundle conduit = getTileEntity(world, pos);
+      if (conduit != null) {
+        conduit.onNeighborBlockChange(neighborBlock);
+      }
     }
   }
 
   @Override
   public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-    TileConduitBundle conduit = getTileEntity(world, pos);
-    if (conduit != null) {
-      conduit.onNeighborChange(world, pos, neighbor);
+    if (world.getBlockState(neighbor).getBlock() != this) {
+      TileConduitBundle conduit = getTileEntity(world, pos);
+      if (conduit != null) {
+        conduit.onNeighborChange(world, pos, neighbor);
+      }
     }
   }
 
