@@ -2,12 +2,20 @@ package crazypants.enderio.conduit;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import crazypants.enderio.Log;
+import crazypants.enderio.diagnostics.ConduitNeighborUpdateTracker;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 
 //I=base type, I is the base class of the implementations accepted by the network 
 public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
@@ -36,7 +44,6 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       }
     }
     setNetwork(world, tile);
-    sendBlockUpdatesForEntireNetwork();
   }
 
   public final Class<T> getBaseConduitType() {
@@ -83,45 +90,63 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     return conduits;
   }
 
-  public void sendBlockUpdatesForEntireNetwork() {
-    long[] times = new long[conduits.size()];
-    try {
-      for (int i = 0; i < conduits.size(); i++) {
-        times[i] = System.nanoTime();
-        I con = conduits.get(i);
-      TileEntity te = con.getBundle().getEntity();
-      if (te.getWorld().isBlockLoaded(te.getPos())) {
-        IBlockState bs = te.getWorld().getBlockState(te.getPos());
-        te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
-        te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType());
-      }
-    }
-    } catch (Error e) { // Watchdog?
-      try {
-        diagnostics(times);
-      } catch (Throwable t) {
-        // prefer to throw the original error
-      }
-      throw e;
-    }
-  }
+  private static final EnumFacing[] WEDUNS = new EnumFacing[] { EnumFacing.WEST, EnumFacing.EAST, EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH,
+      EnumFacing.SOUTH };
 
-  private void diagnostics(long[] times) {
-    long end = System.nanoTime();
-    Log.error("Conduit network " + this.getClass() + " interrupted while notifying neighbors of changes");
-    for (int i = times.length - 1; i >= 0; i--) {
-      if (times[i] != 0) {
-        long tmp = times[i];
-        times[i] = end - times[i];
-        end = tmp;
+  public void sendBlockUpdatesForEntireNetwork() {
+    ConduitNeighborUpdateTracker tracker = null;
+    Set<BlockPos> notified = new HashSet<BlockPos>();
+    for (I con : conduits) {
+      TileEntity te = con.getBundle().getEntity();
+      if (con.hasExternalConnections()) {
+        final BlockPos pos = te.getPos();
+        final Block blockType = te.getBlockType();
+        final World world = te.getWorld();
+        if (world.isBlockLoaded(pos)) {
+          IBlockState bs = world.getBlockState(pos);
+          if (tracker == null) {
+            tracker = new ConduitNeighborUpdateTracker("Conduit network " + this.getClass() + " was interrupted while notifying neighbors of changes");
+          }
+          tracker.start("World.notifyBlockUpdate() at " + pos);
+          world.notifyBlockUpdate(pos, bs, bs, 3);
+          tracker.stop();
+
+          // the following is a fancy version of world.notifyNeighborsOfStateChange(pos, blockType);
+
+          // don't notify other conduits and don't notify the same block twice
+          EnumSet<EnumFacing> sidesToNotify = EnumSet.noneOf(EnumFacing.class);
+          for (EnumFacing side : WEDUNS) {
+            final BlockPos offset = pos.offset(side);
+            if (con.containsExternalConnection(side) && !notified.contains(offset) && world.isBlockLoaded(offset)) {
+              IBlockState blockState = world.getBlockState(offset);
+              if (blockState.getBlock() != blockType && blockState.getBlock() != Blocks.AIR) {
+                sidesToNotify.add(side);
+                notified.add(offset);
+              }
+            }
+          }
+
+          if (!sidesToNotify.isEmpty()) {
+            tracker.start("ForgeEventFactory.onNeighborNotify() at " + pos);
+            boolean canceled = ForgeEventFactory.onNeighborNotify(world, pos, bs, sidesToNotify).isCanceled();
+            tracker.stop();
+
+            if (!canceled) {
+              for (EnumFacing side : WEDUNS) {
+                if (sidesToNotify.contains(side)) {
+                  final BlockPos offset = pos.offset(side);
+                  tracker.start("World.notifyNeighborsOfStateChange() from " + pos + " to " + offset + " (" + world.getBlockState(offset) + ")");
+                  world.notifyBlockOfStateChange(offset, blockType);
+                  tracker.stop();
+                }
+              }
+            }
+          }
+        }
       }
     }
-    for (int i = 0; i < conduits.size(); i++) {
-      if (times[i] != 0) {
-        I con = conduits.get(i);
-        TileEntity te = con.getBundle().getEntity();
-        Log.error("Updating neigbors at " + te.getPos() + " took " + times[i] + "ns");
-      }
+    if (tracker != null) {
+      tracker.discard();
     }
   }
 

@@ -2,6 +2,7 @@ package crazypants.enderio.diagnostics;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import crazypants.enderio.EnderIO;
@@ -131,6 +132,15 @@ public class EnderIOCrashCallable implements ICrashCallable {
     if (stopScreenMessage != null) {
       for (String s : stopScreenMessage) {
         msg += s + "\n";
+      }
+    }
+    Collection<IDiagnosticsTracker> trackers = DiagnosticsRegistry.getActiveTrackers();
+    if (trackers != null && !trackers.isEmpty()) {
+      for (IDiagnosticsTracker tracker : trackers) {
+        msg += "\t" + tracker.getActivityDescription() + "\n";
+        for (String string : tracker.getLines()) {
+          msg += "                 " + string + "\n";
+        }
       }
     }
     return msg;
