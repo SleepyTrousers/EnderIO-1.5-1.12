@@ -27,6 +27,7 @@ import static crazypants.enderio.ModObject.itemPowderIngot;
 
 public class AdditionalFluid {
 
+  static final ResourceLocation GLOWSTONE_TEX_STILL = new ResourceLocation("enderio:blocks/fluid_glowstone_still");
   static final ResourceLocation GLOWSTONE_TEX_FLOWING = new ResourceLocation("enderio:blocks/fluid_glowstone_flowing");
 
   public static final String GLOWSTONE_FLUID_NAME = "glowstone";
@@ -58,12 +59,12 @@ public class AdditionalFluid {
   private static boolean registerVanillaRecipesForEnder = false;
 
   private static Fluid glowstone(FMLPreInitializationEvent event) {
-    Fluid f = new Fluid(GLOWSTONE_FLUID_NAME, GLOWSTONE_TEX_FLOWING,
+    Fluid f = new Fluid(GLOWSTONE_FLUID_NAME, GLOWSTONE_TEX_STILL,
         GLOWSTONE_TEX_FLOWING) {
 
       @Override
       public int getColor() {
-        return 0x80000000 | 0xffbc5e;
+        return 0x80FFFFFF; // | 0xffbc5e;
       }
     };
     f.setDensity(-500);
