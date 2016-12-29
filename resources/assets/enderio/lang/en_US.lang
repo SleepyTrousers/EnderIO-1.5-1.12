@@ -1475,6 +1475,13 @@ item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inv
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
+enderio.coldfireigniter.chat.outoffluid=ERROR: Out of {FLUIDNAME}
+
+item.itemColdFireIgniter.name=Cold Fire Igniter
+item.itemColdFireIgniter.tooltip.detailed.line1=Allows to place Cold Fire.
+item.itemColdFireIgniter.tooltip.detailed.line2=Cold Fire will not spread to other blocks.
+
+
 tile.blockExitRail.name=Exit Rail
 
 tile.blockSelfResettingLever10.name=Self-resetting lever (10 seconds)

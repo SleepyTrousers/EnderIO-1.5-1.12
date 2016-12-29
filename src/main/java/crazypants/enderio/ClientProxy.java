@@ -7,6 +7,7 @@ import com.enderio.core.client.EnderCoreModConflictException;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.block.ColdFireStateMapper;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.DebugCommand;
@@ -98,6 +99,7 @@ public class ClientProxy extends CommonProxy {
 
     // Custom state mappers
     EnderIOGlassesStateMapper.create();
+    ColdFireStateMapper.create();
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();
