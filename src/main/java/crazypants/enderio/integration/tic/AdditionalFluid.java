@@ -2,15 +2,20 @@ package crazypants.enderio.integration.tic;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.fluid.BlockFluidEio;
+import crazypants.enderio.fluid.BlockFluidEio.MoltenEnder;
+import crazypants.enderio.fluid.BlockFluidEio.MoltenGlowstone;
+import crazypants.enderio.fluid.BlockFluidEio.MoltenRedstone;
 import crazypants.enderio.material.PowderIngot;
 import crazypants.util.Things;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -21,6 +26,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import static crazypants.enderio.ModObject.itemPowderIngot;
 
 public class AdditionalFluid {
+
+  static final ResourceLocation GLOWSTONE_TEX_FLOWING = new ResourceLocation("enderio:blocks/fluid_glowstone_flowing");
+
+  public static final String GLOWSTONE_FLUID_NAME = "glowstone";
+  public static final String REDSTONE_FLUID_NAME = "redstone";
+  public static final String ENDER_FLUID_NAME = "ender";
+
+  private static final boolean REGISTER_GLOWSTONE_BLOCK = true;
+  private static final boolean REGISTER_REDSTONE_BLOCK = true;
+  private static final boolean REGISTER_ENDER_BLOCK = true;
 
   static void init(FMLPreInitializationEvent event) {
     if (!Loader.isModLoaded("ThermalFoundation")) {
@@ -43,10 +58,12 @@ public class AdditionalFluid {
   private static boolean registerVanillaRecipesForEnder = false;
 
   private static Fluid glowstone(FMLPreInitializationEvent event) {
-    Fluid f = new Fluid("glowstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
+    Fluid f = new Fluid(GLOWSTONE_FLUID_NAME, GLOWSTONE_TEX_FLOWING,
+        GLOWSTONE_TEX_FLOWING) {
+
       @Override
       public int getColor() {
-        return 0xFF000000 | 0xffbc5e;
+        return 0x80000000 | 0xffbc5e;
       }
     };
     f.setDensity(-500);
@@ -55,20 +72,21 @@ public class AdditionalFluid {
     f.setTemperature(1500 + 273);
     f.setViscosity(100);
     if (FluidRegistry.registerFluid(f)) {
-      // HL: Disabled because I don't have a nice texture for it
-      // MoltenGlowstone block = new crazypants.enderio.fluid.BlockFluidEio.MoltenGlowstone(f, Material.WATER, 0xffbc5e);
-      // block.init();
-      // f.setBlock(block);
-      // if (!EnderIO.proxy.isDedicatedServer()) {
-      // EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
-      // }
+      if (REGISTER_GLOWSTONE_BLOCK) {
+        MoltenGlowstone block = new BlockFluidEio.MoltenGlowstone(f, Material.WATER, 0xffbc5e);
+        block.init();
+        f.setBlock(block);
+        if (!EnderIO.proxy.isDedicatedServer()) {
+          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+        }
+      }
       if (FluidRegistry.isUniversalBucketEnabled()) {
         FluidRegistry.addBucketForFluid(f);
       }
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("fluid", f.getName());
-      tag.setString("ore", StringUtils.capitalize("glowstone"));
+      tag.setString("ore", "Glowstone");
       tag.setBoolean("toolforge", true);
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
@@ -78,9 +96,9 @@ public class AdditionalFluid {
   }
 
   private static void glowstone(FMLPostInitializationEvent event) {
-    Fluid f = FluidRegistry.getFluid("glowstone");
+    Fluid f = FluidRegistry.getFluid(GLOWSTONE_FLUID_NAME);
     if (f == null) {
-      Log.warn("Thermal Foundation fluid 'glowstone' is unexpectedly missing. Late registering our own.");
+      Log.warn("Thermal Foundation fluid '" + GLOWSTONE_FLUID_NAME + "' is unexpectedly missing. Late registering our own.");
       f = glowstone((FMLPreInitializationEvent) null);
     }
     if (registerVanillaRecipesForGlowstone) {
@@ -92,7 +110,7 @@ public class AdditionalFluid {
   }
 
   private static Fluid redstone(FMLPreInitializationEvent event) {
-    Fluid f = new Fluid("redstone", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
+    Fluid f = new Fluid(REDSTONE_FLUID_NAME, TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | 0xff0000;
@@ -103,20 +121,21 @@ public class AdditionalFluid {
     f.setTemperature(1700 + 273);
     f.setViscosity(1500);
     if (FluidRegistry.registerFluid(f)) {
-      // HL: Disabled because I don't have a nice texture for it
-      // MoltenRedstone block = new crazypants.enderio.fluid.BlockFluidEio.MoltenRedstone(f, Material.WATER, 0xff0000);
-      // block.init();
-      // f.setBlock(block);
-      // if (!EnderIO.proxy.isDedicatedServer()) {
-      // EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
-      // }
+      if (REGISTER_REDSTONE_BLOCK) {
+        MoltenRedstone block = new BlockFluidEio.MoltenRedstone(f, Material.WATER, 0xff0000);
+        block.init();
+        f.setBlock(block);
+        if (!EnderIO.proxy.isDedicatedServer()) {
+          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+        }
+      }
       if (FluidRegistry.isUniversalBucketEnabled()) {
         FluidRegistry.addBucketForFluid(f);
       }
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("fluid", f.getName());
-      tag.setString("ore", StringUtils.capitalize("redstone"));
+      tag.setString("ore", "Redstone");
       tag.setBoolean("toolforge", true);
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
@@ -126,9 +145,9 @@ public class AdditionalFluid {
   }
 
   private static void redstone(FMLPostInitializationEvent event) {
-    Fluid f = FluidRegistry.getFluid("redstone");
+    Fluid f = FluidRegistry.getFluid(REDSTONE_FLUID_NAME);
     if (f == null) {
-      Log.warn("Thermal Foundation fluid 'redstone' is unexpectedly missing. Late registering our own.");
+      Log.warn("Thermal Foundation fluid '" + REDSTONE_FLUID_NAME + "' is unexpectedly missing. Late registering our own.");
       f = redstone((FMLPreInitializationEvent) null);
     }
     if (registerVanillaRecipesForRedstone) {
@@ -140,7 +159,7 @@ public class AdditionalFluid {
   }
 
   private static Fluid ender(FMLPreInitializationEvent event) {
-    Fluid f = new Fluid("ender", TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
+    Fluid f = new Fluid(ENDER_FLUID_NAME, TicProxy.TEX_FLOWING, TicProxy.TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | 0x1b7b6b;
@@ -149,22 +168,23 @@ public class AdditionalFluid {
     f.setDensity(4000);
     f.setLuminosity(3);
     f.setTemperature(1000 + 273);
-    f.setViscosity(3500);
+    f.setViscosity(35);
     if (FluidRegistry.registerFluid(f)) {
-      // HL: Disabled because I don't have a nice texture for it
-      // MoltenEnder block = new crazypants.enderio.fluid.BlockFluidEio.MoltenEnder(f, Material.WATER, 0x1b7b6b);
-      // block.init();
-      // f.setBlock(block);
-      // if (!EnderIO.proxy.isDedicatedServer()) {
-      // EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
-      // }
+      if (REGISTER_ENDER_BLOCK) {
+        MoltenEnder block = new BlockFluidEio.MoltenEnder(f, Material.WATER, 0x1b7b6b);
+        block.init();
+        f.setBlock(block);
+        if (!EnderIO.proxy.isDedicatedServer()) {
+          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+        }
+      }
       if (FluidRegistry.isUniversalBucketEnabled()) {
         FluidRegistry.addBucketForFluid(f);
       }
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("fluid", f.getName());
-      tag.setString("ore", StringUtils.capitalize("ender"));
+      tag.setString("ore", "Ender");
       tag.setBoolean("toolforge", true);
       FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
 
@@ -174,9 +194,9 @@ public class AdditionalFluid {
   }
 
   private static void ender(FMLPostInitializationEvent event) {
-    Fluid f = FluidRegistry.getFluid("ender");
+    Fluid f = FluidRegistry.getFluid(ENDER_FLUID_NAME);
     if (f == null) {
-      Log.warn("Thermal Foundation fluid 'ender' is unexpectedly missing. Late registering our own.");
+      Log.warn("Thermal Foundation fluid '" + ENDER_FLUID_NAME + "' is unexpectedly missing. Late registering our own.");
       f = ender((FMLPreInitializationEvent) null);
     }
     if (registerVanillaRecipesForEnder) {

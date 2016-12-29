@@ -37,6 +37,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -113,8 +115,12 @@ public class BlockFluidEio extends BlockFluidClassic {
       dim *= .9f;
     }
 
+    setNames(fluid);
+  }
+
+  protected void setNames(Fluid fluid) {
     setUnlocalizedName(fluid.getUnlocalizedName());
-    setRegistryName("block" + StringUtils.capitalize(fluidName));
+    setRegistryName("block" + StringUtils.capitalize(fluid.getName()));
   }
 
   protected void init() {
@@ -704,10 +710,28 @@ public class BlockFluidEio extends BlockFluidClassic {
   }
 
   /////////////////////////////////////////////////////////////////////////
+  // TiC Fluids
+  /////////////////////////////////////////////////////////////////////////
+
+  public static abstract class TicFluids extends BlockFluidEio {
+
+    protected TicFluids(Fluid fluid, Material material, int fogColor) {
+      super(fluid, material, fogColor);
+    }
+
+    @Override
+    protected void setNames(Fluid fluid) {
+      setUnlocalizedName(fluid.getUnlocalizedName());
+      setRegistryName("fluid" + StringUtils.capitalize(fluid.getName()));
+    }
+
+  }
+
+  /////////////////////////////////////////////////////////////////////////
   // Molten Glowstone
   /////////////////////////////////////////////////////////////////////////
 
-  public static class MoltenGlowstone extends BlockFluidEio {
+  public static class MoltenGlowstone extends TicFluids {
 
     public MoltenGlowstone(Fluid fluid, Material material, int fogColor) { // 0xffbc5e
       super(fluid, material, fogColor);
@@ -715,7 +739,7 @@ public class BlockFluidEio extends BlockFluidClassic {
 
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-      if (entity instanceof EntityPlayer || (!world.isRemote && entity instanceof EntityLivingBase)) {
+      if (!world.isRemote && entity instanceof EntityLivingBase) {
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 200, 0, true, true));
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 2400, 0, true, true));
       }
@@ -733,7 +757,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   // Molten Redstone
   /////////////////////////////////////////////////////////////////////////
 
-  public static class MoltenRedstone extends BlockFluidEio {
+  public static class MoltenRedstone extends TicFluids {
 
     public MoltenRedstone(Fluid fluid, Material material, int fogColor) { // 0xff0000
       super(fluid, material, fogColor);
@@ -741,13 +765,74 @@ public class BlockFluidEio extends BlockFluidClassic {
 
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-      if (entity instanceof EntityPlayer || (!world.isRemote && entity instanceof EntityLivingBase)) {
+      if (!world.isRemote && entity instanceof EntityLivingBase) {
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HASTE, 20 * 60, 0, true, true));
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20 * 60, 0, true, true));
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.SPEED, 20 * 60, 0, true, true));
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 20 * 60, 0, true, true));
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    @Override
+    public void init() {
+      super.init();
+    }
+
+  }
+
+  /////////////////////////////////////////////////////////////////////////
+  // Molten Ender
+  /////////////////////////////////////////////////////////////////////////
+
+  public static class MoltenEnder extends TicFluids {
+
+    private static final Random rand = new Random();
+    private static final ResourceLocation SOUND = new ResourceLocation("entity.endermen.teleport");
+
+    public MoltenEnder(Fluid fluid, Material material, int fogColor) { // 0xff0000
+      super(fluid, material, fogColor);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+      if (!world.isRemote && entity.timeUntilPortal == 0) {
+        teleportEntity(world, entity);
+      }
+      super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    private void teleportEntity(World world, Entity entity) {
+      double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
+      for (int i = 0; i < 5; i++) {
+        double targetX = origX + rand.nextGaussian() * 16f;
+        double targetY = -1;
+        while (targetY < 1.1) {
+          targetY = origY + rand.nextGaussian() * 8f;
+        }
+        double targetZ = origZ + rand.nextGaussian() * 16f;
+        entity.setPosition(targetX, targetY, targetZ);
+        if (isClear(world, entity)) {
+          entity.setPosition(origX, origY, origZ);
+          if (entity instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) entity).connection.setPlayerLocation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+          } else {
+            entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+          }
+          final SoundEvent sound = SoundEvent.REGISTRY.getObject(SOUND);
+          if (sound != null) {
+            world.playSound(null, origX, origY, origZ, sound, SoundCategory.BLOCKS, 1, 1);
+            world.playSound(null, targetX, targetY, targetZ, sound, SoundCategory.BLOCKS, 1, 1);
+          }
+          entity.timeUntilPortal = 5;
+          return;
+        }
+      }
+      entity.setPosition(origX, origY, origZ);
+    }
+
+    private boolean isClear(World world, Entity entity) {
+      return world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity) && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
     }
 
     @Override
