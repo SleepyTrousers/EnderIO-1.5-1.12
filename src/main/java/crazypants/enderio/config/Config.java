@@ -551,6 +551,9 @@ public final class Config {
   public static int[] remoteInventoryRFCapacity = {60000, 120000, 150000};
   public static String[] remoteInventoryFluidTypes = {"nutrient_distillation", "ender_distillation", "vapor_of_levity"};
 
+  public static String coldFireIgniterFluidType = "vapor_of_levity";
+  public static int coldFireIgniterMbPerUse = 10;
+
   public static boolean photovoltaicCanTypesJoins = true;
   public static int photovoltaicRecalcSunTick = 100;
 
@@ -1527,7 +1530,12 @@ public final class Config {
     remoteInventoryMBCapacity = config.get(sectionInventoryPanel.name, "remoteInventoryMBCapacity", remoteInventoryMBCapacity, "Capacity of the intrenal tank in MB").getIntList();
     remoteInventoryRFCapacity = config.get(sectionInventoryPanel.name, "remoteInventoryRFCapacity", remoteInventoryRFCapacity, "Capacity of the intrenal energy storage in RF").getIntList();
     remoteInventoryFluidTypes = config.getStringList("remoteInventoryFluidTypes", sectionInventoryPanel.name, remoteInventoryFluidTypes, "The type of fluid reqquired");
-    
+
+
+    coldFireIgniterFluidType = config.getString("coldFireIgniterFluidType", sectionDarkSteel.name, coldFireIgniterFluidType, "The type of fluid required to ignite cold fire");
+    coldFireIgniterMbPerUse = config.get(sectionDarkSteel.name, "coldFireIgniterMbPerUse", coldFireIgniterMbPerUse,
+        "The amount of fluid in mb used per usage. If set to <= 0 fluid use will be disabled").getInt();
+        
     debugUpdatePackets = config.getBoolean("debugUpdatePackets", sectionPersonal.name, debugUpdatePackets,
         "DEBUG: If true, TEs will flash when they recieve an update packet.");
 
