@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.block.BlockColdFire;
 import crazypants.enderio.block.BlockDarkIronBars;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelLadder;
@@ -35,6 +36,7 @@ import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.item.ItemColdFireIgniter;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
 import crazypants.enderio.item.ItemSoulVessel;
@@ -209,6 +211,7 @@ public enum ModObject implements IModObject {
   blockLightNode(BlockLightNode.class),
 
   //Blocks
+  blockColdFire(BlockColdFire.class),
   blockDarkSteelAnvil(BlockDarkSteelAnvil.class),
   blockDarkSteelLadder(BlockDarkSteelLadder.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
@@ -273,6 +276,7 @@ public enum ModObject implements IModObject {
   itemConduitProbe(ItemConduitProbe.class),
   itemYetaWrench(ItemYetaWrench.class),
   itemXpTransfer(ItemXpTransfer.class),
+  itemColdFireIgniter(ItemColdFireIgniter.class),
 
   blockTravelAnchor(BlockTravelAnchor.class),
   blockTelePad(BlockTelePad.class, "createTelepad"),
