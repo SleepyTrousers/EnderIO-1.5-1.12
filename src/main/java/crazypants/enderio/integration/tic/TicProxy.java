@@ -151,6 +151,9 @@ public class TicProxy {
   }
 
   public static void init(FMLPostInitializationEvent event) {
+    if (!isLoaded) {
+      return;
+    }
     AdditionalFluid.init(event);
     try {
       if (smeltQueue != null) { // 1st because it may provide fluids for later
