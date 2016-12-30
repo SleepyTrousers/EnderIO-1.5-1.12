@@ -1,19 +1,6 @@
 {
 	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
 	"parent": "block/block",
-	"textures": {
-		"particle": "blocks/machineBottom",
-		"top": "blocks/machineTop",
-		"bottom": "blocks/machineBottom",
-		"side": "blocks/machineSide",
-		"back": "blocks/machineBack",
-		"frontframe": "blocks/machineSide",
-		"chest": "entity/chest/normal",
-		"bars": "blocks/blockReinforcedObsidian",
-		"color": "blocks/blockPMonColor",
-		"con": "blocks/inventory_chest_connectors",
-		"canvas": "blocks/machineBottom"
-	},
 	"elements": [
 		{
 			"__comment": "Canvas",
