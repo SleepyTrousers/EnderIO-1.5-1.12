@@ -212,6 +212,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Cold Fire Igniter" required="true">
+    <crafting>
+      <shapeless>
+        <item name="DARK_STEEL" />
+        <item name="itemFlint" />
+      </shapeless>
+      <output name="enderio:itemColdFireIgniter" />
+    </crafting>
+  </recipe>
+
   <recipe name="Soul Vial" required="true">
     <crafting>
       <grid size="3x3">
