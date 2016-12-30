@@ -836,4 +836,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
   }
 
+  @Override
+  public RedstoneConduitNetwork createNetworkForType() {
+    return new RedstoneConduitNetwork();
+  }
+
 }

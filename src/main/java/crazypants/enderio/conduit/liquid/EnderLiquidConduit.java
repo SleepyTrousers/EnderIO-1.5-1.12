@@ -387,4 +387,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   }
 
+  @Override
+  public EnderLiquidConduitNetwork createNetworkForType() {
+    return new EnderLiquidConduitNetwork();
+  }
+
 }

@@ -15,22 +15,6 @@ import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
-import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
-import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.me.MEConduitNetwork;
-import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.oc.OCConduitNetwork;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.power.PowerConduitNetwork;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.block.Block;
@@ -78,6 +62,8 @@ public abstract class AbstractConduit implements IConduit {
   private boolean dodgyChangeSinceLastCallFlagForBundle = true;
 
   protected boolean connectionsDirty = true;
+
+  protected boolean readFromNbt = false;
 
   protected AbstractConduit() {
   }
@@ -368,6 +354,7 @@ public abstract class AbstractConduit implements IConduit {
         i++;
       }
     }
+    readFromNbt = true;
   }
 
   @Override
@@ -459,6 +446,9 @@ public abstract class AbstractConduit implements IConduit {
       ConduitUtil.ensureValidNetwork(this);
       if (getNetwork() != null) {
         getNetwork().sendBlockUpdatesForEntireNetwork();
+        if (readFromNbt) {
+          connectionsChanged();
+        }
       }
     }
   }
@@ -606,32 +596,6 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public AbstractConduitNetwork<?, ?> createNetworkForType() {
-    Class<? extends IConduit> type = this.getClass();
-    if (IRedstoneConduit.class.isAssignableFrom(type)) {
-      return new RedstoneConduitNetwork();
-    } else if (IPowerConduit.class.isAssignableFrom(type)) {
-      return new PowerConduitNetwork();
-    } else if (EnderLiquidConduit.class.isAssignableFrom(type)) {
-      return new EnderLiquidConduitNetwork();
-    } else if (AdvancedLiquidConduit.class.isAssignableFrom(type)) {
-      return new AdvancedLiquidConduitNetwork();
-    } else if (ILiquidConduit.class.isAssignableFrom(type)) {
-      return new LiquidConduitNetwork();
-    } else if (IItemConduit.class.isAssignableFrom(type)) {
-      return new ItemConduitNetwork();
-//    } else if (IGasConduit.class.isAssignableFrom(type)) {
-//      return new GasConduitNetwork();
-    } else if (IMEConduit.class.isAssignableFrom(type)) {
-      return new MEConduitNetwork();
-    } else if (IOCConduit.class.isAssignableFrom(type)) {
-      return new OCConduitNetwork();
-    } else {
-      return null;
-    }
-  }
-
-  @Override
   public boolean shouldMirrorTexture() {
     return true;
   }
@@ -644,5 +608,11 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public void invalidate() {
+  }
+
+  @Override
+  public String toString() {
+    return "AbstractConduit [getClass()=" + getClass() + ", getConduitConnections()=" + getConduitConnections() + ", getExternalConnections()="
+        + getExternalConnections() + ", getNetwork()=" + getNetwork() + "]";
   }
 }

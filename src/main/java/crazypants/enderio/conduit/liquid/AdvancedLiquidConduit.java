@@ -315,4 +315,9 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     }
   }
 
+  @Override
+  public AdvancedLiquidConduitNetwork createNetworkForType() {
+    return new AdvancedLiquidConduitNetwork();
+  }
+
 }

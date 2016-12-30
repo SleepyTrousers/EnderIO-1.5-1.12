@@ -893,4 +893,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     }
   }
 
+  @Override
+  public ItemConduitNetwork createNetworkForType() {
+    return new ItemConduitNetwork();
+  }
+
 }

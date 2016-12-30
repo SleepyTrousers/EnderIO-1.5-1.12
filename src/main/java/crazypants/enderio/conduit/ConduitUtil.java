@@ -14,6 +14,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
@@ -88,7 +89,7 @@ public class ConduitUtil {
       }
     }
     if (con.getNetwork() != null) { // this should have been destroyed when
-                                    // destroying the neighbours network but
+                                    // destroying the neighbour's network but
                                     // lets just make sure
       con.getNetwork().destroyNetwork();
     }
@@ -244,11 +245,10 @@ public class ConduitUtil {
     if (typeName == null || conduitBody == null) {
       return null;
     }
-    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled())) {
-      // (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
+    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) || (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
       // || (typeName.contains("conduit.gas") &&
       // !GasUtil.isGasConduitEnabled()))
-      // {
+    ) {
       return null;
     }
     IConduit result;

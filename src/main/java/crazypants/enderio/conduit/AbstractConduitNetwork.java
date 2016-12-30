@@ -36,7 +36,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       throw new UnsupportedOperationException();
     }
 
-    // Destroy all existing redstone networks around this block
+    // Destroy all existing networks around this block
     for (I con : connections) {
       AbstractConduitNetwork<?, ?> network = con.getNetwork();
       if(network != null) {
@@ -157,7 +157,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       sb.append(con.getLocation());
       sb.append(", ");
     }
-    return "AbstractConduitNetwork [conduits=" + sb.toString() + "]";
+    return "AbstractConduitNetwork@" + Integer.toHexString(hashCode()) + " [conduits=" + sb.toString() + "]";
   }
 
   public void doNetworkTick() {

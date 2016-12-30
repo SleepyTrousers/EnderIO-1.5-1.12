@@ -921,14 +921,22 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
   }
 
-  @SideOnly(Side.CLIENT)
   @Override
   public String toString() {
-    BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(worldObj.getBlockState(pos), worldObj, pos, ConduitRenderMapper.instance);
-    bsw.addCacheKey(this);
-    return "TileConduitBundle [pos=" + pos + ", facade=" + facade + ", facadeType=" + facadeType + ", conduits=" + conduits + ", cachekey=" + bsw.getCachekey()
-        + ", bsw=" + bsw + "]";
+    return worldObj.isRemote ? toStringC(this) : toStringS(this);
   }
 
+  @SideOnly(Side.CLIENT)
+  public static String toStringC(TileConduitBundle self) {
+    BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(self.worldObj.getBlockState(self.pos), self.worldObj, self.pos,
+        ConduitRenderMapper.instance);
+    bsw.addCacheKey(self);
+    return "CLIENT: TileConduitBundle [pos=" + self.pos + ", facade=" + self.facade + ", facadeType=" + self.facadeType + ", conduits=" + self.conduits
+        + ", cachekey=" + bsw.getCachekey() + ", bsw=" + bsw + "]";
+  }
+
+  public static String toStringS(TileConduitBundle self) {
+    return "SERVER: TileConduitBundle [pos=" + self.pos + ", conduits=" + self.conduits + "]";
+  }
 
 }

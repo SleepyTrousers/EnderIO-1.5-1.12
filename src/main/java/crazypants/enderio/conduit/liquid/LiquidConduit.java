@@ -432,4 +432,9 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     return network;
   }
 
+  @Override
+  public LiquidConduitNetwork createNetworkForType() {
+    return new LiquidConduitNetwork();
+  }
+
 }

@@ -552,4 +552,9 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     hashCodes.addEnum(signalColors);
   }
 
+  @Override
+  public OCConduitNetwork createNetworkForType() {
+    return new OCConduitNetwork();
+  }
+
 }

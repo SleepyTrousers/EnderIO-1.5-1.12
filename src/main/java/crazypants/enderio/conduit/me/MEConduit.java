@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.me;
 
-import static crazypants.enderio.ModObject.itemMEConduit;
-
 import java.util.EnumSet;
 import java.util.List;
 
@@ -39,6 +37,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static crazypants.enderio.ModObject.itemMEConduit;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 
@@ -335,5 +335,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public boolean isDense() {
     return isDense;
+  }
+
+  @Override
+  public MEConduitNetwork createNetworkForType() {
+    return new MEConduitNetwork();
   }
 }

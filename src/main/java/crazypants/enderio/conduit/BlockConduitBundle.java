@@ -17,7 +17,6 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
@@ -52,6 +51,7 @@ import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -663,8 +663,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
     
     ItemStack stack = player.getHeldItem(hand);
-    if (world.isRemote && stack != null && stack.getItem() == Items.STICK) { // TODO: remove this later!
-      Log.error("You clicked on " + bundle);
+    if (Prep.isValid(stack) && stack.getItem() == Items.STICK) { // TODO: remove this later!
+      player.addChatMessage(new TextComponentString("You clicked on " + bundle));
     }
     if (stack != null && Block.getBlockFromItem(stack.getItem()) == blockConduitFacade.getBlock()) {
       // add or replace facade

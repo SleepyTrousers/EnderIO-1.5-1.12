@@ -552,4 +552,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     hashCodes.addEnum(rsColors);
   }
 
+  @Override
+  public PowerConduitNetwork createNetworkForType() {
+    return new PowerConduitNetwork();
+  }
+
 }
