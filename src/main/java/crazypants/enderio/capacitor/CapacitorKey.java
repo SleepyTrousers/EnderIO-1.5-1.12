@@ -19,6 +19,14 @@ public enum CapacitorKey implements ICapacitorKey {
   ALLOY_SMELTER_POWER_BUFFER(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   ALLOY_SMELTER_POWER_USE(ModObject.blockAlloySmelter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
+  SAG_MILL_POWER_INTAKE(ModObject.blockSagMill, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  SAG_MILL_POWER_BUFFER(ModObject.blockSagMill, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  SAG_MILL_POWER_USE(ModObject.blockSagMill, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+
+  PAINTER_POWER_INTAKE(ModObject.blockPainter, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  PAINTER_POWER_BUFFER(ModObject.blockPainter, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  PAINTER_POWER_USE(ModObject.blockPainter, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
+
   BUFFER_POWER_INTAKE(ModObject.blockBuffer, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
   BUFFER_POWER_BUFFER(ModObject.blockBuffer, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
 

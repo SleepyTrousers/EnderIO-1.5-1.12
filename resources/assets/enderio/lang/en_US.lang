@@ -1378,7 +1378,8 @@ enderio.top.owner.header=Owner:
 
 # Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
 # machines buffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
-# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup
+# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
+# crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter
 enderio.loot.capacitor.smelting=Smelting %s
 enderio.loot.capacitor.intake=Hungry %s
 enderio.loot.capacitor.buffer=Insatiable %s
@@ -1387,6 +1388,10 @@ enderio.loot.capacitor.area=Big %s
 enderio.loot.capacitor.green=Planting %s
 enderio.loot.capacitor.red=Hot %s
 enderio.loot.capacitor.mobby=Villainous %s
+enderio.loot.capacitor.crushed=Crushed %s
+enderio.loot.capacitor.cleancut=Clean Cut %s
+enderio.loot.capacitor.tight=Tight %s
+enderio.loot.capacitor.aa=Hiding %s
 
 # Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
 # This is the general level of the capacitor

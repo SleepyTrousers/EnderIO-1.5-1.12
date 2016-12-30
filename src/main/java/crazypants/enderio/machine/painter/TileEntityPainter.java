@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -21,7 +22,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
-    super(new SlotDefinition(2, 1), ModObject.blockPainter);
+    super(new SlotDefinition(2, 1), CapacitorKey.PAINTER_POWER_INTAKE, CapacitorKey.PAINTER_POWER_BUFFER, CapacitorKey.PAINTER_POWER_USE);
   }
 
   @Override

@@ -3,6 +3,7 @@ package crazypants.enderio.machine.sagmill;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
@@ -31,7 +32,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   private boolean useGrindingBall;
 
   public TileSagMill() {
-    super(new SlotDefinition(2, 4), ModObject.blockSagMill);
+    super(new SlotDefinition(2, 4), CapacitorKey.SAG_MILL_POWER_INTAKE, CapacitorKey.SAG_MILL_POWER_BUFFER, CapacitorKey.SAG_MILL_POWER_USE);
   }
 
   @Override

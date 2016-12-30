@@ -3,9 +3,8 @@ package crazypants.enderio.loot;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.capacitor.CapacitorHelper;
-import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
+import crazypants.enderio.capacitor.CapacitorKey;
 import net.minecraft.util.WeightedRandom;
 
 public enum WeightedUpgrade {
@@ -17,6 +16,10 @@ public enum WeightedUpgrade {
   GREEN(SetType.NAME, CapacitorKey.FARM_BONUS_SIZE, "green", 10),
   RED(SetType.NAME, CapacitorKey.STIRLING_POWER_GEN, "red", 10),
   MOBBY(SetType.NAME, CapacitorKey.SPAWNER_SPEEDUP, "mobby", 5),
+  CRUSHED(SetType.NAME, CapacitorKey.SAG_MILL_POWER_USE, "crushed", 15),
+  CLEANCUT(SetType.NAME, CapacitorKey.SLICE_POWER_USE, "cleancut", 5),
+  TIGHT(SetType.NAME, CapacitorKey.SOUL_BINDER_POWER_USE, "tight", 5),
+  AA(SetType.NAME, CapacitorKey.PAINTER_POWER_USE, "aa", 10),
 
   ;
 
