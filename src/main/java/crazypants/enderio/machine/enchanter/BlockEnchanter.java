@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -55,12 +56,18 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
 
     TileEnchanter te = getTileEntity(world, pos);
     if (te != null) {
+      te.readFromItemStack(stack);
       te.setFacing(Util.getFacingFromEntity(player));
     }
     if (world.isRemote) {
       return;
     }
     world.notifyBlockUpdate(pos, state, state, 3);
+  }
+
+  @Override
+  public boolean doNormalDrops(IBlockAccess world, BlockPos pos) {
+    return false;
   }
 
   @Override
@@ -75,31 +82,10 @@ public class BlockEnchanter extends BlockEio<TileEnchanter> implements IGuiHandl
   }
   
   @Override
-  public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-    
-    TileEnchanter te = getTileEntity(worldIn, pos);
+  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileEnchanter te, ItemStack drop) {
     if(te != null) {
-      dropItems(worldIn, pos, te);
-    }    
-    super.breakBlock(worldIn, pos, state);
-  }
-
-  public boolean doNormalDrops(World world, int x, int y, int z) {
-    return false;
-  }
-
-  private void dropItems(World world, BlockPos pos, TileEnchanter te) {
-    if (te.getStackInSlot(0) != null) {
-      Util.dropItems(world, te.getStackInSlot(0), pos, true);
+      te.writeToItemStack(drop);
     }
-    if (te.getStackInSlot(1) != null) {
-      Util.dropItems(world, te.getStackInSlot(1), pos, true);
-    }
-  }
-
-  @Override
-  public int quantityDropped(Random p_149745_1_) {
-    return 1;
   }
 
   @Override

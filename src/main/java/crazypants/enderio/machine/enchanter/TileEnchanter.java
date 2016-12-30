@@ -4,15 +4,21 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.util.Prep;
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -23,7 +29,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   @Store
   private ItemStack[] inv = new ItemStack[4];
 
-  @Store
+  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
   private EnumFacing facing = EnumFacing.NORTH;
 
   public void setFacing(EnumFacing s) {
@@ -100,7 +106,6 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   @Override
   public void openInventory(EntityPlayer p) {
-
   }
 
   @Override
@@ -213,6 +218,39 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
   @Override
   public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
     return false;
+  }
+
+  public void writeToItemStack(ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
+      return;
+    }
+    NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      root = new NBTTagCompound();
+      stack.setTagCompound(root);
+    }
+
+    Writer.write(StoreFor.ITEM, root, this);
+
+    String name;
+    if (stack.hasDisplayName()) {
+      name = stack.getDisplayName();
+    } else {
+      name = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
+    }
+    name += " " + EnderIO.lang.localize("machine.tooltip.configured");
+    stack.setStackDisplayName(name);
+  }
+
+  public void readFromItemStack(ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
+      return;
+    }
+    NBTTagCompound root = stack.getTagCompound();
+    if (root == null) {
+      return;
+    }
+    Reader.read(StoreFor.ITEM, root, this);
   }
 
 }
