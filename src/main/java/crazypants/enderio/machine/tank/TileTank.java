@@ -22,6 +22,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.xp.XpUtil;
+import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -249,6 +250,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   private boolean fillEmptyContainer() {
+    if (Prep.isInvalid(inventory[getSlotDefinition().getMinInputSlot() + 1]) || tank.isEmpty()) {
+      return false;
+    }
+
     FluidAndStackResult fill = FluidUtil.tryFillContainer(inventory[getSlotDefinition().getMinInputSlot() + 1], getOutputTanks()[0].getFluid());
     if (fill.result.fluidStack == null) {
       return false;
@@ -275,6 +280,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   private boolean drainFullContainer() {
+    if (Prep.isInvalid(inventory[getSlotDefinition().getMinInputSlot()]) || tank.isFull()) {
+      return false;
+    }
+
     FluidAndStackResult fill = FluidUtil.tryDrainContainer(inventory[getSlotDefinition().getMinInputSlot()], this);
     if (fill.result.fluidStack == null) {
       return false;
