@@ -95,6 +95,10 @@ public abstract class TileEntityEio extends TileEntityBase {
    */
   @Override
   protected void doUpdate() {
+    disableTicking();
+  }
+
+  protected void disableTicking() {
     if (worldObj.isRemote) {
       notTickingTileEntitiesC.add(this);
     } else {

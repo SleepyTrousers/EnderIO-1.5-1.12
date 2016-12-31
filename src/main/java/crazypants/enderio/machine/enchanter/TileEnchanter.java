@@ -1,44 +1,29 @@
 package crazypants.enderio.machine.enchanter;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.util.Prep;
-import info.loenwind.autosave.Reader;
-import info.loenwind.autosave.Writer;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 @Storable
-public class TileEnchanter extends TileEntityEio implements ISidedInventory {
+public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory {
 
   @Store
   private ItemStack[] inv = new ItemStack[4];
-
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
-  private EnumFacing facing = EnumFacing.NORTH;
-
-  public void setFacing(EnumFacing s) {
-    facing = s;
-  }
-
-  public EnumFacing getFacing() {
-    return facing;
-  }
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
@@ -220,37 +205,40 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     return false;
   }
 
-  public void writeToItemStack(ItemStack stack) {
-    if (Prep.isInvalid(stack)) {
-      return;
-    }
-    NBTTagCompound root = stack.getTagCompound();
-    if (root == null) {
-      root = new NBTTagCompound();
-      stack.setTagCompound(root);
-    }
-
-    Writer.write(StoreFor.ITEM, root, this);
-
-    String name;
-    if (stack.hasDisplayName()) {
-      name = stack.getDisplayName();
-    } else {
-      name = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
-    }
-    name += " " + EnderIO.lang.localize("machine.tooltip.configured");
-    stack.setStackDisplayName(name);
+  @Override
+  @Nonnull
+  public String getMachineName() {
+    return ModObject.blockEnchanter.getUnlocalisedName();
   }
 
-  public void readFromItemStack(ItemStack stack) {
-    if (Prep.isInvalid(stack)) {
-      return;
-    }
-    NBTTagCompound root = stack.getTagCompound();
-    if (root == null) {
-      return;
-    }
-    Reader.read(StoreFor.ITEM, root, this);
+  @Override
+  public boolean isActive() {
+    return false;
+  }
+
+  @Override
+  protected boolean doPull(EnumFacing dir) {
+    return false;
+  }
+
+  @Override
+  protected boolean doPush(EnumFacing dir) {
+    return false;
+  }
+
+  @Override
+  protected boolean processTasks(boolean redstoneCheck) {
+    return false; // never called
+  }
+
+  @Override
+  public void doUpdate() {
+    disableTicking();
+  }
+
+  @Override
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+    return mode == IoMode.NONE;
   }
 
 }

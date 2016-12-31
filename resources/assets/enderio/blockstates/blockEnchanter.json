@@ -1,13 +1,25 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "enderio:transform/block",
-        "textures": {
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "0": "enderio:blocks/machineBottom",
+            "1": "enderio:blocks/blockDarkSteelPressurePlate",
+            "2": "enderio:blocks/blockDarkSteelPressurePlate",
             "particle": "enderio:blocks/machineBottom"
         }
     },
-	"variants": {
-        "normal": [{}],
-        "inventory": [{}]
-	}
+    "variants":{
+        "render":{
+            "defaults":{                              "model":"enderio:transform/block"                 },
+            "auto":{                                  "model":"enderio:null"                            },
+            "front":{          "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":0   } } },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":90  } } },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":180 } } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":270 } } },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":0   } } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":90  } } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":180 } } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:blockDialingDevice", "y":270 } } }
+        }
+    }
 }
