@@ -150,6 +150,10 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     
     Block blk = Block.getBlockFromItem(target.getItem());
 
+    if (blk == null) {
+      return false;
+    }
+
     if (blk == resultBlock) {
       return true;
     }

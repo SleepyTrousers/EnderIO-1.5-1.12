@@ -202,6 +202,8 @@ public enum ModObject implements IModObject {
   blockColdFire(BlockColdFire.class),
   blockDarkSteelAnvil(BlockDarkSteelAnvil.class),
   blockDarkSteelLadder(BlockDarkSteelLadder.class),
+  blockDarkIronBars(BlockDarkIronBars.class),
+  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
   blockIngotStorage(BlockIngotStorage.class),
   blockSelfResettingLever(BlockSelfResettingLever.class),
@@ -290,8 +292,6 @@ public enum ModObject implements IModObject {
     }
   },
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
-  blockDarkIronBars(BlockDarkIronBars.class),
-  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
 
   itemSoulVessel(ItemSoulVessel.class) {
     @Override

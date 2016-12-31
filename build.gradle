@@ -89,7 +89,7 @@ dependencies {
     compile "appeng:appliedenergistics2:${ae_version}:api"
     compile "net.darkhax.tesla:Tesla:${tesla_version}"
 
-    compile fileTree(dir: 'lib', include: '*.jar') 
+//    compile fileTree(dir: 'lib', include: '*.jar') 
 }
 
 sourceSets {
