@@ -8,13 +8,7 @@ enderio.power.maxOutput=Макс. выход
 // pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
 enderio.power.generates=Генерирует {0} {1} за {2} {3}{4}
 
-//Ender IO / Enderface
-tile.blockEnderIo.name=Эндер-интерфейс
-tile.blockEnderIo.tooltip.detailed.line1=Даёт удалённый доступ к ближайшим
-tile.blockEnderIo.tooltip.detailed.line2=блокам
-tile.blockEnderIo.tooltip.detailed.line3=Используется с якорями путешествия или
-tile.blockEnderIo.tooltip.detailed.line4=с посохом путешествия
-
+//Enderface
 item.enderio.itemEnderface.name=Лицо Эндермена
 
 //Conduits
@@ -932,7 +926,7 @@ enderio.darksteel.upgrade.glider.enabled=Планер включен
 enderio.darksteel.upgrade.glider.disabled=Планер выключен
 
 enderio.darksteel.upgrade.elytra.name=Элитры
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Позволяют летать
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Включает полёт элитры
 enderio.darksteel.upgrade.elytra.enabled=Элитры включены
 enderio.darksteel.upgrade.elytra.disabled=Элитры выключены
 
@@ -1378,7 +1372,8 @@ enderio.top.owner.header=Владелец:
 
 # Types. smelting=Alloy Smelter Speed, intake=all machines max power input, buffer=all
 # machines baffer size, crafting=Crafter speed, area=all machines "area" attribute (e.g. farm),
-# green=Farming Station area, red=Stirling Generator power generation
+# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
+# crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter
 enderio.loot.capacitor.smelting=Плавильный %s
 enderio.loot.capacitor.intake=Голодный %s
 enderio.loot.capacitor.buffer=Ненасытный %s
@@ -1387,6 +1382,10 @@ enderio.loot.capacitor.area=Большой %s
 enderio.loot.capacitor.green=Засаживающий %s
 enderio.loot.capacitor.red=Горячий %s
 enderio.loot.capacitor.mobby=Злодейский %s
+enderio.loot.capacitor.crushed=Измельчающий %s
+enderio.loot.capacitor.cleancut=Чисто срезанный %s
+enderio.loot.capacitor.tight=Плотный %s
+enderio.loot.capacitor.aa=Скрытый %s
 
 # Names for capacitor levels, the number is the upper boundary of the range (e.g. "25" is used for capacitors level 1.51 to 2.5)
 # This is the general level of the capacitor
@@ -1475,6 +1474,13 @@ item.itemRemoteInvAccessender.tooltip.detailed.line1=Позволяет вам �
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Shift-ПКМ по панеле, чтобы установить с ней связь.
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Использует {FLUIDNAME} для того, чтобы открыть соединение и передавать RF, и держать его открытым.
 
+enderio.coldfireigniter.chat.outoffluid=ОШИБКА: Нет {FLUIDNAME}
+
+item.itemColdFireIgniter.name=Воспламенитель холодного огня
+item.itemColdFireIgniter.tooltip.detailed.line1=Позволяет разместить холодный огонь.
+item.itemColdFireIgniter.tooltip.detailed.line2=Холодный огонь не будет распространяться на другие блоки.
+
+
 tile.blockExitRail.name=Выездные рельсы
 
 tile.blockSelfResettingLever10.name=Рычаг с самовозвратом (10 секунд)
@@ -1536,7 +1542,7 @@ tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Ware
 enderio.gui.permission.denied=Доступ запрещён
 enderio.wrench.permission.denied=Доступ запрещён
 enderio.soulvial.denied=Доступ запрещён
-enderio.soulvial.owned.denied=Доступ запрещён - только владельцы могут подбирать этих животных
+enderio.soulvial.owned.denied=Доступ запрещён - только владельцы могут подбирать своих животных
 
 tile.blockDarkSteelTrapdoor.name=Люк из тёмной стали
 
@@ -1545,3 +1551,18 @@ enderio.spawner.note.noLocationFound=Не достаточно простран�
 enderio.spawner.note.noLocationAtAll=Нет жизнеспособного пространства
 enderio.spawner.note.badSoul=Плохая душа не может создать существо
 enderio.spawner.note.noPlayer=Нет игроков в диапазоне
+
+enderio.plantgreen.name=Обрезки растений
+enderio.plantbrown.name=Рыхлые ветки
+
+fluid.electricalsteel=Расплавленная наэлектризованная сталь
+fluid.energeticalloy=Расплавленный энергетический сплав
+fluid.vibrantalloy=Расплавленный вибрирующий сплав
+fluid.redstonealloy=Расплавленный редстоуновый сплав
+fluid.conductiveiron=Расплавленное проводящее железо
+fluid.pulsatingiron=Расплавленное пульсирующее железо
+fluid.darksteel=Расплавленная тёмная сталь
+fluid.soularium=Расплавленный соуларий
+fluid.glowstone=Светогаз
+fluid.redstone=Расплавленный редстоун
+fluid.ender=Сжиженные эндер-жемчуга
