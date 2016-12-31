@@ -18,6 +18,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.apache.commons.io.IOUtils;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 
 public class RecipeFactory {
@@ -96,6 +97,8 @@ public class RecipeFactory {
         IOUtils.copy(schemaIn, schemaOut);
       }
     } catch (IOException e) {
+      Log.error("Copying default recipe file " + filename + " failed. Reason:");
+      e.printStackTrace();
     } finally {
       IOUtils.closeQuietly(schemaIn);
       IOUtils.closeQuietly(schemaOut);

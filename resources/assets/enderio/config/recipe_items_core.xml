@@ -89,22 +89,8 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Coordinate Selector (endercore)" required="true">
+  <recipe name="Coordinate Selector" required="true">
     <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
-    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
-    <crafting>
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="enderpearl" /><item name="ELECTRICAL_STEEL" />
-        <item /><item name="minecraft:compass" /><item name="ELECTRICAL_STEEL" />
-        <item /><item  /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:itemCoordSelector" />
-    </crafting>
-  </recipe>
-
-  <recipe name="Coordinate Selector (Forge)" required="true">
-    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
-    <config section="Staff Settings" name="travelStaffEnabled" value="true" />
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="enderpearl" /><item name="ELECTRICAL_STEEL" />

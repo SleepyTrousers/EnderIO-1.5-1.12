@@ -1483,10 +1483,10 @@ item.itemColdFireIgniter.tooltip.detailed.line2=Cold Fire will not spread to oth
 
 tile.blockExitRail.name=Exit Rail
 
-tile.blockSelfResettingLever10.name=Self-resetting lever (10 seconds)
-tile.blockSelfResettingLever30.name=Self-resetting lever (30 seconds)
-tile.blockSelfResettingLever60.name=Self-resetting lever (1 Minute)
-tile.blockSelfResettingLever300.name=Self-resetting lever (5 Minutes)
+tile.blockSelfResettingLever10.name=Self-resetting Lever (10 seconds)
+tile.blockSelfResettingLever30.name=Self-resetting Lever (30 seconds)
+tile.blockSelfResettingLever60.name=Self-resetting Lever (1 Minute)
+tile.blockSelfResettingLever300.name=Self-resetting Lever (5 Minutes)
 
 enderio.chassiParts.name=Chassis Plates
 
