@@ -151,12 +151,19 @@ public class CapturedMob {
 
   public @Nonnull ItemStack toGenericStack(Item item, int meta, int amount) {
     NBTTagCompound data = new NBTTagCompound();
+    String id;
     if (entityId != null) {
-      data.setString(ENTITY_ID_KEY, entityId);
+      id = entityId;
     } else if (entityNbt != null && entityNbt.hasKey("id")) {
-      data.setString(ENTITY_ID_KEY, entityNbt.getString("id"));
+      id = entityNbt.getString("id");
+    } else {
+      id = "Pig";
     }
-    data.setBoolean(IS_STUB_KEY, isStub);
+    if (isUnspawnable(id)) {
+      return toStack(item, meta, amount);
+    }
+    data.setString(ENTITY_ID_KEY, id);
+    data.setBoolean(IS_STUB_KEY, true);
     if (variant != null) {
       data.setShort(VARIANT_KEY, (short) variant.ordinal());
     }
@@ -287,7 +294,7 @@ public class CapturedMob {
       if (entityId != null && (isStub || !clone) && (!isUnspawnable(entityId) || entityNbt == null)) {
         entity = EntityList.createEntityByName(entityId, world);
       } else if (entityNbt != null) {
-        if (clone) {
+        if (clone || isUnspawnable(entityId)) {
           entity = EntityList.createEntityFromNBT(entityNbt, world);
           return entity;
         } else {
