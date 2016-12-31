@@ -8,6 +8,7 @@ import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -493,7 +494,7 @@ public class BlockFluidEio extends BlockFluidClassic {
       if (rocketFuelIsExplosive) {
         for (EnumFacing side : EnumFacing.values()) {
           IBlockState neighbor = worldIn.getBlockState(pos.offset(side));
-          if (neighbor.getBlock() instanceof BlockFire) {
+          if (neighbor.getBlock() instanceof BlockFire && neighbor.getBlock() != ModObject.blockColdFire.getBlock()) {
             if (worldIn.rand.nextFloat() < .5f) {
               List<BlockPos> explosions = new ArrayList<BlockPos>();
               explosions.add(pos);
