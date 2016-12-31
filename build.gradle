@@ -38,7 +38,7 @@ ext.dependencies = "required-after:Forge@[${forgeDep_version},${forge_max_versio
 
 def type = 'release'
 if (project.hasProperty('mod_appendix')) {
-    version += "_${project.mod_appendix}"
+//    version += "_${project.mod_appendix}"
        type = project.mod_appendix
 }
 
