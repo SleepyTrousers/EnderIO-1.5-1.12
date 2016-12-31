@@ -37,13 +37,13 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     super(blockTank.getBlock());
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
   public BlockItemTank(Block block, String name) {
     super(block);
     setHasSubtypes(true);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setRegistryName(name);
   }
 

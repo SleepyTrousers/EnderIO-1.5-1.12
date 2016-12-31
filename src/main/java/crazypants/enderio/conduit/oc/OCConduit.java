@@ -49,6 +49,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.itemOCConduit;
+import static crazypants.enderio.config.Config.enableOCConduitsAnimatedTexture;
 
 public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
 
@@ -184,7 +185,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public boolean shouldMirrorTexture() {
-    return !Config.enableOCConduitsAnimatedTexture;
+    return !enableOCConduitsAnimatedTexture;
   }
 
   private static String prettyNode(Node o) {

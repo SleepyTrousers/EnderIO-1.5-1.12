@@ -34,7 +34,6 @@ import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
-import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.item.ItemColdFireIgniter;
 import crazypants.enderio.item.ItemConduitProbe;
@@ -121,7 +120,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public enum ModObject implements IModObject {
   // Enderface
-  blockEnderIo(BlockEnderIO.class),
   itemEnderface(ItemEnderface.class),
 
   // Conduits
@@ -160,16 +158,6 @@ public enum ModObject implements IModObject {
   itemMaterial(ItemMaterial.class),
   itemMachinePart(ItemMachinePart.class),
   itemPowderIngot(ItemPowderIngot.class),
-  blockFusedQuartz(BlockFusedQuartz.class) {
-    @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
-      super.preInitElem(event);
-      BlockColoredFusedQuartz.create();
-    }
-  },
-  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
-  blockDarkIronBars(BlockDarkIronBars.class),
-  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
 
   // Machines
   blockStirlingGenerator(BlockStirlingGenerator.class),
@@ -288,17 +276,31 @@ public enum ModObject implements IModObject {
   itemMagnet,
   itemGliderWing,
   blockEndermanSkull(BlockEndermanSkull.class),
+  itemFrankenSkull(ItemFrankenSkull.class),
+  itemEnderFood(ItemEnderFood.class),
+  blockGauge(BlockGauge.class),
+  itemRemoteInvAccess(ItemRemoteInvAccess.class),
+  blockInventoryPanelSensor(BlockInventoryPanelSensor.class),
+
+  blockFusedQuartz(BlockFusedQuartz.class) {
+    @Override
+    protected void preInitElem(FMLPreInitializationEvent event) {
+      super.preInitElem(event);
+      BlockColoredFusedQuartz.create();
+    }
+  },
+  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
+  blockDarkIronBars(BlockDarkIronBars.class),
+  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
+
   itemSoulVessel(ItemSoulVessel.class) {
     @Override
     protected void initElem(FMLInitializationEvent event) {
       ItemSoulVessel.initPhase();
     }
   },
-  itemFrankenSkull(ItemFrankenSkull.class),
-  itemEnderFood(ItemEnderFood.class),
-  blockGauge(BlockGauge.class),
-  itemRemoteInvAccess(ItemRemoteInvAccess.class),
-  blockInventoryPanelSensor(BlockInventoryPanelSensor.class);
+
+  ;
 
   private final @Nonnull String unlocalisedName;
 

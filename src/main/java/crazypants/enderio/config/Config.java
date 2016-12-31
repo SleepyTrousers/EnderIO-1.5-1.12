@@ -103,8 +103,6 @@ public final class Config {
 
   public static boolean reinforcedObsidianEnabled = true;
 
-  public static boolean useAlternateTesseractModel = false;
-
   public static boolean photovoltaicCellEnabled = true;
 
   public static boolean reservoirEnabled = true;
@@ -140,9 +138,6 @@ public final class Config {
 
   public static boolean fluidConduitDynamicLighting = true;
   
-  public static int gasConduitExtractRate = 200;
-  public static int gasConduitMaxIoRate = 800;
-
   public static boolean updateLightingWhenHidingFacades = false;
   public static boolean transparentFacesLetThroughBeaconBeam = true;
 
@@ -158,7 +153,6 @@ public final class Config {
   public static int travelStaffMaxBlinkDistance = 16;
   public static int travelStaffBlinkPauseTicks = 10;
 
-  public static boolean travelStaffEnabled = true;
   public static boolean travelStaffBlinkEnabled = true;
   public static boolean travelStaffBlinkThroughSolidBlocksEnabled = true;
   public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
@@ -174,9 +168,6 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
-  public static int enderIoRange = 8;
-  public static boolean enderIoMeAccessEnabled = true;
-
   public static boolean darkSteelRightClickPlaceEnabled = true;
   
   public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.7, 0.85};
@@ -185,9 +176,9 @@ public final class Config {
   public static int darkSteelPowerStorageLevelTwo = 250000;
   public static int darkSteelPowerStorageLevelThree = 1000000;
 
-  public static float darkSteelSpeedOneWalkModifier = 0.1f;
-  public static float darkSteelSpeedTwoWalkMultiplier = 0.2f;
-  public static float darkSteelSpeedThreeWalkMultiplier = 0.3f;
+  public static float darkSteelSpeedOneWalkModifier = 0.15f;
+  public static float darkSteelSpeedTwoWalkMultiplier = 0.3f;
+  public static float darkSteelSpeedThreeWalkMultiplier = 0.45f;
 
   public static float darkSteelSpeedOneSprintModifier = 0.1f;
   public static float darkSteelSpeedTwoSprintMultiplier = 0.3f;
@@ -197,9 +188,6 @@ public final class Config {
   public static int darkSteelSpeedTwoCost = 6;
   public static int darkSteelSpeedThreeCost = 8;
   
-  public static boolean darkSteelSpeedLimitFovChanges = true;
-  public static boolean darkSteelSpeedDisableFovChanges = false;
-
   public static double darkSteelBootsJumpModifier = 1.5;
   public static int darkSteelJumpOneCost = 4;
   public static int darkSteelJumpTwoCost = 6;
@@ -226,7 +214,7 @@ public final class Config {
   public static float fakePlayerSkullChance = 0.5f;
 
   public static int darkSteelSwordPowerUsePerHit = 750;
-  public static double darkSteelSwordEnderPearlDropChance = 1;
+  public static double darkSteelSwordEnderPearlDropChance = 1.05;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
 
   public static boolean darkSteelBowEnabled = true;
@@ -237,7 +225,6 @@ public final class Config {
   public static int darkSteelBowPowerUsePerDamagePoint = 1000;
   public static int darkSteelBowPowerUsePerDraw = 750;
   public static int darkSteelBowPowerUsePerTickDrawn = 5;
-
 
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUseObsidian = 10000;
@@ -434,7 +421,6 @@ public final class Config {
   public static double killerJoeAttackLength = 4;
   public static double killerJoeHooverXpWidth = 5;
   public static double killerJoeHooverXpLength = 10;
-  public static int killerJoeMaxXpLevel = Integer.MAX_VALUE;
   public static boolean killerJoeMustSee = false;
   public static boolean killerPvPoffDisablesSwing = false;
   public static boolean killerPvPoffIsIgnored = false;
@@ -445,7 +431,6 @@ public final class Config {
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
-  public static boolean isGasConduitEnabled = true;
   public static boolean enableMEConduits = true;
   public static boolean enableOCConduits = true;
   public static boolean enableOCConduitsAnimatedTexture = true;
@@ -475,7 +460,6 @@ public final class Config {
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
-  public static boolean powerConduitOutputMJ = true;
 
   public static boolean spawnGuardStopAllSlimesDebug = false;
   public static boolean spawnGuardStopAllSquidSpawning = false;
@@ -500,13 +484,6 @@ public final class Config {
 
   public static boolean dumpMobNames = false;
 
-  // public static boolean enderRailEnabled = true;
-  // public static int enderRailPowerRequireCrossDimensions = 10000;
-  // public static int enderRailPowerRequiredPerBlock = 10;
-  // public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
-  // public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
-  // public static boolean enderRailTeleportPlayers = false;
-
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
   public static String xpJuiceName = "xpjuice";
 
@@ -528,7 +505,6 @@ public final class Config {
   public static String telepadFluidType = "ender_distillation";
   public static int telepadFluidUse = 50;
   
-  public static boolean rodOfReturnEnabled = true;
   public static boolean rodOfReturnCanTargetAnywhere = false;
   public static int rodOfReturnTicksToActivate = 50;
   public static int rodOfReturnPowerStorage = 2000000;
@@ -545,7 +521,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
   public static boolean inventoryPanelScaleText = true;
 
-  public static int[] remoteInventoryMBPerOpen = {100, 25, 25};
+  public static int[] remoteInventoryMBPerOpen = { 100, 25, 15 };
   public static int[] remoteInventoryRFPerTick = {4, 6, 8};
   public static int[] remoteInventoryMBCapacity = {2000, 1000, 1500};
   public static int[] remoteInventoryRFCapacity = {60000, 120000, 150000};
@@ -673,7 +649,6 @@ public final class Config {
     powerConduitCanDifferentTiersConnect = config
         .getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
             "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks");
-    powerConduitOutputMJ = config.getBoolean("powerConduitOutputMJ", sectionPower.name, powerConduitOutputMJ, "When set to true power conduits will output MJ if RF is not supported");
 
 
     painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF,
@@ -766,15 +741,6 @@ public final class Config {
     enderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
         "Number of millibuckets per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
 
-    gasConduitExtractRate = config.get(sectionEfficiency.name, "gasConduitExtractRate", gasConduitExtractRate,
-        "Amount of gas per tick extracted by gas conduits auto extracting").getInt(gasConduitExtractRate);
-
-    gasConduitMaxIoRate = config.get(sectionEfficiency.name, "gasConduitMaxIoRate", gasConduitMaxIoRate,
-        "Amount of gas per tick that can pass through a single connection to a gas conduit.").getInt(gasConduitMaxIoRate);
-
-    useAlternateTesseractModel = config.get(sectionAesthetic.name, "useAlternateTransceiverModel", useAlternateTesseractModel,
-        "Use TheKazador's alternative model for the Dimensional Transceiver")
-        .getBoolean(false);
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
@@ -851,8 +817,6 @@ public final class Config {
     travelStaffBlinkPauseTicks = config.get(sectionStaff.name, "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
-    travelStaffEnabled = config.get(sectionStaff.name, "travelStaffEnabled", travelStaffEnabled,
-        "If set to false: the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
     travelStaffBlinkEnabled = config.get(sectionStaff.name, "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
         "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
     travelStaffBlinkThroughSolidBlocksEnabled = config.get(sectionStaff.name, "travelStaffBlinkThroughSolidBlocksEnabled",
@@ -888,10 +852,7 @@ public final class Config {
         .get(sectionStaff.name, "travelStaffOffhandShowsTravelTargets", travelStaffOffhandShowsTravelTargets,
             "If set to false: Teleportation targets will not be highlighted for travel items held in the off-hand.")
         .getBoolean(travelStaffOffhandShowsTravelTargets);
-    
-    
-    rodOfReturnEnabled = config.get(sectionRod.name, "rodOfReturnEnabled", rodOfReturnEnabled,
-        "If set to false: the rod of return will not be craftable.").getBoolean(rodOfReturnEnabled);
+
     rodOfReturnCanTargetAnywhere = config.get(sectionRod.name, "rodOfReturnCanTargetAnywhere", rodOfReturnCanTargetAnywhere,
         "If set to false the rod of return can only target a telepad.").getBoolean(rodOfReturnCanTargetAnywhere);
     rodOfReturnTicksToActivate = config.get(sectionRod.name, "rodOfReturnTicksToActivate", rodOfReturnTicksToActivate,
@@ -907,13 +868,7 @@ public final class Config {
     rodOfReturnFluidUsePerTeleport = config.get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport,
         "How much fluid is used per teleport").getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
-    
 
-    enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
-        "Range accessible (in blocks) when using the Ender IO.").getInt(enderIoRange);
-
-    enderIoMeAccessEnabled = config.get(sectionPersonal.name, "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
-        "If false: you will not be able to access a ME access or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
 
     updateLightingWhenHidingFacades = config.get(sectionEfficiency.name, "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
         "When true: correct lighting is recalculated (client side) for conduit bundles when transitioning to"
@@ -965,11 +920,6 @@ public final class Config {
     darkSteelSpeedThreeCost = config.get(sectionDarkSteel.name, "darkSteelSpeedThreeCost", darkSteelSpeedThreeCost,
         "Number of levels required for the 'Speed 3' upgrade.").getInt(darkSteelSpeedThreeCost);
 
-    darkSteelSpeedLimitFovChanges = config.get(sectionDarkSteel.name, "darkSteelSpeedLimitFovChanges", darkSteelSpeedLimitFovChanges,
-        "When true FOV changes will not be effected by speed upgrades. Vanilla FOV changes will still occur.").getBoolean(darkSteelSpeedLimitFovChanges);
-    darkSteelSpeedDisableFovChanges = config.get(sectionDarkSteel.name, "darkSteelSpeedDisableFovChanges", darkSteelSpeedDisableFovChanges,
-        "When true the FOV will be constant when the upgrade is in effect. For example, it will not vary at all when sprinting or flying").getBoolean(darkSteelSpeedDisableFovChanges);
-    
     slotZeroPlacesEight = config.get(sectionDarkSteel.name, "shouldSlotZeroWrap", slotZeroPlacesEight, "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.").getBoolean();
 
     darkSteelSpeedOneWalkModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
@@ -1347,7 +1297,6 @@ public final class Config {
         "The distance from which XP will be gathered to each side of Joe.").getDouble(killerJoeHooverXpLength);
     killerJoeHooverXpWidth = config.get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth,
         "The distance from which XP will be gathered in front of Joe.").getDouble(killerJoeHooverXpWidth);
-    killerJoeMaxXpLevel = config.get(sectionMisc.name, "killerJoeMaxXpLevel", killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
 
     killerJoeMustSee = config.get(sectionKiller.name, "killerJoeMustSee", killerJoeMustSee, "Set whether the Killer Joe can attack through blocks.").getBoolean();
     killerPvPoffDisablesSwing = config
@@ -1369,9 +1318,6 @@ public final class Config {
         .getDouble(xpVacuumRange);
 
     // Add deprecated comment
-    config.getString("isGasConduitEnabled", sectionItems.name, "auto", "Deprecated option. Use boolean \"gasConduitsEnabled\" below.");
-    isGasConduitEnabled = config.getBoolean("gasConduitEnabled", sectionItems.name, isGasConduitEnabled,
-        "If true, gas conduits will be enabled if the Mekanism Gas API is found. False to forcibly disable.");
     enableMEConduits = config.getBoolean("enableMEConduits", sectionItems.name, enableMEConduits, "Allows ME conduits. Only has an effect with AE2 installed.");
     enableOCConduits = config.getBoolean("enableOCConduits", sectionItems.name, enableOCConduits,
         "Allows OC conduits. Only has an effect with OpenComputers installed.");

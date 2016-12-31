@@ -25,7 +25,7 @@ public class ItemMaterial extends Item implements IHaveRenderers {
   private ItemMaterial() {
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemMaterial.getUnlocalisedName());
     setRegistryName(ModObject.itemMaterial.getUnlocalisedName());
   }

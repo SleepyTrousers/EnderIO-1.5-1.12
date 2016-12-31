@@ -88,7 +88,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     damageVsEntity = 8;
     attackSpeed = -3;
     
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(NAME);
     setRegistryName(NAME);
   }

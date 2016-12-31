@@ -2,21 +2,20 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
@@ -27,7 +26,7 @@ public class ItemGliderWing extends Item implements IResourceTooltipProvider {
   }
 
   protected ItemGliderWing() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemGliderWing.getUnlocalisedName());
     setRegistryName(ModObject.itemGliderWing.getUnlocalisedName());
     setHasSubtypes(true);

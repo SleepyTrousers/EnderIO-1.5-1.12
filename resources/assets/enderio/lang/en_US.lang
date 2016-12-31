@@ -8,13 +8,7 @@ enderio.power.maxOutput=Max Output
 // pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
 enderio.power.generates=Generates {0} {1} at {2} {3}{4}
 
-//Ender IO / Enderface
-tile.blockEnderIo.name=Ender IO
-tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to nearby
-tile.blockEnderIo.tooltip.detailed.line2=blocks
-tile.blockEnderIo.tooltip.detailed.line3=Used with Travel Anchors or
-tile.blockEnderIo.tooltip.detailed.line4=the Staff of Travel
-
+//Enderface
 item.enderio.itemEnderface.name=Enderface
 
 //Conduits

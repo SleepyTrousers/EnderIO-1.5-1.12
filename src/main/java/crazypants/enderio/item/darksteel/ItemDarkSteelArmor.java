@@ -139,7 +139,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   protected ItemDarkSteelArmor(EntityEquipmentSlot armorType) {
     super(MATERIAL, 0, armorType);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
 
     String str = "darkSteel_" + NAMES[armorType.getIndex()];
     setUnlocalizedName(str);

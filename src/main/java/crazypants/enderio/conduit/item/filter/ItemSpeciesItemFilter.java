@@ -2,7 +2,10 @@ package crazypants.enderio.conduit.item.filter;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -18,8 +21,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers  {
 
   public static ItemSpeciesItemFilter create() {
@@ -29,7 +30,7 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
   }
 
   protected ItemSpeciesItemFilter() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemSpeciesItemFilter.getUnlocalisedName());
     setRegistryName(ModObject.itemSpeciesItemFilter.getUnlocalisedName());
     setHasSubtypes(false);

@@ -25,7 +25,7 @@ public class ItemMachinePart extends Item implements IHaveRenderers  {
   private ItemMachinePart() {
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemMachinePart.getUnlocalisedName());
     setRegistryName(ModObject.itemMachinePart.getUnlocalisedName());
   }

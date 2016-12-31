@@ -41,7 +41,7 @@ public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverl
   public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull String name) {
     super(blockCapBank, 0, 0, 0);
     setHasSubtypes(true);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setRegistryName(name);
   }
 

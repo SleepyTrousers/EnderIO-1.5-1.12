@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.invpanel.remote;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.enderface.EnderIOController;
-import crazypants.enderio.enderface.PacketLockClientContainer;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
-import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -97,15 +94,7 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
 
     Container c = player.openContainer;
 
-    PacketHandler.INSTANCE.sendTo(new PacketLockClientContainer(player.openContainer.windowId), player);
     player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, pos, EnumFacing.UP, 0f, 0f, 0f);
-
-    player.interactionManager.thisPlayerMP = player;
-    if (c != player.openContainer) {
-      EnderIOController.INSTANCE.addContainer(player, player.openContainer);
-    } else {
-      PacketHandler.INSTANCE.sendTo(new PacketLockClientContainer(), player);
-    }
 
     return null;
   }

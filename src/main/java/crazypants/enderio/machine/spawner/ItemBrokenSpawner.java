@@ -27,7 +27,7 @@ public class ItemBrokenSpawner extends Item {
   }
 
   protected ItemBrokenSpawner() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemBrokenSpawner.getUnlocalisedName());
     setRegistryName(ModObject.itemBrokenSpawner.getUnlocalisedName());
     setHasSubtypes(true);

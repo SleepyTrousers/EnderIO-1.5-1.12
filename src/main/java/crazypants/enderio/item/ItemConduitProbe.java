@@ -74,7 +74,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   }
 
   protected ItemConduitProbe() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName("enderio." + ModObject.itemConduitProbe.getUnlocalisedName());
     setRegistryName(ModObject.itemConduitProbe.name());
     setMaxStackSize(1);

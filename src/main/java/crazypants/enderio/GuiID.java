@@ -19,7 +19,6 @@ import net.minecraftforge.server.permission.context.PlayerContext;
 
 public enum GuiID {
 
-  GUI_ID_ENDERFACE,
   GUI_ID_PAINTER,
   GUI_ID_STIRLING_GEN,
   GUI_ID_ALLOY_SMELTER,

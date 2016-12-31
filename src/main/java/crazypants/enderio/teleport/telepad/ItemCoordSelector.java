@@ -31,7 +31,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
   }
 
   private ItemCoordSelector() {
-    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setRegistryName(ModObject.itemCoordSelector.name());
     setUnlocalizedName(ModObject.itemCoordSelector.getUnlocalisedName());
     setMaxStackSize(1);

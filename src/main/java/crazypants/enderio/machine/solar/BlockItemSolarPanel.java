@@ -19,7 +19,7 @@ public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipPr
     super(blockSolarPanel);
     setHasSubtypes(true);
     setMaxDamage(0);    
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setRegistryName(name);
   }
 

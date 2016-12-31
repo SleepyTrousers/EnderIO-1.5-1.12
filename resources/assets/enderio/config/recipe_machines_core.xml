@@ -730,30 +730,17 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:blockInventoryPanel" />
     </crafting>
   </recipe>
-  
+
   <recipe name="Inventory Panel Sensor" required="true">
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="enderio:itemFunctionUpgrade:0" /><item name="ELECTRICAL_STEEL" />
         <item name="REDSTONE_ALLOY" /><item name="CHASSIS" /><item name="REDSTONE_ALLOY" />
-        <item name="ELECTRICAL_STEEL" /><item name="item:minecraft:comparator"/><item name="ELECTRICAL_STEEL" />               
+        <item name="ELECTRICAL_STEEL" /><item name="item:minecraft:comparator"/><item name="ELECTRICAL_STEEL" />
       </grid>
       <output name="enderio:blockInventoryPanelSensor" />
     </crafting>
   </recipe>
-
-<!-- Disabled until we fix the block
-  <recipe name="Ender IO" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="FUSED_QUARTZ" /><item name="ELECTRICAL_STEEL" />
-        <item name="FUSED_QUARTZ" /><item name="pearlEnderEye" /><item name="FUSED_QUARTZ" />
-        <item name="ELECTRICAL_STEEL" /><item name="FUSED_QUARTZ" /><item name="ELECTRICAL_STEEL" />
-      </grid>
-      <output name="enderio:blockEnderIo" />
-    </crafting>
-  </recipe>
--->
 
   <recipe name="Travel Anchor" required="true">
     <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
@@ -767,8 +754,8 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="TelePad" required="true" disabled="false">    
-    <crafting>    
+  <recipe name="TelePad" required="true" disabled="false">
+    <crafting>
       <grid size="3x3">
         <item name="FUSED_QUARTZ" /><item name="ENDER_CRYSTAL" /><item name="FUSED_QUARTZ" />
         <item name="DARK_STEEL" /><item name="enderio:blockTravelAnchor" /><item name="DARK_STEEL" />
@@ -778,16 +765,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
   
-  <recipe name="DialingDevice" required="true" disabled="false">    
-    <crafting>    
+  <recipe name="DialingDevice" required="true" disabled="false">
+    <crafting>
       <grid size="3x3">
-        <item/>                  <item name="ELECTRICAL_STEEL" /><item/>
-        <item/>                  <item name="ENDER_RESONATOR" /><item/>
+        <item/><item name="ELECTRICAL_STEEL" /><item/>
+        <item/><item name="ENDER_RESONATOR" /><item/>
         <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
       </grid>
       <output name="enderio:blockDialingDevice" />
     </crafting>
-  </recipe>  
+  </recipe>
 
   <recipe name="Painted Pressure Plate, Dark Steel" required="true">
     <crafting>

@@ -41,7 +41,7 @@ public class ItemBucketEio extends ItemBucket {
 
   protected ItemBucketEio(Block block, String fluidName) {
     super(block);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setContainerItem(Items.BUCKET);
     itemName = "bucket" + StringUtils.capitalize(fluidName);
     setUnlocalizedName(itemName);

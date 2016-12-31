@@ -6,6 +6,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.integration.tic.TicProxy;
@@ -42,6 +43,7 @@ public class BlockIngotStorage extends BlockEio<TileEntityEio> implements IAdvan
   private BlockIngotStorage() {
     super(ModObject.blockIngotStorage.getUnlocalisedName(),null,  Material.IRON);
     setSoundType(SoundType.METAL);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }
   
   @Override

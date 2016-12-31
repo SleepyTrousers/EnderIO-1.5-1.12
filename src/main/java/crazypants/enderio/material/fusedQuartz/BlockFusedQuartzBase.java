@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
@@ -38,6 +39,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   public BlockFusedQuartzBase(@Nonnull String name, Class<T> teClass) {
     super(name, teClass, Material.GLASS);
     setSoundType(SoundType.GLASS);
+    setCreativeTab(EnderIOTab.tabEnderIO);
   }
   
   @Override

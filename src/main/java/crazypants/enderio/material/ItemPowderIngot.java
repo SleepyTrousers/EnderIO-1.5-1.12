@@ -27,7 +27,7 @@ public class ItemPowderIngot extends Item implements IHaveRenderers {
   private ItemPowderIngot() {
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemPowderIngot.getUnlocalisedName());
     setRegistryName(ModObject.itemPowderIngot.getUnlocalisedName());
 

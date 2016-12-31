@@ -56,7 +56,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   protected ItemYetaWrench() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemYetaWrench.getUnlocalisedName());
     setRegistryName(ModObject.itemYetaWrench.getUnlocalisedName());
     setMaxStackSize(1);

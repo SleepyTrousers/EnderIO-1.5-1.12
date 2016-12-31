@@ -27,7 +27,7 @@ public class ItemFrankenSkull extends Item implements IHaveRenderers {
   private ItemFrankenSkull() {
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemFrankenSkull.getUnlocalisedName());
     setRegistryName(ModObject.itemFrankenSkull.getUnlocalisedName());
   }

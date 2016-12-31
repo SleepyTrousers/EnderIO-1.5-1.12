@@ -12,19 +12,26 @@ import static crazypants.enderio.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
 
-  public static final @Nonnull CreativeTabs tabNoTab, tabEnderIO;
+  public static final @Nonnull CreativeTabs tabNoTab, tabEnderIO, tabEnderIOItems, tabEnderIOMaterials, tabEnderIOMachines;
 
   static {
-    tabNoTab = new EnderIOTab();
-    tabEnderIO = new EnderIOTab(CreativeTabs.CREATIVE_TAB_ARRAY.length - 1);
+    tabNoTab = new EnderIOTab(0);
+    tabEnderIOMachines = new EnderIOTab(3, CreativeTabs.CREATIVE_TAB_ARRAY.length - 1);
+    tabEnderIOItems = new EnderIOTab(1);
+    tabEnderIOMaterials = new EnderIOTab(2);
+    tabEnderIO = new EnderIOTab(0);
   }
 
-  public EnderIOTab() {
+  private final int meta;
+
+  public EnderIOTab(int meta) {
     super(MODID);
+    this.meta = meta;
   }
 
-  public EnderIOTab(int index) {
+  public EnderIOTab(int meta, int index) {
     super(index, MODID);
+    this.meta = meta;
   }
 
   @Override
@@ -39,10 +46,16 @@ public class EnderIOTab extends CreativeTabs {
     return MODID;
   }
 
+  @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull Item getTabIconItem() {
     return itemEnderface.getItem();
+  }
+
+  @Override
+  public int getIconItemDamage() {
+    return meta;
   }
 
 }

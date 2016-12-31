@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IHaveTESR;
@@ -73,6 +74,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   private BlockEndermanSkull() {
     super(ModObject.blockEndermanSkull.getUnlocalisedName(), TileEndermanSkull.class, NullHelper.notnullM(Material.CIRCUITS, "Material.CIRCUITS"));
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }
 
   @Override

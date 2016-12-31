@@ -12,13 +12,11 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.PowerDisplayUtil;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +27,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
@@ -56,7 +53,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   protected ItemColdFireIgniter() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemColdFireIgniter.getUnlocalisedName());
     setRegistryName(ModObject.itemColdFireIgniter.getUnlocalisedName());
     setMaxDamage(0);
@@ -248,6 +245,14 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 0);
+  }
+
+  @Override
+  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+    final ItemStack stack = new ItemStack(itemIn);
+    subItems.add(stack.copy());
+    FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);
+    subItems.add(stack);
   }
 
 }

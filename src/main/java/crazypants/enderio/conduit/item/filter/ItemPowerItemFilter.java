@@ -21,7 +21,7 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
   }
 
   protected ItemPowerItemFilter() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemPowerItemFilter.getUnlocalisedName());
     setRegistryName(ModObject.itemPowerItemFilter.getUnlocalisedName());
     setHasSubtypes(true);

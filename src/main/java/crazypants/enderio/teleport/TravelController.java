@@ -13,16 +13,13 @@ import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiID;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
-import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import net.minecraft.block.Block;
@@ -52,7 +49,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockEnderIo;
 import static crazypants.enderio.ModObject.blockTelePad;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
@@ -118,12 +114,6 @@ public class TravelController {
         PacketHandler.INSTANCE.sendToServer(p);
         return true;
       }
-    }
-    if (isTargetEnderIO()) {
-      if (doesHandAllowEnderIO(hand)) {
-        openEnderIO(equipped, hand, world, player);
-      }
-      return true;
     }
     if (Config.travelAnchorEnabled && doesHandAllowTravel(hand)) {
       travelToSelectedTarget(player, equipped, hand, source, false);
@@ -270,13 +260,6 @@ public class TravelController {
     return TravelSource.getMaxDistanceSq();
   }
 
-  private boolean isTargetEnderIO() {
-    if(selectedCoord == null) {
-      return false;
-    }
-    return EnderIO.proxy.getClientPlayer().worldObj.getBlockState(selectedCoord.getBlockPos()).getBlock() == blockEnderIo.getBlock();
-  }
-
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
 
@@ -355,27 +338,6 @@ public class TravelController {
 
   private boolean hasTarget() {
     return selectedCoord != null;
-  }
-
-  private void openEnderIO(ItemStack equipped, EnumHand hand, World world, EntityPlayer player) {
-    BlockCoord target = TravelController.instance.selectedCoord;
-    TileEntity te = world.getTileEntity(target.getBlockPos());
-    if(!(te instanceof TileEnderIO)) {
-      return;
-    }
-    TileEnderIO eio = (TileEnderIO) te;
-    if(eio.canBlockBeAccessed(player)) {
-      int requiredPower = equipped == null ? 0 : instance.getRequiredPower(player, equipped, TravelSource.STAFF, target);
-      if(requiredPower <= 0 || requiredPower <= getEnergyInTravelItem(equipped)) {
-        if(requiredPower > 0) {
-          PacketDrainStaff p = new PacketDrainStaff(requiredPower, hand);
-          PacketHandler.INSTANCE.sendToServer(p);
-        }
-        GuiID.GUI_ID_ENDERFACE.openGui(world, target.getBlockPos(), player, null);
-      }
-    } else {
-      player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
-    }
   }
 
   private int getEnergyInTravelItem(ItemStack equipped) {
@@ -647,9 +609,7 @@ public class TravelController {
       }
     }
 
-    if(isTargetEnderIO()) {
-      openEnderIO(null, null, player.worldObj, player);
-    } else if (Config.travelAnchorEnabled && travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
+    if (Config.travelAnchorEnabled && travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");

@@ -29,7 +29,7 @@ public class ItemAlloy extends Item implements IHaveRenderers {
   private ItemAlloy() {
     setHasSubtypes(true);
     setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemAlloy.getUnlocalisedName());
     setRegistryName(ModObject.itemAlloy.getUnlocalisedName());
 

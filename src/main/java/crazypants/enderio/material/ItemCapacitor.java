@@ -44,7 +44,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   }
 
   protected ItemCapacitor() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     setUnlocalizedName(ModObject.itemBasicCapacitor.getUnlocalisedName());
     setRegistryName(ModObject.itemBasicCapacitor.getUnlocalisedName());
     setHasSubtypes(true);

@@ -39,7 +39,7 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
 
   protected ItemTravelStaff() {
     super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemTravelStaff.getUnlocalisedName());
     setRegistryName(ModObject.itemTravelStaff.getUnlocalisedName());
     setMaxStackSize(1);

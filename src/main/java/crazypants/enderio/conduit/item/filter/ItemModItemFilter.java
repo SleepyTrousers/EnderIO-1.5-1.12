@@ -26,7 +26,7 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
   }
 
   protected ItemModItemFilter() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemModItemFilter.getUnlocalisedName());
     setRegistryName(ModObject.itemModItemFilter.getUnlocalisedName());
     setMaxDamage(0);

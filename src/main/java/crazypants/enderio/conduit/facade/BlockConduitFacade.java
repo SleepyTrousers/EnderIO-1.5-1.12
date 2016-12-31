@@ -50,7 +50,7 @@ public class BlockConduitFacade extends BlockEio<TileEntityPaintedBlock> impleme
   private BlockConduitFacade() {
     super(ModObject.blockConduitFacade.getUnlocalisedName(), TileEntityPaintedBlock.class, new Material(MapColor.STONE));
     setSoundType(SoundType.STONE);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     initDefaultState();
   }
   

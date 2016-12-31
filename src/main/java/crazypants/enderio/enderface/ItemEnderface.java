@@ -2,20 +2,18 @@ package crazypants.enderio.enderface;
 
 import java.util.List;
 
-import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.render.IHaveRenderers;
+import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemEnderface extends Item implements IGuiHandler {
-  
+public class ItemEnderface extends Item implements IHaveRenderers {
+
   public static ItemEnderface create() {
     ItemEnderface result = new ItemEnderface();
     result.init();
@@ -30,31 +28,30 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected void init() {
-    GameRegistry.register(this);    
-    GuiID.registerGuiHandler(GuiID.GUI_ID_ENDERFACE, this);
+    GameRegistry.register(this);
   }
 
   @Override
   public boolean hasEffect(ItemStack stack) {
     return true;
   }
-  
-  @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
-  }
-
-  @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiEnderface(player, world, x, y, z);
-  }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
     if (tab != null) {
-      super.getSubItems(itemIn, tab, subItems);
+      for (int i = 0; i < 4; i++) {
+        subItems.add(new ItemStack(itemIn, 1, i));
+      }
     }
+  }
+
+  @Override
+  public void registerRenderers() {
+    ClientUtil.regRenderer(this, 0, ModObject.itemEnderface.getUnlocalisedName());
+    ClientUtil.regRenderer(this, 1, ModObject.itemEnderface.getUnlocalisedName() + "_items");
+    ClientUtil.regRenderer(this, 2, ModObject.itemEnderface.getUnlocalisedName() + "_materials");
+    ClientUtil.regRenderer(this, 3, ModObject.itemEnderface.getUnlocalisedName() + "_machines");
   }
 
 }

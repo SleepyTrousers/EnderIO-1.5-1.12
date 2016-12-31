@@ -97,7 +97,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   public ItemDarkSteelSword() {
     super(MATERIAL);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(NAME);
     setRegistryName(NAME);
   }
@@ -168,7 +168,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       String name = EntityList.getEntityString(entityLiving);
       if (entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
         int numPearls = 0;
-        if (Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
+        double chance = Config.darkSteelSwordEnderPearlDropChance;
+        while (chance >= 1) {
+          numPearls++;
+          chance--;
+        }
+        if (chance > 0 && Math.random() <= chance) {
           numPearls++;
         }
         for (int i = 0; i < evt.getLootingLevel(); i++) {

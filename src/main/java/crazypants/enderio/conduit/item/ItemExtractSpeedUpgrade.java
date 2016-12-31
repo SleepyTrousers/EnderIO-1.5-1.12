@@ -27,7 +27,7 @@ public class ItemExtractSpeedUpgrade extends Item implements IResourceTooltipPro
   }
 
   protected ItemExtractSpeedUpgrade() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
     setRegistryName(ModObject.itemExtractSpeedUpgrade.getUnlocalisedName());
     setHasSubtypes(true);

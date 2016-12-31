@@ -30,7 +30,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
   protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass) {
     super(name, teClass);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
   /**
@@ -49,7 +49,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
   protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(name, teClass, mat);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
   @Override

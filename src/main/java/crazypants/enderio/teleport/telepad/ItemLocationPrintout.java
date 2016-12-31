@@ -48,7 +48,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   }
 
   protected ItemLocationPrintout() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(itemLocationPrintout.getUnlocalisedName());
     setRegistryName(itemLocationPrintout.getUnlocalisedName());
     setMaxStackSize(1);

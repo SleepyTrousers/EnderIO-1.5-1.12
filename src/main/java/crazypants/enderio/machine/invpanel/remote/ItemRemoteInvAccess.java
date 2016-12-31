@@ -70,7 +70,7 @@ public class ItemRemoteInvAccess extends Item
   }
 
   protected ItemRemoteInvAccess() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemRemoteInvAccess.getUnlocalisedName());
     setRegistryName(ModObject.itemRemoteInvAccess.getUnlocalisedName());
     setHasSubtypes(true);

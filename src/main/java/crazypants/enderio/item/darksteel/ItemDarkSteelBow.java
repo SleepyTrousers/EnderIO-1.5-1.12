@@ -57,7 +57,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   protected ItemDarkSteelBow() {
     setUnlocalizedName(NAME);
     setRegistryName(NAME);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxDamage(300);
     setHasSubtypes(false);
 

@@ -39,7 +39,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   protected ItemXpTransfer() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemXpTransfer.getUnlocalisedName());
     setRegistryName(ModObject.itemXpTransfer.getUnlocalisedName());
     setMaxStackSize(1);

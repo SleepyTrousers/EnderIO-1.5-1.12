@@ -131,7 +131,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   public ItemEnderFood() {
     super(0, false);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxStackSize(1);
     setHasSubtypes(true);
     setRegistryName(ModObject.itemEnderFood.getUnlocalisedName());

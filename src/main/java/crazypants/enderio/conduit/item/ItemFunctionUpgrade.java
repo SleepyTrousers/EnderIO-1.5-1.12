@@ -27,7 +27,7 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
   }
 
   protected ItemFunctionUpgrade() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemFunctionUpgrade.getUnlocalisedName());
     setRegistryName(ModObject.itemFunctionUpgrade.getUnlocalisedName());
     setHasSubtypes(true);

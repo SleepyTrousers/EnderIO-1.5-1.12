@@ -6,6 +6,7 @@ import java.util.Random;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
@@ -48,6 +49,8 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
 
     if (!Config.reinforcedObsidianEnabled) {
       setCreativeTab(null);
+    } else {
+      setCreativeTab(EnderIOTab.tabEnderIO);
     }
   }
 

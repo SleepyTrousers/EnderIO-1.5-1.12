@@ -89,7 +89,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   protected ItemMagnet() {
     super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF/100, 0);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemMagnet.getUnlocalisedName());
     setRegistryName(ModObject.itemMagnet.getUnlocalisedName());
     setMaxStackSize(1);

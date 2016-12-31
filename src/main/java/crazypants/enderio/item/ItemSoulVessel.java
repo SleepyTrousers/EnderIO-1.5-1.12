@@ -71,7 +71,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
   private List<String> blackList;
 
   protected ItemSoulVessel() {
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemSoulVessel.getUnlocalisedName());
     setRegistryName(ModObject.itemSoulVessel.getUnlocalisedName());
     setMaxStackSize(64);
@@ -219,12 +219,19 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-    super.getSubItems(itemIn, tab, subItems);
-    if (tab != null) {
+    if (tab == getCreativeTab() || tab == EnderIOTab.tabNoTab) {
+      super.getSubItems(itemIn, tab, subItems);
+    }
+    if (tab == EnderIOTab.tabEnderIO || tab == EnderIOTab.tabNoTab) {
       for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
         subItems.add(capturedMob.toStack(this, 1, 1));
       }
     }
+  }
+
+  @Override
+  public CreativeTabs[] getCreativeTabs() {
+    return new CreativeTabs[] { getCreativeTab(), EnderIOTab.tabEnderIO };
   }
 
   @Override
