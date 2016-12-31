@@ -231,6 +231,11 @@ public class EnderInventory implements IItemHandler {
         public InventorySlot next() {
           return getSlot(i++);
         }
+
+        @Override
+        public void remove() {
+          throw new UnsupportedOperationException("remove");
+        }
       };
     }
 
