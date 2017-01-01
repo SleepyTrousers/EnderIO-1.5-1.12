@@ -3003,6 +3003,108 @@
     </recipe>
   </recipeGroup>
 
+  <recipeGroup name="ExtraUtils2" >
+    <recipe name="Compressed Cobblestone" energyCost="24000" >
+      <input>
+        <itemStack oreDictionary="compressed1xCobblestone" />
+      </input>
+      <output>
+        <itemStack oreDictionary="compressed1xGravel" chance="0.7" />
+        <itemStack oreDictionary="compressed1xGravel" chance="0.3" />
+        <itemStack oreDictionary="compressed1xSand" chance="0.1" />
+        <itemStack oreDictionary="itemFlint" chance="0.95" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Double Compressed Cobblestone" energyCost="240000" >
+      <input>
+        <itemStack oreDictionary="compressed2xCobblestone" />
+      </input>
+      <output>
+        <itemStack oreDictionary="compressed2xGravel" chance="0.7" />
+        <itemStack oreDictionary="compressed2xGravel" chance="0.3" />
+        <itemStack oreDictionary="compressed1xSand" chance="0.1" />
+        <itemStack oreDictionary="itemFlint" number="9" chance="0.95" />
+        <itemStack oreDictionary="compressed1xCobblestone" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Compressed Gravel" energyCost="24000" >
+      <input>
+        <itemStack oreDictionary="compressed1xGravel" />
+      </input>
+      <output>
+        <itemStack oreDictionary="compressed1xSand" chance="0.7" />
+        <itemStack oreDictionary="compressed1xSand" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" number="9" chance="0.3" />
+        <itemStack oreDictionary="gravel" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Double Compressed Gravel" energyCost="240000" >
+      <input>
+        <itemStack oreDictionary="compressed2xGravel" />
+      </input>
+      <output>
+        <itemStack oreDictionary="compressed2xSand" chance="0.7" />
+        <itemStack oreDictionary="compressed2xSand" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" number="20" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" number="20" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" number="20" chance="0.3" />
+        <itemStack oreDictionary="itemFlint" number="21" chance="0.3" />
+        <itemStack oreDictionary="compressed1xGravel" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Compressed Gravel Sand" energyCost="7200" >
+      <input>
+        <itemStack oreDictionary="compressed1xSand" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack oreDictionary="sand" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Double Compressed Gravel Sand" energyCost="72000" >
+      <input>
+        <itemStack oreDictionary="compressed2xSand" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack oreDictionary="compressed1xSand" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Compressed Netherrack" energyCost="24000" >
+      <input>
+        <itemStack oreDictionary="compressed1xNetherrack" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSulfur" number="3" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="3" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="3" chance="0.15" />
+        <itemStack modID="minecraft" itemName="netherrack" chance="0.05" />
+      </output>
+    </recipe>
+    <recipe name="Double Compressed Netherrack" energyCost="24000" >
+      <input>
+        <itemStack oreDictionary="compressed2xNetherrack" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="dustSulfur" number="10" chance="0.15" />
+        <itemStack oreDictionary="compressed1xNetherrack" chance="0.05" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
   <recipeGroup name="Vanilla Plants" >
     <recipe name="Spider Web" energyCost="5000" >
       <input>
