@@ -259,6 +259,8 @@ enderio.powderCopper.name=Copper Powder
 enderio.powderTin.name=Tin Powder
 enderio.powderEnder.name=Ender Pearl Powder
 enderio.powderObsidian.name=Obsidian Powder
+enderio.powderArdite.name=Ardite Powder
+enderio.powderCobalt.name=Cobalt Powder
 enderio.ingotEnderiumBase.name=Enderium Base
 
 //Capacitors
