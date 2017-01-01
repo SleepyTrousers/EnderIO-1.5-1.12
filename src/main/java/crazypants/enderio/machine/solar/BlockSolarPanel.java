@@ -8,7 +8,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -51,9 +50,6 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
-    if(!Config.photovoltaicCellEnabled) {
-      setCreativeTab(null);
-    }    
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)

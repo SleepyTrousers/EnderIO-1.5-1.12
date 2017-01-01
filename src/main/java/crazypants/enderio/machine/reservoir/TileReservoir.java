@@ -12,7 +12,6 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidReservoirHandler;
@@ -148,7 +147,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
       if (tankDirty || !tank.isFull() || !canRefill) {
         canRefill = hasEnoughLiquid();
       }
-    } else if (Config.reservoirEnabled && shouldDoWorkThisTick(10, -1) && canRefill && !tank.isFull()) {
+    } else if (canRefill && !tank.isFull() && shouldDoWorkThisTick(10, -1)) {
       tank.addFluidAmount(Fluid.BUCKET_VOLUME / 2);
       setTanksDirty();
     }

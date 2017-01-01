@@ -109,7 +109,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Reservoir" required="true">
-    <config section="Item Enabling" name="reservoirEnabled" value="true" />
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
@@ -271,7 +270,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Transceiver" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <level maxlevel="1" />
       <grid size="3x3">
@@ -743,7 +741,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Travel Anchor" required="true">
-    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
     <crafting>
       <grid size="3x3">
         <item name="ingotIron" /><item name="CONDUIT_BINDER" /><item name="ingotIron" />

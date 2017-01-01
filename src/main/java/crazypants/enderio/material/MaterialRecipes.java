@@ -1,6 +1,5 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.config.Config;
 import crazypants.enderio.material.fusedQuartz.FusedQuartzType;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -101,9 +100,7 @@ public class MaterialRecipes {
         }
       }
     }
-    if(Config.darkSteelBowEnabled) {
-      GameRegistry.addRecipe(new NutritiousStickRecipe());
-    }
+    GameRegistry.addRecipe(new NutritiousStickRecipe());
   }
 
 }

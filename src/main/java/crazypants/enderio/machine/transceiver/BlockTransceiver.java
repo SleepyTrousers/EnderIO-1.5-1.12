@@ -13,7 +13,6 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RenderMappers;
@@ -65,9 +64,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
 
   private BlockTransceiver() {
     super(ModObject.blockTransceiver, TileTransceiver.class);
-    if (!Config.transceiverEnabled) {
-      setCreativeTab(null);
-    }
   }
 
   @SideOnly(Side.CLIENT)

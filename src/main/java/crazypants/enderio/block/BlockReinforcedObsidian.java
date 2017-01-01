@@ -9,7 +9,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
@@ -46,12 +45,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
     setHardness(50.0F);
     setResistance(2000.0F);
     setSoundType(SoundType.STONE);
-
-    if (!Config.reinforcedObsidianEnabled) {
-      setCreativeTab(null);
-    } else {
-      setCreativeTab(EnderIOTab.tabEnderIO);
-    }
+    setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   @Override

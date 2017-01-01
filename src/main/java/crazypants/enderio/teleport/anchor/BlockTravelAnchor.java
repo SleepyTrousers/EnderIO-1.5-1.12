@@ -11,7 +11,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -78,9 +77,6 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   private BlockTravelAnchor(Class<T> clz) {
     super(ModObject.blockTravelAnchor.getUnlocalisedName(), clz);
-    if (!Config.travelAnchorEnabled) {
-      setCreativeTab(null);
-    }
     initDefaultState();
   }
 

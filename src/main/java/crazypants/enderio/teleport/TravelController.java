@@ -115,7 +115,7 @@ public class TravelController {
         return true;
       }
     }
-    if (Config.travelAnchorEnabled && doesHandAllowTravel(hand)) {
+    if (doesHandAllowTravel(hand)) {
       travelToSelectedTarget(player, equipped, hand, source, false);
       return true;
     }
@@ -609,7 +609,7 @@ public class TravelController {
       }
     }
 
-    if (Config.travelAnchorEnabled && travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
+    if (travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");

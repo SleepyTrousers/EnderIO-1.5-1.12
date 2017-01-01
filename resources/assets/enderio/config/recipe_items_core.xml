@@ -90,7 +90,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Coordinate Selector" required="true">
-    <config section="Item Enabling" name="travelAnchorEnabled" value="true" />
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="enderpearl" /><item name="ELECTRICAL_STEEL" />
@@ -262,7 +261,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
   
   <recipe name="Dark Bow" required="true">
-    <config name="darkSteelBowEnabled" section="Item Enabling" value="true"/>
     <crafting>
       <grid size="3x3">
         <item /><item name="NUTRITIOUS_STICK" /><item name="string"/>
@@ -544,32 +542,6 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <alias name="GAS_CONDUIT" item="minecraft:stone:0">
-    <!-- prevent log messages from the output tags using this -->
-    <dependency item="enderio:itemGasConduit:0" reverse="true"/>
-  </alias>
-
-  <recipe name="Conduit, Gas" required="true">
-    <config name="gasConduitEnabled" section="Item Enabling" value="true"/>
-    <dependency item="enderio:itemGasConduit:0" />
-    <crafting>
-      <grid>
-        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="ELECTRICAL_STEEL" /><item name="FUSED_QUARTZ" /><item name="ELECTRICAL_STEEL" />
-        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-      </grid>
-      <output name="GAS_CONDUIT" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="GAS_CONDUIT" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="GAS_CONDUIT" amount="2">
-        <level minlevel="3"/>
-      </output>
-    </crafting>
-  </recipe>
-
   <alias name="OC_CONDUIT" item="enderio:itemOCConduit:0">
     <dependency item="enderio:itemOCConduit:0" reverse="false"/>
   </alias>
@@ -807,7 +779,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Advanced Inventory Panel Remote" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <grid size="3x3">
         <item/><item/><item name="PPP_DARK_STEEL" />
@@ -819,7 +790,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Ender Inventory Panel Remote" required="true">
-    <config section="Item Enabling" name="transceiverEnabled" value="true" />
     <crafting>
       <grid size="3x3">
         <item/><item/><item name="PPP_SOULARIUM" />

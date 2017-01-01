@@ -101,15 +101,8 @@ public final class Config {
 
   public static boolean jeiUseShortenedPainterRecipes = true;
 
-  public static boolean reinforcedObsidianEnabled = true;
-
-  public static boolean photovoltaicCellEnabled = true;
-
-  public static boolean reservoirEnabled = true;
-
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static boolean transceiverEnabled = true;
   public static double transceiverEnergyLoss = 0.1;
   public static int transceiverBucketTransmissionCostRF = 100;
 
@@ -141,7 +134,6 @@ public final class Config {
   public static boolean updateLightingWhenHidingFacades = false;
   public static boolean transparentFacesLetThroughBeaconBeam = true;
 
-  public static boolean travelAnchorEnabled = true;
   public static int travelAnchorMaximumDistance = 96;
   public static int travelAnchorCooldown = 0;
   public static boolean travelAnchorSneak = true;
@@ -217,7 +209,6 @@ public final class Config {
   public static double darkSteelSwordEnderPearlDropChance = 1.05;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
 
-  public static boolean darkSteelBowEnabled = true;
   public static float darkSteelBowDamageBonus = 0f;
   public static double[] darkSteelBowForceMultipliers = {1.1f, 1.2f, 1.3f, 1.4f, 1.5f};
   public static int[] darkSteelBowDrawSpeeds = {30, 20, 18, 16, 14};
@@ -687,18 +678,6 @@ public final class Config {
         "The final XP cost for an enchantment is multiplied by this value. To halve costs set to 0.5, to double them set it to 2").getDouble(enchanterLevelCostFactor);
     enchanterLapisCostFactor = config.get(sectionRecipe.name, "enchanterLapisCostFactor", enchanterLapisCostFactor,
         "The lapis cost is enchant level multiplied by this value").getDouble(enchanterLapisCostFactor);
-    
-    photovoltaicCellEnabled = config.get(sectionItems.name, "photovoltaicCellEnabled", photovoltaicCellEnabled,
-        "If set to false: Photovoltaic Cells will not be craftable.")
-        .getBoolean(photovoltaicCellEnabled);
-
-    reservoirEnabled= config.get(sectionItems.name, "reservoirEnabled", reservoirEnabled,
-        "If set to false reservoirs will not be craftable.")
-        .getBoolean(reservoirEnabled);
-
-    transceiverEnabled = config.get(sectionItems.name, "transceiverEnabled", transceiverEnabled,
-        "If set to false: Dimensional Transceivers will not be craftable.")
-        .getBoolean(transceiverEnabled);
 
     maxPhotovoltaicOutputRF = config.get(sectionPower.name, "maxPhotovoltaicOutputRF", maxPhotovoltaicOutputRF,
         "Maximum output in RF/t of the Photovoltaic Panels.").getInt(maxPhotovoltaicOutputRF);
@@ -787,12 +766,6 @@ public final class Config {
         .getBoolean(itemConduitUsePhyscialDistance);
 
     vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getInt(vacuumChestRange);
-
-    reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
-        "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
-
-    travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
-        "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
@@ -1069,7 +1042,6 @@ public final class Config {
             darkSteelSwordEnderPearlDropChancePerLooting);
 
 
-    darkSteelBowEnabled = config.getBoolean("darkSteelBowEnabled", sectionItems.name, darkSteelBowEnabled, "If false the  Dark Steel Bow will be disabled");
     darkSteelBowDamageBonus = (float) config
         .get(sectionDarkSteel.name, "darkSteelBowDamageBonus", darkSteelBowDamageBonus, "The damage bonus applied to arrows fire from the bow.")
         .getDouble(darkSteelBowDamageBonus);

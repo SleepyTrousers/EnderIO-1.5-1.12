@@ -12,7 +12,6 @@ import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
@@ -80,7 +79,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
 
   @Override
   public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-    if (tab != null && Config.reservoirEnabled) {
+    if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }

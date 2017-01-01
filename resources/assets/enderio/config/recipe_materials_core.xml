@@ -405,7 +405,6 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Reinforced Obsidian" required="true">
-    <config name="reinforcedObsidianEnabled" section="Item Enabling" value="true"/>
     <crafting>
       <level maxlevel="2"/>
       <grid>

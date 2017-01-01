@@ -1,7 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgradePowerAdapter;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -44,9 +43,7 @@ public class DarkSteelItems {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
-    if (Config.darkSteelBowEnabled) {
-      itemDarkSteelBow = ItemDarkSteelBow.create();
-    }
+    itemDarkSteelBow = ItemDarkSteelBow.create();
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
     itemMagnet = ItemMagnet.create();
@@ -67,9 +64,7 @@ public class DarkSteelItems {
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelSword, DarkSteelItems.itemDarkSteelSword.getItemName());
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelShears, DarkSteelItems.itemDarkSteelShears.getItemName());
     ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelPickaxe, DarkSteelItems.itemDarkSteelPickaxe.getItemName());
-    if (Config.darkSteelBowEnabled) {
-      ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelBow, ItemDarkSteelBow.NAME);
-    }
+    ClientUtil.registerRenderer(DarkSteelItems.itemDarkSteelBow, ItemDarkSteelBow.NAME);
 
     ClientUtil.registerRenderer(itemMagnet, ModObject.itemMagnet.getUnlocalisedName());
   }
