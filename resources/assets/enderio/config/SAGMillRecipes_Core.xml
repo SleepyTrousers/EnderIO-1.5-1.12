@@ -3053,7 +3053,7 @@
         <itemStack oreDictionary="compressed1xGravel" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="Compressed Gravel Sand" energyCost="7200" >
+    <recipe name="Compressed Sand" energyCost="7200" >
       <input>
         <itemStack oreDictionary="compressed1xSand" />
       </input>
@@ -3064,7 +3064,7 @@
         <itemStack oreDictionary="sand" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="Double Compressed Gravel Sand" energyCost="72000" >
+    <recipe name="Double Compressed Sand" energyCost="72000" >
       <input>
         <itemStack oreDictionary="compressed2xSand" />
       </input>
@@ -3086,7 +3086,7 @@
         <itemStack modID="minecraft" itemName="netherrack" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="Double Compressed Netherrack" energyCost="24000" >
+    <recipe name="Double Compressed Netherrack" energyCost="240000" >
       <input>
         <itemStack oreDictionary="compressed2xNetherrack" />
       </input>
