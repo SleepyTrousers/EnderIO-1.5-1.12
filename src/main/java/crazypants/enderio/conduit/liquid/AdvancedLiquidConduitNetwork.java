@@ -73,13 +73,13 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   private void setConduitVolumes() {
-    if(tank.containsValidLiquid() && !conduits.isEmpty()) {
+    if (tank.containsValidLiquid() && !getConduits().isEmpty()) {
       FluidStack fluidPerConduit = tank.getFluid().copy();
-      int numCons = conduits.size();
+      int numCons = getConduits().size();
       int leftOvers = fluidPerConduit.amount % numCons;
       fluidPerConduit.amount = fluidPerConduit.amount / numCons;
 
-      for (AdvancedLiquidConduit con : conduits) {
+      for (AdvancedLiquidConduit con : getConduits()) {
         FluidStack f = fluidPerConduit.copy();
         if(leftOvers > 0) {
           f.amount += 1;
@@ -137,7 +137,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         if(ticksEmpty > 40) {
           setFluidType(null);
           ticksEmpty = 0;
-          for (IConduit con : conduits) {
+          for (IConduit con : getConduits()) {
             con.setActive(false);
           }
           lastSyncedActive = false;
@@ -149,7 +149,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     ticksEmpty = 0;
     
     if(!lastSyncedActive) {
-      for (IConduit con : conduits) {
+      for (IConduit con : getConduits()) {
         con.setActive(true);
       }
       lastSyncedActive = true;
@@ -241,10 +241,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   World getWorld() {
-    if(conduits.isEmpty()) {
+    if (getConduits().isEmpty()) {
       return null;
     }
-    return conduits.get(0).getBundle().getBundleWorldObj();
+    return getConduits().get(0).getBundle().getBundleWorldObj();
   }
 
   public void removeInput(LiquidOutput lo) {

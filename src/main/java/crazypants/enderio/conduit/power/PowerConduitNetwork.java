@@ -13,8 +13,8 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.power.IPowerInterface;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
@@ -38,7 +38,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   @Override
   public void destroyNetwork() {
-    for (IPowerConduit con : conduits) {
+    for (IPowerConduit con : getConduits()) {
       con.setActive(false);
     }
     if(powerManager != null) {

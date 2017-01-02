@@ -91,12 +91,12 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     int pushToken = getNextPushToken();
     List<FlowAction> actions = new ArrayList<FlowAction>();
-    for (int i = 0; i < Math.min(maxFlowsPerTick, conduits.size()); i++) {
+    for (int i = 0; i < Math.min(maxFlowsPerTick, getConduits().size()); i++) {
 
-      if(lastFlowIndex >= conduits.size()) {
+      if (lastFlowIndex >= getConduits().size()) {
         lastFlowIndex = 0;
       }
-      flowFrom(conduits.get(lastFlowIndex), actions, pushToken);
+      flowFrom(getConduits().get(lastFlowIndex), actions, pushToken);
       ++lastFlowIndex;
 
     }
@@ -108,7 +108,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     // Flush any tanks with a tiny bit left
     List<LiquidConduit> toEmpty = new ArrayList<LiquidConduit>();
-    for (LiquidConduit con : conduits) {
+    for (LiquidConduit con : getConduits()) {
       if(con != null && con.getTank().getFluidAmount() < 10) {
         toEmpty.add(con);
       } else {
@@ -122,7 +122,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
 
     List<LocatedFluidHandler> externals = new ArrayList<LocatedFluidHandler>();
-    for (AbstractTankConduit con : conduits) {
+    for (AbstractTankConduit con : getConduits()) {
       Set<EnumFacing> extCons = con.getExternalConnections();
 
       for (EnumFacing dir : extCons) {
@@ -154,7 +154,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   private boolean isEmpty() {
-    for (LiquidConduit con : conduits) {
+    for (LiquidConduit con : getConduits()) {
       if(con.tank.getFluidAmount() > 0) {
         return false;
       }

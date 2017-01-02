@@ -35,7 +35,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
     } else {
       liquidType = null;
     }
-    for (AbstractTankConduit conduit : conduits) {
+    for (AbstractTankConduit conduit : getConduits()) {
       conduit.setFluidType(liquidType);
     }
     return true;
@@ -46,7 +46,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
       return;
     }
     this.fluidTypeLocked = fluidTypeLocked;
-    for (AbstractTankConduit conduit : conduits) {
+    for (AbstractTankConduit conduit : getConduits()) {
       conduit.setFluidTypeLocked(fluidTypeLocked);
     }
   }
@@ -64,7 +64,7 @@ public class AbstractTankConduitNetwork<T extends AbstractTankConduit> extends A
 
   public int getTotalVolume() {
     int totalVolume = 0;
-    for (T con : conduits) {
+    for (T con : getConduits()) {
       totalVolume += con.getTank().getFluidAmount();
     }
     return totalVolume;

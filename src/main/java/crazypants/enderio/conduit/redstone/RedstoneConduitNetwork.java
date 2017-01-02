@@ -44,7 +44,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void destroyNetwork() {
     updatingNetwork = true;
-    for (IRedstoneConduit con : conduits) {
+    for (IRedstoneConduit con : getConduits()) {
       con.setActive(false);
     }
     // Notify neighbours that all signals have been lost    
@@ -90,7 +90,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         break;
       }
     }    
-    for (IRedstoneConduit con : conduits) {
+    for (IRedstoneConduit con : getConduits()) {
       con.setActive(isActive);      
     }
   }
@@ -133,7 +133,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private String conduitsString() {
     StringBuilder sb = new StringBuilder();
-    for (IRedstoneConduit con : conduits) {
+    for (IRedstoneConduit con : getConduits()) {
       TileEntity te = con.getBundle().getEntity();
       sb.append("<").append(te.getPos().getX()).append(",").append(te.getPos().getY()).append(",").append(te.getPos().getZ()).append(">");
     }
@@ -152,7 +152,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public void notifyNeigborsOfSignalUpdate() {
-    ArrayList<IRedstoneConduit> conduitsCopy = new ArrayList<IRedstoneConduit>(conduits);
+    ArrayList<IRedstoneConduit> conduitsCopy = new ArrayList<IRedstoneConduit>(getConduits());
     for (IRedstoneConduit con : conduitsCopy) {
       notifyConduitNeighbours(con);
     }
@@ -206,7 +206,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       }
       BlockCoord loc = c.getLocation();
       if (world.isBlockLoaded(loc.getBlockPos())) {
-        this.conduits.add(c);
+        this.getConduits().add(c);
         c.setNetwork(this);
       }
     }

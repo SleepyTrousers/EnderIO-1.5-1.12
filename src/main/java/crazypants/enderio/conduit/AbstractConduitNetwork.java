@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.diagnostics.ConduitNeighborUpdateTracker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -20,7 +21,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 //I=base type, I is the base class of the implementations accepted by the network 
 public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
-  protected final List<I> conduits = new ArrayList<I>();
+  private final List<I> conduits = new ArrayList<I>();
 
   protected final Class<I> implClass;
   protected final Class<T> baseConduitClass;
@@ -70,10 +71,47 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   }
 
   public void addConduit(I con) {
-    if(!conduits.contains(con)) {
-      if(conduits.isEmpty()) {
-        ConduitNetworkTickHandler.instance.registerNetwork(this);
+    if (conduits.isEmpty()) {
+      ConduitNetworkTickHandler.instance.registerNetwork(this);
+    }
+    // Step 1: Is the new conduit attached to a TE that is valid?
+    final IConduitBundle newbundle = con.getBundle();
+    if (newbundle == null || newbundle.getEntity().isInvalid() || !newbundle.getEntity().hasWorldObj()) {
+      Log.warn("Tried to add invalid conduit to network: " + con);
+      return;
+    }
+    BlockPos pos = newbundle.getEntity().getPos();
+    // Step 2: Check for duplicates and other errors
+    List<I> old = new ArrayList<I>(conduits);
+    conduits.clear();
+    for (I conduit : old) {
+      // Step 2.1: Fast skip if we have a real dupe
+      if (con == conduit) {
+        continue;
       }
+      // Step 2.2: Check if the old conduit's TE is valid
+      final IConduitBundle bundle = conduit.getBundle();
+      if (bundle == null || bundle.getEntity().isInvalid() || !bundle.getEntity().hasWorldObj()) {
+        conduit.setNetwork(null);
+        continue; // bad conduit, skip it
+      }
+      // Step 2.3: Check if the old conduit's TE matches what its world has
+      World world = bundle.getBundleWorldObj();
+      TileEntity tileEntity = world.getTileEntity(bundle.getEntity().getPos());
+      if (tileEntity != bundle.getEntity()) {
+        conduit.setNetwork(null);
+        continue; // bad conduit, skip it
+      }
+      // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotton from the
+      // world and the old conduit already was checked against the world...
+      if (pos.equals(bundle.getEntity().getPos())) {
+        Log.warn("Tried to add invalid conduit to network: " + con);
+        con = null;
+      }
+      conduits.add(conduit);
+    }
+    // Step 3: Add the new conduit
+    if (con != null) {
       conduits.add(con);
     }
   }
