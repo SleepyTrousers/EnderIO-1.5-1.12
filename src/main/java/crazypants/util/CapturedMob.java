@@ -52,21 +52,21 @@ public class CapturedMob {
   public static final String ENTITY_KEY = "entity";
   public static final String ENTITY_ID_KEY = "entityId";
   public static final String CUSTOM_NAME_KEY = "customName";
-  public static final String IS_STUB_KEY = "isStub";
   public static final String VARIANT_KEY = "isVariant";
 
   private final static List<String> blacklist = new ArrayList<String>();
   private final static List<String> unspawnablelist = new ArrayList<String>();
 
-  private final NBTTagCompound entityNbt;
-  private final String entityId;
-  private final String customName;
-  private final boolean isStub;
-  private Enum<?> variant;
+  private final @Nullable NBTTagCompound entityNbt;
+  private final @Nonnull String entityId;
+  private final @Nullable String customName;
+  private final @Nullable Enum<?> variant;
 
   private CapturedMob(@Nonnull EntityLivingBase entity) {
 
-    entityId = EntityList.getEntityString(entity);
+    String id = EntityList.getEntityString(entity);
+
+    entityId = id == null ? "Pig" : id; // nbt will have nothing else
 
     entityNbt = entity.serializeNBT();
 
@@ -82,6 +82,7 @@ public class CapturedMob {
     } else {
       customName = null;
     }
+
     if (entity instanceof EntitySkeleton) {
       variant = ((EntitySkeleton) entity).func_189771_df();
     } else if (entity instanceof EntityZombie) {
@@ -89,27 +90,28 @@ public class CapturedMob {
     } else {
       variant = null;
     }
-
-    isStub = false;
   }
 
-  private CapturedMob(NBTTagCompound nbt) {
+  private CapturedMob(@Nonnull NBTTagCompound nbt) {
     if (nbt.hasKey(ENTITY_KEY)) {
       entityNbt = nbt.getCompoundTag(ENTITY_KEY).copy();
     } else {
       entityNbt = null;
     }
     if (nbt.hasKey(ENTITY_ID_KEY)) {
-      entityId = nbt.getString(ENTITY_ID_KEY);
+      String id = nbt.getString(ENTITY_ID_KEY);
+      entityId = id == null ? "Pig" : id;
+    } else if (entityNbt != null && entityNbt.hasKey("id")) {
+      String id = NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("id");
+      entityId = id == null ? "Pig" : id;
     } else {
-      entityId = null;
+      entityId = "Pig";
     }
     if (nbt.hasKey(CUSTOM_NAME_KEY)) {
       customName = nbt.getString(CUSTOM_NAME_KEY);
     } else {
       customName = null;
     }
-    isStub = nbt.getBoolean(IS_STUB_KEY);
     if(nbt.hasKey(VARIANT_KEY)) {
       short ord = nbt.getShort(VARIANT_KEY);
       variant = mkEnumForType(ord);
@@ -118,11 +120,10 @@ public class CapturedMob {
     }
   }
 
-  private CapturedMob(String entityId, Enum<?> variant) {
+  private CapturedMob(@Nonnull String entityId, @Nullable Enum<?> variant) {
     this.entityNbt = null;
     this.entityId = entityId;
     this.customName = null;
-    this.isStub = true;
     this.variant = variant;
   }
 
@@ -144,26 +145,18 @@ public class CapturedMob {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
     if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
-      stack.getTagCompound().setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
+      NullHelper.notnullM(stack.getTagCompound(), "getTagCompound() doesn't produce value that was set with setTagCompound()").setString(CUSTOM_NAME_KEY,
+          EnderIO.lang.localize("easteregg.piginabottle"));
     }
     return stack;
   }
 
   public @Nonnull ItemStack toGenericStack(Item item, int meta, int amount) {
     NBTTagCompound data = new NBTTagCompound();
-    String id;
-    if (entityId != null) {
-      id = entityId;
-    } else if (entityNbt != null && entityNbt.hasKey("id")) {
-      id = entityNbt.getString("id");
-    } else {
-      id = "Pig";
-    }
-    if (isUnspawnable(id)) {
+    if (isUnspawnable(entityId)) {
       return toStack(item, meta, amount);
     }
-    data.setString(ENTITY_ID_KEY, id);
-    data.setBoolean(IS_STUB_KEY, true);
+    data.setString(ENTITY_ID_KEY, entityId);
     if (variant != null) {
       data.setShort(VARIANT_KEY, (short) variant.ordinal());
     }
@@ -177,17 +170,12 @@ public class CapturedMob {
 
   public @Nonnull NBTTagCompound toNbt(@Nullable NBTTagCompound nbt) {
     NBTTagCompound data = nbt != null ? nbt : new NBTTagCompound();
+    data.setString(ENTITY_ID_KEY, entityId);
     if (entityNbt != null) {
       data.setTag(ENTITY_KEY, entityNbt.copy());
     }
-    if (entityId != null) {
-      data.setString(ENTITY_ID_KEY, entityId);
-    }
     if (customName != null) {
       data.setString(CUSTOM_NAME_KEY, customName);
-    }
-    if (isStub) {
-      data.setBoolean(IS_STUB_KEY, isStub);
     }
     if (variant != null) {
       data.setShort(VARIANT_KEY, (short)variant.ordinal());
@@ -196,13 +184,15 @@ public class CapturedMob {
   }
 
   public static boolean containsSoul(@Nullable NBTTagCompound nbt) {
-    return nbt != null && (nbt.hasKey(ENTITY_KEY) || (nbt.hasKey(ENTITY_ID_KEY) && nbt.hasKey(IS_STUB_KEY)));
+    return nbt != null && (nbt.hasKey(ENTITY_KEY) || nbt.hasKey(ENTITY_ID_KEY));
   }
 
+  @SuppressWarnings("null")
   public static boolean containsSoul(@Nullable ItemStack stack) {
-    return stack != null && stack.hasTagCompound() && containsSoul(stack.getTagCompound());
+    return Prep.isValid(stack) && stack.hasTagCompound() && containsSoul(stack.getTagCompound());
   }
 
+  @SuppressWarnings("null")
   public static @Nullable CapturedMob create(@Nullable ItemStack stack) {
     if (containsSoul(stack)) {
       return new CapturedMob(stack.getTagCompound());
@@ -212,7 +202,7 @@ public class CapturedMob {
   }
 
   public static @Nullable CapturedMob create(@Nullable NBTTagCompound nbt) {
-    if (containsSoul(nbt)) {
+    if (nbt != null && containsSoul(nbt)) {
       return new CapturedMob(nbt);
     } else {
       return null;
@@ -289,81 +279,84 @@ public class CapturedMob {
 
   @SuppressWarnings("null")
   public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, @Nullable DifficultyInstance difficulty, boolean clone) {
-    Entity entity = null;
-    if (world != null) {
-      if (entityId != null && (isStub || !clone) && (!isUnspawnable(entityId) || entityNbt == null)) {
-        entity = EntityList.createEntityByName(entityId, world);
-      } else if (entityNbt != null) {
-        if (clone || isUnspawnable(entityId)) {
-          entity = EntityList.createEntityFromNBT(entityNbt, world);
-          return entity;
-        } else {
-          entity = EntityList.createEntityByName(entityNbt.getString("id"), world);
-        }
-      }
-      if (pos != null && entity != null) {
-        entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
-      }
-      if (entity instanceof EntityLiving) {
-        if (pos != null && difficulty == null) {
-          difficulty = world.getDifficultyForLocation(pos);
-        }
-        if (difficulty != null) {
-          IEntityLivingData livingData = null;
-          if (variant != null && entity instanceof EntityZombie) {
-            livingData = new IEntityLivingData() {
-            };
-          }
-          ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
-        }
-        }
-      if (variant != null) {
-        if (entity instanceof EntitySkeleton) {
-          EntitySkeleton skel = (EntitySkeleton) entity;
-          skel.func_189768_a((SkeletonType) variant);
-          if (variant == SkeletonType.WITHER) {
-            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
-            skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
-            skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
-            skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
-            skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
-            skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
+    if (world == null) {
+      return null;
+    }
 
-            skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-            skel.setCombatTask();
+    if (entityNbt != null && (clone || isUnspawnable(entityId))) {
+      return EntityList.createEntityFromNBT(entityNbt, world);
+    }
 
-            if (Celeb.H31.isOn() && Math.random() < 0.25) {
-              skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
-              skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-            } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
-              skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
-            } else if (Math.random() < 0.1) {
-              skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
-              skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
-            }
+    Entity entity = EntityList.createEntityByName(entityId, world);
+    if (entity == null) {
+      return null;
+    }
+
+    if (pos != null) {
+      entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+    }
+
+    if (entity instanceof EntityLiving) {
+      if (pos != null && difficulty == null) {
+        difficulty = world.getDifficultyForLocation(pos);
+      }
+      if (difficulty != null) {
+        IEntityLivingData livingData = null;
+        if (variant != null && entity instanceof EntityZombie) {
+          livingData = new IEntityLivingData() {
+          };
+        }
+        ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
+      }
+    }
+
+    if (variant != null) {
+      if (entity instanceof EntitySkeleton) {
+        EntitySkeleton skel = (EntitySkeleton) entity;
+        skel.func_189768_a((SkeletonType) variant);
+        if (variant == SkeletonType.WITHER) {
+          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+          skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
+          skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
+          skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
+          skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
+          skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
+
+          skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+          skel.setCombatTask();
+
+          if (Celeb.H31.isOn() && Math.random() < 0.25) {
+            skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
+            skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
+          } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
+            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
+          } else if (Math.random() < 0.1) {
+            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
+            skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
           }
-        } else if (entity instanceof EntityZombie) {
-          boolean isChild = world.rand.nextFloat() < net.minecraftforge.common.ForgeModContainer.zombieBabyChance;
-          ((EntityZombie)entity).func_189778_a((ZombieType)variant);
-          if (((ZombieType) variant).func_190154_b()) {
-            do {
-              net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession((EntityZombie) entity, world.rand);
-            } while (((EntityZombie) entity).getVillagerTypeForge() == null && !((EntityZombie) entity).func_189777_di().func_190154_b());
-          }
-          if (isChild) {
-            ((EntityZombie) entity).setChild(true);
-            if (world.rand.nextFloat() < 0.05D) {
-              EntityChicken entitychicken1 = new EntityChicken(world);
-              entitychicken1.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
-              entitychicken1.onInitialSpawn(difficulty, (IEntityLivingData) null);
-              entitychicken1.setChickenJockey(true);
-              world.spawnEntityInWorld(entitychicken1);
-              entity.startRiding(entitychicken1);
-            }
+        }
+      } else if (entity instanceof EntityZombie) {
+        boolean isChild = world.rand.nextFloat() < net.minecraftforge.common.ForgeModContainer.zombieBabyChance;
+        ((EntityZombie) entity).func_189778_a((ZombieType) variant);
+        if (((ZombieType) variant).func_190154_b()) {
+          do {
+            net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession((EntityZombie) entity, world.rand);
+          } while (((EntityZombie) entity).getVillagerTypeForge() == null && !((EntityZombie) entity).func_189777_di().func_190154_b());
+        }
+        if (isChild) {
+          ((EntityZombie) entity).setChild(true);
+          if (world.rand.nextFloat() < 0.05D) {
+            EntityChicken entitychicken1 = new EntityChicken(world);
+            entitychicken1.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+            entitychicken1.onInitialSpawn(difficulty, (IEntityLivingData) null);
+            entitychicken1.setChickenJockey(true);
+            world.spawnEntityInWorld(entitychicken1);
+            entity.startRiding(entitychicken1);
           }
         }
       }
     }
+
     return entity;
   }
 
@@ -374,19 +367,17 @@ public class CapturedMob {
       String typeName = variant == SkeletonType.NORMAL ? entityId : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray";
       baseName = EntityUtil.getDisplayNameForEntity(typeName);
     } else if (variant != null && ZOMBIE_ENTITY_NAME.equals(entityId)) {
-      if (((ZombieType) variant).func_190154_b()) {
+      if (((ZombieType) NullHelper.notnullJ(variant, "private final field changed its value")).func_190154_b()) {
         baseName = EntityUtil.getDisplayNameForEntity("ZombieVillager");
       } else {
-        baseName = ((ZombieType) variant).func_190145_d().getUnformattedText();
+        baseName = ((ZombieType) NullHelper.notnullJ(variant, "private final field changed its value")).func_190145_d().getUnformattedText();
       }
-    } else if (entityId != null) {
+    } else {
       baseName = EntityUtil.getDisplayNameForEntity(entityId);
-    } else if (entityNbt != null) {
-      baseName = EntityUtil.getDisplayNameForEntity(entityNbt.getString("id"));
     }
     if (baseName == null || baseName.trim().isEmpty()) {
       if (customName != null && !customName.trim().isEmpty()) {
-        return customName + "";
+        return NullHelper.notnullJ(customName, "private final field changed its value");
       } else {
         return "???";
       }
@@ -401,7 +392,7 @@ public class CapturedMob {
 
   public float getHealth() {
     if (entityNbt != null && entityNbt.hasKey("HealF")) {
-      return entityNbt.getFloat("HealF");
+      return NullHelper.notnullJ(entityNbt, "private final field changed its value").getFloat("HealF");
     } else {
       return Float.NaN;
     }
@@ -417,7 +408,7 @@ public class CapturedMob {
 
   public @Nullable NBTTagCompound getAttribute(@Nullable String name) {
     if (name != null && entityNbt != null && entityNbt.hasKey("Attributes")) {
-      NBTBase tag = entityNbt.getTag("Attributes");
+      NBTBase tag = NullHelper.notnullJ(entityNbt, "private final field changed its value").getTag("Attributes");
       if (tag instanceof NBTTagList) {
         NBTTagList attributes = (NBTTagList) tag;
         for (int i = 0; i < attributes.tagCount(); i++) {
@@ -433,7 +424,7 @@ public class CapturedMob {
 
   public @Nullable DyeColor getColor() {
     if (entityNbt != null && entityNbt.hasKey("Color")) {
-      int colorIdx = entityNbt.getInteger("Color");
+      int colorIdx = NullHelper.notnullJ(entityNbt, "private final field changed its value").getInteger("Color");
       if (colorIdx >= 0 && colorIdx <= 15) {
         return DyeColor.values()[15 - colorIdx];
       }
@@ -443,7 +434,7 @@ public class CapturedMob {
 
   public @Nullable String getFluidName() {
     if (entityNbt != null && entityNbt.hasKey("FluidName")) {
-      return entityNbt.getString("FluidName");
+      return NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("FluidName");
     }
     return null;
   }
@@ -461,7 +452,7 @@ public class CapturedMob {
   }
 
   public @Nullable String getEntityName() {
-    return entityId != null ? entityId : entityNbt != null ? entityNbt.getString("id") : null;
+    return entityId;
   }
 
   public boolean isSameType(Entity entity) {
@@ -472,8 +463,8 @@ public class CapturedMob {
 
   @Override
   public String toString() {
-    return "CapturedMob [" + (entityId != null ? "entityId=" + entityId + ", " : "") + (customName != null ? "customName=" + customName + ", " : "")
-        + "isStub=" + isStub + ", variant=" + variant + ", " + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
+    return "CapturedMob [" + "entityId=" + entityId + ", " + (customName != null ? "customName=" + customName + ", " : "") + "variant=" + variant + ", "
+        + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
         + getDisplayName() + ", getHealth()=" + getHealth() + ", getMaxHealth()=" + getMaxHealth() + ", "
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
   }
@@ -517,17 +508,10 @@ public class CapturedMob {
   }
 
   private Enum<?> mkEnumForType(int ordinal) {
-    String type = entityId;
-    if (entityId == null && entityNbt != null) {
-      type = entityNbt.getString("id");
-    }
-    if (entityId == null) {
-      return null;
-    }
-    if (SKELETON_ENTITY_NAME.equals(type)) {
+    if (SKELETON_ENTITY_NAME.equals(entityId)) {
       return SkeletonType.values()[ordinal];
     }
-    if (ZOMBIE_ENTITY_NAME.equals(type)) {
+    if (ZOMBIE_ENTITY_NAME.equals(entityId)) {
       return ZombieType.values()[ordinal];
   }
     return null;
