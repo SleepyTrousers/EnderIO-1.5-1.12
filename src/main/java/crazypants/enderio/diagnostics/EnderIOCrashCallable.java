@@ -74,7 +74,8 @@ public class EnderIOCrashCallable implements ICrashCallable {
               result.add(" * The RF API that is being used has no API annotation. This may lead to problems.");
             }
           } else {
-            result.add(" * No RF API could be found in memory. This may be may due to an early crash.");
+            // we run fine without RF API nowadays
+            // result.add(" * No RF API could be found in memory. This may be may due to an early crash.");
           }
         }
       } else if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
