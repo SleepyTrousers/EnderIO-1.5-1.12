@@ -364,7 +364,7 @@
         <itemStack modID="minecraft" itemName="glowstone_dust" number="1" chance="0.8" />
       </output>
     </recipe>
-    <recipe name="Bone" energyCost="2400" >
+    <recipe name="Bone" energyCost="1200" >
       <input>
         <itemStack modID="minecraft" itemName="bone" />
       </input>
