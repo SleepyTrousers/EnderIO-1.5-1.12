@@ -116,7 +116,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="blockGlass" /><item name="item:minecraft:cauldron" /><item name="blockGlass" />
         <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
       </grid>
-      <output name="enderio:blockReservoir" amount="2" />
+      <output name="enderio:blockReservoir" amount="4" />
     </crafting>
     <crafting>
       <level minlevel="2" />
@@ -125,7 +125,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="blockGlassHardened" /><item name="item:minecraft:cauldron" /><item name="blockGlassHardened" />
         <item name="blockGlassHardened" /><item name="FUSED_QUARTZ" /><item name="blockGlassHardened" />
       </grid>
-      <output name="enderio:blockReservoir" amount="2" />
+      <output name="enderio:blockReservoir" amount="4" />
     </crafting>
   </recipe>
 
