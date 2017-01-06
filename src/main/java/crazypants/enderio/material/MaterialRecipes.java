@@ -90,12 +90,12 @@ public class MaterialRecipes {
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
         if (color == EnumDyeColor.WHITE) {
-          addShaped(new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
+          addShaped(new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), "GGG", "CGG", "GGG", 'G', type.getUnlocalisedName(), 'C',
               new ItemStack(Items.DYE, 1, color.getDyeDamage()));
         } else {
-          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "GCG", "GGG", 'G',
+          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
               new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage()));
-          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "GCG", "GGG", 'G', type.getUnlocalisedName(), 'C',
+          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getUnlocalisedName(), 'C',
               new ItemStack(Items.DYE, 1, color.getDyeDamage()));
         }
       }
