@@ -259,6 +259,8 @@ enderio.powderCopper.name=Медный порошок
 enderio.powderTin.name=Оловянный порошок
 enderio.powderEnder.name=Порошок из Эндер-жемчуга
 enderio.powderObsidian.name=Обсидиановый порошок
+enderio.powderArdite.name=Ардитовый порошок
+enderio.powderCobalt.name=Кобальтовый порошок
 enderio.ingotEnderiumBase.name=Эндериумовая основа
 
 //Capacitors
