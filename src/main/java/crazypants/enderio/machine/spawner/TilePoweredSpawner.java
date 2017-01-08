@@ -30,6 +30,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -260,7 +261,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     int spawnRange = getRange();
 
     if (Config.poweredSpawnerMaxNearbyEntities > 0) {
-      int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange)).size();
+      int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange), EntitySelectors.IS_ALIVE).size();
       if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
         cleanupUnspawnedEntity(entity);
         setNotification(SpawnerNotification.AREA_FULL);
