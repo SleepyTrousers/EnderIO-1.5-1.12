@@ -70,49 +70,82 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     }
   }
 
-  public void addConduit(I con) {
+  public void addConduit(I newconduit) {
     if (conduits.isEmpty()) {
       ConduitNetworkTickHandler.instance.registerNetwork(this);
     }
+    BlockPos newpos = null;
+    boolean error = false;
     // Step 1: Is the new conduit attached to a TE that is valid?
-    final IConduitBundle newbundle = con.getBundle();
-    if (newbundle == null || newbundle.getEntity().isInvalid() || !newbundle.getEntity().hasWorldObj()) {
-      Log.warn("Tried to add invalid conduit to network: " + con);
+    final IConduitBundle newbundle = newconduit.getBundle();
+    if (newbundle == null) {
+      Log.warn("Tried to add invalid conduit to network: " + newconduit);
+      error = true;
+    } else {
+      final TileEntity newte = newbundle.getEntity();
+      if (!newte.hasWorldObj()) {
+        Log.warn("Tried to add invalid (no world) conduit to network: " + newconduit);
+        error = true;
+      }
+      if (newte.isInvalid()) {
+        Log.warn("Tried to add invalid (invalidated) conduit to network: " + newconduit);
+        error = true;
+      }
+      newpos = newte.getPos();
+      final World newworld = newte.getWorld();
+      if (!newworld.isBlockLoaded(newpos)) {
+        Log.warn("Tried to add invalid (unloaded) conduit to network: " + newconduit);
+        error = true;
+      }
+      if (newworld.getTileEntity(newte.getPos()) != newte) {
+        Log.warn("Tried to add invalid (world disagrees) conduit to network: " + newconduit);
+        error = true;
+      }
+    }
+    if (error) {
+      new Exception("trace for message above").printStackTrace();
       return;
     }
-    BlockPos pos = newbundle.getEntity().getPos();
     // Step 2: Check for duplicates and other errors
     List<I> old = new ArrayList<I>(conduits);
     conduits.clear();
-    for (I conduit : old) {
+    for (I oldconduit : old) {
       // Step 2.1: Fast skip if we have a real dupe
-      if (con == conduit) {
+      if (newconduit == oldconduit) {
         continue;
       }
       // Step 2.2: Check if the old conduit's TE is valid
-      final IConduitBundle bundle = conduit.getBundle();
-      if (bundle == null || bundle.getEntity().isInvalid() || !bundle.getEntity().hasWorldObj()) {
-        conduit.setNetwork(null);
+      final IConduitBundle oldbundle = oldconduit.getBundle();
+      final TileEntity oldte = oldbundle.getEntity();
+      if (oldbundle == null || oldte.isInvalid() || !oldte.hasWorldObj()) {
+        oldconduit.setNetwork(null);
+        continue; // bad conduit, skip it
+      }
+      // Step 2.2b: Check if the target position is loaded
+      final World oldworld = oldbundle.getBundleWorldObj();
+      final BlockPos oldpos = oldte.getPos();
+      if (!oldworld.isBlockLoaded(oldpos)) {
+        Log.warn("Removed unloaded but valid conduit from network: " + oldconduit);
+        oldconduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
       // Step 2.3: Check if the old conduit's TE matches what its world has
-      World world = bundle.getBundleWorldObj();
-      TileEntity tileEntity = world.getTileEntity(bundle.getEntity().getPos());
-      if (tileEntity != bundle.getEntity()) {
-        conduit.setNetwork(null);
+      if (oldworld.getTileEntity(oldpos) != oldte) {
+        oldconduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
-      // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotton from the
+      // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotten from the
       // world and the old conduit already was checked against the world...
-      if (pos.equals(bundle.getEntity().getPos())) {
-        Log.warn("Tried to add invalid conduit to network: " + con);
-        con = null;
+      if (newpos.equals(oldpos)) {
+        Log.warn("Tried to add invalid conduit to network! Old conduit: " + oldconduit + "/" + oldbundle + " New conduit: " + newconduit + "/" + oldbundle
+            + " World says: " + oldworld.getTileEntity(newpos));
+        newconduit = null;
       }
-      conduits.add(conduit);
+      conduits.add(oldconduit);
     }
     // Step 3: Add the new conduit
-    if (con != null) {
-      conduits.add(con);
+    if (newconduit != null) {
+      conduits.add(newconduit);
     }
   }
 
