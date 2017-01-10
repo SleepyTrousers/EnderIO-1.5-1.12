@@ -294,7 +294,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     int result;
     if(cached == null) {
       TileEntity te = getBundle().getEntity();
-      result = te.getWorld().isBlockIndirectlyGettingPowered(te.getPos());
+      result = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
       externalRedstoneSignals.put(dir, result);
     } else {
       result = cached;

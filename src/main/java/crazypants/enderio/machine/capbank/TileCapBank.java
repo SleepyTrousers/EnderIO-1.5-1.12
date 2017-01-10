@@ -15,6 +15,7 @@ import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
@@ -207,7 +208,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if (redstoneStateDirty) {
-      int sig = worldObj.isBlockIndirectlyGettingPowered(getPos());
+      int sig = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(worldObj, getPos());
       boolean recievingSignal = sig > 0;
       network.updateRedstoneSignal(this, recievingSignal);
       redstoneStateDirty = false;

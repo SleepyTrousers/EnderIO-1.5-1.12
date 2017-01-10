@@ -275,9 +275,30 @@ public class ConduitUtil {
     int signalStrength = getInternalSignalForColor(bundle, col);
     if (signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
-      signalStrength = Math.max(signalStrength, te.getWorld().isBlockIndirectlyGettingPowered(te.getPos()));
+      signalStrength = Math.max(signalStrength, isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos()));
     }
     return RedstoneControlMode.isConditionMet(mode, signalStrength);
+  }
+
+  public static int isBlockIndirectlyGettingPoweredIfLoaded(World world, BlockPos pos) {
+    int i = 0;
+
+    for (EnumFacing enumfacing : EnumFacing.values()) {
+      final BlockPos offset = pos.offset(enumfacing);
+      if (world.isBlockLoaded(offset)) {
+        int j = world.getRedstonePower(offset, enumfacing);
+
+        if (j >= 15) {
+          return 15;
+        }
+
+        if (j > i) {
+          i = j;
+        }
+      }
+    }
+
+    return i;
   }
 
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {

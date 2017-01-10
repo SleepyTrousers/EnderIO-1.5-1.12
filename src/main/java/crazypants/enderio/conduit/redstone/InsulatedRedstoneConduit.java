@@ -608,23 +608,24 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   protected int getExternalPowerLevel(EnumFacing dir) {
     World world = getBundle().getEntity().getWorld();
-    BlockCoord loc = getLocation();
-    loc = loc.getLocation(dir);
+    BlockPos loc = getLocation().getBlockPos().offset(dir);
+    int res = 0;
 
-    int strong = world.getStrongPower(loc.getBlockPos(), dir);
-    if (strong > 0) {
-      return strong;
+    if (world.isBlockLoaded(loc)) {
+      int strong = world.getStrongPower(loc, dir);
+      if (strong > 0) {
+        return strong;
+      }
+
+      res = world.getRedstonePower(loc, dir);
+      IBlockState bs = world.getBlockState(loc);
+      Block block = bs.getBlock();
+      if (res < 15 && block == Blocks.REDSTONE_WIRE) {
+        int wireIn = bs.getValue(BlockRedstoneWire.POWER);
+        res = Math.max(res, wireIn);
+      }
     }
 
-    int res = world.getRedstonePower(loc.getBlockPos(), dir);
-    IBlockState bs = world.getBlockState(loc.getBlockPos());
-    Block block = bs.getBlock();
-    if (res < 15 && block == Blocks.REDSTONE_WIRE) {
-      int wireIn = bs.getValue(BlockRedstoneWire.POWER);
-      res = Math.max(res, wireIn);
-
-      
-    }
     return res;
   }
 
