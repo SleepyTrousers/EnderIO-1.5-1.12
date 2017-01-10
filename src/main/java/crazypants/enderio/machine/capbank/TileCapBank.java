@@ -525,7 +525,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public boolean isOutputEnabled(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
-    return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();
+    return (mode == IoMode.PUSH || mode == IoMode.NONE) && isOutputEnabled();
   }
 
   private boolean isOutputEnabled() {
@@ -538,7 +538,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public boolean isInputEnabled(@Nonnull EnumFacing direction) {
     IoMode mode = getIoMode(direction);
-    return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
+    return (mode == IoMode.PULL || mode == IoMode.NONE) && isInputEnabled();
   }
 
   private boolean isInputEnabled() {
