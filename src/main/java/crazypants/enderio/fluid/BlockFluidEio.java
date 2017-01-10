@@ -25,7 +25,9 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -48,9 +50,11 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -90,6 +94,19 @@ public class BlockFluidEio extends BlockFluidClassic {
     res.init();
     fluid.setBlock(res);
     return res;
+  }
+
+  static {
+    MinecraftForge.EVENT_BUS.register(BlockFluidEio.class);
+  }
+
+  public static void onEntitySpawn(LivingSpawnEvent.CheckSpawn evt) {
+    if (evt.getResult() != Result.DENY
+        && EntitySpawnPlacementRegistry.getPlacementForEntity(evt.getEntity().getClass()) == EntityLiving.SpawnPlacementType.IN_WATER
+        && evt.getWorld().getBlockState(evt.getEntityLiving().getPosition()).getBlock() instanceof BlockFluidEio) {
+      evt.setResult(Result.DENY);
+    }
+    return;
   }
 
   protected final Fluid fluid;

@@ -3,6 +3,8 @@ package crazypants.enderio.machine.obelisk.spawn;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySquid;
@@ -22,7 +24,7 @@ public class SpawningObeliskController {
     MinecraftForge.EVENT_BUS.register(SpawningObeliskController.instance);
   }
 
-  private Map<Integer, Map<BlockPos, ISpawnCallback>> perWorldGuards = new HashMap<Integer, Map<BlockPos, ISpawnCallback>>();
+  private final @Nonnull Map<Integer, Map<BlockPos, ISpawnCallback>> perWorldGuards = new HashMap<Integer, Map<BlockPos, ISpawnCallback>>();
 
   private SpawningObeliskController() {
   }
@@ -59,7 +61,6 @@ public class SpawningObeliskController {
       return;
     }
     
-    
     Map<BlockPos, ISpawnCallback> guards = getGuardsForWorld(evt.getWorld());
     for (ISpawnCallback guard : guards.values()) {
       ISpawnCallback.Result result = guard.isSpawnPrevented(evt.getEntityLiving());
@@ -72,7 +73,7 @@ public class SpawningObeliskController {
     }    
   }
   
-  private Map<BlockPos, ISpawnCallback> getGuardsForWorld(World world) {
+  private @Nonnull Map<BlockPos, ISpawnCallback> getGuardsForWorld(World world) {
     Map<BlockPos, ISpawnCallback> res = perWorldGuards.get(world.provider.getDimension());
     if(res == null) {
       res = new HashMap<BlockPos, ISpawnCallback>();
