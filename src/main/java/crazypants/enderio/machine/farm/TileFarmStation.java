@@ -82,12 +82,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       if (item == null) {
         return false;
       }
-      return match(item) && !isBrokenTinkerTool(item);
+      return match(item) && !isBrokenTinkerTool(item) && isActive(item);
     }
 
     private boolean isBrokenTinkerTool(ItemStack item)
     {
       return item.hasTagCompound() && item.getTagCompound().hasKey("InfiTool") && item.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+    }
+
+    private boolean isActive(ItemStack item)
+    {
+      return !item.hasTagCompound() || !item.getTagCompound().hasKey("isActive", 1) || item.getTagCompound().getBoolean("isActive");
     }
 
     abstract boolean match(ItemStack item);
