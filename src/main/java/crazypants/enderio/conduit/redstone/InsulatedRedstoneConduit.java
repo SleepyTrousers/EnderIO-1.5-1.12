@@ -327,7 +327,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       forcedConnections.put(dir, mode);
       onAddedToBundle();
       if (network != null) {
-        network.updateInputsFromConduit(this);
+        network.updateInputsFromConduit(this, false);
       }
 
     } else {
@@ -335,7 +335,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       forcedConnections.put(dir, mode);
       onAddedToBundle();
       if (network != null) {
-        network.updateInputsFromConduit(this);
+        network.updateInputsFromConduit(this, false);
       }
 
     }
@@ -383,7 +383,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void setSignalColor(EnumFacing dir, DyeColor col) {
     signalColors.put(dir, col);
     if (network != null) {
-      network.updateInputsFromConduit(this);
+      network.updateInputsFromConduit(this, false);
     }
     setClientStateDirty();
   }
@@ -650,9 +650,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return false;
     }
     if (blockId != blockConduitBundle.getBlock()) {
-      network.updateInputsFromConduit(this);
+      computeSpecialConnections();
+      if (hasExternalConnections()) {
+        network.updateInputsFromConduit(this, false);
+      }
     }
-    computeSpecialConnections();
     return res;
   }
 

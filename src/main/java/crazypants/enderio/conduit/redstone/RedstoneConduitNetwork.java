@@ -57,24 +57,31 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void addConduit(IRedstoneConduit con) {    
     super.addConduit(con);    
-    updateInputsFromConduit(con);           
+    updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 
-  public void updateInputsFromConduit(IRedstoneConduit con) {    
+  public void updateInputsFromConduit(IRedstoneConduit con, boolean delayUpdate) {
     BlockPos pos = con.getLocation().getBlockPos();
-    
-    //Make my neighbours update as if we have no signals
+
+    // Make my neighbors update as if we have no signals
     updatingNetwork = true;
     notifyConduitNeighbours(con);
     updatingNetwork = false;
-    
+
     //Then ask them what inputs they have now
-    for(EnumFacing side : EnumFacing.values()) {      
-      updateInputsForSource(con, new SignalSource(pos, side));      
-    }        
-    
-    //then tell the whole network about the change
-    notifyNeigborsOfSignalUpdate();   
+    Set<EnumFacing> externalConnections = con.getExternalConnections();
+    for (EnumFacing side : EnumFacing.values()) {
+      if (externalConnections.contains(side)) {
+        updateInputsForSource(con, new SignalSource(pos, side));
+      } else {
+        signals.removeAll(new SignalSource(pos, side));
+      }
+    }
+
+    if (!delayUpdate) {
+      // then tell the whole network about the change
+      notifyNeigborsOfSignalUpdate();
+    }
     
     if(Config.redstoneConduitsShowState) {
       updateActiveState();
