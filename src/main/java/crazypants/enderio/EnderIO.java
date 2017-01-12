@@ -111,6 +111,8 @@ public class EnderIO {
 
     Config.preInit(event);
 
+    MigrationMapper.create();
+
     proxy.loadIcons();
 
     // Dummy blocks that contain the models for all the other blocks

@@ -20,7 +20,7 @@ import crazypants.enderio.block.BlockDecorationFacing;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
-import crazypants.enderio.conduit.facade.BlockConduitFacade;
+import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
@@ -124,7 +124,7 @@ public enum ModObject implements IModObject {
 
   // Conduits
   blockConduitBundle(BlockConduitBundle.class),
-  blockConduitFacade(BlockConduitFacade.class),
+  blockConduitFacade(ItemConduitFacade.class),
   itemConduitFacade,
   itemRedstoneConduit(ItemRedstoneConduit.class),
   itemItemConduit(ItemItemConduit.class),
