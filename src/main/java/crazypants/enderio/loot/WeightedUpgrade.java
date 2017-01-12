@@ -52,4 +52,25 @@ public enum WeightedUpgrade {
     }
 
   }
+
+  public static WeightedUpgrade getByRawString(String raw) {
+    for (WeightedUpgrade wa : values()) {
+      switch (wa.setType) {
+      case NAME:
+        if (wa.capacitorKey.getName().equals(raw)) {
+          return wa;
+        }
+        break;
+      case TYPE:
+        if (wa.capacitorKey.getValueType().getName().equals(raw)) {
+          return wa;
+        }
+        break;
+      default:
+        break;
+      }
+    }
+    return null;
+  }
+
 }

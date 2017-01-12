@@ -92,7 +92,7 @@ public class LootSelector extends LootFunction {
     return WeightedRandom.getRandomItem(rand, weightedCount).getInteger();
   }
 
-  private String buildBaseName(String name, float level) {
+  public static String buildBaseName(String name, float level) {
     if (level < 1f) {
       name = EnderIO.lang.localize("loot.capacitor.baselevel.10", name);
     } else if (level < 1.5f) {
@@ -107,7 +107,7 @@ public class LootSelector extends LootFunction {
     return name;
   }
 
-  private String buildName(String name, float level) {
+  public static String buildName(String name, float level) {
     if (level < 1f) {
       name = EnderIO.lang.localize("loot.capacitor.level.10", name);
     } else if (level < 1.5f) {

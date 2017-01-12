@@ -1,5 +1,10 @@
 package crazypants.enderio.capacitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -92,6 +97,28 @@ public class CapacitorHelper {
       break;
     }
     return stack;
+  }
+
+  public static List<Pair<String, Float>> getCapDataRaw(ItemStack stack) {
+    NBTTagCompound tag = stack.getSubCompound("eiocap", false);
+    if (tag == null) {
+      return null;
+    }
+    List<Pair<String, Float>> result = new ArrayList<Pair<String, Float>>();
+    for (String key : tag.getKeySet()) {
+      if (tag.hasKey(key, 5)) {
+        result.add(Pair.of(key, tag.getFloat(key)));
+      }
+    }
+    return result;
+  }
+
+  public static int getCapLevelRaw(ItemStack stack) {
+    NBTTagCompound tag = stack.getSubCompound("eiocap", false);
+    if (tag == null) {
+      return 1;
+    }
+    return tag.getInteger("level");
   }
 
 }
