@@ -3,13 +3,18 @@ package crazypants.enderio.machine.hypercube;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -135,6 +140,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
   public TileHyperCube() {
     redstoneControlMode = RedstoneControlMode.IGNORE;
     recieveBuffer = new ItemRecieveBuffer(this);
+    initStallCache();
   }
 
   @Override
@@ -680,26 +686,59 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerHandle
         }
       }
     }
+    purgeStallCache();
+  }
 
+  private final Map<ForgeDirection, Map<Item, Long>> stallCache = new EnumMap<ForgeDirection, Map<Item, Long>>(ForgeDirection.class);
+
+  private void initStallCache() {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      stallCache.put(dir, new HashMap<Item, Long>());
+    }
+  }
+
+  private void purgeStallCache() {
+      final long tickCount = EnderIO.proxy.getTickCount();
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      final Map<Item, Long> subStallCache = stallCache.get(dir);
+      if (subStallCache.size() > recieveBuffer.getSizeInventory()) {
+        Iterator<Entry<Item, Long>> itr = subStallCache.entrySet().iterator();
+        while (itr.hasNext()) {
+          Entry<Item, Long> entry = itr.next();
+          if (entry.getValue() < tickCount) {
+            itr.remove();
+          }
+        }
+      }
+    }
   }
 
   private ItemStack recieveItems(ItemStack toPush) {
     if(toPush == null) {
       return null;
     }
-    ItemStack result = toPush.copy();
-    //TODO: need to cache this
+    final long tickCount = EnderIO.proxy.getTickCount();
+    ItemStack result = toPush;
     BlockCoord myLoc = new BlockCoord(this);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite());
-      if(result.stackSize <= 0) {
-        return null;
+      Long stalled = stallCache.get(dir).get(result.getItem());
+      if (stalled == null || stalled < tickCount) {
+        BlockCoord checkLoc = myLoc.getLocation(dir);
+        TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        final int insertedItemCount = ItemUtil.doInsertItem(te, result, dir.getOpposite());
+        if (insertedItemCount == 0) {
+          stallCache.get(dir).put(result.getItem(), tickCount + 20);
+        } else {
+          stallCache.get(dir).remove(result.getItem());
+          if (insertedItemCount >= result.stackSize) {
+            return null;
+          }
+          result = result.copy();
+          result.stackSize -= insertedItemCount;
+        }
       }
     }
     return result;
-
   }
 
   private ISidedInventory getRemoteInventory() {
