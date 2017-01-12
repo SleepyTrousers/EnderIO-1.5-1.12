@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.render.model.FacadeSmartItemModel;
+import crazypants.enderio.render.model.RotatingSmartItemModel;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -12,8 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.render.model.RotatingSmartItemModel;
 
 @SideOnly(Side.CLIENT)
 public class ItemModelRegistry {
@@ -44,6 +45,15 @@ public class ItemModelRegistry {
       @Override
       public IBakedModel wrap(IBakedModel model) {
         return new RotatingSmartItemModel((IPerspectiveAwareModel) model, speed);
+      }
+    });
+  }
+
+  public static void registerFacade(ModelResourceLocation resource) {
+    register(resource, new Registry() {
+      @Override
+      public IBakedModel wrap(IBakedModel model) {
+        return new FacadeSmartItemModel((IPerspectiveAwareModel) model);
       }
     });
   }

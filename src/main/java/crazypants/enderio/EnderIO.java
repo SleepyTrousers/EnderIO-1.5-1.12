@@ -60,6 +60,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -110,8 +111,6 @@ public class EnderIO {
     PowerHandlerUtil.create();
 
     Config.preInit(event);
-
-    MigrationMapper.create();
 
     proxy.loadIcons();
 
@@ -296,6 +295,11 @@ public class EnderIO {
     } catch (Exception e) {
       Log.error("Could not write mob types file: " + e);
     }
+  }
+
+  @EventHandler
+  public static void handleMappings(FMLMissingMappingsEvent event) {
+    MigrationMapper.handleMappings(event);
   }
 
   static {

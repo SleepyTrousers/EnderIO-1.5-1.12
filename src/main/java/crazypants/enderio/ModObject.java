@@ -124,8 +124,7 @@ public enum ModObject implements IModObject {
 
   // Conduits
   blockConduitBundle(BlockConduitBundle.class),
-  blockConduitFacade(ItemConduitFacade.class),
-  itemConduitFacade,
+  itemConduitFacade(ItemConduitFacade.class),
   itemRedstoneConduit(ItemRedstoneConduit.class),
   itemItemConduit(ItemItemConduit.class),
   itemGasConduit,

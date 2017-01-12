@@ -95,7 +95,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import static crazypants.enderio.ModObject.blockConduitFacade;
 import static crazypants.enderio.ModObject.blockTank;
 import static crazypants.enderio.ModObject.itemYetaWrench;
 
@@ -354,8 +353,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         if (conduit != null) {
           ret = conduit.createItem();
         } else if (cc.conduitType == null && bundle.hasFacade()) {
+          bundle.getFacadeType();
           // use the facade
-          ret = new ItemStack(blockConduitFacade.getBlock(), 1, 0);
+          ret = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
           PainterUtil2.setSourceBlock(ret, bundle.getPaintSource());
         }
       }
@@ -547,7 +547,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     List<ItemStack> drop = new ArrayList<ItemStack>();
     if (YetaUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(blockConduitFacade.getBlock(), 1, te.getFacadeType().ordinal());
+      ItemStack fac = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
       PainterUtil2.setSourceBlock(fac, te.getPaintSource());
       drop.add(fac);
 
@@ -666,7 +666,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     if (Prep.isValid(stack) && stack.getItem() == Items.STICK) { // TODO: remove this later!
       player.addChatMessage(new TextComponentString("You clicked on " + bundle));
     }
-    if (stack != null && Block.getBlockFromItem(stack.getItem()) == blockConduitFacade.getBlock()) {
+    if (Prep.isValid(stack) && stack.getItem() == ModObject.itemConduitFacade.getItem()) {
       // add or replace facade
       return handleFacadeClick(world, pos, player, side, bundle, stack, hand, hitX, hitY, hitZ);
 
@@ -823,7 +823,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         return false;
       }
       if (!world.isRemote && !player.capabilities.isCreativeMode) {
-        ItemStack drop = new ItemStack(blockConduitFacade.getBlock(), 1, bundle.getFacadeType().ordinal());
+        ItemStack drop = new ItemStack(ModObject.itemConduitFacade.getItem(), 1, EnumFacadeType.getMetaFromType(bundle.getFacadeType()));
         PainterUtil2.setSourceBlock(drop, bundle.getPaintSource());
         if (!player.inventory.addItemStackToInventory(drop)) {
           ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.2f);

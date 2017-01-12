@@ -12,11 +12,14 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.recipe.FacadePainterRecipe;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import crazypants.enderio.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,6 +29,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,7 +39,9 @@ import static crazypants.enderio.ModObject.blockConduitBundle;
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static ItemConduitFacade create() {
-    ItemConduitFacade result = new ItemConduitFacade(ModObject.blockConduitFacade.getUnlocalisedName());
+    ItemConduitFacade result = new ItemConduitFacade(ModObject.itemConduitFacade.getUnlocalisedName());
+    GameRegistry.register(result);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new FacadePainterRecipe());
     return result;
   }
 
@@ -44,6 +51,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     setMaxStackSize(64);
     setHasSubtypes(true);
     setRegistryName(name);
+    setUnlocalizedName(name);
   }
 
   @Override
@@ -56,11 +64,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     return EnumFacadeType.getTypeFromMeta(stack.getMetadata()).getUnlocName(this);
   }
 
-  @Override
-  public String getUnlocalizedName() {
-    return "item.enderio." + ModObject.itemConduitFacade.name();
-  }
-  
   @SuppressWarnings("deprecation")
   @Override 
  public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
@@ -148,7 +151,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   public void registerRenderers() {
     for (EnumFacadeType type : EnumFacadeType.values()) {
-      ClientUtil.regRenderer(this, EnumFacadeType.getMetaFromType(type), getRegistryName().getResourcePath() + "#type=" + type.getName());
+      final ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), "type=" + type.getName());
+      ModelLoader.setCustomModelResourceLocation(this, EnumFacadeType.getMetaFromType(type), mrl);
+      ItemModelRegistry.registerFacade(mrl);
     }
   }
 }
