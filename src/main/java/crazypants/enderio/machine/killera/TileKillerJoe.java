@@ -26,6 +26,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
@@ -36,6 +37,7 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.MagnetUtil;
+import crazypants.util.Things;
 import crazypants.util.UserIdent;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -137,12 +139,20 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return ModObject.blockKillerJoe.getUnlocalisedName();
   }
 
+  // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.
+  public static final Things WEAPONS = new Things("tconstruct:hatchet", "tconstruct:mattock", "tconstruct:hammer", "tconstruct:lumberaxe", "tconstruct:scythe",
+      "tconstruct:broadsword", "tconstruct:longsword", "tconstruct:rapier", "tconstruct:frypan", "tconstruct:cleaver", "minecraft:stick")
+          // for the ghost slot:
+          .add(Items.WOODEN_SWORD).add(Items.STONE_SWORD).add(Items.IRON_SWORD).add(Items.GOLDEN_SWORD).add(Items.DIAMOND_SWORD)
+          .add(DarkSteelItems.itemDarkSteelSword).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
+          .add(DarkSteelItems.itemDarkSteelAxe);
+  
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || itemstack.getItem() == Items.STICK;
+    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack);
   }
 
   @Override
