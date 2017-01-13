@@ -1,7 +1,5 @@
 package crazypants.enderio;
 
-import java.util.StringJoiner;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,9 +37,12 @@ public final class Log {
   }
 
   public static String join(CharSequence delimiter, Object... elements) {
-    StringJoiner joiner = new StringJoiner(delimiter);
+    StringBuilder joiner = new StringBuilder();
     for (Object cs : elements) {
-      joiner.add(cs == null ? "null" : cs.toString());
+      if (joiner.length() != 0) {
+        joiner.append(delimiter);
+      }
+      joiner.append(cs);
     }
     return joiner.toString();
   }
