@@ -13,25 +13,24 @@ item.enderio.itemEnderface.name=Лицо Эндермена
 
 //Conduits
 enderio.blockConduitBundle=Связка труб
-enderio.blockConduitFacade=Фасад для труб
-item.enderio.itemConduitFacade.name=Фасад для труб
-item.enderio.itemConduitFacade.hardened.name=Прочный фасад для труб
-item.enderio.itemConduitFacade.transparent.name=Прозрачный фасад для труб
-item.enderio.itemConduitFacade.transparent.hardened.name=Прозрачный прочный фасад для труб
+item.itemConduitFacade.name=Фасад для труб
+item.itemConduitFacade.hardened.name=Прочный фасад для труб
+item.itemConduitFacade.transparent.name=Прозрачный фасад для труб
+item.itemConduitFacade.transparent.hardened.name=Прозрачный прочный фасад для труб
 enderio.item.itemConduitFacade.tooltip.notpainted=Не покрашен
-item.enderio.itemConduitFacade.tooltip.detailed.line1=Окрашивается в покрасочном механизме
-item.enderio.itemConduitFacade.tooltip.detailed.line2=ПКМ по трубе, чтобы поставить
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Скрыт, когда гаечный ключ или труба
-item.enderio.itemConduitFacade.tooltip.detailed.line4=экипированы
-item.enderio.itemConduitFacade.hardened.tooltip=Упрочнён: Выдерживает удары и взрывы
-item.enderio.itemConduitFacade.transparent.tooltip=Прозрачность: Скрывает фасады, покрашенные в нетвёрдые блоки
-item.enderio.itemConduitFacade.transparent.hardened.tooltip=Прозрачность: Скрывает фасады, покрашенные в нетвёрдые блоки;Прочность: Устойчивы к поломке и взрывам
+item.itemConduitFacade.tooltip.detailed.line1=Окрашивается в покрасочном механизме
+item.itemConduitFacade.tooltip.detailed.line2=ПКМ по трубе, чтобы поставить
+item.itemConduitFacade.tooltip.detailed.line3=Скрыт, когда гаечный ключ или труба
+item.itemConduitFacade.tooltip.detailed.line4=экипированы
+item.itemConduitFacade.hardened.tooltip=Упрочнён: Выдерживает удары и взрывы
+item.itemConduitFacade.transparent.tooltip=Прозрачность: Скрывает фасады, покрашенные в нетвёрдые блоки
+item.itemConduitFacade.transparent.hardened.tooltip=Прозрачность: Скрывает фасады, покрашенные в нетвёрдые блоки;Прочность: Устойчивы к поломке и взрывам
 
 enderio.itemPowerConduit.name=Энергетическая труба
 enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
 enderio.itemPowerConduitEnder.name=Энергетическая Эндер-труба
 
-enderio.itemRedstoneConduitInsulated.name=Изолированная красная труба
+enderio.itemRedstoneConduitInsulated.name=Редстоуновая труба
 
 enderio.itemLiquidConduit.name=Жидкостная труба
 enderio.itemLiquidConduitAdvanced.name=Жидкостная труба высокого давления
