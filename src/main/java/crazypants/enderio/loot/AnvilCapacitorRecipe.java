@@ -52,7 +52,7 @@ public class AnvilCapacitorRecipe {
       if (weightedUpgrade == null) {
         return;
       }
-      data.put(weightedUpgrade, Pair.of(pair.getValue(), null));
+      data.put(weightedUpgrade, Pair.of(pair.getValue(), (Float) null));
       seed += pair.getValue();
     }
 
@@ -64,7 +64,7 @@ public class AnvilCapacitorRecipe {
       if (data.containsKey(weightedUpgrade)) {
         data.put(weightedUpgrade, Pair.of(pair.getValue(), data.get(weightedUpgrade).getKey()));
       } else {
-        data.put(weightedUpgrade, Pair.of(pair.getValue(), null));
+        data.put(weightedUpgrade, Pair.of(pair.getValue(), (Float) null));
       }
       seed += pair.getValue();
     }
