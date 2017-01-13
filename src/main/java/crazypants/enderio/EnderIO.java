@@ -24,7 +24,9 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
+import crazypants.enderio.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.integration.tic.TicProxy;
+import crazypants.enderio.integration.waila.WailaIMC;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.loot.Loot;
@@ -135,7 +137,7 @@ public class EnderIO {
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
 
-    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.integration.waila.WailaCompat.load");
+    WailaIMC.init(event);
 
     MaterialRecipes.registerOresInDictionary();
 
@@ -155,6 +157,8 @@ public class EnderIO {
     instance = this;
 
     ModObject.init(event);
+
+    CABIMC.init(event);
 
     PacketHandler.init(event);
 
