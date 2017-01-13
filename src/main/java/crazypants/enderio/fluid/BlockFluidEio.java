@@ -836,13 +836,13 @@ public class BlockFluidEio extends BlockFluidClassic {
           if (entity instanceof EntityPlayerMP) {
             EnderTeleportEvent event = new EnderTeleportEvent((EntityPlayerMP) entity, targetX, targetY, targetZ, 0);
             if (!MinecraftForge.EVENT_BUS.post(event)) {
-        		  ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw, entity.rotationPitch);
+              ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw, entity.rotationPitch);
         	  }
           } else if (entity instanceof EntityLiving) {
-        	  EnderTeleportEvent event = new EnderTeleportEvent((EntityLiving) entity, targetX, targetY, targetZ, 0);
-        	  if (!MinecraftForge.EVENT_BUS.post(event)) {
-        		  entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-        	  }
+            EnderTeleportEvent event = new EnderTeleportEvent((EntityLiving) entity, targetX, targetY, targetZ, 0);
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
+              entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            }
           } else {
             entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
           }
