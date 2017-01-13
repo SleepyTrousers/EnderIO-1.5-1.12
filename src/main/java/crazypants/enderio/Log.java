@@ -1,5 +1,7 @@
 package crazypants.enderio;
 
+import java.util.StringJoiner;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,28 +14,36 @@ public final class Log {
 
   public static final Logger LOGGER = LogManager.getLogger(EnderIO.MODID);
 
-  public static void warn(String msg) {
-    LOGGER.warn(msg);
+  public static void warn(Object... msg) {
+    LOGGER.warn(join("", msg));
   }
 
-  public static void error(String msg) {
-    LOGGER.error(msg);
+  public static void error(Object... msg) {
+    LOGGER.error(join("", msg));
   }
 
-  public static void info(String msg) {
+  public static void info(Object... msg) {
     if (inDev) {
-      LOGGER.info(msg);
-    } else {
-      LOGGER.debug(msg);
+      LOGGER.info(join("", msg));
+    } else if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug(join("", msg));
     }
   }
 
-  public static void debug(String msg) {
+  public static void debug(Object... msg) {
     if (inDev) {
-      LOGGER.info("INDEV: " + msg);
-    } else {
-      LOGGER.debug(msg);
+      LOGGER.info("INDEV: " + join("", msg));
+    } else if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug(join("", msg));
     }
+  }
+
+  public static String join(CharSequence delimiter, Object... elements) {
+    StringJoiner joiner = new StringJoiner(delimiter);
+    for (Object cs : elements) {
+      joiner.add(cs == null ? "null" : cs.toString());
+    }
+    return joiner.toString();
   }
 
   private Log() {
