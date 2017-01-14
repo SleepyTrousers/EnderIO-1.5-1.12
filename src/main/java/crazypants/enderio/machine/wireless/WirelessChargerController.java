@@ -122,6 +122,9 @@ public class WirelessChargerController {
         }
       }
     }
+    if (res) {
+      player.inventoryContainer.detectAndSendChanges();
+    }
     return res;
   }
 

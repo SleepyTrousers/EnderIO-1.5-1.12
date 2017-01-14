@@ -544,7 +544,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         prevWeapon = cur == null ? null : cur.copy();
       }
 
-      getChargedLocation().chargeItems(inventory.mainInventory);
+      if (getChargedLocation().chargeItems(inventory.mainInventory)) {
+        markDirty();
+      }
       ticksSinceLastSwing++;
       
     }
