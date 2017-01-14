@@ -51,6 +51,7 @@ import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -833,7 +834,15 @@ public class BlockFluidEio extends BlockFluidClassic {
         if (isClear(world, entity)) {
           entity.setPosition(origX, origY, origZ);
           if (entity instanceof EntityPlayerMP) {
-            ((EntityPlayerMP) entity).connection.setPlayerLocation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+            EnderTeleportEvent event = new EnderTeleportEvent((EntityPlayerMP) entity, targetX, targetY, targetZ, 0);
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
+              ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw, entity.rotationPitch);
+        	  }
+          } else if (entity instanceof EntityLiving) {
+            EnderTeleportEvent event = new EnderTeleportEvent((EntityLiving) entity, targetX, targetY, targetZ, 0);
+            if (!MinecraftForge.EVENT_BUS.post(event)) {
+              entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+            }
           } else {
             entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
           }
