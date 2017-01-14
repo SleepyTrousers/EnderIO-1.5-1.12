@@ -100,7 +100,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       Block b = bs.getBlock();
       if (b != null && b != blockConduitBundle.getBlock()) {
         try {// TODO: This seems wrong. pickBlock?
-          Item item = b.getItemDropped(bs, world.rand, 0);
+          Item item = b.getItemDropped(bs.getActualState(world, blockPos), world.rand, 0);
           if (item != null) {
             stacks.put(direction, new ItemStack(item, 1, b.damageDropped(bs)));
           }
