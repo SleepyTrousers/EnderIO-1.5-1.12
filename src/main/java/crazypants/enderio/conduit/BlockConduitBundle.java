@@ -644,7 +644,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   @Override
   public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
     ItemStack equipped = player.getHeldItemMainhand();
-    if (!player.isSneaking() || equipped == null || equipped.getItem() != itemYetaWrench.getItem()) {
+    if (!player.isSneaking() || equipped == null || !ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND)) {
       return;
     }
     ConduitUtil.openConduitGui(world, pos, player);
