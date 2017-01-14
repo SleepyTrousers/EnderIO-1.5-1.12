@@ -28,6 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -50,8 +51,8 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -830,22 +831,7 @@ public class BlockFluidEio extends BlockFluidClassic {
           targetY = origY + rand.nextGaussian() * 8f;
         }
         double targetZ = origZ + rand.nextGaussian() * 16f;
-        entity.setPosition(targetX, targetY, targetZ);
-        if (isClear(world, entity)) {
-          entity.setPosition(origX, origY, origZ);
-          if (entity instanceof EntityPlayerMP) {
-            EnderTeleportEvent event = new EnderTeleportEvent((EntityPlayerMP) entity, targetX, targetY, targetZ, 0);
-            if (!MinecraftForge.EVENT_BUS.post(event)) {
-              ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw, entity.rotationPitch);
-        	  }
-          } else if (entity instanceof EntityLiving) {
-            EnderTeleportEvent event = new EnderTeleportEvent((EntityLiving) entity, targetX, targetY, targetZ, 0);
-            if (!MinecraftForge.EVENT_BUS.post(event)) {
-              entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-            }
-          } else {
-            entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
-          }
+        if (isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ, rand)) {
           final SoundEvent sound = SoundEvent.REGISTRY.getObject(SOUND);
           if (sound != null) {
             world.playSound(null, origX, origY, origZ, sound, SoundCategory.BLOCKS, 1, 1);
@@ -855,11 +841,72 @@ public class BlockFluidEio extends BlockFluidClassic {
           return;
         }
       }
-      entity.setPosition(origX, origY, origZ);
     }
 
-    private boolean isClear(World world, Entity entity) {
-      return world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity) && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
+    private boolean isClear(World world, Entity entity, double targetX, double targetY, double targetZ) {
+      double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
+      try {
+        entity.setPosition(targetX, targetY, targetZ);
+        boolean result = world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity)
+            && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
+        return result;
+      } finally {
+        entity.setPosition(origX, origY, origZ);
+      }
+    }
+
+    private static boolean doTeleport(World world, Entity entity, double targetX, double targetY, double targetZ, Random rand) {
+      if (entity instanceof EntityLivingBase) {
+        return doTeleport(world, (EntityLivingBase) entity, targetX, targetY, targetZ, rand);
+      }
+
+      if (entity.isRiding()) {
+        entity.dismountRidingEntity();
+      }
+      if (entity.isBeingRidden()) {
+        for (Entity passenger : entity.getPassengers()) {
+          passenger.dismountRidingEntity();
+        }
+      }
+
+      entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
+      return true;
+    }
+
+    private static boolean doTeleport(World world, EntityLivingBase entity, double targetX, double targetY, double targetZ, Random rand) {
+      float damage = 5f;
+      if (entity.getMaxHealth() < 10f) {
+        damage = 1f;
+      }
+      EnderTeleportEvent event = new net.minecraftforge.event.entity.living.EnderTeleportEvent(entity, targetX, targetY, targetZ, damage);
+      if (!net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) {
+        if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning")) {
+          EntityEndermite entityendermite = new EntityEndermite(world);
+          entityendermite.setSpawnedByPlayer(true);
+          entityendermite.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
+          world.spawnEntityInWorld(entityendermite);
+        }
+
+        if (entity.isRiding()) {
+          entity.dismountRidingEntity();
+        }
+        if (entity.isBeingRidden()) {
+          for (Entity passenger : entity.getPassengers()) {
+            passenger.dismountRidingEntity();
+          }
+        }
+
+        if (entity instanceof EntityPlayerMP) {
+          ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw,
+              entity.rotationPitch);
+        } else {
+          entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+        }
+        entity.fallDistance = 0.0F;
+        entity.attackEntityFrom(DamageSource.fall, event.getAttackDamage());
+        return true;
+      }
+      return false;
     }
 
     @Override
