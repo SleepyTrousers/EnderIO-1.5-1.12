@@ -98,10 +98,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   protected EnumMap<EnumFacing, Long> recievedTicks;
 
-  private final Map<EnumFacing, Integer> externalRedstoneSignals = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
-
-  private boolean redstoneStateDirty = true;
-
   public PowerConduit() {
   }
 
@@ -262,44 +258,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
  
   private boolean isRedstoneEnabled(EnumFacing dir) {
-    
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    if(mode == RedstoneControlMode.NEVER) {
-      return false;
-    }
-    if(mode == RedstoneControlMode.IGNORE) {
-      return true;
-    }
-
-    DyeColor col = getExtractionSignalColor(dir);
-    int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    int exSig = getExternalRedstoneSignalForDir(dir);
-    boolean res;
-    if(mode == RedstoneControlMode.OFF) {
-      //if checking for no signal, must be no signal from both
-      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || RedstoneControlMode.isConditionMet(mode, exSig));
-    } else {
-      //if checking for a signal, either is fine
-      res = RedstoneControlMode.isConditionMet(mode, signal) || (col == DyeColor.RED && RedstoneControlMode.isConditionMet(mode, exSig));
-    }
-    return res;
-  }
-
-  private int getExternalRedstoneSignalForDir(EnumFacing dir) {
-    if(redstoneStateDirty) {
-      externalRedstoneSignals.clear();
-      redstoneStateDirty = false;
-    }
-    Integer cached = externalRedstoneSignals.get(dir);
-    int result;
-    if(cached == null) {
-      TileEntity te = getBundle().getEntity();
-      result = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
-      externalRedstoneSignals.put(dir, result);
-    } else {
-      result = cached;
-    }
-    return result;
+    return ConduitUtil.isRedstoneControlModeMet(getBundle(), mode, getExtractionSignalColor(dir));
   }
 
   @Override
@@ -338,7 +298,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public boolean onNeighborBlockChange(Block blockId) {
-    redstoneStateDirty = true;
     if(network != null && network.powerManager != null) {
       network.powerManager.receptorsChanged();
     }

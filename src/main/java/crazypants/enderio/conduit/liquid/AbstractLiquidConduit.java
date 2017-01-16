@@ -1,9 +1,9 @@
 package crazypants.enderio.conduit.liquid;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
@@ -15,9 +15,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -26,9 +24,6 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   protected final EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
   protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
-
-  protected final Map<EnumFacing, Integer> externalRedstoneSignals = new HashMap<EnumFacing, Integer>();
-  protected boolean redstoneStateDirty = true;
 
   public static IFluidWrapper getExternalFluidHandler(IBlockAccess world, BlockPos pos, EnumFacing side) {
     if (world.getTileEntity(pos) instanceof IConduitBundle) {
@@ -56,22 +51,15 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean onNeighborBlockChange(Block blockId) {
-    redstoneStateDirty = true;
-    return super.onNeighborBlockChange(blockId);
-  }
-
-  @Override
   public void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir) {
     extractionModes.put(dir, mode);
-    redstoneStateDirty = true;
   }
 
   @Override
-  public RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir) {
+  public @Nonnull RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
-      res = RedstoneControlMode.ON;
+      res = RedstoneControlMode.NEVER;
     }
     return res;
   }
@@ -101,12 +89,6 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     if(!externalConnections.contains(dir)) {
       return false;
     }
-    IFluidWrapper ext = getExternalHandler(dir);
-    // if(ext instanceof TileReservoir) { // dont push to an auto ejecting
-    // // resevoir or we loop
-    // TileReservoir tr = (TileReservoir) ext;
-    // return !tr.isAutoEject();
-    // }
     return true;
   }
 
@@ -115,45 +97,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       return false;
     }
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    if(mode == RedstoneControlMode.IGNORE) {
-      return true;
-    }
-    if(mode == RedstoneControlMode.NEVER) {
-      return false;
-    }
-    if(redstoneStateDirty) {
-      externalRedstoneSignals.clear();
-      redstoneStateDirty = false;
-    }
-
-    DyeColor col = getExtractionSignalColor(dir);
-    int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    
-    boolean res;
-    if(mode == RedstoneControlMode.OFF) {
-      //if checking for no signal, must be no signal from both
-      res = RedstoneControlMode.isConditionMet(mode, signal) && (col != DyeColor.RED || isConditionMetByExternalSignal(dir, mode, col));     
-    } else {
-      //if checking for a signal, either is fine
-      res = RedstoneControlMode.isConditionMet(mode, signal) || (col == DyeColor.RED && isConditionMetByExternalSignal(dir, mode, col));
-    }
-    return res;
-  }
-
-  private boolean isConditionMetByExternalSignal(EnumFacing dir, RedstoneControlMode mode, DyeColor col) {
-    int externalSignal = 0;
-    if(col == DyeColor.RED) {
-      Integer val = externalRedstoneSignals.get(dir);
-      if(val == null) {
-        TileEntity te = getBundle().getEntity();
-        externalSignal = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
-        externalRedstoneSignals.put(dir, externalSignal);
-      } else {
-        externalSignal = val;
-      }
-    }
-
-    return RedstoneControlMode.isConditionMet(mode, externalSignal);
+    return ConduitUtil.isRedstoneControlModeMet(getBundle(), mode, getExtractionSignalColor(dir));
   }
 
   @Override

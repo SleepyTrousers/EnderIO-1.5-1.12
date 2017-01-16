@@ -343,7 +343,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
-      res = RedstoneControlMode.ON;
+      res = RedstoneControlMode.NEVER;
     }
     return res;
   }
@@ -365,9 +365,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean isExtractionRedstoneConditionMet(EnumFacing dir) {
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    if(mode == null) {
-      return true;
-    }
     return ConduitUtil.isRedstoneControlModeMet(getBundle(), mode, getExtractionSignalColor(dir));
   }
 

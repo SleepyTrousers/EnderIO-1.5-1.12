@@ -18,6 +18,12 @@ public enum RedstoneControlMode {
   OFF,
   NEVER;
 
+  /**
+   * This is the highest level that will make a difference. Meaning, that if it is known that the input level is at least MIN_ON_LEVEL, then there is no need to
+   * run any checks for a higher level.
+   */
+  public static final int MIN_ON_LEVEL = 1;
+
   // @SideOnly(Side.CLIENT)
   @SuppressWarnings("hiding")
   public static enum IconHolder implements ICycleEnum {
@@ -65,23 +71,29 @@ public enum RedstoneControlMode {
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {
-    boolean redstoneCheckPassed = true;
-    if(redstoneControlMode == RedstoneControlMode.NEVER) {
-      redstoneCheckPassed = false;
-    } else if(redstoneControlMode == RedstoneControlMode.ON) {
-      if(powerLevel < 1) {
-        redstoneCheckPassed = false;
-      }
-    } else if(redstoneControlMode == RedstoneControlMode.OFF) {
-      if(powerLevel > 0) {
-        redstoneCheckPassed = false;
-      }
+    switch (redstoneControlMode) {
+    case IGNORE:
+      return true;
+    case NEVER:
+      return false;
+    case OFF:
+      return powerLevel == 0;
+    case ON:
+      return powerLevel > 0;
+    default:
+      return false;
     }
-    return redstoneCheckPassed;
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
-    return isConditionMet(redstoneControlMode, ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos()));
+    switch (redstoneControlMode) {
+    case IGNORE:
+      return true;
+    case NEVER:
+      return false;
+    default:
+      return isConditionMet(redstoneControlMode, ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos()));
+    }
   }
 
   public RedstoneControlMode next() {
