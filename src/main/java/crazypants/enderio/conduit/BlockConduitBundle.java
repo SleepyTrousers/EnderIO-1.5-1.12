@@ -57,7 +57,6 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -73,8 +72,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -83,9 +80,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -96,7 +91,6 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
 import static crazypants.enderio.ModObject.blockTank;
-import static crazypants.enderio.ModObject.itemYetaWrench;
 
 public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements IGuiHandler, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -137,10 +131,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
-    SoundType curType = getSoundType();
-    SoundEvent silent = new SoundEvent(new ResourceLocation(EnderIO.DOMAIN, "silence"));
-    setSoundType(new SoundType(curType.volume, curType.pitch, silent, silent, curType.getPlaceSound(), silent, curType.getFallSound()));
-
     setDefaultState(blockState.getBaseState());
   }
 
@@ -302,45 +292,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     digFX.setParticleTexture(tex);
   }
 
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onPlaySound(PlaySoundSourceEvent event) {
-    String path = event.getSound().getSoundLocation().toString();
-    if (path != null && path.contains("silence.step")) {
-      ISound snd = event.getSound();
-      World world = EnderIO.proxy.getClientWorld();
-      BlockCoord bc = new BlockCoord(snd.getXPosF(), snd.getYPosF(), snd.getZPosF());
-      TileEntity te = bc.getTileEntity(world);
-      if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
-        IBlockState facade = ((TileConduitBundle) te).getPaintSource();
-        ConduitUtil.playHitSound(facade.getBlock().getSoundType(), world, bc.x, bc.y, bc.z);
-      } else {
-        ConduitUtil.playHitSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
-      }
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  @SubscribeEvent
-  public void onPlaySoundAtEntity(PlaySoundAtEntityEvent event) {
-    // SoundEvent path = event.getSound();
-    // World world = event.getEntity().worldObj;
-    // //TODO: 1.10 this equals is now stuffed
-    // if ("EnderIO:silence.step".equals(path) && world.isRemote) {
-    // BlockCoord bc = new BlockCoord(event.getEntity().posX,
-    // event.getEntity().posY - 2, event.getEntity().posZ);
-    // TileEntity te = bc.getTileEntity(world);
-    // if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle)
-    // te).hasFacade()) {
-    // IBlockState facade = ((TileConduitBundle) te).getPaintSource();
-    // ConduitUtil.playStepSound(facade.getBlock().getSoundType(), world, bc.x,
-    // bc.y, bc.z);
-    // } else {
-    // ConduitUtil.playStepSound(SoundType.METAL, world, bc.x, bc.y, bc.z);
-    // }
-    // }
-  }
-
   @Override
   public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
     ItemStack ret = null;
@@ -435,6 +386,16 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       }
     }
     return result > 15 ? 15 : result;
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+    IConduitBundle te = getTileEntitySafe(world, pos);
+    if (te != null && te.hasFacade()) {
+      te.getPaintSource().getBlock().getSoundType();
+    }
+    return super.getSoundType(state, world, pos, entity);
   }
 
   @Deprecated
