@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Triple;
 
 import crazypants.enderio.Log;

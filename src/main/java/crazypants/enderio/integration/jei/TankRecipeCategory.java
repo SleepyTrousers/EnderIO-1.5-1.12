@@ -6,16 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.machine.tank.GuiTank;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry.ISubtypeInterpreter;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiIngredient;
@@ -131,6 +129,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
         (end - start) / 1000000000d));
   }
 
+  @SuppressWarnings("unused")
   private static String fluidString(FluidStack stack) {
     return stack == null ? "nothing" : stack.amount + "x" + stack.getUnlocalizedName();
   }

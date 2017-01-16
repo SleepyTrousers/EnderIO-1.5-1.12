@@ -2,11 +2,9 @@ package crazypants.enderio.block;
 
 import java.util.Random;
 
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;

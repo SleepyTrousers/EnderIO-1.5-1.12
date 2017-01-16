@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.gui.item;
 
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.util.EnumFacing;

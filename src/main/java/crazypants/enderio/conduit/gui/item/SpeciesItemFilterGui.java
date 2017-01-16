@@ -1,18 +1,18 @@
 package crazypants.enderio.conduit.gui.item;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.filter.FuzzyMode;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.item.filter.SpeciesItemFilter;
 import crazypants.enderio.conduit.item.filter.SpeciesMode;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class SpeciesItemFilterGui implements IItemFilterGui {
 
