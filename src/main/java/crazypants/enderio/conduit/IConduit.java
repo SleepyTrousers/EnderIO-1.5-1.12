@@ -169,4 +169,7 @@ public interface IConduit {
 
   void invalidate();
 
+  int getExternalRedstoneLevel();
+
+
 }

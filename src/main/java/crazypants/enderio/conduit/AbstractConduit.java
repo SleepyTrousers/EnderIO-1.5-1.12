@@ -65,6 +65,8 @@ public abstract class AbstractConduit implements IConduit {
 
   protected boolean readFromNbt = false;
 
+  private Integer lastExternalRedstoneLevel = null;
+
   protected AbstractConduit() {
   }
 
@@ -515,6 +517,8 @@ public abstract class AbstractConduit implements IConduit {
       return false;
     }
 
+    lastExternalRedstoneLevel = null;
+
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
     Set<EnumFacing> newCons = EnumSet.noneOf(EnumFacing.class);
@@ -604,6 +608,18 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public void invalidate() {
+  }
+
+  @Override
+  public int getExternalRedstoneLevel() {
+    if (lastExternalRedstoneLevel == null) {
+      if (bundle == null || bundle.getEntity() != null) {
+        return 0;
+      }
+      TileEntity te = bundle.getEntity();
+      lastExternalRedstoneLevel = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
+    }
+    return lastExternalRedstoneLevel;
   }
 
   @Override

@@ -262,7 +262,7 @@ public class ConduitUtil {
 
   }
 
-  public static boolean isRedstoneControlModeMet(IConduitBundle bundle, RedstoneControlMode mode, DyeColor col) {
+  public static boolean isRedstoneControlModeMet(IConduit conduit, RedstoneControlMode mode, DyeColor col) {
 
     if (mode == RedstoneControlMode.IGNORE) {
       return true;
@@ -272,10 +272,9 @@ public class ConduitUtil {
       return false;
     }
 
-    int signalStrength = getInternalSignalForColor(bundle, col);
-    if (signalStrength < RedstoneControlMode.MIN_ON_LEVEL && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
-      TileEntity te = bundle.getEntity();
-      signalStrength = Math.max(signalStrength, isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos()));
+    int signalStrength = getInternalSignalForColor(conduit.getBundle(), col);
+    if (signalStrength < RedstoneControlMode.MIN_ON_LEVEL && DyeColor.RED == col) {
+      signalStrength = Math.max(signalStrength, conduit.getExternalRedstoneLevel());
     }
     return RedstoneControlMode.isConditionMet(mode, signalStrength);
   }

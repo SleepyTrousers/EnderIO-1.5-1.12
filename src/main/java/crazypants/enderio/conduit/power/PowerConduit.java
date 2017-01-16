@@ -259,7 +259,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
  
   private boolean isRedstoneEnabled(EnumFacing dir) {
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    return ConduitUtil.isRedstoneControlModeMet(getBundle(), mode, getExtractionSignalColor(dir));
+    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir));
   }
 
   @Override
