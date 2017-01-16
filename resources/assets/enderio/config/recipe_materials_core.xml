@@ -316,27 +316,27 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <level maxlevel="1"/>
       <grid>
-        <item /><item name="dustRedstone"/><item name="nuggetGold"/>
-        <item name="dustRedstone"/><item name="ingotIron"/><item name="dustRedstone"/>
-        <item name="nuggetGold"/><item name="dustRedstone"/><item />
+        <item /><item name="nuggetGold"/><item name="dustRedstone"/>
+        <item name="nuggetGold"/><item name="ingotIron"/><item name="nuggetGold"/>
+        <item name="dustRedstone"/><item name="nuggetGold"/><item />
       </grid>
       <output name="CAPACITOR1"/>
     </crafting>
     <crafting>
       <level minlevel="2" maxlevel="2"/>
       <grid>
-        <item /><item name="dustRedstone"/><item name="nuggetGold"/>
-        <item name="dustRedstone"/><item name="CAPACITOR_METAL"/><item name="dustRedstone"/>
-        <item name="nuggetGold"/><item name="dustRedstone"/><item />
+        <item /><item name="nuggetGold"/><item name="dustRedstone"/>
+        <item name="nuggetGold"/><item name="CAPACITOR_METAL"/><item name="nuggetGold"/>
+        <item name="dustRedstone"/><item name="nuggetGold"/><item />
       </grid>
       <output name="CAPACITOR1"/>
     </crafting>
     <crafting>
       <level minlevel="3"/>
       <grid>
-        <item /><item name="dustRedstone"/><item name="ingotGold"/>
-        <item name="dustRedstone"/><item name="CAPACITOR_METAL"/><item name="dustRedstone"/>
-        <item name="ingotGold"/><item name="dustRedstone"/><item />
+        <item /><item name="ingotGold"/><item name="dustRedstone"/>
+        <item name="ingotGold"/><item name="CAPACITOR_METAL"/><item name="ingotGold"/>
+        <item name="dustRedstone"/><item name="ingotGold"/><item />
       </grid>
       <output name="CAPACITOR1"/>
     </crafting>
