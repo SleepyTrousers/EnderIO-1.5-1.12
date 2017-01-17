@@ -356,12 +356,11 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public int getLightOpacity(IBlockState bs, IBlockAccess world, BlockPos pos) {
-    TileEntity te = getTileEntitySafe(world, pos);
-    if (!(te instanceof IConduitBundle)) {
-      return super.getLightOpacity(bs, world, pos);
+    IConduitBundle te = getTileEntitySafe(world, pos);
+    if (te == null) {
+      return getLightOpacity(bs);
     }
-    IConduitBundle con = (IConduitBundle) te;
-    return con.getLightOpacity();
+    return te.getLightOpacity();
   }
 
   @Override

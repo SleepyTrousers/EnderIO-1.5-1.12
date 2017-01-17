@@ -55,7 +55,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockConduitBundle;
-import static crazypants.enderio.config.Config.transparentFacesLetThroughBeaconBeam;
+import static crazypants.enderio.config.Config.transparentFacadesLetThroughBeaconBeam;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent {
 
@@ -78,7 +78,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   private boolean clientUpdated = false;
 
-  private int lightOpacity = -1;
+  private int lightOpacityOverride = -1;
 
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
@@ -207,25 +207,26 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     this.facadeRenderAs = state;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public int getLightOpacity() {
-    if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      if (facade != null) {
-        if (getFacadeType().isTransparent() && transparentFacesLetThroughBeaconBeam) {
-          return Math.min(facade.getLightOpacity(), 14);
-        } else {
-          return facade.getLightOpacity();
-        }
-      } else {
-        return 0;
-      }
+    if (worldObj != null && worldObj.isRemote && lightOpacityOverride != -1) {
+      return lightOpacityOverride;
     }
-    return lightOpacity;
+    if (facade != null) {
+      if (getFacadeType().isTransparent() && transparentFacadesLetThroughBeaconBeam) {
+        return Math.min(facade.getLightOpacity(), 14);
+      } else {
+        return facade.getLightOpacity();
+      }
+    } else {
+      return 0;
+    }
   }
 
   @Override
-  public void setLightOpacity(int opacity) {
-    lightOpacity = opacity;
+  public void setLightOpacityOverride(int opacity) {
+    lightOpacityOverride = opacity;
   }
 
   @Override
@@ -290,11 +291,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
 
     if(Config.updateLightingWhenHidingFacades) {
-      int curLO = getLightOpacity();
-      int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
-      if(curLO != shouldBeLO) {
-        setLightOpacity(shouldBeLO);
-        //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+      int shouldBeLO = rs == FacadeRenderState.FULL ? -1 : 0;
+      if (lightOpacityOverride != shouldBeLO) {
+        setLightOpacityOverride(shouldBeLO);
         worldObj.checkLight(getPos());
       }
     }

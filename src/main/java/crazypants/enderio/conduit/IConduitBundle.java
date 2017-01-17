@@ -98,7 +98,7 @@ public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, I
 
   int getLightOpacity();
 
-  void setLightOpacity(int opacity);
+  void setLightOpacityOverride(int opacity);
 
   boolean hasFacade();
 

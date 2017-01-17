@@ -132,7 +132,7 @@ public final class Config {
   public static boolean fluidConduitDynamicLighting = true;
   
   public static boolean updateLightingWhenHidingFacades = false;
-  public static boolean transparentFacesLetThroughBeaconBeam = true;
+  public static boolean transparentFacadesLetThroughBeaconBeam = true;
 
   public static int travelAnchorMaximumDistance = 96;
   public static int travelAnchorCooldown = 0;
@@ -849,10 +849,10 @@ public final class Config {
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
 
-    transparentFacesLetThroughBeaconBeam = config
-        .get(sectionAdvanced.name, "transparentFacesLetThroughBeaconBeam", transparentFacesLetThroughBeaconBeam,
+    transparentFacadesLetThroughBeaconBeam = config
+        .get(sectionAdvanced.name, "transparentFacadesLetThroughBeaconBeam", transparentFacadesLetThroughBeaconBeam,
             "If true, transparent facades will not block the Beacon's beam. As side effect they will also let through a tiny amount of light.")
-        .getBoolean(transparentFacesLetThroughBeaconBeam);
+        .getBoolean(transparentFacadesLetThroughBeaconBeam);
     
     darkSteelRightClickPlaceEnabled = config.get(sectionDarkSteel.name, "darkSteelRightClickPlaceEnabled", darkSteelRightClickPlaceEnabled,
         "Enable / disable right click to place block using dark steel tools.").getBoolean(darkSteelRightClickPlaceEnabled);
