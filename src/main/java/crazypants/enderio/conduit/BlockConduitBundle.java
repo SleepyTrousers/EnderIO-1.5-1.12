@@ -392,7 +392,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
     IConduitBundle te = getTileEntitySafe(world, pos);
     if (te != null && te.hasFacade()) {
-      te.getPaintSource().getBlock().getSoundType();
+      return te.getPaintSource().getBlock().getSoundType();
     }
     return super.getSoundType(state, world, pos, entity);
   }

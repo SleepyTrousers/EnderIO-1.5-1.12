@@ -20,6 +20,8 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.enderio.sound.IModSound;
+import crazypants.enderio.sound.SoundHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -29,11 +31,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -359,51 +361,43 @@ public class ConduitUtil {
   }
 
   public static void playBreakSound(SoundType snd, World world, int x, int y, int z) {
-    if (!world.isRemote) {
-      //TODO: 1.10 We cant access the break sound here but I am not sure we need to
-      //world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getBreakSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
-    } else {
-      playClientBreakSound(snd);
-    }
-  }
-
-  private static void playClientBreakSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
+    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getBreakSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   public static void playHitSound(SoundType snd, World world, int x, int y, int z) {
-    if (!world.isRemote) {
-      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), SoundCategory.BLOCKS,(snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
-    } else {
-      playClientHitSound(snd);
-    }
-  }
-
-  private static void playClientHitSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
+    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getHitSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   public static void playStepSound(SoundType snd, World world, int x, int y, int z) {
-    if (!world.isRemote) {
-      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getStepSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
-    } else {
-      playClientStepSound(snd);
-    }
-  }
-
-  private static void playClientStepSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getStepSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getStepSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
   public static void playPlaceSound(SoundType snd, World world, int x, int y, int z) {
-    if (!world.isRemote) {
-      world.playSound(x + 0.5, y + 0.5, z + 0.5, snd.getPlaceSound(), SoundCategory.BLOCKS, (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F, false);
-    } else {
-      playClientPlaceSound(snd);
-    }
+    SoundHelper.playSound(world, new BlockPos(x, y, z), new Sound(snd.getPlaceSound()), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
   }
 
-  private static void playClientPlaceSound(SoundType snd) {
-    FMLClientHandler.instance().getClientPlayerEntity().playSound(snd.getPlaceSound(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
+  private static class Sound implements IModSound {
+
+    private final SoundEvent event;
+
+    public Sound(SoundEvent event) {
+      this.event = event;
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
+    }
+
+    @Override
+    public SoundEvent getSoundEvent() {
+      return event;
+    }
+
+    @Override
+    public SoundCategory getSoundCategory() {
+      return SoundCategory.BLOCKS;
+    }
+
   }
 }
