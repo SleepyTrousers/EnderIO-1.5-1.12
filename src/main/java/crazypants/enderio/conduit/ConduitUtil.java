@@ -128,15 +128,16 @@ public class ConduitUtil {
     int height = worldObj.getHeight(pos).getY();
     if (height <= pos.getY()) {
       for (int i = 1; i < 12; i++) {
-        if (worldObj.isAirBlock(pos)) {
+        final BlockPos offset = pos.offset(EnumFacing.UP, i);
+        if (worldObj.isAirBlock(offset)) {
           // We need to force the re-lighting of the column due to a change
-          // in the light reaching bellow the block from the sky. To avoid
+          // in the light reaching below the block from the sky. To avoid
           // modifying core classes to expose this functionality I am just
           // placing then breaking
           // a block above this one to force the check
 
-          worldObj.setBlockState(pos.offset(EnumFacing.UP, i), Blocks.STONE.getDefaultState(), 3);
-          worldObj.setBlockToAir(pos.offset(EnumFacing.UP, i));
+          worldObj.setBlockState(offset, Blocks.STONE.getDefaultState(), 3);
+          worldObj.setBlockToAir(offset);
 
           return true;
         }

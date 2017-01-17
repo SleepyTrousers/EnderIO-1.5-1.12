@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -55,6 +56,9 @@ import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleDigging;
@@ -131,7 +135,14 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     setHardness(1.5f);
     setResistance(10.0f);
     setCreativeTab(null);
-    setDefaultState(blockState.getBaseState());
+    setDefaultState(blockState.getBaseState().withProperty(OPAQUE, false));
+  }
+
+  public static final IProperty<Boolean> OPAQUE = PropertyBool.create("opaque");
+
+  @Override
+  protected @Nonnull BlockStateContainer createBlockState() {
+    return new BlockStateContainer(this, new IProperty[] { OPAQUE });
   }
 
   private void setBlockBounds(double f, double g, double h, double i, double j, double k) {
@@ -155,12 +166,12 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public int getMetaFromState(IBlockState state) {
-    return 0;
+    return state.getValue(OPAQUE) ? 1 : 0;
   }
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState();
+    return getDefaultState().withProperty(OPAQUE, meta == 1);
   }
 
   @Override
@@ -346,16 +357,19 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @Override
   public boolean isFullCube(IBlockState bs) {
-    return false;
+    return bs.getValue(OPAQUE);
   }
 
   @Override
   public int getLightOpacity(IBlockState bs) {
-    return 0;
+    return bs.getValue(OPAQUE) ? 255 : 0;
   }
 
   @Override
   public int getLightOpacity(IBlockState bs, IBlockAccess world, BlockPos pos) {
+    if (bs.getValue(OPAQUE)) {
+      return 255;
+    }
     IConduitBundle te = getTileEntitySafe(world, pos);
     if (te == null) {
       return getLightOpacity(bs);
@@ -790,8 +804,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
         }
       }
     }
-    bundle.setPaintSource(facadeID);
     bundle.setFacadeType(EnumFacadeType.getTypeFromMeta(facadeType));
+    bundle.setPaintSource(facadeID);
     if (!world.isRemote) {
       ConduitUtil.playPlaceSound(facadeID.getBlock().getSoundType(), world, pos.getX(), pos.getY(), pos.getZ());
     }

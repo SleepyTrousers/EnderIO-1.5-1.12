@@ -66,8 +66,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   private IBlockState facade = null;
   private EnumFacadeType facadeType = EnumFacadeType.BASIC;
 
-  private boolean facadeChanged;
-
   private final List<CollidableComponent> cachedCollidables = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
 
   private final List<CollidableComponent> cachedConnectors = new CopyOnWriteArrayList<CollidableComponent>(); // <- duct-tape fix
@@ -170,9 +168,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public void setPaintSource(@Nullable IBlockState paintSource) {
     facade = paintSource;
-    facadeChanged = true;
     markDirty();
-    updateBlock();
+    // force re-calc of lighting for both client and server
+    IBlockState bs = worldObj.getBlockState(pos);
+    IBlockState newBs = bs.withProperty(BlockConduitBundle.OPAQUE, getLightOpacity() > 0);
+    if (bs == newBs) {
+      worldObj.setBlockState(getPos(), newBs.cycleProperty(BlockConduitBundle.OPAQUE));
+    }
+    worldObj.setBlockState(getPos(), newBs);
   }
 
   @Override
@@ -246,10 +249,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       doConduitsDirty();
     }
 
-    if(facadeChanged) {
-      doFacadeChanged();
-    }
-
     //client side only, check for changes in rendering of the bundle
     if(worldObj.isRemote) {
       updateEntityClient();
@@ -266,16 +265,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       geometryChanged(); // Q&D
     }
     conduitsDirty = false;
-  }
-
-  private void doFacadeChanged() {
-    //force re-calc of lighting for both client and server
-    ConduitUtil.forceSkylightRecalculation(worldObj, getPos());
-    worldObj.checkLight(getPos());
-    IBlockState bs = worldObj.getBlockState(pos);
-    worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
-    facadeChanged = false;
   }
 
   private void updateEntityClient() {
