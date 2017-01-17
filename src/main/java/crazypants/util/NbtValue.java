@@ -4,7 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public enum NbtValue {
+  @Deprecated
   SOURCE_BLOCK("sourceBlockId"),
+  @Deprecated
   SOURCE_META("sourceBlockMeta"),
   GLINT("glinted"),
   CAPNAME("capname"),
@@ -20,6 +22,7 @@ public enum NbtValue {
   REMOTE_D("eiod"),
   ENERGY("Energy"),
   FLUIDAMOUNT("famount"),
+  BLOCKSTATE("paint"),
 
   ;
 
@@ -126,6 +129,32 @@ public enum NbtValue {
     return stack != null ? removeTag(stack.copy()) : null;
   }
 
+  public NBTTagCompound getTag(ItemStack tag) {
+    return getTag(tag, new NBTTagCompound());
+  }
+
+  public NBTTagCompound getTag(ItemStack stack, NBTTagCompound _default) {
+    if (stack != null && stack.hasTagCompound() && stack.getTagCompound().hasKey(key)) {
+      return (NBTTagCompound) stack.getTagCompound().getTag(key);
+    }
+    setTag(stack, _default);
+    return _default;
+  }
+
+  public ItemStack setTag(ItemStack stack, NBTTagCompound value) {
+    if (stack != null) {
+      if (!stack.hasTagCompound()) {
+        stack.setTagCompound(new NBTTagCompound());
+      }
+      if (value == null) {
+        removeTag(stack);
+      } else {
+        stack.getTagCompound().setTag(key, value);
+      }
+    }
+    return stack;
+  }
+
   // NBT STRING
 
   public String getString(NBTTagCompound tag, String _default) {
@@ -192,4 +221,28 @@ public enum NbtValue {
   public NBTTagCompound removeTagCopy(NBTTagCompound tag) {
     return tag != null ? removeTag((NBTTagCompound) tag.copy()) : null;
   }
+
+  public NBTTagCompound getTag(NBTTagCompound tag) {
+    return getTag(tag, new NBTTagCompound());
+  }
+
+  public NBTTagCompound getTag(NBTTagCompound tag, NBTTagCompound _default) {
+    if (tag != null && tag.hasKey(key)) {
+      return (NBTTagCompound) tag.getTag(key);
+    }
+    setTag(tag, _default);
+    return _default;
+  }
+
+  public NBTTagCompound setTag(NBTTagCompound tag, NBTTagCompound value) {
+    if (tag != null) {
+      if (value == null) {
+        removeTag(tag);
+      } else {
+        tag.setTag(key, value);
+      }
+    }
+    return tag;
+  }
+
 }

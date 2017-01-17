@@ -3,7 +3,6 @@ package crazypants.enderio.paint;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
-import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
@@ -17,11 +16,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPiston;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
+import static crazypants.util.NbtValue.BLOCKSTATE;
 import static crazypants.util.NbtValue.SOURCE_BLOCK;
 import static crazypants.util.NbtValue.SOURCE_META;
 
@@ -82,33 +83,31 @@ public class PainterUtil2 {
     }    
     if(paintSource.getBlock() instanceof BlockLog) {
       return paintSource.cycleProperty(BlockLog.LOG_AXIS);
-    }    
+    }
     return paintSource;
   }
   
+  @SuppressWarnings("deprecation")
   public static void writeNbt(NBTTagCompound nbtRoot, IBlockState paintSource) {
     if (nbtRoot == null) {
       return;
     }
     if (paintSource == null) {
+      BLOCKSTATE.removeTag(nbtRoot);
       SOURCE_BLOCK.removeTag(nbtRoot);
       SOURCE_META.removeTag(nbtRoot);
-      return;
-    }
-    Block block = paintSource.getBlock();
-    ResourceLocation res = Block.REGISTRY.getNameForObject(block);
-    String name = res.toString();
-    if (!name.trim().isEmpty()) {
-      SOURCE_BLOCK.setString(nbtRoot, name);
-      SOURCE_META.setInt(nbtRoot, block.getMetaFromState(paintSource));
+    } else {
+      BLOCKSTATE.setTag(nbtRoot, NBTUtil.func_190009_a(new NBTTagCompound(), paintSource));
     }
   }
 
+  @SuppressWarnings("deprecation")
   public static IBlockState readNbt(NBTTagCompound nbtRoot) {
     if (nbtRoot != null) {
-      String blockId = SOURCE_BLOCK.getString(nbtRoot);
-      if (!Strings.isNullOrEmpty(blockId)) {
-        ResourceLocation res = new ResourceLocation(blockId);
+      if (BLOCKSTATE.hasTag(nbtRoot)) {
+        return NBTUtil.func_190008_d(BLOCKSTATE.getTag(nbtRoot));
+      } else if (SOURCE_BLOCK.hasTag(nbtRoot) && SOURCE_META.hasTag(nbtRoot)) { // legacy
+        ResourceLocation res = new ResourceLocation(SOURCE_BLOCK.getString(nbtRoot));
         if (Block.REGISTRY.containsKey(res)) {
           Block block = Block.REGISTRY.getObject(res);
           int meta = SOURCE_META.getInt(nbtRoot);
@@ -123,21 +122,18 @@ public class PainterUtil2 {
     return readNbt(itemStack.getTagCompound());
   }
 
+  @SuppressWarnings("deprecation")
   public static void setSourceBlock(ItemStack itemStack, IBlockState paintSource) {
     if (itemStack == null) {
       return;
     }
     if (paintSource == null) {
+      BLOCKSTATE.removeTag(itemStack);
       SOURCE_BLOCK.removeTag(itemStack);
       SOURCE_META.removeTag(itemStack);
       return;
-    }
-    Block block = paintSource.getBlock();
-    ResourceLocation res = Block.REGISTRY.getNameForObject(block);
-    String name = res.toString();
-    if (!name.trim().isEmpty()) {
-      SOURCE_BLOCK.setString(itemStack, name);
-      SOURCE_META.setInt(itemStack, block.getMetaFromState(paintSource));
+    } else {
+      BLOCKSTATE.setTag(itemStack, NBTUtil.func_190009_a(new NBTTagCompound(), paintSource));
     }
   }
 
@@ -153,6 +149,8 @@ public class PainterUtil2 {
         if (itemFromBlock != null) {
           ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
           sourceName = is.getDisplayName();
+        } else {
+          sourceName = block.getLocalizedName();
         }
       }
     }
