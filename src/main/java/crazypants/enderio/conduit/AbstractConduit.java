@@ -613,7 +613,7 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public int getExternalRedstoneLevel() {
     if (lastExternalRedstoneLevel == null) {
-      if (bundle == null || bundle.getEntity() != null) {
+      if (bundle == null || bundle.getEntity() == null) {
         return 0;
       }
       TileEntity te = bundle.getEntity();
@@ -624,7 +624,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public String toString() {
-    return "AbstractConduit [getClass()=" + getClass() + ", getConduitConnections()=" + getConduitConnections() + ", getExternalConnections()="
-        + getExternalConnections() + ", getNetwork()=" + getNetwork() + "]";
+    return "AbstractConduit [getClass()=" + getClass() + ", lastExternalRedstoneLevel=" + lastExternalRedstoneLevel + ", getConduitConnections()="
+        + getConduitConnections() + ", getExternalConnections()=" + getExternalConnections() + ", getNetwork()=" + getNetwork() + "]";
   }
 }
