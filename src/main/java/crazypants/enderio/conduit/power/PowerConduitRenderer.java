@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.BlockRenderLayer;
 
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 
@@ -27,7 +28,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer, List<BakedQuad> quads) {
 
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       IPowerConduit pc = (IPowerConduit) conduit;
@@ -49,7 +50,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
       return;
     } 
     
-    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
     
     if(component.dir  == null) {
       return;

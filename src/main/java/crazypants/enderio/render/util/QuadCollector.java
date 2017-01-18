@@ -5,11 +5,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -41,7 +44,7 @@ public class QuadCollector {
   }
 
   private static Integer mkKey(EnumFacing side, BlockRenderLayer pass) {
-    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == null ? 0 : pass.ordinal());
+    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == null ? 0 : pass.ordinal() + 1);
   }
 
   public void addQuads(EnumFacing side, BlockRenderLayer pass, List<BakedQuad> quads) {
@@ -150,7 +153,9 @@ public class QuadCollector {
   }
 
   public Collection<BlockRenderLayer> getBlockLayers() {
-    return Arrays.asList(BlockRenderLayer.values());
+    Set<BlockRenderLayer> ret = Sets.newHashSet(BlockRenderLayer.values());
+    ret.add(null);
+    return ret;
   }
 
   public boolean isEmpty() {

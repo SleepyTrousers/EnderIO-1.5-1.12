@@ -34,6 +34,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -107,7 +108,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   public List<BakedQuad> getGeneralQuads(IBlockStateWrapper state, BlockRenderLayer layer) {
 
-    if(layer != BlockRenderLayer.CUTOUT) {
+    if(layer != null && layer != BlockRenderLayer.CUTOUT) {
       return Collections.emptyList();
     }
 
@@ -121,12 +122,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
     
     // TODO: check if this is the client thread, if not, make a copy of the bundle and its conduits in a thread-safe way
-    addConduitQuads(state, bundle, brightness, result);
+    addConduitQuads(state, bundle, brightness, layer, result);
 
     return result;
   }
 
-  private void addConduitQuads(IBlockStateWrapper state, IConduitBundle bundle, float brightness, List<BakedQuad> quads) {
+  private void addConduitQuads(IBlockStateWrapper state, IConduitBundle bundle, float brightness, BlockRenderLayer layer, List<BakedQuad> quads) {
 
     // Conduits
     Set<EnumFacing> externals = new HashSet<EnumFacing>();
@@ -140,17 +141,21 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
       if (state.getYetaDisplayMode().renderConduit(con)) {
         ConduitRenderer renderer = getRendererForConduit(con);
-        renderer.addBakedQuads(this, bundle, con, brightness, quads);
-        Set<EnumFacing> extCons = con.getExternalConnections();
-        for (EnumFacing dir : extCons) {
-          if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
-            externals.add(dir);
+        renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
+        if (layer != null) {
+          Set<EnumFacing> extCons = con.getExternalConnections();
+          for (EnumFacing dir : extCons) {
+            if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
+              externals.add(dir);
+            }
           }
         }
       } else if (con != null) {
         Collection<CollidableComponent> components = con.getCollidableComponents();
         for (CollidableComponent component : components) {
-          addWireBounds(wireBounds, component);
+          if (layer != null || component.dir == null) {
+            addWireBounds(wireBounds, component);
+          }
         }
       }
     }
@@ -160,6 +165,14 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     for (CollidableComponent component : connectors) {
       if (component != null) {
         if (component.conduitType != null) {
+          if (layer == null) {
+            // This is a breaking animation, so check that this is the currently targeted conduit
+            RayTraceResult hit = Minecraft.getMinecraft().objectMouseOver;
+            if (hit == null || !(hit.hitInfo instanceof CollidableComponent) || ((CollidableComponent)hit.hitInfo).conduitType != component.conduitType) {
+              continue; // FIXME this is a bit ugly
+            }
+          }
+
           IConduit conduit = bundle.getConduit(component.conduitType);
           if (conduit != null) {
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {

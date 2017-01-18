@@ -49,6 +49,7 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk.EnumCreateEntityType;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -181,7 +182,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     }
 
     if (!hasPaintRendered || renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
-      if (doCaching) {
+      if (doCaching && MinecraftForgeClient.getRenderLayer() != null) {
         quads = getFromCache();
         cacheResult = quads == null ? "miss" : "hit";
       } else {

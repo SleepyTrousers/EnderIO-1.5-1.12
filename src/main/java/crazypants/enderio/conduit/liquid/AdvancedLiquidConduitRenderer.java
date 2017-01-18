@@ -20,6 +20,7 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -31,9 +32,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum,
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
       List<BakedQuad> quads) {
-    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
     if (!isNSEWUD(component.dir)) {
       return;

@@ -14,13 +14,16 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.RayTraceResult;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
@@ -53,7 +56,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   // ------------ Static Model ---------------------------------------------
 
   @Override
-  public void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, List<BakedQuad> quads) {
+  public void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit conduit, float brightness, BlockRenderLayer layer, List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
@@ -61,20 +64,22 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       if (renderComponent(component)) {
         float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
-        if (isNSEWUD(component.dir) && transmitionTextureForState != null) {
+        if (layer != null && isNSEWUD(component.dir) && transmitionTextureForState != null) {
           Vector4f color = conduit.getTransmitionTextureColorForState(component);
           addTransmissionQuads(transmitionTextureForState, color, conduit, component, selfIllum, quads);
         }
         TextureAtlasSprite tex = conduit.getTextureForState(component);
-        addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+        addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
       }
     }
   }
 
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, List<BakedQuad> quads) {
-  
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer, List<BakedQuad> quads) {
     if (isNSEWUD(component.dir)) {
-
+      if (layer == null) {
+        return;
+      }
+      
       float scaleFactor = 0.75f;
       float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
       float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;

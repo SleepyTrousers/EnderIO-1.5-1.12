@@ -11,6 +11,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
 public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
@@ -24,10 +25,10 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum,
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
       List<BakedQuad> quads) {
   
-    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+    super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
     
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
     for (EnumFacing dir : conduit.getExternalConnections()) {

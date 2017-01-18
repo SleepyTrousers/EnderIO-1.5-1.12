@@ -11,6 +11,7 @@ import crazypants.enderio.conduit.render.BakedQuadBuilder;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.BlockRenderLayer;
 
 public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
 
@@ -20,7 +21,7 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum,
+  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
       List<BakedQuad> quads) {
     if (IRedstoneConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       if (conduit.containsExternalConnection(component.dir) && !((IRedstoneConduit) conduit).isSpecialConnection(component.dir)) {
@@ -28,7 +29,7 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
         BakedQuadBuilder.addBakedQuads(quads, component.bound, tex, ColorUtil.toFloat4(c));
       }
     } else {
-      super.addConduitQuads(bundle, conduit, tex, component, selfIllum, quads);
+      super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
     }
   }
 
