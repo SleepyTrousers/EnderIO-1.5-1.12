@@ -181,8 +181,9 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       hasPaintRendered = PaintWrangler.wrangleBakedModel(world, pos, ((IBlockPaintableBlock) block).getPaintSource(state, world, pos), paintQuads);
     }
 
+    boolean fromCache = doCaching && MinecraftForgeClient.getRenderLayer() != null;
     if (!hasPaintRendered || renderMapper instanceof IRenderMapper.IBlockRenderMapper.IRenderLayerAware.IPaintAware) {
-      if (doCaching && MinecraftForgeClient.getRenderLayer() != null) {
+      if (fromCache) {
         quads = getFromCache();
         cacheResult = quads == null ? "miss" : "hit";
       } else {
@@ -191,7 +192,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
       if (quads == null) {
         quads = new QuadCollector();
         bakeBlockLayer(quads);
-        if (doCaching) {
+        if (fromCache) {
           putIntoCache(quads);
         }
       }
