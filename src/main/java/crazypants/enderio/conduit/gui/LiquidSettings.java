@@ -22,6 +22,7 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketFluidFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
@@ -63,7 +64,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private MultiIconButton inOutNextB;
   private IconButton whiteListB;
 
-  protected LiquidSettings(final GuiExternalConnection gui, IConduit con) {
+  public LiquidSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con);
 
     conduit = (ILiquidConduit) con;

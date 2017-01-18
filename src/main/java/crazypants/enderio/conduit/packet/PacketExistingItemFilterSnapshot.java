@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.conduit.packet;
 
 import java.util.List;
 
@@ -6,8 +6,6 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
-import crazypants.enderio.conduit.packet.AbstractConduitPacket;
-import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -33,7 +31,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
   }
   
   public PacketExistingItemFilterSnapshot(IItemConduit con, EnumFacing dir, boolean isInput, Opcode opcode) {
-    super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     this.isInput= isInput;
     this.opcode = opcode;

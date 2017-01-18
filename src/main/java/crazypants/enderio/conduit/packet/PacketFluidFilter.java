@@ -1,10 +1,8 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.packet;
 
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.packet.AbstractConduitPacket;
-import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +22,7 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
   }
   
   public PacketFluidFilter(EnderLiquidConduit eConduit, EnumFacing dir, FluidFilter filter, boolean isInput) {
-    super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
+    super(eConduit.getBundle().getEntity(), eConduit);
     this.dir = dir;
     this.filter = filter;
     this.isInput = isInput;

@@ -2,16 +2,20 @@ package crazypants.enderio.conduit.power;
 
 import java.util.List;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.conduit.registry.ConduitRegistry;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.AbstractItemConduit;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.ItemConduitSubtype;
-import crazypants.enderio.power.PowerDisplayUtil;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 
@@ -24,6 +28,8 @@ public class ItemPowerConduit extends AbstractItemConduit {
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
   };
 
+  private final ConduitRegistry.ConduitInfo conduitInfo;
+
   public static ItemPowerConduit create() {
     ItemPowerConduit result = new ItemPowerConduit();
     result.init();
@@ -32,6 +38,17 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   protected ItemPowerConduit() {
     super(ModObject.itemPowerConduit, SUBTYPES);
+    conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.DOWN, Offset.DOWN, Offset.SOUTH, Offset.DOWN);
+    conduitInfo.addMember(PowerConduit.class);
+    ConduitRegistry.register(conduitInfo);
+    ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_POWER, IconEIO.WRENCH_OVERLAY_POWER_OFF));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    super.registerRenderers();
+    conduitInfo.addRenderer(new PowerConduitRenderer());
   }
 
   @Override

@@ -20,7 +20,7 @@ public class PacketOCConduitSignalColor extends AbstractConduitPacket<IOCConduit
   }
 
   public PacketOCConduitSignalColor(IOCConduit con, EnumFacing dir) {
-    super(con.getBundle().getEntity(), ConTypeEnum.OC);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     col = con.getSignalColor(dir);
   }

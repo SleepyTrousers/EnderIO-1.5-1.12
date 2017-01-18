@@ -53,6 +53,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -82,8 +84,8 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void preInit(FMLPreInitializationEvent event) {
-    super.preInit(event);
+  public void init(FMLPreInitializationEvent event) {
+    super.init(event);
 
     SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
     tt.addCallback(new TooltipHandlerGrinding());
@@ -93,7 +95,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     //conduits
-    ConduitBundleRenderManager.instance.registerRenderers();
+    ConduitBundleRenderManager.instance.init(event);
 
     // Fluids
     EnderIO.fluids.registerRenderers();
@@ -156,10 +158,16 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void init() {
-    super.init();
+  public void init(FMLInitializationEvent event) {
+    super.init(event);
     SmartModelAttacher.registerColoredBlocksAndItems();
     MinecraftForge.EVENT_BUS.register(ClientNetworkManager.getInstance());
+  }
+
+  @Override
+  public void init(FMLPostInitializationEvent event) {
+    super.init(event);
+    ConduitBundleRenderManager.instance.init(event);
   }
 
   @Override

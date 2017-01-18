@@ -145,7 +145,7 @@ public class EnderIO {
 
     BRProxy.init(event);
 
-    proxy.preInit(event);
+    proxy.init(event);
   }
 
   @EventHandler
@@ -166,7 +166,7 @@ public class EnderIO {
 
     MaterialRecipes.registerDependantOresInDictionary();
 
-    proxy.init();
+    proxy.init(event);
   }
 
   @EventHandler
@@ -176,7 +176,7 @@ public class EnderIO {
 
     LootManager.register();
     
-    // Regsiter the enchants
+    // Register the enchants
     Enchantments.register();
 
     // This must be loaded before parsing the recipes so we get the preferred
@@ -202,6 +202,8 @@ public class EnderIO {
     addModIntegration();
 
     TicProxy.init(event);
+
+    proxy.init(event);
 
     Celeb.create();
     Scheduler.instance.start();

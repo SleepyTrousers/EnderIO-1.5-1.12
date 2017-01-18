@@ -28,7 +28,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -59,13 +61,13 @@ public class CommonProxy {
   public void loadIcons() {
   }
   
-  public void preInit(FMLPreInitializationEvent event) {
+  public void init(FMLPreInitializationEvent event) {
     if (Loader.isModLoaded("theoneprobe")) {
       FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.integration.top.TOPCompatibility");
     }
   }
   
-  public void init() {
+  public void init(FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
@@ -79,6 +81,9 @@ public class CommonProxy {
     }
 
     // registerCommands(); // debug command disabled because it is not needed at the moment
+  }
+
+  public void init(FMLPostInitializationEvent event) {
   }
 
   public void stopWithErrorScreen(String... message) {

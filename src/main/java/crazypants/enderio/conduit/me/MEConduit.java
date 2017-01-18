@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.me;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -23,6 +24,8 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.MESettings;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -341,4 +344,17 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public MEConduitNetwork createNetworkForType() {
     return new MEConduitNetwork();
   }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+    return new MESettings(gui, con);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public int getTabOrderForConduit(IConduit con) {
+    return 4;
+  }
+
 }

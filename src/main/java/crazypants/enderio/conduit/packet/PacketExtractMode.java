@@ -21,7 +21,7 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
   }
 
   public PacketExtractMode(IExtractor con, EnumFacing dir) {
-    super(con.getBundle().getEntity(), ConTypeEnum.get(con));
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     mode = con.getExtractionRedstoneMode(dir);
     color = con.getExtractionSignalColor(dir);

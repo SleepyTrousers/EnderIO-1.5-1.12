@@ -74,4 +74,9 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
+  @Override
+  public void initIcons() {
+    ItemConduit.initIcons();
+  }
+
 }

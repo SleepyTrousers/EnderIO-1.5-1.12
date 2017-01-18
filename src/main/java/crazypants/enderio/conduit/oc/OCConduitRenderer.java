@@ -34,4 +34,9 @@ public class OCConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
+  @Override
+  public void initIcons() {
+    OCConduit.initIcons();
+  }
+
 }

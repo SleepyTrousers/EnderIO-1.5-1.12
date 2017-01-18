@@ -1,5 +1,6 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.packet;
 
+import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

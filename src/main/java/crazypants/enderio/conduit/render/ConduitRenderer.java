@@ -18,4 +18,6 @@ public interface ConduitRenderer {
 
   void addBakedQuads(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle bundle, IConduit con, float brightness, BlockRenderLayer layer, List<BakedQuad> quads);
 
+  void initIcons();
+
 }

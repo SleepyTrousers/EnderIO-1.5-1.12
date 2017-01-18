@@ -47,6 +47,10 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
+  @Override
+  public void initIcons() {
+    EnderLiquidConduit.initIcons();
+  }
   
 
 }

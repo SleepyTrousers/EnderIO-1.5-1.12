@@ -28,7 +28,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   public PacketItemConduitFilter(IItemConduit con, EnumFacing dir) {
-    super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     loopMode = con.isSelfFeedEnabled(dir);
     roundRobin = con.isRoundRobinEnabled(dir);

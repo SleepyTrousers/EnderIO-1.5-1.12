@@ -253,4 +253,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     cache.clear();
   }
 
+  @Override
+  public void initIcons() {
+    LiquidConduit.initIcons();
+  }
+
 }

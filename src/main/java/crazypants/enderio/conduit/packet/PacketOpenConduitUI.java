@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
 

@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.sound.IModSound;
@@ -346,7 +347,7 @@ public class ConduitUtil {
     boolean hasInsulated = false;
     for (IConduit con : cb.getConduits()) {
       cons.addAll(con.getExternalConnections());
-      if (con instanceof IRedstoneConduit) {
+      if (ConduitRegistry.get(con).canConnectToAnything()) {
         hasInsulated = true;
       }
     }

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.DyeColor;
@@ -14,11 +15,15 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.LiquidSettings;
 import crazypants.enderio.machine.RedstoneControlMode;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -166,6 +171,18 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
         }
       }
     }
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+    return new LiquidSettings(gui, con);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public int getTabOrderForConduit(IConduit con) {
+    return 1;
   }
 
 }

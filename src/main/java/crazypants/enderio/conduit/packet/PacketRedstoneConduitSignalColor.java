@@ -19,7 +19,7 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRed
   }
 
   public PacketRedstoneConduitSignalColor(IRedstoneConduit con, EnumFacing dir) {
-    super(con.getBundle().getEntity(), ConTypeEnum.REDSTONE);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     col = con.getSignalColor(dir);
   }

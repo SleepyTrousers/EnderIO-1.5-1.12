@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -28,16 +26,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IConduit {
 
-  interface IHasTabPanel {
-    @SideOnly(Side.CLIENT)
-    ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con);
-  }
+  @SideOnly(Side.CLIENT)
+  ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con);
 
-  interface IHasTabOrder {
-    @SideOnly(Side.CLIENT)
-    @Nullable
-    Integer getTabOrderForConduit(IConduit con);
-  }
+  @SideOnly(Side.CLIENT)
+  int getTabOrderForConduit(IConduit con);
 
   // Base functionality
   Class<? extends IConduit> getBaseConduitType();

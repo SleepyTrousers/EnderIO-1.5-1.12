@@ -11,23 +11,11 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static crazypants.enderio.gui.IconEIO.CROSS;
 import static crazypants.enderio.gui.IconEIO.TICK;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_FLUID;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_FLUID_OFF;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_ITEM;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_ITEM_OFF;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_POWER_OFF;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE;
-import static crazypants.enderio.gui.IconEIO.WRENCH_OVERLAY_REDSTONE_OFF;
 import static crazypants.enderio.gui.IconEIO.YETA_GEAR;
 
 public class ConduitDisplayMode {
@@ -41,13 +29,9 @@ public class ConduitDisplayMode {
   // @formatter:off
   static {
     registrar = Lists.newArrayList(
-        NONE, 
-        ALL, 
-        new ConduitDisplayMode(IItemConduit.class, WRENCH_OVERLAY_ITEM, WRENCH_OVERLAY_ITEM_OFF), 
-        new ConduitDisplayMode(ILiquidConduit.class, WRENCH_OVERLAY_FLUID, WRENCH_OVERLAY_FLUID_OFF), 
-        new ConduitDisplayMode(IPowerConduit.class, WRENCH_OVERLAY_POWER, WRENCH_OVERLAY_POWER_OFF), 
-        new ConduitDisplayMode(IRedstoneConduit.class, WRENCH_OVERLAY_REDSTONE, WRENCH_OVERLAY_REDSTONE_OFF),
-        NEUTRAL
+        NEUTRAL,
+        NONE,
+        ALL
      );
   }
   // @formatter:on

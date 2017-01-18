@@ -8,15 +8,21 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IconEIO;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
+
+  private final ConduitRegistry.ConduitInfo conduitInfo;
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
@@ -33,6 +39,21 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   protected ItemLiquidConduit() {
     super(ModObject.itemLiquidConduit, subtypes);
+    conduitInfo = new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.WEST, Offset.NORTH, Offset.WEST, Offset.WEST);
+    conduitInfo.addMember(LiquidConduit.class);
+    conduitInfo.addMember(AdvancedLiquidConduit.class);
+    conduitInfo.addMember(EnderLiquidConduit.class);
+    ConduitRegistry.register(conduitInfo);
+    ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_FLUID, IconEIO.WRENCH_OVERLAY_FLUID_OFF));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers() {
+    super.registerRenderers();
+    conduitInfo.addRenderer(LiquidConduitRenderer.create());
+    conduitInfo.addRenderer(new AdvancedLiquidConduitRenderer());
+    conduitInfo.addRenderer(new EnderLiquidConduitRenderer());
   }
 
   @Override

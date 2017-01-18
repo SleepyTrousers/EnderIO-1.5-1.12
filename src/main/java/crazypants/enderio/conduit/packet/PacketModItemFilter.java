@@ -1,9 +1,7 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.conduit.packet;
 
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
-import crazypants.enderio.conduit.packet.AbstractConduitPacket;
-import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -22,7 +20,7 @@ public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit> imp
   }
   
   public PacketModItemFilter(IItemConduit con, EnumFacing dir, boolean isInput, int index, String name) {
-    super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     this.isInput= isInput;
     this.index = index;

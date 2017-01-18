@@ -17,7 +17,7 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
   }
 
   public PacketRedstoneConduitOutputStrength(IRedstoneConduit con, EnumFacing dir) {
-    super(con.getBundle().getEntity(), ConTypeEnum.REDSTONE);
+    super(con.getBundle().getEntity(), con);
     this.dir = dir;
     isStrong = con.isOutputStrong(dir);
   }

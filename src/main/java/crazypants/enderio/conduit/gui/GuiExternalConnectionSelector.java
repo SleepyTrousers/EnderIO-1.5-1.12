@@ -14,7 +14,8 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.packet.PacketOpenConduitUI;
+import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -47,7 +48,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     this.cb = cb;
     cons = new HashSet<EnumFacing>();
     for (IConduit con : cb.getConduits()) {
-      if(con instanceof IRedstoneConduit) {
+      if (ConduitRegistry.get(con).canConnectToAnything()) {
         Set<EnumFacing> conCons = con.getConduitConnections();
         for(EnumFacing dir : EnumFacing.VALUES) {
           if(!conCons.contains(dir)) {

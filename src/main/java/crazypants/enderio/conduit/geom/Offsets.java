@@ -5,12 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.me.IMEConduit;
-import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import net.minecraft.util.EnumFacing;
 
 public class Offsets {
@@ -61,48 +55,9 @@ public class Offsets {
 
   private static Map<OffsetKey, Offset> OFFSETS = new HashMap<OffsetKey, Offset>();
 
-  static {
-    OFFSETS.put(key(IRedstoneConduit.class, Axis.NONE), Offset.UP);
-    OFFSETS.put(key(IRedstoneConduit.class, Axis.X), Offset.UP);
-    OFFSETS.put(key(IRedstoneConduit.class, Axis.Y), Offset.NORTH);
-    OFFSETS.put(key(IRedstoneConduit.class, Axis.Z), Offset.UP);
+    // new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.NORTH_UP, Offset.NORTH_UP, Offset.NORTH_WEST, Offset.WEST_UP);
 
-    OFFSETS.put(key(IPowerConduit.class, Axis.NONE), Offset.DOWN);
-    OFFSETS.put(key(IPowerConduit.class, Axis.X), Offset.DOWN);
-    OFFSETS.put(key(IPowerConduit.class, Axis.Y), Offset.SOUTH);
-    OFFSETS.put(key(IPowerConduit.class, Axis.Z), Offset.DOWN);
-
-    OFFSETS.put(key(ILiquidConduit.class, Axis.NONE), Offset.WEST);
-    OFFSETS.put(key(ILiquidConduit.class, Axis.X), Offset.NORTH);
-    OFFSETS.put(key(ILiquidConduit.class, Axis.Y), Offset.WEST);
-    OFFSETS.put(key(ILiquidConduit.class, Axis.Z), Offset.WEST);
-
-    OFFSETS.put(key(IItemConduit.class, Axis.NONE), Offset.EAST);
-    OFFSETS.put(key(IItemConduit.class, Axis.X), Offset.SOUTH);
-    OFFSETS.put(key(IItemConduit.class, Axis.Y), Offset.EAST);
-    OFFSETS.put(key(IItemConduit.class, Axis.Z), Offset.EAST);
-
-//    OFFSETS.put(key(IGasConduit.class, Axis.NONE), Offset.NORTH_UP);
-//    OFFSETS.put(key(IGasConduit.class, Axis.X), Offset.NORTH_UP);
-//    OFFSETS.put(key(IGasConduit.class, Axis.Y), Offset.NORTH_WEST);
-//    OFFSETS.put(key(IGasConduit.class, Axis.Z), Offset.WEST_UP);
-
-    OFFSETS.put(key(IMEConduit.class, Axis.NONE), Offset.SOUTH_UP);
-    OFFSETS.put(key(IMEConduit.class, Axis.X), Offset.SOUTH_UP);
-    OFFSETS.put(key(IMEConduit.class, Axis.Y), Offset.NORTH_EAST);
-    OFFSETS.put(key(IMEConduit.class, Axis.Z), Offset.EAST_UP);
-
-    OFFSETS.put(key(IOCConduit.class, Axis.NONE), Offset.NORTH_DOWN);
-    OFFSETS.put(key(IOCConduit.class, Axis.X), Offset.NORTH_DOWN);
-    OFFSETS.put(key(IOCConduit.class, Axis.Y), Offset.SOUTH_WEST);
-    OFFSETS.put(key(IOCConduit.class, Axis.Z), Offset.WEST_DOWN);
-
-    // OFFSETS.put(key(IxConduit.class, Axis.NONE), Offset.SOUTH_DOWN);
-    // OFFSETS.put(key(IxConduit.class, Axis.X), Offset.SOUTH_DOWN);
-    // OFFSETS.put(key(IxConduit.class, Axis.Y), Offset.SOUTH_EAST);
-    // OFFSETS.put(key(IxConduit.class, Axis.Z), Offset.EAST_DOWN);
-
-  }
+    // new ConduitRegistry.ConduitInfo(getBaseConduitType(), Offset.SOUTH_DOWN, Offset.SOUTH_DOWN, Offset.SOUTH_EAST, Offset.EAST_DOWN);
 
   public static Offset get(Class<? extends IConduit> type, EnumFacing dir) {
     Offset res = OFFSETS.get(key(type, getAxisForDir(dir)));

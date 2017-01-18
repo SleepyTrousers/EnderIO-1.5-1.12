@@ -4,19 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.oc.IOCConduit;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -31,17 +24,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 
   public static int nextButtonId() {
     return nextButtonId++;
-  }
-
-  private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
-  static {
-    TAB_ORDER.put(IItemConduit.class, 0);
-    TAB_ORDER.put(ILiquidConduit.class, 1);
-    TAB_ORDER.put(IRedstoneConduit.class, 2);
-    TAB_ORDER.put(IPowerConduit.class, 3);
-//    TAB_ORDER.put(IMEConduit.class, 4);
-//    TAB_ORDER.put(IGasConduit.class, 5);
-    TAB_ORDER.put(IOCConduit.class, 4);
   }
 
   final InventoryPlayer playerInv;
@@ -72,23 +54,15 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
 
       @Override
       public int compare(IConduit o1, IConduit o2) {
-        Integer int1 = (o1 instanceof IConduit.IHasTabOrder) ? ((IConduit.IHasTabOrder) o1).getTabOrderForConduit(o1) : TAB_ORDER.get(o1.getBaseConduitType());
-        if(int1 == null) {
-          return 1;
-        }
-        Integer int2 = (o2 instanceof IConduit.IHasTabOrder) ? ((IConduit.IHasTabOrder) o2).getTabOrderForConduit(o2) : TAB_ORDER.get(o2.getBaseConduitType());
-        if(int2 == null) {
-          return 1;
-        }
         //NB: using Double.comp instead of Integer.comp as the int version is only from Java 1.7+
-        return Double.compare(int1, int2);
+        return Double.compare(o1.getTabOrderForConduit(o1), o2.getTabOrderForConduit(o2));
 
       }
     });
 
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        ITabPanel tab = TabFactory.instance.createPanelForConduit(this, con);
+        ITabPanel tab = con.createPanelForConduit(this, con);
         if(tab != null) {
           conduits.add(con);
           tabs.add(tab);

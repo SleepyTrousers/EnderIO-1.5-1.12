@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
@@ -24,6 +25,8 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.OCSettings;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -556,6 +559,18 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Override
   public OCConduitNetwork createNetworkForType() {
     return new OCConduitNetwork();
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+    return new OCSettings(gui, con);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public int getTabOrderForConduit(IConduit con) {
+    return 5;
   }
 
 }

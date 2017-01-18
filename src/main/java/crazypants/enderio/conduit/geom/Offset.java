@@ -74,4 +74,11 @@ public enum Offset {
     return EnumHelper.addEnum(Offset.class, name, new Class<?>[] { int.class, int.class, int.class }, xOffset, yOffset, zOffset);
   }
 
+  public Offset next() {
+    return values().length > ordinal() + 1 ? values()[ordinal() + 1] : null;
+  }
+
+  public static Offset first() {
+    return values()[0];
+  }
 }

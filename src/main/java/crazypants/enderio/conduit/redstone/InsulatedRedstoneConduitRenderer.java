@@ -33,4 +33,9 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
+  @Override
+  public void initIcons() {
+    InsulatedRedstoneConduit.initIcons();
+  }
+
 }

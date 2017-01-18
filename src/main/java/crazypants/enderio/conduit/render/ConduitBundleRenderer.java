@@ -43,7 +43,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduitBundle> {
 
   private final List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
-  private final DefaultConduitRenderer dcr = new DefaultConduitRenderer();
+  private final DefaultConduitRenderer dcr = new DefaultConduitRenderer() {
+    @Override
+    public void initIcons() {
+    }
+  };
 
   public ConduitBundleRenderer() {    
   }

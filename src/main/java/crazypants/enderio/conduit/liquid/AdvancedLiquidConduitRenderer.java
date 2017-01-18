@@ -163,4 +163,9 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     return xyz.z;
   }
 
+  @Override
+  public void initIcons() {
+    AdvancedLiquidConduit.initIcons();
+  }
+
 }
