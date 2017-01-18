@@ -38,6 +38,14 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       }
       return values()[nextOrd];
     }
+    
+    Mode prev() {
+      int nextOrd = ordinal() - 1;
+      if (nextOrd < 0) {
+        nextOrd = values().length - 1;
+      }
+      return values()[nextOrd];
+    }
   }
 
   @Store

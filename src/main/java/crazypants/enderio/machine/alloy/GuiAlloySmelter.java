@@ -3,9 +3,12 @@ package crazypants.enderio.machine.alloy;
 import java.awt.Rectangle;
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 
 import org.lwjgl.opengl.GL11;
 
@@ -59,15 +62,28 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
       super.renderSlotHighlight(slot, col);
     }
   }
+  
+  @Override
+  protected void mouseClicked(int x, int y, int button) throws IOException {
+    if (button == 1 && vanillaFurnaceButton.isMouseOver()) {
+      Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+      actionPerformed(vanillaFurnaceButton, 1);
+    }
+    super.mouseClicked(x, y, button);
+  }
 
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
-    if (par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
-      getTileEntity().setMode(getTileEntity().getMode().next());
+    actionPerformed(par1GuiButton, 0);
+  }
+  
+  private void actionPerformed(GuiButton button, int mbutton) throws IOException {
+    if (button.id == SMELT_MODE_BUTTON_ID) {
+      getTileEntity().setMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());
       updateVanillaFurnaceButton();
       PacketHandler.INSTANCE.sendToServer(new PacketClientState(getTileEntity()));
     } else {
-      super.actionPerformed(par1GuiButton);
+      super.actionPerformed(button);
     }
   }
 
