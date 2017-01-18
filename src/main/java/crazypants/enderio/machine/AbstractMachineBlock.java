@@ -33,6 +33,7 @@ import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.NullHelper;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -222,14 +223,14 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       EnumFacing side,
       float hitX, float hitY, float hitZ) {
     T tile = getTileEntity(world, pos);
-    if (heldItem != null && tile instanceof AbstractPoweredMachineEntity) {
+    if (Prep.isValid(heldItem) && tile instanceof AbstractPoweredMachineEntity) {
       AbstractPoweredMachineEntity machine = (AbstractPoweredMachineEntity) tile;
       if (machine.getSlotDefinition().getNumUpgradeSlots() > 0 && heldItem.getItem() == ModObject.itemBasicCapacitor.getItem()) {
         int slot = machine.getSlotDefinition().getMinUpgradeSlot();
         ItemStack toInsert = heldItem.copy();
         toInsert.stackSize = 1;
         ItemStack temp = machine.getStackInSlot(slot);
-        if (temp == null) {
+        if (Prep.isInvalid(temp)) {
           machine.setInventorySlotContents(slot, toInsert);
           toInsert = null;
         } else if (temp.getItemDamage() != toInsert.getItemDamage()) {
