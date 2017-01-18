@@ -7,11 +7,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.EnderIOAPIProps;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -26,6 +31,7 @@ import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -38,8 +44,10 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -48,6 +56,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import scala.tools.nsc.transform.SpecializeTypes.Abstract;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
     IWailaInfoProvider, ISmartRenderAwareBlock {
@@ -207,8 +217,45 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
-  
-  
+  @Override
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
+      EnumFacing side,
+      float hitX, float hitY, float hitZ) {
+    T tile = getTileEntity(world, pos);
+    if (heldItem != null && tile instanceof AbstractPoweredMachineEntity) {
+      AbstractPoweredMachineEntity machine = (AbstractPoweredMachineEntity) tile;
+      if (machine.getSlotDefinition().getNumUpgradeSlots() > 0 && heldItem.getItem() == ModObject.itemBasicCapacitor.getItem()) {
+        int slot = machine.getSlotDefinition().getMinUpgradeSlot();
+        ItemStack toInsert = heldItem.copy();
+        toInsert.stackSize = 1;
+        ItemStack temp = machine.getStackInSlot(slot);
+        if (temp == null) {
+          machine.setInventorySlotContents(slot, toInsert);
+          toInsert = null;
+        } else if (temp.getItemDamage() != toInsert.getItemDamage()) {
+          machine.setInventorySlotContents(slot, toInsert);
+          toInsert = temp;
+        } else {
+          return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+        }
+        
+        heldItem.stackSize--;
+        if (heldItem.stackSize == 0) {
+          entityPlayer.setHeldItem(hand, null);
+        }
+        
+        if (toInsert != null) {
+          if (!entityPlayer.inventory.addItemStackToInventory(toInsert)) {
+            entityPlayer.dropItem(toInsert, true);
+          }
+        }
+        
+        return true;
+      }
+    }
+    
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+  }
   
   @SideOnly(Side.CLIENT)
   @Override
