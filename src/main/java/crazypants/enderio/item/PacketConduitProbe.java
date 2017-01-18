@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -155,9 +156,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   }
 
   public static void sendInfoMessage(EntityPlayer player, IItemConduit conduit, ItemStack input) {
-    String color = "\u00A7a ";
+    TextFormatting color;
     StringBuilder sb = new StringBuilder();
-    sb.append(color);
 
     if (conduit.getExternalConnections().isEmpty()) {
       sb.append(ITEM_HEADING);
@@ -167,7 +167,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     } else {
       for (EnumFacing dir : conduit.getExternalConnections()) {
         ConnectionMode mode = conduit.getConnectionMode(dir);
-
+        color = TextFormatting.GREEN;
+        
+        sb.append(color);
         sb.append(ITEM_HEADING);
         sb.append(" ");
         sb.append(EnderIO.lang.localize("gui.mjReader.connectionDir"));
@@ -177,8 +179,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
         ItemConduitNetwork icn = (ItemConduitNetwork) conduit.getNetwork();
         if (icn != null && mode.acceptsInput()) {
-          color = "\u00A79 ";
-          sb.append(color);
+          color = TextFormatting.BLUE;
+          sb.append(color + " ");
 
           if (input == null) {
             sb.append(EnderIO.lang.localize("gui.mjReader.extractedItems"));
@@ -206,8 +208,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
           }
         }
         if (icn != null && mode.acceptsOutput()) {
-          color = "\u00A79 ";
-          sb.append(color);
+          color = TextFormatting.BLUE;
+          sb.append(color + " ");
 
           List<String> targets = icn.getInputSourcesFor(conduit, dir, input);
           if (targets.isEmpty()) {
