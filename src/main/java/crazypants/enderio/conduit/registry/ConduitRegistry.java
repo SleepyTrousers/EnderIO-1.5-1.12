@@ -278,11 +278,24 @@ public class ConduitRegistry {
     return conduitMemberMapF.get(conduit.getClass());
   }
 
+  public static void sort(List<IConduit> conduits) {
+    Collections.sort(conduits, CONDUIT_COMPERATOR);
+  }
+
   private static final Comparator<ConduitInfo> UUID_COMPERATOR = new Comparator<ConduitInfo>() {
 
     @Override
     public int compare(ConduitInfo o1, ConduitInfo o2) {
       return o1.getNetworkUUID().compareTo(o2.getNetworkUUID());
+    }
+
+  };
+
+  private static final Comparator<IConduit> CONDUIT_COMPERATOR = new Comparator<IConduit>() {
+
+    @Override
+    public int compare(IConduit o1, IConduit o2) {
+      return get(o1).getNetworkUUID().compareTo(get(o2).getNetworkUUID());
     }
 
   };
