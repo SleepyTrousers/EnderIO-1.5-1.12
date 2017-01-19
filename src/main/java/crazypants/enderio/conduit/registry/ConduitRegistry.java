@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
@@ -30,6 +31,23 @@ public class ConduitRegistry {
     private @Nonnull Collection<ConduitRenderer> renderers;
     private @Nonnull Collection<Class<? extends IConduit>> members = new ArrayList<Class<? extends IConduit>>();
 
+    /**
+     * Constructs a new ConduitInfo object.
+     * 
+     * @param baseType
+     *          An interface that identifies this type of conduit.
+     * @param none
+     *          The preferred location of the conduit node in the bundle.
+     * @param x
+     *          The preferred location of the conduit arm in the bundle on the X
+     *          axis.
+     * @param y
+     *          The preferred location of the conduit arm in the bundle on the Y
+     *          axis.
+     * @param z
+     *          The preferred location of the conduit arm in the bundle on the Z
+     *          axis.
+     */
     public ConduitInfo(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset none, @Nonnull Offset x, @Nonnull Offset y, @Nonnull Offset z) {
       this.baseType = baseType;
       this.none = none;
@@ -39,22 +57,43 @@ public class ConduitRegistry {
       this.networkUUID = UUID.nameUUIDFromBytes(baseType.getName().getBytes());
     }
 
+    /**
+     * Returns the UUID that identifies the conduit type.
+     */
     public @Nonnull UUID getNetworkUUID() {
       return networkUUID;
     }
 
+    /**
+     * Returns the interface that identifies the conduit type.
+     */
     public @Nonnull Class<? extends IConduit> getBaseType() {
       return baseType;
     }
 
+    /**
+     * Conduits that can connect to any block type (but AIR) need to have this
+     * enabled so the GUI selector knows to show GUIs for unconnected sides.
+     */
     public void setCanConnectToAnything() {
       this.canConnectToAnything = true;
     }
 
+    /**
+     * Conduits that can connect to any block type (but AIR) need to have this
+     * enabled so the GUI selector knows to show GUIs for unconnected sides.
+     */
     public boolean canConnectToAnything() {
       return canConnectToAnything;
     }
 
+    /**
+     * Adds a renderer to the list of conduit renderers. This can called
+     * multiple times, and the registered renderers are not linked to this
+     * conduit type.
+     * <p>
+     * <em>CLIENT only!</em>
+     */
     @SideOnly(Side.CLIENT)
     public void addRenderer(@Nonnull ConduitRenderer renderer) {
       if (renderers == null) {
@@ -63,6 +102,12 @@ public class ConduitRegistry {
       renderers.add(renderer);
     }
 
+    /**
+     * Returns the registered renderers for this conduit type. Can be an empty
+     * list.
+     * <p>
+     * <em>CLIENT only!</em>
+     */
     @SideOnly(Side.CLIENT)
     public @Nonnull Collection<ConduitRenderer> getRenderers() {
       if (renderers == null) {
@@ -71,26 +116,39 @@ public class ConduitRegistry {
       return renderers;
     }
 
+    /**
+     * Adds a conduit implementation class for this conduit type. The given
+     * class <em>must</em> implement the base type (the interface that
+     * identifies the conduit type). This must be called at least once for any
+     * conduit type.
+     */
     public void addMember(@Nonnull Class<? extends IConduit> member) {
       members.add(member);
     }
 
+    /**
+     * Returns a collection of registered conduit implementation classes.
+     */
     public @Nonnull Collection<Class<? extends IConduit>> getMembers() {
       return members;
     }
 
+    // internal use only
     protected @Nonnull Offset getNone() {
       return none;
     }
 
+    // internal use only
     protected @Nonnull Offset getX() {
       return x;
     }
 
+    // internal use only
     protected @Nonnull Offset getY() {
       return y;
     }
 
+    // internal use only
     protected @Nonnull Offset getZ() {
       return z;
     }
@@ -101,6 +159,36 @@ public class ConduitRegistry {
   private static final Map<Class<? extends IConduit>, ConduitInfo> conduitCLassMap = new IdentityHashMap<Class<? extends IConduit>, ConduitInfo>();
   private static final Map<UUID, ConduitInfo> conduitUUIDMap = new HashMap<UUID, ConduitInfo>();
 
+  private static final Map<Class<? extends IConduit>, UUID> conduitMemberMapF = new IdentityHashMap<Class<? extends IConduit>, UUID>();
+  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapR = new IdentityHashMap<UUID, Class<? extends IConduit>>();
+
+  /**
+   * Register an old name for a conduit member class after renaming it. Allows
+   * conduits of that type to be read from the save game. The aliasName should
+   * be the ".getName()" of the old class.
+   */
+  public static void registerAlias(Class<? extends IConduit> member, String aliasName) {
+    final UUID uuid = UUID.nameUUIDFromBytes(aliasName.getBytes());
+    conduitMemberMapR.put(uuid, member);
+  }
+
+  /**
+   * Register an old name for a conduit identity interface after renaming it.
+   * Allows conduits of that type to be read from the save game. The aliasName
+   * should be the ".getName()" of the old interface. The given ConduitInfo must
+   * already be registered.
+   */
+  public static void registerAlias(ConduitInfo info, String aliasName) {
+    final UUID uuid = UUID.nameUUIDFromBytes(aliasName.getBytes());
+    conduitUUIDMap.put(uuid, info);
+  }
+
+  /**
+   * Register a new conduit type.
+   * <p>
+   * Will throw a RuntimeException if no location in the bundle could be found
+   * for the conduit.
+   */
   public static void register(ConduitInfo info) {
     conduitInfos.add(info);
     Collections.sort(conduitInfos, UUID_COMPERATOR);
@@ -108,6 +196,9 @@ public class ConduitRegistry {
     conduitCLassMap.put(info.getBaseType(), info);
     for (Class<? extends IConduit> member : info.getMembers()) {
       conduitCLassMap.put(member, info);
+      final UUID uuid = UUID.nameUUIDFromBytes(member.getName().getBytes());
+      conduitMemberMapF.put(member, uuid);
+      conduitMemberMapR.put(uuid, member);
     }
 
     Offset none = info.getNone(), x = info.getX(), y = info.getY(), z = info.getZ();
@@ -140,16 +231,51 @@ public class ConduitRegistry {
     }
   }
 
+  /**
+   * Returns the ConduitInfo for the given conduit instance (member).
+   */
   public static ConduitInfo get(IConduit conduit) {
     return conduitCLassMap.get(conduit.getClass());
   }
 
+  /**
+   * Returns the ConduitInfo for the given conduit interface UUID.
+   */
   public static ConduitInfo get(UUID uuid) {
     return conduitUUIDMap.get(uuid);
   }
 
+  /**
+   * Returns all registered ConduitInfos. This list is always sorted the same
+   * way.
+   */
   public static Collection<ConduitInfo> getAll() {
     return conduitInfos;
+  }
+
+  /**
+   * Returns a new conduit instance (member) for the given member UUID (
+   * <em>not</em> interface UUID).
+   */
+  public static IConduit getInstance(UUID uuid) {
+    final Class<? extends IConduit> clazz = conduitMemberMapR.get(uuid);
+    if (clazz == null) {
+      Log.warn("Ignoring unregistered conduit type " + uuid);
+      return null;
+    }
+    try {
+      return clazz.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException("Could not create an instance of the conduit of type " + uuid, e);
+    }
+  }
+
+  /**
+   * Returns the member UUID for the given conduit instance (member). This is
+   * not the interface/network UUID!
+   */
+  public static UUID getInstanceUUID(IConduit conduit) {
+    return conduitMemberMapF.get(conduit.getClass());
   }
 
   private static final Comparator<ConduitInfo> UUID_COMPERATOR = new Comparator<ConduitInfo>() {
