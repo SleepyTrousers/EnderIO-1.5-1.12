@@ -8,7 +8,6 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.oc.OCConduitRenderer;
 import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.gui.IconEIO;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +45,7 @@ public class ItemMEConduit extends AbstractItemConduit {
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     super.registerRenderers();
-    conduitInfo.addRenderer(new OCConduitRenderer());
+    conduitInfo.addRenderer(new MEConduitRenderer());
   }
 
   @Override
