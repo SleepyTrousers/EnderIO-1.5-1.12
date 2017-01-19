@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -67,6 +68,9 @@ public abstract class DefaultConduitRenderer implements ConduitRenderer {
           addTransmissionQuads(transmitionTextureForState, color, conduit, component, selfIllum, quads);
         }
         TextureAtlasSprite tex = conduit.getTextureForState(component);
+        if (tex == null) {
+          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+        }
         addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
       }
     }
@@ -150,6 +154,9 @@ public abstract class DefaultConduitRenderer implements ConduitRenderer {
         }
 
         TextureAtlasSprite tex = conduit.getTextureForState(component);
+        if (tex == null) {
+          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+        }
         renderConduitDynamic(tex, conduit, component, selfIllum);
       }
     }

@@ -180,7 +180,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
           IConduit conduit = bundle.getConduit(component.conduitType);
           if (conduit != null) {
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
-              BakedQuadBuilder.addBakedQuads(quads, component.bound, conduit.getTextureForState(component));
+              TextureAtlasSprite tex = conduit.getTextureForState(component);
+              if (tex == null) {
+                tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+              }
+              BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
             } else {
               addWireBounds(wireBounds, component);
             }
@@ -204,10 +208,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     if (quads.isEmpty() && !bundle.hasFacade()) {
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.10), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.15), ConduitBundleRenderManager.instance.getWireFrameIcon());
+      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.20), ConduitBundleRenderManager.instance.getWireFrameIcon());
       BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.25), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.50), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE.scale(.75), ConduitBundleRenderManager.instance.getWireFrameIcon());
-      BakedQuadBuilder.addBakedQuads(quads, BoundingBox.UNIT_CUBE, ConduitBundleRenderManager.instance.getWireFrameIcon());
     }
 
   }
