@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
@@ -233,26 +234,28 @@ public class ConduitUtil {
 
   public static void writeToNBT(IConduit conduit, NBTTagCompound conduitRoot) {
     if (conduit == null) {
-      return;
+      conduitRoot.setString("UUID", UUID.nameUUIDFromBytes("null".getBytes()).toString());
+    } else {
+      conduitRoot.setString("UUID", ConduitRegistry.getInstanceUUID(conduit).toString());
+      conduit.writeToNBT(conduitRoot);
     }
-
-    NBTTagCompound conduitBody = new NBTTagCompound();
-    conduit.writeToNBT(conduitBody);
-
-    conduitRoot.setString("conduitType", conduit.getClass().getCanonicalName());
-    conduitRoot.setTag("conduit", conduitBody);
   }
 
   public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot, short nbtVersion) {
+    if (conduitRoot.hasKey("UUID")) {
+      String UUIDString = conduitRoot.getString("UUID");
+      IConduit result = ConduitRegistry.getInstance(UUID.fromString(UUIDString));
+      result.readFromNBT(conduitRoot, nbtVersion);
+      return result;
+    }
+
+    // legacy NBT
     String typeName = conduitRoot.getString("conduitType");
     NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
     if (typeName == null || conduitBody == null) {
       return null;
     }
-    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) || (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())
-      // || (typeName.contains("conduit.gas") &&
-      // !GasUtil.isGasConduitEnabled()))
-    ) {
+    if ((typeName.contains("conduit.oc") && !OCUtil.isOCEnabled()) || (typeName.contains("conduit.me") && !MEUtil.isMEEnabled())) {
       return null;
     }
     IConduit result;

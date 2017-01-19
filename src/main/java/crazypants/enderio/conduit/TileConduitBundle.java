@@ -31,6 +31,7 @@ import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
+import crazypants.enderio.conduit.registry.ConduitRegistry;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduit.render.ConduitRenderMapper;
 import crazypants.enderio.config.Config;
@@ -138,8 +139,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
         if(conduit != null) {
           conduit.setBundle(this);
-          // keep conduits sorted on client side so the cache key is stable
-          addConduitSorted(conduit);
+          addConduit(conduit);
         }
       }
     }
@@ -358,19 +358,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       return;
     }
     conduits.add(conduit);
+    // keep conduits sorted so the client side cache key is stable
+    ConduitRegistry.sort(conduits);
     conduit.setBundle(this);
     conduit.onAddedToBundle();
     dirty();
-  }
-
-  protected void addConduitSorted(IConduit conduit) {
-    int idx = 0;
-    for (int i = 0; i < conduits.size(); i++) {
-      if (Offsets.get(conduits.get(i).getClass(), null).ordinal() > Offsets.get(conduit.getClass(), null).ordinal()) {
-        idx = i;
-      }
-    }
-    conduits.add(idx, conduit);
   }
 
   @Override
