@@ -160,7 +160,7 @@ public class ConduitRegistry {
   private static final Map<UUID, ConduitInfo> conduitUUIDMap = new HashMap<UUID, ConduitInfo>();
 
   private static final Map<Class<? extends IConduit>, UUID> conduitMemberMapF = new IdentityHashMap<Class<? extends IConduit>, UUID>();
-  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapR = new IdentityHashMap<UUID, Class<? extends IConduit>>();
+  private static final Map<UUID, Class<? extends IConduit>> conduitMemberMapR = new HashMap<UUID, Class<? extends IConduit>>();
 
   /**
    * Register an old name for a conduit member class after renaming it. Allows

@@ -245,7 +245,9 @@ public class ConduitUtil {
     if (conduitRoot.hasKey("UUID")) {
       String UUIDString = conduitRoot.getString("UUID");
       IConduit result = ConduitRegistry.getInstance(UUID.fromString(UUIDString));
-      result.readFromNBT(conduitRoot, nbtVersion);
+      if (result != null) {
+        result.readFromNBT(conduitRoot, nbtVersion);
+      }
       return result;
     }
 
