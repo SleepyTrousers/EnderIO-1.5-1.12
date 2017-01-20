@@ -69,7 +69,7 @@ public class AdditionalFluid {
     };
     f.setDensity(-500);
     f.setGaseous(true);
-    f.setLuminosity(15);
+    f.setLuminosity(Blocks.GLOWSTONE.getDefaultState().getLightValue());
     f.setTemperature(1500 + 273);
     f.setViscosity(100);
     if (FluidRegistry.registerFluid(f)) {
@@ -118,7 +118,7 @@ public class AdditionalFluid {
       }
     };
     f.setDensity(1200);
-    f.setLuminosity(7);
+    f.setLuminosity(Blocks.LIT_REDSTONE_ORE.getDefaultState().getLightValue() * 7 / 10);
     f.setTemperature(1700 + 273);
     f.setViscosity(1500);
     if (FluidRegistry.registerFluid(f)) {
