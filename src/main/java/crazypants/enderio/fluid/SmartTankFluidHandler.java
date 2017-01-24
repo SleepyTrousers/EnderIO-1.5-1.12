@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
  * Handles IFluidHandler, FluidTank and SmartTank
  *
  */
+// TODO 1.11: REMOVE for ec version
 public abstract class SmartTankFluidHandler {
 
   protected final IFluidHandler[] tanks;

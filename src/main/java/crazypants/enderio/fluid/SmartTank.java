@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+// TODO 1.11: REMOVE for ec version
 public class SmartTank extends FluidTank {
 
   // Note: NBT-safe as long as the restriction isn't using NBT

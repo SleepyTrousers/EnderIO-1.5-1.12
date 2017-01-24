@@ -65,6 +65,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.config.Config.rocketFuelIsExplosive;
 
+// TODO 1.11: REMOVE for ec version
 public class BlockFluidEio extends BlockFluidClassic {
 
   public static BlockFluidEio create(Fluid fluid, Material material, int fogColor) {
@@ -102,6 +103,7 @@ public class BlockFluidEio extends BlockFluidClassic {
     MinecraftForge.EVENT_BUS.register(BlockFluidEio.class);
   }
 
+  @SubscribeEvent
   public static void onEntitySpawn(LivingSpawnEvent.CheckSpawn evt) {
     if (evt.getResult() != Result.DENY
         && EntitySpawnPlacementRegistry.getPlacementForEntity(evt.getEntity().getClass()) == EntityLiving.SpawnPlacementType.IN_WATER
@@ -150,10 +152,6 @@ public class BlockFluidEio extends BlockFluidClassic {
   /////////////////////////////////////////////////////////////////////////
   // START VISUALS
   /////////////////////////////////////////////////////////////////////////
-
-  static {
-    MinecraftForge.EVENT_BUS.register(BlockFluidEio.class);
-  }
 
   // net.minecraft.client.renderer.EntityRenderer.getNightVisionBrightness(EntityLivingBase, float) is private :-(
   @SideOnly(Side.CLIENT)
