@@ -19,6 +19,7 @@ public abstract class SmartTankFluidHandler {
 
   protected final IFluidHandler[] tanks;
   private final SideHandler[] sides = new SideHandler[EnumFacing.values().length];
+  private final InformationHandler nullSide = new InformationHandler();
 
   public SmartTankFluidHandler(IFluidHandler... tanks) {
     this.tanks = tanks;
@@ -28,12 +29,14 @@ public abstract class SmartTankFluidHandler {
     return facing != null && canAccess(facing);
   }
 
-  public SideHandler get(EnumFacing facing) {
+  public IFluidHandler get(EnumFacing facing) {
     if (has(facing)) {
       if (sides[facing.ordinal()] == null) {
         sides[facing.ordinal()] = new SideHandler(facing);
       }
       return sides[facing.ordinal()];
+    } else if (facing == null) {
+      return nullSide;
     } else {
       return null;
     }
@@ -45,19 +48,13 @@ public abstract class SmartTankFluidHandler {
 
   protected abstract boolean canAccess(EnumFacing from);
 
-  private class SideHandler implements IFluidHandler {
-    private final EnumFacing facing;
+  private class InformationHandler implements IFluidHandler {
 
-    public SideHandler(EnumFacing facing) {
-      this.facing = facing;
+    public InformationHandler() {
     }
-
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-      if (!canAccess(facing)) {
-        return new IFluidTankProperties[0];
-      }
       if (tanks.length == 1) {
         return tanks[0].getTankProperties();
       }
@@ -71,6 +68,40 @@ public abstract class SmartTankFluidHandler {
         }
       }
       return result.toArray(new IFluidTankProperties[result.size()]);
+    }
+
+    @Override
+    public int fill(FluidStack resource, boolean doFill) {
+      return 0;
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(FluidStack resource, boolean doDrain) {
+      return null;
+    }
+
+    @Override
+    @Nullable
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+      return null;
+    }
+
+  }
+
+  private class SideHandler extends InformationHandler {
+    private final EnumFacing facing;
+
+    public SideHandler(EnumFacing facing) {
+      this.facing = facing;
+    }
+
+    @Override
+    public IFluidTankProperties[] getTankProperties() {
+      if (!canAccess(facing)) {
+        return new IFluidTankProperties[0];
+      }
+      return super.getTankProperties();
     }
 
     @Override
