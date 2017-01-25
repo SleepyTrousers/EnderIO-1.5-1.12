@@ -261,7 +261,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
       // no point in checking the recipes if an item is already in the slot
       // worst case we get more of the wrong item - but that doesn't change
       // anything
-      return existing.isStackable() && existing.isItemEqual(itemstack);
+      return existing.isStackable() && existing.stackSize < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
     }
     // no need to call isItemValidForSlot as upgrade slots are not input slots
     return isMachineItemValidForSlot(slot, itemstack);
