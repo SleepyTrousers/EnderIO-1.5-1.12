@@ -44,12 +44,12 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   }
 
   protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, IModObject modObject) {
-    this(null, modObject, null, null, null);
+    this(subclassInventory, modObject, null, null, null);
   }
 
   protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nonnull ICapacitorKey maxEnergyRecieved,
       @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
-    this(null, null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    this(subclassInventory, null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
   private AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nullable IModObject modObject,
