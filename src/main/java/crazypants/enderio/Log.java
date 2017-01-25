@@ -3,6 +3,7 @@ package crazypants.enderio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import crazypants.enderio.config.Config;
 
 public final class Log {
 
@@ -33,6 +34,12 @@ public final class Log {
       LOGGER.info("INDEV: " + join("", msg));
     } else if (LOGGER.isDebugEnabled()) {
       LOGGER.debug(join("", msg));
+    }
+  }
+
+  public static void livetraceNBT(Object... msg) {
+    if (Config.debugTraceNBTActivityExtremelyDetailed) {
+      LOGGER.info(join("", msg));
     }
   }
 

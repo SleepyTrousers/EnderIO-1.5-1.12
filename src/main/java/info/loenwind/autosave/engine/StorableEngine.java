@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.Log;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.Writer;
@@ -85,33 +86,42 @@ public class StorableEngine {
       cacheHandlers(registry, clazz);
     }
 
+    Log.livetraceNBT("Reading NBT data for object ", object, " of class ", clazz, " for phase(s) ", phase, " from NBT ", tag);
     for (Field field : fieldCache.get(clazz)) {
       if (!Collections.disjoint(phaseCache.get(field), phase)) {
         Object fieldData = field.get(object);
         String fieldName = field.getName();
         if (!tag.hasKey(fieldName + NULL_POSTFIX) && fieldName != null) {
           for (IHandler handler : fieldHandlerCache.get(field)) {
+            Log.livetraceNBT("Trying to read data for field ", fieldName, " with handler ", handler);
             Object result = handler.read(registry, phase, tag, field, fieldName, fieldData);
             if (result != null) {
+              Log.livetraceNBT("Read data for field ", fieldName, " with handler ", handler, " yielded data: ", result);
               field.set(object, result);
               break;
             }
           }
         } else {
+          Log.livetraceNBT("Field ", fieldName, " is set to null. NULL_POSTFIX=", tag.hasKey(fieldName + NULL_POSTFIX));
           field.set(object, null);
         }
+      } else {
+        Log.livetraceNBT("Field ", field.getName(), " is not part of the current phase.");
       }
     }
 
     Class<?> superclazz = superclassCache.get(clazz);
     if (superclazz != null) {
       for (IHandler handler : superclassHandlerCache.get(superclazz)) {
+        Log.livetraceNBT("Trying to read data for super class ", superclazz, " with handler ", handler);
         if (handler.read(registry, phase, tag, null, SUPERCLASS_KEY, object) != null) {
+          Log.livetraceNBT("Read data for super class ", superclazz, " with handler ", handler);
           break;
         }
       }
     }
 
+    Log.livetraceNBT("Read NBT data for object ", object, " of class ", clazz);
   }
 
   public <T> void store_impl(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
@@ -121,30 +131,40 @@ public class StorableEngine {
       cacheHandlers(registry, clazz);
     }
 
+    Log.livetraceNBT("Saving NBT data for object ", object, " of class ", clazz, " for phase(s) ", phase, " into NBT ", tag);
     for (Field field : fieldCache.get(clazz)) {
       if (!Collections.disjoint(phaseCache.get(field), phase)) {
         Object fieldData = field.get(object);
         String fieldName = field.getName();
         if (fieldData != null && fieldName != null) {
           for (IHandler handler : fieldHandlerCache.get(field)) {
+            Log.livetraceNBT("Trying to save data for field ", fieldName, " with handler ", handler);
             if (handler.store(registry, phase, tag, fieldName, fieldData)) {
+              Log.livetraceNBT("Saved data for field ", fieldName, " with handler ", handler, ". NBT now is ", tag);
               break;
             }
           }
         } else {
+          Log.livetraceNBT("Field ", fieldName, " is null. Setting NULL_POSTFIX.");
           tag.setBoolean(fieldName + NULL_POSTFIX, true);
         }
+      } else {
+        Log.livetraceNBT("Field ", field.getName(), " is not part of the current phase.");
       }
     }
 
     Class<?> superclazz = superclassCache.get(clazz);
     if (superclazz != null) {
       for (IHandler handler : superclassHandlerCache.get(superclazz)) {
+        Log.livetraceNBT("Trying to save data for super class ", superclazz, " with handler ", handler);
         if (handler.store(registry, phase, tag, SUPERCLASS_KEY, object)) {
+          Log.livetraceNBT("Saved data for super class ", superclazz, " with handler ", handler);
           break;
         }
       }
     }
+
+    Log.livetraceNBT("Saved NBT data for object ", object, " of class ", clazz);
   }
 
   public static <T> T getSingleField(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
