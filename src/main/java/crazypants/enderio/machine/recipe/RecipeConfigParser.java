@@ -397,11 +397,10 @@ public class RecipeConfigParser extends DefaultHandler {
       stack = stack.copy();
       stack.stackSize = stackSize;
       if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
-        Log.warn(LP + "Could not find a specific item in the ore dictionary for " + oreDict + ". Assuming " + stack.getUnlocalizedName() + " with meta=0.");
         stack.setItemDamage(0);
+        Log.warn(LP + "Could not find a specific item in the ore dictionary for " + oreDict + ". Assuming " + stack.getUnlocalizedName() + " with meta=0.");
       }
-      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes,
-          -1));
+      return new OreDictionaryRecipeInput(stack, oreDict, getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes, -1));
     }
 
     boolean useMeta = true;

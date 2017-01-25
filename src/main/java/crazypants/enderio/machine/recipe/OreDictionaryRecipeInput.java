@@ -1,26 +1,87 @@
 package crazypants.enderio.machine.recipe;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import javax.annotation.Nonnull;
+
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class OreDictionaryRecipeInput extends RecipeInput {
 
-  private int oreId;
+  private static final @Nonnull Map<String, Set<StackWrapper>> oreCache = new HashMap<String, Set<StackWrapper>>();
 
-  public OreDictionaryRecipeInput(ItemStack itemStack, int oreId, int slot) {
-    this(itemStack, oreId, 1, slot);
+  private static @Nonnull Set<StackWrapper> getCached(@Nonnull String oreDict) {
+    Set<StackWrapper> set = oreCache.get(oreDict);
+    if (set == null) {
+      set = new HashSet<StackWrapper>();
+      List<ItemStack> ores = OreDictionary.getOres(oreDict);
+      for (ItemStack ore : ores) {
+        if (Prep.isValid(ore)) {
+          set.add(new StackWrapper(ore));
+        }
+      }
+      synchronized (oreCache) {
+        oreCache.put(oreDict, set);
+      }
+    }
+    return set;
   }
 
-  public OreDictionaryRecipeInput(ItemStack stack, int oreId, float multiplier, int slot) {
+  static class StackWrapper {
+    private final @Nonnull ItemStack stack;
+
+    StackWrapper(@Nonnull ItemStack stack) {
+      this.stack = stack;
+    }
+
+    public ItemStack getStackCopy(int size) {
+      final ItemStack copy = stack.copy();
+      copy.stackSize = size;
+      return copy;
+    }
+
+    @Override
+    public int hashCode() {
+      return stack.getItem().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      StackWrapper other = (StackWrapper) obj;
+      if (stack.getItem() != other.stack.getItem())
+        return false;
+      else if (!stack.getHasSubtypes())
+        return true;
+      else if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+        return true;
+      else if (other.stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+        return true;
+      else
+        return stack.getMetadata() == other.stack.getMetadata();
+    }
+
+  }
+
+  private final @Nonnull String oreDict;
+
+  public OreDictionaryRecipeInput(@Nonnull ItemStack stack, @Nonnull String oreDict, float multiplier, int slot) {
     super(stack, true, multiplier, slot);
-    this.oreId = oreId;
+    this.oreDict = oreDict;
   }
-  
+
   public OreDictionaryRecipeInput(OreDictionaryRecipeInput copy) {
     super(copy.getInput(), true, copy.getMulitplier(), copy.getSlotNumber());
-    oreId = copy.oreId;
+    oreDict = copy.oreDict;
   }
 
   @Override
@@ -30,43 +91,29 @@ public class OreDictionaryRecipeInput extends RecipeInput {
 
   @Override
   public boolean isInput(ItemStack test) {
-    if(test == null || oreId < 0) {
+    if (Prep.isInvalid(test)) {
       return false;
     }
-    try { 
-      int[] ids = OreDictionary.getOreIDs(test);
-      if(ids == null) {
-        return false;
-      }
-      for(int id : ids) {
-        if(id == oreId) {
-          return true;
-        }
-      }
-      return false;
-    } catch (Exception e) {
-      return false;
-    }
+    return getCached(oreDict).contains(new StackWrapper(test));
   }
 
   @Override
-  public ItemStack[] getEquivelentInputs() {    
-    List<ItemStack> res = OreDictionary.getOres(OreDictionary.getOreName(oreId));
-    if(res == null || res.isEmpty()) {
+  public ItemStack[] getEquivelentInputs() {
+    Set<StackWrapper> cached = getCached(oreDict);
+    if (cached.isEmpty()) {
       return null;
     }
-    ItemStack[] res2 = res.toArray(new ItemStack[res.size()]);
-    for(int i = 0; i < res.size(); ++i) {
-      res2[i] = res2[i].copy();
-      res2[i].stackSize = getInput().stackSize;
+    ItemStack[] result = new ItemStack[cached.size()];
+    int i = 0;
+    for (StackWrapper stackWrapper : cached) {
+      result[i++] = stackWrapper.getStackCopy(getInput().stackSize);
     }
-    return res2;
+    return result;
   }
 
   @Override
   public String toString() {
-    return "OreDictionaryRecipeInput [oreId=" + oreId + " name=" + OreDictionary.getOreName(oreId) + " amount="
-        + getInput().stackSize + "]";
+    return "OreDictionaryRecipeInput [oreDict=" + oreDict + " amount=" + getInput().stackSize + "]";
   }
 
 }
