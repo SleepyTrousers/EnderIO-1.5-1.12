@@ -23,7 +23,7 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return false;
   }
 

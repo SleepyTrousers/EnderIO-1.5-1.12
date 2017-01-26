@@ -59,7 +59,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
     if (!slotDefinition.isInputSlot(slot)) {
       return false;
     }

@@ -152,7 +152,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int slot, ItemStack item) {
+  public boolean isMachineItemValidForSlot(int slot, ItemStack item) {
     if(!slotDefinition.isInputSlot(slot)) {
       return false;
     }

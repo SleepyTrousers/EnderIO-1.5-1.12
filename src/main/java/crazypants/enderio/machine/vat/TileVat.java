@@ -73,7 +73,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     MachineRecipeInput[] inputs = getRecipeInputs();
     inputs[i] = new MachineRecipeInput(i, itemstack);
     return VatRecipeManager.getInstance().isValidInput(inputs);

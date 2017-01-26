@@ -550,7 +550,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
     if (itemstack == null) {
       return false;
     }

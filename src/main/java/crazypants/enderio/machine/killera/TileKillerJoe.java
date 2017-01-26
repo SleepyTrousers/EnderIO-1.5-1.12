@@ -148,7 +148,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           .add(DarkSteelItems.itemDarkSteelAxe);
   
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     if (itemstack == null) {
       return false;
     }

@@ -111,7 +111,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack item) {
     if (canVoidItems() && voidMode == VoidMode.ALWAYS && i < getSlotDefinition().getMaxInputSlot()) {
       return false;
     }

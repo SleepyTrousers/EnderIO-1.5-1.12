@@ -74,7 +74,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
     return false;
   }
 

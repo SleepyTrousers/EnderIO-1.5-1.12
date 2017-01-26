@@ -86,7 +86,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return isMachineItemValidForSlot(i, itemstack);
   }
 
-  protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
+  public abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {

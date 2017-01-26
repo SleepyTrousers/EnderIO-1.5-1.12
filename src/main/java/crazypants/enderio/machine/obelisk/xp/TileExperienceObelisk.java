@@ -43,7 +43,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return false;
   }
 

@@ -41,7 +41,7 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     if(!slotDefinition.isInputSlot(i)) {
       return false;
     }

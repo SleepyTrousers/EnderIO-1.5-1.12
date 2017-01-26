@@ -383,7 +383,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack stack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack stack) {
     if (Prep.isInvalid(stack)) {
       return false;
     }

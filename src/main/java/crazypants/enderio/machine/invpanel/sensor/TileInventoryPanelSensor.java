@@ -54,7 +54,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
+  public boolean isMachineItemValidForSlot(int i, @Nullable ItemStack item) {
     return false;
   }
 

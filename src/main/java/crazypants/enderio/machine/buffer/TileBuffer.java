@@ -49,7 +49,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return true;
   }
 

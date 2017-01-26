@@ -117,7 +117,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return false;
   }
 
