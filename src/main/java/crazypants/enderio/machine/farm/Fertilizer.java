@@ -95,6 +95,14 @@ public enum Fertilizer {
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
       return BONEMEAL.apply(stack, player, world, bc);
     }
+  },
+  
+  ACTUALLY_ADDITIONS_FERTILIZER(Item.REGISTRY.getObject(new ResourceLocation("actuallyadditions", "itemFertilizer"))) {
+	  
+	@Override
+	public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
+	  return BONEMEAL.apply(stack, player, world, bc);
+	}
   };
 
   private ItemStack stack;
