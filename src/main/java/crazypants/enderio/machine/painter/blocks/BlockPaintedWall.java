@@ -110,9 +110,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (side.getAxis() != EnumFacing.Axis.Y) {
       // Special case for walls painted with transparent/translucent textures
-      IBlockState blockState2 = worldIn.getBlockState(pos);
-      if (blockState2.getBlock() instanceof BlockPaintedWall
-          && getPaintSource(blockState2, worldIn, pos) == getPaintSource(blockState2, worldIn, pos.offset(side.getOpposite()))) {
+      final BlockPos otherPos = pos.offset(side);
+      IBlockState otherBlockState = worldIn.getBlockState(otherPos);
+      if (otherBlockState.getBlock() instanceof BlockPaintedWall && getPaintSource(bs, worldIn, pos) == getPaintSource(otherBlockState, worldIn, otherPos)) {
         return false;
       }
     }

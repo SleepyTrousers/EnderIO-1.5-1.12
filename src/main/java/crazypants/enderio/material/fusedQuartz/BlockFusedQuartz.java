@@ -12,7 +12,6 @@ import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.util.FacadeUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -97,18 +96,17 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockState blockStateIn, IBlockAccess world, BlockPos pos, EnumFacing side) {
     IBlockState otherState = world.getBlockState(pos.offset(side)).getActualState(world, pos.offset(side));
-    Block otherBlock = otherState.getBlock();
-    if (otherBlock == this) {
-      IBlockState ourState = world.getBlockState(pos).getActualState(world, pos);
+    if (FacadeUtil.instance.isFacaded(otherState)) {
+      IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, pos.offset(side), side);
+      if (facade != null) {
+        otherState = facade;
+      }
+    }
+
+    if (otherState.getBlock() == this) {
+      IBlockState ourState = blockStateIn.getActualState(world, pos);
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND))
           || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
-    } else if (FacadeUtil.instance.isFacaded(otherState)) {
-      IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, pos.offset(side), side);
-      if (facade != null && facade.getBlock() == this) {
-        IBlockState ourState = world.getBlockState(pos);
-        return !ourState.getValue(FusedQuartzType.KIND).connectTo(facade.getValue(FusedQuartzType.KIND))
-            || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != facade.getValue(BlockColored.COLOR));
-      }
     }
     return true;
   }

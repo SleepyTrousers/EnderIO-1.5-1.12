@@ -266,15 +266,15 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
     if (side.getAxis() != EnumFacing.Axis.Y) {
-      IBlockState blockState2 = worldIn.getBlockState(pos);
-      if (blockState2.getBlock() instanceof BlockPaintedFence
-          && getPaintSource(blockState2, worldIn, pos) == getPaintSource(blockState2, worldIn, pos.offset(side.getOpposite()))) {
+      final BlockPos otherPos = pos.offset(side);
+      IBlockState otherBlockState = worldIn.getBlockState(otherPos);
+      if (otherBlockState.getBlock() instanceof BlockPaintedFence && getPaintSource(bs, worldIn, pos) == getPaintSource(otherBlockState, worldIn, otherPos)) {
         return false;
       }
     }
-    return super.shouldSideBeRendered(state, worldIn, pos, side);
+    return super.shouldSideBeRendered(bs, worldIn, pos, side);
   }
 
   @Override
