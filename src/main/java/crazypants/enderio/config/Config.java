@@ -544,6 +544,7 @@ public final class Config {
   public static String leversEnabled = "10,30,60,300";
 
   public static boolean debugTraceNBTActivityExtremelyDetailed = false;
+  public static boolean debugTraceTELivecycleExtremelyDetailed = false;
 
   public static void preInit(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
@@ -1163,9 +1164,14 @@ public final class Config {
         "If this is enabled the farm will harvest jungle wood even if it has cocoa beans in its inventory.").getBoolean();
 
     debugTraceNBTActivityExtremelyDetailed = config
-        .get(sectionAdvanced.name, "debugTraceNBTActivityExtremelyDetailed", detailedPowerTrackingEnabled,
-            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO delevloper!")
+        .get(sectionAdvanced.name, "debugTraceNBTActivityExtremelyDetailed", debugTraceNBTActivityExtremelyDetailed,
+            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
         .getBoolean(debugTraceNBTActivityExtremelyDetailed);
+
+    debugTraceTELivecycleExtremelyDetailed = config
+        .get(sectionAdvanced.name, "debugTraceTELivecycleExtremelyDetailed", debugTraceTELivecycleExtremelyDetailed,
+            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
+        .getBoolean(debugTraceTELivecycleExtremelyDetailed);
 
     // START Hoes
 

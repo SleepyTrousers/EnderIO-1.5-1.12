@@ -23,6 +23,41 @@ public abstract class TileEntityEio extends TileEntityBase {
   private static final Vector4f COLOR = new Vector4f(1, 182f / 255f, 0, 0.4f);
   protected boolean doingOtherNbt = false;
 
+  protected TileEntityEio() {
+    super();
+    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("TE ").append(this).append(" created");
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
+  }
+
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("TE ").append(this).append(" invalidated");
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
+  }
+
+  @Override
+  public void onChunkUnload() {
+    super.onChunkUnload();
+    if (Config.debugTraceTELivecycleExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("TE ").append(this).append(" unloaded");
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
+  }
+
   @Override
   public final SPacketUpdateTileEntity getUpdatePacket() {
     NBTTagCompound root = createClientUpdateNBT();
