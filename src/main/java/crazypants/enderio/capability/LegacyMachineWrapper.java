@@ -31,29 +31,23 @@ public class LegacyMachineWrapper implements IItemHandler {
     return result;
   }
 
-  private int smin(int a, int b) {
-    return a > -1 && a < b ? a : b;
-  }
-
   private int extSlot2intSlot(int external) {
-    int min = -1, max = -1;
-    final IoMode ioMode = machine.getIoMode(side);
-    if (ioMode.canRecieveInput()) {
-      min = machine.getSlotDefinition().getMinInputSlot();
-      max = machine.getSlotDefinition().getMaxInputSlot();
+    if (external >= 0) {
+      final IoMode ioMode = machine.getIoMode(side);
+      if (ioMode.canRecieveInput()) {
+        int num = machine.getSlotDefinition().getNumInputSlots();
+        if (external < num) {
+          return external + machine.getSlotDefinition().getMinInputSlot();
+        }
+        external -= num;
+      }
+      if (ioMode.canOutput()) {
+        if (external < machine.getSlotDefinition().getNumOutputSlots()) {
+          return external + machine.getSlotDefinition().getMinOutputSlot();
+        }
+      }
     }
-    if (ioMode.canOutput()) {
-      min = smin(min, machine.getSlotDefinition().getMinOutputSlot());
-      max = Math.max(max, machine.getSlotDefinition().getMaxOutputSlot());
-    }
-    if (min < 0) {
-      return -1;
-    }
-    int internal = external - min;
-    if (internal > max) {
-      return -1;
-    }
-    return internal;
+    return -1;
   }
 
   @Override
@@ -119,7 +113,7 @@ public class LegacyMachineWrapper implements IItemHandler {
       return null;
 
     int slot = extSlot2intSlot(external);
-    if (!machine.getSlotDefinition().isInputSlot(slot)) {
+    if (!machine.getSlotDefinition().isOutputSlot(slot)) {
       return Prep.getEmpty();
     }
 

@@ -90,6 +90,7 @@ public class ItemTools {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
                         source.getWorld().spawnEntityInWorld(drop);
+                        return MoveResult.MOVED;
                       }
                     }
                   }

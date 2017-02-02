@@ -7,6 +7,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
+import crazypants.enderio.capability.LegacyMachineWrapper;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -21,7 +22,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 @Storable
 public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity implements ISidedInventory {
@@ -90,12 +90,11 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
-    if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20)) {
+    if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasStuffToPush()) {
       return false;
     }
     MoveResult res = ItemTools.move(getPushLimit(), worldObj, getPos(), dir, getPos().offset(dir), dir.getOpposite());
     if (res == MoveResult.MOVED) {
-      markDirty();
       return true;
     }
     return false;
@@ -108,8 +107,16 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     }
     MoveResult res = ItemTools.move(getPullLimit(), worldObj, getPos().offset(dir), dir.getOpposite(), getPos(), dir);
     if (res == MoveResult.MOVED) {
-      markDirty();
       return true;
+    }
+    return false;
+  }
+
+  protected boolean hasStuffToPush() {
+    for (int slot = slotDefinition.minOutputSlot; slot <= slotDefinition.maxOutputSlot; slot++) {
+      if (Prep.isValid(inventory[slot])) {
+        return true;
+      }
     }
     return false;
   }
@@ -117,7 +124,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   protected boolean hasSpaceToPull() {
     boolean hasSpace = false;
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
+      hasSpace = Prep.isInvalid(inventory[slot]) ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
     }
     return hasSpace;
   }
@@ -142,7 +149,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facing1) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return (T) new SidedInvWrapper(this, facing1);
+      return (T) new LegacyMachineWrapper(this, facing1);
     }
     return super.getCapability(capability, facing1);
   }
