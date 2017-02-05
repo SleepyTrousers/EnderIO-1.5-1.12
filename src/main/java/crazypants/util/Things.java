@@ -26,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * Non-existing things are silently ignored. Adding things in the pre-init phase (i.e. before all modded things exist in the game) is safe.
  *
  */
+// TODO 1.11 - use ec version
 public class Things {
   private static final Map<String, IThing> aliases = new HashMap<String, IThing>();
 

@@ -3,6 +3,7 @@ package crazypants.util;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+//TODO 1.11 - use ec version
 public final class NullHelper {
 
   private NullHelper() {
