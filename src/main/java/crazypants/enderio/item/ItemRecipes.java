@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
 import static crazypants.util.RecipeUtil.addShapeless;
@@ -44,7 +45,7 @@ public class ItemRecipes {
       for (int i = 1; i <= count; i++) {
         ingr[i] = in;
       }
-      addShapeless(block, ingr);
+      GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(block), ingr));
     }
   }
 

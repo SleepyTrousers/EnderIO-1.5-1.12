@@ -6,14 +6,14 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static crazypants.enderio.ModObject.blockEndermanSkull;
 import static crazypants.enderio.ModObject.blockFusedQuartz;
 import static crazypants.enderio.ModObject.itemMachinePart;
 import static crazypants.enderio.ModObject.itemMaterial;
 import static crazypants.enderio.ModObject.itemPowderIngot;
-import static crazypants.util.RecipeUtil.addShaped;
-import static crazypants.util.RecipeUtil.addShapeless;
 
 public class MaterialRecipes {
 
@@ -83,20 +83,21 @@ public class MaterialRecipes {
   public static void addRecipes() {
 
     for (Alloy alloy : Alloy.values()) {
-      addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
-      addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
+      Object[] recipe = { "iii", "iii", "iii", 'i', alloy.getOreIngot() };
+      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackBlock(), recipe));
+      GameRegistry.addRecipe(new ShapelessOreRecipe(alloy.getStackIngot(9), alloy.getOreBlock()));
     }
 
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
         if (color == EnumDyeColor.WHITE) {
-          addShaped(new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), "GGG", "CGG", "GGG", 'G', type.getUnlocalisedName(), 'C',
-              new ItemStack(Items.DYE, 1, color.getDyeDamage()));
+          GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), "GGG", "CGG", "GGG", 'G',
+              type.getUnlocalisedName(), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage())));
         } else {
-          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
-              new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage()));
-          addShaped(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getUnlocalisedName(), 'C',
-              new ItemStack(Items.DYE, 1, color.getDyeDamage()));
+          GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
+              new ItemStack(blockFusedQuartz.getBlock(), 8, type.ordinal()), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage())));
+          GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
+              type.getUnlocalisedName(), 'C', new ItemStack(Items.DYE, 1, color.getDyeDamage())));
         }
       }
     }
