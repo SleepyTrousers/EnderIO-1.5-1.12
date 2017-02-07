@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -15,10 +16,10 @@ import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,13 +47,13 @@ public class ItemFilter implements IInventory, IItemFilter {
   boolean matchNBT = true;
   boolean useOreDict = false;
   boolean sticky = false;
-  FuzzyMode fuzzyMode = FuzzyMode.DISABLED;
+  DamageMode damageMode = DamageMode.DISABLED;
 
   ItemStack[] items;
 
   final List<int[]> oreIds;
 
-  private boolean isAdvanced; 
+  private boolean isAdvanced;
 
   public void copyFrom(ItemFilter o) {
     isBlacklist = o.isBlacklist;
@@ -60,7 +61,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     matchNBT = o.matchNBT;
     useOreDict = o.useOreDict;
     sticky = o.sticky;
-    fuzzyMode = o.fuzzyMode;
+    damageMode = o.damageMode;
     items = o.items;
     oreIds.clear();
     oreIds.addAll(o.oreIds);
@@ -70,7 +71,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   public ItemFilter() {
     this(5, false);
   }
-  
+
   public ItemFilter(boolean advanced) {
     this(advanced ? 10 : 5, advanced);
   }
@@ -79,7 +80,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     this.isAdvanced = isAdvanced;
     items = new ItemStack[numItems];
     oreIds = new ArrayList<int[]>(numItems);
-    for(int i=0;i<numItems;i++) {
+    for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
     }
   }
@@ -90,91 +91,81 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
-    return doesItemPassFilter(item);
-  }
-
-  public boolean doesItemPassFilter(ItemStack item) {
-    if(!isValid()) {
-      return true;
-    }
-    boolean matched = itemMatched(item);
-    return isBlacklist ? !matched : matched;
+  public boolean doesItemPassFilter(@Nullable NetworkedInventory inv, ItemStack item) {
+    return !isValid() || (isBlacklist != itemMatched(item));
   }
 
   private boolean itemMatched(ItemStack item) {
-    if(item == null) {
-      return false;
-    }
-    boolean doFuzzy = false;
-    boolean fuzzyValue = false;
-    if(fuzzyMode != FuzzyMode.DISABLED && item.getItem().isDamageable()) {
-      doFuzzy = true;
-      fuzzyValue = fuzzyMode.compare(item);
-    }
-    boolean matched = false;
-    int i = 0;
-    for (ItemStack it : items) {
-      if(it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
-        matched = true;
-        boolean fuzzyOk = doFuzzy && fuzzyMode.compare(it) == fuzzyValue;
-        if(matchMeta && !fuzzyOk && item.getItemDamage() != it.getItemDamage()) {
-          matched = false;
-        } else if(matchNBT && !isNBTMatch(item, it)) {
-          matched = false;
-        }        
+    if (damageMode.passesFilter(item)) {
+      boolean canPassFilter = damageMode != DamageMode.DISABLED;
+      for (int i = 0; i < items.length; i++) {
+        ItemStack filterStack = items[i];
+        if (Prep.isValid(filterStack)) {
+          if (item.getItem() == filterStack.getItem() || (useOreDict && isOreDicMatch(i, item))) {
+            if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
+              if (!matchNBT || isNBTMatch(item, filterStack)) {
+                return true;
+              }
+            }
+          }
+          canPassFilter = false;
+        }
       }
-      if(!matched && useOreDict && isOreDicMatch(i, item)) {
-        matched = true;
-      }
-      if(matched) {
-        break;
-      }
-      i++;
+      return canPassFilter;
     }
-    return matched;
+
+    return false;
   }
 
   private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {
     int[] ids1 = getCachedIds(filterItemIndex);
-    if(ids1 == null || ids1.length == 0) {
+    if (ids1 == null || ids1.length == 0) {
       return false;
     }
     int[] ids2 = OreDictionary.getOreIDs(item);
-    if(ids2 == null || ids2.length == 0) {
+    if (ids2 == null || ids2.length == 0) {
       return false;
     }
-    for(int id1 : ids1) {
-      for(int id2 : ids2) {
-        if(id1 == id2) {
+    for (int id1 : ids1) {
+      for (int id2 : ids2) {
+        if (id1 == id2) {
           return true;
         }
       }
-    }    
+    }
     return false;
   }
-  
-  private boolean isNBTMatch(ItemStack filter, ItemStack item)
-  {
-    if (filter.getTagCompound() == null && item.getTagCompound() == null) return true;
-    if (filter.getTagCompound() == null || item.getTagCompound() == null) return false;
-    if (!filter.getTagCompound().hasKey("GEN")) return filter.getTagCompound().equals(item.getTagCompound());
-    NBTTagCompound filterTag = (NBTTagCompound) filter.getTagCompound().copy();
-    NBTTagCompound itemTag = (NBTTagCompound) item.getTagCompound().copy();
-    filterTag.removeTag("GEN");
-    itemTag.removeTag("GEN");
-    return filterTag.equals(itemTag);
+
+  private boolean isNBTMatch(ItemStack filter, ItemStack item) {
+    return getTag(filter).equals(getTag(item));
   }
 
-  private int[] getCachedIds(int filterItemIndex) {   
+  private static final @Nonnull NBTTagCompound EMPTY_NBT = new NBTTagCompound();
+
+  private @Nonnull NBTTagCompound getTag(ItemStack item) {
+    if (Prep.isInvalid(item) || !item.hasTagCompound()) {
+      return EMPTY_NBT;
+    }
+    NBTTagCompound nbt = item.getTagCompound();
+    if (nbt == null || nbt.hasNoTags()) {
+      return EMPTY_NBT;
+    }
+    if (nbt.hasKey("GEN")) {
+      // ignore Forestry bee generation (age of bee)
+      (nbt = nbt.copy()).removeTag("GEN");
+    }
+    return nbt;
+  }
+
+  private int[] getCachedIds(int filterItemIndex) {
     int[] res = oreIds.get(filterItemIndex);
-    if(res == null) {
+    if (res == null) {
       ItemStack item = items[filterItemIndex];
-      if(item == null) {
+      if (item == null) {
         res = new int[0];
       } else {
         res = OreDictionary.getOreIDs(item);
-        if(res == null) {
+        if (res == null) {
           res = new int[0];
         }
       }
@@ -185,8 +176,11 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public boolean isValid() {
+    if (damageMode != DamageMode.DISABLED) {
+      return true;
+    }
     for (ItemStack item : items) {
-      if(item != null) {
+      if (item != null) {
         return true;
       }
     }
@@ -234,12 +228,12 @@ public class ItemFilter implements IInventory, IItemFilter {
     this.sticky = sticky;
   }
 
-  public FuzzyMode getFuzzyMode() {
-    return fuzzyMode;
+  public DamageMode getDamageMode() {
+    return damageMode;
   }
 
-  public void setFuzzyMode(FuzzyMode fuzzyMode) {
-    this.fuzzyMode = fuzzyMode;
+  public void setDamageMode(DamageMode damageMode) {
+    this.damageMode = damageMode;
   }
 
   @Override
@@ -250,12 +244,12 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
     nbtRoot.setBoolean("isAdvanced", isAdvanced);
-    nbtRoot.setByte("fuzzyMode", (byte) fuzzyMode.ordinal());
+    nbtRoot.setByte("damageMode", (byte) damageMode.ordinal());
 
     int i = 0;
     for (ItemStack item : items) {
       NBTTagCompound itemTag = new NBTTagCompound();
-      if(item != null) {
+      if (item != null) {
         item.writeToNBT(itemTag);
         nbtRoot.setTag("item" + i, itemTag);
       }
@@ -281,17 +275,21 @@ public class ItemFilter implements IInventory, IItemFilter {
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
     isAdvanced = nbtRoot.getBoolean("isAdvanced");
-    fuzzyMode = FuzzyMode.values()[nbtRoot.getByte("fuzzyMode") & 255];
+    if (nbtRoot.hasKey("damageMode")) {
+      damageMode = DamageMode.values()[nbtRoot.getByte("damageMode") & 255];
+    } else {
+      damageMode = DamageMode.DISABLED;
+    }
 
     int numItems = isAdvanced ? 10 : 5;
     items = new ItemStack[numItems];
     oreIds.clear();
-    for(int i=0;i<numItems;i++) {
+    for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
     }
-    for (int i = 0; i < numItems; i++) {      
+    for (int i = 0; i < numItems; i++) {
       NBTBase tag = nbtRoot.getTag("item" + i);
-      if(tag instanceof NBTTagCompound) {
+      if (tag instanceof NBTTagCompound) {
         items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
       } else {
         items[i] = null;
@@ -319,7 +317,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public ItemStack getStackInSlot(int i) {
-    if(i < 0 || i >= items.length) {
+    if (i < 0 || i >= items.length) {
       return null;
     }
     return items[i];
@@ -330,16 +328,16 @@ public class ItemFilter implements IInventory, IItemFilter {
     oreIds.set(fromSlot, null);
     ItemStack item = items[fromSlot];
     items[fromSlot] = null;
-    if(item == null) {
+    if (item == null) {
       return null;
     }
     item.stackSize = 0;
     return item;
   }
-  
+
   @Override
   public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
-    if(itemstack != null) {
+    if (itemstack != null) {
       items[i] = itemstack.copy();
       items[i].stackSize = 0;
     } else {
@@ -347,22 +345,22 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
     oreIds.set(i, null);
   }
-  
+
   @Override
   public ItemStack removeStackFromSlot(int index) {
-    if(index < 0 || index >= items.length) {
+    if (index < 0 || index >= items.length) {
       return null;
     }
     ItemStack res = items[index];
     items[index] = null;
-    return res;    
+    return res;
   }
-  
+
   @Override
   public void clear() {
-    for(int i=0;i<items.length;i++) {
+    for (int i = 0; i < items.length; i++) {
       items[i] = null;
-    }    
+    }
   }
 
   @Override
@@ -381,7 +379,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void markDirty() {    
+  public void markDirty() {
   }
 
   @Override
@@ -406,7 +404,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   public void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
     int topY = yOffset;
     int leftX = xOffset;
-    int index = 0;    
+    int index = 0;
     int numRows = isAdvanced ? 2 : 1;
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < 5; ++col) {
@@ -419,27 +417,24 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public int getSlotCount() { 
+  public int getSlotCount() {
     return getSizeInventory();
   }
 
-  public boolean isAdvanced() {    
+  public boolean isAdvanced() {
     return isAdvanced;
   }
-  
+
   public boolean isDefault() {
-    return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST &&
-        matchMeta == DEFAULT_META &&
-        matchNBT == DEFAULT_MBT &&
-        useOreDict == DEFAULT_ORE_DICT &&
-        sticky == DEFAULT_STICKY;
+    return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST && matchMeta == DEFAULT_META && matchNBT == DEFAULT_MBT
+        && useOreDict == DEFAULT_ORE_DICT && sticky == DEFAULT_STICKY;
   }
 
   @Override
   public String toString() {
-//    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT + ", useOreDict=" + useOreDict + ", sticky="
-//        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
-    return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items)  + "]";
+    // return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT + ", useOreDict=" + useOreDict + ", sticky="
+    // + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
+    return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items) + "]";
   }
 
   class ItemFilterGhostSlot extends GhostSlot {
@@ -455,7 +450,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     @Override
     public void putStack(ItemStack stack) {
-      if(stack != null) {
+      if (stack != null) {
         stack = stack.copy();
         stack.stackSize = 1;
       }
@@ -480,13 +475,12 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void setField(int id, int value) {    
+  public void setField(int id, int value) {
   }
 
   @Override
   public int getFieldCount() {
     return 0;
   }
-
 
 }

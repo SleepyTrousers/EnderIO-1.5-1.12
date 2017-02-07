@@ -1212,11 +1212,17 @@ enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
 enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
 enderio.gui.conduit.item.priority=Priority
 
-enderio.gui.conduit.item.fuzzy.disabled=Fuzzy Mode disabled
-enderio.gui.conduit.item.fuzzy.fuzzy_25=Fuzzy match for 25% damage
-enderio.gui.conduit.item.fuzzy.fuzzy_50=Fuzzy match for 50% damage
-enderio.gui.conduit.item.fuzzy.fuzzy_75=Fuzzy match for 75% damage
-enderio.gui.conduit.item.fuzzy.fuzzy_99=Fuzzy match for any damage
+enderio.gui.conduit.item.damage.disabled=Ignore Damage
+enderio.gui.conduit.item.damage.damage_00_25=Up to 25% Damaged
+enderio.gui.conduit.item.damage.damage_25_00=More than 25% Damaged
+enderio.gui.conduit.item.damage.damage_00_50=Up to 50% Damaged
+enderio.gui.conduit.item.damage.damage_50_00=More than 50% Damaged
+enderio.gui.conduit.item.damage.damage_00_75=Up to 75% Damaged
+enderio.gui.conduit.item.damage.damage_75_00=More than 75% Damaged
+enderio.gui.conduit.item.damage.damage_00_00=Not Damaged
+enderio.gui.conduit.item.damage.damage_01_00=Damaged
+enderio.gui.conduit.item.damage.damage_yes=Can be Damaged
+enderio.gui.conduit.item.damage.damage_not=Cannot be Damaged
 
 enderio.gui.conduit.item.species.both=Match primary and secondary species
 enderio.gui.conduit.item.species.primary=Match primary species only

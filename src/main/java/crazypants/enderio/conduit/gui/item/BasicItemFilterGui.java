@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.gui.item;
 
-import net.minecraft.client.gui.GuiButton;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CycleButton;
@@ -10,10 +8,11 @@ import com.enderio.core.client.gui.button.ToggleButton;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.item.filter.FuzzyMode;
+import crazypants.enderio.conduit.item.filter.DamageModeIconHolder;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.client.gui.GuiButton;
 
 public class BasicItemFilterGui implements IItemFilterGui {
     
@@ -22,7 +21,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private static final int ID_META = GuiExternalConnection.nextButtonId();
   private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();    
-  private static final int ID_FUZZY = GuiExternalConnection.nextButtonId();
+  private static final int ID_DAMAGE = GuiExternalConnection.nextButtonId();
   
   private final GuiContainerBaseEIO gui;
   
@@ -31,7 +30,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private final IconButton whiteListB;
   private final ToggleButton useOreDictB;
   private final ToggleButton stickyB;
-  private final CycleButton<FuzzyMode.IconHolder> fuzzyB;
+  private final CycleButton<DamageModeIconHolder> damageB;
     
   final boolean isAdvanced;
   final boolean isStickyModeAvailable;
@@ -94,7 +93,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
-    fuzzyB = new CycleButton<FuzzyMode.IconHolder>(gui, ID_FUZZY + buttonIdOffset, x, y, FuzzyMode.IconHolder.class);
+    damageB = new CycleButton<DamageModeIconHolder>(gui, ID_DAMAGE + buttonIdOffset, x, y, DamageModeIconHolder.class);
   }
 
   public void createFilterSlots() {
@@ -126,8 +125,8 @@ public class BasicItemFilterGui implements IItemFilterGui {
         stickyB.setSelected(activeFilter.isSticky());
       }
 
-      fuzzyB.onGuiInit();
-      fuzzyB.setMode(FuzzyMode.IconHolder.getFromMode(activeFilter.getFuzzyMode()));
+      damageB.onGuiInit();
+      damageB.setMode(DamageModeIconHolder.getFromMode(activeFilter.getDamageMode()));
     }
 
     useMetaB.onGuiInit();
@@ -159,8 +158,8 @@ public class BasicItemFilterGui implements IItemFilterGui {
     } else if(guiButton.id == ID_ORE_DICT + buttonIdOffset) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_FUZZY + buttonIdOffset) {
-      filter.setFuzzyMode(fuzzyB.getMode().getMode());
+    } else if(guiButton.id == ID_DAMAGE + buttonIdOffset) {
+      filter.setDamageMode(damageB.getMode().getMode());
       sendFilterChange();
     } else if(guiButton.id == ID_WHITELIST + buttonIdOffset) {
       filter.setBlacklist(!filter.isBlacklist());
@@ -174,13 +173,13 @@ public class BasicItemFilterGui implements IItemFilterGui {
   }
   
   @Override
-  public void deactivate() {        
+  public void deactivate() {
     useNbtB.detach();
     useMetaB.detach();
     useOreDictB.detach();
     whiteListB.detach();
     stickyB.detach();
-    fuzzyB.detach();
+    damageB.detach();
   }
   
   @Override

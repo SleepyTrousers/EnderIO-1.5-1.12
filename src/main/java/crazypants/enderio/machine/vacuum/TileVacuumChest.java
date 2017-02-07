@@ -101,7 +101,7 @@ public class TileVacuumChest extends TileEntityEio
     List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, getBounds(), this);
 
     for (EntityItem entity : interestingItems) {
-      if (filter == null || filter.doesItemPassFilter(entity.getEntityItem())) {
+      if (filter == null || filter.doesItemPassFilter(null, entity.getEntityItem())) {
         double x = (pos.getX() + 0.5D - entity.posX);
         double y = (pos.getY() + 0.5D - entity.posY);
         double z = (pos.getZ() + 0.5D - entity.posZ);
