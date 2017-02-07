@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
-import static crazypants.util.RecipeUtil.addShapeless;
 
 public class ItemRecipes {
 
