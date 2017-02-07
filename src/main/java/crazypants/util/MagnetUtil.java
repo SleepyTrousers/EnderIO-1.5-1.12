@@ -7,6 +7,7 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
+// TODO 1.11 - use ec version
 public class MagnetUtil {
 
   private static final String PREVENT_REMOTE_MOVEMENT = "PreventRemoteMovement";

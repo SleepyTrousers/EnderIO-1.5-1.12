@@ -2,6 +2,7 @@ package crazypants.util;
 
 import java.text.MessageFormat;
 
+// TODO 1.11 - drop
 public class TextUtil {
 
   // Handle french local 'non breaking space' character used to separate thousands.

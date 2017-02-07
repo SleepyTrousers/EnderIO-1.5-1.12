@@ -284,7 +284,12 @@ public class CapturedMob {
     }
 
     if (entityNbt != null && (clone || isUnspawnable(entityId))) {
-      return EntityList.createEntityFromNBT(entityNbt, world);
+      final Entity entity = EntityList.createEntityFromNBT(entityNbt, world);
+      if (!clone) {
+        // The caller doesn't expect a clone, but we return one. Give it a unique/new ID to avoid problems with duplicate entities.
+        entity.setUniqueId(MathHelper.getRandomUuid(world.rand));
+      }
+      return entity;
     }
 
     Entity entity = EntityList.createEntityByName(entityId, world);

@@ -215,7 +215,8 @@ public class EnderIOCrashCallable implements ICrashCallable {
       } catch (ClassNotFoundException e) {
         result.add(" * " + displayName + " API class '" + clazz + "' could not be loaded (reason: " + e + ")");
         if (Log.LOGGER.isDebugEnabled()) {
-          e.printStackTrace();
+          // e.printStackTrace();
+          Log.debug("Hey, you wanted diagnostics output? Guess what you're not getting it. Too many people reported it as bug. Deal with it.");
         }
       }
     }
