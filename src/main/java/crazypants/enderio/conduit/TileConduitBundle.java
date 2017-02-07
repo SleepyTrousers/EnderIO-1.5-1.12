@@ -903,7 +903,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public String toString() {
-    return worldObj.isRemote ? toStringC(this) : toStringS(this);
+    return worldObj == null ? super.toString() : worldObj.isRemote ? toStringC(this) : toStringS(this);
   }
 
   @SideOnly(Side.CLIENT)
