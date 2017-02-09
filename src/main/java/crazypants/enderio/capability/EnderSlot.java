@@ -7,6 +7,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
+//TODO 1.11 - use ec version
 public class EnderSlot extends SlotItemHandler {
 
   public EnderSlot(InventorySlot itemHandler, int xPosition, int yPosition) {

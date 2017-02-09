@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 
+//TODO 1.11 - use ec version
 public class InventorySlot implements IItemHandler {
 
   private ItemStack itemStack = Prep.getEmpty();

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.ModObject.itemSoulVessel;
 
+//TODO 1.11 - use ec version for some of these
 public class Filters {
 
   public static final @Nonnull Callback<ItemStack> NO_CALLBACK = new Callback<ItemStack>() {
