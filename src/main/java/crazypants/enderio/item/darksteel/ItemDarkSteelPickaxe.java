@@ -128,13 +128,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {
-    if(isTravelUpgradeActive(player, item, hand)) {
-      return EnumActionResult.SUCCESS;
-    }
     if(world.isRemote) {
-      return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);
+      if (Config.darkSteelRightClickPlaceEnabled) {
+        return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);
+      } else {
+        if (doTravelAction(item, world, player, hand) != null) {
+          return EnumActionResult.SUCCESS;
+        }
+      }
     }
-    if(Math.random() < 0.001 ) {
+    if (Math.random() < 0.001) {
       Entity cow = EntityList.createEntityByIDFromName("Pig", world);
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
@@ -323,6 +326,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+    ActionResult<ItemStack> doTravelAction = doTravelAction(stack, world, player, hand);
+
+    return doTravelAction != null ? doTravelAction : super.onItemRightClick(stack, world, player, hand);
+  }
+
+  protected ActionResult<ItemStack> doTravelAction(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
     if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
         if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
@@ -343,8 +352,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       }
       return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
-
-    return super.onItemRightClick(stack, world, player, hand);
+    return null;
   }
 
   @Override
