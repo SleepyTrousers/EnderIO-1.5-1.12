@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
@@ -17,6 +18,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.power.IInternalPoweredItem;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
@@ -337,7 +339,7 @@ public class ItemRemoteInvAccess extends Item
 
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-   return new CapabilityProvider(stack);
+    return new CompoundCapabilityProvider(new CapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
   private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {

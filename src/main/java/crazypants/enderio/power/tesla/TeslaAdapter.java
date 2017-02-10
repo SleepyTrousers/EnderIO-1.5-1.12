@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.forge.PowerInterfaceForge;
 import net.darkhax.tesla.api.ITeslaConsumer;
@@ -33,6 +33,7 @@ public class TeslaAdapter implements IPowerApiAdapter {
   public static void capRegistered(Capability<?> cap) {
     PowerHandlerUtil.addAdapter(new TeslaAdapter());
     MinecraftForge.EVENT_BUS.register(TeslaAdapter.class);
+    ItemPowerCapabilityBackend.register(new InternalPoweredItemWrapper.PoweredItemCapabilityProvider());
     Log.info("Tesla integration loaded");
   }
 
@@ -81,15 +82,4 @@ public class TeslaAdapter implements IPowerApiAdapter {
     }
   }
 
-  @SubscribeEvent
-  public static void attachCapabilities(AttachCapabilitiesEvent.Item evt) {
-    if(evt.getCapabilities().containsKey(KEY)) {
-      return;
-    }
-    if(evt.getItem() instanceof IInternalPoweredItem) {
-      IInternalPoweredItem item = (IInternalPoweredItem)evt.getItem();
-      evt.addCapability(KEY, new InternalPoweredItemWrapper.PoweredItemCapabilityProvider(item, evt.getItemStack()));
-    }
-  }
-  
 }

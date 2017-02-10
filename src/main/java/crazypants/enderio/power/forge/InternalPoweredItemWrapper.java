@@ -1,38 +1,27 @@
 package crazypants.enderio.power.forge;
 
-import javax.annotation.Nullable;
-
 import crazypants.enderio.power.IInternalPoweredItem;
+import crazypants.enderio.power.ItemPowerCapabilityProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalPoweredItemWrapper implements IEnergyStorage {
 
   
-  public static class PoweredItemCapabilityProvider implements ICapabilityProvider {
-
-    private final IInternalPoweredItem item;
-    private final ItemStack stack;
-
-    public PoweredItemCapabilityProvider(IInternalPoweredItem item, ItemStack stack) {
-      this.item = item;
-      this.stack = stack;
-    }
+  public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(ItemStack stack, Capability<?> capability, EnumFacing facing) {
       return capability == CapabilityEnergy.ENERGY;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(ItemStack stack, Capability<T> capability, EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
-        return (T) new InternalPoweredItemWrapper(stack, item);
+        return CapabilityEnergy.ENERGY.cast(new InternalPoweredItemWrapper(stack));
       }
       return null;
     }
@@ -42,9 +31,9 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
   protected final ItemStack container;
   protected IInternalPoweredItem item;
 
-  public InternalPoweredItemWrapper(ItemStack container, IInternalPoweredItem item) {
+  public InternalPoweredItemWrapper(ItemStack container) {
     this.container = container;
-    this.item = item;
+    this.item = (IInternalPoweredItem) container.getItem();
   }
 
   @Override

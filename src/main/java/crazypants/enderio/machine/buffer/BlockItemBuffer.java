@@ -11,7 +11,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.power.AbstractPoweredBlockItem;
-import crazypants.enderio.power.forge.InternalPoweredItemWrapper;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -112,20 +111,21 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
   private class InnerProv implements ICapabilityProvider {
 
     private final ItemStack container;
+    private final ItemPowerCapabilityBackend backend;
     
     public InnerProv(ItemStack container) {
       this.container = container;
+      this.backend = new ItemPowerCapabilityBackend(container);
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY && blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
+      return backend.hasCapability(capability, facing) && blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE).hasPower;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability != CapabilityEnergy.ENERGY) {
+      if (!hasCapability(capability, facing)) {
         return null;
       }
       BufferType type = blockBuffer.getBlock().getStateFromMeta(container.getMetadata()).getValue(BufferType.TYPE);
@@ -133,27 +133,27 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
         return null;
       }
       if(type.isCreative) {
-        return (T)new CreativePowerCap(container);
+        return null; // TODO (T)new CreativePowerCap(container);
       }
-      return null;
+      return backend.getCapability(capability, facing);
     }
   }
   
-  private class CreativePowerCap extends InternalPoweredItemWrapper {
-
-    public CreativePowerCap (ItemStack container) {
-      super(container, BlockItemBuffer.this);
-    }
-
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return maxReceive;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-      return maxExtract;
-    }
-  }
+  // private class CreativePowerCap extends InternalPoweredItemWrapper {
+  //
+  // public CreativePowerCap (ItemStack container) {
+  // super(container, BlockItemBuffer.this);
+  // }
+  //
+  // @Override
+  // public int receiveEnergy(int maxReceive, boolean simulate) {
+  // return maxReceive;
+  // }
+  //
+  // @Override
+  // public int extractEnergy(int maxExtract, boolean simulate) {
+  // return maxExtract;
+  // }
+  // }
 
 }

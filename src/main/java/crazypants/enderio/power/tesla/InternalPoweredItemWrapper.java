@@ -1,8 +1,7 @@
 package crazypants.enderio.power.tesla;
 
-import javax.annotation.Nullable;
-
 import crazypants.enderio.power.IInternalPoweredItem;
+import crazypants.enderio.power.ItemPowerCapabilityProvider;
 import crazypants.util.NbtValue;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
@@ -12,35 +11,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder, ITeslaProducer {
 
-  public static class PoweredItemCapabilityProvider implements ICapabilityProvider {
-
-    private final IInternalPoweredItem item;
-    private final ItemStack stack;
-
-    public PoweredItemCapabilityProvider(IInternalPoweredItem item, ItemStack stack) {
-      this.item = item;
-      this.stack = stack;
-    }
+  public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(ItemStack stack, Capability<?> capability, EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER
           || capability == TeslaCapabilities.CAPABILITY_PRODUCER;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-      if (capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER) {
-        return (T) new InternalPoweredItemWrapper(stack, item);
+    public <T> T getCapability(ItemStack stack, Capability<T> capability, EnumFacing facing) {
+      if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
+        return TeslaCapabilities.CAPABILITY_CONSUMER.cast(new InternalPoweredItemWrapper(stack));
+      } else if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {
+        return TeslaCapabilities.CAPABILITY_HOLDER.cast(new InternalPoweredItemWrapper(stack));
       } else if (capability == TeslaCapabilities.CAPABILITY_PRODUCER) {
-        InternalPoweredItemWrapper res = new InternalPoweredItemWrapper(stack, item);
+        InternalPoweredItemWrapper res = new InternalPoweredItemWrapper(stack);
         if (res.canExtract()) {
-          return (T) res;
+          return TeslaCapabilities.CAPABILITY_PRODUCER.cast(res);
         }
       }
       return null;
@@ -53,8 +44,9 @@ public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder,
   protected int maxInput;
   protected int maxOutput;
 
-  public InternalPoweredItemWrapper(ItemStack stack, IInternalPoweredItem item) {
-    this(stack, item.getMaxEnergyStored(stack), item.getMaxInput(stack), item.getMaxOutput(stack));
+  public InternalPoweredItemWrapper(ItemStack stack) {
+    this(stack, ((IInternalPoweredItem) stack.getItem()).getMaxEnergyStored(stack), ((IInternalPoweredItem) stack.getItem()).getMaxInput(stack),
+        ((IInternalPoweredItem) stack.getItem()).getMaxOutput(stack));
   }
 
   public InternalPoweredItemWrapper(ItemStack container, int capacity, int maxInput, int maxOutput) {

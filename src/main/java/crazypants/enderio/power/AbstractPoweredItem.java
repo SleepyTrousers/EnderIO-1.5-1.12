@@ -3,7 +3,9 @@ package crazypants.enderio.power;
 import crazypants.util.NbtValue;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public abstract class AbstractPoweredItem extends Item implements IInternalPoweredItem {
 
@@ -44,6 +46,11 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
   
   public void setFull(ItemStack container) {
     setEnergyStored(container, getMaxEnergyStored(container));
+  }
+
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new ItemPowerCapabilityBackend(stack);
   }
 
 }

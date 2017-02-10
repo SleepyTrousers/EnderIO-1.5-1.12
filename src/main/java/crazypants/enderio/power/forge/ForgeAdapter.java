@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -18,7 +18,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.event.AttachCapabilitiesEvent.Item;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeAdapter implements IPowerApiAdapter {
@@ -31,6 +30,7 @@ public class ForgeAdapter implements IPowerApiAdapter {
   public static void capRegistered(Capability<?> cap) {
     PowerHandlerUtil.addAdapter(new ForgeAdapter());
     MinecraftForge.EVENT_BUS.register(ForgeAdapter.class);
+    ItemPowerCapabilityBackend.register(new InternalPoweredItemWrapper.PoweredItemCapabilityProvider());
     Log.info("Forge Energy integration loaded");
   }
 
@@ -64,18 +64,4 @@ public class ForgeAdapter implements IPowerApiAdapter {
     }
   }
 
-  @SubscribeEvent
-  public static void attachCapabilities(Item evt) {
-    if(evt.getCapabilities().containsKey(KEY)) {
-      return;
-    }
-    if(evt.getItem() instanceof IInternalPoweredItem) {
-//      System.out.println("ForgeAdapter.attachCapabilities: Attached cap to " + evt.getItem());
-      IInternalPoweredItem item = (IInternalPoweredItem)evt.getItem();
-      evt.addCapability(KEY, new InternalPoweredItemWrapper.PoweredItemCapabilityProvider(item, evt.getItemStack()));
-    }
-  }
-  
-  
-  
 }

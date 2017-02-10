@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -23,6 +24,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.MachineSound;
 import crazypants.enderio.power.AbstractPoweredItem;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;
@@ -438,7 +440,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-    return new FluidCapabilityProvider(stack);
+    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
   private class FluidCapabilityProvider implements IFluidHandler, ICapabilityProvider {

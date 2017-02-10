@@ -9,14 +9,13 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.power.AbstractPoweredBlockItem;
-import crazypants.enderio.power.forge.InternalPoweredItemWrapper;
+import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import crazypants.util.NbtValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.ModObject.blockCapBank;
 
@@ -90,42 +89,43 @@ public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverl
   private class InnerProv implements ICapabilityProvider {
 
     private final ItemStack container;
-    
+    private final ItemPowerCapabilityBackend backend;
+
     public InnerProv(ItemStack container) {
       this.container = container;
+      this.backend = new ItemPowerCapabilityBackend(container);
     }
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY;
+      return backend.hasCapability(capability, facing);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability == CapabilityEnergy.ENERGY && CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
-        return (T)new CreativePowerCap(container);
+      if (hasCapability(capability, facing) && CapBankType.getTypeFromMeta(container.getMetadata()).isCreative()) {
+        return null; // TODO (T)new CreativePowerCap(container);
       }
-      return null;
+      return backend.getCapability(capability, facing);
     }
   }
   
-  private class CreativePowerCap extends InternalPoweredItemWrapper {
-
-    public CreativePowerCap (ItemStack container) {
-      super(container, BlockItemCapBank.this);
-    }
-
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return maxReceive;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-      return maxExtract;
-    }
-  }
+  // private class CreativePowerCap extends InternalPoweredItemWrapper {
+  //
+  // public CreativePowerCap (ItemStack container) {
+  // super(container, BlockItemCapBank.this);
+  // }
+  //
+  // @Override
+  // public int receiveEnergy(int maxReceive, boolean simulate) {
+  // return maxReceive;
+  // }
+  //
+  // @Override
+  // public int extractEnergy(int maxExtract, boolean simulate) {
+  // return maxExtract;
+  // }
+  // }
 
   
 }

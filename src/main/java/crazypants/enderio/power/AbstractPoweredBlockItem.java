@@ -4,7 +4,9 @@ import crazypants.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class AbstractPoweredBlockItem extends ItemBlock implements IInternalPoweredItem {
 
@@ -47,4 +49,10 @@ public class AbstractPoweredBlockItem extends ItemBlock implements IInternalPowe
   public void setFull(ItemStack container) {
     setEnergyStored(container, getMaxEnergyStored(container));
   }
+
+  @Override
+  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+    return new ItemPowerCapabilityBackend(stack);
+  }
+
 }
