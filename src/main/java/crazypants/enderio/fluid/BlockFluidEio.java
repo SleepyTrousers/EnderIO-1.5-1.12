@@ -654,25 +654,60 @@ public class BlockFluidEio extends BlockFluidClassic {
       }
     }
 
+    /*
+     * BlockFluidClassic uses both random ticks and update ticks (after a neighbor change) to flow. This means we cannot decouple our snow gen completely from
+     * that by using one or the other. However, we can stay out of the random tick, so we don't have to do anything if there wasn't either a block update around
+     * us or we scheduled a update ourselves because there's the possibility to gen something. This means we may miss the corners if they are removed after we
+     * finished. Same for sides if a block was placed below them.
+     */
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-      if (!world.isRemote && rand.nextFloat() < .1f) {
+      if (!world.isRemote && rand.nextFloat() < 0.05f) {
         final BlockPos neighborPos = getNeighbor(pos, rand);
         final IBlockState neighborState = world.getBlockState(neighborPos);
-        final Block neighborBlock = neighborState.getBlock();
-        final BlockPos belowNeighborPos = neighborPos.down();
-        if (neighborBlock != Blocks.SNOW_LAYER && !(neighborBlock instanceof IFluidBlock) && !(neighborBlock instanceof BlockLiquid)
-            && neighborBlock.isReplaceable(world, neighborPos) && world.getBlockState(belowNeighborPos).isSideSolid(world, belowNeighborPos, EnumFacing.UP)) {
+        if (canMakeSnow(world, neighborPos, neighborState)) {
           world.setBlockState(neighborPos, Blocks.SNOW_LAYER.getDefaultState());
-        } else if (neighborBlock == Blocks.WATER && neighborState.getValue(BlockLiquid.LEVEL) == 0
-            && world.canBlockBePlaced(Blocks.ICE, neighborPos, false, EnumFacing.DOWN, (Entity) null, (ItemStack) null)) {
+        } else if (canMakeIce(world, neighborPos, neighborState)) {
           world.setBlockState(neighborPos, Blocks.ICE.getDefaultState());
         }
       }
       super.updateTick(world, pos, state, rand);
-      if (!world.isUpdateScheduled(pos, this)) {
+      if (canMakeMoreSnowOrIceAround(world, pos) && !world.isUpdateScheduled(pos, this)) {
         world.scheduleUpdate(pos, this, tickRate * 10);
       }
+    }
+
+    @Override
+    public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random) {
+      // still do flowing here, but no snow gen
+      super.updateTick(worldIn, pos, state, random); // Note: Block.randomTick() does this.updateTick()
+    }
+
+    protected boolean canMakeIce(World world, final BlockPos neighborPos, final IBlockState neighborState) {
+      return neighborState.getBlock() == Blocks.WATER && neighborState.getValue(BlockLiquid.LEVEL) == 0
+          && world.canBlockBePlaced(Blocks.ICE, neighborPos, false, EnumFacing.DOWN, (Entity) null, (ItemStack) null);
+    }
+
+    protected boolean canMakeSnow(World world, final BlockPos neighborPos, final IBlockState neighborState) {
+      final BlockPos belowNeighborPos = neighborPos.down();
+      final Block neighborBlock = neighborState.getBlock();
+      return neighborBlock != Blocks.SNOW_LAYER && !(neighborBlock instanceof IFluidBlock) && !(neighborBlock instanceof BlockLiquid)
+          && neighborBlock.isReplaceable(world, neighborPos) && world.getBlockState(belowNeighborPos).isSideSolid(world, belowNeighborPos, EnumFacing.UP);
+    }
+
+    protected boolean canMakeMoreSnowOrIceAround(World world, BlockPos pos) {
+      for (int x = -1; x <= 1; x++) {
+        for (int z = -1; z <= 1; z++) {
+          if (x != 0 || z != 0) {
+            final BlockPos neighborPos = pos.east(x).south(z);
+            final IBlockState neighborState = world.getBlockState(neighborPos);
+            if (canMakeSnow(world, neighborPos, neighborState) || canMakeIce(world, neighborPos, neighborState)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
 
     protected BlockPos getNeighbor(BlockPos pos, Random rand) {
