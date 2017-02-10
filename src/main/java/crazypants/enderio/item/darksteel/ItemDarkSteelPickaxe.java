@@ -196,7 +196,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean canHarvestBlock(IBlockState block, ItemStack item) {
     if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
-      return block == Blocks.SNOW_LAYER ? true : block == Blocks.SNOW || super.canHarvestBlock(block, item);
+      return block.getBlock() == Blocks.SNOW_LAYER ? true : block.getBlock() == Blocks.SNOW || super.canHarvestBlock(block, item);
     } else {
       return super.canHarvestBlock(block, item);
     }
