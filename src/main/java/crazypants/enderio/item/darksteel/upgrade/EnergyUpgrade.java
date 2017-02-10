@@ -247,7 +247,6 @@ public class EnergyUpgrade extends AbstractUpgrade {
   private double getAbsorptionRatio() {
     int val = level;
     if(val >= Config.darkSteelPowerDamgeAbsorptionRatios.length) {
-      System.out.println("EnergyUpgrade.getAbsorptionRatio: " + val);
       val = 0;
     }
     return Config.darkSteelPowerDamgeAbsorptionRatios[val];

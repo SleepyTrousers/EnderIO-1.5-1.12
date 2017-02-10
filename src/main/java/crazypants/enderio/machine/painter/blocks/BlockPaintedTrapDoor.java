@@ -196,7 +196,6 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
 
     if (open) {
       model = "trapdoor_open";
-      System.out.println(facing);
       switch (facing) {
       case EAST:
         modelState = ModelRotation.X0_Y90;

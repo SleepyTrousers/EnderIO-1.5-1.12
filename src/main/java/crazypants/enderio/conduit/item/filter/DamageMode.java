@@ -79,8 +79,6 @@ public enum DamageMode {
   abstract boolean passesFilter(float percentDamaged);
 
   public boolean passesFilter(ItemStack stack) {
-    if (Prep.isValid(stack))
-      System.out.println(stack.isItemStackDamageable() ? (float) stack.getItemDamage() / (float) stack.getMaxDamage() : -1f);
     return Prep.isValid(stack) && passesFilter(stack.isItemStackDamageable() ? (float) stack.getItemDamage() / (float) stack.getMaxDamage() : -1f);
   }
 

@@ -37,7 +37,6 @@ public class PacketItemCount extends MessageTileEntity<TileInventoryPanelSensor>
 
   @Override
   public IMessage onMessage(PacketItemCount message, MessageContext ctx) {
-    System.out.println("PacketItemCount.onMessage: ");
     TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
     if(te != null) {
       
