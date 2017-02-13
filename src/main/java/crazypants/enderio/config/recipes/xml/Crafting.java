@@ -8,6 +8,7 @@ import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.recipes.GenericUpgradeRecipe;
+import crazypants.enderio.config.recipes.GenericUpgradeRecipeShapeless;
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -32,9 +33,6 @@ public class Crafting extends AbstractCrafting {
         }
         valid = valid && grid.isValid();
       } else if (shapeless != null) {
-        if (upgrade) {
-          throw new InvalidRecipeConfigException("Upgrade recipes for <shapeless> are not yet supported");
-        }
         valid = valid && shapeless.isValid();
       } else {
         throw new InvalidRecipeConfigException("Missing <grid> and <shapeless>");
@@ -67,8 +65,13 @@ public class Crafting extends AbstractCrafting {
           GameRegistry.addRecipe(new ShapedOreRecipe(getOutput().getItemStack(), grid.getElements()));
         }
       } else {
-        Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(getOutput().getItemStack(), shapeless.getElements()));
+        if (upgrade) {
+          Log.debug("Registering GenericUpgradeRecipeShapeless: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
+          GameRegistry.addRecipe(new GenericUpgradeRecipeShapeless(getOutput().getItemStack(), shapeless.getElements()));
+        } else {
+          Log.debug("Registering ShapelessOreRecipe: " + getOutput().getItemStack() + ": " + Arrays.toString(shapeless.getElements()));
+          GameRegistry.addRecipe(new ShapelessOreRecipe(getOutput().getItemStack(), shapeless.getElements()));
+        }
       }
     } else {
       Log.debug("Skipping Crafting '" + (getOutput() == null ? "null" : getOutput().getItemStack()) + "' (valid=" + valid + ", active=" + active + ")");

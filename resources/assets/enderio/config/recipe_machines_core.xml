@@ -831,6 +831,76 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Painted Pressure Plate, Wood, Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_WOOD" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_WOOD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Stone, Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_STONE" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_STONE_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Iron Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_IRON" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_IRON_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Gold Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_GOLD" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_GOLD_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Dark Steel Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_DARK_STEEL" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_DARK_STEEL_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Soularium Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_SOULARIUM" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_SOULARIUM_SILENT" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Painted Pressure Plate, Tuned Silent, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="1x2">
+        <item name="PPP_TUNED" />
+        <item name="minecraft:wool" />
+      </grid>
+      <output name="PPP_TUNED_SILENT" />
+    </crafting>
+  </recipe>
+
   <recipe name="Exit Rail" required="true">
     <crafting>
       <grid size="3x3">
