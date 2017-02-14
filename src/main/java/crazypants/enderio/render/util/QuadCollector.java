@@ -2,17 +2,14 @@ package crazypants.enderio.render.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -152,10 +149,39 @@ public class QuadCollector {
     }
   }
 
-  public Collection<BlockRenderLayer> getBlockLayers() {
-    Set<BlockRenderLayer> ret = Sets.newHashSet(BlockRenderLayer.values());
-    ret.add(null);
-    return ret;
+  private static final class BlockRenderLayerIterable implements Iterable<BlockRenderLayer> {
+
+    private static final class BlockRenderLayerIterator implements Iterator<BlockRenderLayer> {
+
+      private final static BlockRenderLayer[] LAYERS = Arrays.copyOf(BlockRenderLayer.values(), BlockRenderLayer.values().length + 1);
+
+      private int idx = 0;
+
+      @Override
+      public boolean hasNext() {
+        return idx < LAYERS.length;
+      }
+
+      @Override
+      public BlockRenderLayer next() {
+        return LAYERS[idx++];
+      }
+
+    }
+
+    @Override
+    public Iterator<BlockRenderLayer> iterator() {
+      return new BlockRenderLayerIterator();
+    }
+
+  }
+
+  /**
+   * Returns an Iterable for all valid BlockRenderLayers (including null). Be aware that the Iterator returned by the Iterable does no checks on proper use at
+   * all. Recommended for use with a foreach loop.
+   */
+  public Iterable<BlockRenderLayer> getBlockLayers() {
+    return new BlockRenderLayerIterable();
   }
 
   public boolean isEmpty() {
