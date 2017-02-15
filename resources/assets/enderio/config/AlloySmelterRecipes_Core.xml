@@ -330,7 +330,7 @@
     <recipe name="Enderium" energyCost="50000" >
       <input>
         <itemStack oreDictionary="ingotEnderiumBase" number="2" />
-        <itemStack modID="ThermalFoundation" itemName="material" itemMeta="512" />
+        <itemStack modID="ThermalFoundation" itemName="material" itemMeta="1024" />
         <itemStack modID="minecraft" itemName="ender_pearl" number="2" />
       </input>
       <output>
@@ -341,7 +341,7 @@
       <input>
         <itemStack oreDictionary="ingotElectrum" number="2" />
         <itemStack modID="minecraft" itemName="redstone" number="4" />
-        <itemStack modID="ThermalFoundation" itemName="material" itemMeta="512" />
+        <itemStack modID="ThermalFoundation" itemName="material" itemMeta="1024" />
       </input>
       <output>
         <itemStack oreDictionary="ingotElectrumFlux" number="2" />
