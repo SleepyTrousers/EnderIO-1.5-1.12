@@ -15,6 +15,7 @@ import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -70,6 +71,7 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotNumber) {
+    hasAlreadyJustSuccessfullyTransferedAStack = false;
     SlotDefinition slotDef = getInv().getSlotDefinition();
 
     ItemStack copystack = null;
@@ -82,6 +84,8 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
         boolean merged = false;
         for (SlotRange range : getTargetSlotsForTransfer(slotNumber, slot)) {
           if (mergeItemStack(origStack, range.getStart(), range.getEnd(), range.reverse)) {
+            while (mergeItemStack(origStack, range.getStart(), range.getEnd(), range.reverse)) {
+            }
             merged = true;
             break;
           }
@@ -109,7 +113,19 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
       }
     }
 
+    hasAlreadyJustSuccessfullyTransferedAStack = true;
     return copystack;
+  }
+
+  private boolean hasAlreadyJustSuccessfullyTransferedAStack = false;
+
+  @Override
+  protected void retrySlotClick(int slotId, int clickedButton, boolean mode, EntityPlayer playerIn) {
+    if (!hasAlreadyJustSuccessfullyTransferedAStack) {
+      this.slotClick(slotId, clickedButton, ClickType.QUICK_MOVE, playerIn);
+    } else {
+      hasAlreadyJustSuccessfullyTransferedAStack = false;
+    }
   }
 
   protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
@@ -129,12 +145,23 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
   }
 
   protected void addInventorySlotRange(List<SlotRange> res, int start, int end) {
+    SlotRange range = null;
     for (int i = start; i < end; i++) {
       Slot slotFromInventory = getSlotFromInventory(getInv(), i);
       if (slotFromInventory != null) {
         int slotNumber = slotFromInventory.slotNumber;
-        res.add(new SlotRange(slotNumber, slotNumber + 1, false));
+        if (range == null) {
+          range = new SlotRange(slotNumber, slotNumber + 1, false);
+        } else if (range.getEnd() == slotNumber) {
+          range = new SlotRange(range.getStart(), slotNumber + 1, false);
+        } else {
+          res.add(range);
+          range = new SlotRange(slotNumber, slotNumber + 1, false);
+        }
       }
+    }
+    if (range != null) {
+      res.add(range);
     }
   }
 
