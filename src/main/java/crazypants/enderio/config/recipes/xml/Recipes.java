@@ -113,10 +113,17 @@ public class Recipes implements RecipeRoot {
       return true;
     }
     if ("recipe".equals(name)) {
+      final Recipe recipe = factory.read(new Recipe(), startElement);
       if (recipes == null) {
         recipes = new ArrayList<Recipe>();
+      } else {
+        for (Recipe existingRecipe : recipes) {
+          if (existingRecipe.getName().equals(recipe.getName())) {
+            throw new InvalidRecipeConfigException("Duplicate recipe " + recipe.getName());
+          }
+        }
       }
-      recipes.add(factory.read(new Recipe(), startElement));
+      recipes.add(recipe);
       return true;
     }
 
