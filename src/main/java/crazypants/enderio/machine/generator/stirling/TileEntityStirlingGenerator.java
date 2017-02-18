@@ -9,6 +9,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
+import crazypants.enderio.capability.LegacyStirlingWrapper;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.SlotDefinition;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
@@ -210,6 +213,15 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   @Override
   public boolean hasCustomName() {
     return false;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> T getCapability(Capability<T> capability, EnumFacing facing1) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return (T) new LegacyStirlingWrapper(this, facing1);
+    }
+    return super.getCapability(capability, facing1);
   }
 
 }

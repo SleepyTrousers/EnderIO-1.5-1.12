@@ -21,6 +21,7 @@ import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capability.LegacyKillerJoeWrapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTank;
@@ -72,6 +73,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
@@ -662,6 +664,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
+    }
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+      return (T) new LegacyKillerJoeWrapper(this, facingIn);
     }
     return super.getCapability(capability, facingIn);
   }
