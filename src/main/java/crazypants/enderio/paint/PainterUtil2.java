@@ -219,8 +219,12 @@ public class PainterUtil2 {
     return null;
   }
 
+  private static final BlockRenderLayer BREAKING = null;
+
   public static boolean canRenderInLayer(@Nullable IBlockState paintSource, BlockRenderLayer blockLayer) {
-    if (paintSource != null) {      
+    if (blockLayer == BREAKING) {
+      return true;
+    } else if (paintSource != null) {
       return paintSource.getBlock().canRenderInLayer(paintSource, blockLayer);
     } else {
       return blockLayer == BlockRenderLayer.SOLID;

@@ -207,6 +207,8 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     Profiler.instance.stop(start, state.getBlock().getLocalizedName() + " (bake, cache=" + cacheResult + ")");
   }
 
+  private static final BlockRenderLayer BREAKING = null;
+
   protected void bakeBlockLayer(QuadCollector quads) {
     if (renderMapper == nullRenderMapper) {
       IBakedModel missingModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
@@ -220,6 +222,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     } else {
       BlockRenderLayer layer = block.getBlockLayer();
       quads.addFriendlyBlockStates(layer, renderMapper.mapBlockRender(this, world, pos, layer, quads));
+      quads.addFriendlyBlockStates(BREAKING, renderMapper.mapBlockRender(this, world, pos, BREAKING, quads));
     }
   }
 

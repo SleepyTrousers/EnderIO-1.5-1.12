@@ -19,6 +19,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 public class PaintWrangler {
 
+  private static final BlockRenderLayer BREAKING = null;
+
   private static class Memory {
     boolean doActualState = true;
     boolean doExtendedState = true;
@@ -77,7 +79,7 @@ public class PaintWrangler {
     final long positionRandom = MathHelper.getPositionRandom(pos);
     BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
     for (BlockRenderLayer layer : quads.getBlockLayers()) {
-      if (paintSource.getBlock().canRenderInLayer(extendedPaintSource, layer)) {
+      if (layer == BREAKING || paintSource.getBlock().canRenderInLayer(extendedPaintSource, layer)) {
         ForgeHooksClient.setRenderLayer(layer);
         List<String> errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
         if (errors != null) {

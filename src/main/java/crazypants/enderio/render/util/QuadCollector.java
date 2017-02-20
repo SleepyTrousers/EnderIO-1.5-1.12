@@ -23,6 +23,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 public class QuadCollector {
 
+  private static final BlockRenderLayer BREAKING = null;
+
   @SuppressWarnings("unchecked")
   private final List<BakedQuad>[] table = new List[mkKey(EnumFacing.values()[EnumFacing.values().length - 1],
       BlockRenderLayer.values()[BlockRenderLayer.values().length - 1]) + 1];
@@ -41,7 +43,7 @@ public class QuadCollector {
   }
 
   private static Integer mkKey(EnumFacing side, BlockRenderLayer pass) {
-    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == null ? 0 : pass.ordinal() + 1);
+    return (side == null ? 0 : side.ordinal() + 1) * BlockRenderLayer.values().length + (pass == BREAKING ? 0 : pass.ordinal() + 1);
   }
 
   public void addQuads(EnumFacing side, BlockRenderLayer pass, List<BakedQuad> quads) {
@@ -62,7 +64,16 @@ public class QuadCollector {
 
   public List<BakedQuad> getQuads(EnumFacing side, BlockRenderLayer pass) {
     Integer key = mkKey(side, pass);
-    if (table[key] == null) {
+    if (table[key] == null || table[key].isEmpty()) {
+      if (pass == BREAKING) {
+        // breaking layer: not set by model, try to construct it on-the-fly
+        List<BakedQuad> result = null;
+        for (BlockRenderLayer layer : BlockRenderLayer.values()) {
+          Integer key2 = mkKey(side, layer);
+          result = CompositeList.create(result, table[key2]);
+        }
+        return result;
+      }
       return Collections.<BakedQuad> emptyList();
     } else {
       return table[key];
