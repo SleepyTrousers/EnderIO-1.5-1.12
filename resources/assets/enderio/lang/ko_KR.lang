@@ -480,7 +480,7 @@ item.itemYetaWrench.tooltip.detailed.line2=앉은 채로 우클릭해
 item.itemYetaWrench.tooltip.detailed.line3=기계와 컨두잇을 즉시 해체 가능합니다.
 item.itemYetaWrench.tooltip.detailed.line4=앉은 채로 컨두잇에 좌클릭해
 item.itemYetaWrench.tooltip.detailed.line5=컨두잇 설정 GUI를 열 수 있습니다.
-item.itemYetaWrench.tooltip.detailed.line6=앉은 채로 마우스 휠을 굴리거나 Y를 눌러
+item.itemYetaWrench.tooltip.detailed.line6=앉은 채로 마우스 휠을 굴리거나 'Y' 키로
 item.itemYetaWrench.tooltip.detailed.line7=한 종류의 컨두잇만을 보이게 할 수 있습니다.
 
 item.itemMagnet.name=전자석
@@ -489,13 +489,13 @@ item.itemMagnet.tooltip.detailed.line2=앉은 채로 우클릭해 활성화/비�
 item.itemMagnet.tooltip.detailed.line3=작동하기 위해서는 충전되어야 하고,
 item.itemMagnet.tooltip.detailed.line4=활성화된 상태로 핫바에 있어야 합니다.
 
-item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit   
-item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
-item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
-item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles connection settings 
-item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
-item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+item.enderio.itemConduitProbe.name=컨두잇 조사기
+item.enderio.itemConduitProbe.tooltip.detailed.line1=조사 모드에서는 컨두잇에 우클릭하여  
+item.enderio.itemConduitProbe.tooltip.detailed.line2=해당 컨두잇의 연결 상태를 알아볼 수 있습니다.
+item.enderio.itemConduitProbe.tooltip.detailed.line3=복사/붙여넣기 모드에서는 앉은 채로 우클릭해
+item.enderio.itemConduitProbe.tooltip.detailed.line4=해당 컨두잇의 설정을 복사하여
+item.enderio.itemConduitProbe.tooltip.detailed.line5=우클릭으로 설정을 붙여넣습니다.
+item.enderio.itemConduitProbe.tooltip.detailed.line6=앉은 채로 마우스 휠을 굴리거나 'Y' 키로 모드를 바꿀 수 있습니다.
 
 item.itemSoulVessel.name=영혼 병
 item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
@@ -634,11 +634,11 @@ enderio.gui.tooltip.redstoneControlMode.never=비활성화
 
 enderio.gui.machine.ioMode.overlay.tooltip=입출력 설정
 enderio.gui.machine.ioMode.none=없음
-enderio.gui.machine.ioMode.pull=Pull
-enderio.gui.machine.ioMode.push=Push
-enderio.gui.machine.ioMode.disabled=비활성
-enderio.gui.machine.ioMode.pullPush=Push / Pull
-enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
+enderio.gui.machine.ioMode.pull=입력
+enderio.gui.machine.ioMode.push=출력
+enderio.gui.machine.ioMode.disabled=비활성화
+enderio.gui.machine.ioMode.pullPush=입출력
+enderio.gui.machine.ioMode.pullPush.colored=%s입%s%s출력
 enderio.gui.machine.ioMode=모드 : %s
 enderio.gui.machine.side=방향 : %s
 enderio.gui.machine.side.north=북
@@ -684,13 +684,13 @@ enderio.gui.mjReader.receiveItem1=Can receive
 enderio.gui.mjReader.receiveItem2=from:
 
 //CapactorBank
-enderio.gui.capBank.inputRs=Input Redstone Mode
-enderio.gui.capBank.outputRs=Output Redstone Mode
-enderio.gui.capBank.maxIo=Max I/O
-enderio.gui.capBank.maxInput=Max Input
-enderio.gui.capBank.maxOutput=Max Output
-enderio.gui.capBank.inputMode=Input
-enderio.gui.capBank.outputMode=Output
+enderio.gui.capBank.inputRs=입력 모드
+enderio.gui.capBank.outputRs=출력 모드
+enderio.gui.capBank.maxIo=최대 입출력
+enderio.gui.capBank.maxInput=최대 입력
+enderio.gui.capBank.maxOutput=최대 출력
+enderio.gui.capBank.inputMode=입력
+enderio.gui.capBank.outputMode=출력
 
 //Transceiver
 enderio.gui.trans.publicChannel=Public Channel
@@ -705,25 +705,25 @@ enderio.gui.trans.publicHeading=Public
 enderio.gui.trans.privateHeading=Private
 
 //Alloy Smelter
-enderio.gui.alloy.mode.heading=Furnace Mode
-enderio.gui.alloy.mode.all=All Smelting
-enderio.gui.alloy.mode.alloy=Alloys Only
-enderio.gui.alloy.mode.furnace=Furnace Only
+enderio.gui.alloy.mode.heading=모드
+enderio.gui.alloy.mode.all=합금 제련과 화로 모두
+enderio.gui.alloy.mode.alloy=합금 제련만
+enderio.gui.alloy.mode.furnace=화로만
 
 //Vat
-enderio.vat.outputTank=Output Tank
-enderio.vat.inputTank=Input Tank
-enderio.gui.machine.vat.dump.1=Dump Input Tank
-enderio.gui.machine.vat.dump.2=Dump Output Tank
+enderio.vat.outputTank=출력 탱크
+enderio.vat.inputTank=입력 탱크
+enderio.gui.machine.vat.dump.1=입력 탱크 비우기
+enderio.gui.machine.vat.dump.2=출력 탱크 비우기
 
 //Combustion Gen
-enderio.combustionGenerator.coolantTank=Coolant
-enderio.combustionGenerator.fuelTank=Fuel
-enderio.combustionGenerator.output=Generating:
+enderio.combustionGenerator.coolantTank=냉각제
+enderio.combustionGenerator.fuelTank=연료
+enderio.combustionGenerator.output=발전 중:
 
 //Stirling Gen
-enderio.stirlingGenerator.output=Generating:
-enderio.stirlingGenerator.burnRate=Burn Rate:
+enderio.stirlingGenerator.output=발전 중:
+enderio.stirlingGenerator.burnRate=연소 속도:
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
@@ -740,33 +740,33 @@ enderio.gui.spawnGurad.showRange=Show Range
 enderio.gui.spawnGurad.range=Range:
 
 //conduits
-enderio.gui.conduit.ioMode=Mode
-enderio.gui.conduit.ioMode.inOut=In / Out
-enderio.gui.conduit.ioMode.input=Extract
-enderio.gui.conduit.ioMode.output=Insert
-enderio.gui.conduit.ioMode.disabled=Disabled
-enderio.gui.conduit.ioMode.notSet=Default
-tile.blockConduitBundle.name=Conduit Connector
+enderio.gui.conduit.ioMode=모드
+enderio.gui.conduit.ioMode.inOut=입출력
+enderio.gui.conduit.ioMode.input=출력
+enderio.gui.conduit.ioMode.output=입력
+enderio.gui.conduit.ioMode.disabled=비활성화
+enderio.gui.conduit.ioMode.notSet=기본
+tile.blockConduitBundle.name=컨두잇 접합부
 
-enderio.gui.conduit.item.insertionFilter=Insert
-enderio.gui.conduit.item.extractionFilter=Extract
-enderio.gui.conduit.item.sigCol=Signal Color
-enderio.gui.conduit.item.channel=Channel
-enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data
-enderio.gui.conduit.item.matchMetaData=Match Meta Data
-enderio.gui.conduit.item.whitelist=Whitelist
-enderio.gui.conduit.item.blacklist=Blacklist
-enderio.gui.conduit.item.stickyEnabled=Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
-enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Disabled
-enderio.gui.conduit.item.ignoreNBT=Ignore NBT Data
-enderio.gui.conduit.item.matchNBT=Match NBT Data
-enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
-enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
+enderio.gui.conduit.item.insertionFilter=입력
+enderio.gui.conduit.item.extractionFilter=출력
+enderio.gui.conduit.item.sigCol=채널 색
+enderio.gui.conduit.item.channel=채널
+enderio.gui.conduit.item.ignoreMetaData=메타데이터 무시
+enderio.gui.conduit.item.matchMetaData=메타데이터 구분
+enderio.gui.conduit.item.whitelist=화이트리스트
+enderio.gui.conduit.item.blacklist=블랙리스트
+enderio.gui.conduit.item.stickyEnabled=스티커 모드 활성화|선택된 아이템은 여기나|스티커 모드가 활성화된|다른 출력 포트로 빠져나갑니다.
+enderio.gui.conduit.item.stickyDisbaled=스티커 모드 비활성화
+enderio.gui.conduit.item.ignoreNBT=NBT 데이터 무시
+enderio.gui.conduit.item.matchNBT=NBT 데이터 구분
+enderio.gui.conduit.item.oreDicEnabled=오어 딕셔너리 활성화
+enderio.gui.conduit.item.oreDicDisabled=오어 딕셔너리 비활성화
 enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
 enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
-enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
-enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
-enderio.gui.conduit.item.priority=Priority
+enderio.gui.conduit.item.roundRobinEnabled=라운드 로빈 활성화
+enderio.gui.conduit.item.roundRobinDisabled=라운드 로빈 비활성화
+enderio.gui.conduit.item.priority=우선 순위
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color
