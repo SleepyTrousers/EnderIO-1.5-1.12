@@ -18,6 +18,8 @@ import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.TargetContext;
 
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
@@ -78,7 +80,8 @@ public class TileAttractor extends AbstractMobObelisk {
 
   private void collectEntities() {
     for (EntityLiving entity : worldObj.getEntitiesWithinAABB(EntityLiving.class, getBounds())) {
-      if (!entity.isDead && !tracking.containsKey(entity) && canAttract(entity)) {
+      if (!entity.isDead && !tracking.containsKey(entity) && canAttract(entity)
+          && PermissionAPI.hasPermission(owner.getAsGameProfile(), BlockAttractor.permissionAttracting, new TargetContext(getTarget(), entity))) {
         collectEntity(entity);
         if (tracking.size() >= maxMobsAttracted) {
           return;

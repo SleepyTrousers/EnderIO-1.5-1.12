@@ -45,6 +45,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.BlockPosContext;
 
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
 import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
@@ -452,22 +454,24 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
     removeNotification(FarmNotification.NO_POWER);
 
-    BlockPos bc = null;
-    int infiniteLoop = 20;
-    while (bc == null || bc.equals(getPos()) || !worldObj.isBlockLoaded(bc)) {
-      if (infiniteLoop-- <= 0) {
-        return;
-      }
-      bc = getNextCoord();
-    }
-
-    IBlockState bs = getBlockState(bc);
-    Block block = bs.getBlock();
-
     if (farmerJoe == null) {
       farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
       farmerJoe.setOwner(owner);
     }
+
+    BlockPos bc = null;
+    IBlockState bs = null;
+    int infiniteLoop = 20;
+    while (bc == null || bc.equals(getPos()) || !worldObj.isBlockLoaded(bc)
+        || !PermissionAPI.hasPermission(owner.getAsGameProfile(), BlockFarmStation.permissionFarming, new BlockPosContext(farmerJoe, bc, bs, null))) {
+      if (infiniteLoop-- <= 0) {
+        return;
+      }
+      bc = getNextCoord();
+      bs = getBlockState(bc);
+    }
+
+    Block block = bs.getBlock();
 
     if (isOpen(bc)) {
       FarmersCommune.instance.prepareBlock(this, bc, block, bs);

@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
+import java.util.Locale;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
@@ -9,7 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
@@ -47,4 +53,15 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   protected GuiID getGuiId() {
     return GuiID.GUI_ID_ATTRACTOR;
   }
+
+  protected static String permissionAttracting;
+
+  @Override
+  public void init(FMLInitializationEvent event) {
+    super.init(event);
+    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+        "Permission for the block " + name + " of Ender IO to attract entities."
+            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
+  }
+
 }

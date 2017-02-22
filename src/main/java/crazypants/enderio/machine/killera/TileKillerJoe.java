@@ -74,6 +74,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.server.permission.PermissionAPI;
+import net.minecraftforge.server.permission.context.TargetContext;
 
 import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
@@ -250,6 +252,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
             }
           }
           if (Config.killerJoeMustSee && !canJoeSee(ent)) {
+            continue;
+          }
+          if (!PermissionAPI.hasPermission(owner.getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
             continue;
           }
           if (ent instanceof EntityZombie) {

@@ -1,7 +1,10 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.Locale;
+
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -32,9 +35,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 /**
  * Name proudly created by Xaw4
@@ -147,4 +153,15 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, new KillerJoeRenderer());
   }
+
+  protected static String permissionAttacking;
+
+  @Override
+  public void init(FMLInitializationEvent event) {
+    super.init(event);
+    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+        "Permission for the block " + name + " of Ender IO to attack entities."
+            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
+  }
+
 }

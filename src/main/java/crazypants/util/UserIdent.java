@@ -39,6 +39,10 @@ public class UserIdent {
     return uuid != null ? uuid.toString() : NONE_MARKER;
   }
 
+  public GameProfile getAsGameProfile() {
+    return new GameProfile(getUUID(), getPlayerName());
+  }
+
   /**
    * Create a UserIdent from a UUID object and a name. Use this when reading
    * stored data, it will check for username changes, implement them and write a
