@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -8,7 +9,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.base.Predicate;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
@@ -35,17 +35,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
 
 @Storable
-public class TileVacuumChest extends TileEntityEio
-    implements Predicate<EntityItem>, IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
+public class TileVacuumChest extends TileEntityEio implements IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
@@ -90,17 +94,42 @@ public class TileVacuumChest extends TileEntityEio
     redstoneStateDirty = true;
   }
 
-  @Override
-  public boolean apply(@Nullable EntityItem entity) {
-    return (filter == null || filter.doesItemPassFilter(null, entity.getEntityItem())) && MagnetUtil.shouldAttract(getPos(), entity);
+  private List<EntityItem> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
+    List<EntityItem> result = new ArrayList<EntityItem>();
+
+    final int minChunkX = MathHelper.floor_double((bb.minX) / 16.0D);
+    final int maxChunkX = MathHelper.floor_double((bb.maxX) / 16.0D);
+    final int minChunkZ = MathHelper.floor_double((bb.minZ) / 16.0D);
+    final int maxChunkZ = MathHelper.floor_double((bb.maxZ) / 16.0D);
+    final int minChunkY = MathHelper.floor_double((bb.minY) / 16.0D);
+    final int maxChunkY = MathHelper.floor_double((bb.maxY) / 16.0D);
+
+    for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
+      for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
+        Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+        final ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
+        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, entityLists.length - 1);
+        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, entityLists.length - 1);
+        for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
+          for (Entity entity : entityLists[chunkY]) {
+            if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersectsWith(bb)
+                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getEntityItem())) && MagnetUtil.shouldAttract(getPos(), entity)) {
+              result.add((EntityItem) entity);
+              if (Config.vacuumChestMaxItems > 0 && Config.vacuumChestMaxItems <= result.size()) {
+                return result;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   private void doHoover() {
-
     int rangeSqr = range * range;
-    List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, getBounds(), this);
-
-    for (EntityItem entity : interestingItems) {
+    for (EntityItem entity : selectEntitiesWithinAABB(getWorld(), getBounds())) {
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
       double z = (pos.getZ() + 0.5D - entity.posZ);
@@ -344,11 +373,6 @@ public class TileVacuumChest extends TileEntityEio
   @Override
   public int getFieldCount() {
     return 0;
-  }
-
-  @Override
-  public boolean equals(@Nullable Object obj) {
-    return super.equals(obj);
   }
 
   @Store({ StoreFor.CLIENT, StoreFor.SAVE })

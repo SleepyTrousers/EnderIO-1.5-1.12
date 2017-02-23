@@ -352,6 +352,7 @@ public final class Config {
   public static String[] magnetBlacklist = new String[] { "appliedenergistics2:item.ItemCrystalSeed", "Botania:livingrock",
       "Botania:manaTablet" };
   public static int magnetMaxItems = 20;
+  public static int vacuumChestMaxItems = 40;
 
   public static boolean magnetAllowInMainInventory = false;
   public static boolean magnetAllowInBaublesSlot = true;
@@ -769,6 +770,8 @@ public final class Config {
         .getBoolean(itemConduitUsePhyscialDistance);
 
     vacuumChestRange = config.get(sectionEfficiency.name, "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getInt(vacuumChestRange);
+    vacuumChestMaxItems = config.get(sectionEfficiency.name, "vacuumChestMaxItems", vacuumChestMaxItems,
+        "Maximum number of items the vacuum chest can effect at a time. (-1 for unlimited)").getInt(vacuumChestMaxItems);
 
     travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);

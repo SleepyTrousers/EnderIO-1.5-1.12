@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -148,10 +149,11 @@ public class MagnetController {
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
         Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, chunk.getEntityLists().length - 1);
-        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, chunk.getEntityLists().length - 1);
+        final ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
+        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, entityLists.length - 1);
+        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, entityLists.length - 1);
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
-          for (Entity entity : chunk.getEntityLists()[chunkY]) {
+          for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead) {
               boolean isValidTarget = false;
               if(entity.getEntityBoundingBox().intersectsWith(bb)) {
