@@ -92,7 +92,7 @@ public class TileVacuumChest extends TileEntityEio
 
   @Override
   public boolean apply(@Nullable EntityItem entity) {
-    return MagnetUtil.shouldAttract(getPos(), entity);
+    return (filter == null || filter.doesItemPassFilter(null, entity.getEntityItem())) && MagnetUtil.shouldAttract(getPos(), entity);
   }
 
   private void doHoover() {
@@ -101,23 +101,21 @@ public class TileVacuumChest extends TileEntityEio
     List<EntityItem> interestingItems = worldObj.getEntitiesWithinAABB(EntityItem.class, getBounds(), this);
 
     for (EntityItem entity : interestingItems) {
-      if (filter == null || filter.doesItemPassFilter(null, entity.getEntityItem())) {
-        double x = (pos.getX() + 0.5D - entity.posX);
-        double y = (pos.getY() + 0.5D - entity.posY);
-        double z = (pos.getZ() + 0.5D - entity.posZ);
+      double x = (pos.getX() + 0.5D - entity.posX);
+      double y = (pos.getY() + 0.5D - entity.posY);
+      double z = (pos.getZ() + 0.5D - entity.posZ);
 
-        double distance = Math.sqrt(x * x + y * y + z * z);
-        if (distance < 1.25 || range == 0) {
-          hooverEntity(entity);
-        } else {
-          double speed = 0.06;
-          double distScale = 1.0 - Math.min(0.9, distance / rangeSqr);
-          distScale *= distScale;
+      double distance = Math.sqrt(x * x + y * y + z * z);
+      if (distance < 1.25 || range == 0) {
+        hooverEntity(entity);
+      } else {
+        double speed = 0.06;
+        double distScale = 1.0 - Math.min(0.9, distance / rangeSqr);
+        distScale *= distScale;
 
-          entity.motionX += x / distance * distScale * speed;
-          entity.motionY += y / distance * distScale * 0.2;
-          entity.motionZ += z / distance * distScale * speed;
-        }
+        entity.motionX += x / distance * distScale * speed;
+        entity.motionY += y / distance * distScale * 0.2;
+        entity.motionZ += z / distance * distScale * speed;
       }
     }
   }
