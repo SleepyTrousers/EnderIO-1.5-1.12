@@ -82,7 +82,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private void doHoover() {
     boolean pickUpThisTick = xpCon.getFluidAmount() == 0;
-    for (EntityXPOrb entity : worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) {
+    for (EntityXPOrb entity : worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) { // note the Predicate parameter
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
       double z = (pos.getZ() + 0.5D - entity.posZ);
@@ -92,7 +92,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
         if (pickUpThisTick) {
           hooverEntity(entity);
         }
-      } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
+      } else {
         double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / range));
         distScale *= distScale;
 
