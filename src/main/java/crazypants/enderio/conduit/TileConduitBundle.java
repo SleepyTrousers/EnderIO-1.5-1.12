@@ -243,18 +243,30 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public void doUpdate() {
+    getWorld().theProfiler.startSection("conduitBundle");
+    getWorld().theProfiler.startSection("tick");
+
     for (IConduit conduit : conduits) {
+      getWorld().theProfiler.startSection(conduit.getClass().toString());
       conduit.updateEntity(worldObj);
+      getWorld().theProfiler.endSection();
     }
 
     if(conduitsDirty) {
+      getWorld().theProfiler.startSection("neigborUpdate");
       doConduitsDirty();
+      getWorld().theProfiler.endSection();
     }
+    getWorld().theProfiler.endSection();
 
     //client side only, check for changes in rendering of the bundle
     if(worldObj.isRemote) {
+      getWorld().theProfiler.startSection("clientTick");
       updateEntityClient();
+      getWorld().theProfiler.endSection();
     }
+
+    getWorld().theProfiler.endSection();
   }
 
   private void doConduitsDirty() {

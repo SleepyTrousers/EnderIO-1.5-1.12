@@ -200,43 +200,56 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void doUpdate() {
+    getWorld().theProfiler.startSection(getMachineName());
     if (worldObj.isRemote) {
+      getWorld().theProfiler.startSection("clientTick");
       updateEntityClient();
-      return;
-    } // else is server, do all logic only on the server
+      getWorld().theProfiler.endSection();
+    } else { // else is server, do all logic only on the server
+      getWorld().theProfiler.startSection("serverTick");
 
-    boolean requiresClientSync = forceClientUpdate.peek();
-    boolean prevRedCheck = redstoneCheckPassed;
-    if (redstoneStateDirty) {
-      redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
-      redstoneStateDirty = false;
+      boolean requiresClientSync = forceClientUpdate.peek();
+      boolean prevRedCheck = redstoneCheckPassed;
+      if (redstoneStateDirty) {
+        redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+        redstoneStateDirty = false;
+      }
+
+      if (shouldDoWorkThisTick(5)) {
+        getWorld().theProfiler.startSection("sideIO");
+        requiresClientSync |= doSideIo();
+        getWorld().theProfiler.endSection();
+      }
+
+      requiresClientSync |= prevRedCheck != redstoneCheckPassed;
+
+      getWorld().theProfiler.startSection("tasks");
+      requiresClientSync |= processTasks(redstoneCheckPassed);
+      getWorld().theProfiler.endSection();
+
+      if (requiresClientSync) {
+        getWorld().theProfiler.startSection("clientNotification");
+        // this will cause 'getPacketDescription()' to be called and its result
+        // will be sent to the PacketHandler on the other end of
+        // client/server connection
+        IBlockState bs = worldObj.getBlockState(pos);
+        worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+
+        // And this will make sure our current tile entity state is saved
+        markDirty();
+        getWorld().theProfiler.endSection();
+      }
+
+      if (notifyNeighbours) {
+        getWorld().theProfiler.startSection("neighborNotification");
+        worldObj.notifyBlockOfStateChange(pos, getBlockType());
+        notifyNeighbours = false;
+        getWorld().theProfiler.endSection();
+      }
+
+      getWorld().theProfiler.endSection();
     }
-
-    if (shouldDoWorkThisTick(5)) {
-      requiresClientSync |= doSideIo();
-    }
-
-    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
-
-    requiresClientSync |= processTasks(redstoneCheckPassed);
-
-    if (requiresClientSync) {
-
-      // this will cause 'getPacketDescription()' to be called and its result
-      // will be sent to the PacketHandler on the other end of
-      // client/server connection
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      
-      // And this will make sure our current tile entity state is saved
-      markDirty();
-    }
-
-    if (notifyNeighbours) {
-      worldObj.notifyBlockOfStateChange(pos, getBlockType());
-      notifyNeighbours = false;
-    }
-
+    getWorld().theProfiler.endSection();
   }
 
   protected void updateEntityClient() {
