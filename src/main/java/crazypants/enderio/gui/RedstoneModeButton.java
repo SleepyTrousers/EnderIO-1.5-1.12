@@ -26,7 +26,15 @@ public class RedstoneModeButton extends CycleButton<RedstoneControlMode.IconHold
     super(gui, id, x, y, RedstoneControlMode.IconHolder.class);
     this.model = model;
     this.bc = bc;
-    setMode(RedstoneControlMode.IconHolder.getFromMode(model.getRedstoneControlMode()));
+    setModeRaw(RedstoneControlMode.IconHolder.getFromMode(model.getRedstoneControlMode()));
+  }
+
+  public void setModeRaw(RedstoneControlMode.IconHolder newMode) {
+    if (model == null) {
+      return;
+    }
+    super.setMode(newMode);
+    setTooltipKey(tooltipKey); // forces our behavior
   }
 
   @Override
@@ -34,12 +42,11 @@ public class RedstoneModeButton extends CycleButton<RedstoneControlMode.IconHold
     if (model == null) {
       return;
     }
-    super.setMode(newMode);
+    setModeRaw(newMode);
     model.setRedstoneControlMode(getMode().getMode());
     if (bc != null) {
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(model, bc.x, bc.y, bc.z));
     }
-    setTooltipKey(tooltipKey); // forces our behavior
   }
 
   public void setTooltipKey(String key) {

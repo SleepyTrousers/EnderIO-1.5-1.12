@@ -384,8 +384,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
     maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
     textFieldsHaveRealData = true;
-    inputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
-    outputRsButton.setMode(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));
+    inputRsButton.setModeRaw(RedstoneControlMode.IconHolder.getFromMode(network.getInputControlMode()));
+    outputRsButton.setModeRaw(RedstoneControlMode.IconHolder.getFromMode(network.getOutputControlMode()));
   }
 
 }
