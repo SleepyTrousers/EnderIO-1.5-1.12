@@ -546,6 +546,7 @@ public final class Config {
 
   public static boolean debugTraceNBTActivityExtremelyDetailed = false;
   public static boolean debugTraceTELivecycleExtremelyDetailed = false;
+  public static boolean debugTraceCapLimitsExtremelyDetailed = false;
 
   public static void preInit(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
@@ -1175,6 +1176,11 @@ public final class Config {
         .get(sectionAdvanced.name, "debugTraceTELivecycleExtremelyDetailed", debugTraceTELivecycleExtremelyDetailed,
             "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
         .getBoolean(debugTraceTELivecycleExtremelyDetailed);
+
+    debugTraceCapLimitsExtremelyDetailed = config
+        .get(sectionAdvanced.name, "debugTraceCapLimitsExtremelyDetailed", debugTraceCapLimitsExtremelyDetailed,
+            "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!")
+        .getBoolean(debugTraceCapLimitsExtremelyDetailed);
 
     // START Hoes
 

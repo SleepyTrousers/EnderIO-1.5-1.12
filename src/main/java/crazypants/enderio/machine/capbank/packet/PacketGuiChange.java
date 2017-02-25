@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.capbank.packet;
 
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
@@ -24,6 +26,14 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
     maxRec = network.getMaxInput();
     inputMode = network.getInputControlMode();
     outputMode = network.getOutputControlMode();
+    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("CapBankNetwork ").append(network).append(" sending network package in=").append(maxRec).append(" out=")
+          .append(maxSend);
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
   }
 
   @Override

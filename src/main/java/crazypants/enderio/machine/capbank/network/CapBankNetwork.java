@@ -12,10 +12,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
@@ -166,9 +168,23 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
       maxEnergyStored += cap.getMaxEnergyStored(null);
       if(maxInput == -1) {
         maxInput = cap.getMaxInputOverride();
+        if (Config.debugTraceCapLimitsExtremelyDetailed) {
+          StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" intput changed from -1 to ").append(maxInput);
+          for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+            sb.append(" at ").append(elem);
+          }
+          Log.warn(sb);
+        }
       }
       if(maxOutput == -1) {
         maxOutput = cap.getMaxOutputOverride();
+        if (Config.debugTraceCapLimitsExtremelyDetailed) {
+          StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" output changed from -1 to ").append(maxOutput);
+          for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+            sb.append(" at ").append(elem);
+          }
+          Log.warn(sb);
+        }
       }
       cap.setInputControlMode(inputControlMode);
       cap.setOutputControlMode(outputControlMode);
@@ -449,6 +465,13 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
 
   @Override
   public void setMaxInput(int max) {
+    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" intput changed from ").append(this.maxInput).append(" to ").append(max);
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
     if(max >= maxIO) {
       maxInput = -1;
     } else if(max < 0) {
@@ -463,6 +486,13 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
 
   @Override
   public void setMaxOutput(int max) {
+    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("CapBankNetwork ").append(this).append(" output changed from ").append(this.maxOutput).append(" to ").append(max);
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
     if(max >= maxIO) {
       maxOutput = -1;
     } else if(max < 0) {

@@ -14,9 +14,11 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -677,6 +679,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     if(this.maxInput == maxInput) {
       return;
     }
+
+    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("CapBank ").append(this).append(" input changed from ").append(this.maxInput).append(" to ").append(maxInput);
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
+    }
     this.maxInput = maxInput;
     markDirty();
   }
@@ -696,6 +706,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   public void setMaxOutput(int maxOutput) {
     if(this.maxOutput == maxOutput) {
       return;
+    }
+
+    if (Config.debugTraceCapLimitsExtremelyDetailed) {
+      StringBuilder sb = new StringBuilder("CapBank ").append(this).append(" output changed from ").append(this.maxOutput).append(" to ").append(maxOutput);
+      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+        sb.append(" at ").append(elem);
+      }
+      Log.warn(sb);
     }
     this.maxOutput = maxOutput;
     markDirty();
