@@ -22,9 +22,9 @@ item.itemConduitFacade.tooltip.detailed.line1=可放入喷涂机喷涂
 item.itemConduitFacade.tooltip.detailed.line2=右击一个导管可放置
 item.itemConduitFacade.tooltip.detailed.line3=当手里拿着一个扳手或者导管时 
 item.itemConduitFacade.tooltip.detailed.line4=导管框架隐藏
-item.itemConduitFacade.hardened.tooltip=Hardened=硬化: 抵抗破坏以及爆炸
-item.itemConduitFacade.transparent.tooltip=Transparent=透明:当使用非固体方块喷涂时，隐藏导管
-item.itemConduitFacade.transparent.hardened.tooltip=Transparent=透明:当使用非固体方块喷涂时，隐藏导管；硬化: 抵抗破坏以及爆炸
+item.itemConduitFacade.hardened.tooltip=硬化: 抵抗破坏以及爆炸
+item.itemConduitFacade.transparent.tooltip=透明:当使用非固体方块喷涂时，隐藏导管
+item.itemConduitFacade.transparent.hardened.tooltip=透明:当使用非固体方块喷涂时，隐藏导管；硬化: 抵抗破坏以及爆炸
 
 enderio.itemPowerConduit.name=能量导管
 enderio.itemPowerConduitEnhanced.name=强化能量导管
@@ -1253,7 +1253,7 @@ enderio.gui.weather.requiredfluid=需要流体：%s mB
 enderio.weatherObelisk.fuelTank=大气通量仓
 
 //Enchants
-enchantment.soulBound=Soulbound
+enchantment.soulBound=灵魂绑定
 description.enchantment.enderio.soulBound=该附魔使物品免于死亡掉落
 
 //Configuration
