@@ -123,7 +123,7 @@ enderio.silicon.name=硅
 enderio.conduitBinder.name=导管粘合剂
 enderio.binderComposite.name=粘合胚料
 enderio.pulsatingIronNugget.name=脉冲铁粒
-enderio.nutritiousStick.name=滋养棍
+enderio.nutritiousStick.name=营养精华浸渍木棍
 tile.blockDarkIronBars.name=玄铁栅栏
 tile.blockEndermanSkull.name=末影人头颅
 tile.blockEndermanSkull.base.name=末影人头
@@ -151,9 +151,9 @@ fluid.ender_distillation=深渊露水
 tile.fluid.ender_distillation.name=深渊露水
 item.bucketEnder_distillation.name=桶装深渊露水
 
-fluid.vapor_of_levity=漂浮潜隐蒸汽
-tile.vapor_of_levity.name=潜隐蒸汽
-item.bucketVapor_of_levity.name=桶装潜隐蒸汽
+fluid.vapor_of_levity=漂浮潜影蒸汽
+tile.vapor_of_levity.name=潜影蒸汽
+item.bucketVapor_of_levity.name=桶装潜影蒸汽
 
 fluid.hootch=烈酒
 tile.fluid.hootch.name=烈酒
@@ -615,7 +615,7 @@ enderio.machine.tooltip.configured=(已配置)
 
 tile.blockInventoryPanelSensor.name=存储传感器
 tile.blockInventoryPanelSensor.tooltip.detailed.line1=可在库存面板里根据
-tile.blockInventoryPanelSensor.tooltip.detailed.line2=物品数量发出红石信号
+tile.blockInventoryPanelSensor.tooltip.detailed.line2=物品数量发出红石信
 tile.blockInventoryPanelSensor.tooltip.detailed.line3=号
 
 enderio.gui.inventorySensor.control1=开始于 < 
@@ -797,9 +797,9 @@ tile.blockPaintedRedstone.name=喷涂红石
 tile.blockPaintedRedstoneSolid.name=喷涂红石
 tile.blockPaintedStone.name=喷涂圆石
 tile.blockPaintedCarpet.name=喷涂地毯
-tile.blockPaintedWoodenTrapdoor.name=喷涂木活版门
-tile.blockPaintedIronTrapdoor.name=喷涂铁活版门
-tile.blockPaintedDarkSteelTrapdoor.name=喷涂玄钢活版门
+tile.blockPaintedWoodenTrapdoor.name=喷涂木活板门
+tile.blockPaintedIronTrapdoor.name=喷涂铁活板门
+tile.blockPaintedDarkSteelTrapdoor.name=喷涂玄钢活板门
 
 enderio.painter.tooltip.wasPainted=§o你认为这是干嘛用的?
 
@@ -858,7 +858,7 @@ skullZombieController.name=Z-逻辑控制器
 skullZombieFrankenstien.name=人造僵尸
 skullEnderResonator.name=末影谐振器
 skullSentientEnder.name=意识末影谐振器
-skullSkeletalContractor.name=骷髅契约板
+skullSkeletalContractor.name=骷髅电极中间体
 
 item.itemSpawnEggEnderIO.name=生成
 
@@ -1212,17 +1212,17 @@ enderio.gui.conduit.item.roundRobinEnabled=循环启用
 enderio.gui.conduit.item.roundRobinDisabled=循环禁用
 enderio.gui.conduit.item.priority=优先级
 
-enderio.gui.conduit.item.damage.disabled=无视耐久
-enderio.gui.conduit.item.damage.damage_00_25=增加到25%的耐久
-enderio.gui.conduit.item.damage.damage_25_00=超过25%的耐久
-enderio.gui.conduit.item.damage.damage_00_50=增加到50%的耐久
-enderio.gui.conduit.item.damage.damage_50_00=超过50%的耐久
-enderio.gui.conduit.item.damage.damage_00_75=增加到75%的耐久
-enderio.gui.conduit.item.damage.damage_75_00=超过75%的耐久
-enderio.gui.conduit.item.damage.damage_00_00=无损坏
-enderio.gui.conduit.item.damage.damage_01_00=损坏的
-enderio.gui.conduit.item.damage.damage_yes=有耐久条的
-enderio.gui.conduit.item.damage.damage_not=没有耐久条的
+enderio.gui.conduit.item.damage.disabled=耐久模糊禁用
+enderio.gui.conduit.item.damage.damage_00_25=小于等于25%的耐久
+enderio.gui.conduit.item.damage.damage_25_00=大于25%的耐久
+enderio.gui.conduit.item.damage.damage_00_50=小于等于50%的耐久
+enderio.gui.conduit.item.damage.damage_50_00=大于50%的耐久
+enderio.gui.conduit.item.damage.damage_00_75=小于等于75%的耐久
+enderio.gui.conduit.item.damage.damage_75_00=大于75%的耐久
+enderio.gui.conduit.item.damage.damage_00_00=满耐久
+enderio.gui.conduit.item.damage.damage_01_00=耐久耗尽
+enderio.gui.conduit.item.damage.damage_yes=有耐久属性的
+enderio.gui.conduit.item.damage.damage_not=没有耐久属性的
 
 enderio.gui.conduit.item.species.both=匹配主要和次要的种类
 enderio.gui.conduit.item.species.primary=仅匹配主要种类
@@ -1372,7 +1372,7 @@ enderio.top.rf.header.maxout=最大输出:
 enderio.top.rf.header.avg=I/O:
 enderio.top.rf.value=%s RF/t
 enderio.top.paint.header=涂覆:
-enderio.top.owner.header=猪人:
+enderio.top.owner.header=主人:
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
@@ -1532,7 +1532,7 @@ tile.blockDecoration2_type14.name=虚空箱子(装饰方块)
 tile.blockDecoration2_type15.name=无线充能器(装饰方块)
 
 tile.blockXPVacuum.name=经验吸收箱
-tile.blockXPVacuum.tooltip.detailed.line1=吸收经验球并转移转移
+tile.blockXPVacuum.tooltip.detailed.line1=吸收经验球并转移
 tile.blockXPVacuum.tooltip.detailed.line2=到相邻的容器或管道
 tile.blockXPVacuum.tooltip.detailed.line3=需要液态XP来激活
 
@@ -1551,7 +1551,7 @@ enderio.wrench.permission.denied=权限拒绝
 enderio.soulvial.denied=权限拒绝
 enderio.soulvial.owned.denied=权限拒绝 - 只有主人才能带走动物
 
-tile.blockDarkSteelTrapdoor.name=玄钢活版门
+tile.blockDarkSteelTrapdoor.name=玄钢活板门
 
 enderio.spawner.note.areaFull=生物过多
 enderio.spawner.note.noLocationFound=未发现空间
@@ -1562,14 +1562,14 @@ enderio.spawner.note.noPlayer=范围内无玩家
 enderio.plantgreen.name=植物碎叶
 enderio.plantbrown.name=松散枯草
 
-fluid.electricalsteel=融化磁钢锭
-fluid.energeticalloy=融化充能合金锭
-fluid.vibrantalloy=融化脉冲合金锭
+fluid.electricalsteel=熔融磁钢锭
+fluid.energeticalloy=熔融充能合金锭
+fluid.vibrantalloy=熔融脉冲合金锭
 fluid.redstonealloy=融合红石合金锭
-fluid.conductiveiron=融化导电铁锭
-fluid.pulsatingiron=融化脉冲铁锭
-fluid.darksteel=融化玄钢锭
-fluid.soularium=融化魂金锭
+fluid.conductiveiron=熔融导电铁锭
+fluid.pulsatingiron=熔融脉冲铁锭
+fluid.darksteel=熔融玄钢锭
+fluid.soularium=熔融魂金锭
 fluid.glowstone=辉光气体
-fluid.redstone=融化红石
-fluid.ender=液态末影珍珠
+fluid.redstone=熔融红石
+fluid.ender=熔融末影珍珠
