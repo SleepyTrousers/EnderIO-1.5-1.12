@@ -63,8 +63,8 @@ public class PlantableFarmer implements IFarmerJoe {
     if (type == null) {
       return false;
     }
-    Block ground = farm.getBlock(bc.down());
     if (type == EnumPlantType.Nether) {
+      Block ground = farm.getBlock(bc.down());
       if (ground != Blocks.SOUL_SAND) {
         return false;
       }
