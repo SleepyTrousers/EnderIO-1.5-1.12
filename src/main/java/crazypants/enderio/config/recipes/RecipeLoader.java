@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.config.recipes.xml.Recipes;
 
 public class RecipeLoader {
@@ -27,8 +28,12 @@ public class RecipeLoader {
       } catch (InvalidRecipeConfigException e) {
         recipeError(filename, e.getMessage());
       } catch (IOException e) {
+        Log.error("IO error while reading file:");
+        e.printStackTrace();
         recipeError(filename, "IO error while reading file:" + e.getMessage());
       } catch (XMLStreamException e) {
+        Log.error("File has malformed XML:");
+        e.printStackTrace();
         recipeError(filename, "File has malformed XML:" + e.getMessage());
       }
     }

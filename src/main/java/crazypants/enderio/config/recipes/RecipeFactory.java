@@ -3,6 +3,7 @@ package crazypants.enderio.config.recipes;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,16 +37,27 @@ public class RecipeFactory {
       copyCore(fileName + "_core.xml");
 
       // default first, so the user file has access to the aliases
-      defaultFileStream = RecipeFactory.class.getResourceAsStream("/assets/" + EnderIO.DOMAIN + "/config/" + fileName + "_core.xml");
+      final String coreFile = "/assets/" + EnderIO.DOMAIN + "/config/" + fileName + "_core.xml";
+      defaultFileStream = RecipeFactory.class.getResourceAsStream(coreFile);
       if (defaultFileStream == null) {
-        throw new IOException("Could not get resource /assets/" + EnderIO.DOMAIN + "/config/" + fileName + "_core.xml from classpath. ");
+        throw new IOException("Could not get resource " + coreFile + " from classpath. ");
       }
-      defaultConfig = readStax(target.copy(target), rootElement, defaultFileStream);
+      try {
+        defaultConfig = readStax(target.copy(target), rootElement, defaultFileStream);
+      } catch (XMLStreamException e) {
+        printContentsOnError(RecipeFactory.class.getResourceAsStream(coreFile), coreFile);
+        throw e;
+      }
 
       File configFile = new File(Config.configDirectory, fileName + "_user.xml");
       if (configFile.exists()) {
         userFileStream = new FileInputStream(configFile);
-        userConfig = readStax(target, rootElement, userFileStream);
+        try {
+          userConfig = readStax(target, rootElement, userFileStream);
+        } catch (XMLStreamException e) {
+          printContentsOnError(new FileInputStream(configFile), configFile.toString());
+          throw e;
+        }
         userConfig.addRecipes(defaultConfig);
         return userConfig;
       } else {
@@ -63,6 +75,34 @@ public class RecipeFactory {
     } finally {
       IOUtils.closeQuietly(userFileStream);
       IOUtils.closeQuietly(defaultFileStream);
+    }
+  }
+
+  protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {
+    Log.error("Failed to parse xml from file '", filename, "'. Content:");
+    try {
+      int data = 0;
+      while (data != -1) {
+        StringBuilder sb1 = new StringBuilder(), sb2 = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+          data = stream.read();
+          if (data != -1) {
+            sb1.append(String.format("%02x ", data));
+            if (data > 32 && data < 128) {
+              sb2.appendCodePoint(data);
+            } else {
+              sb2.append(".");
+            }
+          } else {
+            sb1.append("   ");
+          }
+        }
+        Log.error(sb1, sb2);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      IOUtils.closeQuietly(stream);
     }
   }
 
