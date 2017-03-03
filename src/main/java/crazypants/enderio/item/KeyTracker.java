@@ -223,7 +223,7 @@ public class KeyTracker {
   
   private void handleNightVision() {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){
+    if(!DarkSteelController.instance.isNightVisionUpgradeOrEnchEquipped(player)){
       return;
     }
     if(nightVisionKey.isPressed()) {
