@@ -9,6 +9,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.particle.EntityReddustFX;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
@@ -491,10 +493,10 @@ public class DarkSteelController {
   
   
   private void updateNightvision(EntityPlayer player) {
-    if(isNightVisionUpgradeEquipped(player) && nightVisionActive) {
+    if(isNightVisionUpgradeOrEnchEquipped(player) && nightVisionActive) {
       player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true));
     } 
-    if(!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
+    if(!isNightVisionUpgradeOrEnchEquipped(player) && nightVisionActive) {
       nightVisionActive = false;
       removeNightvision = true;
     }
@@ -504,9 +506,42 @@ public class DarkSteelController {
     }
   }
 
-  public boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
-    ItemStack helmet = player.getEquipmentInSlot(4);    
-    return NightVisionUpgrade.loadFromItem(helmet) != null;    
+  // --- Thaumic Exploration Night Vision enchant support
+
+  private static int nightVisionEnchID = -6;
+
+  public static int getNightVisionEnchID() {
+    if (nightVisionEnchID == -6) setNightVisionEnchID();
+    return nightVisionEnchID;
+  }
+
+  private static void setNightVisionEnchID() {
+    for (Enchantment ench : Enchantment.enchantmentsList) {
+      if (ench != null && ench.getName().equals("enchantment.nightVision")) {
+        nightVisionEnchID = ench.effectId;
+        return;
+      }
+    } nightVisionEnchID = -1;
+  }
+
+  public boolean isNightVisionEnch(ItemStack helmet) {
+    if (helmet == null) return false;
+    NBTTagList stackEnch = helmet.getEnchantmentTagList();
+    if (getNightVisionEnchID () >= 0 && stackEnch != null) {
+      for (int i = 0; i < stackEnch.tagCount(); i++) {
+        int id = stackEnch.getCompoundTagAt(i).getInteger("id");
+        if (id == getNightVisionEnchID())
+          return true;
+      }
+    }
+    return false;
+  }
+
+  // ---
+
+  public boolean isNightVisionUpgradeOrEnchEquipped(EntityPlayer player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);
+    return (NightVisionUpgrade.loadFromItem(helmet) != null || isNightVisionEnch(helmet));    
   }
 
   public void setNightVisionActive(boolean isNightVisionActive) {
