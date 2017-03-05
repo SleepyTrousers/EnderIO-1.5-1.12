@@ -39,7 +39,7 @@ public class AdditionalFluid {
   private static final boolean REGISTER_ENDER_BLOCK = true;
 
   static void init(FMLPreInitializationEvent event) {
-    if (!Loader.isModLoaded("ThermalFoundation")) {
+    if (!Loader.isModLoaded("thermalfoundation")) {
       glowstone(event);
       redstone(event);
       ender(event);

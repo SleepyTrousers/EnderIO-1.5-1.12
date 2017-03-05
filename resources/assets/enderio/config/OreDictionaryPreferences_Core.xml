@@ -32,70 +32,71 @@
 
   <!-- Dusts -->
   <preference oreDictionary="dustCoal" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="2" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="768" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" />
   </preference>
   <preference oreDictionary="dustCharcoal" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="3" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="769" />
   </preference>
   <preference oreDictionary="dustObsidian" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="4" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="770" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="7" />
   </preference>
   <preference oreDictionary="dustIron" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="0" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="0" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" />
   </preference>
   <preference oreDictionary="dustGold" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="1" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="1" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" />
   </preference>
   <preference oreDictionary="dustCopper" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="32" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="64" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" />
   </preference>
   <preference oreDictionary="dustTin" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="33" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="65" />
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" />
   </preference>
   <preference oreDictionary="dustSilver" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="34" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="66" />
   </preference>
   <preference oreDictionary="dustLead" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="35" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="67" />
   </preference>
   <preference oreDictionary="dustNickel" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="36" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="69" />
   </preference>
   <preference oreDictionary="dustSulfur" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="16" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="771" />
   </preference>
   <preference oreDictionary="dustBronze" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="41" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="99" />
   </preference>
   <preference oreDictionary="dustNetherQuartz" >
     <itemStack modID="appliedenergistics2" itemName="item.itemMultiMaterial" itemMeta="3" />
   </preference>
   <!-- Ingots -->
   <preference oreDictionary="ingotCopper" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="64" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="128" />
     <itemStack modID="TConstruct" itemName="materials" itemMeta="9" />
   </preference>
   <preference oreDictionary="ingotTin" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="65" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="129" />
     <itemStack modID="TConstruct" itemName="materials" itemMeta="10" />
   </preference>
   <preference oreDictionary="ingotSilver" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="66" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="130" />
   </preference>
   <preference oreDictionary="ingotLead" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="67" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="131" />
   </preference>
   <preference oreDictionary="ingotBronze" >
-    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="73" />
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="163" />
     <itemStack modID="TConstruct" itemName="materials" itemMeta="13" />
   </preference>
   <preference oreDictionary="ingotAluminum" >
+    <itemStack modID="thermalfoundation" itemName="material" itemMeta="132" />
     <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />
   </preference>
   <preference oreDictionary="ingotAluminium" >
