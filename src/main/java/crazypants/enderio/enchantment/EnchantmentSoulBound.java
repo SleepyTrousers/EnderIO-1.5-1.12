@@ -89,7 +89,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     // wait for that because gravestone mods also listen to this event. So we have
     // to fetch Baubles items ourselves here.
     // For the same reason we cannot put the items into Baubles slots.
-    IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer);
+    /*IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer);
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack item = baubles.getStackInSlot(i);
@@ -99,7 +99,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
           }
         }
       }
-    }
+    }*/
 
     // Galacticraft. Again we are too early for those items. We just dump the
     // stuff into the normal inventory to not have to keep a separate list.

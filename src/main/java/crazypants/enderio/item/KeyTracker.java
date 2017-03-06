@@ -165,7 +165,7 @@ public class KeyTracker {
     }
     if(gogglesKey.isPressed()) {
       boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
-      sendEnabledChatMessage("darksteel.upgrade.goggles", isActive);
+      sendEnabledChatMessage("darksteel.upgrade.gogglesOfRevealing", isActive);
       DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
     }
   }
