@@ -25,6 +25,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.integration.chiselsandbits.CABIMC;
+import crazypants.enderio.integration.te.TEIntegration;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.integration.waila.WailaIMC;
 import crazypants.enderio.item.darksteel.DarkSteelController;
@@ -234,6 +235,7 @@ public class EnderIO {
   private void addModIntegration() {
     // ThaumcraftCompat.load();
     BuildcraftIntegration.init();
+    TEIntegration.init();
   }
 
   private void processImc(ImmutableList<IMCMessage> messages) {

@@ -7,6 +7,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import buildcraft.api.tools.IToolWrench;
+import cofh.api.item.IToolHammer;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -23,6 +24,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,8 +47,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockConduitBundle;
 
-@Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core") })
-public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench {
+@Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core"),
+    @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhapi|item") })
+public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer {
 
   public static ItemYetaWrench create() {
     PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
@@ -220,5 +223,30 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   @Override
   @Optional.Method(modid = "BuildCraftAPI|core")
   public void wrenchUsed(EntityPlayer player, Entity arg1) {
+  }
+
+  @Override
+  @Optional.Method(modid = "cofhapi|item")
+  public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
+    return true;
+  }
+
+  @Override
+  @Optional.Method(modid = "cofhapi|item")
+  public boolean isUsable(ItemStack item, EntityLivingBase user, Entity entity) {
+    return false;
+  }
+
+  @Override
+  @Optional.Method(modid = "cofhapi|item")
+  public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
+    if (user instanceof EntityPlayer) {
+      used(user.getHeldItemMainhand(), (EntityPlayer) user, pos);
+    }
+  }
+
+  @Override
+  @Optional.Method(modid = "cofhapi|item")
+  public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
   }
 }
