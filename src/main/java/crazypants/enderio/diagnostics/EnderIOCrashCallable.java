@@ -47,7 +47,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
         if ("1.8-BuildCraft-Testing".equals(apiVersionString) || apiVersionString.contains("1.7")) {
           result.add(" * An unsupportted RF API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO needs at least 1.8.9R1.2.0B1 and will NOT work with older versions.");
+          result.add("   Ender IO needs at least 1.4.0 and will NOT work with older versions.");
         } else {
           Package caep = Package.getPackage("cofh.api.energy");
           if (caep != null) {
@@ -59,7 +59,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
                   if ("1.8-BuildCraft-Testing".equals(apiVersion) || apiVersion.contains("1.7")) {
                     result.add(" * An unsupportted RF API is installed (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps")
                         + ").");
-                    result.add("   Ender IO needs at least 1.8.9R1.2.0B1 and will NOT work with older versions.");
+                    result.add("   Ender IO needs at least 1.4.0 and will NOT work with older versions.");
                   } else {
                     result.add(" * The RF API that is being used (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps.class")
                         + ") differes from that that is reported as being loaded (" + apiVersionString + " from " + modContainer.getSource().getName()
@@ -144,6 +144,10 @@ public class EnderIOCrashCallable implements ICrashCallable {
         }
       }
     }
+    msg += "\n";
+    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+    msg += "\t!!!You are looking at the diagnostics information, not at the crash. Scroll up!!!\n";
+    msg += "\t!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
     return msg;
   }
 

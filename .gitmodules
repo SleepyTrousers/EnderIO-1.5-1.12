@@ -1,0 +1,3 @@
+[submodule "CoFHLib"]
+	path = CoFHLib
+	url = git@github.com:TheCBProject/CoFHLib.git
