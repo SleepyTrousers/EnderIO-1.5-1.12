@@ -97,16 +97,20 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   private boolean itemMatched(ItemStack item) {
     if (damageMode.passesFilter(item)) {
+      // if there are not filter items, but a damage mode is set, the filter will let items pass that match that filter mode
       boolean canPassFilter = damageMode != DamageMode.DISABLED;
       for (int i = 0; i < items.length; i++) {
         ItemStack filterStack = items[i];
         if (Prep.isValid(filterStack)) {
-          if (item.getItem() == filterStack.getItem() || (useOreDict && isOreDicMatch(i, item))) {
+          if (item.getItem() == filterStack.getItem()) {
             if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
               if (!matchNBT || isNBTMatch(item, filterStack)) {
                 return true;
               }
             }
+          }
+          if (useOreDict && isOreDicMatch(i, item)) {
+            return true;
           }
           canPassFilter = false;
         }
