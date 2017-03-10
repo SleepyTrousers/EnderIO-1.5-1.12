@@ -279,7 +279,11 @@ public class ConduitRegistry {
   }
 
   public static void sort(List<IConduit> conduits) {
-    Collections.sort(conduits, CONDUIT_COMPERATOR);
+    try {
+      Collections.sort(conduits, CONDUIT_COMPERATOR);
+    } catch (UnsupportedOperationException e) {
+      // On older versions of Java this is not supported. We don't care, the list is only sorted to optimize our model cache.
+    }
   }
 
   private static final Comparator<ConduitInfo> UUID_COMPERATOR = new Comparator<ConduitInfo>() {
