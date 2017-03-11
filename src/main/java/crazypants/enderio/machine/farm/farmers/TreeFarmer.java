@@ -205,6 +205,9 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   protected void tryReplanting(TileFarmStation farm, World worldObj, BlockPos bc, HarvestResult res) {
+    if (!farm.isOpen(bc)) {
+      return;
+    }
     ItemStack allowedSeed = Prep.getEmpty();
     int supplySlotForCoord = farm.getSupplySlotForCoord(bc);
     if (farm.isSlotLocked(supplySlotForCoord)) {
