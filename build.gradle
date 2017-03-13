@@ -135,6 +135,9 @@ compileJava.doFirst {
     String contents = modFileFile.getText('UTF-8')
     contents = contents.replaceAll('dependencies = ".*", guiFactory', 'dependencies = "' + project.ext.dependencies + '", guiFactory')
     modFileFile.write(contents, 'UTF-8')
+    
+    // This is needed because the classpath contains the dependencies before the api sourceSet. Which is not very nice.
+    classpath = sourceSets.api.output + classpath
 }
 
 jar {
