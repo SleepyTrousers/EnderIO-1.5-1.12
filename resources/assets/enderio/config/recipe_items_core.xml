@@ -609,13 +609,13 @@ XML editor will display that as tooltips when editing this file.
         <item name="crystalPureFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalPureFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="ME_CONDUIT" amount="12">
+      <output name="ME_CONDUIT" amount="6">
         <level maxlevel="1"/>
       </output>
-      <output name="ME_CONDUIT" amount="8">
+      <output name="ME_CONDUIT" amount="4">
         <level minlevel="2" maxlevel="2"/>
       </output>
-      <output name="ME_CONDUIT" amount="2">
+      <output name="ME_CONDUIT" amount="1">
         <level minlevel="3"/>
       </output>
     </crafting>
@@ -638,15 +638,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ME_CONDUIT" /><item name="CONDUIT_BINDER" /><item name="ME_CONDUIT" />
         <item name="CONDUIT_BINDER" /><item name="ME_CONDUIT" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="ME_CONDUIT_DENSE" amount="12">
-        <level maxlevel="1"/>
-      </output>
-      <output name="ME_CONDUIT_DENSE" amount="8">
-        <level minlevel="2" maxlevel="2"/>
-      </output>
-      <output name="ME_CONDUIT_DENSE" amount="2">
-        <level minlevel="3"/>
-      </output>
+      <output name="ME_CONDUIT_DENSE" amount="1" />
     </crafting>
   </recipe>
 
