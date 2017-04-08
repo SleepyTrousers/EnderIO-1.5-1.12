@@ -300,6 +300,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       }
       faceModes.put(faceHit, mode);
     }
+    markDirty();
     if (updateReceptors) {
       validateModeForReceptor(faceHit);
       receptorsDirty = true;
@@ -395,7 +396,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     if (faceDisplayTypes.isEmpty()) {
       faceDisplayTypes = null;
     }
-    displayTypesDirty = markDirty;
+    if (markDirty) {
+      displayTypesDirty = true;
+      markDirty();
+    }
     invalidateDisplayInfoCache();
   }
 
@@ -486,6 +490,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   public void setInputControlMode(RedstoneControlMode inputControlMode) {
     this.inputControlMode = inputControlMode;
+    markDirty();
   }
 
   public RedstoneControlMode getOutputControlMode() {
@@ -494,6 +499,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   public void setOutputControlMode(RedstoneControlMode outputControlMode) {
     this.outputControlMode = outputControlMode;
+    markDirty();
   }
 
   // ----------- Power
@@ -650,6 +656,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   public void setEnergyStored(int stored) {
     energyStored = MathHelper.clamp_int(stored, 0, getMaxEnergyStored(null));
+    markDirty();
   }
 
   @Override

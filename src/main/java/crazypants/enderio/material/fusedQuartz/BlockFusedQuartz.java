@@ -16,11 +16,13 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -114,6 +116,12 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   @Override
   public int getBlockTint(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex) {
     return state.getValue(BlockColored.COLOR).getMapColor().colorValue;
+  }
+
+  @Override
+  @Nullable
+  public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos) {
+    return EntitySheep.getDyeRgb(state.getValue(BlockColored.COLOR));
   }
 
 }
