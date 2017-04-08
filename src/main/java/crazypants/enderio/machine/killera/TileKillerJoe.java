@@ -254,7 +254,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           if (Config.killerJoeMustSee && !canJoeSee(ent)) {
             continue;
           }
-          if (!PermissionAPI.hasPermission(owner.getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
+          if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
             continue;
           }
           if (ent instanceof EntityZombie) {
@@ -433,7 +433,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   Attackera getAttackera() {
     if (attackera == null) {
-      attackera = new Attackera(owner);
+      attackera = new Attackera(getOwner());
     }
     return attackera;
   }

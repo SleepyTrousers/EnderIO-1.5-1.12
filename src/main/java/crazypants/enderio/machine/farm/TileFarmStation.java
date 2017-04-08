@@ -456,14 +456,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     if (farmerJoe == null) {
       farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
-      farmerJoe.setOwner(owner);
+      farmerJoe.setOwner(getOwner());
     }
 
     BlockPos bc = null;
     IBlockState bs = null;
     int infiniteLoop = 20;
     while (bc == null || bc.equals(getPos()) || !worldObj.isBlockLoaded(bc)
-        || !PermissionAPI.hasPermission(owner.getAsGameProfile(), BlockFarmStation.permissionFarming, new BlockPosContext(farmerJoe, bc, bs, null))) {
+        || !PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockFarmStation.permissionFarming, new BlockPosContext(farmerJoe, bc, bs, null))) {
       if (infiniteLoop-- <= 0) {
         return;
       }

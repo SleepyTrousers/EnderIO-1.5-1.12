@@ -175,7 +175,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     if (output != null) {
       if (playerInst == null) {
         playerInst = new FakePlayerEIO(worldObj, getLocation(), DUMMY_PROFILE);
-        playerInst.setOwner(owner);
+        playerInst.setOwner(getOwner());
       }
       MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
 

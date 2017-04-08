@@ -71,7 +71,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   private MachineSound sound;
 
   @Store(StoreFor.SAVE)
-  protected @Nullable UserIdent owner;
+  private @Nullable UserIdent owner;
 
   private final ResourceLocation soundRes;
 
@@ -451,7 +451,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   public UserIdent getOwner() {
-    return owner;
+    return owner != null ? owner : UserIdent.nobody;
   }
 
 }

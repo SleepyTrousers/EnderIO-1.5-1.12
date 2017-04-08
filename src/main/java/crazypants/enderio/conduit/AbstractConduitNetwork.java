@@ -117,7 +117,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       // Step 2.2: Check if the old conduit's TE is valid
       final IConduitBundle oldbundle = oldconduit.getBundle();
       final TileEntity oldte = oldbundle.getEntity();
-      if (oldbundle == null || oldte.isInvalid() || !oldte.hasWorldObj()) {
+      if (oldte == null || oldte.isInvalid() || !oldte.hasWorldObj()) {
         oldconduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
@@ -136,7 +136,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       }
       // Step 2.4: Check if the new conduit is for the same position as the old. This should not happen, as the new conduit should have been gotten from the
       // world and the old conduit already was checked against the world...
-      if (newpos.equals(oldpos)) {
+      if (newpos != null && newpos.equals(oldpos)) {
         Log.info("Tried to add invalid conduit to network! Old conduit: ", oldconduit, "/", oldbundle, " New conduit: ", newconduit, "/", oldbundle,
             " World says: ", oldworld.getTileEntity(newpos));
         newconduit = null;
