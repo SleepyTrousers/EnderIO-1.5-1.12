@@ -25,12 +25,12 @@ import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
 import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
+import static crazypants.enderio.config.Config.maxMobsAttracted;
 
 @Storable
 public class TileAttractor extends AbstractMobObelisk {
 
   private Target target;
-  private int maxMobsAttracted = 20;
 
   private Map<EntityLiving, IMobAttractionHandler> tracking = new HashMap<EntityLiving, IMobAttractionHandler>();
 

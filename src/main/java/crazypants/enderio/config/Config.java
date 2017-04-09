@@ -544,6 +544,8 @@ public final class Config {
 
   public static String leversEnabled = "10,30,60,300";
 
+  public static int maxMobsAttracted = 20;
+
   public static boolean debugTraceNBTActivityExtremelyDetailed = false;
   public static boolean debugTraceTELivecycleExtremelyDetailed = false;
   public static boolean debugTraceCapLimitsExtremelyDetailed = false;
@@ -1406,6 +1408,9 @@ public final class Config {
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
     xpJuiceName = config.getString("xpJuiceName", sectionMisc.name, xpJuiceName, "Id of liquid XP fluid (WARNING: only for users who know what they are doing - changing this id can break worlds) - this should match with OpenBlocks when installed");
+
+    maxMobsAttracted = config
+        .get(sectionMisc.name, "maxMobsAttracted", maxMobsAttracted, "Maximum number of mobs any Attraction Obelisk can attract at any time.").getInt();
 
     glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
