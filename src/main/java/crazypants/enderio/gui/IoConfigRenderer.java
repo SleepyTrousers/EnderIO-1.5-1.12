@@ -53,6 +53,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 public class IoConfigRenderer {
 
@@ -356,18 +357,23 @@ public class IoConfigRenderer {
 
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     
-    for(BlockRenderLayer layer : BlockRenderLayer.values()) {
-      ForgeHooksClient.setRenderLayer(layer);      
-      setGlStateForPass(layer, false);
-      doWorldRenderPass(trans, configurables, layer);      
-    }
-    
-    if (renderNeighbours) {
+    BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+    try {
       for (BlockRenderLayer layer : BlockRenderLayer.values()) {
         ForgeHooksClient.setRenderLayer(layer);
-        setGlStateForPass(layer, true);
-        doWorldRenderPass(trans, neighbours, layer);        
+        setGlStateForPass(layer, false);
+        doWorldRenderPass(trans, configurables, layer);
       }
+
+      if (renderNeighbours) {
+        for (BlockRenderLayer layer : BlockRenderLayer.values()) {
+          ForgeHooksClient.setRenderLayer(layer);
+          setGlStateForPass(layer, true);
+          doWorldRenderPass(trans, neighbours, layer);
+        }
+      }
+    } finally {
+      ForgeHooksClient.setRenderLayer(oldRenderLayer);
     }
     
     RenderHelper.enableStandardItemLighting();
@@ -380,6 +386,7 @@ public class IoConfigRenderer {
     TileEntityRendererDispatcher.staticPlayerZ = origin.z - eye.z;
 
     for (int pass = 0; pass < 2; pass++) {
+      ForgeHooksClient.setRenderPass(pass);
       setGlStateForPass(pass, false);
       doTileEntityRenderPass(configurables, pass);
       if (renderNeighbours) {
@@ -387,11 +394,11 @@ public class IoConfigRenderer {
         doTileEntityRenderPass(neighbours, pass);
       }
     }
+    ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);
   }
 
   private void doTileEntityRenderPass(List<BlockCoord> blocks, int pass) {
-    ForgeHooksClient.setRenderPass(pass);    
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.getBlockPos());
       if (tile != null) {
