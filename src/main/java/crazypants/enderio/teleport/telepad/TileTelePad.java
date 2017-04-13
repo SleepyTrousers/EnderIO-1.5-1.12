@@ -34,6 +34,7 @@ import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.teleport.telepad.packet.PacketFluidLevel;
 import crazypants.enderio.teleport.telepad.packet.PacketSetTarget;
 import crazypants.enderio.teleport.telepad.packet.PacketTeleport;
+import crazypants.enderio.teleport.telepad.packet.PacketTeleportTrigger;
 import crazypants.enderio.teleport.telepad.render.BlockType;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.Entity;
@@ -504,10 +505,13 @@ public class TileTelePad extends TileTravelAnchor
     if (m == null) {
       return;
     }
-    for (Entity e : m.getEntitiesInRange()) {
-      m.enqueueTeleport(e, true);
+    if (m.worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketTeleportTrigger(m));
+    } else {
+      for (Entity e : m.getEntitiesInRange()) {
+        m.enqueueTeleport(e, true);
+      }
     }
-
   }
 
   private List<Entity> getEntitiesInRange() {
@@ -532,7 +536,7 @@ public class TileTelePad extends TileTravelAnchor
     toTeleport.add(entity);
     if (sendUpdate) {
       if (entity.worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity));
+        // NOP
       } else {
         PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity));
       }
@@ -547,7 +551,7 @@ public class TileTelePad extends TileTravelAnchor
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     if (sendUpdate) {
       if (worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToServer(new PacketTeleport(PacketTeleport.Type.END, this, entity));
+        // NOP
       } else {
         PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.END, this, entity));
       }
