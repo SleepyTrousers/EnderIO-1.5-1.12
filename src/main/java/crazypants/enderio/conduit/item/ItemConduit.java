@@ -859,6 +859,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
         conectionModes.put(dir, ConnectionMode.OUTPUT);
       }
     }
+    connectionsDirty = true;
   }
 
   @Override
