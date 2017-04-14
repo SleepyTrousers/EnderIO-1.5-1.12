@@ -394,6 +394,7 @@ public abstract class AbstractConduit implements IConduit {
     }
     updateNetwork(world);
     updateConnections();
+    readFromNbt = false; // the two update*()s react to this on their first run
     if (clientStateDirty && getBundle() != null) {
       getBundle().dirty();
       clientStateDirty = false;
@@ -401,7 +402,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   private void updateConnections() {
-    if (!connectionsDirty) {
+    if (!connectionsDirty && !readFromNbt) {
       return;
     }
 
@@ -409,7 +410,7 @@ public abstract class AbstractConduit implements IConduit {
     List<EnumFacing> copy = new ArrayList<EnumFacing>(externalConnections);
     // remove any no longer valid connections
     for (EnumFacing dir : copy) {
-      if (!canConnectToExternal(dir, false)) {
+      if (!canConnectToExternal(dir, false) || readFromNbt) {
         externalConnectionRemoved(dir);
         externalConnectionsChanged = true;
       }
