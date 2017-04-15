@@ -63,7 +63,7 @@ public enum Offset {
    *          The Y offset
    * @param zOffset
    *          The Z offset
-   * @return The new enum constant of null if it would collide with an existing offset
+   * @return The new enum constant or null if it would collide with an existing offset
    */
   public static Offset addOffset(String name, int xOffset, int yOffset, int zOffset) {
     for (Offset offset : values()) {
