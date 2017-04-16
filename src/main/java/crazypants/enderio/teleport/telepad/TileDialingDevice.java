@@ -14,6 +14,8 @@ import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -222,6 +224,24 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   public void setFacing(DialerFacing facing) {
     this.facing = facing;
     markDirty();
+  }
+
+  // TileEntity.rotate(Rotation)
+  @Override
+  public void func_189667_a(final Rotation rotation) {
+    if (rotation == Rotation.NONE) {
+      return;
+    }
+    setFacing(getFacing().rotate(rotation));
+  }
+
+  // TileEntity.mirror(Mirror)
+  @Override
+  public void func_189668_a(final Mirror mirror) {
+    if (mirror == Mirror.NONE) {
+      return;
+    }
+    setFacing(getFacing().mirror(mirror));
   }
 
   public int getPowerScaled(int scale) {

@@ -2,6 +2,8 @@ package crazypants.enderio.teleport.telepad;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 import static net.minecraft.util.EnumFacing.EAST;
@@ -70,4 +72,35 @@ public enum DialerFacing implements IStringSerializable {
     return EnumFacing.values()[ordinal() / 4];
   }
 
+  public DialerFacing rotate(final Rotation rotation) {
+    switch (getSide()) {
+      case UP:
+      case DOWN:
+        return values()[(this.ordinal() / 4) * 4 + rotation.rotate(getInputSide()).ordinal() - 2];
+      default:
+        switch (getInputSide()) {
+          case UP:
+          case DOWN:
+            return values()[rotation.rotate(getSide()).ordinal() * 4 + getMeta()];
+          default:
+            return values()[rotation.rotate(getSide()).ordinal() * 4 + rotation.rotate(getInputSide()).ordinal() % 2];
+        }
+    }
+  }
+
+  public DialerFacing mirror(final Mirror mirror) {
+    switch (getSide()) {
+      case UP:
+      case DOWN:
+        return values()[(this.ordinal() / 4) * 4 + mirror.mirror(getInputSide()).ordinal() - 2];
+      default:
+        switch (getInputSide()) {
+          case UP:
+          case DOWN:
+            return values()[mirror.mirror(getSide()).ordinal() * 4 + getMeta()];
+          default:
+            return values()[mirror.mirror(getSide()).ordinal() * 4 + mirror.mirror(getInputSide()).ordinal() % 2];
+        }
+    }
+  }
 }

@@ -32,7 +32,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -156,6 +158,44 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   public void setFacing(EnumFacing facing) {
     this.facing = facing == null ? EnumFacing.SOUTH : facing;
     markDirty();
+  }
+
+  // TileEntity.rotate(Rotation)
+  @Override
+  public void func_189667_a(final Rotation rotation) {
+    if (rotation == Rotation.NONE) {
+      return;
+    }
+    setFacing(rotation.rotate(getFacing()));
+    if (faceModes != null) {
+      Map<EnumFacing, IoMode> rotatedFaceModes = new EnumMap<EnumFacing, IoMode>(EnumFacing.class);
+      for (final EnumFacing side : faceModes.keySet()) {
+        rotatedFaceModes.put(rotation.rotate(side), faceModes.get(side));
+      }
+      faceModes = rotatedFaceModes;
+    }
+    forceClientUpdate.set();
+    notifyNeighbours = true;
+    updateBlock();
+  }
+
+  // TileEntity.mirror(Mirror)
+  @Override
+  public void func_189668_a(final Mirror mirror) {
+    if (mirror == Mirror.NONE) {
+      return;
+    }
+    setFacing(mirror.mirror(getFacing()));
+    if (faceModes != null) {
+      Map<EnumFacing, IoMode> mirroredFaceModes = new EnumMap<EnumFacing, IoMode>(EnumFacing.class);
+      for (final EnumFacing side : faceModes.keySet()) {
+        mirroredFaceModes.put(mirror.mirror(side), faceModes.get(side));
+      }
+      faceModes = mirroredFaceModes;
+    }
+    forceClientUpdate.set();
+    notifyNeighbours = true;
+    updateBlock();
   }
 
   public abstract boolean isActive();
