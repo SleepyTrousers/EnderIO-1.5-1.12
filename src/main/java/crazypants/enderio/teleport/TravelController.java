@@ -675,6 +675,7 @@ public class TravelController {
     return d;
   }
 
+  // Note: This is restricted to the current player
   public boolean doClientTeleport(Entity entity, EnumHand hand, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z, entity.dimension);

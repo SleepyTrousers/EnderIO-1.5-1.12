@@ -72,6 +72,11 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
   public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
     Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity : ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.entityId);
 
+    if (toTp != ctx.getServerHandler().playerEntity) {
+      ctx.getServerHandler().playerEntity.connection.kickPlayerFromServer("Teleporting others around denied. (" + toTp + ")");
+      return null;
+    }
+
     int x1 = message.x, y1 = message.y, z1 = message.z;
 
     TravelSource source1 = TravelSource.values()[message.source];
