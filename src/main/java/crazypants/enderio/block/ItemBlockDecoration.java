@@ -33,6 +33,11 @@ public class ItemBlockDecoration extends ItemBlock implements IOverlayRenderAwar
 
     FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
 
+    if (fr == null) {
+      // The hotbar can be rendered before the render manager is initialized...
+      return;
+    }
+
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();
     GlStateManager.disableBlend();

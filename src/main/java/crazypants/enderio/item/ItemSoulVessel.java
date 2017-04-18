@@ -291,6 +291,12 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         name = (name + " " + name).substring(idx, idx + 3);
 
         FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
+
+        if (fr == null) {
+          // The hotbar can be rendered before the render manager is initialized...
+          return;
+        }
+
         GlStateManager.disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.disableBlend();
