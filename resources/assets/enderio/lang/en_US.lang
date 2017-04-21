@@ -53,6 +53,7 @@ enderio.itemItemConduit.name=Item Conduit
 
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
+enderio.filterUpgradeLimited.name=Counting Item Filter
 enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 

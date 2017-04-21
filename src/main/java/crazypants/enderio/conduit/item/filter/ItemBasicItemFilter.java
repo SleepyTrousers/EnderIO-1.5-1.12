@@ -22,6 +22,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers  {
 
+  private static final String[] TYPES = { "filterUpgradeBasic", "filterUpgradeAdvanced", "filterUpgradeLimited" };
+
   public static ItemBasicItemFilter create() {
     ItemBasicItemFilter result = new ItemBasicItemFilter();
     result.init();
@@ -43,14 +45,9 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   public IItemFilter createFilterFromStack(ItemStack stack) {
-    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, 1);
-    ItemFilter filter;
-    if(damage == 0) {
-      filter = new ItemFilter(false);
-    } else {
-      filter = new ItemFilter(true);
-    }
-    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
+    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, TYPES.length);
+    ItemFilter filter = new ItemFilter(damage);
+    if (stack.hasTagCompound() && stack.getTagCompound().hasKey("filter")) {
       filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
     }
     return filter;
@@ -58,22 +55,22 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {                  
-    ClientUtil.regRenderer(this, 0,"filterUpgradeBasic");
-    ClientUtil.regRenderer(this, 1 ,"filterUpgradeAdvanced");    
+  public void registerRenderers() {
+    for (int i = 0; i < TYPES.length; i++) {
+      ClientUtil.regRenderer(this, i, TYPES[i]);
+    }
   }  
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 1);
-    return i == 0 ? "enderio.filterUpgradeBasic" : "enderio.filterUpgradeAdvanced";
+    return "enderio." + TYPES[MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, TYPES.length)];
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-    for (int j = 0; j < 2; ++j) {
-      par3List.add(new ItemStack(this, 1, j));
+    for (int i = 0; i < TYPES.length; i++) {
+      par3List.add(new ItemStack(this, 1, i));
     }
   }
 

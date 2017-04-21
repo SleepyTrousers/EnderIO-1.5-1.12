@@ -15,6 +15,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.util.Prep;
@@ -128,41 +129,48 @@ public class NetworkedInventory {
   }
 
   private boolean transferItems() {
-    IItemHandler inventory = getInventory();
+    final IItemHandler inventory = getInventory();
     if (inventory == null) {
       return false;
     }
-    int numSlots = inventory.getSlots();
-    if(numSlots < 1) {
+    final int numSlots = inventory.getSlots();
+    if (numSlots < 1) {
       return false;
     }
     
-    int maxExtracted = con.getMaximumExtracted(conDir);
+    final int maxExtracted = con.getMaximumExtracted(conDir);
+    final IItemFilter filter = con.getInputFilter(conDir);
 
     int slot = -1;
-    int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
+    final int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
     for (int i = 0; i < slotChecksPerTick; i++) {
       slot = nextSlot(numSlots);
       ItemStack item = inventory.extractItem(slot, maxExtracted, SIMULATE);
-      if (Prep.isValid(item) && canExtractItem(item)) {
-        if (doTransfer(inventory, item, slot)) {
-            setNextStartingSlot(slot);
-            return true;
+      if (Prep.isValid(item)) {
+
+        if (filter instanceof ItemFilter && ((ItemFilter) filter).isLimited()) {
+          final int count = ((ItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+          if (count <= 0) { // doesn't pass filter
+            item = Prep.getEmpty();
+          } else if (count < Integer.MAX_VALUE) { // some limit
+            final ItemStack stackInSlot = inventory.getStackInSlot(slot);
+            if (stackInSlot.stackSize <= count) { // there's less than the limit in there
+              item = Prep.getEmpty();
+            } else if (stackInSlot.stackSize - item.stackSize < count) { // we are trying to extract more than allowed
+              item = inventory.extractItem(slot, stackInSlot.stackSize - count, SIMULATE);
+            }
+          }
+        } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
+          item = Prep.getEmpty();
+        }
+
+        if (Prep.isValid(item) && doTransfer(inventory, item, slot)) {
+          setNextStartingSlot(slot);
+          return true;
         }
       }
     }
     return false;
-  }
-
-  private boolean canExtractItem(ItemStack itemStack) {
-    if(itemStack == null) {
-      return false;
-    }
-    IItemFilter filter = con.getInputFilter(conDir);
-    if(filter == null) {
-      return true;
-    }
-    return filter.doesItemPassFilter(this, itemStack);
   }
 
   private boolean doTransfer(IItemHandler inventory, ItemStack extractedItem, int slot) {
@@ -223,14 +231,25 @@ public class NetworkedInventory {
   }
 
   private int insertItem(ItemStack item) {
-    if(!canInsert() || item == null) {
+    if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
     }
     IItemFilter filter = con.getOutputFilter(conDir);
-    if(filter != null) {
-      if(!filter.doesItemPassFilter(this, item)) {
+    if (filter instanceof ItemFilter && ((ItemFilter) filter).isLimited()) {
+      final int count = ((ItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+      if (count <= 0) {
         return 0;
+      } else {
+        final int maxInsert = ItemTools.getInsertLimit(getInventory(), item, count);
+        if (maxInsert <= 0) {
+          return 0;
+        } else if (maxInsert < item.stackSize) {
+          item = item.copy();
+          item.stackSize = maxInsert;
+        }
       }
+    } else if (filter != null && !filter.doesItemPassFilter(this, item)) {
+      return 0;
     }
     return ItemTools.doInsertItem(getInventory(), item);
   }

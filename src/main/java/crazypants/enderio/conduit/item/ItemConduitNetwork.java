@@ -144,6 +144,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
   }
 
+  // not used?
+  @Deprecated
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, EnumFacing side) {
     if(doingSend) {
       return item;

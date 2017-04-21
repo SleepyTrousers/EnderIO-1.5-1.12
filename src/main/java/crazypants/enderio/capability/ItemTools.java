@@ -153,6 +153,56 @@ public class ItemTools {
     return false;
   }
 
+  public static int countItems(IItemHandler handler, ItemStack template) {
+    int count = 0;
+    for (int i = 0; i < handler.getSlots(); i++) {
+      ItemStack stack = handler.getStackInSlot(i);
+      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
+        count += stack.stackSize;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * Determines how many items can be inserted into an inventory given that the number of items is limited by "limit".
+   * 
+   * @param handler
+   *          The target inventory
+   * @param template
+   *          The item to insert
+   * @param limit
+   *          The limit, meaning the maximum number of items that are allowed in the inventory.
+   * @return The number of items that can be inserted without violating the limit.
+   */
+  public static int getInsertLimit(IItemHandler handler, ItemStack template, int limit) {
+    int count = 0;
+    for (int i = 0; i < handler.getSlots(); i++) {
+      ItemStack stack = handler.getStackInSlot(i);
+      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
+        count += stack.stackSize;
+      }
+      if (count >= limit) {
+        return 0;
+      }
+    }
+    return limit - count;
+  }
+
+  public static boolean hasAtLeast(IItemHandler handler, ItemStack template, int limit) {
+    int count = 0;
+    for (int i = 0; i < handler.getSlots(); i++) {
+      ItemStack stack = handler.getStackInSlot(i);
+      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
+        count += stack.stackSize;
+      }
+      if (count >= limit) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public static boolean canPutInto(TileEntity tileEntity, EnumFacing facing) {
     if (tileEntity instanceof AbstractMachineEntity) {
       IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(facing);

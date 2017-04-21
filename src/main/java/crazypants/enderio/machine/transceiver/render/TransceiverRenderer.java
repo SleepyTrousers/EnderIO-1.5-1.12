@@ -28,7 +28,7 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
 
   @Override
   protected boolean shouldRender(@Nonnull TileTransceiver te, @Nonnull IBlockState blockState, int renderPass) {
-    return te.isActive() && renderPass == 1;
+    return te.isActive();
   }
 
   @Override
@@ -41,11 +41,10 @@ public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {
 
     BoundingBox bb = BoundingBox.UNIT_CUBE.scale(localScale, localScale, localScale);
 
-    GlStateManager.enableNormalize();
-    GlStateManager.disableLighting();
     GlStateManager.color(1, 1, 1, alpha);
+    GlStateManager.enableNormalize();
     RenderUtil.renderBoundingBox(bb, icon);
-    GlStateManager.disableRescaleNormal();
+    GlStateManager.disableNormalize();
   }
 
 }

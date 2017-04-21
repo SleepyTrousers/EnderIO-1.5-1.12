@@ -35,6 +35,10 @@ public interface IItemFilter {
    */
   boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item);
 
+  /**
+   * Unused?
+   */
+  @Deprecated
   boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item);
 
   boolean isValid();

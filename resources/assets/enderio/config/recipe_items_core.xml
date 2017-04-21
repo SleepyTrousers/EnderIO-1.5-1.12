@@ -683,6 +683,15 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Counting" required="true">
+    <crafting>
+      <grid size="3x1">
+        <item name="minecraft:comparator" /><item name="ADVANCED_FILTER" /><item name="minecraft:comparator" />
+      </grid>
+      <output name="COUNTING_FILTER" />
+    </crafting>
+  </recipe>
+
   <recipe name="Filter, Mod" required="true">
     <crafting>
       <grid>

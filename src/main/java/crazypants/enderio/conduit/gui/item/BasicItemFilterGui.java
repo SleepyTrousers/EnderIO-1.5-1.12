@@ -32,7 +32,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private final ToggleButton stickyB;
   private final CycleButton<DamageModeIconHolder> damageB;
     
-  final boolean isAdvanced;
+  final boolean isAdvanced, isLimited;
   final boolean isStickyModeAvailable;
   
   private final IItemFilterContainer filterContainer;
@@ -59,6 +59,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     filter = (ItemFilter) filterContainer.getItemFilter();
     
     isAdvanced = filter.isAdvanced();
+    isLimited = filter.isLimited();
     
     int butLeft = xOffset + 92;
     int x = butLeft;
@@ -132,14 +133,17 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useMetaB.onGuiInit();
     useMetaB.setSelected(activeFilter.isMatchMeta());
 
-    whiteListB.onGuiInit();
-    if(activeFilter.isBlacklist()) {
-      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
-    } else {
-      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    if (!isLimited) {
+      whiteListB.onGuiInit();
+      if (activeFilter.isBlacklist()) {
+        whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
+        whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
+      } else {
+        whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
+        whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+      }
     }
+
   }
   
   

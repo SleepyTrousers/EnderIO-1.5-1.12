@@ -23,6 +23,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -53,7 +54,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   final List<int[]> oreIds;
 
-  private boolean isAdvanced;
+  private boolean isAdvanced, isLimited;
 
   public void copyFrom(ItemFilter o) {
     isBlacklist = o.isBlacklist;
@@ -66,6 +67,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     oreIds.clear();
     oreIds.addAll(o.oreIds);
     isAdvanced = o.isAdvanced;
+    isLimited = o.isLimited;
   }
 
   public ItemFilter() {
@@ -83,21 +85,50 @@ public class ItemFilter implements IInventory, IItemFilter {
     for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
     }
+    isLimited = false;
+  }
+
+  public ItemFilter(int damage) {
+    this(damage > 0);
+    isLimited = damage > 1;
   }
 
   @Override
   public boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item) {
-    return isSticky() && itemMatched(item);
+    return isSticky() && itemMatched(item) != 0;
   }
 
   @Override
   public boolean doesItemPassFilter(@Nullable NetworkedInventory inv, ItemStack item) {
-    return !isValid() || (isBlacklist != itemMatched(item));
+    return !isValid() || (isBlacklist != (itemMatched(item) != 0));
   }
 
-  private boolean itemMatched(ItemStack item) {
+  public int getMaxCountThatPassesFilter(@Nullable NetworkedInventory inv, ItemStack item) {
+    if (isLimited) {
+      if (!isValid()) {
+        return 0;
+      }
+      int value = itemMatched(item);
+      // Note: No blacklist for limited filters
+      if (value <= 0) {
+        return 0;
+      }
+      return value;
+    } else {
+      return doesItemPassFilter(inv, item) ? Integer.MAX_VALUE : 0;
+    }
+  }
+
+  /**
+   * Checks if the given item passes the filter.
+   * 
+   * @param item
+   *          The item to check against the filter
+   * @return 0 if the item does not pass. -1 if it passes but no single rule could be identified that lets it pass. Otherwise the size limit for the given item.
+   */
+  private int itemMatched(ItemStack item) {
     if (damageMode.passesFilter(item)) {
-      // if there are not filter items, but a damage mode is set, the filter will let items pass that match that filter mode
+      // if there are no filter items, but a damage mode is set, the filter will let items pass that match that filter mode
       boolean canPassFilter = damageMode != DamageMode.DISABLED;
       for (int i = 0; i < items.length; i++) {
         ItemStack filterStack = items[i];
@@ -105,20 +136,20 @@ public class ItemFilter implements IInventory, IItemFilter {
           if (item.getItem() == filterStack.getItem()) {
             if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
               if (!matchNBT || isNBTMatch(item, filterStack)) {
-                return true;
+                return filterStack.stackSize;
               }
             }
           }
           if (useOreDict && isOreDicMatch(i, item)) {
-            return true;
+            return filterStack.stackSize;
           }
           canPassFilter = false;
         }
       }
-      return canPassFilter;
+      return canPassFilter ? -1 : 0;
     }
 
-    return false;
+    return 0;
   }
 
   private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {
@@ -248,6 +279,9 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
     nbtRoot.setBoolean("isAdvanced", isAdvanced);
+    if (isAdvanced) {
+      nbtRoot.setBoolean("isLimited", isLimited);
+    }
     nbtRoot.setByte("damageMode", (byte) damageMode.ordinal());
 
     int i = 0;
@@ -279,6 +313,13 @@ public class ItemFilter implements IInventory, IItemFilter {
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
     isAdvanced = nbtRoot.getBoolean("isAdvanced");
+    if (isAdvanced) {
+      if (nbtRoot.hasKey("isLimited")) {
+        isLimited = nbtRoot.getBoolean("isLimited");
+      } else {
+        isLimited = false;
+      }
+    }
     if (nbtRoot.hasKey("damageMode")) {
       damageMode = DamageMode.values()[nbtRoot.getByte("damageMode") & 255];
     } else {
@@ -429,6 +470,10 @@ public class ItemFilter implements IInventory, IItemFilter {
     return isAdvanced;
   }
 
+  public boolean isLimited() {
+    return isLimited;
+  }
+
   public boolean isDefault() {
     return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST && matchMeta == DEFAULT_META && matchNBT == DEFAULT_MBT
         && useOreDict == DEFAULT_ORE_DICT && sticky == DEFAULT_STICKY;
@@ -450,13 +495,15 @@ public class ItemFilter implements IInventory, IItemFilter {
       this.y = y;
       this.slot = slot;
       this.cb = cb;
+      this.displayStdOverlay = isLimited;
+      this.stackSizeLimit = isLimited ? 64 * 3 : 1;
     }
 
     @Override
     public void putStack(ItemStack stack) {
       if (stack != null) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.stackSize = MathHelper.clamp_int(stack.stackSize, 1, stackSizeLimit);
       }
       items[slot] = stack;
       cb.run();
