@@ -448,6 +448,8 @@ public final class Config {
   public static int soulBinderTunedPressurePlateRF = 250000;
   public static int soulBinderMaxXpLevel = 40;
 
+  public static float slicenspliceToolDamageChance = 0.01f;
+
   public static boolean powerConduitCanDifferentTiersConnect = false;
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
@@ -1361,6 +1363,11 @@ public final class Config {
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
     soulBinderMaxXpLevel = config.get(sectionSoulBinder.name, "soulBinderMaxXPLevel", soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
+
+    slicenspliceToolDamageChance = (float) config.get(sectionAdvanced.name, "slicenspliceToolDamageChance", slicenspliceToolDamageChance,
+        "The chance that a tool will take damage each tick while the Slice'n'Splice is running (0 = no chance, 1 = 100% chance). "
+            + "Tools will always take damage when the crafting is finished.")
+        .getDouble(slicenspliceToolDamageChance);
 
     spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttractor.name, spawnGuardStopAllSlimesDebug,
         "When true slimes wont be allowed to spawn at all. Only added to aid testing in super flat worlds.");

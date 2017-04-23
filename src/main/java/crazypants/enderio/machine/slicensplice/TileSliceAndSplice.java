@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
 
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -64,10 +65,29 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
+  protected boolean checkProgress(boolean redstoneChecksPassed) {
+    if (getAxe() == null || getShears() == null) {
+      return false;
+    }
+    return super.checkProgress(redstoneChecksPassed);
+  }
+
+  @Override
   protected void taskComplete() {
     super.taskComplete();
     damageTool(getAxe(), axeIndex);
     damageTool(getShears(), shearsIndex);
+  }
+
+  @Override
+  protected double usePower() {
+    if (random.nextFloat() < slicenspliceToolDamageChance) {
+      damageTool(getAxe(), axeIndex);
+    }
+    if (random.nextFloat() < slicenspliceToolDamageChance) {
+      damageTool(getShears(), shearsIndex);
+    }
+    return super.usePower();
   }
 
   private void damageTool(ItemStack tool, int toolIndex) {
