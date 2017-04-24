@@ -15,7 +15,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.conduit.item.filter.ILimitedItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.util.Prep;
@@ -148,8 +148,8 @@ public class NetworkedInventory {
       ItemStack item = inventory.extractItem(slot, maxExtracted, SIMULATE);
       if (Prep.isValid(item)) {
 
-        if (filter instanceof ItemFilter && ((ItemFilter) filter).isLimited()) {
-          final int count = ((ItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+        if (filter instanceof ILimitedItemFilter && ((ILimitedItemFilter) filter).isLimited()) {
+          final int count = ((ILimitedItemFilter) filter).getMaxCountThatPassesFilter(this, item);
           if (count <= 0) { // doesn't pass filter
             item = Prep.getEmpty();
           } else if (count < Integer.MAX_VALUE) { // some limit
@@ -235,8 +235,8 @@ public class NetworkedInventory {
       return 0;
     }
     IItemFilter filter = con.getOutputFilter(conDir);
-    if (filter instanceof ItemFilter && ((ItemFilter) filter).isLimited()) {
-      final int count = ((ItemFilter) filter).getMaxCountThatPassesFilter(this, item);
+    if (filter instanceof ILimitedItemFilter && ((ILimitedItemFilter) filter).isLimited()) {
+      final int count = ((ILimitedItemFilter) filter).getMaxCountThatPassesFilter(this, item);
       if (count <= 0) {
         return 0;
       } else {

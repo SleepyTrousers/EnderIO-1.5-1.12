@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemFilter implements IInventory, IItemFilter {
+public class ItemFilter implements IInventory, ILimitedItemFilter {
 
   private static final boolean DEFAULT_BLACKLIST = false;
 
@@ -80,7 +80,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   private ItemFilter(int numItems, boolean isAdvanced) {
     this.isAdvanced = isAdvanced;
-    items = new ItemStack[numItems];
+    items = new ItemStack[numItems]; // TODO 1.11
     oreIds = new ArrayList<int[]>(numItems);
     for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
@@ -103,6 +103,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     return !isValid() || (isBlacklist != (itemMatched(item) != 0));
   }
 
+  @Override
   public int getMaxCountThatPassesFilter(@Nullable NetworkedInventory inv, ItemStack item) {
     if (isLimited) {
       if (!isValid()) {
@@ -196,7 +197,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     int[] res = oreIds.get(filterItemIndex);
     if (res == null) {
       ItemStack item = items[filterItemIndex];
-      if (item == null) {
+      if (Prep.isInvalid(item)) {
         res = new int[0];
       } else {
         res = OreDictionary.getOreIDs(item);
@@ -215,7 +216,7 @@ public class ItemFilter implements IInventory, IItemFilter {
       return true;
     }
     for (ItemStack item : items) {
-      if (item != null) {
+      if (Prep.isValid(item)) {
         return true;
       }
     }
@@ -287,7 +288,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     int i = 0;
     for (ItemStack item : items) {
       NBTTagCompound itemTag = new NBTTagCompound();
-      if (item != null) {
+      if (Prep.isValid(item)) {
         item.writeToNBT(itemTag);
         nbtRoot.setTag("item" + i, itemTag);
       }
@@ -327,7 +328,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     int numItems = isAdvanced ? 10 : 5;
-    items = new ItemStack[numItems];
+    items = new ItemStack[numItems]; // TODO 1.11
     oreIds.clear();
     for (int i = 0; i < numItems; i++) {
       oreIds.add(null);
@@ -337,7 +338,7 @@ public class ItemFilter implements IInventory, IItemFilter {
       if (tag instanceof NBTTagCompound) {
         items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
       } else {
-        items[i] = null;
+        items[i] = Prep.getEmpty();
       }
     }
   }
@@ -363,18 +364,18 @@ public class ItemFilter implements IInventory, IItemFilter {
   @Override
   public ItemStack getStackInSlot(int i) {
     if (i < 0 || i >= items.length) {
-      return null;
+      return Prep.getEmpty();
     }
-    return items[i];
+    return items[i]; // TODO 1.11
   }
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
     oreIds.set(fromSlot, null);
     ItemStack item = items[fromSlot];
-    items[fromSlot] = null;
-    if (item == null) {
-      return null;
+    items[fromSlot] = Prep.getEmpty();
+    if (Prep.isInvalid(item)) {
+      return Prep.getEmpty();
     }
     item.stackSize = 0;
     return item;
@@ -382,11 +383,11 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
-    if (itemstack != null) {
+    if (Prep.isValid(itemstack)) {
       items[i] = itemstack.copy();
       items[i].stackSize = 0;
     } else {
-      items[i] = null;
+      items[i] = Prep.getEmpty();
     }
     oreIds.set(i, null);
   }
@@ -394,10 +395,10 @@ public class ItemFilter implements IInventory, IItemFilter {
   @Override
   public ItemStack removeStackFromSlot(int index) {
     if (index < 0 || index >= items.length) {
-      return null;
+      return Prep.getEmpty();
     }
     ItemStack res = items[index];
-    items[index] = null;
+    items[index] = Prep.getEmpty();
     return res;
   }
 
@@ -470,6 +471,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     return isAdvanced;
   }
 
+  @Override
   public boolean isLimited() {
     return isLimited;
   }
@@ -501,7 +503,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     @Override
     public void putStack(ItemStack stack) {
-      if (stack != null) {
+      if (Prep.isValid(stack)) {
         stack = stack.copy();
         stack.stackSize = MathHelper.clamp_int(stack.stackSize, 1, stackSizeLimit);
       }
