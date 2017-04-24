@@ -16,7 +16,7 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   public static final TheOneProbeUpgrade INSTANCE = new TheOneProbeUpgrade();
   
   @ItemStackHolder("theoneprobe:probe")
-  public static final ItemStack probe = null;
+  public static ItemStack probe = null;
   
   public static TheOneProbeUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
