@@ -26,7 +26,9 @@ import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.PaintedHelmetLayer;
+import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PainterUtil2;
@@ -244,7 +246,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public String getArmorTexture(ItemStack itemStack, Entity entity, EntityEquipmentSlot slot, String layer) {
-    if(armorType == EntityEquipmentSlot.LEGS) {
+    if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && NightVisionUpgrade.loadFromItem(itemStack) == null
+        && SoundDetectorUpgrade.loadFromItem(itemStack) == null)) {
       return "enderio:textures/models/armor/darkSteel_layer_2.png";
     }
     return "enderio:textures/models/armor/darkSteel_layer_1.png";
