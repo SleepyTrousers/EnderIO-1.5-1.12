@@ -38,6 +38,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -180,21 +181,47 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public boolean tillBlock(BlockPos plantingLocation) {
     BlockPos dirtLoc = plantingLocation.down();
     Block dirtBlock = getBlock(dirtLoc);
-    if ((dirtBlock == Blocks.DIRT || dirtBlock == Blocks.GRASS)) {
-      if (!hasHoe()) {
-        setNotification(FarmNotification.NO_HOE);
+    if (dirtBlock == Blocks.FARMLAND) {
+      return true;
+    } else {
+      ItemStack tool = getTool(ToolType.HOE);
+      if (Prep.isInvalid(tool)) {
+        if (dirtBlock == Blocks.DIRT || dirtBlock == Blocks.GRASS) {
+          setNotification(FarmNotification.NO_HOE);
+        }
+        // else we don't know if the ground can even be tilled, so no notification
         return false;
       }
-      damageHoe(1, dirtLoc);
-      worldObj.setBlockState(dirtLoc, Blocks.FARMLAND.getDefaultState());
+
+
+      boolean doDamage = worldObj.rand.nextFloat() < Config.farmToolTakeDamageChance && canDamage(tool);
+      if (!doDamage) {
+        tool = tool.copy();
+      }
+
+      int origDamage = tool.getItemDamage();
+      EnumActionResult itemUse = tool.getItem().onItemUse(tool, farmerJoe, worldObj, dirtLoc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+
+      if (itemUse != EnumActionResult.SUCCESS) {
+        return false;
+      }
+
+      if (doDamage) {
+        if (origDamage == tool.getItemDamage()) {
+          tool.damageItem(1, farmerJoe);
+        }
+
+        if (Prep.isInvalid(tool) || tool.stackSize == 0 || tool.getItemDamage() >= tool.getMaxDamage()) { // TODO 1.11
+          destroyTool(ToolType.HOE);
+          markDirty();
+        }
+      }
+
       worldObj.playSound(dirtLoc.getX() + 0.5F, dirtLoc.getY() + 0.5F, dirtLoc.getZ() + 0.5F, SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS,
           (Blocks.FARMLAND.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.FARMLAND.getSoundType().getPitch() * 0.8F, false);
       actionPerformed(false);
       return true;
-    } else if (dirtBlock == Blocks.FARMLAND) {
-      return true;
     }
-    return false;
   }
 
   public int getMaxLootingValue() {
@@ -512,7 +539,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return;
     }
 
-    if (hasBonemeal() && bonemealCooldown-- <= 0) {
+    if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= .75f) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
       if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc))) {
         farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
@@ -525,17 +552,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }
           usePower(Config.farmBonemealActionEnergyUseRF);
-          bonemealCooldown = 20;
+          bonemealCooldown = 16;
         } else {
           usePower(Config.farmBonemealTryEnergyUseRF);
-          bonemealCooldown = 5;
+          bonemealCooldown = 4;
         }
         farmerJoe.inventory.mainInventory[0] = Prep.getEmpty();
       }
     }
   }
 
-  private int bonemealCooldown = 5; // no need to persist this
+  private int bonemealCooldown = 4; // no need to persist this
 
   private boolean hasBonemeal() {
     if (Prep.isValid(inventory[minFirtSlot])) {
