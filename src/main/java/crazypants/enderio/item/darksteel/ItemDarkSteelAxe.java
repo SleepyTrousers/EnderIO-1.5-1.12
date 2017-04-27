@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
@@ -18,6 +20,7 @@ import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -44,17 +47,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-//RF
-public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware { //IEnergyContainerItem,
+public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static final String NAME = "darkSteel_axe";
+  public static final @Nonnull String NAME = "darkSteel_axe";
 
   public static boolean isEquipped(EntityPlayer player) {
     if (player == null) {
       return false;
     }
     ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null) {
+    if (Prep.isInvalid(equipped)) {
       return false;
     }
     return equipped.getItem() == DarkSteelItems.itemDarkSteelAxe;
@@ -71,7 +73,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return EnergyUpgrade.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelAxe create() {
+  public static @Nonnull ItemDarkSteelAxe create() {
     ItemDarkSteelAxe res = new ItemDarkSteelAxe();
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
@@ -111,6 +113,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+    @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -224,10 +227,10 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public float getStrVsBlock(ItemStack stack, IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
-      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || EnergyUpgrade.getEnergyStored(stack) > 0) {
-        return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
+      if (Config.darkSteelAxePowerUsePerDamagePoint <= 0 ? EnergyUpgrade.itemHasAnyPowerUpgrade(stack) : EnergyUpgrade.getEnergyStored(stack) > 0) {
+        return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
-      return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
+      return toolMaterial.getEfficiencyOnProperMaterial();
     }
     return super.getStrVsBlock(stack, state);
   }
@@ -282,10 +285,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
-  public ItemStack createItemStack() {
-    return new ItemStack(this);
-  }
-
   private static class MultiHarvestComparator implements Comparator<BlockPos> {
 
     BlockPos refPoint;
@@ -311,7 +310,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+    return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
   }
 
 }

@@ -3,6 +3,8 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
@@ -21,6 +23,7 @@ import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.TravelController;
+import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -48,14 +51,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
-  public static final String NAME = "darkSteel_pickaxe";
+  public static final @Nonnull String NAME = "darkSteel_pickaxe";
 
   public static boolean isEquipped(EntityPlayer player, EnumHand hand) {
     if (player == null) {
       return false;
     }
     ItemStack equipped = player.getHeldItem(hand);
-    if (equipped == null) {
+    if (Prep.isInvalid(equipped)) {
       return false;
     }
     return equipped.getItem() == DarkSteelItems.itemDarkSteelPickaxe;
@@ -92,6 +95,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+    @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -123,8 +127,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return super.onBlockDestroyed(item, world, bs, pos, entityLiving);
   }
 
-  
-
   @Override
   public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
       float hitY, float hitZ) {
@@ -138,13 +140,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       }
     }
     if (Math.random() < 0.001) {
-      Entity cow = EntityList.createEntityByIDFromName("Pig", world);
+      Entity cow = EntityList.createEntityByIDFromName("Pig", world); // TODO 1.11
       BlockPos p = pos.offset(side);
       cow.setLocationAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0, 0);
       world.spawnEntityInWorld(cow);
     }
     return EnumActionResult.PASS;
-        
   }
 
   @SideOnly(Side.CLIENT)
@@ -156,7 +157,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     
     int current = player.inventory.currentItem;
     int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
-    if (slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
+    if (slot < 9 && Prep.isValid(player.inventory.mainInventory[slot]) && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
       /*
        * this will not work with buckets unless we don't switch back to the current item (the pick); there's probably some client <-> server event thing going
        * on with buckets, so our item-switch within the same tick would be a problem.
@@ -199,31 +200,29 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean canHarvestBlock(IBlockState block, ItemStack item) {
     if (hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
-      return block.getBlock() == Blocks.SNOW_LAYER ? true : block.getBlock() == Blocks.SNOW || super.canHarvestBlock(block, item);
+      return block.getBlock() == Blocks.SNOW_LAYER || block.getBlock() == Blocks.SNOW || super.canHarvestBlock(block, item);
     } else {
       return super.canHarvestBlock(block, item);
     }
   }
 
   private boolean hasSpoonUpgrade(ItemStack item) {
-
     return SpoonUpgrade.loadFromItem(item) != null;
   }
 
   @Override
   public float getStrVsBlock(ItemStack stack, IBlockState state) {
     if (state.getMaterial() == Material.GLASS) {
-      return efficiencyOnProperMaterial;
+      return toolMaterial.getEfficiencyOnProperMaterial();
     }
     if (useObsidianEffeciency(stack, state)) {
-      return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered
-          + Config.darkSteelPickEffeciencyObsidian;
+      return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered + Config.darkSteelPickEffeciencyObsidian;
     }
     if (isToolEffective(state, stack)) {
-      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
-        return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
+      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 ? EnergyUpgrade.itemHasAnyPowerUpgrade(stack) : EnergyUpgrade.getEnergyStored(stack) > 0) {
+        return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
-      return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
+      return toolMaterial.getEfficiencyOnProperMaterial();
     }
     return super.getStrVsBlock(stack, state);
   }
@@ -306,10 +305,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
-  public ItemStack createItemStack() {
-    return new ItemStack(this);
-  }
-
   @Override
   public boolean isActive(EntityPlayer ep, ItemStack equipped) {
     return isTravelUpgradeActive(ep, equipped, EnumHand.MAIN_HAND) || isTravelUpgradeActive(ep, equipped, EnumHand.OFF_HAND);
@@ -362,7 +357,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+    return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
   }
 
 }

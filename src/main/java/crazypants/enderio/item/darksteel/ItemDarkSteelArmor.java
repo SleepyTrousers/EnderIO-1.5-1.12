@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
@@ -33,6 +34,7 @@ import crazypants.enderio.material.Alloy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
+import crazypants.util.Prep;
 import forestry.api.apiculture.IArmorApiarist;
 import forestry.api.core.IArmorNaturalist;
 import net.minecraft.client.model.ModelBiped;
@@ -76,13 +78,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
     return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35, new int[] { 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
   }
-                                                                                      
-  public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
-      Config.darkSteelPowerStorageBase * 2 };
-
-  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase,
-      Config.darkSteelPowerStorageBase * 2,
-      Config.darkSteelPowerStorageBase * 2 };
 
   public static final String[] NAMES = new String[] { "boots", "leggings", "chestplate", "helmet"};
 
@@ -131,7 +126,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return 0;
   }
 
-  public static ItemDarkSteelArmor create(EntityEquipmentSlot armorType) {
+  public static @Nonnull ItemDarkSteelArmor create(EntityEquipmentSlot armorType) {
     ItemDarkSteelArmor res = new ItemDarkSteelArmor(armorType);
     res.init();
     return res;
@@ -164,6 +159,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+    @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -207,7 +203,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     default:
       return 4;
     }
-    
   }
 
   @Override
@@ -241,20 +236,17 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
-    
   }
 
   @Override
   public String getArmorTexture(ItemStack itemStack, Entity entity, EntityEquipmentSlot slot, String layer) {
     if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && NightVisionUpgrade.loadFromItem(itemStack) == null
         && SoundDetectorUpgrade.loadFromItem(itemStack) == null)) {
+      // LEGS and HELMET without faceplate
       return "enderio:textures/models/armor/darkSteel_layer_2.png";
     }
+    // BOOTS, HELMET with faceplate, CHEST
     return "enderio:textures/models/armor/darkSteel_layer_1.png";
-  }
-
-  public ItemStack createItemStack() {
-    return new ItemStack(this);
   }
 
   @Override
@@ -305,7 +297,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
     if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
-
     } else {
       stack.damageItem(damage, entity);
     }
@@ -376,7 +367,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @SideOnly(Side.CLIENT)
   public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
-    if (armorType == EntityEquipmentSlot.HEAD && itemStack != null && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
+    if (armorType == EntityEquipmentSlot.HEAD && Prep.isValid(itemStack) && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
+      // Don't render the armor model of the helmet if it is painted. The paint will be rendered by the PaintedHelmetLayer.
       return new ModelBiped() {
         @Override
         public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
@@ -389,7 +381,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @SuppressWarnings("null")
   @Override
   public String getPaintName(ItemStack itemStack) {
-    if (itemStack != null && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
+    if (Prep.isValid(itemStack) && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
       ItemStack paintSource = ItemStack.loadItemStackFromNBT(itemStack.getTagCompound().getCompoundTag("DSPAINT"));
       if (paintSource == null) {
         return null;
@@ -416,7 +408,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @Method(modid = "forestry")
   public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
-    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if (Prep.isInvalid(armor) || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
       return false;
     }
     return NaturalistEyeUpgrade.isUpgradeEquipped(player);
