@@ -1,17 +1,22 @@
 package crazypants.enderio.machine.farm;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -22,11 +27,33 @@ import net.minecraft.inventory.Slot;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
+  private static final int EXTRA_WITH = 8;
+
   private static final int LOCK_ID = 1234;
+  ToggleButton showRangeB;
 
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farmStation");
     setYSize(ySize + 3);
+
+    showRangeB = new ToggleButton(this, -1, 163, 43, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
+    showRangeB.setSize(16, 16);
+    addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
+      @Override
+      public List<String> getToolTipText() {
+        return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+      }
+    });
+  }
+
+  @Override
+  public int getXSize() {
+    return 176 + EXTRA_WITH;
+  }
+
+  @Override
+  protected int getPowerU() {
+    return getXSize();
   }
 
   @Override
@@ -42,6 +69,15 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
 
     ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlots());
+
+    showRangeB.onGuiInit();
+    showRangeB.setSelected(getTileEntity().isShowingRange());
+
+    for (IGuiOverlay overlay : overlays) {
+      if (overlay instanceof GuiOverlayIoConfig) {
+        overlay.getBounds().width -= EXTRA_WITH;
+      }
+    }
   }
 
   private IconButton createLockButton(int slot, int x, int y) {
@@ -91,6 +127,10 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
   @Override
   protected void actionPerformed(GuiButton b) throws IOException {
+    if (b == showRangeB) {
+      getTileEntity().setShowRange(showRangeB.isSelected());
+      return;
+    }
     if (b.id >= LOCK_ID + TileFarmStation.minSupSlot && b.id <= LOCK_ID + TileFarmStation.maxSupSlot) {
       getTileEntity().toggleLockedState(b.id - LOCK_ID);
     }

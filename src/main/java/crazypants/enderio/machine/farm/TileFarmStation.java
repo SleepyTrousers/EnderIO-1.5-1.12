@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.vecmath.Vector4f;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
@@ -19,6 +21,8 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -29,6 +33,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -46,6 +51,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
@@ -60,7 +67,7 @@ import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
 import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
 
 @Storable
-public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
 
   private static final int TICKS_PER_WORK = 20;
 
@@ -818,5 +825,39 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public boolean shouldRenderInPass(int pass) {
     return pass == 1;
   }
+
+  // RANGE
+
+  private boolean showingRange;
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  private final static Vector4f color = new Vector4f(145f / 255f, 82f / 255f, 21f / 255f, .4f);
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileFarmStation>(this, color));
+    }
+  }
+
+  @Override
+  public BoundingBox getBounds() {
+    return new BoundingBox(getPos()).expand(getRange(), 0, getRange());
+  }
+
+  public float getRange() {
+    return getFarmSize();
+  }
+
+  // RANGE END
 
 }
