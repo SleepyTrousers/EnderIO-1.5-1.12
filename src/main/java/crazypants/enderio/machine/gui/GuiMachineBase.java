@@ -10,7 +10,6 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -58,7 +57,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
     int y = 5;
-    redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
+    redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, tileEntity);
 
     configOverlay = new GuiOverlayIoConfig(machine);
     addOverlay(configOverlay);

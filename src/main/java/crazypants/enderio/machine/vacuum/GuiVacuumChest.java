@@ -12,7 +12,6 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
-import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
@@ -77,7 +76,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
 
     x = xSize - 16 - 7;
     y = 104;
-    rsB = new RedstoneModeButton(this, ID_REDSTONE, x, y, te, new BlockCoord(te));
+    rsB = new RedstoneModeButton<TileVacuumChest>(this, ID_REDSTONE, x, y, te);
 
     x -= BUTTON_SIZE + 2;
     showRangeB = new ToggleButton(this, -1, x, y, IconEIO.SHOW_RANGE, IconEIO.HIDE_RANGE);
