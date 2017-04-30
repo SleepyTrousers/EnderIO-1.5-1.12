@@ -33,21 +33,23 @@ public class GuiLocationPrintout extends GuiScreenBase {
   private final ItemStack stack;
   private final TelepadTarget target;
   private final EntityEquipmentSlot slot;
+  private final int paperSlot;
 
   private boolean isCancelled = false;  
   
-  public GuiLocationPrintout(ItemStack stack) {
-    this(stack, null);
+  public GuiLocationPrintout(ItemStack stack, int paperSlot) {
+    this(stack, null, paperSlot);
   }
   
    public GuiLocationPrintout(EntityPlayer player, EntityEquipmentSlot slot) {
-    this(player.getItemStackFromSlot(slot), slot);             
+    this(player.getItemStackFromSlot(slot), slot, -1);
   }  
   
-  public GuiLocationPrintout(ItemStack stack, EntityEquipmentSlot slot) {
+  public GuiLocationPrintout(ItemStack stack, EntityEquipmentSlot slot, int paperSlot) {
         
     this.slot = slot;
     this.stack = stack;
+    this.paperSlot = paperSlot;
     target = TelepadTarget.readFromNBT(stack);
     
     xSize = 176;
@@ -158,7 +160,7 @@ public class GuiLocationPrintout extends GuiScreenBase {
     target.setName(newTxt);
     target.writeToNBT(stack);
     if(slot != null) { //update as we go if the stack exists already
-      PacketUpdateLocationPrintout p = new PacketUpdateLocationPrintout(stack, slot);
+      PacketUpdateLocationPrintout p = new PacketUpdateLocationPrintout(stack, slot, paperSlot);
       PacketHandler.INSTANCE.sendToServer(p);
     }
   }
@@ -166,7 +168,7 @@ public class GuiLocationPrintout extends GuiScreenBase {
   @Override
   public void onGuiClosed() {
     if(slot == null && !isCancelled) { 
-      PacketUpdateLocationPrintout p = new PacketUpdateLocationPrintout(stack, slot);
+      PacketUpdateLocationPrintout p = new PacketUpdateLocationPrintout(stack, slot, paperSlot);
       PacketHandler.INSTANCE.sendToServer(p);
     }
   }

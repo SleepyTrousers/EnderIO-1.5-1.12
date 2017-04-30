@@ -129,16 +129,14 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     if (GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.is(ID)) {
 
-      boolean foundPaper = false;
-      for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && !foundPaper; paperIndex++) {
+      int foundPaper = -1;
+      for (int paperIndex = 0; paperIndex < player.inventoryContainer.inventorySlots.size() && foundPaper < 0; paperIndex++) {
         ItemStack invItem = player.inventoryContainer.inventorySlots.get(paperIndex).getStack();
         if (invItem != null && invItem.getItem() == Items.PAPER) {
-          player.inventoryContainer.inventorySlots.get(paperIndex).decrStackSize(1);
-          player.inventoryContainer.detectAndSendChanges();
-          foundPaper = true;
+          foundPaper = paperIndex;
         }
       }
-      if (!foundPaper) {
+      if (foundPaper < 0) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localizeExact("item.itemLocationPrintout.chat.noPaper")));
         return null;
       }
@@ -146,7 +144,7 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
       TelepadTarget target = new TelepadTarget(new BlockPos(x, y, z), world.provider.getDimension());
       ItemStack stack = new ItemStack(this);
       target.writeToNBT(stack);
-      return new GuiLocationPrintout(stack);
+      return new GuiLocationPrintout(stack, foundPaper);
     } else {
       EnumHand hand = x == 0 ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
       EntityEquipmentSlot slot = hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND;
