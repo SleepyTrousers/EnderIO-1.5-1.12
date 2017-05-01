@@ -1576,4 +1576,4 @@ fluid.redstone=Molten Redstone
 fluid.ender=Liquidfied Ender Pearls
 
 tile.block_detector_block.name=Block Detector
-
+tile.block_detector_block_silent.name=Block Detector (Silent)

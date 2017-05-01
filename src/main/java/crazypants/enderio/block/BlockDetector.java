@@ -9,7 +9,7 @@ import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
 import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
 import crazypants.enderio.paint.IPaintable;
@@ -53,14 +53,23 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   public static final PropertyBool IS_ON = PropertyBool.create("on");
   public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-  public static BlockDetector create() {
-    BlockDetector result = new BlockDetector(ModObject.block_detector_block.getUnlocalisedName());
+  public static BlockDetector create(IModObject modobject) {
+    BlockDetector result = new BlockDetector(modobject.getUnlocalisedName(), false);
     result.init();
     return result;
   }
 
-  protected BlockDetector(@Nonnull String name) {
+  public static BlockDetector createSilent(IModObject modobject) {
+    BlockDetector result = new BlockDetector(modobject.getUnlocalisedName(), true);
+    result.init();
+    return result;
+  }
+
+  private final boolean silent;
+
+  protected BlockDetector(@Nonnull String name, boolean silent) {
     super(name, TileEntityPaintedBlock.class);
+    this.silent = silent;
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
     initDefaultState();
   }
@@ -159,7 +168,9 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
     IBlockState newState = state.withProperty(IS_ON, isTargetBlockAir(state, world, pos));
     if (newState != state) {
       world.setBlockState(pos, newState);
-      playClickSound(world, pos, newState);
+      if (!silent) {
+        playClickSound(world, pos, newState);
+      }
     }
   }
 

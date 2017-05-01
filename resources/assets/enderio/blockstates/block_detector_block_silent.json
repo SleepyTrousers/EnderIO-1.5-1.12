@@ -1,0 +1,28 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "enderio:blocks/machineBottom",
+				"top": "enderio:blocks/machineTop",
+				"side": "enderio:blocks/invPanelSide",
+				"mside": "enderio:blocks/machineSide",
+				"bottom": "enderio:blocks/machineBottom",
+				"redstone": "blocks/redstone_block",
+				"pp": "enderio:blocks/blockDarkSteelPressurePlate"
+    }
+  },
+  "variants":{
+  	"on":{
+      true:             { "model": "enderio:detector_block_off" },
+      false:            { "model": "enderio:detector_block_on" }
+    },
+    "facing":{
+    	"east":           { "x":90, "y":90 },
+    	"west":           { "x":90, "y":270 },
+    	"north":          { "x":90 },
+    	"south":          { "x":90, "y":180 },
+    	"up":             { },
+    	"down":           { "x":180  }
+    }
+  }
+}
