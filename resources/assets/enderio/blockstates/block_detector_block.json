@@ -16,9 +16,13 @@
       true:             { "model": "enderio:detector_block_off" },
       false:            { "model": "enderio:detector_block_on" }
     },
-  	"painted":{
-      true:             { },
-      false:            { }
+    "facing":{
+    	"east":           { "x":90, "y":90 },
+    	"west":           { "x":90, "y":270 },
+    	"north":          { "x":90 },
+    	"south":          { "x":90, "y":180 },
+    	"up":             { },
+    	"down":           { "x":180  }
     }
   }
 }

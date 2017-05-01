@@ -22,6 +22,7 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
@@ -36,6 +37,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -47,8 +50,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements IPaintable.ISolidBlockPaintableBlock, IHaveRenderers {
 
-  public static final PropertyBool PAINTED = PropertyBool.create("painted");
   public static final PropertyBool IS_ON = PropertyBool.create("on");
+  public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
   public static BlockDetector create() {
     BlockDetector result = new BlockDetector(ModObject.block_detector_block.getUnlocalisedName());
@@ -74,17 +77,17 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
 
   @Override
   protected BlockStateContainer createBlockState() {
-    return new BlockStateContainer(this, new IProperty[] { IS_ON, PAINTED });
+    return new BlockStateContainer(this, new IProperty[] { IS_ON, FACING });
   }
 
   @Override
   public IBlockState getStateFromMeta(int meta) {
-    return getDefaultState().withProperty(IS_ON, (meta & 0x01) != 0).withProperty(PAINTED, (meta & 0x02) != 0);
+    return getDefaultState().withProperty(IS_ON, (meta & 0x08) != 0).withProperty(FACING, EnumFacing.values()[meta & 0x7]);
   }
 
   @Override
   public int getMetaFromState(IBlockState state) {
-    return (state.getValue(IS_ON) ? 1 : 0) + (state.getValue(PAINTED) ? 2 : 0);
+    return (state.getValue(IS_ON) ? 8 : 0) + state.getValue(FACING).ordinal();
   }
 
   @Override
@@ -92,13 +95,19 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   public void registerRenderers() {
     Item item = Item.getItemFromBlock(this);
     Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(this);
-    IBlockState state = getItemState();
+    IBlockState state = getDefaultState().withProperty(IS_ON, true).withProperty(FACING, EnumFacing.DOWN);
     ModelResourceLocation mrl = locations.get(state);
     ModelLoader.setCustomModelResourceLocation(item, 0, mrl);
   }
 
-  protected IBlockState getItemState() {
-    return getDefaultState().withProperty(IS_ON, true).withProperty(PAINTED, false);
+  @Override
+  public IBlockState withRotation(IBlockState state, Rotation rot) {
+    return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+  }
+
+  @Override
+  public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
   }
 
   @Override
@@ -129,7 +138,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
 
   @Override
   public int getWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-    return side != EnumFacing.DOWN && state.getValue(IS_ON) ? 15 : 0;
+    return side.getOpposite() != state.getValue(FACING) && state.getValue(IS_ON) ? 15 : 0;
   }
 
   @Override
@@ -155,12 +164,12 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   protected boolean isTargetBlockAir(IBlockState state, World world, BlockPos pos) {
-    return world.isAirBlock(pos.up());
+    return world.isAirBlock(pos.offset(state.getValue(FACING)));
   }
 
   @Override
   public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-    final IBlockState state = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+    final IBlockState state = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing);
     return state.withProperty(IS_ON, isTargetBlockAir(state, worldIn, pos));
   }
 
@@ -184,10 +193,6 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
-      IBlockState newState = state.withProperty(PAINTED, paintSource != null);
-      if (newState != state && world instanceof World) {
-        ((World) world).setBlockState(pos, newState);
-      }
     }
   }
 
@@ -219,13 +224,18 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   @Override
-  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-    return state.getValue(PAINTED) ? true : (layer == BlockRenderLayer.SOLID);
+  public BlockRenderLayer getBlockLayer() {
+    return BlockRenderLayer.SOLID;
   }
 
   @Override
   public boolean canRenderInLayer(BlockRenderLayer layer) {
     return true;
+  }
+
+  @Override
+  public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    return state.getValue(FACING) == side.getOpposite();
   }
 
   @SideOnly(Side.CLIENT)

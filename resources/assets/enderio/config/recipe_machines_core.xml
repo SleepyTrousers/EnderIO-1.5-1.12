@@ -1022,15 +1022,4 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Detector Block, sideways" required="true">
-    <crafting>
-      <grid size="3x3">
-        <item name="itemChassiParts" /><item name="itemChassiParts" /><item name="itemChassiParts" />
-        <item name="redstone_block" /><item name="sticky_piston" /><item name="PPP_DARK_STEEL" />
-        <item name="itemChassiParts" /><item name="itemChassiParts" /><item name="itemChassiParts" />
-      </grid>
-      <output name="enderio:block_detector_block_side" />
-    </crafting>
-  </recipe>
-
 </enderio:recipes>
