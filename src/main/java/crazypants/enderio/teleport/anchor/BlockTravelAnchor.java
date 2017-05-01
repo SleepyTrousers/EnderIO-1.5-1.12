@@ -203,10 +203,11 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof ITravelAccessable) {
+    @SuppressWarnings("null")
+    T te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
       if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
-        return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
+        return new ContainerTravelAccessable(player.inventory, te, world);
       } else {
         return new ContainerTravelAuth(player.inventory);
       }
@@ -216,12 +217,13 @@ public class BlockTravelAnchor<T extends TileTravelAnchor> extends BlockEio<T> i
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof ITravelAccessable) {
+    @SuppressWarnings("null")
+    T te = getTileEntity(world, new BlockPos(x, y, z));
+    if (te != null) {
       if (GuiID.GUI_ID_TRAVEL_ACCESSABLE.is(ID)) {
-        return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
+        return new GuiTravelAccessable<T>(player.inventory, te, world);
       } else {
-        return new GuiTravelAuth(player, (ITravelAccessable) te, world);
+        return new GuiTravelAuth(player, te, world);
       }
     }
     return null;
