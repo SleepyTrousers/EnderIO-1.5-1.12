@@ -64,7 +64,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   protected final @Nonnull IRenderMapper.IBlockRenderMapper renderMapper;
   protected boolean doCaching = false;
 
-  private IBakedModel model = null;
+  protected IBakedModel model = null;
 
   @Nonnull
   private final YetaDisplayMode yetaDisplayMode = YetaUtil.getYetaDisplayMode();

@@ -1574,3 +1574,5 @@ fluid.soularium=Molten Soularium
 fluid.glowstone=Glowgas
 fluid.redstone=Molten Redstone
 fluid.ender=Liquidfied Ender Pearls
+
+tile.block_detector_block.name=Block Detector

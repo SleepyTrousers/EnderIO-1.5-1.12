@@ -17,6 +17,7 @@ import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDarkSteelTrapDoor;
 import crazypants.enderio.block.BlockDecoration;
 import crazypants.enderio.block.BlockDecorationFacing;
+import crazypants.enderio.block.BlockDetector;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.block.BlockSelfResettingLever;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -298,6 +299,8 @@ public enum ModObject implements IModObject {
       ItemSoulVessel.initPhase();
     }
   },
+
+  block_detector_block(BlockDetector.class),
 
   ;
 

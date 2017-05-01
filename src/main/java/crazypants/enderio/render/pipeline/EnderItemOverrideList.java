@@ -107,7 +107,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
       }
     }
 
-    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+    return originalModel; // Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
   }
 
 }
