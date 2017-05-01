@@ -36,7 +36,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if (ord <= 0 && ord < EnumFacing.values().length) {
+    if (ord >= 0 && ord < EnumFacing.values().length) {
       dir = EnumFacing.values()[ord];
     }
   }
