@@ -95,7 +95,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   public void registerRenderers() {
     Item item = Item.getItemFromBlock(this);
     Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(this);
-    IBlockState state = getDefaultState().withProperty(IS_ON, true).withProperty(FACING, EnumFacing.DOWN);
+    IBlockState state = getDefaultState().withProperty(IS_ON, true).withProperty(FACING, EnumFacing.UP);
     ModelResourceLocation mrl = locations.get(state);
     ModelLoader.setCustomModelResourceLocation(item, 0, mrl);
   }
