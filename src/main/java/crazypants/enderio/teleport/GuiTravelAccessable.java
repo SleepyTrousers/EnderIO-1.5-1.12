@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -98,8 +97,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
     te.setAccessMode(curMode);
 
-    BlockCoord bc = te.getLocation();
-    PacketAccessMode p = new PacketAccessMode(bc.x, bc.y, bc.z, curMode);
+    PacketAccessMode p = new PacketAccessMode(te, curMode);
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
