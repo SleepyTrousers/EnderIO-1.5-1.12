@@ -212,7 +212,7 @@ public enum GuiID {
       @Override
       public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         IGuiHandler handler = byID(id).handler;
-        if (handler != null) {
+        if (handler != null && world != null && world.isBlockLoaded(new BlockPos(x, y, z))) {
           return handler.getServerGuiElement(id, player, world, x, y, z);
         }
         return null;

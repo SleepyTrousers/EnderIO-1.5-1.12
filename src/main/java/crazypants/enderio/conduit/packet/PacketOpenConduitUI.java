@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.GuiID;
@@ -13,12 +15,12 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage> {
 
-  private EnumFacing dir;
+  private @Nonnull EnumFacing dir = EnumFacing.DOWN;
 
   public PacketOpenConduitUI() {
   }
 
-  public PacketOpenConduitUI(TileEntity tile, EnumFacing dir) {
+  public PacketOpenConduitUI(@Nonnull TileEntity tile, @Nonnull EnumFacing dir) {
     super(tile);
     this.dir = dir;
   }
@@ -26,20 +28,15 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if(dir != null) {
-      buf.writeShort(dir.ordinal());
-    } else {
-      buf.writeShort(-1);
-    }
+    buf.writeShort(dir.ordinal());
   }
 
+  @SuppressWarnings("null")
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     short ord = buf.readShort();
-    if(ord < 0) {
-      dir = null;
-    } else {
+    if (ord <= 0 && ord < EnumFacing.values().length) {
       dir = EnumFacing.values()[ord];
     }
   }
@@ -47,8 +44,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   @Override
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity tile = message.getWorld(ctx).getTileEntity(message.getPos());
-    GuiID.facing2guiid(message.dir).openGui(player.worldObj, tile.getPos(), player, message.dir);
+    GuiID.facing2guiid(message.dir).openGui(player.worldObj, getPos(), player, message.dir);
     return null;
   }
 
