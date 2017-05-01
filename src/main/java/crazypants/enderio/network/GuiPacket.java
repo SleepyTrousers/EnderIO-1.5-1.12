@@ -148,6 +148,10 @@ public class GuiPacket implements IMessage {
       final Container openContainer = ctx.getServerHandler().playerEntity.openContainer;
       if (openContainer instanceof IRemoteExec.IContainer && ((IRemoteExec.IContainer) openContainer).getGuiID() == message.guiID && message.guiID >= 0) {
         ((IRemoteExec.IContainer) openContainer).networkExec(message.msgID, message);
+        Log.debug("Exec ok (" + message.guiID + "/" + message.msgID + "/" + message.pattern + "): cont=" + openContainer);
+      } else {
+        Log.debug("Invalid network packet received (" + message.guiID + "/" + message.msgID + "/" + message.pattern + "): cont=" + openContainer + " id="
+            + ((openContainer instanceof IRemoteExec.IContainer) ? ((IRemoteExec.IContainer) openContainer).getGuiID() : "n/a"));
       }
       return null;
     }

@@ -42,7 +42,7 @@ public class PacketOpenServerGui extends MessageTileEntity<TileEntity> implement
     World world = message.getWorld(ctx);
     TileEntity te = message.getTileEntity(world);    
     if(te instanceof TileTelePad) {
-      GuiID.byID(id).openGui(world, te.getPos(), player, null);
+      GuiID.byID(message.id).openGui(world, te.getPos(), player, null);
     }
     return null;
   }

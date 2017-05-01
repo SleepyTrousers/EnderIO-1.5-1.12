@@ -13,8 +13,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -97,8 +97,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
     te.setAccessMode(curMode);
 
-    PacketAccessMode p = new PacketAccessMode(te, curMode);
-    PacketHandler.INSTANCE.sendToServer(p);
+    GuiPacket.send(this, ContainerTravelAccessable.EXEC_ACCESS_MODE, curMode);
   }
 
   @Override
