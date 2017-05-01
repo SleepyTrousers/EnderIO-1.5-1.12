@@ -5,7 +5,6 @@ import java.util.List;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -66,26 +65,20 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     return false;
   }
 
-  private int x;
-  private int y;
-  private int z;
+  private long pos;
   private EnumFacing side;
 
   public PacketConduitProbe() {
   }
- 
-  public PacketConduitProbe(int x, int y, int z, EnumFacing side) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+
+  public PacketConduitProbe(BlockPos pos, EnumFacing side) {
+    this.pos = pos.toLong();
     this.side = side;
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
     if(side == null) {
       buf.writeShort(-1);
     } else {
@@ -96,9 +89,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
   @Override
   public void fromBytes(ByteBuf buffer) {
-    x = buffer.readInt();
-    y = buffer.readInt();
-    z = buffer.readInt();
+    pos = buffer.readLong();
     short ord = buffer.readShort();
     if(ord < 0) {
       side = null;
@@ -111,17 +102,15 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   public IMessage onMessage(PacketConduitProbe message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     World world = player.worldObj;
-    if(world == null) {
-      Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
+    BlockPos pos = BlockPos.fromLong(message.pos);
+    if (world == null || !world.isBlockLoaded(pos)) {
       return null;
     }
-    Block block = world.getBlockState(new BlockPos(message.x, message.y, message.z)).getBlock();
+    Block block = world.getBlockState(pos).getBlock();
 
-    TileEntity te = world.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = world.getTileEntity(pos);
     if(te instanceof TileConduitBundle) {
-
       sendInfoMessage(player, (TileConduitBundle) te);
-
     } else if(te instanceof IInternalPowerReceiver) {
       IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
       sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,

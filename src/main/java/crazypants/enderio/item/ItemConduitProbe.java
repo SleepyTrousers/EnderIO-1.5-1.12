@@ -90,7 +90,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     if(itemStack.getItemDamage() == 0) {      
       if(PacketConduitProbe.canCreatePacket(world, pos.getX(), pos.getY(), pos.getZ())) {
         if(world.isRemote) {
-          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos.getX(), pos.getY(), pos.getZ(), side));
+          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos, side));
         }
         return EnumActionResult.SUCCESS;
       }
