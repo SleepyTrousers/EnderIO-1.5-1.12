@@ -92,9 +92,13 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   public void registerRenderers() {
     Item item = Item.getItemFromBlock(this);
     Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(this);
-    IBlockState state = getDefaultState().withProperty(IS_ON, true).withProperty(PAINTED, false);
+    IBlockState state = getItemState();
     ModelResourceLocation mrl = locations.get(state);
     ModelLoader.setCustomModelResourceLocation(item, 0, mrl);
+  }
+
+  protected IBlockState getItemState() {
+    return getDefaultState().withProperty(IS_ON, true).withProperty(PAINTED, false);
   }
 
   @Override
@@ -143,16 +147,21 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
 
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn) {
-    IBlockState newState = state.withProperty(IS_ON, world.isAirBlock(pos.up()));
+    IBlockState newState = state.withProperty(IS_ON, isTargetBlockAir(state, world, pos));
     if (newState != state) {
       world.setBlockState(pos, newState);
       playClickSound(world, pos, newState);
     }
   }
 
+  protected boolean isTargetBlockAir(IBlockState state, World world, BlockPos pos) {
+    return world.isAirBlock(pos.up());
+  }
+
   @Override
   public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-    return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(IS_ON, worldIn.isAirBlock(pos.up()));
+    final IBlockState state = super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+    return state.withProperty(IS_ON, isTargetBlockAir(state, worldIn, pos));
   }
 
   @Override
