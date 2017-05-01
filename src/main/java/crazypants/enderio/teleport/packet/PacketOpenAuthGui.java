@@ -9,37 +9,28 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAuthGui, IMessage> {
 
-  int x;
-  int y;
-  int z;
+  long pos;
 
   public PacketOpenAuthGui() {
-
   }
 
-  public PacketOpenAuthGui(int x, int y, int z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  public PacketOpenAuthGui(BlockPos pos) {
+    this.pos = pos.toLong();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
   }
 
   @Override
   public void fromBytes(ByteBuf buffer) {
-    x = buffer.readInt();
-    y = buffer.readInt();
-    z = buffer.readInt();
+    pos = buffer.readLong();
   }
 
   @Override
   public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
-    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.worldObj, new BlockPos(message.x, message.y, message.z),
+    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.worldObj, BlockPos.fromLong(message.pos),
         ctx.getServerHandler().playerEntity, null);
     return null;
   }

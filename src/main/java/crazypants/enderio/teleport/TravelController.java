@@ -110,7 +110,7 @@ public class TravelController {
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.getRequiresPassword(player)) {
-        PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target.getBlockPos());
         PacketHandler.INSTANCE.sendToServer(p);
         return true;
       }
@@ -603,7 +603,7 @@ public class TravelController {
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.getRequiresPassword(player)) {
-        PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target.getBlockPos());
         PacketHandler.INSTANCE.sendToServer(p);
         return;
       }
