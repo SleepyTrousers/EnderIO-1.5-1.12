@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.network.GuiPacket;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -63,7 +63,7 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
   protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
     if(par1GuiButton == modeB) {
       getTileEntity().setSpawnMode(!getTileEntity().isSpawnMode());
-      PacketHandler.INSTANCE.sendToServer(new PacketMode(getTileEntity()));
+      GuiPacket.send(this, 0, getTileEntity().isSpawnMode());
     } else if (par1GuiButton == showRangeB) {
       getTileEntity().setShowRange(showRangeB.isSelected());
     } else {

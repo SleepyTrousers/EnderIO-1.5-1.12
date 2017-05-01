@@ -37,6 +37,7 @@ public class PacketHandler {
 
   public static void init(FMLInitializationEvent event) {
     INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

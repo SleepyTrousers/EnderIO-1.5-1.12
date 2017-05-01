@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -213,7 +214,11 @@ public enum GuiID {
       public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         IGuiHandler handler = byID(id).handler;
         if (handler != null && world != null && world.isBlockLoaded(new BlockPos(x, y, z))) {
-          return handler.getServerGuiElement(id, player, world, x, y, z);
+          final Object guiElement = handler.getServerGuiElement(id, player, world, x, y, z);
+          if (guiElement instanceof IRemoteExec) {
+            ((IRemoteExec) guiElement).setGuiID(id);
+          }
+          return guiElement;
         }
         return null;
       }
@@ -222,7 +227,11 @@ public enum GuiID {
       public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         IGuiHandler handler = byID(id).handler;
         if (handler != null) {
-          return handler.getClientGuiElement(id, player, world, x, y, z);
+          final Object guiElement = handler.getClientGuiElement(id, player, world, x, y, z);
+          if (guiElement instanceof IRemoteExec) {
+            ((IRemoteExec) guiElement).setGuiID(id);
+          }
+          return guiElement;
         }
         return null;
       }

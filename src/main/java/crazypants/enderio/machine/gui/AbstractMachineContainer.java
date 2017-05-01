@@ -233,4 +233,15 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
       return end;
     }
   }
+
+  private int guiID = -1;
+
+  public void setGuiID(int id) {
+    guiID = id;
+  }
+
+  public int getGuiID() {
+    return guiID;
+  }
+
 }

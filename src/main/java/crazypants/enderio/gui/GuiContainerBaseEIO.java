@@ -13,6 +13,7 @@ import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainerBaseEIO extends GuiContainerBase {
+public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IRemoteExec.IGui {
 
   private final List<ResourceLocation> guiTextures = new ArrayList<ResourceLocation>();
 
@@ -174,6 +175,21 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase {
     tes.pos(x + w, y + h, 0).tex(maxU, maxV).endVertex();
     tes.pos(x + w, y + 0, 0).tex(maxU, minV).endVertex();
     tes.pos(x, y + 0, 0).tex(minU, minV).endVertex();
+  }
+
+  @Override
+  public void setGuiID(int id) {
+    if (inventorySlots instanceof IRemoteExec.IContainer) {
+      ((IRemoteExec.IContainer) inventorySlots).setGuiID(id);
+    }
+  }
+
+  @Override
+  public int getGuiID() {
+    if (inventorySlots instanceof IRemoteExec.IContainer) {
+      return ((IRemoteExec.IContainer) inventorySlots).getGuiID();
+    }
+    return -1;
   }
 
 }
