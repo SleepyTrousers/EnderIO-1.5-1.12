@@ -232,6 +232,22 @@ public class ConduitRegistry {
   }
 
   /**
+   * Add a member to an already registered conduit type. The given 'info' MUST already be registered, you can access all registered types with getAll().
+   * <p>
+   * Please be advised that is is considered a 'hack' and may or may not work. Especially conduit types where the members need to interact with each other will
+   * not magically work.
+   **/
+  public static void injectMember(ConduitInfo info, Class<? extends IConduit> member) {
+    if (!conduitInfos.contains(info)) {
+      throw new IllegalArgumentException("The specified ConduitInfo has not been added yet");
+    }
+    conduitCLassMap.put(member, info);
+    final UUID uuid = UUID.nameUUIDFromBytes(member.getName().getBytes());
+    conduitMemberMapF.put(member, uuid);
+    conduitMemberMapR.put(uuid, member);
+  }
+
+  /**
    * Returns the ConduitInfo for the given conduit instance (member).
    */
   public static ConduitInfo get(IConduit conduit) {
@@ -278,11 +294,16 @@ public class ConduitRegistry {
     return conduitMemberMapF.get(conduit.getClass());
   }
 
+  private static boolean sortingSupported = true;
+
   public static void sort(List<IConduit> conduits) {
-    try {
-      Collections.sort(conduits, CONDUIT_COMPERATOR);
-    } catch (UnsupportedOperationException e) {
-      // On older versions of Java this is not supported. We don't care, the list is only sorted to optimize our model cache.
+    if (sortingSupported) {
+      try {
+        Collections.sort(conduits, CONDUIT_COMPERATOR);
+      } catch (UnsupportedOperationException e) {
+        // On older versions of Java this is not supported. We don't care, the list is only sorted to optimize our model cache.
+        sortingSupported = false;
+      }
     }
   }
 
