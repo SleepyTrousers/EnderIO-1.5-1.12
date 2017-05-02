@@ -99,7 +99,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemstack == null || itemstack.getItem() == null) {
+    if (itemStack.isEmpty() || itemstack.getItem() == null) {
       return false;
     }
     if (!slotDefinition.isInputSlot(slot)) {

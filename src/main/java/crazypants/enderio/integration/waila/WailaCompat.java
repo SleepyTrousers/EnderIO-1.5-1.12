@@ -250,7 +250,7 @@ public class WailaCompat implements IWailaDataProvider {
   }
 
   private void getWailaBodyConduitBundle(ItemStack itemStack, List<String> currenttip) {
-    if(itemStack == null) {
+    if(itemStack.isEmpty()) {
       return;
     }
 

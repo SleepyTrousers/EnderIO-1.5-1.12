@@ -268,7 +268,7 @@ public class ChannelTab implements ITabPanel {
     }
     Channel c;
     if (privateButton.isSelected()) {
-      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile(), type);
+      c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().player.getGameProfile(), type);
     } else {
       c = new Channel(newChannelTF.getText(), type);
     }

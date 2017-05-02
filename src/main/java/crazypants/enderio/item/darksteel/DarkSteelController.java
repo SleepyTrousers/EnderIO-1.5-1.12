@@ -349,7 +349,7 @@ public class DarkSteelController {
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().player;
     if (player == null) {
       return;
     }

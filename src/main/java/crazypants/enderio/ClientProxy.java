@@ -48,6 +48,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -59,12 +60,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
   @Override
   public World getClientWorld() {
-    return FMLClientHandler.instance().getClient().theWorld;
+    return FMLClientHandler.instance().getClient().world;
   }
 
   @Override
@@ -74,7 +77,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public EntityPlayer getClientPlayer() {
-    return Minecraft.getMinecraft().thePlayer;
+    return Minecraft.getMinecraft().player;
   }
 
   @Override
@@ -181,7 +184,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
     ent.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, duration, 1, true, true));
-    Minecraft.getMinecraft().thePlayer.timeInPortal = 1;
+    Minecraft.getMinecraft().player.timeInPortal = 1;
   }
 
   @Override
@@ -191,7 +194,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   protected void onClientTick() {
-    if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
+    if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().world != null) {
       ++clientTickCount;
       YetaUtil.onClientTick();
     }
@@ -213,12 +216,12 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public CreativeTabs getCreativeTab(ItemStack stack) {
+  public CreativeTabs getCreativeTab(@Nonnull ItemStack stack) {
     return Prep.isInvalid(stack) ? null : stack.getItem().getCreativeTab();
   }
 
   @Override
-  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
     itemIn.getSubItems(itemIn, tab, subItems);
   }
 

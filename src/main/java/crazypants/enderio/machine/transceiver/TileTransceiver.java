@@ -551,7 +551,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return false;
     }
     if (slotDefinition.isInputSlot(slot)) {
@@ -568,7 +568,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   @Override
   public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing j) {
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return false;
     }
 

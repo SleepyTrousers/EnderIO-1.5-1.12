@@ -236,7 +236,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return itemStack == null ? null : getUnlocalizedName(itemStack);
+    return itemStack.isEmpty() ? null : getUnlocalizedName(itemStack);
   }
 
   @Override

@@ -70,7 +70,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
       }
     }
     if (tabs.isEmpty()) {
-      Minecraft.getMinecraft().thePlayer.closeScreen();
+      Minecraft.getMinecraft().player.closeScreen();
     }
   }
 

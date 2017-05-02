@@ -53,7 +53,7 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nonnull ItemStack heldItem,
       EnumFacing side,
       float hitX, float hitY, float hitZ) {
     if (shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, side, entityPlayer, heldItem, permissionNodeWrenching)) {

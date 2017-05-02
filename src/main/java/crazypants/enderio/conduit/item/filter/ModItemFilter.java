@@ -28,7 +28,7 @@ public class ModItemFilter implements IItemFilter {
       return null;
     }
 
-    if(itemStack == null || itemStack.getItem() == null) {
+    if(itemStack.isEmpty()) {
       setMod(index, (String) null);
       return null;
     }        

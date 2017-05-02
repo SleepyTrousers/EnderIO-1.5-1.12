@@ -27,19 +27,19 @@ public interface ITravelAccessable {
 
   boolean getRequiresPassword(EntityPlayer username);
 
-  boolean authoriseUser(EntityPlayer username, ItemStack[] password);
+  boolean authoriseUser(EntityPlayer username, @Nonnull ItemStack[] password);
 
   AccessMode getAccessMode();
 
   void setAccessMode(AccessMode accessMode);
 
-  ItemStack[] getPassword();
+  @Nonnull ItemStack[] getPassword();
 
-  void setPassword(ItemStack[] password);
+  void setPassword(@Nonnull ItemStack[] password);
   
-  ItemStack getItemLabel();
+  @Nonnull ItemStack getItemLabel();
   
-  void setItemLabel(ItemStack lableIcon);
+  void setItemLabel(@Nonnull ItemStack lableIcon);
   
   String getLabel();
   

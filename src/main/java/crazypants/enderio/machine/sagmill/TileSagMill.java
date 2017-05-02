@@ -47,7 +47,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return false;
     }
     return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));

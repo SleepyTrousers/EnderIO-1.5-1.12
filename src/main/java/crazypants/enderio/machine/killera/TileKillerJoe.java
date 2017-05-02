@@ -153,7 +153,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return false;
     }
     return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack);

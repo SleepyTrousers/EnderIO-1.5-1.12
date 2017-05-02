@@ -55,7 +55,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
 
   @Override
   protected void renderItem() {
-    renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, 0f);
+    renderItemStack(null, Minecraft.getMinecraft().world, 0, 0, 0, 0f);
     ObeliskBakery.render(ObeliskRenderManager.INSTANCE.getActiveTextures());
   }
 

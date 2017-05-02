@@ -142,7 +142,7 @@ public class ModItemFilterGui implements IItemFilterGui {
   
   @Override
   public void mouseClicked(int x, int y, int par3) {
-    ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+    ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
     if(st == null) {
       return;
     }

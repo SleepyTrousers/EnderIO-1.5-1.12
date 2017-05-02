@@ -206,7 +206,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     TextureAtlasSprite tex = null;
 
     TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.getBlockPos());
-    if (YetaUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
+    if (YetaUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().player)) {
       IBlockState paintSource = cb.getPaintSource();
       if (paintSource != null) {
         tex = RenderUtil.getTexture(paintSource);
@@ -923,7 +923,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World world, BlockPos pos) {
 
     TileEntity te = world.getTileEntity(pos);
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().player;
     if (!(te instanceof IConduitBundle)) {
       return null;
     }

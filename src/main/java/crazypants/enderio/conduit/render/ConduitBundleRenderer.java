@@ -63,7 +63,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     
 
     IConduitBundle bundle = te;
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().player;
     if (bundle.hasFacade() && bundle.getPaintSource().isOpaqueCube() && !YetaUtil.isFacadeHidden(bundle, player)) {
       return;
     }

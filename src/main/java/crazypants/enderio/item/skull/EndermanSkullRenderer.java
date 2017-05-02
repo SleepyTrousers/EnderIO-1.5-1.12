@@ -41,7 +41,7 @@ public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
 
       Angle yaw = new Angle(360, te.yaw);
 
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       double d = te.getPos().distanceSqToCenter(player.posX, player.posY, player.posZ);
       if (d < 10 * 10) {
         double speed = d < 3 * 3 ? 2.5 : d < 6 * 6 ? 1.5 : .5;

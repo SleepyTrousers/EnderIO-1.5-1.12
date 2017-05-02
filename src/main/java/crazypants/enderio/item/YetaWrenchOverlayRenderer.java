@@ -43,7 +43,7 @@ public class YetaWrenchOverlayRenderer {
   }
 
   private ItemStack getEquippedWrench() {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().player;
     ItemStack equipped = player.getHeldItemMainhand();
     if (equipped != null && equipped.getItem() instanceof IConduitControl) {
       return ((IConduitControl) equipped.getItem()).showOverlay(equipped, player) ? equipped : null;

@@ -34,7 +34,7 @@ public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
   @Override
   protected void renderTileEntity(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     if (MinecraftForgeClient.getRenderPass() == 0) {       
-      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().thePlayer.getPrimaryHand() == EnumHandSide.LEFT);
+      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().player.getPrimaryHand() == EnumHandSide.LEFT);
     } else if (MinecraftForgeClient.getRenderPass() == 1) {
       HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
       if (buffer != null) {         

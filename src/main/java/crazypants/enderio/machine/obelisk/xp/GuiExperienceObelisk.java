@@ -112,7 +112,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     }
 
     if (levels < 0) {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       int currLevel = player.experienceLevel;
       int targetLevel = Math.max(0, currLevel + levels);
 

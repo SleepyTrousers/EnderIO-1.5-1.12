@@ -114,7 +114,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
           @Override
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
-            if (par1ItemStack == null) {
+            if (par1itemStack.isEmpty()) {
               return false;
             }
             return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);

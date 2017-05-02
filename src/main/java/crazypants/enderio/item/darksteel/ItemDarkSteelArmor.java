@@ -321,7 +321,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 //  @Override
 //  @Method(modid = "Thaumcraft")
 //  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
-//    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+//    if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
 //      return false;
 //    }
 //    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
@@ -331,7 +331,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 //  @Override
 //  @Method(modid = "Thaumcraft")
 //  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
-//    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+//    if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
 //      return false;
 //    }
 //    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;

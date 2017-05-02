@@ -54,7 +54,7 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
   }
 
   private TileEntityStirlingGenerator getStirlingGen(ItemStack stack) {
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = Minecraft.getMinecraft().player;
     if (player != null && player.openContainer instanceof StirlingGeneratorContainer) {
       AbstractMachineEntity te = ((StirlingGeneratorContainer) player.openContainer).getInv();
       if (te instanceof TileEntityStirlingGenerator) {

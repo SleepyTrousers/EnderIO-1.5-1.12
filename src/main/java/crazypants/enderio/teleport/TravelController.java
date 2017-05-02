@@ -284,7 +284,7 @@ public class TravelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       if(player == null) {
         return;
       }
@@ -521,7 +521,7 @@ public class TravelController {
   private void updateVerticalTarget(EntityPlayerSP player, int direction) {
 
     BlockCoord currentBlock = getActiveTravelBlock(player);
-    World world = Minecraft.getMinecraft().theWorld;
+    World world = Minecraft.getMinecraft().world;
     for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
 
       //Circumvents the raytracing used to find candidates on the y axis
@@ -691,7 +691,7 @@ public class TravelController {
 
   @SideOnly(Side.CLIENT)
   private BlockCoord getActiveTravelBlock(EntityPlayerSP player) {
-    World world = Minecraft.getMinecraft().theWorld;
+    World world = Minecraft.getMinecraft().world;
     if(world != null && player != null) {
       int x = MathHelper.floor_double(player.posX);
       int y = MathHelper.floor_double(player.getEntityBoundingBox().minY) - 1;

@@ -834,7 +834,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return false;
     }
     return PowerHandlerUtil.getCapability(itemstack, null) != null;

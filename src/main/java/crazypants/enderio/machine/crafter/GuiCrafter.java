@@ -50,7 +50,7 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
     if (!getGhostSlots().isEmpty()) {
       GhostSlot slot = getGhostSlot(mouseX, mouseY);
       if (slot != null) {
-        ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+        ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
         // don't replace already set slots while dragging an item
         if (st == null || slot.getStack() == null) {
           slot.putStack(st);

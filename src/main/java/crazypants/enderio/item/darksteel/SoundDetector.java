@@ -36,7 +36,7 @@ public class SoundDetector {
 
   // @SubscribeEvent
   // public void onSound(PlaySoundAtEntityEvent evt) {
-  // if (enabled && evt.getEntity() != null && evt.getEntity() != Minecraft.getMinecraft().thePlayer && soundQueue.size() < MAX_PARTICLES) {
+  // if (enabled && evt.getEntity() != null && evt.getEntity() != Minecraft.getMinecraft().player && soundQueue.size() < MAX_PARTICLES) {
   // soundQueue.offer(new SoundSource(evt.getEntity(), evt.getVolume()));
   // }
   // }

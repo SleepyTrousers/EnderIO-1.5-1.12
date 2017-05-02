@@ -124,7 +124,7 @@ public class PainterUtil2 {
 
   @SuppressWarnings("deprecation")
   public static void setSourceBlock(ItemStack itemStack, IBlockState paintSource) {
-    if (itemStack == null) {
+    if (itemStack.isEmpty()) {
       return;
     }
     if (paintSource == null) {

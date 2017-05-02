@@ -123,7 +123,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemstack == null || isSpawnMode) {
+    if (itemStack.isEmpty() || isSpawnMode) {
       return false;
     }
     if (slotDefinition.isInputSlot(i)) {

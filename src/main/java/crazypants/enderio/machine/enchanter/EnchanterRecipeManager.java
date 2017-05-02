@@ -25,7 +25,7 @@ public class EnchanterRecipeManager {
   }
 
   public EnchanterRecipe getEnchantmentRecipeForInput(ItemStack itemStack) {
-    if(itemStack == null) {
+    if(itemStack.isEmpty()) {
       return null;
     }
     for(EnchanterRecipe recipe : recipes) {

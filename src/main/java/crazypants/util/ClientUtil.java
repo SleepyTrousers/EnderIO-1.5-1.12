@@ -28,7 +28,7 @@ import net.minecraftforge.client.model.ModelLoader;
 public class ClientUtil {
 
   public static void doFluidLevelUpdate(int x, int y, int z, PacketFluidLevel pkt) {
-    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
+    TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x, y, z));
     if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
       return;
     }
@@ -41,7 +41,7 @@ public class ClientUtil {
   }
 
 //  public static void doGasLevelUpdate(int x, int y, int z, PacketGasLevel pkt) {
-//    TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
+//    TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x, y, z));
 //    if(pkt.tc == null || !(tile instanceof IConduitBundle)) {
 //      return;
 //    }
@@ -57,12 +57,12 @@ public class ClientUtil {
     double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
     double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
     double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-    Minecraft.getMinecraft().theWorld.spawnParticle(EnumParticleTypes.PORTAL, bc.getX() + xOff, bc.getY() + yOff, bc.getZ() + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
+    Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.PORTAL, bc.getX() + xOff, bc.getY() + yOff, bc.getZ() + zOff, (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(),
         (rand.nextDouble() - 0.5) * 1.5);
   }
 
   public static void setTankNBT(PacketCombustionTank message, BlockPos pos) {
-    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(pos);
+    TileCombustionGenerator tile = (TileCombustionGenerator) Minecraft.getMinecraft().world.getTileEntity(pos);
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
@@ -84,7 +84,7 @@ public class ClientUtil {
 
   public static void setStirlingBurnTime(PacketBurnTime message, int x, int y, int z) {
 
-    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y, z));
+    TileEntityStirlingGenerator tile = (TileEntityStirlingGenerator) Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x, y, z));
     if(tile == null) {
       //no loaded on client when receiving message, can happen when loading the chunks 
       return;
@@ -159,7 +159,7 @@ public class ClientUtil {
         d1 = rand.nextGaussian() * 0.02D;
         d2 = rand.nextGaussian() * 0.02D;
       }
-      Minecraft.getMinecraft().theWorld.spawnParticle(particle, posX + xOff, posY + yOff, posZ + zOff, d0, d1, d2);
+      Minecraft.getMinecraft().world.spawnParticle(particle, posX + xOff, posY + yOff, posZ + zOff, d0, d1, d2);
     }
   }
   

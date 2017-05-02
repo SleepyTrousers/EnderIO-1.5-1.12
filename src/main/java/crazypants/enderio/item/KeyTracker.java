@@ -94,7 +94,7 @@ public class KeyTracker {
       }
     }
 
-    if (!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+    if (!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
       SoundDetector.instance.setEnabled(false);
     }
   }
@@ -105,9 +105,9 @@ public class KeyTracker {
   }
 
   private static void toggleDarkSteelController(Type type, String messageBase) {
-    boolean isActive = !DarkSteelController.instance.isActive(Minecraft.getMinecraft().thePlayer, type);
+    boolean isActive = !DarkSteelController.instance.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
-    DarkSteelController.instance.setActive(Minecraft.getMinecraft().thePlayer, type, isActive);
+    DarkSteelController.instance.setActive(Minecraft.getMinecraft().player, type, isActive);
     PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
   }
 
@@ -123,7 +123,7 @@ public class KeyTracker {
   private static class MagnetAction implements Action {
     @Override
     public void execute() {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       ActiveMagnet magnet = MagnetController.getMagnet(player, false);
       if (magnet != null) {
         boolean isActive = !ItemMagnet.isActive(magnet.item);
@@ -148,7 +148,7 @@ public class KeyTracker {
   private static class JumpAction implements Action {
     @Override
     public void execute() {
-      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
       }
     }
@@ -157,7 +157,7 @@ public class KeyTracker {
   private static class SpeedAction implements Action {
     @Override
     public void execute() {
-      if (SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      if (SpeedUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
       }
     }
@@ -166,7 +166,7 @@ public class KeyTracker {
   private static class StepAssistAction implements Action {
     @Override
     public void execute() {
-      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
       }
     }
@@ -176,7 +176,7 @@ public class KeyTracker {
     @Override
     public void execute() {
       // TODO: Mod Thaumcraft
-      // EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      // EntityPlayer player = Minecraft.getMinecraft().player;
       // if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
       // boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
       // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
@@ -188,7 +188,7 @@ public class KeyTracker {
   private static class YetaWrenchAction implements Action {
     @Override
     public void execute() {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       ItemStack equipped = player.getHeldItemMainhand();
       if (equipped == null) {
         return;
@@ -214,7 +214,7 @@ public class KeyTracker {
   private static class SoundDetectorAction implements Action {
     @Override
     public void execute() {
-      if (isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      if (isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
         boolean isActive = !SoundDetector.instance.isEnabled();
         sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
         SoundDetector.instance.setEnabled(isActive);
@@ -225,9 +225,9 @@ public class KeyTracker {
   private static class GlideAction implements Action {
     @Override
     public void execute() {
-      if (DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      if (DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
-      } else if (DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      } else if (DarkSteelController.instance.isElytraUpgradeEquipped(Minecraft.getMinecraft().player)) {
         toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
       }
     }
@@ -236,7 +236,7 @@ public class KeyTracker {
   private static class NightVisionAction implements Action {
     @Override
     public void execute() {
-      EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayer player = Minecraft.getMinecraft().player;
       if (DarkSteelController.instance.isNightVisionUpgradeEquipped(player)) {
         boolean isActive = !DarkSteelController.instance.isNightVisionActive();
         if (isActive) {
@@ -252,7 +252,7 @@ public class KeyTracker {
   private static class TopAction implements Action {
     @Override
     public void execute() {
-      EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayer player = Minecraft.getMinecraft().player;
       if (DarkSteelController.instance.isTopUpgradeEquipped(player)) {
         boolean isActive = !DarkSteelController.instance.isTopActive(player);
         DarkSteelController.instance.setTopActive(player, isActive);

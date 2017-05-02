@@ -661,7 +661,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           InventoryDatabaseClient db = getDatabase();
           if (invSlot.getStack() != null && invSlot.entry != null && db != null) {
             ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
-            if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
+            if (itemStack.isEmpty() || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
           }
