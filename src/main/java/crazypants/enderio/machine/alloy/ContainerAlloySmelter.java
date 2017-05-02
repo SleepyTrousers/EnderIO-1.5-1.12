@@ -5,6 +5,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.network.IRemoteExec;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -13,7 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 
-public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
+public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> implements IRemoteExec.IContainer {
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
@@ -102,6 +105,19 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
       if (output.getItem() == Items.COOKED_FISH) {
         thePlayer.addStat(AchievementList.COOK_FISH, 1);
       }
+    }
+  }
+
+  @Override
+  public void networkExec(int id, GuiPacket message) {
+    switch (id) {
+    case 0:
+      getInv().setMode(message.getEnum(0, TileAlloySmelter.Mode.class));
+      IBlockState bs = getInv().getWorld().getBlockState(getInv().getPos());
+      getInv().getWorld().notifyBlockUpdate(getInv().getPos(), bs, bs, 3);
+      break;
+    default:
+      break;
     }
   }
 

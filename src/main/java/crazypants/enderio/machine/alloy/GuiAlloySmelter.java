@@ -3,13 +3,6 @@ package crazypants.enderio.machine.alloy;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.SoundEvents;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IIconButton;
@@ -20,7 +13,13 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.network.GuiPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
@@ -81,7 +80,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
     if (button.id == SMELT_MODE_BUTTON_ID) {
       getTileEntity().setMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());
       updateVanillaFurnaceButton();
-      PacketHandler.INSTANCE.sendToServer(new PacketClientState(getTileEntity()));
+      GuiPacket.send(this, 0, getTileEntity().getMode());
     } else {
       super.actionPerformed(button);
     }
