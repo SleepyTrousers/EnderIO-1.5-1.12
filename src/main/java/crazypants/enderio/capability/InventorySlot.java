@@ -197,7 +197,7 @@ public class InventorySlot implements IItemHandler {
   }
 
   public void readFromNBT(NBTTagCompound tag) {
-    itemStack = ItemStack.loadItemStackFromNBT(tag);
+    itemStack = new ItemStack(tag);
   }
 
   public void clear() {

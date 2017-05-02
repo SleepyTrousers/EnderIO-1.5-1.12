@@ -84,7 +84,7 @@ public class YetaUtil {
     if (bundle.getPaintSource() == null) {
       return false;
     }
-    if (player == null || player.worldObj.isRemote) {
+    if (player == null || player.world.isRemote) {
       return shouldHeldItemHideFacadesClient();
     }
     return shouldHeldItemHideFacades(player);
@@ -95,7 +95,7 @@ public class YetaUtil {
   }
 
   public static boolean renderConduit(EntityPlayer player, Class<? extends IConduit> conduitType) {
-    if (player == null || player.worldObj.isRemote) {
+    if (player == null || player.world.isRemote) {
       return lastCheckResult.renderConduit(conduitType);
     }
     return getDisplayMode(player).renderConduit(conduitType);

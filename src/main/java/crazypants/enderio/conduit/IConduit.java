@@ -139,9 +139,9 @@ public interface IConduit {
 
   boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all);
 
-  void onChunkUnload(World worldObj);
+  void onChunkUnload(World world);
 
-  void updateEntity(World worldObj);
+  void updateEntity(World world);
 
   boolean onNeighborBlockChange(Block blockId);
   

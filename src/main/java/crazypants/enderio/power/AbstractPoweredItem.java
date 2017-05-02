@@ -31,7 +31,7 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
     
   @Override
   public void setEnergyStored(ItemStack container, int energy) {
-    NbtValue.ENERGY.setInt(container, MathHelper.clamp_int(energy, 0, maxEneryStored));
+    NbtValue.ENERGY.setInt(container, MathHelper.clamp(energy, 0, maxEneryStored));
   }
 
   @Override

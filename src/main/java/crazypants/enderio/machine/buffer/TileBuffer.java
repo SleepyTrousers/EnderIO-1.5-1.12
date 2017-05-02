@@ -66,7 +66,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     if (dist == null) {
       dist = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored(null)));
+    int transmitted = dist.transmitEnergy(world, Math.min(getMaxOutput(), getEnergyStored(null)));
     if (!isCreative()) {
       setEnergyStored(getEnergyStored(null) - transmitted);
     }

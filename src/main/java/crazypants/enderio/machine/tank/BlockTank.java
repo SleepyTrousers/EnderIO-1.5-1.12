@@ -150,7 +150,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   public float getExplosionResistance(World world, BlockPos pos, Entity par1Entity, Explosion explosion) {
     IBlockState bs = world.getBlockState(pos);
     int meta = getMetaFromState(bs);
-    meta = MathHelper.clamp_int(meta, 0, 1);
+    meta = MathHelper.clamp(meta, 0, 1);
     if(meta == 1) {
       return Config.EXPLOSION_RESISTANT;
     } else {

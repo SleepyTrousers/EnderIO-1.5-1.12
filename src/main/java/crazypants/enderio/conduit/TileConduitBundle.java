@@ -105,7 +105,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
   
   @Override
-  public World getBundleWorldObj() {
+  public World getBundleworld() {
     return getWorld();
   }
 
@@ -157,7 +157,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       facadeType = EnumFacadeType.BASIC;
     }
 
-    if(worldObj != null && worldObj.isRemote) {
+    if(world != null && world.isRemote) {
       clientUpdated = true;
     }
   }
@@ -172,12 +172,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     facade = paintSource;
     markDirty();
     // force re-calc of lighting for both client and server
-    IBlockState bs = worldObj.getBlockState(pos);
+    IBlockState bs = world.getBlockState(pos);
     IBlockState newBs = bs.withProperty(BlockConduitBundle.OPAQUE, getLightOpacity() > 0);
     if (bs == newBs) {
-      worldObj.setBlockState(getPos(), newBs.cycleProperty(BlockConduitBundle.OPAQUE));
+      world.setBlockState(getPos(), newBs.cycleProperty(BlockConduitBundle.OPAQUE));
     }
-    worldObj.setBlockState(getPos(), newBs);
+    world.setBlockState(getPos(), newBs);
   }
 
   @Override
@@ -215,7 +215,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @SuppressWarnings("deprecation")
   @Override
   public int getLightOpacity() {
-    if (worldObj != null && worldObj.isRemote && lightOpacityOverride != -1) {
+    if (world != null && world.isRemote && lightOpacityOverride != -1) {
       return lightOpacityOverride;
     }
     if (facade != null) {
@@ -237,7 +237,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public void onChunkUnload() {
     for (IConduit conduit : conduits) {
-      conduit.onChunkUnload(worldObj);
+      conduit.onChunkUnload(world);
     }
   }
 
@@ -248,7 +248,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
     for (IConduit conduit : conduits) {
       getWorld().theProfiler.startSection(conduit.getClass().toString());
-      conduit.updateEntity(worldObj);
+      conduit.updateEntity(world);
       getWorld().theProfiler.endSection();
     }
 
@@ -260,7 +260,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     getWorld().theProfiler.endSection();
 
     //client side only, check for changes in rendering of the bundle
-    if(worldObj.isRemote) {
+    if(world.isRemote) {
       getWorld().theProfiler.startSection("clientTick");
       updateEntityClient();
       getWorld().theProfiler.endSection();
@@ -270,10 +270,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   private void doConduitsDirty() {
-    if(!worldObj.isRemote) {
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
+    if(!world.isRemote) {
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
+      world.notifyNeighborsOfStateChange(pos, getBlockType());
       markDirty();
     } else {
       geometryChanged(); // Q&D
@@ -297,13 +297,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       int shouldBeLO = rs == FacadeRenderState.FULL ? -1 : 0;
       if (lightOpacityOverride != shouldBeLO) {
         setLightOpacityOverride(shouldBeLO);
-        worldObj.checkLight(getPos());
+        world.checkLight(getPos());
       }
     }
 
     if(curRS != rs) {
       setFacadeRenderAs(rs);
-      if(!ConduitUtil.forceSkylightRecalculation(worldObj, getPos())) {
+      if(!ConduitUtil.forceSkylightRecalculation(world, getPos())) {
         markForUpdate = true;
       }
     }
@@ -315,8 +315,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
     if(markForUpdate) {
       geometryChanged(); // Q&D
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
     }
   }
 
@@ -368,7 +368,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public void addConduit(IConduit conduit) {
-    if(worldObj.isRemote) {
+    if(world.isRemote) {
       return;
     }
     conduits.add(conduit);
@@ -385,7 +385,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   public void removeConduit(IConduit conduit, boolean notify) {
-    if(worldObj.isRemote) {
+    if(world.isRemote) {
       return;
     }
     conduit.onRemovedFromBundle();
@@ -398,7 +398,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public void onBlockRemoved() {
-    if(worldObj.isRemote) {
+    if(world.isRemote) {
       return;
     }
     List<IConduit> copy = new ArrayList<IConduit>(conduits);
@@ -890,7 +890,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public void invalidate() {
     super.invalidate();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       return;
     }
     List<IConduit> copy = new ArrayList<IConduit>(conduits);
@@ -915,12 +915,12 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public String toString() {
-    return worldObj == null ? super.toString() : worldObj.isRemote ? toStringC(this) : toStringS(this);
+    return world == null ? super.toString() : world.isRemote ? toStringC(this) : toStringS(this);
   }
 
   @SideOnly(Side.CLIENT)
   public static String toStringC(TileConduitBundle self) {
-    BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(self.worldObj.getBlockState(self.pos), self.worldObj, self.pos,
+    BlockStateWrapperConduitBundle bsw = new BlockStateWrapperConduitBundle(self.world.getBlockState(self.pos), self.world, self.pos,
         ConduitRenderMapper.instance);
     bsw.addCacheKey(self);
     return "CLIENT: TileConduitBundle [pos=" + self.pos + ", facade=" + self.facade + ", facadeType=" + self.facadeType + ", conduits=" + self.conduits

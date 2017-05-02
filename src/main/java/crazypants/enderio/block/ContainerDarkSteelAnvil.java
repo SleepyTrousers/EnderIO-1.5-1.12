@@ -2,6 +2,7 @@ package crazypants.enderio.block;
 
 import java.lang.reflect.Field;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.config.Config;
@@ -52,7 +53,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
     this.inventorySlots.set(2, new Slot(outputSlot, 2, 134, 47) {
 
       @Override
-      public boolean isItemValid(@Nullable ItemStack stack) {
+      public boolean isItemValid(@Nonnull ItemStack stack) {
         return false;
       }
 
@@ -63,7 +64,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
       }
 
       @Override
-      public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
+      public void onPickupFromSlot(EntityPlayer playerIn, @Nonnull ItemStack stack) {
         if (!playerIn.capabilities.isCreativeMode) {
           playerIn.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
         }
@@ -73,8 +74,8 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         if (materialCost > 0) {
           ItemStack itemstack1 = inputSlots.getStackInSlot(1);
 
-          if (Prep.isValid(itemstack1) && itemstack1.stackSize > materialCost) {
-            itemstack1.stackSize -= materialCost;
+          if (Prep.isValid(itemstack1) && itemstack1.getCount() > materialCost) {
+            itemstack1.shrink(materialCost);
             inputSlots.setInventorySlotContents(1, itemstack1);
           } else {
             inputSlots.setInventorySlotContents(1, Prep.getEmpty());
@@ -107,6 +108,6 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
   @Override
   public boolean canInteractWith(EntityPlayer player) {
-    return player.worldObj.getBlockState(new BlockPos(x, y, z)).getBlock() == blockDarkSteelAnvil.getBlock();
+    return player.world.getBlockState(new BlockPos(x, y, z)).getBlock() == blockDarkSteelAnvil.getBlock();
   }
 }

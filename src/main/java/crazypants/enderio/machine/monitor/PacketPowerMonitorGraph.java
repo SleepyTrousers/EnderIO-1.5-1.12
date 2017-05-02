@@ -72,7 +72,7 @@ public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor>
 
     @Override
     public IMessage onMessage(PacketPowerMonitorGraph msg, MessageContext ctx) {
-      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
       if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
         return sendUpdate(te, msg.no);
       }
@@ -87,7 +87,7 @@ public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor>
     public IMessage onMessage(PacketPowerMonitorGraph msg, MessageContext ctx) {
       EntityPlayer player = EnderIO.proxy.getClientPlayer();
       if (player != null) {
-        TilePowerMonitor te = msg.getTileEntity(player.worldObj);
+        TilePowerMonitor te = msg.getTileEntity(player.world);
         if (te != null && msg.no >= 0 && msg.no < te.stats.length) {
           te.stats[msg.no].setCollectCount(msg.collectCount);
           te.stats[msg.no].setPos(msg.pos);

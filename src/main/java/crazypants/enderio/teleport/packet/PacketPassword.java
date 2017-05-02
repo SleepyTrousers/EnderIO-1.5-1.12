@@ -62,7 +62,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
 
     @Override
     public IMessage onMessage(PacketPassword msg, MessageContext ctx) {
-      TileEntityBase te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+      TileEntityBase te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
       if (te instanceof ITravelAccessable) {
         if (((ITravelAccessable) te).canUiBeAccessed(ctx.getServerHandler().playerEntity)) {
           if (msg.stack != null) {

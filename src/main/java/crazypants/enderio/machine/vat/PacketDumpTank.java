@@ -36,7 +36,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
 
   @Override
   public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
-    TileVat te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    TileVat te = message.getTileEntity(ctx.getServerHandler().playerEntity.world);
     if (te != null) {
       if (message.tank == 2) {
         te.outputTank.setFluid(null);

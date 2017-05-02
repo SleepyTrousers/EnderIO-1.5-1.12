@@ -64,7 +64,7 @@ public class TileAttractor extends AbstractMobObelisk {
       } else if (!canAttract(next.getKey())) {
         next.getValue().release(this, next.getKey());
         iterator.remove();
-      } else if (next.getKey().worldObj.rand.nextInt(4) == 0) {
+      } else if (next.getKey().world.rand.nextInt(4) == 0) {
         PacketObeliskFx.create(next.getKey(), EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
       }
     }
@@ -79,7 +79,7 @@ public class TileAttractor extends AbstractMobObelisk {
   }
 
   private void collectEntities() {
-    for (EntityLiving entity : worldObj.getEntitiesWithinAABB(EntityLiving.class, getBounds())) {
+    for (EntityLiving entity : world.getEntitiesWithinAABB(EntityLiving.class, getBounds())) {
       if (!entity.isDead && !tracking.containsKey(entity) && canAttract(entity)
           && PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockAttractor.permissionAttracting, new TargetContext(getTarget(), entity))) {
         collectEntity(entity);

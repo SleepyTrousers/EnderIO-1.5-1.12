@@ -66,7 +66,7 @@ public class IoConfigRenderer {
   private long initTime;
 
   private Minecraft mc = Minecraft.getMinecraft();
-  private World world = mc.thePlayer.worldObj;
+  private World world = mc.player.world;
 
   private final Vector3d origin = new Vector3d();
   private final Vector3d eye = new Vector3d();
@@ -116,8 +116,8 @@ public class IoConfigRenderer {
     pitchRot.setIdentity();
     yawRot.setIdentity();
 
-    pitch = -mc.thePlayer.rotationPitch;
-    yaw = 180 - mc.thePlayer.rotationYaw;
+    pitch = -mc.player.rotationPitch;
+    yaw = 180 - mc.player.rotationYaw;
 
     distance = Math.max(Math.max(size.x, size.y), size.z) + 4;
 
@@ -130,7 +130,7 @@ public class IoConfigRenderer {
       }
     }
 
-    world = mc.thePlayer.worldObj;
+    world = mc.player.world;
   }
 
   public void init() {

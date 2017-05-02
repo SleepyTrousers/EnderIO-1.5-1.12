@@ -41,7 +41,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
   
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       super.doUpdate(); // disable ticking on the client
       return;
     }
@@ -189,7 +189,7 @@ public class TileDialingDevice extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public void setEnergyStored(int storedEnergy) {
-    storedEnergyRF = MathHelper.clamp_int(storedEnergy, 0, getMaxEnergyStored(null));
+    storedEnergyRF = MathHelper.clamp(storedEnergy, 0, getMaxEnergyStored(null));
   }
 
   @Override

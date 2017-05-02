@@ -201,7 +201,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public void doUpdate() {
     getWorld().theProfiler.startSection(getMachineName());
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       getWorld().theProfiler.startSection("clientTick");
       updateEntityClient();
       getWorld().theProfiler.endSection();
@@ -232,8 +232,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
-        IBlockState bs = worldObj.getBlockState(pos);
-        worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+        IBlockState bs = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, bs, bs, 3);
 
         // And this will make sure our current tile entity state is saved
         markDirty();
@@ -242,7 +242,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
       if (notifyNeighbours) {
         getWorld().theProfiler.startSection("neighborNotification");
-        worldObj.notifyBlockOfStateChange(pos, getBlockType());
+        world.notifyBlockOfStateChange(pos, getBlockType());
         notifyNeighbours = false;
         getWorld().theProfiler.endSection();
       }
@@ -270,8 +270,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
 
     if (forceClientUpdate.read()) {
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
     } else {
       YetaUtil.refresh(this);
     }
@@ -315,7 +315,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Override
   public void invalidate() {
     super.invalidate();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       updateSound();
     }
   }

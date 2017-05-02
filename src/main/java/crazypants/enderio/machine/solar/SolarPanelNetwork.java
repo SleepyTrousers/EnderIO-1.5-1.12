@@ -64,7 +64,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         BlockPos panel = iterator.next();
         if (world.isBlockLoaded(panel)) {
           TileEntity tileEntity = world.getTileEntity(panel);
-          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorldObj()) {
+          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasworld()) {
             if (((TileEntitySolarPanel) tileEntity).network == this) {
               for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
                 final BlockPos neighbor = panel.offset(neighborDir);
@@ -83,7 +83,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         for (BlockPos candidate : candidateList) {
           if (!panels.contains(candidate) && canConnect(candidate)) {
             TileEntity tileEntity = world.getTileEntity(candidate);
-            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorldObj()) {
+            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasworld()) {
               panels.add(candidate.toImmutable());
               final SolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
               if (otherNetwork != this) {

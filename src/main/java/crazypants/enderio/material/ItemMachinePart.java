@@ -44,7 +44,7 @@ public class ItemMachinePart extends Item implements IHaveRenderers  {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, MachinePart.values().length - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, MachinePart.values().length - 1);
     return MachinePart.values()[i].unlocalisedName;
   }
 

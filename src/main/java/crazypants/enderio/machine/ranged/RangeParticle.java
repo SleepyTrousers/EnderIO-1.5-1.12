@@ -39,8 +39,8 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
   @Override
   public boolean isAlive() {
-    return age < AGE_LIMIT && ((TileEntity) owner).hasWorldObj() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
-        && worldObj.getTileEntity(owner.getPos()) == owner;
+    return age < AGE_LIMIT && ((TileEntity) owner).hasworld() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
+        && world.getTileEntity(owner.getPos()) == owner;
   }
 
   @Override

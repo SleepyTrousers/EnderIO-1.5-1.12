@@ -45,7 +45,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   public IItemFilter createFilterFromStack(ItemStack stack) {
-    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, TYPES.length);
+    int damage = MathHelper.clamp(stack.getItemDamage(), 0, TYPES.length);
     ItemFilter filter = new ItemFilter(damage);
     if (stack.hasTagCompound() && stack.getTagCompound().hasKey("filter")) {
       filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
@@ -63,7 +63,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    return "enderio." + TYPES[MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, TYPES.length)];
+    return "enderio." + TYPES[MathHelper.clamp(par1ItemStack.getItemDamage(), 0, TYPES.length)];
   }
 
   @Override

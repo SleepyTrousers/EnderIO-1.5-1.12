@@ -135,7 +135,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
 
   private void broadcastSignal() {
     initialized = true;
-    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
+    world.notifyNeighborsOfStateChange(getPos(), getBlockType());
   }
 
   private static final long bit62 = Integer.MAX_VALUE;
@@ -165,7 +165,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
 
   public NetworkPowerManager getPowerManager() {
     for (EnumFacing dir : EnumFacing.values()) {
-      IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
+      IPowerConduit con = ConduitUtil.getConduit(world, this, dir, IPowerConduit.class);
       if (con != null) {
         AbstractConduitNetwork<?, ?> n = con.getNetwork();
         if (n instanceof PowerConduitNetwork) {

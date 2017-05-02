@@ -76,7 +76,7 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
 
     @Override
     public IMessage onMessage(PacketPowerMonitorStatData msg, MessageContext ctx) {
-      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
       if (te != null) {
         NetworkPowerManager powerManager = te.getPowerManager();
         if (powerManager != null) {
@@ -94,7 +94,7 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
     public IMessage onMessage(PacketPowerMonitorStatData msg, MessageContext ctx) {
       EntityPlayer player = EnderIO.proxy.getClientPlayer();
       if (player != null) {
-        TilePowerMonitor te = msg.getTileEntity(player.worldObj);
+        TilePowerMonitor te = msg.getTileEntity(player.world);
         if (te != null) {
           te.statData = msg.data;
         }

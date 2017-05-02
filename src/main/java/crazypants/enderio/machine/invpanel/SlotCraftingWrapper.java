@@ -24,7 +24,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
     net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
     this.onCrafting(stack);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(playerIn);
-    ItemStack[] containeritems = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, playerIn.worldObj);
+    ItemStack[] containeritems = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, playerIn.world);
     net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
     for (int i = 0; i < containeritems.length; ++i) {

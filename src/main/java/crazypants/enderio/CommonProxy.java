@@ -145,7 +145,7 @@ public class CommonProxy {
     return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
-  public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
+  public void markBlock(World world, BlockPos pos, Vector4f color) {
   }
 
   public boolean isDedicatedServer() {

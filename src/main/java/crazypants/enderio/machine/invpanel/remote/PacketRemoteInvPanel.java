@@ -94,7 +94,7 @@ public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRem
 
     Container c = player.openContainer;
 
-    player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, pos, EnumFacing.UP, 0f, 0f, 0f);
+    player.interactionManager.processRightClickBlock(player, player.world, null, EnumHand.MAIN_HAND, pos, EnumFacing.UP, 0f, 0f, 0f);
 
     return null;
   }

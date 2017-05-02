@@ -33,7 +33,7 @@ public class AbstractPoweredBlockItem extends ItemBlock implements IInternalPowe
     
   @Override
   public void setEnergyStored(ItemStack container, int energy) {
-    NbtValue.ENERGY.setInt(container, MathHelper.clamp_int(energy, 0, getMaxEnergyStored(container)));
+    NbtValue.ENERGY.setInt(container, MathHelper.clamp(energy, 0, getMaxEnergyStored(container)));
   }
 
   @Override

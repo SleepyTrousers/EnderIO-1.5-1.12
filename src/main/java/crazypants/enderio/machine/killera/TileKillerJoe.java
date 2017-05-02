@@ -167,7 +167,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   @Override
   public void doUpdate() {
     updateArmSwingProgress();
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (doMending()) {
         hooverXP();
         if (!needsMending()) {
@@ -235,7 +235,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return false;
     }
 
-    List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
+    List<EntityLivingBase> entsInBounds = world.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if (!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
@@ -290,7 +290,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   private boolean canJoeSee(EntityLivingBase ent) {
     Vec3d entPos = new Vec3d(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
     for (EnumFacing facing1 : frontFaceAndSides) {
-      if (this.worldObj.rayTraceBlocks(new Vec3d(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
+      if (this.world.rayTraceBlocks(new Vec3d(getPos().getX() + faceMidPoints[facing1.ordinal()][0], getPos().getY() + faceMidPoints[facing1.ordinal()][1],
           getPos().getZ() + faceMidPoints[facing1.ordinal()][2]), entPos) == null)
         return true;
     }
@@ -312,7 +312,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
     double maxDist = Config.killerJoeHooverXpLength;
 
-    List<EntityXPOrb> xp = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
+    List<EntityXPOrb> xp = world.getEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), null);
 
     for (EntityXPOrb entity : xp) {
       double xDist = (getPos().getX() + 0.5D - entity.posX);
@@ -346,7 +346,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   private void hooverXP(EntityXPOrb entity) {
-    if (!worldObj.isRemote && !entity.isDead && needsMending()) {
+    if (!world.isRemote && !entity.isDead && needsMending()) {
       int xpValue = entity.getXpValue();
       int i = Math.min(xpToDurability(xpValue), inventory[0].getItemDamage());
       xpValue -= durabilityToXp(i);
@@ -394,7 +394,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     if (!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
       swingProgressInt = -1;
       isSwingInProgress = true;
-      if (worldObj instanceof WorldServer) {
+      if (world instanceof WorldServer) {
         PacketHandler.sendToAllAround(new PacketSwing(this), this);
       }
     }
@@ -513,7 +513,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }

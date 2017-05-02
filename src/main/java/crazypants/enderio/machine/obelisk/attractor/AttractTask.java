@@ -36,7 +36,7 @@ class AttractTask extends EntityAIBase {
   @Override
   public boolean continueExecuting() {
     boolean res = false;
-    TileEntity te = mob.worldObj.getTileEntity(coord);
+    TileEntity te = mob.world.getTileEntity(coord);
     if (te instanceof TileAttractor) {
       TileAttractor attractor = (TileAttractor) te;
       res = !attractor.isInvalid() && attractor.isActive() && attractor.canAttract(mob);

@@ -56,7 +56,7 @@ public class MachineRecipeInput {
     FluidStack fluid = null;
     if(root.hasKey("itemStack")) {
       NBTTagCompound stackRoot = root.getCompoundTag("itemStack");
-      item = ItemStack.loadItemStackFromNBT(stackRoot);
+      item = new ItemStack(stackRoot);
     } else if(root.hasKey("fluidStack")) {
       NBTTagCompound stackRoot = root.getCompoundTag("fluidStack");
       fluid = FluidStack.loadFluidStackFromNBT(stackRoot);

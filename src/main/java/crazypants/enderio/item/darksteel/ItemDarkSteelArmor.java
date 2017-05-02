@@ -387,7 +387,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public String getPaintName(ItemStack itemStack) {
     if (itemStack != null && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
-      ItemStack paintSource = ItemStack.loadItemStackFromNBT(itemStack.getTagCompound().getCompoundTag("DSPAINT"));
+      ItemStack paintSource = new ItemStack(itemStack.getTagCompound().getCompoundTag("DSPAINT"));
       if (paintSource == null) {
         return null;
       }
@@ -400,9 +400,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   public boolean isElytraFlying(EntityLivingBase entity, ItemStack itemstack, boolean shouldStop) {
     if (entity instanceof EntityPlayer && DarkSteelController.instance.isElytraUpgradeEquipped(itemstack)
         && DarkSteelController.instance.isElytraActive((EntityPlayer) entity)) {
-      if (shouldStop && !entity.worldObj.isRemote) {
+      if (shouldStop && !entity.world.isRemote) {
         DarkSteelController.instance.setActive((EntityPlayer) entity, Type.ELYTRA, false);
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.worldObj.provider.getDimension());
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.world.provider.getDimension());
       }
       return true;
     } else {

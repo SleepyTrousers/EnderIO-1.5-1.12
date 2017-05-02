@@ -65,10 +65,10 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   // Ender IO's teleporting
   @SubscribeEvent
   public void onTeleport(TeleportEntityEvent event) {
-    if (isTeleportPrevented(event.getEntity().worldObj, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
+    if (isTeleportPrevented(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
       event.setCanceled(true);
     }
-    if (isTeleportPrevented(event.getEntity().worldObj, event.targetX, event.targetY, event.targetZ)) {
+    if (isTeleportPrevented(event.getEntity().world, event.targetX, event.targetY, event.targetZ)) {
       event.setCanceled(true);
     }
   }
@@ -76,10 +76,10 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   // Forge's event for endermen and enderpearl teleporting
   @SubscribeEvent
   public void onEnderTeleport(EnderTeleportEvent event) {
-    if (isTeleportPrevented(event.getEntity().worldObj, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
+    if (isTeleportPrevented(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
       event.setCanceled(true);
     }
-    if (isTeleportPrevented(event.getEntity().worldObj, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
+    if (isTeleportPrevented(event.getEntity().world, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
       event.setCanceled(true);
     }
   }

@@ -56,7 +56,7 @@ public class PacketSendRecieveChannelList extends MessageTileEntity<TileTranscei
   @Override
   public IMessage onMessage(PacketSendRecieveChannelList message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileTransceiver tile = message.getTileEntity(player.worldObj);
+    TileTransceiver tile = message.getTileEntity(player.world);
     if (tile != null) {
       if (message.isSend) {
         tile.setSendChannels(message.channels);

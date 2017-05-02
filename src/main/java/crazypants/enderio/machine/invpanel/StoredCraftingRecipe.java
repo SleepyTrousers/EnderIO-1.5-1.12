@@ -72,7 +72,7 @@ public class StoredCraftingRecipe {
     for(int slotIdx = 0; slotIdx < 9; slotIdx++) {
       NBTTagCompound itemStackNBT = (NBTTagCompound) nbtRoot.getTag(Integer.toString(slotIdx));
       if(itemStackNBT != null) {
-        slots[slotIdx] = ItemStack.loadItemStackFromNBT(itemStackNBT);
+        slots[slotIdx] = new ItemStack(itemStackNBT);
         hasSlots = true;
       } else {
         slots[slotIdx] = null;

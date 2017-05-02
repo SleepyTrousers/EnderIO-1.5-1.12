@@ -30,7 +30,7 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
       return;
     }
 
-    ItemStack paintSource = ItemStack.loadItemStackFromNBT(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
+    ItemStack paintSource = new ItemStack(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
     if (paintSource == null) {
       return;
     }

@@ -68,9 +68,9 @@ public class ItemTools {
     }
     boolean movedSomething = false;
     TileEntity source = world.getTileEntity(sourcePos);
-    if (source != null && source.hasWorldObj() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
+    if (source != null && source.hasworld() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
       TileEntity target = world.getTileEntity(targetPos);
-      if (target != null && target.hasWorldObj() && canPutInto(target, targetFacing)) {
+      if (target != null && target.hasworld() && canPutInto(target, targetFacing)) {
         IItemHandler sourceHandler = getExternalInventory(world, sourcePos, sourceFacing);
         if (sourceHandler != null && hasItems(sourceHandler)) {
           IItemHandler targetHandler = getExternalInventory(world, targetPos, targetFacing);

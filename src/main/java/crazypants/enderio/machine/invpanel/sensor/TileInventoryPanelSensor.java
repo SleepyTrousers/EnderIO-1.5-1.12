@@ -124,7 +124,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   private void broadcastSignal() {
-    worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
+    world.notifyNeighborsOfStateChange(getPos(), getBlockType());
   }
 
   @Override
@@ -135,7 +135,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   public InventoryDatabaseServer getInventoryDB() {
 
     for (EnumFacing dir : EnumFacing.values()) {
-      IItemConduit con = ConduitUtil.getConduit(worldObj, this, dir, IItemConduit.class);
+      IItemConduit con = ConduitUtil.getConduit(world, this, dir, IItemConduit.class);
       if (con != null) {
         AbstractConduitNetwork<?, ?> n = con.getNetwork();
         if (n instanceof ItemConduitNetwork) {

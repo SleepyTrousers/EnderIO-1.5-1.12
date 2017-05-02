@@ -72,7 +72,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
     super.doUpdate();
 
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       return;
     }
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
@@ -100,7 +100,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
+    storedEnergyRF = MathHelper.clamp(stored, 0, getMaxEnergyStored());
   }
 
   @Override

@@ -162,7 +162,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void doUpdate() {
-    if(worldObj.isRemote) {
+    if(world.isRemote) {
       updateEntityClient();
       return;
     }
@@ -190,7 +190,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     ItemConduitNetwork icn = null;
 
     BlockPos p = pos.offset(backside);
-    TileEntity te = worldObj.getTileEntity(p);
+    TileEntity te = world.getTileEntity(p);
     if(te instanceof TileConduitBundle) {
       TileConduitBundle teCB = (TileConduitBundle) te;
       ItemConduit conduit = teCB.getConduit(ItemConduit.class);
@@ -262,8 +262,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     this.guiSortMode = sortMode;
     this.guiFilterString = filterString;
     this.guiSync = sync;
-    if (worldObj != null && !worldObj.isRemote) {
-      PacketHandler.INSTANCE.sendToDimension(new PacketGuiSettingsUpdated(this), worldObj.provider.getDimension());
+    if (world != null && !world.isRemote) {
+      PacketHandler.INSTANCE.sendToDimension(new PacketGuiSettingsUpdated(this), world.provider.getDimension());
       markDirty();
     }
   }
@@ -281,7 +281,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void addStoredCraftingRecipe(StoredCraftingRecipe recipe) {
     storedCraftingRecipes.add(recipe);
-    if (worldObj == null || worldObj.isRemote) {
+    if (world == null || world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
     } else {
       markDirty();
@@ -292,7 +292,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public void removeStoredCraftingRecipe(int index) {
     if (index >= 0 && index < storedCraftingRecipes.size()) {
       storedCraftingRecipes.remove(index);
-      if (worldObj == null || worldObj.isRemote) {
+      if (world == null || world.isRemote) {
         PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
       } else {
         markDirty();
@@ -307,9 +307,9 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void setExtractionDisabled(boolean extractionDisabled) {
     this.extractionDisabled = extractionDisabled;
-    if(worldObj != null) {
-      if (!worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.getDimension());
+    if(world != null) {
+      if (!world.isRemote) {
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), world.provider.getDimension());
       }
     }
   }

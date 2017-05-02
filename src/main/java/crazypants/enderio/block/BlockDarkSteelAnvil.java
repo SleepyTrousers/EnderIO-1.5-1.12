@@ -1,5 +1,6 @@
 package crazypants.enderio.block;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -67,7 +68,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
       @Override
       public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new GuiDarkSteelAnvil(player.inventory, player.worldObj);
+        return new GuiDarkSteelAnvil(player.inventory, player.world);
       }
     });
   }
@@ -88,14 +89,13 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return this.getUnlocalizedName();
   }
 
   @Override
-  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem,
-      EnumFacing side,
-      float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
     GuiID.GUI_ID_ANVIL.openGui(worldIn, pos, playerIn, side);
     return true;
   }

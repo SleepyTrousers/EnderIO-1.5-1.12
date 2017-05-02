@@ -48,7 +48,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity tile = message.getWorld(ctx).getTileEntity(message.getPos());
-    GuiID.facing2guiid(message.dir).openGui(player.worldObj, tile.getPos(), player, message.dir);
+    GuiID.facing2guiid(message.dir).openGui(player.world, tile.getPos(), player, message.dir);
     return null;
   }
 

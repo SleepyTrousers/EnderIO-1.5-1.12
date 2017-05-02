@@ -27,7 +27,7 @@ public class PacketObeliskFx implements IMessage, IMessageHandler<PacketObeliskF
 
   public static void create(Entity position, EnumParticleTypes... particles) {
     PacketHandler.INSTANCE.sendToAllAround(new PacketObeliskFx(position, particles),
-        new TargetPoint(position.worldObj.provider.getDimension(), position.posX, position.posY, position.posZ, 64));
+        new TargetPoint(position.world.provider.getDimension(), position.posX, position.posY, position.posZ, 64));
   }
 
   public PacketObeliskFx(Entity position, EnumParticleTypes... particles) {

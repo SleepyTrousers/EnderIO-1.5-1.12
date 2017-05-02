@@ -150,7 +150,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public float getProgress() {
-    return isActive() ? worldObj.isRemote ? progress : (float) fluidUsed / 1000 : 0;
+    return isActive() ? world.isRemote ? progress : (float) fluidUsed / 1000 : 0;
   }
   
   @Override
@@ -175,7 +175,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   @Override
   public void doUpdate() {
     super.doUpdate();
-    if (worldObj.isRemote && isActive() && worldObj.getTotalWorldTime() % 2 == 0) {
+    if (world.isRemote && isActive() && world.getTotalWorldTime() % 2 == 0) {
       doLoadingParticles();
     }
   }
@@ -190,21 +190,21 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       double yf = pos1.getY() + 0.8;
       double zf = pos1.getZ() + 0.5 + correction;
       
-      IBlockState bs = worldObj.getBlockState(pos);
+      IBlockState bs = world.getBlockState(pos);
 //      Block b = getBlockType();
 //      double yi = pos1.getY() + b.getBlockBoundsMaxY() - 0.1;
-      double yi = bs.getBoundingBox(worldObj, pos).maxY - 01.;
+      double yi = bs.getBoundingBox(world, pos).maxY - 01.;
       double offset = 0.3;
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + offset
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(world, pos1.getX() + offset + correction, yi, pos1.getZ() + offset
           + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ() + offset
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(world, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ() + offset
           + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ()
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(world, pos1.getX() + (1 - offset) + correction, yi, pos1.getZ()
           + (1 - offset) + correction, xf, yf, zf, c));
-      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(worldObj, pos1.getX() + offset + correction, yi, pos1.getZ() + (1 - offset)
+      Minecraft.getMinecraft().effectRenderer.addEffect(new EntityFluidLoadingFX(world, pos1.getX() + offset + correction, yi, pos1.getZ() + (1 - offset)
           + correction, xf, yf, zf, c));
     } else if (!playedFuse) {
-      worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1, true);
+      world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1, 1, true);
       playedFuse = true;
     }
   }
@@ -232,9 +232,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
         }
 
         if (fluidUsed >= 1000) {
-          EntityWeatherRocket e = new EntityWeatherRocket(worldObj, activeTask);
+          EntityWeatherRocket e = new EntityWeatherRocket(world, activeTask);
           e.setPosition(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5);
-          worldObj.spawnEntityInWorld(e);
+          world.spawnEntityInWorld(e);
           stopTask();
           res = true;
         }
@@ -258,7 +258,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
    * @return True if the task can be started with the item in the inventory.
    */
   public boolean canStartTask(WeatherTask task) {
-    return task != null && getActiveTask() == null && !WeatherTask.worldIsState(task, worldObj) && getStackInSlot(0) != null
+    return task != null && getActiveTask() == null && !WeatherTask.worldIsState(task, world) && getStackInSlot(0) != null
         && inputTank.getFluidAmount() >= 1000 && task == WeatherTask.fromFluid(inputTank.getFluid().getFluid());
   }
 
@@ -282,8 +282,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     if (getActiveTask() != null) {
       activeTask = null;
       fluidUsed = 0;
-      if (!worldObj.isRemote) {
-        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), worldObj.provider.getDimension());
+      if (!world.isRemote) {
+        PacketHandler.INSTANCE.sendToDimension(new PacketActivateWeather(this), world.provider.getDimension());
       } else {
         playedFuse = false;
       }

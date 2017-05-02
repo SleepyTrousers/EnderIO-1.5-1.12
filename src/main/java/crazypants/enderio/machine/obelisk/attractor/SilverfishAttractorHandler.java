@@ -35,12 +35,12 @@ public class SilverfishAttractorHandler implements IMobAttractionHandler {
   }
 
   public Path getPathEntityToEntity(Entity entity, Entity targetEntity, float range) {
-    int targX = MathHelper.floor_double(targetEntity.posX);
-    int targY = MathHelper.floor_double(targetEntity.posY + 1.0D);
-    int targZ = MathHelper.floor_double(targetEntity.posZ);
+    int targX = MathHelper.floor(targetEntity.posX);
+    int targY = MathHelper.floor(targetEntity.posY + 1.0D);
+    int targZ = MathHelper.floor(targetEntity.posZ);
 
     PathFinder pf = new PathFinder(new WalkNodeProcessor());
-    return pf.findPath(entity.worldObj, (EntityLiving) entity, new BlockPos(targX, targY, targZ), range);
+    return pf.findPath(entity.world, (EntityLiving) entity, new BlockPos(targX, targY, targZ), range);
   }
 
 }

@@ -67,7 +67,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
     baubles = BaublesUtil.instance().getBaubles(playerInv.player);
 
-    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
+    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.world) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
     }
 

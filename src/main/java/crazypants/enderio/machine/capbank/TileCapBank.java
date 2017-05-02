@@ -103,7 +103,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   public CapBankType getType() {
     if (type == null) {
-      if (!hasWorldObj()) {
+      if (!hasworld()) {
         // needed when loading from invalid NBT
         return CapBankType.VIBRANT;
       }
@@ -190,7 +190,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       if (networkId == -1) {
         if (idRequestTimer <= 0) {
           PacketHandler.INSTANCE.sendToServer(new PacketNetworkIdRequest(this));
@@ -210,7 +210,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
 
     if (redstoneStateDirty) {
-      int sig = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(worldObj, getPos());
+      int sig = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(world, getPos());
       boolean recievingSignal = sig > 0;
       network.updateRedstoneSignal(this, recievingSignal);
       redstoneStateDirty = false;
@@ -225,14 +225,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     if (displayTypesDirty) {
       displayTypesDirty = false;
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
     }
 
     // update any comparators, since they don't check themselves
     int comparatorState = getComparatorOutput();
     if (lastComparatorState != comparatorState) {
-      worldObj.updateComparatorOutputLevel(getPos(), getBlockType());
+      world.updateComparatorOutputLevel(getPos(), getBlockType());
       lastComparatorState = comparatorState;
     }
 
@@ -305,11 +305,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       validateModeForReceptor(faceHit);
       receptorsDirty = true;
     }
-    if (hasWorldObj()) {
-      IBlockState bs = worldObj.getBlockState(pos);
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
-      worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
+    if (hasworld()) {
+      IBlockState bs = world.getBlockState(pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
+      world.notifyBlockOfStateChange(getPos(), getBlockType());
+      world.notifyNeighborsOfStateChange(pos, getBlockType());
     }
   }
 
@@ -409,7 +409,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
     }
     List<EnumFacing> reset = new ArrayList<EnumFacing>();
     for (Entry<EnumFacing, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
-      IBlockState bs = worldObj.getBlockState(getPos().offset(NullHelper.notnullJ(entry.getKey(), "EnumMap.getKey()")));
+      IBlockState bs = world.getBlockState(getPos().offset(NullHelper.notnullJ(entry.getKey(), "EnumMap.getKey()")));
       if (bs.isOpaqueCube() || bs.getBlock() == blockCapBank.getBlock()) {
         reset.add(entry.getKey());
       }
@@ -599,7 +599,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   }
 
   private IPowerInterface getReceptorForFace(@Nonnull EnumFacing faceHit) {
-    TileEntity te = worldObj.getTileEntity(getPos().offset(faceHit));
+    TileEntity te = world.getTileEntity(getPos().offset(faceHit));
     if (!(te instanceof TileCapBank)) {
       return PowerHandlerUtil.getPowerInterface(te, faceHit.getOpposite());
     } else {
@@ -655,7 +655,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
 
   @Override
   public void setEnergyStored(int stored) {
-    energyStored = MathHelper.clamp_int(stored, 0, getMaxEnergyStored(null));
+    energyStored = MathHelper.clamp(stored, 0, getMaxEnergyStored(null));
     markDirty();
   }
 
@@ -853,13 +853,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
       return;
     }
     Vector3d dropLocation;
-    EntityPlayer player = worldObj.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32, false);
+    EntityPlayer player = world.getClosestPlayer(getPos().getX(), getPos().getY(), getPos().getZ(), 32, false);
     if (player != null) {
       dropLocation = EntityUtil.getEntityPosition(player);
     } else {
       dropLocation = new Vector3d(getPos());
     }
-    Util.dropItems(worldObj, inventory, (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
+    Util.dropItems(world, inventory, (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
     for (int i = 0; i < inventory.length; i++) {
       inventory[i] = null;
     }

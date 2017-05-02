@@ -48,7 +48,7 @@ public class PacketGivePlayerXP extends MessageTileEntity<TileEntity> implements
   @Override
   public IMessage onMessage(PacketGivePlayerXP message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity tile = message.getTileEntity(player.worldObj);
+    TileEntity tile = message.getTileEntity(player.world);
     if (tile instanceof IHaveExperience) {      
       IHaveExperience xpTile = (IHaveExperience)tile;
       xpTile.getContainer().givePlayerXp(player, message.levels);

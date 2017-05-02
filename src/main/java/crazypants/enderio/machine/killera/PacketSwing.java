@@ -20,7 +20,7 @@ public class PacketSwing extends MessageTileEntity<TileKillerJoe> implements IMe
   @Override
   public IMessage onMessage(PacketSwing message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileKillerJoe tile = message.getTileEntity(player.worldObj);
+    TileKillerJoe tile = message.getTileEntity(player.world);
     if (tile != null) {
       tile.swingWeapon();
     }

@@ -191,7 +191,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
         int toDrop = numPearls - existing;
         if (toDrop > 0) {
           evt.getDrops().add(
-              Util.createDrop(player.worldObj, new ItemStack(Items.ENDER_PEARL, toDrop, 0), entityLiving.posX, entityLiving.posY, entityLiving.posZ, false));
+              Util.createDrop(player.world, new ItemStack(Items.ENDER_PEARL, toDrop, 0), entityLiving.posX, entityLiving.posY, entityLiving.posZ, false));
         }
 
       }
@@ -202,7 +202,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   protected void dropSkull(LivingDropsEvent evt, EntityPlayer player) {
     ItemStack skull = getSkullForEntity(evt.getEntityLiving());
     if (skull != null && !containsDrop(evt, skull)) {
-      evt.getDrops().add(Util.createEntityItem(player.worldObj, skull, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ));
+      evt.getDrops().add(Util.createEntityItem(player.world, skull, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ));
     }
   }
 

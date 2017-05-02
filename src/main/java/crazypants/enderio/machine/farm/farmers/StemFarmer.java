@@ -48,7 +48,7 @@ public class StemFarmer extends CustomSeedFarmer {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
-    World worldObj = farm.getWorld();
+    World world = farm.getWorld();
     final EntityPlayerMP fakePlayer = farm.getFakePlayer();
     final int fortune = farm.getMaxLootingValue();
     HarvestResult result = new HarvestResult();
@@ -59,12 +59,12 @@ public class StemFarmer extends CustomSeedFarmer {
       boolean hasHoe = farm.hasHoe();
       if (plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
         result.harvestedBlocks.add(harvestCoord);
-        List<ItemStack> drops = plantedBlock.getDrops(worldObj, harvestCoord, meta, fortune);
-        float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, harvestCoord, meta, fortune, 1.0F, false, fakePlayer);
+        List<ItemStack> drops = plantedBlock.getDrops(world, harvestCoord, meta, fortune);
+        float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, harvestCoord, meta, fortune, 1.0F, false, fakePlayer);
         if (drops != null) {
           for (ItemStack drop : drops) {
-            if (worldObj.rand.nextFloat() <= chance) {
-              result.drops.add(new EntityItem(worldObj, harvestCoord.getX() + 0.5, harvestCoord.getY() + 0.5, harvestCoord.getZ() + 0.5, drop.copy()));
+            if (world.rand.nextFloat() <= chance) {
+              result.drops.add(new EntityItem(world, harvestCoord.getX() + 0.5, harvestCoord.getY() + 0.5, harvestCoord.getZ() + 0.5, drop.copy()));
             }
           }
         }
@@ -76,7 +76,7 @@ public class StemFarmer extends CustomSeedFarmer {
           ItemStack stack = inv[slot];
           if (Prep.isValid(stack)) {
             inv[slot] = Prep.getEmpty();
-            EntityItem entityitem = new EntityItem(worldObj, harvestCoord.getX() + 0.5, harvestCoord.getY() + 1, harvestCoord.getZ() + 0.5, stack);
+            EntityItem entityitem = new EntityItem(world, harvestCoord.getX() + 0.5, harvestCoord.getY() + 1, harvestCoord.getZ() + 0.5, stack);
             result.drops.add(entityitem);
           }
         }
@@ -101,9 +101,9 @@ public class StemFarmer extends CustomSeedFarmer {
 
   @Override
   protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc) {
-    World worldObj = farm.getWorld();
-    if (canPlant(farm, worldObj, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
-      return plant(farm, worldObj, bc);
+    World world = farm.getWorld();
+    if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
+      return plant(farm, world, bc);
     }
     return false;
   }

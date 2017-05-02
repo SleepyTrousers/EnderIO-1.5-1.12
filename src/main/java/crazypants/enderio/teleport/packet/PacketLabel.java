@@ -58,13 +58,13 @@ public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMess
   @Override
   public IMessage onMessage(PacketLabel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof ITravelAccessable) {
       ((ITravelAccessable) te).setLabel(message.label);      
       BlockPos pos = new BlockPos(message.x, message.y, message.z);
       IBlockState bs = te.getWorld().getBlockState(pos);
       te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);
-      player.worldObj.markChunkDirty(new BlockPos(message.x, message.y, message.z), te);      
+      player.world.markChunkDirty(new BlockPos(message.x, message.y, message.z), te);
     }
     return null;
   }

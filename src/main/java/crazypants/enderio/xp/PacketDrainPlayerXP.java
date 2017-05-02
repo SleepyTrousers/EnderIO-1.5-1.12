@@ -52,7 +52,7 @@ public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity> implement
   @Override
   public IMessage onMessage(PacketDrainPlayerXP message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity tile = message.getTileEntity(player.worldObj);
+    TileEntity tile = message.getTileEntity(player.world);
     if (tile instanceof IHaveExperience) {      
       IHaveExperience xpTile = (IHaveExperience)tile;       
       if(player.capabilities.isCreativeMode && message.isContainerLevel) {        

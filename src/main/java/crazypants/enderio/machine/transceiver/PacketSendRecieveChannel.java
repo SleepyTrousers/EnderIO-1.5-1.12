@@ -48,7 +48,7 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
   @Override
   public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileTransceiver tile = message.getTileEntity(player.worldObj);
+    TileTransceiver tile = message.getTileEntity(player.world);
     if (tile != null && message.channel != null) {
       if (message.isSend) {
         if (message.isAdd) {

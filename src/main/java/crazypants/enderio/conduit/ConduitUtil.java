@@ -122,24 +122,24 @@ public class ConduitUtil {
     return false;
   }
 
-  public static boolean forceSkylightRecalculation(World worldObj, int xCoord, int yCoord, int zCoord) {
-    return forceSkylightRecalculation(worldObj, new BlockPos(xCoord, yCoord, zCoord));
+  public static boolean forceSkylightRecalculation(World world, int xCoord, int yCoord, int zCoord) {
+    return forceSkylightRecalculation(world, new BlockPos(xCoord, yCoord, zCoord));
   }
 
-  public static boolean forceSkylightRecalculation(World worldObj, BlockPos pos) {
-    int height = worldObj.getHeight(pos).getY();
+  public static boolean forceSkylightRecalculation(World world, BlockPos pos) {
+    int height = world.getHeight(pos).getY();
     if (height <= pos.getY()) {
       for (int i = 1; i < 12; i++) {
         final BlockPos offset = pos.offset(EnumFacing.UP, i);
-        if (worldObj.isAirBlock(offset)) {
+        if (world.isAirBlock(offset)) {
           // We need to force the re-lighting of the column due to a change
           // in the light reaching below the block from the sky. To avoid
           // modifying core classes to expose this functionality I am just
           // placing then breaking
           // a block above this one to force the check
 
-          worldObj.setBlockState(offset, Blocks.STONE.getDefaultState(), 3);
-          worldObj.setBlockToAir(offset);
+          world.setBlockState(offset, Blocks.STONE.getDefaultState(), 3);
+          world.setBlockToAir(offset);
 
           return true;
         }

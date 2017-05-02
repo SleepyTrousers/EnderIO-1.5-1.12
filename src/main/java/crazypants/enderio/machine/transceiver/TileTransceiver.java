@@ -103,7 +103,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   @Override
   public void doUpdate() {
-    if (!registered && !worldObj.isRemote) {
+    if (!registered && !world.isRemote) {
       ServerChannelRegister.instance.register(this);
       registered = true;
       removeUnregsiteredChannels(sendChannels);
@@ -111,7 +111,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     }
     super.doUpdate();
 
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (sendChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
         sendChannelsDirty = false;
@@ -126,7 +126,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
   @Override
   public void invalidate() {
     super.invalidate();
-    if (registered && worldObj != null && !worldObj.isRemote) {
+    if (registered && world != null && !world.isRemote) {
       ServerChannelRegister.instance.dergister(this);
       registered = false;
     }
@@ -135,7 +135,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
-    if (registered && worldObj != null && !worldObj.isRemote) {
+    if (registered && world != null && !world.isRemote) {
       ServerChannelRegister.instance.dergister(this);
       registered = false;
     }
@@ -328,7 +328,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
       if (powerDistributor == null) {
         powerDistributor = new PowerDistributor(getLocation());
       }
-      int used = powerDistributor.transmitEnergy(worldObj, canSend);
+      int used = powerDistributor.transmitEnergy(world, canSend);
       usePower(used);
     }
   }
@@ -368,7 +368,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
       return false;
     }
     FluidStack offer = new FluidStack(fluid, 1);
-    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(worldObj, pos);
+    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(world, pos);
     for (Entry<EnumFacing, IFluidWrapper> entry : neighbours.entrySet()) {
       IoMode mode = getIoMode(entry.getKey());
       if (mode.canOutput() && entry.getValue().offer(offer) > 0) {
@@ -400,7 +400,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     if (!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
-    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(worldObj, pos);
+    Map<EnumFacing, IFluidWrapper> neighbours = FluidWrapper.wrapNeighbours(world, pos);
     for (Entry<EnumFacing, IFluidWrapper> entry : neighbours.entrySet()) {
       IoMode mode = getIoMode(entry.getKey());
       if (mode.canOutput()) {
@@ -438,7 +438,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
 
   Map<EnumFacing, IFluidHandler> getNeighbouringFluidHandlers() {
     if (neighbourFluidHandlers == null) {
-      neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(worldObj, getPos());
+      neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(world, getPos());
     }
     return neighbourFluidHandlers;
   }

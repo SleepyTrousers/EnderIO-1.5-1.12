@@ -107,7 +107,7 @@ public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, I
   EnumFacadeType getFacadeType();
 
   //NB: this has to be named differently to the TE method due to obf
-  World getBundleWorldObj();
+  World getBundleworld();
 
   /**
    * A callback for conduits to tell the conduit bundle that they have just changed in a way that changes the way the conduit bundle is rendered.

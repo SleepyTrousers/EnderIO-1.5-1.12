@@ -37,7 +37,7 @@ public class PacketNutrientTank extends MessageTileEntity<TileEntity> implements
   @Override
   public IMessage onMessage(PacketNutrientTank message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity tile = message.getTileEntity(player.worldObj);
+    TileEntity tile = message.getTileEntity(player.world);
     if (tile instanceof IHasNutrientTank) {
       ((IHasNutrientTank) tile).getNutrientTank().setFluidAmount(message.amount);
     }

@@ -22,7 +22,7 @@ public class ServerRemoteGuiManager {
     if (te instanceof TileInventoryPanel) {
       PacketHandler.INSTANCE.sendTo(new PacketPrimeInventoryPanelRemote((TileInventoryPanel) te), player);
     }
-    GuiID.GUI_ID_INVENTORY_PANEL_REMOTE.openGui(player.worldObj, player, x, y, z);
+    GuiID.GUI_ID_INVENTORY_PANEL_REMOTE.openGui(player.world, player, x, y, z);
     Ticker.create();
   }
 

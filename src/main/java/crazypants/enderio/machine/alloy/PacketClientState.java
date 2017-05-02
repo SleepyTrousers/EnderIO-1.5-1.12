@@ -43,13 +43,13 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
 
   @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
-    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.getPos());
+    TileEntity te = ctx.getServerHandler().playerEntity.world.getTileEntity(message.getPos());
     if (te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(message.mode);
             
-      IBlockState bs = ctx.getServerHandler().playerEntity.worldObj.getBlockState(message.getPos());
-      ctx.getServerHandler().playerEntity.worldObj.notifyBlockUpdate(message.getPos(), bs, bs, 3);
+      IBlockState bs = ctx.getServerHandler().playerEntity.world.getBlockState(message.getPos());
+      ctx.getServerHandler().playerEntity.world.notifyBlockUpdate(message.getPos(), bs, bs, 3);
     }
     return null;
   }

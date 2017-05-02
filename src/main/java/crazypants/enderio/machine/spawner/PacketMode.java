@@ -46,7 +46,7 @@ public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessag
 
   @Override
   public IMessage onMessage(PacketMode message, MessageContext ctx) {
-    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = ctx.getServerHandler().playerEntity.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof TilePoweredSpawner) {
       TilePoweredSpawner me = (TilePoweredSpawner) te;
       me.setSpawnMode(message.isSpawnMode);

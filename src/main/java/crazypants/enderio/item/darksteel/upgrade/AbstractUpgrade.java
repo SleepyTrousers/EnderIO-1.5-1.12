@@ -41,7 +41,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     levelCost = tag.getInteger(KEY_LEVEL_COST);
     unlocName = tag.getString(KEY_UNLOC_NAME);
     if(tag.hasKey(KEY_UPGRADE_ITEM)) {
-      upgradeItem = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag.getTag(KEY_UPGRADE_ITEM));
+      upgradeItem = new ItemStack((NBTTagCompound) tag.getTag(KEY_UPGRADE_ITEM));
     }
   }
 

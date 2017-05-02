@@ -41,7 +41,7 @@ public class PickableFarmer extends CustomSeedFarmer {
     }
     EntityPlayerMP player = farm.getFakePlayer();
     World world = farm.getWorld();
-    player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
+    player.interactionManager.processRightClickBlock(player, player.world, null, EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
 
     List<EntityItem> drops = new ArrayList<EntityItem>();
 

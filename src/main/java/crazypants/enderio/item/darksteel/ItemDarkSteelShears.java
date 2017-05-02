@@ -112,7 +112,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
-    if (player.worldObj.isRemote) {
+    if (player.world.isRemote) {
       return false;
     }
 
@@ -130,8 +130,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dx <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dx++) {
       for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dy <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dy++) {
         for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
-          Block block2 = player.worldObj.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
-          if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.worldObj, new BlockPos(x + dx, y + dy, z + dz))) {
+          Block block2 = player.world.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
+          if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.world, new BlockPos(x + dx, y + dy, z + dz))) {
             res.add(new BlockPos(x + dx, y + dy, z + dz));
           }
         }
@@ -147,7 +147,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       BlockPos bc2 = sortedTargets.get(i);
       super.onBlockStartBreak(itemstack, bc2, player);
       if (bc2 != pos) {
-        player.worldObj.setBlockToAir(bc2);
+        player.world.setBlockToAir(bc2);
       }
     }
 
@@ -158,7 +158,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
     @Override
     public boolean apply(@Nullable Entity entity) {
-      return entity instanceof IShearable && !entity.isDead && ((IShearable) entity).isShearable(null, entity.worldObj, entity.getPosition());
+      return entity instanceof IShearable && !entity.isDead && ((IShearable) entity).isShearable(null, entity.world, entity.getPosition());
     }
 
     @Override
@@ -169,7 +169,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-    if (entity.worldObj.isRemote) {
+    if (entity.world.isRemote) {
       return false;
     }
 
@@ -184,7 +184,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
           entity.posX + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY + Config.darkSteelShearsEntityAreaBoostWhenPowered,
           entity.posZ + Config.darkSteelShearsEntityAreaBoostWhenPowered);
 
-      List<Entity> sortedTargets = new ArrayList<Entity>(entity.worldObj.getEntitiesWithinAABB(Entity.class, bb, selectShearable));
+      List<Entity> sortedTargets = new ArrayList<Entity>(entity.world.getEntitiesWithinAABB(Entity.class, bb, selectShearable));
       entityComparator.refPoint = entity;
       Collections.sort(sortedTargets, entityComparator);
 

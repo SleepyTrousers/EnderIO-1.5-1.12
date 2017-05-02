@@ -37,7 +37,7 @@ public class HandleEnum implements IHandler<Enum<?>> {
     if (nbt.hasKey(name) && (object != null || field != null)) {
 //      System.out.println("HandleEnum.read: ");
       Enum<?>[] enumConstants = (Enum<?>[]) (object != null ? object.getClass().getEnumConstants() : field.getType().getEnumConstants());
-      Enum<?> res = enumConstants[MathHelper.clamp_int(nbt.getInteger(name), 0, enumConstants.length - 1)];
+      Enum<?> res = enumConstants[MathHelper.clamp(nbt.getInteger(name), 0, enumConstants.length - 1)];
 //      System.out.println("HandleEnum.read: " + res);
       return  res;
     } else {

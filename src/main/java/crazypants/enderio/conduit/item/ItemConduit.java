@@ -183,7 +183,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
     if(ConduitUtil.isProbeEquipped(player, hand)) {
-      if(!player.worldObj.isRemote) {
+      if(!player.world.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
@@ -213,7 +213,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       if(res != null && res.component != null) {
         EnumFacing connDir = res.component.dir;
         if (connDir != null && containsExternalConnection(connDir)) {
-          if(!player.worldObj.isRemote) {
+          if(!player.world.isRemote) {
             PacketConduitProbe.sendInfoMessage(player, this, player.getHeldItem(hand));
           }
           return true;
@@ -320,7 +320,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     if (!externalConnections.contains(dir)) {
       return false;
     }
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     if (world == null) {
       return false;
     }
@@ -441,7 +441,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   public IItemHandler getExternalInventory(EnumFacing direction) {
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     if(world == null) {
       return null;
     }
@@ -772,28 +772,28 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       key = "speedUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        ItemStack ups = new ItemStack(upTag);
         speedUpgrades.put(dir, ups);
       }
 
       key = "functionUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        ItemStack ups = new ItemStack(upTag);
         functionUpgrades.put(dir, ups);
       }
 
       key = "inputFilterUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        ItemStack ups = new ItemStack(upTag);
         inputFilterUpgrades.put(dir, ups);
       }
 
       key = "outputFilterUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        ItemStack ups = new ItemStack(upTag);
         outputFilterUpgrades.put(dir, ups);
       }
 

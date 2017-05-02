@@ -58,7 +58,7 @@ public class PacketUpdateLocationPrintout implements IMessage, IMessageHandler<P
       return null;
     }     
     if (!ctx.getServerHandler().playerEntity.inventory.addItemStackToInventory(stack)) {
-      ItemUtil.spawnItemInWorldWithRandomMotion(player.worldObj, stack, player.getPosition());
+      ItemUtil.spawnItemInWorldWithRandomMotion(player.world, stack, player.getPosition());
     }
     return null;
   }

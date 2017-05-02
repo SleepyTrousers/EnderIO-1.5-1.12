@@ -228,17 +228,17 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
   }
   
   @Override
-  public boolean addLandingEffects(IBlockState state, net.minecraft.world.WorldServer worldObj, BlockPos bp, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles ) {
+  public boolean addLandingEffects(IBlockState state, net.minecraft.world.WorldServer world, BlockPos bp, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles ) {
     //TODO: Should probably register a dummy state for this, but this gives a nice generic grey color for non facded blocks
     int stateId = Block.getStateId(blockTank.getBlock().getDefaultState());
-    TileConduitBundle te = getTileEntity(worldObj, bp);
+    TileConduitBundle te = getTileEntity(world, bp);
     if(te != null) {
       IBlockState ps = te.getPaintSource();
       if(ps != null) {
         stateId = Block.getStateId(ps);
       }
     }
-    worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, bp.getX() + 0.5, bp.getY() + 1, bp.getZ() + 0.5, numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {stateId});
+    world.spawnParticle(EnumParticleTypes.BLOCK_DUST, bp.getX() + 0.5, bp.getY() + 1, bp.getZ() + 0.5, numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D, new int[] {stateId});
     return true;
   }
 
@@ -475,7 +475,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       if (held == null || held.getItem().getHarvestLevel(held, "pickaxe") == -1) {
         event.setNewSpeed(event.getNewSpeed() + 2);
       }
-      IConduitBundle te = (IConduitBundle) event.getEntity().worldObj.getTileEntity(event.getPos());
+      IConduitBundle te = (IConduitBundle) event.getEntity().world.getTileEntity(event.getPos());
       if (te != null && te.getFacadeType().isHardened()) {
         if (!YetaUtil.isSolidFacadeRendered(te, event.getEntityPlayer())) {
           event.setNewSpeed(event.getNewSpeed() * 6);
@@ -598,7 +598,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     }
 
     BlockCoord bc = te.getLocation();
-    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleWorldObj(), bc.x, bc.y, bc.z);
+    ConduitUtil.playBreakSound(SoundType.METAL, te.getBundleworld(), bc.x, bc.y, bc.z);
 
     return true;
   }

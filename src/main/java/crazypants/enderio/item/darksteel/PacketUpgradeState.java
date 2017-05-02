@@ -56,7 +56,7 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
       DarkSteelController.instance.setActive(player, message.type, message.isActive);
       if (ctx.side.isServer()) {
         message.entityID = player.getEntityId();
-        PacketHandler.INSTANCE.sendToDimension(message, player.worldObj.provider.getDimension());
+        PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
       }
     }
     return null;

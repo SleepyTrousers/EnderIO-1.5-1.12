@@ -95,7 +95,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         setInventorySlotContents(1, res);
       }
     } else {
-      this.worldObj.destroyBlock(getPos(), true);
+      this.world.destroyBlock(getPos(), true);
     }
 
     if (sendNotification) {
@@ -135,13 +135,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
     if (!hasEntity()) {
-      this.worldObj.destroyBlock(getPos(), true);
+      this.world.destroyBlock(getPos(), true);
       return null;
     }
     if (isSpawnMode) {
       if (Config.poweredSpawnerMaxPlayerDistance > 0) {
         BlockPos p = getPos();
-        if (worldObj.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, Config.poweredSpawnerMaxPlayerDistance, false) == null) {
+        if (world.getClosestPlayer(p.getX() + 0.5, p.getX() + 0.5, p.getX() + 0.5, Config.poweredSpawnerMaxPlayerDistance, false) == null) {
           setNotification(SpawnerNotification.NO_PLAYER);
           return null;
         }
@@ -197,16 +197,16 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   @Override
   protected void updateEntityClient() {
     if (isActive()) {
-      double x = getPos().getX() + worldObj.rand.nextFloat();
-      double y = getPos().getY() + worldObj.rand.nextFloat();
-      double z = getPos().getZ() + worldObj.rand.nextFloat();
-      worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
-      worldObj.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
+      double x = getPos().getX() + world.rand.nextFloat();
+      double y = getPos().getY() + world.rand.nextFloat();
+      double z = getPos().getZ() + world.rand.nextFloat();
+      world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
+      world.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0.0D, 0.0D, 0.0D);
 
       this.prevMobRotation = this.mobRotation;
       this.mobRotation = (this.mobRotation + 1000.0F / ((1F - getProgress()) * 800F + 200.0F)) % 360.0D;
       if (cachedEntity == null && hasEntity()) {
-        cachedEntity = capturedMob.getEntity(worldObj, pos, null, false);
+        cachedEntity = capturedMob.getEntity(world, pos, null, false);
         cachedEntity.setDead();
       }
     }
@@ -230,9 +230,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
-    boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.getEntityBoundingBox())
-        && worldObj.getCollisionBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
-        && (!worldObj.containsAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
+    boolean spaceClear = world.checkNoEntityCollision(entityliving.getEntityBoundingBox())
+        && world.getCollisionBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
+        && (!world.containsAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
     if (spaceClear && Config.poweredSpawnerUseVanillaSpawChecks) {
       // Full checks for lighting, dimension etc
       spaceClear = entityliving.getCanSpawnHere();
@@ -241,16 +241,16 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   Entity createEntity(DifficultyInstance difficulty, boolean forceAlive) {
-    Entity ent = capturedMob.getEntity(worldObj, pos, difficulty, false);
+    Entity ent = capturedMob.getEntity(world, pos, difficulty, false);
     if (forceAlive && Config.poweredSpawnerMaxPlayerDistance <= 0 && Config.poweredSpawnerDespawnTimeSeconds > 0 && ent instanceof EntityLiving) {
-      ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, worldObj.getTotalWorldTime());
+      ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, world.getTotalWorldTime());
       ((EntityLiving) ent).enablePersistence();
     }
     return ent;
   }
 
   protected boolean trySpawnEntity() {
-    Entity entity = createEntity(worldObj.getDifficultyForLocation(getPos()), true);
+    Entity entity = createEntity(world.getDifficultyForLocation(getPos()), true);
     if (!(entity instanceof EntityLiving)) {
       cleanupUnspawnedEntity(entity);
       setNotification(SpawnerNotification.BAD_SOUL);
@@ -261,7 +261,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     int spawnRange = getRange();
 
     if (Config.poweredSpawnerMaxNearbyEntities > 0) {
-      int nearbyEntities = worldObj.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange), EntitySelectors.IS_ALIVE).size();
+      int nearbyEntities = world.getEntitiesWithinAABB(entity.getClass(), getBounds().expand(spawnRange, 2, spawnRange), EntitySelectors.IS_ALIVE).size();
       if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {
         cleanupUnspawnedEntity(entity);
         setNotification(SpawnerNotification.AREA_FULL);
@@ -271,15 +271,15 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     }
 
     for (int i = 0; i < Config.poweredSpawnerMaxSpawnTries; i++) {
-      double x = getPos().getX() + .5 + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
-      double y = getPos().getY() + worldObj.rand.nextInt(3) - 1;
-      double z = getPos().getZ() + .5 + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * spawnRange;
+      double x = getPos().getX() + .5 + (world.rand.nextDouble() - world.rand.nextDouble()) * spawnRange;
+      double y = getPos().getY() + world.rand.nextInt(3) - 1;
+      double z = getPos().getZ() + .5 + (world.rand.nextDouble() - world.rand.nextDouble()) * spawnRange;
 
-      entity.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+      entity.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0F, 0.0F);
 
       if (canSpawnEntity(entityliving)) {
-        worldObj.spawnEntityInWorld(entityliving);
-        worldObj.playEvent(2004, getPos(), 0);
+        world.spawnEntityInWorld(entityliving);
+        world.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
         final Entity ridingEntity = entity.getRidingEntity();
         if (ridingEntity != null) {
@@ -310,7 +310,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   protected boolean anyLocationInRange() {
-    Entity entity = createEntity(worldObj.getDifficultyForLocation(getPos()), true);
+    Entity entity = createEntity(world.getDifficultyForLocation(getPos()), true);
     if (!(entity instanceof EntityLiving)) {
       cleanupUnspawnedEntity(entity);
       setNotification(SpawnerNotification.BAD_SOUL);
@@ -320,14 +320,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     EntityLiving entityliving = (EntityLiving) entity;
     int spawnRange = Config.poweredSpawnerSpawnRange;
 
-    int minxi = MathHelper.floor_double(getPos().getX() + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
-    int maxxi = MathHelper.floor_double(getPos().getX() + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
+    int minxi = MathHelper.floor(getPos().getX() + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
+    int maxxi = MathHelper.floor(getPos().getX() + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
 
     int minyi = getPos().getY() + 0 - 1;
     int maxyi = getPos().getY() + 2 - 1;
 
-    int minzi = MathHelper.floor_double(getPos().getZ() + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
-    int maxzi = MathHelper.floor_double(getPos().getZ() + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
+    int minzi = MathHelper.floor(getPos().getZ() + (0.0d - Math.nextAfter(1.0d, 0.0d)) * spawnRange);
+    int maxzi = MathHelper.floor(getPos().getZ() + (Math.nextAfter(1.0d, 0.0d) - 0.0d) * spawnRange);
 
     for (int x = minxi; x <= maxxi; x++) {
       for (int y = minyi; y <= maxyi; y++) {
@@ -401,7 +401,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       if (bounds == null) {
         bounds = new BoundingBox(getPos()).expand(getRange(), 1d, getRange());
         if (capturedMob != null) {
-          Entity ent = capturedMob.getEntity(worldObj, false);
+          Entity ent = capturedMob.getEntity(world, false);
           if (ent != null) {
             int height = Math.max((int) Math.ceil(ent.height) - 1, 0);
             bounds = bounds.setMaxY(bounds.maxY + height);

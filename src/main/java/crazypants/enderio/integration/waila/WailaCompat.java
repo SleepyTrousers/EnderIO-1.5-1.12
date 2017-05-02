@@ -86,7 +86,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(te == null) {
         return null;
       }
-      te.setWorldObj(this);
+      te.setworld(this);
       te.setPos(pos);
       return te;
     }

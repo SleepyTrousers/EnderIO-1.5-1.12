@@ -36,11 +36,11 @@ public class PacketActive extends MessageTileEntity<TileInventoryPanelSensor> im
   @Override
   public IMessage onMessage(PacketActive message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileInventoryPanelSensor te = message.getTileEntity(player.worldObj);
+    TileInventoryPanelSensor te = message.getTileEntity(player.world);
     if(te != null) {
       if(message.active != te.isActive()) {
         te.setActive(message.active);
-        player.worldObj.markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+        player.world.markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
       }
     }
     return null;

@@ -116,12 +116,12 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       super.doUpdate(); // disable ticking on the client
       return;
     }
 
-    boolean isActivated = init ? worldObj.isBlockPowered(pos) ^ isInvereted : lastActive;
+    boolean isActivated = init ? world.isBlockPowered(pos) ^ isInvereted : lastActive;
     if(requiresPower) {
       if(isActivated) {
         if(!hasPower()) {
@@ -138,25 +138,25 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
     if(isActivated != lastActive || init) {
 
-      IBlockState bs = worldObj.getBlockState(pos);
+      IBlockState bs = world.getBlockState(pos);
       bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
-      worldObj.setBlockState(pos, bs, 2);
+      world.setBlockState(pos, bs, 2);
 
       if(requiresPower) {
         for (BlockPos ln : lightNodes) {
           if(ln != null) {
-            bs = worldObj.getBlockState(ln);
+            bs = world.getBlockState(ln);
             if (bs.getBlock() == blockLightNode.getBlock()) {
               bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
-              worldObj.setBlockState(ln, bs, 2);
-              worldObj.notifyBlockUpdate(ln, bs, bs, 3);
-              worldObj.checkLightFor(EnumSkyBlock.BLOCK, ln);
+              world.setBlockState(ln, bs, 2);
+              world.notifyBlockUpdate(ln, bs, bs, 3);
+              world.checkLightFor(EnumSkyBlock.BLOCK, ln);
             }
           }
         }
       }
-      worldObj.notifyBlockUpdate(pos, bs, bs, 3);
-      worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+      world.notifyBlockUpdate(pos, bs, bs, 3);
+      world.checkLightFor(EnumSkyBlock.BLOCK, pos);
       init = false;
       lastActive = isActivated;
       
@@ -236,8 +236,8 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
         for (BlockPos entry : after) {
           if (!before.contains(entry)) {
-            worldObj.setBlockState(entry, blockLightNode.getBlock().getDefaultState(), 3);
-            TileEntity te = worldObj.getTileEntity(entry);
+            world.setBlockState(entry, blockLightNode.getBlock().getDefaultState(), 3);
+            TileEntity te = world.getTileEntity(entry);
             if (te instanceof TileLightNode) {
               ((TileLightNode) te).setParentPos(getPos());
               lightNodes.add(entry);
@@ -248,9 +248,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
         }
         for (BlockPos entry : before) {
           if (!after.contains(entry)) {
-            TileEntity te = worldObj.getTileEntity(entry);
+            TileEntity te = world.getTileEntity(entry);
             if ((te instanceof TileLightNode) && (((TileLightNode) te).parent == null || ((TileLightNode) te).parent.equals(getPos()))) {
-              worldObj.setBlockToAir(entry);
+              world.setBlockToAir(entry);
             }
           }
         }
@@ -301,14 +301,14 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private boolean isLightNode(Vector3d offset) {
     BlockPos bp = new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ()  + (int) offset.z);
-    return worldObj.getBlockState(bp).getBlock() == blockLightNode.getBlock() && worldObj.getTileEntity(bp) instanceof TileLightNode;
+    return world.getBlockState(bp).getBlock() == blockLightNode.getBlock() && world.getTileEntity(bp) instanceof TileLightNode;
   }
 
   private void clearLightNodes() {
     if(lightNodes != null) {
       for (BlockPos ln : lightNodes) {
-        if (worldObj.getBlockState(ln).getBlock() == blockLightNode.getBlock()) {
-          worldObj.setBlockToAir(ln);
+        if (world.getBlockState(ln).getBlock() == blockLightNode.getBlock()) {
+          world.setBlockToAir(ln);
         }
       }
       lightNodes.clear();
@@ -321,7 +321,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     int z = getPos().getZ() + (int) offset.z;
 
     if(isLightNode(offset)) {
-      TileLightNode te = (TileLightNode) worldObj.getTileEntity(new BlockPos(x, y, z));
+      TileLightNode te = (TileLightNode) world.getTileEntity(new BlockPos(x, y, z));
       if (te != null && te.parent != null && !getPos().equals(te.parent)) {
         // its somebody else's so leave it alone
         return;
@@ -336,15 +336,15 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   private boolean isTranparent(Vector3d offset) {
-    Block id = worldObj.getBlockState(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)).getBlock();
+    Block id = world.getBlockState(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)).getBlock();
     if(isRailcraftException(id)) {
       return false;
     }
-    return worldObj.getBlockLightOpacity(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) == 0;
+    return world.getBlockLightOpacity(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) == 0;
   }
 
   private boolean isAir(Vector3d offset) {
-    return worldObj.isAirBlock(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) || isLightNode(offset);
+    return world.isAirBlock(new BlockPos(getPos().getX() + (int) offset.x, getPos().getY() + (int) offset.y, getPos().getZ() + (int) offset.z)) || isLightNode(offset);
   }
 
   public boolean hasPower() {

@@ -68,8 +68,8 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   
   @Override
   public void doUpdate() {
-    if (!hasWorldObj() || worldObj.isRemote) {
-      if (worldObj.isRemote) {
+    if (!hasworld() || world.isRemote) {
+      if (world.isRemote) {
         super.doUpdate(); // disable ticking on the client
       }
       return;
@@ -94,7 +94,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   int getEnergyPerTick() {
-    return getEnergyPerTick(worldObj, pos);
+    return getEnergyPerTick(world, pos);
   }
 
   static int getEnergyPerTick(World world, BlockPos pos) {
@@ -107,11 +107,11 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   float calculateLightRatio() {
-    return calculateLightRatio(worldObj);
+    return calculateLightRatio(world);
   }
 
   boolean canSeeSun() {
-    return canSeeSun(worldObj, pos);
+    return canSeeSun(world, pos);
   }
 
   static boolean canSeeSun(World world, BlockPos pos) {
@@ -130,12 +130,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
     lightValue = Math.round(lightValue * MathHelper.cos(sunAngle));
 
-    lightValue = MathHelper.clamp_int(lightValue, 0, 15);
+    lightValue = MathHelper.clamp(lightValue, 0, 15);
     return lightValue / 15f;
   }
 
   private void transmitEnergy() {
-    IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(worldObj.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
+    IPowerInterface receptor = PowerHandlerUtil.getPowerInterface(world.getTileEntity(getPos().offset(EnumFacing.DOWN)), EnumFacing.UP);
     if (receptor != null) {
       int canTransmit = network.getEnergyAvailableThisTick(); // <-- potentially expensive operation
       if (canTransmit > 0) {

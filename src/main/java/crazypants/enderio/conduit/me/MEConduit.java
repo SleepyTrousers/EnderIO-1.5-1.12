@@ -130,7 +130,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   @Method(modid = "appliedenergistics2")
   public boolean canConnectToExternal(EnumFacing dir, boolean ignoreDisabled) {
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     BlockCoord pos = getLocation();
     TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos.getLocation(dir).getBlockPos());
 
@@ -184,12 +184,12 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   @Method(modid = "appliedenergistics2")
-  public void updateEntity(World worldObj) {
+  public void updateEntity(World world) {
     if(grid == null) {
       grid = new MEConduitGrid(this);
     }
 
-    if(getNode() == null && !worldObj.isRemote) {
+    if(getNode() == null && !world.isRemote) {
       IGridNode node = AEApi.instance().createGridNode(grid);
       if(node != null) {
         node.setPlayerID(playerID);
@@ -198,7 +198,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       }
     }
 
-    super.updateEntity(worldObj);
+    super.updateEntity(world);
   }
 
   @Override
@@ -266,7 +266,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Method(modid = "appliedenergistics2")
   private void onNodeChanged(BlockCoord location) {
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     for (EnumFacing dir : EnumFacing.VALUES) {
       TileEntity te = location.getLocation(dir).getTileEntity(world);
       if(te != null && te instanceof IGridHost && !(te instanceof IConduitBundle)) {
@@ -284,7 +284,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public void onAddedToBundle() {
     for (EnumFacing dir : EnumFacing.VALUES) {
-      TileEntity te = getLocation().getLocation(dir).getTileEntity(getBundle().getBundleWorldObj());
+      TileEntity te = getLocation().getLocation(dir).getTileEntity(getBundle().getBundleworld());
       if(te instanceof TileConduitBundle) {
         IMEConduit cond = ((TileConduitBundle) te).getConduit(IMEConduit.class);
         if(cond != null) {
@@ -305,8 +305,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   @Method(modid = "appliedenergistics2")
-  public void onChunkUnload(World worldObj) {
-    super.onChunkUnload(worldObj);
+  public void onChunkUnload(World world) {
+    super.onChunkUnload(world);
     if(getNode() != null) {
       getNode().destroy();
       getBundle().setGridNode(null);

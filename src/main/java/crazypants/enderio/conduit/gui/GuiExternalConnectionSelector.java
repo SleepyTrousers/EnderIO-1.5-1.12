@@ -65,7 +65,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   @Override
   protected void keyTyped(char typedChar, int keyCode) throws IOException {
     if (keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
-      mc.thePlayer.closeScreen();
+      mc.player.closeScreen();
     }
 
     if (won && keyCode == mc.gameSettings.keyBindForward.getKeyCode()) {
@@ -94,7 +94,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   protected void findBlockDataForDirection(EnumFacing direction) {
-    World world = cb.getBundleWorldObj();
+    World world = cb.getBundleworld();
     BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);

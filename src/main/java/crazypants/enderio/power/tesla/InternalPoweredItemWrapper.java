@@ -57,7 +57,7 @@ public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder,
   }
 
   public void setEnergyStored(int energy) {
-    NbtValue.ENERGY.setInt(container, MathHelper.clamp_int(energy, 0, capacity));
+    NbtValue.ENERGY.setInt(container, MathHelper.clamp(energy, 0, capacity));
   }
 
   @Override

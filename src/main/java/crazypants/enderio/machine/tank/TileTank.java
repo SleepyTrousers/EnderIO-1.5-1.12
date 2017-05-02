@@ -67,7 +67,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     if (dir != null && tank.getFluidAmount() > 0) {
-      if (FluidWrapper.transfer(tank, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(tank, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }
@@ -78,7 +78,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }
@@ -165,14 +165,14 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     }
     if (tankDirty && canSendClientUpdate()) {
       PacketHandler.sendToAllAround(new PacketTankFluid(this), this);
-      worldObj.updateComparatorOutputLevel(pos, getBlockType());
+      world.updateComparatorOutputLevel(pos, getBlockType());
       int thisFluidLuminosity = tank.getFluid() == null || tank.getFluid().getFluid() == null || tank.getFluidAmount() == 0 ? 0 : tank.getFluid().getFluid()
           .getLuminosity(tank.getFluid());
       if (thisFluidLuminosity != lastFluidLuminosity) {
-        worldObj.checkLight(getPos());
-        worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 3);
-        // worldObj.notifyLightSet(getPos());
-        // worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+        world.checkLight(getPos());
+        world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
+        // world.notifyLightSet(getPos());
+        // world.checkLightFor(EnumSkyBlock.BLOCK, pos);
         // updateBlock();
         lastFluidLuminosity = thisFluidLuminosity;
       }

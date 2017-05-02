@@ -38,7 +38,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
   @Override
   public IMessage onMessage(PacketStoredEnergy message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(BlockPos.fromLong(message.pos));
+    TileEntity te = player.world.getTileEntity(BlockPos.fromLong(message.pos));
     if (te instanceof TileWirelessCharger) {
       TileWirelessCharger me = (TileWirelessCharger) te;
       boolean doRender = (me.storedEnergyRF > 0) != (message.storedEnergy > 0);

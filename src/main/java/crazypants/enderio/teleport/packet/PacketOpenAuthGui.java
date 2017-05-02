@@ -39,7 +39,7 @@ public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAu
 
   @Override
   public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
-    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.worldObj, new BlockPos(message.x, message.y, message.z),
+    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.world, new BlockPos(message.x, message.y, message.z),
         ctx.getServerHandler().playerEntity, null);
     return null;
   }

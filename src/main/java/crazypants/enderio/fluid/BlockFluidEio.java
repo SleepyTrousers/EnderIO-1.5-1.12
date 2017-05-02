@@ -189,7 +189,7 @@ public class BlockFluidEio extends BlockFluidClassic {
       final EntityPlayer player = event.getPlayer();
       // the event has the wrong BlockPos (entity center instead of eyes)
       final BlockPos blockpos = new BlockPos(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-      final Block block = player.worldObj.getBlockState(blockpos).getBlock();
+      final Block block = player.world.getBlockState(blockpos).getBlock();
 
       if (block instanceof BlockFluidEio) {
         float fogColorRed = ((BlockFluidEio) block).fogColorRed;
@@ -558,7 +558,7 @@ public class BlockFluidEio extends BlockFluidClassic {
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
       if (!world.isRemote && entity instanceof EntityPlayerMP) {
-        long time = entity.worldObj.getTotalWorldTime();
+        long time = entity.world.getTotalWorldTime();
         EntityPlayerMP player = (EntityPlayerMP) entity;
         if (time % Config.nutrientFoodBoostDelay == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
           player.getFoodStats().addStats(1, 0.1f);

@@ -83,14 +83,14 @@ public class GuiLocationPrintout extends GuiScreenBase {
 
   @Override
   protected void actionPerformed(GuiButton button) throws IOException {
-    mc.thePlayer.closeScreen();
+    mc.player.closeScreen();
   }
 
   @Override
   protected void keyTyped(char c, int key) throws IOException {
     if (key == 1 || key == 28) { // esc + enter
       isCancelled = key == 1;
-      mc.thePlayer.closeScreen();
+      mc.player.closeScreen();
       return;
     }
     tf.textboxKeyTyped(c, key);

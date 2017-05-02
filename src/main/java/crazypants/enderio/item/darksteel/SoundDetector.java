@@ -64,7 +64,7 @@ public class SoundDetector {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
 
-    if (!enabled || mc.thePlayer == null || mc.thePlayer.worldObj == null) {
+    if (!enabled || mc.player == null || mc.player.world == null) {
       return;
     }
 
@@ -72,12 +72,12 @@ public class SoundDetector {
     soundQueue.drainTo(sounds);
 
     try {
-      Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
+      Vector3d eye = Util.getEyePositionEio(mc.player);
       for (SoundSource ss : sounds) {
         double distSq = ss.pos.distanceSquared(eye);
         int minDist = ss.isEntity ? 4 : 49;
         if (distSq > minDist && distSq <= maxRangeSq) {
-          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundParticle(mc.thePlayer.worldObj, ss));
+          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundParticle(mc.player.world, ss));
         }
       }
     } catch (Exception ex) {

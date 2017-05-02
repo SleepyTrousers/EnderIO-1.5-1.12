@@ -38,7 +38,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable implements
 
   @Override
   public void switchGui() {
-    GuiID.GUI_ID_TELEPAD.openClientGui(world, te.getTileEntity().getPos(), mc.thePlayer, null);
+    GuiID.GUI_ID_TELEPAD.openClientGui(world, te.getTileEntity().getPos(), mc.player, null);
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD));
   }
 }

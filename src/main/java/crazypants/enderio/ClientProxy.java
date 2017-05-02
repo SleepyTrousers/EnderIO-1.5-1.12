@@ -201,8 +201,8 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
-    Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(worldObj, pos, color));
+  public void markBlock(World world, BlockPos pos, Vector4f color) {
+    Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(world, pos, color));
   }
 
   @Override

@@ -81,7 +81,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   public int getMetadata(ItemStack stack) {
-    return MathHelper.clamp_int(stack != null ? stack.getItemDamage() : 0, 0, DefaultCapacitorData.values().length - 1);
+    return MathHelper.clamp(stack != null ? stack.getItemDamage() : 0, 0, DefaultCapacitorData.values().length - 1);
   }
 
   @Override

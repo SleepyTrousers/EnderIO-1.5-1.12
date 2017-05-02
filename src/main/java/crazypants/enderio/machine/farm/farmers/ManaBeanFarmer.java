@@ -15,7 +15,7 @@ public class ManaBeanFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockPos bc) {
-    return getPlantedBlock().canPlaceBlockOnSide(worldObj, bc, EnumFacing.DOWN);
+  protected boolean canPlant(TileFarmStation farm, World world, BlockPos bc) {
+    return getPlantedBlock().canPlaceBlockOnSide(world, bc, EnumFacing.DOWN);
   }
 }

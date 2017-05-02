@@ -83,7 +83,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     if (dir != null && outputTank.getFluidAmount() > 0) {
-      if (FluidWrapper.transfer(outputTank, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(outputTank, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }
@@ -94,7 +94,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && inputTank.getFluidAmount() < inputTank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), inputTank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), inputTank, IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }

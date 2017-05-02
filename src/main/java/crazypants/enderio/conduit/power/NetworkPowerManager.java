@@ -258,7 +258,7 @@ public class NetworkPowerManager {
       }
       return;
     }
-    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);
+    energyStored = MathHelper.clamp(energyStored, 0, maxEnergyStored);
 
     float filledRatio = (float) energyStored / maxEnergyStored;
     int energyLeft = energyStored;
@@ -291,7 +291,7 @@ public class NetworkPowerManager {
       con.onTick();
       energyStored += con.getEnergyStored(null);
     }
-    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);
+    energyStored = MathHelper.clamp(energyStored, 0, maxEnergyStored);
   }
 
   public void receptorsChanged() {

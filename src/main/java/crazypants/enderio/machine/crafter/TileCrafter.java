@@ -25,6 +25,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
@@ -153,11 +154,11 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       ItemStack req = craftingGrid.getStackInSlot(j);
       if (req != null) {
         for (int i = 0; i < 9; i++) {
-          if (inventory[i] != null && inventory[i].stackSize > usedItems[i] && compareDamageable(inventory[i], req)) {
+          if (inventory[i] != null && inventory[i].getCount() > usedItems[i] && compareDamageable(inventory[i], req)) {
             req = null;
             usedItems[i]++;
             ItemStack craftingItem = inventory[i].copy();
-            craftingItem.stackSize = 1;
+            craftingItem.setCount(1);
             inv.setInventorySlotContents(j, craftingItem);
             break;
           }
@@ -169,17 +170,17 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }
 
     // (2) Try to craft with the temp grid
-    ItemStack output = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
+    ItemStack output = CraftingManager.getInstance().findMatchingRecipe(inv, world);
 
     // (3) If we got a result, ...
     if (output != null) {
       if (playerInst == null) {
-        playerInst = new FakePlayerEIO(worldObj, getLocation(), DUMMY_PROFILE);
+        playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE);
         playerInst.setOwner(getOwner());
       }
       MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
 
-      ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(inv, worldObj);
+      NonNullList<ItemStack> remaining = CraftingManager.getInstance().getRemainingItems(inv, world);
 
       // (3a) ... remove the used up items and ...
       for (int i = 0; i < 9; i++) {
@@ -188,11 +189,9 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
         }
       }
       
-      if (remaining != null) {
-        for(ItemStack stack : remaining) {
-          if(stack != null) {
-            containerItems.add(stack.copy());
-          }
+      for(ItemStack stack : remaining) {
+        if(stack != null) {
+          containerItems.add(stack.copy());
         }
       }
 
@@ -294,7 +293,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     for (int i = 0; i < 9; i++) {
       inv.setInventorySlotContents(i, craftingGrid.getStackInSlot(i));
     }
-    ItemStack matches = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
+    ItemStack matches = CraftingManager.getInstance().findMatchingRecipe(inv, world);
     craftingGrid.setInventorySlotContents(9, matches);
     markDirty();
   }

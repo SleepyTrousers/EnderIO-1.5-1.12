@@ -71,7 +71,7 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
   @Override
   public IMessage onMessage(PacketIoMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(message.x, message.y, message.z));
+    TileEntity te = player.world.getTileEntity(new BlockPos(message.x, message.y, message.z));
     if(te instanceof IIoConfigurable) {
       IIoConfigurable me = (IIoConfigurable) te;
       if(message.face == null) {

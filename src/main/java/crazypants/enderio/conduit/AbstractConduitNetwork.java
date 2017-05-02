@@ -83,7 +83,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       error = true;
     } else {
       final TileEntity newte = newbundle.getEntity();
-      if (!newte.hasWorldObj()) {
+      if (!newte.hasworld()) {
         Log.info("Tried to add invalid (no world) conduit to network: ", newconduit);
         error = true;
       }
@@ -117,12 +117,12 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
       // Step 2.2: Check if the old conduit's TE is valid
       final IConduitBundle oldbundle = oldconduit.getBundle();
       final TileEntity oldte = oldbundle.getEntity();
-      if (oldte == null || oldte.isInvalid() || !oldte.hasWorldObj()) {
+      if (oldte == null || oldte.isInvalid() || !oldte.hasworld()) {
         oldconduit.setNetwork(null);
         continue; // bad conduit, skip it
       }
       // Step 2.2b: Check if the target position is loaded
-      final World oldworld = oldbundle.getBundleWorldObj();
+      final World oldworld = oldbundle.getBundleworld();
       final BlockPos oldpos = oldte.getPos();
       if (!oldworld.isBlockLoaded(oldpos)) {
         Log.info("Removed unloaded but valid conduit from network: " + oldconduit);

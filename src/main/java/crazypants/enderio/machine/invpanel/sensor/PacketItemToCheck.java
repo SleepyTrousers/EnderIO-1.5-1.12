@@ -35,7 +35,7 @@ public class PacketItemToCheck extends MessageTileEntity<TileInventoryPanelSenso
 
   @Override
   public IMessage onMessage(PacketItemToCheck message, MessageContext ctx) {
-    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    TileInventoryPanelSensor te = message.getTileEntity(ctx.getServerHandler().playerEntity.world);
     if(te != null) {
       te.setItemToCheck(message.item);
     }

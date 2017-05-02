@@ -110,7 +110,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   @Override
   public IMessage onMessage(PacketConduitProbe message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    World world = player.worldObj;
+    World world = player.world;
     if(world == null) {
       Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
       return null;

@@ -50,11 +50,11 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
   protected abstract Q handleMessage(TileCapBank te, T message, MessageContext ctx);
 
   protected TileCapBank getTileEntity(T message, MessageContext ctx) {
-    World worldObj = getWorld(ctx);
-    if(worldObj == null) {
+    World world = getWorld(ctx);
+    if(world == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(message.getPos());
+    TileEntity te = world.getTileEntity(message.getPos());
     if(te == null) {
       return null;
     }
@@ -66,7 +66,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
 
   protected World getWorld(MessageContext ctx) {
     if(ctx.side == Side.SERVER) {
-      return ctx.getServerHandler().playerEntity.worldObj;
+      return ctx.getServerHandler().playerEntity.world;
     } else {
       return EnderIO.proxy.getClientWorld();
     }

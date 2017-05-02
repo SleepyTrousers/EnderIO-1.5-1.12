@@ -144,14 +144,14 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   @Override
   public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-    if(player.worldObj.isRemote) {
+    if(player.world.isRemote) {
       onUsingClient(stack, player, count);
     }
     
     int used = (Config.rodOfReturnTicksToActivate - count) * 1000;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
-      if (player.worldObj.isRemote) {
+      if (player.world.isRemote) {
         player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
       }
       player.stopActiveHand();
@@ -279,7 +279,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     float progress = 1 - ((float)timeLeft/Config.rodOfReturnTicksToActivate);
     float spinSpeed = progress * 2;
     if (activeSound != null) {
-      activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
+      activeSound.setPitch(MathHelper.clamp(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
     }
     if (activeSound == null) {
       BlockPos p = player.getPosition();
@@ -288,7 +288,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     }
     
     double dist = 2 - (progress * 1.5);
-    Random rand = player.worldObj.rand;
+    Random rand = player.world.rand;
     for(int i=0;i<6;i++) {
       double xo = randomOffset(rand, dist);
       double yo = randomOffset(rand, dist) ;

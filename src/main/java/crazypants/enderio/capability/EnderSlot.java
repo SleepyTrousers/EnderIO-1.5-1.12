@@ -7,6 +7,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nonnull;
+
 //TODO 1.11 - use ec version
 public class EnderSlot extends SlotItemHandler {
 
@@ -50,18 +52,18 @@ public class EnderSlot extends SlotItemHandler {
   }
 
   @Override
-  public void putStack(ItemStack stack) {
+  public void putStack(@Nonnull ItemStack stack) {
     ((InventorySlot) getItemHandler()).set(stack);
     this.onSlotChanged();
   }
 
   @Override
-  public boolean isItemValid(ItemStack stack) {
+  public boolean isItemValid(@Nonnull ItemStack stack) {
     return ((InventorySlot) getItemHandler()).isItemValidForSlot(stack);
   }
 
   @Override
-  public int getItemStackLimit(ItemStack stack) {
+  public int getItemStackLimit(@Nonnull ItemStack stack) {
     return getSlotStackLimit();
   }
 

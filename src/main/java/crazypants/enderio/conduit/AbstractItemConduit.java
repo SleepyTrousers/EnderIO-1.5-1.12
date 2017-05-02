@@ -154,7 +154,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem,I
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, subtypes.length - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, subtypes.length - 1);
     return subtypes[i].unlocalisedName;
 
   }
