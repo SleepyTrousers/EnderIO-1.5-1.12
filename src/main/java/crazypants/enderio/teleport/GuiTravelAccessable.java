@@ -14,8 +14,6 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.network.GuiPacket;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketLabel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -183,8 +181,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       return;
     }
     te.setLabel(newTxt);
-    PacketLabel p = new PacketLabel(te);
-    PacketHandler.INSTANCE.sendToServer(p);
+    GuiPacket.send(this, ContainerTravelAccessable.EXEC_LABEL, newTxt);
   }
 
   @Override

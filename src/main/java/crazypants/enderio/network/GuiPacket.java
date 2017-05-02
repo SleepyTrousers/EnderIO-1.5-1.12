@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -33,22 +34,27 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class GuiPacket implements IMessage {
 
   public static void send(IRemoteExec gui, int msgID) {
-    GuiPacket p = new GuiPacket(gui, msgID, 0, null, null);
+    GuiPacket p = new GuiPacket(gui, msgID, 0, null);
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, int data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data }, null);
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data });
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, Enum<?> data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data.ordinal() }, null);
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data.ordinal() });
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, boolean data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data ? 1 : 0 }, null);
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data ? 1 : 0 });
+    p.send();
+  }
+
+  public static void send(IRemoteExec gui, int msgID, String data) {
+    GuiPacket p = new GuiPacket(gui, msgID, 2, null, null, new String[] { data });
     p.send();
   }
 
@@ -56,21 +62,32 @@ public class GuiPacket implements IMessage {
 
   private static enum DataType {
     INT,
-    LONG;
+    LONG,
+    STRING;
   }
 
-  private static final DataType[][] PATTERN = { {}, { DataType.INT } };
+  private static final DataType[][] PATTERN = { {}, { DataType.INT }, { DataType.STRING } };
 
   private int guiID, msgID, pattern;
   private int[] ints;
   private long[] longs;
+  private String[] strings;
 
-  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints, long[] longs) {
+  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints, long[] longs, String[] strings) {
     this.guiID = gui.getGuiID();
     this.msgID = msgID;
     this.pattern = pattern;
     this.ints = ints;
     this.longs = longs;
+    this.strings = strings;
+  }
+
+  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints, long[] longs) {
+    this(gui, msgID, pattern, ints, longs, null);
+  }
+
+  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints) {
+    this(gui, msgID, pattern, ints, null, null);
   }
 
   public GuiPacket() {
@@ -89,6 +106,13 @@ public class GuiPacket implements IMessage {
         break;
       case LONG:
         buf.writeLong(longs[idx++]);
+        break;
+      case STRING:
+        buf.writeBoolean(strings[idx] != null);
+        if (strings[idx] != null) {
+          ByteBufUtils.writeUTF8String(buf, strings[idx]);
+        }
+        idx++;
         break;
       }
     }
@@ -116,6 +140,14 @@ public class GuiPacket implements IMessage {
           longs = new long[PATTERN[pattern].length];
         longs[idx++] = buf.readLong();
         break;
+      case STRING:
+        if (strings == null)
+          strings = new String[PATTERN[pattern].length];
+        if (buf.readBoolean()) {
+          strings[idx] = ByteBufUtils.readUTF8String(buf);
+        }
+        idx++;
+        break;
       }
     }
   }
@@ -129,7 +161,7 @@ public class GuiPacket implements IMessage {
       Log.warn("Invalid network packet received (" + guiID + "/" + msgID + "/" + pattern + "): idx" + idx + " not " + type);
       return false;
     }
-    if ((type == DataType.INT && ints == null) || (type == DataType.LONG && longs == null)) {
+    if ((type == DataType.INT && ints == null) || (type == DataType.LONG && longs == null) || (type == DataType.STRING && strings == null)) {
       Log.warn(
           "Invalid network packet received (" + guiID + "/" + msgID + "/" + pattern + "): idx" + idx + " no " + type + " data");
       return false;
@@ -179,6 +211,10 @@ public class GuiPacket implements IMessage {
 
   public BlockPos getBlockPos(int idx) {
     return BlockPos.fromLong(getLong(idx));
+  }
+
+  public String getString(int idx) {
+    return checkAccess(idx, DataType.STRING) ? strings[idx] : null;
   }
 
 }

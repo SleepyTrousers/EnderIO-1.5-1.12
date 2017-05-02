@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 public class ContainerTravelAccessable extends ContainerEnder<IInventory> implements IRemoteExec.IContainer {
 
   public static final int EXEC_ACCESS_MODE = 0;
+  public static final int EXEC_LABEL = 1;
 
   ITravelAccessable ta;
   TileEntity te;
@@ -122,13 +123,16 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     switch (id) {
     case EXEC_ACCESS_MODE:
       ta.setAccessMode(message.getEnum(0, TileTravelAnchor.AccessMode.class));
-      IBlockState bs = te.getWorld().getBlockState(te.getPos());
-      te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
-      te.getWorld().markChunkDirty(te.getPos(), te);
+      break;
+    case EXEC_LABEL:
+      ta.setLabel(message.getString(0));
       break;
     default:
-      break;
+      return;
     }
+    IBlockState bs = te.getWorld().getBlockState(te.getPos());
+    te.getWorld().notifyBlockUpdate(te.getPos(), bs, bs, 3);
+    te.getWorld().markChunkDirty(te.getPos(), te);
   }
 
 }
