@@ -23,7 +23,6 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
-import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
@@ -46,7 +45,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemBuffer, IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
 
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
@@ -507,12 +506,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IItemB
     return bufferStacks ? 64 : 1;
   }
 
-  @Override
   public boolean isBufferStacks() {
     return bufferStacks;
   }
 
-  @Override
   public void setBufferStacks(boolean bufferStacks) {
     this.bufferStacks = bufferStacks;
   }

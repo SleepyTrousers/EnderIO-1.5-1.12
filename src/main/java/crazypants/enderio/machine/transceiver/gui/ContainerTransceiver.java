@@ -9,11 +9,15 @@ import javax.annotation.Nullable;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> {
+import static crazypants.enderio.machine.crafter.ContainerCrafter.EXEC_SET_BUFFER;
+
+public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> implements IRemoteExec.IContainer {
 
   public static final int GUI_WIDTH = 256;
 
@@ -119,4 +123,16 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
     return slotDef.getNumSlots();
   }
+
+  @Override
+  public void networkExec(int id, GuiPacket message) {
+    switch (id) {
+    case EXEC_SET_BUFFER:
+      getInv().setBufferStacks(message.getBoolean(0));
+      break;
+    default:
+      break;
+    }
+  }
+
 }

@@ -9,13 +9,17 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.network.IRemoteExec;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
+public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> implements IRemoteExec.IContainer {
+
+  public static final int EXEC_SET_BUFFER = 0;
 
   public ContainerCrafter(InventoryPlayer playerInv, TileCrafter te) {
     super(playerInv, te);
@@ -126,6 +130,17 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
   @Override
   public AbstractMachineContainer.SlotRange getPlayerInventorySlotRange(boolean reverse) {
     return super.getPlayerInventorySlotRange(reverse);
+  }
+
+  @Override
+  public void networkExec(int id, GuiPacket message) {
+    switch (id) {
+    case EXEC_SET_BUFFER:
+      getInv().setBufferStacks(message.getBoolean(0));
+      break;
+    default:
+      break;
+    }
   }
 
 }

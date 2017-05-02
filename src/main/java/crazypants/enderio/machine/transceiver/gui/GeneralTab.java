@@ -14,8 +14,8 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.PacketItemBuffer;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.machine.crafter.ContainerCrafter;
+import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -145,7 +145,7 @@ public class GeneralTab implements ITabPanel {
   public void actionPerformed(GuiButton guiButton) {
     if (guiButton == bufferSizeB) {
       parent.getTransciever().setBufferStacks(bufferSizeB.isSelected());
-      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(parent.getTransciever()));
+      GuiPacket.send(parent, ContainerCrafter.EXEC_SET_BUFFER, bufferSizeB.isSelected());
     }
   }
 

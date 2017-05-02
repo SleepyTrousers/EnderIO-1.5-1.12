@@ -14,7 +14,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
@@ -33,7 +32,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_TICKS;
 
 @Storable
-public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer, IPaintable.IPaintableTileEntity {
+public class TileCrafter extends AbstractPowerConsumerEntity implements IPaintable.IPaintableTileEntity {
 
   @Store
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
@@ -272,12 +271,10 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     return bufferStacks ? 64 : 1;
   }
 
-  @Override
   public boolean isBufferStacks() {
     return bufferStacks;
   }
 
-  @Override
   public void setBufferStacks(boolean bufferStacks) {
     this.bufferStacks = bufferStacks;
   }
