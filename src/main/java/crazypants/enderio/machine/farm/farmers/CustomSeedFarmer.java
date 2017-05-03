@@ -109,19 +109,11 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
-    if (!farm.isOpen(bc)) {
+    if (!farm.isOpen(bc) || !farm.hasSeed(getSeeds(), bc)) {
       return false;
     }
-    if (requiresFarmland()) {
-      if (isGroundTilled(farm, bc)) {
-        return plantFromInventory(farm, bc);
-      }
-      if (farm.hasSeed(getSeeds(), bc)) {
-        boolean tilled = farm.tillBlock(bc);
-        if (!tilled) {
-          return false;
-        }
-      }
+    if (requiresFarmland() && !isGroundTilled(farm, bc) && !farm.tillBlock(bc)) {
+      return false;
     }
     return plantFromInventory(farm, bc);
   }

@@ -491,6 +491,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (farmerJoe == null) {
       farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
       farmerJoe.setOwner(getOwner());
+      farmerJoe.worldObj = new PickupWorld(worldObj, farmerJoe);
     }
 
     BlockPos bc = null;

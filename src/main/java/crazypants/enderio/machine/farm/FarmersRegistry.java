@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.farm;
 
+import crazypants.enderio.Log;
 import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
@@ -17,13 +18,16 @@ import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2exp;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerTechReborn;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 import crazypants.util.Things;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
 
 public final class FarmersRegistry {
@@ -31,8 +35,8 @@ public final class FarmersRegistry {
   private static final Things SAPLINGS = new Things("treeSapling");
   private static final Things WOODS = new Things("logWood", "blockSlimeCongealed");
   private static final Things FLOWERS = new Things("block:BiomesOPlenty:flowers", "block:BiomesOPlenty:flowers2", "block:Botany:flower", "block:botania:flower",
-      "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower", "block:botania:mushroom").add(Blocks.YELLOW_FLOWER)
-          .add(Blocks.RED_FLOWER);
+      "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower", "block:botania:mushroom", "block:natura:bluebells_flower",
+      "block:natura:saguaro_fruit").add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
   public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
 
@@ -96,47 +100,86 @@ public final class FarmersRegistry {
     return null;
   }
 
+  private static Block findBlock(String mod, String blockName) {
+    final ResourceLocation name = new ResourceLocation(mod, blockName);
+    if (Block.REGISTRY.containsKey(name)) {
+      return Block.REGISTRY.getObject(name);
+    }
+    return null;
+  }
+
+  private static Item findItem(String mod, String itemName) {
+    final ResourceLocation name = new ResourceLocation(mod, itemName);
+    if (Item.REGISTRY.containsKey(name)) {
+      return Item.REGISTRY.getObject(name);
+    }
+    return null;
+  }
+
   private static void addNatura() {
-    String mod = "Natura";
+    int count = 0;
 
-    String blockName = "N Crops";
-    String seedName = "barley.seed";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      DEFAULT_FARMER.addHarvestExlude(cropBlock);
-      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, seedName));
-      if (seedItem != null) {
-        // barley
-        FarmersCommune.joinCommune(new CustomSeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
-        // cotton
-        FarmersCommune.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
+    Item overworldSeeds = findItem("natura", "overworld_seeds");
+    if (overworldSeeds != null) {
+      Block barleyBlock = findBlock("natura", "barley_crop");
+      Block cottonBlock = findBlock("natura", "cotton_crop");
+      if (barleyBlock != null) {
+        DEFAULT_FARMER.addHarvestExlude(barleyBlock);
+        FarmersCommune.joinCommune(new PickableFarmer(barleyBlock, 0, 3, new ItemStack(overworldSeeds, 1, 0)));
+        count++;
+      }
+      if (cottonBlock != null) {
+        DEFAULT_FARMER.addHarvestExlude(cottonBlock);
+        FarmersCommune.joinCommune(new PickableFarmer(cottonBlock, 0, 4, new ItemStack(overworldSeeds, 1, 1)));
+        count++;
       }
     }
 
-    blockName = "BerryBush";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      Item seedItem = Item.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      if (seedItem != null) {
-        for (int i = 0; i < 4; i++) {
-          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
-          farmer.setRequiresFarmland(false);
-          FarmersCommune.joinCommune(farmer);
+    for (String berry : new String[] { "overworld_berrybush_raspberry", "overworld_berrybush_blueberry", "overworld_berrybush_blackberry",
+        "overworld_berrybush_maloberry", "nether_berrybush_blightberry", "nether_berrybush_duskberry", "nether_berrybush_skyberry",
+        "nether_berrybush_stingberry" }) {
+      Block berryBlock = findBlock("natura", berry);
+      Item berryItem = findItem("natura", berry);
+      if (berryBlock != null && berryItem != null) {
+        DEFAULT_FARMER.addHarvestExlude(berryBlock);
+        PickableFarmer farmer = new NaturaBerryFarmer(berryBlock, 0, 3, new ItemStack(berryItem, 1, 0));
+        farmer.setRequiresFarmland(false);
+        FarmersCommune.joinCommune(farmer);
+        TreeHarvestUtil.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
+        count++;
+      }
+    }
+
+    Block shroomSapling = findBlock("natura", "nether_glowshroom");
+    Block shroomGreenBlock = findBlock("natura", "nether_green_large_glowshroom");
+    Block shroomBlueBlock = findBlock("natura", "nether_blue_large_glowshroom");
+    Block shroomPurpleBlock = findBlock("natura", "nether_purple_large_glowshroom");
+
+    if (shroomSapling != null && shroomGreenBlock != null && shroomBlueBlock != null && shroomPurpleBlock != null) {
+      final TreeFarmer shroomFarmer = new TreeFarmer(shroomSapling, shroomGreenBlock, shroomBlueBlock, shroomPurpleBlock);
+      shroomFarmer.setIgnoreMeta(true);
+      FarmersCommune.joinCommune(shroomFarmer);
+      count++;
+    }
+
+    Block saguaroBlock = findBlock("natura", "saguaro");
+    Item saguaroBabyItem = findItem("natura", "saguaro_baby");
+    if (saguaroBlock != null && saguaroBabyItem != null) {
+      FarmersCommune.joinCommune(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
+        @Override
+        public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+          return false;
         }
-      }
+      });
+      count++;
     }
 
-    blockName = "florasapling";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      FarmersCommune.joinCommune(new TreeFarmer(cropBlock, Block.REGISTRY.getObject(new ResourceLocation(mod, "tree")),
-          Block.REGISTRY.getObject(new ResourceLocation(mod, "willow")), Block.REGISTRY.getObject(new ResourceLocation(mod, "Dark Tree"))));
-    }
-
-    blockName = "Rare Sapling";
-    if (Block.REGISTRY.containsKey(new ResourceLocation(mod, blockName))) {
-      Block cropBlock = Block.REGISTRY.getObject(new ResourceLocation(mod, blockName));
-      FarmersCommune.joinCommune(new TreeFarmer(cropBlock, Block.REGISTRY.getObject(new ResourceLocation(mod, "Rare Tree"))));
+    if (count == 12) {
+      Log.info("Farming Station: Natura integration fully loaded");
+    } else if (count == 0) {
+      Log.info("Farming Station: Natura integration not loaded");
+    } else {
+      Log.info("Farming Station: Natura integration partially loaded (" + count + " of 12)");
     }
   }
 

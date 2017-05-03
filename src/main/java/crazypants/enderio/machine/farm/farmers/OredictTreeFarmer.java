@@ -16,19 +16,11 @@ import net.minecraftforge.common.IPlantable;
 public class OredictTreeFarmer extends TreeFarmer {
 
   protected Things saplings;
-  protected Things woodBlocks;
 
   public OredictTreeFarmer(Things saplings, Things woods) {
-    super(null);
+    super(null, woods);
     this.saplings = saplings;
-    this.woodBlocks = woods;
     FarmStationContainer.slotItemsSeeds.addAll(saplings.getItemStacks());
-    FarmStationContainer.slotItemsProduce.addAll(woods.getItemStacks());
-  }
-
-  @Override
-  protected boolean isWood(Block block) {
-    return woodBlocks.contains(block);
   }
 
   @Override

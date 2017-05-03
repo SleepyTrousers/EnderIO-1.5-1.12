@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 public class TreeHarvestUtil {
 
   private final static Things LEAVES = new Things("treeLeaves");
+  private final static Things NOT_LEAVES = new Things();
 
   private int horizontalRange;
   private int verticalRange;
@@ -26,7 +27,12 @@ public class TreeHarvestUtil {
   public void harvest(TileFarmStation farm, TreeFarmer farmer, BlockPos bc, HarvestResult res) {
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
-    harvest(farm.getWorld(), farm.getPos(), bc, res, farmer.getIgnoreMeta());
+    origin = farm.getPos().toImmutable();
+    if (farmer.getIgnoreMeta()) {
+      harvestUp(farm.getWorld(), bc, res, new BaseHarvestTarget(null, farmer));
+    } else {
+      harvestUp(farm.getWorld(), bc, res, new HarvestTarget(null, farmer));
+    }
   }
 
   public void harvest(World world, BlockPos bc, HarvestResult res) {
@@ -34,17 +40,7 @@ public class TreeHarvestUtil {
     verticalRange = 30;
     origin = bc.toImmutable();
     IBlockState wood = world.getBlockState(bc);
-    harvestUp(world, bc, res, new HarvestTarget(wood));
-  }
-
-  private void harvest(World world, BlockPos originIn, BlockPos bc, HarvestResult res, boolean ignoreMeta) {
-    this.origin = originIn.toImmutable();
-    IBlockState wood = world.getBlockState(bc);
-    if (ignoreMeta) {
-      harvestUp(world, bc, res, new BaseHarvestTarget(wood.getBlock()));
-    } else {
-      harvestUp(world, bc, res, new HarvestTarget(wood));
-    }
+    harvestUp(world, bc, res, new HarvestTarget(wood, null));
   }
 
   protected void harvestUp(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
@@ -63,6 +59,8 @@ public class TreeHarvestUtil {
     } else {
       // check the sides for connected wood
       harvestAdjacentWood(world, bc, res, target);
+      // check the lower diagonals for connected wood
+      harvestAdjacentWood(world, bc.down(), res, target);
       // and another check for large oaks, where wood can be surrounded by
       // leaves
       for (EnumFacing dir : EnumFacing.HORIZONTALS) {
@@ -77,7 +75,7 @@ public class TreeHarvestUtil {
   }
 
   static boolean isLeaves(IBlockState bs) {
-    return bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock());
+    return (bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock())) && !NOT_LEAVES.contains(bs.getBlock());
   }
 
   private void harvestAdjacentWood(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
@@ -110,8 +108,8 @@ public class TreeHarvestUtil {
 
     final EnumType variant;
 
-    HarvestTarget(IBlockState bs) {
-      super(bs.getBlock());
+    HarvestTarget(IBlockState bs, TreeFarmer farmer) {
+      super(bs.getBlock(), farmer);
       variant = getVariant(bs);
     }
 
@@ -139,14 +137,19 @@ public class TreeHarvestUtil {
   private static class BaseHarvestTarget {
 
     private final Block wood;
+    private final TreeFarmer farmer;
 
-    BaseHarvestTarget(Block wood) {
+    BaseHarvestTarget(Block wood, TreeFarmer farmer) {
       this.wood = wood;
+      this.farmer = farmer;
     }
 
     boolean isTarget(IBlockState bs) {
-      return bs.getBlock() == wood;
+      return farmer != null ? farmer.isWood(bs.getBlock()) : bs.getBlock() == wood;
     }
   }
 
+  public static void addLeavesExcemption(Block block) {
+    NOT_LEAVES.add(block);
+  }
 }

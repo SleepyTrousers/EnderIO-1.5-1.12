@@ -30,7 +30,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   public boolean isValid() {
-    return woods != null && woods.length > 0 && sapling != null && Prep.isValid(saplingItem) && Prep.isValid(stickyResin);
+    return woods != null && !woods.isEmpty() && sapling != null && Prep.isValid(saplingItem) && Prep.isValid(stickyResin);
   }
 
   @Override
@@ -73,7 +73,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
         if (canHarvest(world, pos)) {
           if (farm.hasTool(ToolType.TREETAP)) {
             harvest(res, world, pos);
-            farm.damageTool(ToolType.TREETAP, woods[0], pos, 1);
+            farm.damageTool(ToolType.TREETAP, woods.getBlocks().get(0), pos, 1);
           } else {
             farm.setNotification(FarmNotification.NO_TREETAP);
           }

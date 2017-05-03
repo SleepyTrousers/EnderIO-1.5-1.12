@@ -304,7 +304,6 @@ public final class Config {
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
   public static boolean disableFarmNotification = false;
-  public static boolean farmEssenceBerriesEnabled = true;
   public static boolean farmManaBeansEnabled = false;
   public static boolean farmHarvestJungleWhenCocoa = false;
   public static String[] hoeStrings = new String[] {
@@ -1161,9 +1160,6 @@ public final class Config {
 
     disableFarmNotification = config.get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification,
         "Disable the notification text above the farm block.").getBoolean();
-
-    farmEssenceBerriesEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmEssenceBerriesEnabled,
-        "This setting controls whether essence berry bushes from TiC can be harvested by the farm.").getBoolean();
 
     farmManaBeansEnabled = config.get(sectionFarm.name, "farmManaBeansEnabled", farmManaBeansEnabled,
             "This setting controls whether mana beans from Thaumcraft can be harvested by the farm.").getBoolean();
