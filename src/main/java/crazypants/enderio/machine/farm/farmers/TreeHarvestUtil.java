@@ -109,7 +109,7 @@ public class TreeHarvestUtil {
     final EnumType variant;
 
     HarvestTarget(IBlockState bs, TreeFarmer farmer) {
-      super(bs.getBlock(), farmer);
+      super(bs == null ? null : bs.getBlock(), farmer);
       variant = getVariant(bs);
     }
 

@@ -550,10 +550,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= .75f) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
       if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc))) {
-        farmerJoe.inventory.mainInventory[0] = inventory[minFirtSlot];
-        farmerJoe.inventory.currentItem = 0;
+        setJoeUseItem(inventory[minFirtSlot]);
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
-          inventory[minFirtSlot] = farmerJoe.inventory.mainInventory[0];
+          inventory[minFirtSlot] = clearJoeUseItem(true);
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc),
               new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
           if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].stackSize == 0) {
@@ -565,9 +564,33 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           usePower(Config.farmBonemealTryEnergyUseRF);
           bonemealCooldown = 4;
         }
-        farmerJoe.inventory.mainInventory[0] = Prep.getEmpty();
+        clearJoeUseItem(true);
       }
     }
+  }
+
+  public void setJoeUseItem(ItemStack item) {
+    farmerJoe.inventory.mainInventory[0] = item;
+    farmerJoe.inventory.currentItem = 0;
+  }
+
+  public ItemStack clearJoeUseItem(boolean retreiveHandItem) {
+    ItemStack item = Prep.getEmpty();
+    if (retreiveHandItem) {
+      item = farmerJoe.inventory.mainInventory[0];
+      farmerJoe.inventory.mainInventory[0] = Prep.getEmpty();
+    }
+
+    ItemStack[] inv = farmerJoe.inventory.mainInventory;
+    for (int slot = 0; slot < inv.length; slot++) {
+      ItemStack stack = inv[slot];
+      if (Prep.isValid(stack)) {
+        inv[slot] = null;
+        insertItem(stack);
+      }
+    }
+
+    return item;
   }
 
   private int bonemealCooldown = 4; // no need to persist this
@@ -692,6 +715,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           item.setDead();
         }
       }
+    }
+  }
+
+  private void insertItem(ItemStack stack) {
+    int numInserted = insertResult(stack, getPos());
+    stack.stackSize -= numInserted;
+    if (Prep.isValid(stack) && stack.stackSize > 0) {
+      EntityItem entityItem = new EntityItem(getWorld(), getPos().getX() + .5, getPos().getY() + .5, getPos().getZ() + .5, stack);
+      getWorld().spawnEntityInWorld(entityItem);
     }
   }
 

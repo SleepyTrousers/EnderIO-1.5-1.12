@@ -94,6 +94,7 @@ public class PickupWorld extends World {
         }
       }
     }
+    entityIn.worldObj = wrapped;
     return wrapped.spawnEntityInWorld(entityIn);
   }
 
