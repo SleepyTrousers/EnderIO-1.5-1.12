@@ -69,6 +69,9 @@ public class RecipeConfigParser extends DefaultHandler {
     InputSource is = new InputSource(reader);
     try {
       return parse(is, customHandler);
+    } catch (Exception e) {
+      Log.warn("Error parsing string \"" + str + "\" as XML document: " + e);
+      throw e;
     } finally {
       reader.close();
     }
@@ -79,6 +82,9 @@ public class RecipeConfigParser extends DefaultHandler {
     InputSource is = new InputSource(bis);
     try {
       return parse(is, customHandler);
+    } catch (Exception e) {
+      Log.warn("Error parsing file \"" + file.getCanonicalPath() + "\" as XML document: " + e);
+      throw e;
     } finally {
       IOUtils.closeQuietly(bis);
     }
@@ -122,19 +128,20 @@ public class RecipeConfigParser extends DefaultHandler {
 
   @Override
   public void warning(SAXParseException e) throws SAXException {
-    Log.warn("Warning parsing SAG Mill config file: " + e.getMessage());
+    Log.warn("Warning parsing XML config file: " + e.getMessage());
   }
 
   @Override
   public void error(SAXParseException e) throws SAXException {
-    Log.error("Error parsing SAG Mill config file: " + e.getMessage());
+    Log.error("Error parsing XML config file: " + e.getMessage());
     e.printStackTrace();
   }
 
   @Override
   public void fatalError(SAXParseException e) throws SAXException {
-    Log.error("Error parsing SAG Mill config file: " + e.getMessage());
+    Log.error("Error parsing XML config file: " + e.getMessage());
     e.printStackTrace();
+    super.fatalError(e);
   }
 
   @Override
