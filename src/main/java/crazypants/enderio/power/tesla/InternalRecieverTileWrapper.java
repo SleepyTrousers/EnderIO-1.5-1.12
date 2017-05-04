@@ -1,5 +1,7 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPowerReceiver;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.capability.TeslaCapabilities;
@@ -20,7 +22,7 @@ public class InternalRecieverTileWrapper implements ITeslaConsumer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
         return (T) new InternalRecieverTileWrapper(tile, facing);
       }
@@ -28,7 +30,7 @@ public class InternalRecieverTileWrapper implements ITeslaConsumer {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_CONSUMER;
     }
 

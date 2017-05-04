@@ -38,11 +38,11 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
   private final T tileEntity;
 
-  protected RedstoneModeButton redstoneButton;
+  protected RedstoneModeButton<T> redstoneButton;
 
-  private final GuiOverlayIoConfig configOverlay;
+  private final GuiOverlayIoConfig<T> configOverlay;
 
-  protected final GuiButtonIoConfig configB;
+  protected final GuiButtonIoConfig<T> configB;
   
   protected IconButton recipeButton;
 
@@ -59,11 +59,11 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     int y = 5;
     redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, tileEntity);
 
-    configOverlay = new GuiOverlayIoConfig(machine);
+    configOverlay = new GuiOverlayIoConfig<T>(machine);
     addOverlay(configOverlay);
 
     y += 19;
-    configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, machine, configOverlay);
+    configB = new GuiButtonIoConfig<T>(this, CONFIG_ID, x, y, machine, configOverlay);
 
     y += 19;
     recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
@@ -101,7 +101,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   public void renderSlotHighlights() {
-    SelectedFace sel = configOverlay.getSelection();
+    SelectedFace<T> sel = configOverlay.getSelection();
     if(sel != null) {
       IoMode mode = sel.config.getIoMode(sel.face);
       renderSlotHighlights(mode);
@@ -131,9 +131,9 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
   }
 
-  protected void renderSlotHighlight(Vector4f col, int x, int y, int width, int height) {
+  protected void renderSlotHighlight(Vector4f col, int x, int y, int widthIn, int heightIn) {
     GL11.glEnable(GL11.GL_BLEND);
-    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height, col);
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, widthIn, heightIn, col);
     GL11.glDisable(GL11.GL_BLEND);
   }
   

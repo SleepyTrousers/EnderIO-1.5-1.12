@@ -1,5 +1,7 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.ItemPowerCapabilityProvider;
 import crazypants.util.NbtValue;
@@ -17,13 +19,13 @@ public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder,
   public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(ItemStack stack, Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER
           || capability == TeslaCapabilities.CAPABILITY_PRODUCER;
     }
 
     @Override
-    public <T> T getCapability(ItemStack stack, Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
         return TeslaCapabilities.CAPABILITY_CONSUMER.cast(new InternalPoweredItemWrapper(stack));
       } else if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {

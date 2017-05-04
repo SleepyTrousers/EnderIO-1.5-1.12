@@ -61,7 +61,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private final MultiIconButton priUpB;
   private final MultiIconButton priDownB;
 
-  private final RedstoneModeButton rsB;
+  private final RedstoneModeButton<?> rsB;
   private final ColorButton colorB;
   
   private ColorButton channelB;

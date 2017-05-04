@@ -223,8 +223,9 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     }
   }
 
+  @SuppressWarnings("null")
   @Override
-  public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }

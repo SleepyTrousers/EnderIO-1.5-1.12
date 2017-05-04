@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -39,7 +41,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     super();
   }
 
-  public static LiquidConduitRenderer create() {
+  public static @Nonnull LiquidConduitRenderer create() {
     LiquidConduitRenderer result = new LiquidConduitRenderer();
     RenderUtil.registerReloadListener(result);
     return result;

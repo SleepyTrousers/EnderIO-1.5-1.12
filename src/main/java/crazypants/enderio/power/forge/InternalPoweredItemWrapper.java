@@ -1,5 +1,7 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.enderio.power.ItemPowerCapabilityProvider;
 import net.minecraft.item.ItemStack;
@@ -14,12 +16,12 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
   public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(ItemStack stack, Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityEnergy.ENERGY;
     }
 
     @Override
-    public <T> T getCapability(ItemStack stack, Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
         return CapabilityEnergy.ENERGY.cast(new InternalPoweredItemWrapper(stack));
       }

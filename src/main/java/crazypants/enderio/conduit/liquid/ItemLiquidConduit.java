@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
@@ -57,7 +59,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public Class<? extends IConduit> getBaseConduitType() {
+  public @Nonnull Class<? extends IConduit> getBaseConduitType() {
     return ILiquidConduit.class;
   }
 

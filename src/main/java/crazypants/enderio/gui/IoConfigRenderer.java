@@ -55,7 +55,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class IoConfigRenderer {
+public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
   // protected static final RenderBlocks RB = new RenderBlocks();
 
@@ -79,7 +79,7 @@ public class IoConfigRenderer {
   private List<BlockCoord> configurables = new ArrayList<BlockCoord>();
   private List<BlockCoord> neighbours = new ArrayList<BlockCoord>();
 
-  private SelectedFace selection;
+  private SelectedFace<E> selection;
 
   private boolean renderNeighbours = true;
   private boolean inNeigButBounds = false;
@@ -137,7 +137,7 @@ public class IoConfigRenderer {
     initTime = System.currentTimeMillis();
   }
 
-  public SelectedFace getSelection() {
+  public SelectedFace<E> getSelection() {
     return selection;
   }
 
@@ -189,6 +189,7 @@ public class IoConfigRenderer {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void updateSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
@@ -209,9 +210,8 @@ public class IoConfigRenderer {
     if (hit != null) {
       TileEntity te = world.getTileEntity(hit.getBlockPos());
       if (te instanceof IIoConfigurable) {
-        IIoConfigurable configuarble = (IIoConfigurable) te;
         EnumFacing face = hit.sideHit;
-        selection = new SelectedFace(configuarble, face);
+        selection = new SelectedFace<E>((E) te, face);
       }
     }
   }
@@ -523,12 +523,12 @@ public class IoConfigRenderer {
     GL11.glTranslatef(-(float) eye.x, -(float) eye.y, -(float) eye.z);
   }
 
-  public static class SelectedFace {
+  public static class SelectedFace<E extends TileEntity & IIoConfigurable> {
 
-    public IIoConfigurable config;
+    public E config;
     public EnumFacing face;
 
-    public SelectedFace(IIoConfigurable config, EnumFacing face) {
+    public SelectedFace(E config, EnumFacing face) {
       super();
       this.config = config;
       this.face = face;

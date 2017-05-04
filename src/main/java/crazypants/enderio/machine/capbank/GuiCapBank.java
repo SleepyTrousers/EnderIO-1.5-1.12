@@ -61,14 +61,14 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private final TileCapBank capBank;
 
-  private RedstoneModeButton inputRsButton;
-  private RedstoneModeButton outputRsButton;
+  private RedstoneModeButton<?> inputRsButton;
+  private RedstoneModeButton<?> outputRsButton;
 
   private TextFieldEnder maxInputTF;
   private TextFieldEnder maxOutputTF;
 
-  private final GuiOverlayIoConfig configOverlay;
-  private final GuiButtonIoConfig configB;
+  private final GuiOverlayIoConfig<TileCapBank> configOverlay;
+  private final GuiButtonIoConfig<TileCapBank> configB;
 
   private CapBankClientNetwork network;
 
@@ -78,6 +78,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private final ContainerCapBank container;
 
+  @SuppressWarnings("rawtypes")
   public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te, ContainerCapBank container) {
     super(container, "capacitorBank");
     capBank = te;
@@ -162,7 +163,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       coords.add(te.getLocation());
     }
 
-    configOverlay = new GuiOverlayIoConfig(coords) {
+    configOverlay = new GuiOverlayIoConfig<TileCapBank>(coords) {
       @Override
       protected String getLabelForMode(IoMode mode) {
         if (mode == IoMode.PUSH) {
@@ -176,7 +177,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     addOverlay(configOverlay);
 
     y += 20;
-    configB = new GuiButtonIoConfig(this, CONFIG_ID, x, y, te, configOverlay);
+    configB = new GuiButtonIoConfig<TileCapBank>(this, CONFIG_ID, x, y, te, configOverlay);
 
     FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 

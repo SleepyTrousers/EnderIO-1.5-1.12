@@ -65,11 +65,11 @@ public class BaseSettingsPanel implements ITabPanel {
   }
 
   @Override
-  public void onGuiInit(int left, int top, int width, int height) {
-    this.left = left;
-    this.top = top;
-    this.width = width;
-    this.height = height;
+  public void onGuiInit(int leftIn, int topIn, int widthIn, int heightIn) {
+    this.left = leftIn;
+    this.top = topIn;
+    this.width = widthIn;
+    this.height = heightIn;
 
     leftArrow.onGuiInit();
     rightArrow.onGuiInit();
@@ -143,16 +143,16 @@ public class BaseSettingsPanel implements ITabPanel {
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
   }
 
-  protected void renderCustomOptions(int top, float par1, int par2, int par3) {
+  protected void renderCustomOptions(int topIn, float par1, int par2, int par3) {
 
   }
 
   private int getLongestModeStringWidth() {
     int maxWidth = 0;
     for (ConnectionMode mode : ConnectionMode.values()) {
-      int width = gui.getFontRenderer().getStringWidth(mode.getLocalisedName());
-      if(width > maxWidth) {
-        maxWidth = width;
+      int stringWidth = gui.getFontRenderer().getStringWidth(mode.getLocalisedName());
+      if(stringWidth > maxWidth) {
+        maxWidth = stringWidth;
       }
     }
     return maxWidth;

@@ -1,5 +1,7 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPoweredTile;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -19,13 +21,13 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityEnergy.ENERGY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
         return (T) new InternalPoweredTileWrapper(tile, facing);
       }

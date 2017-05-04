@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.me;
 
+import javax.annotation.Nonnull;
+
 import appeng.api.AEApi;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -49,7 +51,7 @@ public class ItemMEConduit extends AbstractItemConduit {
   }
 
   @Override
-  public Class<? extends IConduit> getBaseConduitType() {
+  public @Nonnull Class<? extends IConduit> getBaseConduitType() {
     return IMEConduit.class;
   }
 

@@ -84,13 +84,13 @@ IPaintable.IWrenchHideablePaint {
 
   @Deprecated
   @Override
-  public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+  public int getWeakPower(IBlockState blockStateIn, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
     TileInventoryPanelSensor te = getTileEntity(blockAccess, pos);
     if (te != null) {
       int res = te.getIoMode(side.getOpposite()) != IoMode.DISABLED ? te.getRedstoneLevel() : 0;
       return res;
     }
-    return super.getWeakPower(blockState, blockAccess, pos, side);
+    return super.getWeakPower(blockStateIn, blockAccess, pos, side);
   }
 
   @Override

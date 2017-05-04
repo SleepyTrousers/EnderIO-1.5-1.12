@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.redstone;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -44,7 +46,7 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
   }
 
   @Override
-  public Class<? extends IConduit> getBaseConduitType() {
+  public @Nonnull Class<? extends IConduit> getBaseConduitType() {
     return IRedstoneConduit.class;
   }
 

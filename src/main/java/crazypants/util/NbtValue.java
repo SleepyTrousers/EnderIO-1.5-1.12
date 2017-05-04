@@ -178,7 +178,7 @@ public enum NbtValue {
   }
 
   public NBTTagCompound setStringCopy(NBTTagCompound tag, String value) {
-    return tag != null ? setString((NBTTagCompound) tag.copy(), value) : null;
+    return tag != null ? setString(tag.copy(), value) : null;
   }
 
   // NBT INT
@@ -202,7 +202,7 @@ public enum NbtValue {
   }
 
   public NBTTagCompound setIntCopy(NBTTagCompound tag, int value) {
-    return tag != null ? setInt((NBTTagCompound) tag.copy(), value) : null;
+    return tag != null ? setInt(tag.copy(), value) : null;
   }
 
   // NBT
@@ -219,7 +219,7 @@ public enum NbtValue {
   }
 
   public NBTTagCompound removeTagCopy(NBTTagCompound tag) {
-    return tag != null ? removeTag((NBTTagCompound) tag.copy()) : null;
+    return tag != null ? removeTag(tag.copy()) : null;
   }
 
   public NBTTagCompound getTag(NBTTagCompound tag) {

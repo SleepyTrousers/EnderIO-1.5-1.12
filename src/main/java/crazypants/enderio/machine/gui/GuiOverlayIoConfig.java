@@ -19,8 +19,9 @@ import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.tileentity.TileEntity;
 
-public class GuiOverlayIoConfig implements IGuiOverlay {
+public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implements IGuiOverlay {
 
   private boolean visible = false;
   private ToggleButton configB;
@@ -30,7 +31,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   private Rectangle bounds;
   int height = 80;
 
-  private IoConfigRenderer renderer;
+  private IoConfigRenderer<E> renderer;
 
   private List<BlockCoord> coords = new ArrayList<BlockCoord>();
 
@@ -47,9 +48,9 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   }
 
   @Override
-  public void init(IGuiScreen screen) {
-    this.screen = screen;
-    renderer = new IoConfigRenderer(coords) {
+  public void init(IGuiScreen screenIn) {
+    this.screen = screenIn;
+    renderer = new IoConfigRenderer<E>(coords) {
 
       @Override
       protected String getLabelForMode(IoMode mode) {
@@ -58,7 +59,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
     };
     renderer.init();
-    bounds = new Rectangle(screen.getOverlayOffsetX() + 5, screen.getYSize() - height -5, screen.getXSize() - 10, height);
+    bounds = new Rectangle(screenIn.getOverlayOffsetX() + 5, screenIn.getYSize() - height - 5, screenIn.getXSize() - 10, height);
   }
 
   protected String getLabelForMode(IoMode mode) {
@@ -121,7 +122,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     return bounds;
   }
 
-  public SelectedFace getSelection() {
+  public SelectedFace<E> getSelection() {
     return visible ? renderer.getSelection() : null;
   }
   

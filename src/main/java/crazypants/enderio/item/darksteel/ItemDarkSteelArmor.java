@@ -416,7 +416,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   @Method(modid = "forestry")
-  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
+  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, @Nullable String cause, boolean doProtect) {
     return ApiaristArmorUpgrade.loadFromItem(armor) != null;
   }
 

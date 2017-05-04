@@ -403,7 +403,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
 
   @SuppressWarnings("deprecation")
   @Override
-  public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+  public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
     IConduitBundle te = getTileEntitySafe(world, pos);
     if (te != null && te.hasFacade()) {
       return te.getPaintSource().getBlock().getSoundType();
@@ -902,8 +902,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
       super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
     } else {
 
-      Collection<CollidableComponent> bounds = con.getCollidableComponents();
-      for (CollidableComponent bnd : bounds) {
+      Collection<CollidableComponent> collidableComponents = con.getCollidableComponents();
+      for (CollidableComponent bnd : collidableComponents) {
         setBlockBounds(bnd.bound.minX, bnd.bound.minY, bnd.bound.minZ, bnd.bound.maxX, bnd.bound.maxY, bnd.bound.maxZ);
         super.addCollisionBoxToList(state, world, pos, axisalignedbb, arraylist, par7Entity);
       }
@@ -1109,8 +1109,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle> implements I
     return PainterUtil2.getSourceBlock(stack);
   }
 
+  @SuppressWarnings("null")
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public @Nonnull IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }

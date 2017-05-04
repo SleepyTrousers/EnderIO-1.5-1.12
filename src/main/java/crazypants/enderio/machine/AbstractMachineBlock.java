@@ -62,7 +62,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected final IModObject modObject;
 
   static {
-    PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 

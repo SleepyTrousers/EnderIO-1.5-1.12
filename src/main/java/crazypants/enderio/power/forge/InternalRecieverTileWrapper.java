@@ -1,5 +1,7 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPowerReceiver;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -19,7 +21,7 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
         return (T) new InternalRecieverTileWrapper(tile, facing);
       }

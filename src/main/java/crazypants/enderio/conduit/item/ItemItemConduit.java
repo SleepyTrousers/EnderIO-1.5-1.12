@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -43,7 +45,7 @@ public class ItemItemConduit extends AbstractItemConduit {
   }
 
   @Override
-  public Class<? extends IConduit> getBaseConduitType() {
+  public @Nonnull Class<? extends IConduit> getBaseConduitType() {
     return IItemConduit.class;
   }
 

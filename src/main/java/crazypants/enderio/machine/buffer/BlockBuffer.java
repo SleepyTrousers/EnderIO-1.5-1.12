@@ -50,7 +50,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER, BufferType.TYPE });
   }
 

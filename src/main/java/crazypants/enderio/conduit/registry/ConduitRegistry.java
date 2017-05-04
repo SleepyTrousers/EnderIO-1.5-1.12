@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduit;
@@ -28,7 +29,7 @@ public class ConduitRegistry {
     private final @Nonnull Offset none, x, y, z;
     private boolean canConnectToAnything;
     @SideOnly(Side.CLIENT)
-    private @Nonnull Collection<ConduitRenderer> renderers;
+    private @Nullable Collection<ConduitRenderer> renderers;
     private @Nonnull Collection<Class<? extends IConduit>> members = new ArrayList<Class<? extends IConduit>>();
 
     /**

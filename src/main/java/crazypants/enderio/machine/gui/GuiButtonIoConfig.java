@@ -13,13 +13,14 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
+import net.minecraft.tileentity.TileEntity;
 
-public class GuiButtonIoConfig extends ToggleButton {
+public class GuiButtonIoConfig<E extends TileEntity & IIoConfigurable> extends ToggleButton {
 
-  private final IIoConfigurable config;
-  private final GuiOverlayIoConfig configOverlay;
+  private final E config;
+  private final GuiOverlayIoConfig<E> configOverlay;
 
-  public GuiButtonIoConfig(IGuiScreen gui, int id, int x, int y, IIoConfigurable config, GuiOverlayIoConfig configOverlay) {
+  public GuiButtonIoConfig(IGuiScreen gui, int id, int x, int y, E config, GuiOverlayIoConfig<E> configOverlay) {
     super(gui, id, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
     this.config = config;
     this.configOverlay = configOverlay;

@@ -151,14 +151,14 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Deprecated
   @Override
-  public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+  public int getWeakPower(IBlockState blockStateIn, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
     if (blockAccess != null && pos != null) {
       TilePowerMonitor te = getTileEntity(blockAccess, pos);
       if (te != null) {
         return te.getRedstoneLevel();
       }
     }
-    return super.getWeakPower(blockState, blockAccess, pos, side);
+    return super.getWeakPower(blockStateIn, blockAccess, pos, side);
   }
 
   @Override

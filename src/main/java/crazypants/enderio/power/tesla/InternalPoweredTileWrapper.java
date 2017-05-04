@@ -1,5 +1,7 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.power.IInternalPoweredTile;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.capability.TeslaCapabilities;
@@ -19,13 +21,13 @@ public class InternalPoweredTileWrapper implements ITeslaHolder {
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_HOLDER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {
         return (T) new InternalPoweredTileWrapper(tile, facing);
       }

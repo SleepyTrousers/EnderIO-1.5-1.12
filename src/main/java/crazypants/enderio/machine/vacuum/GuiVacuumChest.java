@@ -50,7 +50,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   private final MultiIconButton rangeDownB;
   private final ToggleButton whiteListB;
   private final ToggleButton useMetaB;
-  private final RedstoneModeButton rsB;
+  private final RedstoneModeButton<TileVacuumChest> rsB;
   private final String headerChest;
   private final String headerFilter;
   private final String headerRange;

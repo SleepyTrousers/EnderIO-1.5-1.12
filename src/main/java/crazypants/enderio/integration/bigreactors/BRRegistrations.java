@@ -14,6 +14,7 @@ public class BRRegistrations {
   private static final float conductivityGold = 2f;
   private static final float conductivityDiamond = 3f;
   private static final float conductivityEmerald = 2.5f;
+  @SuppressWarnings("unused")
   private static final float conductivityGraphene = 5f;
 
   public static void init(FMLPreInitializationEvent event) {
