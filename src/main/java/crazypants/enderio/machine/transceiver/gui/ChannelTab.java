@@ -4,10 +4,6 @@ import java.awt.Color;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -27,6 +23,9 @@ import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.UserIdent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 
 public class ChannelTab implements ITabPanel {
 
@@ -92,6 +91,11 @@ public class ChannelTab implements ITabPanel {
       @Override
       public boolean equals(@Nullable Object obj) {
         return super.equals(obj);
+      }
+
+      @Override
+      public int hashCode() {
+        return super.hashCode();
       }
     };
 
@@ -181,8 +185,6 @@ public class ChannelTab implements ITabPanel {
       return IconEIO.WRENCH_OVERLAY_ITEM;
     case POWER:
       return IconEIO.WRENCH_OVERLAY_POWER;
-    case RAIL:
-      return IconEIO.ENDER_RAIL;
     default:
       return IconEIO.WRENCH_OVERLAY_POWER;
     }

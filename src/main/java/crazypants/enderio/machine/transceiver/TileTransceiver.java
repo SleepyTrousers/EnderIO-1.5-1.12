@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.transceiver;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +13,6 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.SetMultimap;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -50,8 +46,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
 
-  private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
-  private final SetMultimap<ChannelType, Channel> recieveChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
+  private final ChannelList sendChannels = new ChannelList();
+  private final ChannelList recieveChannels = new ChannelList();
 
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
@@ -140,11 +136,13 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
     }
   }
 
-  private void removeUnregsiteredChannels(SetMultimap<ChannelType, Channel> chans) {
+  private void removeUnregsiteredChannels(ChannelList chans) {
     List<Channel> toRemove = new ArrayList<Channel>();
-    for (Channel chan : chans.values()) {
-      if (!ServerChannelRegister.instance.getChannelsForType(chan.getType()).contains(chan)) {
-        toRemove.add(chan);
+    for (Set<Channel> chan : chans.values()) {
+      for (Channel channel : chan) {
+        if (!ServerChannelRegister.instance.getChannelsForType(channel.getType()).contains(channel)) {
+          toRemove.add(channel);
+        }
       }
     }
     for (Channel chan : toRemove) {
@@ -186,12 +184,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
     removeChannel(channel, recieveChannels);
   }
 
-  private void addChannel(Channel channel, SetMultimap<ChannelType, Channel> channels) {
-    if (channel == null) {
-      return;
-    }
-    Collection<Channel> chans = channels.get(channel.getType());
-    if (chans.add(channel)) {
+  private void addChannel(Channel channel, ChannelList channels) {
+    if (channels.add(channel)) {
       if (channels == sendChannels) {
         sendChannelsDirty = true;
       } else {
@@ -200,7 +194,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
     }
   }
 
-  private void removeChannel(Channel channel, SetMultimap<ChannelType, Channel> channnels) {
+  private void removeChannel(Channel channel, ChannelList channnels) {
     if (channel == null) {
       return;
     }
@@ -242,19 +236,16 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
     }
   }
 
-  static void readChannels(NBTTagCompound nbtRoot, SetMultimap<ChannelType, Channel> channels, String key) {
+  static void readChannels(NBTTagCompound nbtRoot, ChannelList channels, String key) {
     channels.clear();
+    ;
 
     if (!nbtRoot.hasKey(key)) {
       return;
     }
     NBTTagList tags = (NBTTagList) nbtRoot.getTag(key);
     for (int i = 0; i < tags.tagCount(); i++) {
-      NBTTagCompound chanelTag = tags.getCompoundTagAt(i);
-      Channel channel = Channel.readFromNBT(chanelTag);
-      if (channel != null) {
-        channels.put(channel.getType(), channel);
-      }
+      channels.add(Channel.readFromNBT(tags.getCompoundTagAt(i)));
     }
   }
 
@@ -282,31 +273,33 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
     nbtRoot.setBoolean("bufferStacks", bufferStacks);
   }
 
-  static NBTTagList createTagList(SetMultimap<ChannelType, Channel> channels) {
+  static NBTTagList createTagList(ChannelList channels) {
     NBTTagList res = new NBTTagList();
-    for (Channel channel : channels.values()) {
-      NBTTagCompound chanTag = new NBTTagCompound();
-      channel.writeToNBT(chanTag);
-      res.appendTag(chanTag);
+    for (Set<Channel> chan : channels.values()) {
+      for (Channel channel : chan) {
+        NBTTagCompound chanTag = new NBTTagCompound();
+        channel.writeToNBT(chanTag);
+        res.appendTag(chanTag);
+      }
     }
     return res;
   }
 
-  void setSendChannels(Multimap<? extends ChannelType, ? extends Channel> channels) {
+  void setSendChannels(ChannelList channels) {
     sendChannels.clear();
     sendChannels.putAll(channels);
   }
 
-  void setRecieveChannels(Multimap<? extends ChannelType, ? extends Channel> channels) {
+  void setRecieveChannels(ChannelList channels) {
     recieveChannels.clear();
     recieveChannels.putAll(channels);
   }
 
-  SetMultimap<ChannelType, Channel> getSendChannels() {
+  ChannelList getSendChannels() {
     return sendChannels;
   }
 
-  SetMultimap<ChannelType, Channel> getReceiveChannels() {
+  ChannelList getReceiveChannels() {
     return recieveChannels;
   }
 
@@ -462,15 +455,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
 
   private class FluidCap implements IFluidHandler {
     
-    final EnumFacing facing;
+    final EnumFacing capFacing;
     
     FluidCap(EnumFacing facing) {
-      this.facing = facing;
+      this.capFacing = facing;
     }
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      return TileTransceiver.this.fill(facing, resource, doFill);
+      return TileTransceiver.this.fill(capFacing, resource, doFill);
     }
 
     // Pulling liquids not supported

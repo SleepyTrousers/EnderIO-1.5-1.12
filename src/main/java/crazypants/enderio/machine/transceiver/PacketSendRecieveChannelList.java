@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.transceiver;
 
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,17 +12,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.enderio.core.common.network.MessageTileEntity;
-import com.enderio.core.common.network.NetworkUtil;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.SetMultimap;
-
-import crazypants.enderio.EnderIO;
-
 public class PacketSendRecieveChannelList extends MessageTileEntity<TileTransceiver> implements IMessageHandler<PacketSendRecieveChannelList, IMessage> {
 
   private boolean isSend;
-  private SetMultimap<ChannelType, Channel> channels;
+  private ChannelList channels;
 
   public PacketSendRecieveChannelList() {
   }
@@ -49,7 +46,7 @@ public class PacketSendRecieveChannelList extends MessageTileEntity<TileTranscei
     super.fromBytes(buf);
     isSend = buf.readBoolean();
     NBTTagCompound root = NetworkUtil.readNBTTagCompound(buf);
-    channels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
+    channels = new ChannelList();
     TileTransceiver.readChannels(root, channels, "chans");
   }
 
