@@ -1,47 +1,29 @@
 package crazypants.enderio.machine.capbank.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.TileCapBank;
 
-public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> implements IMessage, IMessageHandler<T, Q> {
-
-  private long pos;
+public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMessage> extends MessageTileEntity<TileCapBank> implements IMessageHandler<T, Q> {
 
   public PacketCapBank() {
+    super();
   }
 
   public PacketCapBank(TileCapBank capBank) {
-    pos = capBank.getPos().toLong();
-  }
-
-  @Override
-  public void toBytes(ByteBuf buf) {
-    buf.writeLong(pos);
-  }
-
-  @Override
-  public void fromBytes(ByteBuf buf) {
-    pos = buf.readLong();
-  }
-
-  public BlockPos getPos() {
-    return BlockPos.fromLong(pos);
+    super(capBank);
   }
 
   @Override
   public Q onMessage(T message, MessageContext ctx) {
-
-    TileCapBank te = getTileEntity(message, ctx);
-    if(te == null) {
-
+    TileCapBank te = getTileEntity(message.getWorld(ctx));
+    if (te == null) {
       return null;
     }
     return handleMessage(te, message, ctx);
@@ -49,23 +31,9 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
 
   protected abstract Q handleMessage(TileCapBank te, T message, MessageContext ctx);
 
-  protected TileCapBank getTileEntity(T message, MessageContext ctx) {
-    World worldObj = getWorld(ctx);
-    if(worldObj == null) {
-      return null;
-    }
-    TileEntity te = worldObj.getTileEntity(message.getPos());
-    if(te == null) {
-      return null;
-    }
-    if(te instanceof TileCapBank) {
-      return (TileCapBank) te;
-    }
-    return null;
-  }
-
+  @Override
   protected World getWorld(MessageContext ctx) {
-    if(ctx.side == Side.SERVER) {
+    if (ctx.side == Side.SERVER) {
       return ctx.getServerHandler().playerEntity.worldObj;
     } else {
       return EnderIO.proxy.getClientWorld();
