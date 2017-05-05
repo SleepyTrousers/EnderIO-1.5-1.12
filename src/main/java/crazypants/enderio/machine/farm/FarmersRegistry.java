@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.farm;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.machine.farm.farmers.ChorusFarmer;
 import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
@@ -66,6 +67,8 @@ public final class FarmersRegistry {
     FarmersCommune.joinCommune(new NetherWartFarmer());
     // Cocoa is odd
     FarmersCommune.joinCommune(new CocoaFarmer());
+    // Chorus plant is even odder
+    FarmersCommune.joinCommune(new ChorusFarmer());
     // Handles all 'vanilla' style crops
     FarmersCommune.joinCommune(DEFAULT_FARMER);
   }

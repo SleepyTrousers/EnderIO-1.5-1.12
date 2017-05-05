@@ -527,18 +527,27 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     if (!isOpen(bc)) {
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, bs);
-      if (harvest != null && harvest.getDrops() != null && !harvest.getDrops().isEmpty()) {
-        PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
-        for (EntityItem ei : harvest.getDrops()) {
-          if (ei != null) {
-            insertHarvestDrop(ei, bc);
-            if (!ei.isDead) {
-              worldObj.spawnEntityInWorld(ei);
+      if (harvest != null) {
+        boolean done = false;
+        if (harvest.getHarvestedBlocks() != null && !harvest.getHarvestedBlocks().isEmpty()) {
+          PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
+          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+          done = true;
+        }
+        if (harvest.getDrops() != null) {
+          for (EntityItem ei : harvest.getDrops()) {
+            if (ei != null) {
+              insertHarvestDrop(ei, bc);
+              if (!ei.isDead) {
+                worldObj.spawnEntityInWorld(ei);
+              }
+              done = true;
             }
           }
         }
-        return;
+        if (done) {
+          return;
+        }
       }
     }
 
