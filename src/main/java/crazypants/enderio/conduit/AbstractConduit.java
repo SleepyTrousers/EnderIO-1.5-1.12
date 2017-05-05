@@ -147,8 +147,6 @@ public abstract class AbstractConduit implements IConduit {
     } else {
       conectionModes.put(dir, mode);
     }
-    clientStateDirty = true;
-    collidablesDirty = true;
 
     connectionsChanged();
   }

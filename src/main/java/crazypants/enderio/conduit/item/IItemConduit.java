@@ -1,14 +1,13 @@
 package crazypants.enderio.conduit.item;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 
 public interface IItemConduit extends IExtractor {
 
@@ -79,5 +78,7 @@ public interface IItemConduit extends IExtractor {
   void setInputColor(EnumFacing dir, DyeColor col);
 
   void setOutputColor(EnumFacing dir, DyeColor col);
+
+  boolean isConnectedToNetworkAwareBlock(EnumFacing dir);
 
 }

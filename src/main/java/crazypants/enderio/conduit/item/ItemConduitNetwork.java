@@ -47,14 +47,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         IItemHandler extCon = con.getExternalInventory(direction);
         if(extCon != null) {
           BlockPos p = te.getPos().offset(direction);
-          inventoryAdded(con, direction, p.getX(), p.getY(), p.getZ(), extCon);
+          inventoryAdded(con, direction, p, extCon);
         }
       }
     }
   }
 
-  public void inventoryAdded(IItemConduit itemConduit, EnumFacing direction, int x, int y, int z, IItemHandler externalInventory) {
-    BlockCoord bc = new BlockCoord(x, y, z);
+  public void inventoryAdded(IItemConduit itemConduit, EnumFacing direction, BlockPos pos, IItemHandler externalInventory) {
+    BlockCoord bc = new BlockCoord(pos);
     NetworkedInventory inv = new NetworkedInventory(this, itemConduit, direction, externalInventory, bc);
     inventories.add(inv);
     getOrCreate(bc).add(inv);
@@ -89,8 +89,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     return res;
   }
 
-  public void inventoryRemoved(ItemConduit itemConduit, int x, int y, int z) {
-    BlockCoord bc = new BlockCoord(x, y, z);
+  public void inventoryRemoved(ItemConduit itemConduit, BlockPos pos) {
+    BlockCoord bc = new BlockCoord(pos);
     List<NetworkedInventory> invs = getOrCreate(bc);
     NetworkedInventory remove = null;
     for (NetworkedInventory ni : invs) {

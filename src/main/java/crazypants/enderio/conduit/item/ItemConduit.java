@@ -316,7 +316,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     return (upgrade != null && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
   }
 
-  private boolean isConnectedToNetworkAwareBlock(EnumFacing dir) {
+  @Override
+  public boolean isConnectedToNetworkAwareBlock(EnumFacing dir) {
     if (!externalConnections.contains(dir)) {
       return false;
     }
@@ -432,11 +433,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public void externalConnectionAdded(EnumFacing direction) {
     super.externalConnectionAdded(direction);
-    if(network != null) {
-      TileEntity te = bundle.getEntity();
-      BlockPos p = te.getPos().offset(direction);
-      network.inventoryAdded(this, direction, p.getX(), p.getY(), p.getZ(), getExternalInventory(direction));
-    }
+    checkInventoryConnections(direction);
   }
 
   @Override
@@ -453,10 +450,22 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public void externalConnectionRemoved(EnumFacing direction) {
     externalConnections.remove(direction);
     connectionsChanged();
+    checkInventoryConnections(direction);
+  }
+
+  private void checkInventoryConnections(EnumFacing direction) {
     if(network != null) {
-      TileEntity te = bundle.getEntity();
-      BlockPos p = te.getPos().offset(direction);
-      network.inventoryRemoved(this, p.getX(), p.getY(), p.getZ());
+      BlockPos p = bundle.getEntity().getPos().offset(direction);
+      NetworkedInventory networkedInventory = network.getInventory(this, direction);
+      if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
+        if (networkedInventory == null) {
+          network.inventoryAdded(this, direction, p, getExternalInventory(direction));
+        }
+      } else {
+        if (networkedInventory != null) {
+          network.inventoryRemoved(this, p);
+        }
+      }
     }
   }
 
@@ -467,6 +476,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       return;
     }
     super.setConnectionMode(dir, mode);
+    checkInventoryConnections(dir);
     if(network != null) {
       network.routesChanged();
     }
@@ -886,7 +896,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       for (EnumFacing direction : externalConnections) {
         try {
           BlockPos p = pos.offset(direction);
-          network.inventoryRemoved(this, p.getX(), p.getY(), p.getZ());
+          network.inventoryRemoved(this, p);
         } catch (Throwable t) {
           // silent
         }

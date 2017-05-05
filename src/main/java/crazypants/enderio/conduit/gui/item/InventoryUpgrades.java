@@ -2,7 +2,9 @@ package crazypants.enderio.conduit.gui.item;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,7 +15,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import static crazypants.enderio.ModObject.itemExtractSpeedUpgrade;
-import static crazypants.enderio.ModObject.itemFunctionUpgrade;
 
 public class InventoryUpgrades implements IInventory {
 
@@ -140,7 +141,9 @@ public class InventoryUpgrades implements IInventory {
     case 0:
       return item.getItem() == itemExtractSpeedUpgrade.getItem();
     case 1:
-      return item.getItem() == itemFunctionUpgrade.getItem();
+      final FunctionUpgrade functionUpgrade = ItemFunctionUpgrade.getFunctionUpgrade(item);
+      return functionUpgrade != null
+          && (functionUpgrade != FunctionUpgrade.INVENTORY_PANEL || !itemConduit.isConnectedToNetworkAwareBlock(dir));
     case 2:
     case 3:
       return item.getItem() instanceof IItemFilterUpgrade;
