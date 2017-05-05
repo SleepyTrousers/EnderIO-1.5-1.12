@@ -32,7 +32,6 @@ import crazypants.enderio.item.darksteel.upgrade.PaintedHelmetLayer;
 import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
 import crazypants.util.Prep;
 import forestry.api.apiculture.IArmorApiarist;
@@ -212,9 +211,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    if (armorType == EntityEquipmentSlot.HEAD) {
-      list.add(PainterUtil2.getTooltTipText(itemstack));
-    }
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 

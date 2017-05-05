@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
@@ -21,6 +22,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     this.resultBlock = resultBlock;
     this.validTargets = validTargetBlocks;
     this.allowEasyConversion = allowEasyConversion;
+    PaintTooltipUtil.registerPaintable(validTargetBlocks);
   }
 
   public BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
@@ -165,6 +167,10 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     }
     
     return false;
+  }
+
+  @Override
+  protected void registerTargetsWithTooltipProvider() {
   }
 
 }

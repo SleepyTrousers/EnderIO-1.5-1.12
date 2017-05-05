@@ -107,7 +107,7 @@ public class PainterUtil2 {
       if (BLOCKSTATE.hasTag(nbtRoot)) {
         return NBTUtil.func_190008_d(BLOCKSTATE.getTag(nbtRoot));
       } else if (SOURCE_BLOCK.hasTag(nbtRoot) && SOURCE_META.hasTag(nbtRoot)) { // legacy
-        ResourceLocation res = new ResourceLocation(SOURCE_BLOCK.getString(nbtRoot));
+        ResourceLocation res = new ResourceLocation(SOURCE_BLOCK.getString(nbtRoot)); // TODO 1.11 remove legacy
         if (Block.REGISTRY.containsKey(res)) {
           Block block = Block.REGISTRY.getObject(res);
           int meta = SOURCE_META.getInt(nbtRoot);
@@ -116,6 +116,11 @@ public class PainterUtil2 {
       }
     }
     return null;
+  }
+
+  @SuppressWarnings("deprecation")
+  public static boolean isPainted(ItemStack itemStack) {
+    return BLOCKSTATE.hasTag(itemStack) || (SOURCE_BLOCK.hasTag(itemStack) && SOURCE_META.hasTag(itemStack)); // TODO 1.11 remove legacy
   }
 
   public static IBlockState getSourceBlock(ItemStack itemStack) {

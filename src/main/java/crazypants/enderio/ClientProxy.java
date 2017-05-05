@@ -29,6 +29,7 @@ import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machine.ranged.MarkerParticle;
 import crazypants.enderio.material.fusedQuartz.EnderIOGlassesStateMapper;
+import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.render.IHaveRenderers;
@@ -93,6 +94,7 @@ public class ClientProxy extends CommonProxy {
     if (Config.addFuelTooltipsToAllFluidContainers) {
       tt.addCallback(new TooltipHandlerFluid());
     }
+    PaintTooltipUtil.create();
 
     //conduits
     ConduitBundleRenderManager.instance.init(event);

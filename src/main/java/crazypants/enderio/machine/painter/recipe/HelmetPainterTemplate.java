@@ -1,7 +1,9 @@
 package crazypants.enderio.machine.painter.recipe;
 
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.paint.PaintTooltipUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -66,6 +68,11 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
       return isValidPaint(input.item);
     }
     return false;
+  }
+
+  @Override
+  protected void registerTargetsWithTooltipProvider() {
+    PaintTooltipUtil.registerPaintable(DarkSteelItems.itemDarkSteelHelmet);
   }
 
 }

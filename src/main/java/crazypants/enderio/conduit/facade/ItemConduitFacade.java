@@ -41,7 +41,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   public static ItemConduitFacade create() {
     ItemConduitFacade result = new ItemConduitFacade(ModObject.itemConduitFacade.getUnlocalisedName());
     GameRegistry.register(result);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new FacadePainterRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new FacadePainterRecipe(result));
     return result;
   }
 
@@ -121,11 +121,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    if (PainterUtil2.getSourceBlock(itemstack) == null) {
-      list.add(EnderIO.lang.localize("item.itemConduitFacade.tooltip.notpainted"));
-    } else {
-      list.add(PainterUtil2.getTooltTipText(itemstack));
-    }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

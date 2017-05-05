@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter.recipe;
 
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
@@ -10,6 +11,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFacade> {
+
+  public FacadePainterRecipe(ItemConduitFacade facade) {
+    super();
+    PaintTooltipUtil.registerPaintable(facade);
+  }
 
   @Override
   public boolean isValidTarget(ItemStack target) {
@@ -63,6 +69,10 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
       return isValidPaint(input.item);
     }
     return false;
+  }
+
+  @Override
+  protected void registerTargetsWithTooltipProvider() {
   }
 
 }

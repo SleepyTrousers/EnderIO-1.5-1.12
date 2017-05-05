@@ -5,9 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public enum NbtValue {
   @Deprecated
-  SOURCE_BLOCK("sourceBlockId"),
+  SOURCE_BLOCK("sourceBlockId"), // TODO 1.11 remove
   @Deprecated
-  SOURCE_META("sourceBlockMeta"),
+  SOURCE_META("sourceBlockMeta"), // TODO 1.11 remove
   GLINT("glinted"),
   CAPNAME("capname"),
   CAPNO("capno"),

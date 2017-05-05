@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -9,7 +7,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.power.AbstractPoweredBlockItem;
 import crazypants.enderio.power.ItemPowerCapabilityBackend;
 import net.minecraft.block.Block;
@@ -23,8 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockBuffer;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
@@ -65,13 +60,6 @@ public class BlockItemBuffer extends AbstractPoweredBlockItem implements IOverla
       }
     }
     return true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-    super.addInformation(stack, playerIn, tooltip, advanced);
-    tooltip.add(PainterUtil2.getTooltTipText(stack));
   }
 
   @Override

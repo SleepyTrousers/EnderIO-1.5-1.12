@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.painter.blocks;
 
-import java.util.List;
-
 import crazypants.enderio.paint.PainterUtil2;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
@@ -38,13 +36,6 @@ public class BlockItemPaintedSlab extends ItemBlock {
   @Override
   public String getUnlocalizedName(ItemStack stack) {
     return this.singleSlab.getUnlocalizedName(stack.getMetadata());
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-    super.addInformation(stack, playerIn, tooltip, advanced);
-    tooltip.add(PainterUtil2.getTooltTipText(stack));
   }
 
   @Override

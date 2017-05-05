@@ -16,7 +16,13 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   public AbstractPainterTemplate() {
     super();
+    registerTargetsWithTooltipProvider();
   }
+
+  /**
+   * An reminder to register things with the PaintTooltipUtil if needed...
+   */
+  protected abstract void registerTargetsWithTooltipProvider();
 
   public abstract boolean isValidTarget(ItemStack target);
 
