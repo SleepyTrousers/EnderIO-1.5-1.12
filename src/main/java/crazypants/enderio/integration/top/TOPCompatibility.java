@@ -78,6 +78,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   @Override
   public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData hitData) {
+    if (mode == ProbeMode.DEBUG) {
+      probeInfo.text(blockState.toString());
+    }
     if (probeInfo != null && world != null && blockState != null && hitData != null && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
       TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, hitData.getPos());
       if (tileEntity != null) {
