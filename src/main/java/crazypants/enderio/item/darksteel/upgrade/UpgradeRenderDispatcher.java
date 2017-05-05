@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.IHasPlayerRenderer;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
-import crazypants.util.BaublesUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;

@@ -1,6 +1,10 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.integration.immersiveengineering;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
+import crazypants.enderio.machine.farm.farmers.IFarmerJoe;
+import crazypants.enderio.machine.farm.farmers.IHarvestResult;
+import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

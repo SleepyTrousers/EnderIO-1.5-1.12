@@ -1,22 +1,22 @@
 package crazypants.enderio.machine.farm;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.integration.forestry.ForestryFarmer;
+import crazypants.enderio.integration.ic2e.RubberTreeFarmerIC2exp;
+import crazypants.enderio.integration.immersiveengineering.HempFarmerIE;
+import crazypants.enderio.integration.natura.NaturaBerryFarmer;
+import crazypants.enderio.integration.techreborn.RubberTreeFarmerTechReborn;
 import crazypants.enderio.machine.farm.farmers.ChorusFarmer;
 import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.FlowerPicker;
-import crazypants.enderio.machine.farm.farmers.ForestryFarmer;
-import crazypants.enderio.machine.farm.farmers.HempFarmerIE;
 import crazypants.enderio.machine.farm.farmers.MelonFarmer;
-import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
 import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
 import crazypants.enderio.machine.farm.farmers.OredictTreeFarmer;
 import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmer;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2exp;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerTechReborn;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;

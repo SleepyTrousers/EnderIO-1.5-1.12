@@ -15,6 +15,7 @@ import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
@@ -24,7 +25,6 @@ import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpeedController;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TheOneProbeUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BaublesUtil;
 import crazypants.util.MagnetUtil;
 import crazypants.util.Prep;
 import net.minecraft.entity.Entity;
@@ -27,8 +27,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import static crazypants.enderio.integration.botania.BotaniaUtil.hasSolegnoliaAround;
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
-import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
 
 public class MagnetController {
 

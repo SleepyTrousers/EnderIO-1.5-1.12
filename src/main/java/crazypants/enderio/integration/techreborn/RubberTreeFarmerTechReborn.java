@@ -1,5 +1,6 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.integration.techreborn;
 
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

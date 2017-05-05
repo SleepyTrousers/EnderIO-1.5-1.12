@@ -1,4 +1,4 @@
-package crazypants.util;
+package crazypants.enderio.integration.baubles;
 
 import baubles.api.BaublesApi;
 import crazypants.enderio.config.Config;

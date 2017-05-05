@@ -1,8 +1,11 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.integration.natura;
 
 
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import crazypants.enderio.machine.farm.farmers.IHarvestResult;
+import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

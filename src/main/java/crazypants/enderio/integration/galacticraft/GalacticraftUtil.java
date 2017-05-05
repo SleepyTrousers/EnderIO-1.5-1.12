@@ -1,4 +1,4 @@
-package crazypants.util;
+package crazypants.enderio.integration.galacticraft;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package crazypants.util;
+package crazypants.enderio.integration.botania;
 
 import java.lang.reflect.Method;
 

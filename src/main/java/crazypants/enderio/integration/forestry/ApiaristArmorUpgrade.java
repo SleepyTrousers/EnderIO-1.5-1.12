@@ -1,7 +1,8 @@
-package crazypants.enderio.item.darksteel.upgrade;
+package crazypants.enderio.integration.forestry;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

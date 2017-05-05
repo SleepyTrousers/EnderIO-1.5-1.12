@@ -7,7 +7,7 @@ import java.util.Map;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
-import crazypants.util.BaublesUtil;
+import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

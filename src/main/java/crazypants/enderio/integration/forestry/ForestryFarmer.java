@@ -1,6 +1,9 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.integration.forestry;
 
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.machine.farm.farmers.IFarmerJoe;
+import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.util.Prep;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.ITree;
