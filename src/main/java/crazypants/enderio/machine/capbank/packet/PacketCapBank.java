@@ -22,7 +22,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
 
   @Override
   public Q onMessage(T message, MessageContext ctx) {
-    TileCapBank te = getTileEntity(message.getWorld(ctx));
+    TileCapBank te = message.getTileEntity(message.getWorld(ctx));
     if (te == null) {
       return null;
     }
