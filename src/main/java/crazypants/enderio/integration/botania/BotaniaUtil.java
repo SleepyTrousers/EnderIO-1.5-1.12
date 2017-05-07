@@ -3,6 +3,7 @@ package crazypants.enderio.integration.botania;
 import java.lang.reflect.Method;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.machine.farm.FarmersRegistry;
 import net.minecraft.entity.Entity;
 
 public class BotaniaUtil {
@@ -38,6 +39,11 @@ public class BotaniaUtil {
       }
     }
     return false;
+  }
+
+  public static void addBotania() {
+    FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower",
+        "block:botania:mushroom");
   }
 
 }
