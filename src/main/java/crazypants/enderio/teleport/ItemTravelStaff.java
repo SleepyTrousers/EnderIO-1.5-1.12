@@ -2,7 +2,7 @@ package crazypants.enderio.teleport;
 
 import java.util.List;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.EnderIO;
@@ -12,8 +12,9 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
-import crazypants.enderio.power.AbstractPoweredItem;
-import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.item.darksteel.IDarkSteelItem;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,7 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTravel, IResourceTooltipProvider, IOverlayRenderAware {
+public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedTooltipProvider, IOverlayRenderAware, IDarkSteelItem {
 
   private long lastBlickTick = 0;
 
@@ -38,7 +39,6 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
   
 
   protected ItemTravelStaff() {
-    super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setUnlocalizedName(ModObject.itemTravelStaff.getUnlocalisedName());
     setRegistryName(ModObject.itemTravelStaff.getUnlocalisedName());
@@ -52,7 +52,7 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setEnergyStored(itemStack, 0);
+    EnergyUpgrade.EMPOWERED.writeToItem(itemStack);
   }
 
   @Override
@@ -79,18 +79,24 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
-    list.add(str);
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+    list.add(EnergyUpgrade.getStoredEnergyString(itemstack));
+    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void extractInternal(ItemStack item, int powerUse) {
-    int res = Math.max(0, getEnergyStored(item) - powerUse);
-    setEnergyStored(item, res);
+    EnergyUpgrade.extractEnergy(item, powerUse, false);
   }
 
   @Override
@@ -100,13 +106,10 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
     par3List.add(is);
 
     is = new ItemStack(this);
-    setFull(is);
+    onCreated(is, null, null);
+    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.setPowerFull(is);
     par3List.add(is);
-  }
-
-  @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
   }
 
   @Override
@@ -123,6 +126,27 @@ public class ItemTravelStaff extends AbstractPoweredItem implements IItemOfTrave
   @Override
   public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
+  }
+
+  @Override
+  public int getIngotsRequiredForFullRepair() {
+    return 0;
+  }
+
+  @Override
+  public String getItemName() {
+    return ModObject.itemTravelStaff.getUnlocalisedName();
+  }
+
+  @Override
+  public boolean isItemForRepair(ItemStack right) {
+    // not damageable, no repair
+    return false;
+  }
+
+  @Override
+  public int getEnergyStored(ItemStack item) {
+    return EnergyUpgrade.getEnergyStored(item);
   }
 
 }

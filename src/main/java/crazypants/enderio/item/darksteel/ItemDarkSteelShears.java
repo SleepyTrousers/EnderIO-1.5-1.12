@@ -165,6 +165,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     public boolean equals(@Nullable Object obj) {
       return super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+      return super.hashCode();
+    }
   };
 
   @Override

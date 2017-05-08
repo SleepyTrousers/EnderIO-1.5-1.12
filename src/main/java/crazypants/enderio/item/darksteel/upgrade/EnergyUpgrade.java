@@ -11,6 +11,8 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.ItemTravelStaff;
+import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,7 +75,13 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if(stack == null) {
       return null;
     }
-    return loadFromNBT(stack.getTagCompound());
+    EnergyUpgrade upgrade = loadFromNBT(stack.getTagCompound());
+    if (upgrade == null && stack.getItem() instanceof ItemTravelStaff) {
+      stack = stack.copy();
+      stack.getItem().onCreated(stack, null, null);
+      upgrade = loadFromNBT(stack.getTagCompound());
+    }
+    return upgrade;
     
   }
 
@@ -188,7 +196,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean hasUpgrade(ItemStack stack) {
-    if(!super.hasUpgrade(stack)) {
+    if (!super.hasUpgrade(stack) && (Prep.isInvalid(stack) || !(stack.getItem() instanceof ItemTravelStaff))) {
       return false;
     }
     EnergyUpgrade up = loadFromItem(stack);
@@ -216,18 +224,19 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
     List<String> upgradeStr = new ArrayList<String>();
     upgradeStr.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
-    SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
+    if (itemstack.isItemStackDamageable()) {
+      SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
-    String percDamage = (int)Math.round(getAbsorptionRatio() * 100) + "";
-    String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
-    for (int i = 0; i < upgradeStr.size(); i++) {
-      String str = upgradeStr.get(i);
-      str = str.replaceAll("\\$P", capString);
-      str = str.replaceAll("\\$D", percDamage);
-      upgradeStr.set(i, str);
+      String percDamage = (int) Math.round(getAbsorptionRatio() * 100) + "";
+      String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+      for (int i = 0; i < upgradeStr.size(); i++) {
+        String str = upgradeStr.get(i);
+        str = str.replaceAll("\\$P", capString);
+        str = str.replaceAll("\\$D", percDamage);
+        upgradeStr.set(i, str);
+      }
     }
     list.addAll(upgradeStr);
-
   }
 
   @Override
