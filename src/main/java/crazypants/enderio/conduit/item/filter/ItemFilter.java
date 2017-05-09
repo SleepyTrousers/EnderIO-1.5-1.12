@@ -95,29 +95,26 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
 
   @Override
   public boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item) {
-    return isSticky() && itemMatched(item) != 0;
+    return isSticky() && itemMatched(item).isPass();
   }
 
   @Override
   public boolean doesItemPassFilter(@Nullable NetworkedInventory inv, ItemStack item) {
-    return !isValid() || (isBlacklist != (itemMatched(item) != 0));
+    return !isValid() || itemMatched(item).isPass(isBlacklist);
   }
 
   @Override
   public int getMaxCountThatPassesFilter(@Nullable NetworkedInventory inv, ItemStack item) {
-    if (isLimited) {
-      if (!isValid()) {
-        return 0;
+    if (isValid()) {
+      FilterResult value = itemMatched(item);
+      if (isLimited && value.hasLimit()) {
+        // Note: No blacklist for limited filters
+        return value.getLimit();
+      } else if (!isLimited && itemMatched(item).isPass(isBlacklist)) {
+        return Integer.MAX_VALUE;
       }
-      int value = itemMatched(item);
-      // Note: No blacklist for limited filters
-      if (value <= 0) {
-        return 0;
-      }
-      return value;
-    } else {
-      return doesItemPassFilter(inv, item) ? Integer.MAX_VALUE : 0;
     }
+    return 0;
   }
 
   /**
@@ -125,9 +122,9 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
    * 
    * @param item
    *          The item to check against the filter
-   * @return 0 if the item does not pass. -1 if it passes but no single rule could be identified that lets it pass. Otherwise the size limit for the given item.
+   * @return a FilterResult
    */
-  private int itemMatched(ItemStack item) {
+  private FilterResult itemMatched(ItemStack item) {
     if (damageMode.passesFilter(item)) {
       // if there are no filter items, but a damage mode is set, the filter will let items pass that match that filter mode
       boolean canPassFilter = damageMode != DamageMode.DISABLED;
@@ -137,20 +134,20 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
           if (item.getItem() == filterStack.getItem()) {
             if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
               if (!matchNBT || isNBTMatch(item, filterStack)) {
-                return filterStack.stackSize;
+                return new FilterResult(filterStack.stackSize);
               }
             }
           }
           if (useOreDict && isOreDicMatch(i, item)) {
-            return filterStack.stackSize;
+            return new FilterResult(filterStack.stackSize);
           }
           canPassFilter = false;
         }
       }
-      return canPassFilter ? -1 : 0;
+      return canPassFilter ? FilterResult.PASS : FilterResult.FAIL;
     }
 
-    return 0;
+    return FilterResult.FAIL;
   }
 
   private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {
@@ -534,6 +531,56 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
   @Override
   public int getFieldCount() {
     return 0;
+  }
+
+  public static class FilterResult {
+
+    static final FilterResult PASS = new FilterResult(true);
+    static final FilterResult FAIL = new FilterResult(false);
+
+    private final boolean pass;
+    private final int limit;
+
+    /**
+     * Creates a pass/fail result without stack size limit.
+     */
+    private FilterResult(boolean pass) {
+      this.pass = pass;
+      this.limit = -1;
+    }
+
+    /**
+     * Creates a pass result with the given stack size limit.
+     */
+    public FilterResult(int limit) {
+      this.pass = true;
+      this.limit = limit;
+    }
+
+    /**
+     * @return true if the item passes the filter
+     */
+    public boolean isPass() {
+      return pass;
+    }
+
+    /**
+     * @return the result of isPass() but inverted if the invert parameter is true
+     */
+    public boolean isPass(boolean invert) {
+      return pass != invert;
+    }
+
+    public int getLimit() {
+      return limit;
+    }
+
+    /**
+     * @return true if the item passes the filter and it matched a rule that gave a stack size limit
+     */
+    public boolean hasLimit() {
+      return pass && limit >= 0;
+    }
   }
 
 }
