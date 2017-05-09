@@ -1,9 +1,13 @@
 package crazypants.enderio.capability;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -12,40 +16,38 @@ import net.minecraftforge.items.IItemHandler;
 public class LegacyMachineWrapper implements IItemHandler {
   protected final AbstractInventoryMachineEntity machine;
   protected final EnumFacing side;
+  protected IoMode lastIoMode = null;
+  protected final List<Integer> slots = new ArrayList<Integer>();
 
   public LegacyMachineWrapper(AbstractInventoryMachineEntity machine, EnumFacing side) {
     this.machine = machine;
     this.side = side;
   }
 
+  protected void computeSlotMappings() {
+    final IoMode ioMode = machine.getIoMode(side);
+    if (ioMode != lastIoMode) {
+      slots.clear();
+      final SlotDefinition slotDefinition = machine.getSlotDefinition();
+      for (int i = 0; i < slotDefinition.getNumSlots(); i++) {
+        if ((ioMode.canRecieveInput() && slotDefinition.isInputSlot(i)) || ((ioMode.canOutput() && slotDefinition.isOutputSlot(i)))) {
+          slots.add(i);
+        }
+      }
+      lastIoMode = ioMode;
+    }
+  }
+
   @Override
   public int getSlots() {
-    int result = 0;
-    final IoMode ioMode = machine.getIoMode(side);
-    if (ioMode.canRecieveInput()) {
-      result += machine.getSlotDefinition().getNumInputSlots();
-    }
-    if (ioMode.canOutput()) {
-      result += machine.getSlotDefinition().getNumOutputSlots();
-    }
-    return result;
+    computeSlotMappings();
+    return slots.size();
   }
 
   protected int extSlot2intSlot(int external) {
-    if (external >= 0) {
-      final IoMode ioMode = machine.getIoMode(side);
-      if (ioMode.canRecieveInput()) {
-        int num = machine.getSlotDefinition().getNumInputSlots();
-        if (external < num) {
-          return external + machine.getSlotDefinition().getMinInputSlot();
-        }
-        external -= num;
-      }
-      if (ioMode.canOutput()) {
-        if (external < machine.getSlotDefinition().getNumOutputSlots()) {
-          return external + machine.getSlotDefinition().getMinOutputSlot();
-        }
-      }
+    computeSlotMappings();
+    if (external >= 0 && external < slots.size()) {
+      return slots.get(external);
     }
     return -1;
   }
