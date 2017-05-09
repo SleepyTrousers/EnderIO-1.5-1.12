@@ -44,7 +44,7 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
   @Override
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    GuiID.facing2guiid(message.dir).openGui(player.worldObj, getPos(), player, message.dir);
+    GuiID.facing2guiid(message.dir).openGui(player.worldObj, message.getPos(), player, message.dir);
     return null;
   }
 
