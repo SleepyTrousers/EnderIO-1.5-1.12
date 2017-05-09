@@ -65,7 +65,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && xpCont.getFluidAmount() < xpCont.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), xpCont, Config.fluidConduitMaxIoRate) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont, Config.fluidConduitMaxIoRate) > 0) {
         setTanksDirty();
       }
     }
@@ -76,7 +76,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   protected boolean doPush(@Nullable EnumFacing dir) {
     boolean res = super.doPush(dir);
     if (dir != null && xpCont.getFluidAmount() > 0) {
-      if (FluidWrapper.transfer(xpCont, worldObj, getPos().offset(dir), dir.getOpposite(), Config.fluidConduitMaxIoRate) > 0) {
+      if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), Config.fluidConduitMaxIoRate) > 0) {
         setTanksDirty();
       }
     }

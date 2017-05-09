@@ -106,7 +106,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
 
   private EntityLivingBase getFakePlayer() {
     if (fakePlayer == null) {
-      fakePlayer = FakePlayerFactory.getMinecraft(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldObj.provider.getDimension()));
+      fakePlayer = FakePlayerFactory.getMinecraft(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()));
     }
     return fakePlayer;
   }

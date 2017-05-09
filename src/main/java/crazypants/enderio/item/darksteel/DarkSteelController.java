@@ -153,22 +153,22 @@ public class DarkSteelController {
 
   private void updateSolar(EntityPlayer player) {
     // no processing on client
-    if (player.worldObj.isRemote) {
+    if (player.world.isRemote) {
       return;
     }
 
     ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
     if (upgrade == null
-        || !player.worldObj.canBlockSeeSky(new BlockPos(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + player.eyeHeight + .25),
-            MathHelper.floor_double(player.posZ)))) {
+        || !player.world.canBlockSeeSky(new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY + player.eyeHeight + .25),
+            MathHelper.floor(player.posZ)))) {
       return;
     }
 
-    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj));
+    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.world));
 
     int leftover = RFperSecond % 20;
-    boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
+    boolean addExtraRF = player.world.getTotalWorldTime() % 20 < leftover;
 
     int toAdd = (RFperSecond / 20) + (addExtraRF ? 1 : 0);
 
@@ -349,7 +349,7 @@ public class DarkSteelController {
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
-    EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayerSP player = Minecraft.getMinecraft().player;
     if (player == null) {
       return;
     }
@@ -412,9 +412,9 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
-      SoundHelper.playSound(player.worldObj, player, SoundRegistry.JUMP, 1.0f, player.worldObj.rand.nextFloat() * 0.5f + 0.75f);
+      SoundHelper.playSound(player.world, player, SoundRegistry.JUMP, 1.0f, player.world.rand.nextFloat() * 0.5f + 0.75f);
 
-      Random rand = player.worldObj.rand;
+      Random rand = player.world.rand;
       for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
         Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
             player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);

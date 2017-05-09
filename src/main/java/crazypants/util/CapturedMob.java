@@ -129,7 +129,7 @@ public class CapturedMob {
   }
 
   public static @Nullable CapturedMob create(@Nullable Entity entity) {
-    if (!(entity instanceof EntityLivingBase) || entity.worldObj == null || entity.worldObj.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
+    if (!(entity instanceof EntityLivingBase) || entity.world == null || entity.world.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
       return null;
     }
     return new CapturedMob((EntityLivingBase) entity);
@@ -248,7 +248,7 @@ public class CapturedMob {
     }
 
     if (!world.spawnEntityInWorld(entity)) {
-      entity.setUniqueId(MathHelper.getRandomUuid(world.rand));
+      entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
       if (!world.spawnEntityInWorld(entity)) {
         return false;
       }
@@ -289,7 +289,7 @@ public class CapturedMob {
       final Entity entity = EntityList.createEntityFromNBT(entityNbt, world);
       if (!clone) {
         // The caller doesn't expect a clone, but we return one. Give it a unique/new ID to avoid problems with duplicate entities.
-        entity.setUniqueId(MathHelper.getRandomUuid(world.rand));
+        entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
       }
       return entity;
     }

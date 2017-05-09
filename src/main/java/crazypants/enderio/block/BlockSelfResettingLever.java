@@ -91,22 +91,22 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem,
-      EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
     if (world.isRemote) {
       return true;
     } else {
       if (!state.getValue(POWERED)) {
         world.scheduleBlockUpdate(pos, this, delay, 0);
       }
-      return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+      return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
     }
   }
 
   @Override
   public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
     if (!world.isRemote && state.getValue(POWERED)) {
-      super.onBlockActivated(world, pos, state, null, EnumHand.MAIN_HAND, null, EnumFacing.DOWN, 0f, 0f, 0f);
+      super.onBlockActivated(world, pos, state, null, EnumHand.MAIN_HAND, EnumFacing.DOWN, 0f, 0f, 0f);
     }
   }
 

@@ -140,7 +140,7 @@ public class TravelController {
     double lookComp = -look.y * playerHeight;
     double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
 
-    RayTraceResult p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
     if(p == null) {
 
       //go as far as possible
@@ -158,10 +158,10 @@ public class TravelController {
       return false;
     } else {
 
-      List<RayTraceResult> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
       for (RayTraceResult pos : res) {
         if(pos != null) {
-          IBlockState hitBlock = player.worldObj.getBlockState(pos.getBlockPos());
+          IBlockState hitBlock = player.world.getBlockState(pos.getBlockPos());
           if(isBlackListedBlock(player, pos, hitBlock)) {
             BlockPos bp = pos.getBlockPos();
             maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) - 1.5 - lookComp);
@@ -210,7 +210,7 @@ public class TravelController {
 
   private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {
     return TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
-        && (hitBlock.getBlockHardness(player.worldObj, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
   private boolean doBlinkAround(EntityPlayer player, ItemStack equipped, EnumHand hand, Vector3d sample, boolean conserveMomentum) {
@@ -264,8 +264,8 @@ public class TravelController {
   public void onRender(RenderWorldLastEvent event) {
 
     Minecraft mc = Minecraft.getMinecraft();
-    Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
-    Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
+    Vector3d eye = Util.getEyePositionEio(mc.player);
+    Vector3d lookAt = Util.getLookVecEio(mc.player);
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
@@ -284,7 +284,7 @@ public class TravelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
-      EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+      EntityPlayerSP player = Minecraft.getMinecraft().player;
       if(player == null) {
         return;
       }
@@ -372,7 +372,7 @@ public class TravelController {
   private boolean travelToLocation(EntityPlayer player, ItemStack equipped, EnumHand hand, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
 
     if(source != TravelSource.STAFF_BLINK) {
-      TileEntity te = player.worldObj.getTileEntity(coord.getBlockPos());
+      TileEntity te = player.world.getTileEntity(coord.getBlockPos());
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
         if(!ta.canBlockBeAccessed(player)) {
@@ -402,7 +402,7 @@ public class TravelController {
     }
     if (doClientTeleport(player, hand, coord, source, requiredPower, conserveMomentum)) {
       for (int i = 0; i < 6; ++i) {
-        player.worldObj.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
+        player.world.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
             player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
             (rand.nextDouble() - 0.5D) * 2.0D);
       }
@@ -445,7 +445,7 @@ public class TravelController {
     if(bc == null) {
       return false;
     }
-    World w = player.worldObj;
+    World w = player.world;
     BlockCoord baseLoc = bc;
     if(source != TravelSource.STAFF_BLINK) {
       //targeting a block so go one up
@@ -521,7 +521,7 @@ public class TravelController {
   private void updateVerticalTarget(EntityPlayerSP player, int direction) {
 
     BlockCoord currentBlock = getActiveTravelBlock(player);
-    World world = Minecraft.getMinecraft().theWorld;
+    World world = Minecraft.getMinecraft().world;
     for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
 
       //Circumvents the raytracing used to find candidates on the y axis
@@ -599,7 +599,7 @@ public class TravelController {
       return;
     }
 
-    TileEntity te = player.worldObj.getTileEntity(new BlockPos(target.x, target.y, target.z));
+    TileEntity te = player.world.getTileEntity(new BlockPos(target.x, target.y, target.z));
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
       if(ta.getRequiresPassword(player)) {
@@ -641,7 +641,7 @@ public class TravelController {
     //smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
     float start = 0.2f;
     float end = 0.01f;
-    double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
+    double mix = MathHelper.clamp((start - ratio) / (start - end), 0, 1);
     double scale = 1;
     if(mix > 0) {
 
@@ -652,7 +652,7 @@ public class TravelController {
       scale *= Config.travelAnchorZoomScale;
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
+      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
@@ -691,11 +691,11 @@ public class TravelController {
 
   @SideOnly(Side.CLIENT)
   private BlockCoord getActiveTravelBlock(EntityPlayerSP player) {
-    World world = Minecraft.getMinecraft().theWorld;
+    World world = Minecraft.getMinecraft().world;
     if(world != null && player != null) {
-      int x = MathHelper.floor_double(player.posX);
-      int y = MathHelper.floor_double(player.getEntityBoundingBox().minY) - 1;
-      int z = MathHelper.floor_double(player.posZ);
+      int x = MathHelper.floor(player.posX);
+      int y = MathHelper.floor(player.getEntityBoundingBox().minY) - 1;
+      int z = MathHelper.floor(player.posZ);
       final BlockPos pos = new BlockPos(x, y, z);
       final Block block = world.getBlockState(pos).getBlock();
       if (block instanceof BlockTravelAnchor) {

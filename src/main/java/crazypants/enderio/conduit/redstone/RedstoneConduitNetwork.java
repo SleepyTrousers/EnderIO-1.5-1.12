@@ -171,25 +171,25 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
     TileEntity te = con.getBundle().getEntity();
 
-    World worldObj = te.getWorld();
+    World world = te.getWorld();
 
     BlockPos bc1 = te.getPos();
 
-    if (!worldObj.isBlockLoaded(bc1)) {
+    if (!world.isBlockLoaded(bc1)) {
       return;
     }
 
     // Done manually to avoid orphaning chunks
     for (EnumFacing dir : con.getExternalConnections()) {
       BlockPos bc2 = bc1.offset(dir);
-      if (worldObj.isBlockLoaded(bc2)) {
-        worldObj.notifyBlockOfStateChange(bc2, blockConduitBundle.getBlock());
-        IBlockState bs = worldObj.getBlockState(bc2);
+      if (world.isBlockLoaded(bc2)) {
+        world.notifyBlockOfStateChange(bc2, blockConduitBundle.getBlock());
+        IBlockState bs = world.getBlockState(bc2);
         if (bs.isBlockNormalCube()) {
           for (EnumFacing dir2 : EnumFacing.VALUES) {
             BlockPos bc3 = bc2.offset(dir2);
-            if (!bc3.equals(bc1) && worldObj.isBlockLoaded(bc3)) {
-              worldObj.notifyBlockOfStateChange(bc3, blockConduitBundle.getBlock());
+            if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
+              world.notifyBlockOfStateChange(bc3, blockConduitBundle.getBlock());
             }
           }
         }
@@ -209,7 +209,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     World world = null;
     for (IRedstoneConduit c : conduits) {
       if (world == null) {
-        world = c.getBundle().getBundleWorldObj();
+        world = c.getBundle().getBundleworld();
       }
       BlockCoord loc = c.getLocation();
       if (world.isBlockLoaded(loc.getBlockPos())) {

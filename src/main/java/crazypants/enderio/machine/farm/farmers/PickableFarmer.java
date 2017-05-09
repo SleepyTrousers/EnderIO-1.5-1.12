@@ -37,7 +37,7 @@ public class PickableFarmer extends CustomSeedFarmer {
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();
-    player.interactionManager.processRightClickBlock(player, player.worldObj, null, EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
+    player.interactionManager.processRightClickBlock(player, player.world, null, EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
 
     farm.clearJoeUseItem(false);
 

@@ -23,6 +23,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDarkSteelLadder create() {
@@ -61,8 +63,8 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     if (entity.motionY >= 0.1) {
       entity.setPosition(entity.posX, entity.posY + Config.darkSteelLadderSpeedBoost, entity.posZ);
     } else if (entity.motionY <= -0.1) {
-      Block blockUnder = entity.worldObj
-          .getBlockState(new BlockPos(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY) - 3, MathHelper.floor_double(entity.posZ)))
+      Block blockUnder = entity.world
+          .getBlockState(new BlockPos(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY) - 3, MathHelper.floor(entity.posZ)))
           .getBlock();
       if (blockUnder == Blocks.AIR || blockUnder == this) { // prevent clipping into block
         entity.setPosition(entity.posX, entity.posY - Config.darkSteelLadderSpeedBoost, entity.posZ);
@@ -71,7 +73,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 

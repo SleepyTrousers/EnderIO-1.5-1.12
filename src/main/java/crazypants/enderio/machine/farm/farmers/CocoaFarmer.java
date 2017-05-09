@@ -31,13 +31,13 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockPos bc) {
-    EnumFacing dir = getPlantDirection(worldObj, bc);
+  protected boolean plant(TileFarmStation farm, World world, BlockPos bc) {
+    EnumFacing dir = getPlantDirection(world, bc);
     if (dir == null) {
       return false;
     }
     IBlockState iBlockState = getPlantedBlock().getDefaultState().withProperty(FACING, dir);
-    if (worldObj.setBlockState(bc, iBlockState, 1 | 2)) {
+    if (world.setBlockState(bc, iBlockState, 1 | 2)) {
       farm.actionPerformed(false);
       return true;
     }
@@ -45,18 +45,18 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(TileFarmStation farm, World worldObj, BlockPos bc) {
-    return getPlantDirection(worldObj, bc) != null;
+  protected boolean canPlant(TileFarmStation farm, World world, BlockPos bc) {
+    return getPlantDirection(world, bc) != null;
   }
 
-  private EnumFacing getPlantDirection(World worldObj, BlockPos bc) {
-    if (!worldObj.isAirBlock(bc)) {
+  private EnumFacing getPlantDirection(World world, BlockPos bc) {
+    if (!world.isAirBlock(bc)) {
       return null;
     }
 
     for (EnumFacing dir : EnumFacing.HORIZONTALS) {
       BlockPos p = bc.offset(dir);
-      if (validBlock(worldObj.getBlockState(p)))
+      if (validBlock(world.getBlockState(p)))
         return dir;
     }
 

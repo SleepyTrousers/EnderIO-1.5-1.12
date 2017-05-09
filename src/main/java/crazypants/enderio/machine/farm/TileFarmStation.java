@@ -328,7 +328,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return;
     }
 
-    float rand = worldObj.rand.nextFloat();
+    float rand = world.rand.nextFloat();
     if (rand >= Config.farmToolTakeDamageChance) {
       return;
     }
@@ -337,10 +337,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     boolean canDamage = canDamage(tool);
     if (type == ToolType.AXE) {
-      tool.getItem().onBlockDestroyed(tool, worldObj, bs, bc, farmerJoe);
+      tool.getItem().onBlockDestroyed(tool, world, bs, bc, farmerJoe);
     } else if (type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
-      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      tool.getItem().onItemUse(tool, farmerJoe, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       if (origDamage == tool.getItemDamage() && canDamage) {
         tool.damageItem(1, farmerJoe);
       }
@@ -381,13 +381,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   public IBlockState getBlockState(BlockPos posIn) {
-    return worldObj.getBlockState(posIn);
+    return world.getBlockState(posIn);
   }
 
   public boolean isOpen(BlockPos bc) {
     Block block = getBlock(bc);
     IBlockState bs = getBlockState(bc);
-    return block.isAir(bs, worldObj, bc) || block.isReplaceable(worldObj, bc);
+    return block.isAir(bs, world, bc) || block.isReplaceable(world, bc);
   }
 
   public void setNotification(FarmNotification note) {
@@ -447,7 +447,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     super.doUpdate();
     if (isActive() != wasActive) {
       wasActive = isActive();
-      worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+      world.checkLightFor(EnumSkyBlock.BLOCK, pos);
     }
   }
 
@@ -489,7 +489,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     removeNotification(FarmNotification.NO_POWER);
 
     if (farmerJoe == null) {
-      farmerJoe = new FakePlayerEIO(worldObj, getLocation(), FARMER_PROFILE);
+      farmerJoe = new FakePlayerEIO(world, getLocation(), FARMER_PROFILE);
       farmerJoe.setOwner(getOwner());
       farmerJoe.worldObj = new PickupWorld(worldObj, farmerJoe);
     }
@@ -497,7 +497,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     BlockPos bc = null;
     IBlockState bs = null;
     int infiniteLoop = 20;
-    while (bc == null || bc.equals(getPos()) || !worldObj.isBlockLoaded(bc)
+    while (bc == null || bc.equals(getPos()) || !world.isBlockLoaded(bc)
         || !PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockFarmStation.permissionFarming, new BlockPosContext(farmerJoe, bc, bs, null))) {
       if (infiniteLoop-- <= 0) {
         return;
@@ -558,12 +558,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
     if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= .75f) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
-      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == worldObj.isAirBlock(bc))) {
+      if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == world.isAirBlock(bc))) {
         setJoeUseItem(inventory[minFirtSlot]);
-        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, worldObj, bc)) {
+        if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, world, bc)) {
           inventory[minFirtSlot] = clearJoeUseItem(true);
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc),
-              new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+              new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
           if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].stackSize == 0) {
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }
@@ -708,7 +708,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private void insertHarvestDrop(Entity entity, BlockPos bc) {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem();
@@ -804,7 +804,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   public void toggleLockedState(int slot) {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, slot));
     }
     setSlotLocked(slot, !isSlotLocked(slot));

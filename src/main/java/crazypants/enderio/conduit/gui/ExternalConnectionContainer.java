@@ -147,7 +147,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     setSlotsVisible(inputVisible, speedUpgradeSlot, speedUpgradeSlot + 1);
     setSlotsVisible(outputVisible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
     setSlotsVisible(inputVisible || outputVisible, functionUpgradeSlot, functionUpgradeSlot + 1);
-    World world = itemConduit.getBundle().getBundleWorldObj();
+    World world = itemConduit.getBundle().getBundleworld();
     if(world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketSlotVisibility(inputVisible, outputVisible));
     }

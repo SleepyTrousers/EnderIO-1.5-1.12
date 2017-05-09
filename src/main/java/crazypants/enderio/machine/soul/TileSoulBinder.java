@@ -183,7 +183,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
     boolean res = super.doPull(dir);
     int req = getXPRequired();
     if (dir != null && req > 0) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), xpCont,
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont,
           Math.min(XpUtil.experienceToLiquid(req), Config.fluidConduitExtractRate)) > 0) {
         setTanksDirty();
       }
@@ -196,7 +196,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
     boolean res = super.doPush(dir);
     int maxAmount = Math.min(XpUtil.experienceToLiquid(getExcessXP()), Config.fluidConduitExtractRate);
     if (dir != null && maxAmount > 0) {
-      if (FluidWrapper.transfer(xpCont, worldObj, getPos().offset(dir), dir.getOpposite(), maxAmount) > 0) {
+      if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), maxAmount) > 0) {
         setTanksDirty();
       }
     }

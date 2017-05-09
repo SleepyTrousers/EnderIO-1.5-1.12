@@ -30,10 +30,10 @@ public class PowerDistributor {
     receptorsDirty = true;
   }
 
-  public int transmitEnergy(World worldObj, int available) {
+  public int transmitEnergy(World world, int available) {
 
     int transmitted = 0;
-    checkReceptors(worldObj);
+    checkReceptors(world);
     if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
     }
@@ -60,16 +60,16 @@ public class PowerDistributor {
     return transmitted;
   }
 
-  private void checkReceptors(World worldObj) {
+  private void checkReceptors(World world) {
     if(!receptorsDirty) {
       return;
     }
     receptors.clear();
-    TileEntity transmitter = worldObj.getTileEntity(bc.getBlockPos());
+    TileEntity transmitter = world.getTileEntity(bc.getBlockPos());
     for (EnumFacing dir : EnumFacing.VALUES) {
       if(!(transmitter instanceof AbstractMachineEntity) || ((AbstractMachineEntity) transmitter).getIoMode(dir).canOutput()) {
         BlockCoord checkLoc = bc.getLocation(dir);
-        TileEntity te = worldObj.getTileEntity(checkLoc.getBlockPos());
+        TileEntity te = world.getTileEntity(checkLoc.getBlockPos());
         IPowerInterface pi = PowerHandlerUtil.getPowerInterface(te, dir.getOpposite());
         if (pi != null) {
           receptors.add(new Receptor(pi, dir));

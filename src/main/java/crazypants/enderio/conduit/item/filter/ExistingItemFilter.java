@@ -234,7 +234,7 @@ public class ExistingItemFilter implements IItemFilter {
       NBTTagList itemList = (NBTTagList) nbtRoot.getTag("snapshot");
       for (int i = 0; i < itemList.tagCount(); i++) {
         NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
-        ItemStack itemStack = ItemStack.loadItemStackFromNBT(itemTag);
+        ItemStack itemStack = new ItemStack(itemTag);
         if (itemStack != null) {
           snapshot.add(itemStack);
         }
@@ -308,7 +308,7 @@ public class ExistingItemFilter implements IItemFilter {
     snapshot = new ArrayList<ItemStack>(numItems);
     for (int i = 0; i < numItems; i++) {
       NBTTagCompound itemTag = NetworkUtil.readNBTTagCompound(buf);
-      ItemStack item = ItemStack.loadItemStackFromNBT(itemTag);
+      ItemStack item = new ItemStack(itemTag);
       if (item != null) {
         snapshot.add(item);
       }

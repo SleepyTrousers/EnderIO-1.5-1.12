@@ -37,7 +37,7 @@ public class SpeedController {
   private boolean ignoreFovEvent = false;
 
   public void updateSpeed(EntityPlayer player) {
-    if (player.worldObj.isRemote || !player.onGround) {
+    if (player.world.isRemote || !player.onGround) {
       return;
     }
 

@@ -179,7 +179,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(!filterBounds.contains(x, y)) {
       return;
     }
-    ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+    ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
     FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
     if(filter == null && st == null) {
       return;

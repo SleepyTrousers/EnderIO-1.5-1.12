@@ -15,10 +15,10 @@ public class TileLightNode extends TileEntityEio {
   BlockPos parent;
 
   public TileElectricLight getParent() {
-    if (worldObj == null || parent == null) {
+    if (world == null || parent == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(parent);
+    TileEntity te = world.getTileEntity(parent);
     if(te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }
@@ -26,9 +26,9 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void checkParent() {
-    if (hasWorldObj() && parent != null && worldObj.isBlockLoaded(parent)) {
-      if (worldObj.getBlockState(parent).getBlock() != blockElectricLight.getBlock()) {
-        worldObj.setBlockToAir(pos);
+    if (hasworld() && parent != null && world.isBlockLoaded(parent)) {
+      if (world.getBlockState(parent).getBlock() != blockElectricLight.getBlock()) {
+        world.setBlockToAir(pos);
       }
     }
   }

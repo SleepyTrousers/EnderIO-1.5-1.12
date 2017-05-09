@@ -36,7 +36,7 @@ public class HandleEnum implements IHandler<Enum<?>> {
       @Nullable Enum<?> object) {
     if (nbt.hasKey(name) && (object != null || field != null)) {
       Enum<?>[] enumConstants = (Enum<?>[]) (object != null ? object.getClass().getEnumConstants() : field.getType().getEnumConstants());
-      Enum<?> res = enumConstants[MathHelper.clamp_int(nbt.getInteger(name), 0, enumConstants.length - 1)];
+      Enum<?> res = enumConstants[MathHelper.clamp(nbt.getInteger(name), 0, enumConstants.length - 1)];
       return  res;
     } else {
       return object;

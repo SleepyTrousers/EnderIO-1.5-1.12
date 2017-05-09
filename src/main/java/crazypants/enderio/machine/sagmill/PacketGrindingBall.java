@@ -41,7 +41,7 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
   @Override
   public IMessage onMessage(PacketGrindingBall message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(BlockPos.fromLong(message.pos));
+    TileEntity te = player.world.getTileEntity(BlockPos.fromLong(message.pos));
     if (te instanceof TileSagMill) {
       TileSagMill me = (TileSagMill) te;
       me.currGbUse = message.currGbUse;

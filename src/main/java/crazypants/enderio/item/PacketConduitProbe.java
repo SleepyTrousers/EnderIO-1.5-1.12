@@ -101,7 +101,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
   @Override
   public IMessage onMessage(PacketConduitProbe message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    World world = player.worldObj;
+    World world = player.world;
     BlockPos pos = BlockPos.fromLong(message.pos);
     if (world == null || !world.isBlockLoaded(pos)) {
       return null;

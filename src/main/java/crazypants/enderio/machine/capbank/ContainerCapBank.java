@@ -67,7 +67,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
     baubles = BaublesUtil.instance().getBaubles(playerInv.player);
 
-    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.worldObj) == BaublesUtil.WhoAmI.SPCLIENT) {
+    if (baubles != null && BaublesUtil.WhoAmI.whoAmI(playerInv.player.world) == BaublesUtil.WhoAmI.SPCLIENT) {
       baubles = new ShadowInventory(baubles);
     }
 
@@ -114,7 +114,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
           @Override
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
-            if (par1ItemStack == null) {
+            if (par1itemStack.isEmpty()) {
               return false;
             }
             return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);

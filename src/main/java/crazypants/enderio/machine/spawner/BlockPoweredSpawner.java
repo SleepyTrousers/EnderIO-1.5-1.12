@@ -118,8 +118,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
     if(evt.getState().getBlock() instanceof BlockMobSpawner) {
-      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote && !evt.isCanceled()) {
-        TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.getPos());
+      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().world.isRemote && !evt.isCanceled()) {
+        TileEntity tile = evt.getPlayer().world.getTileEntity(evt.getPos());
         if(tile instanceof TileEntityMobSpawner) {
 
           if(Math.random() > Config.brokenSpawnerDropChance) {
@@ -278,7 +278,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
 
     long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
-    long livedFor = livingUpdate.getEntity().worldObj.getTotalWorldTime() - spawnTime;
+    long livedFor = livingUpdate.getEntity().world.getTotalWorldTime() - spawnTime;
     if(livedFor > Config.poweredSpawnerDespawnTimeSeconds*20) {      
       try {
         fieldpersistenceRequired.setBoolean(livingUpdate.getEntityLiving(), false);

@@ -75,7 +75,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if(evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
+    if(evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
@@ -135,7 +135,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
 
@@ -169,7 +169,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if(evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if(evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
+    if(evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
     if (evt.getOriginal() == evt.getEntityPlayer()
@@ -212,7 +212,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     if (evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if (evt.getEntityPlayer().worldObj.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
       return;
     }
     if (evt.getOriginal() == evt.getEntityPlayer()
@@ -242,13 +242,13 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private boolean tryToSpawnItemInWorld(EntityPlayer entityPlayer, @Nonnull ItemStack item) {
-    if (entityPlayer != null && entityPlayer.worldObj != null) {
-      EntityItem entityitem = new EntityItem(entityPlayer.worldObj, entityPlayer.posX, entityPlayer.posY + 0.5, entityPlayer.posZ, item);
+    if (entityPlayer != null && entityPlayer.world != null) {
+      EntityItem entityitem = new EntityItem(entityPlayer.world, entityPlayer.posX, entityPlayer.posY + 0.5, entityPlayer.posZ, item);
       entityitem.setPickupDelay(40);
       entityitem.lifespan *= 2;
       entityitem.motionX = 0;
       entityitem.motionZ = 0;
-      entityPlayer.worldObj.spawnEntityInWorld(entityitem);
+      entityPlayer.world.spawnEntityInWorld(entityitem);
       Log.debug("Running tryToSpawnItemInWorld logic for " + entityPlayer.getName() + ": " + item);
       return true;
     }

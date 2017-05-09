@@ -50,7 +50,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     int got = tank.getFluidAmount();
     for (EnumFacing neighbor : EnumFacing.VALUES) {
       BlockPos pos1 = getPos().offset(neighbor);
-      TileEntity tileEntity = worldObj.getTileEntity(pos1);
+      TileEntity tileEntity = world.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir && ((TileReservoir) tileEntity).tank != null && !seen.contains(tileEntity)) {
         seen.add((TileReservoir) tileEntity);
         got += ((TileReservoir) tileEntity).tank.getFluidAmount();
@@ -59,7 +59,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
         }
         for (EnumFacing neighbor2 : EnumFacing.VALUES) {
           BlockPos pos2 = pos1.offset(neighbor2);
-          TileEntity tileEntity2 = worldObj.getTileEntity(pos2);
+          TileEntity tileEntity2 = world.getTileEntity(pos2);
           if (tileEntity2 instanceof TileReservoir && ((TileReservoir) tileEntity2).tank != null && !seen.contains(tileEntity2)) {
             seen.add((TileReservoir) tileEntity2);
             got += ((TileReservoir) tileEntity2).tank.getFluidAmount();
@@ -79,7 +79,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     if (tank.getFluidAmount() > 0) {
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (dir != null && tank.getFluidAmount() > 0) {
-          if (FluidWrapper.transfer(tank, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+          if (FluidWrapper.transfer(tank, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
             setTanksDirty();
           }
         }
@@ -101,7 +101,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   }
 
   protected void doLeak(BlockPos pos1, int maxAmount) {
-    TileEntity tileEntity = worldObj.getTileEntity(pos1);
+    TileEntity tileEntity = world.getTileEntity(pos1);
     if (tileEntity instanceof TileReservoir && !((TileReservoir) tileEntity).tank.isFull()) {
       FluidStack canDrain = tank.drainInternal(maxAmount, false);
       if (canDrain != null && canDrain.amount > 0) {
@@ -116,7 +116,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   protected void doEqualize() {
     for (EnumFacing dir : EnumFacing.Plane.HORIZONTAL) {
       BlockPos pos1 = getPos().offset(dir);
-      TileEntity tileEntity = worldObj.getTileEntity(pos1);
+      TileEntity tileEntity = world.getTileEntity(pos1);
       if (tileEntity instanceof TileReservoir) {
         TileReservoir other = (TileReservoir) tileEntity;
         int toMove = (tank.getFluidAmount() - other.tank.getFluidAmount()) / 2;
@@ -135,7 +135,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       super.doUpdate(); // disable ticking on the client
       return;
     }

@@ -7,7 +7,7 @@ import com.enderio.core.common.util.BlockCoord;
 
 public interface IWirelessCharger {
 
-  World getWorldObj();
+  World getworld();
 
   BlockCoord getLocation();
 

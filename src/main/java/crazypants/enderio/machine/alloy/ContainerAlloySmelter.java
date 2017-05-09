@@ -24,11 +24,11 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
   public static int FIRST_INVENTORY_SLOT = 3 + 1 + 1; // input + output + upgrade
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
-  private final EntityPlayer thePlayer;
+  private final EntityPlayer player;
 
   public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {
     super(playerInv, te);
-    thePlayer = playerInv.player;
+    player = playerInv.player;
   }
 
   @Override
@@ -66,7 +66,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
     @Override
     public ItemStack decrStackSize(int par1) {
       if (getHasStack()) {
-        numResults += Math.min(par1, getStack().stackSize);
+        numResults += Math.min(par1, getStack().getCount());
       }
       return super.decrStackSize(par1);
     }
@@ -90,20 +90,20 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
 
     @Override
     protected void onCrafting(ItemStack output) {
-      output.onCrafting(thePlayer.worldObj, thePlayer, numResults);
-      if (!thePlayer.worldObj.isRemote) {
+      output.onCrafting(player.world, player, numResults);
+      if (!player.world.isRemote) {
         ItemStack outputSized = output.copy();
-        outputSized.stackSize = numResults;
+        outputSized.setCount(numResults);
         float experience = getInv().getExperienceForOutput(outputSized);
-        Util.giveExperience(thePlayer, experience);
+        Util.giveExperience(player, experience);
       }
       numResults = 0;
 
       if (output.getItem() == Items.IRON_INGOT) {
-        thePlayer.addStat(AchievementList.ACQUIRE_IRON, 1);
+        player.addStat(AchievementList.ACQUIRE_IRON, 1);
       }
       if (output.getItem() == Items.COOKED_FISH) {
-        thePlayer.addStat(AchievementList.COOK_FISH, 1);
+        player.addStat(AchievementList.COOK_FISH, 1);
       }
     }
   }

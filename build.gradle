@@ -43,7 +43,7 @@ if (project.hasProperty('mod_appendix')) {
 }
 
 minecraft {
-    mappings = "snapshot_20160518"
+    mappings = "snapshot_20170425"
     version = "${minecraft_version}-${forge_version}"
     runDir = 'run'
 
@@ -57,7 +57,7 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url = "http://mobiusstrip.eu/maven" }
+    maven { url "http://tehnut.info/maven" }
     maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
     maven { url = "http://maven.tterrag.com" }
     maven { url = "http://dvs1.progwml6.com/files/maven" } 
@@ -80,12 +80,12 @@ dependencies {
         deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
     }
 
-    deobfCompile "mcp.mobius.waila:Waila:${waila_version}"
+    deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-    deobfCompile "mcjty.theoneprobe:TheOneProbe:${top_version}"
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
-    deobfCompile "net.sengir.forestry:${forestry_version}:api"
-    deobfCompile "team.chisel:Chisel:${chisel_version}:api"
+    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
+    compile "mcjty.theoneprobe:TheOneProbe:${top_version}:api"
+    compile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}:api"
     compile "appeng:appliedenergistics2:${ae_version}:api"
     compile "net.darkhax.tesla:Tesla:${tesla_version}"
 

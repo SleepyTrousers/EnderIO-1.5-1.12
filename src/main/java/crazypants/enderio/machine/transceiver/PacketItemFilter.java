@@ -51,7 +51,7 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver> impleme
   @Override
   public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileTransceiver tile = message.getTileEntity(player.worldObj);
+    TileTransceiver tile = message.getTileEntity(player.world);
     if (tile != null && message.filter != null) {
       if (message.isSend) {
         tile.setSendItemFilter(message.filter);

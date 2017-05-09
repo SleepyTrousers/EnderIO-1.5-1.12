@@ -262,7 +262,7 @@ public class GuiTelePad extends GuiContainerBaseEIO implements IToggleableGui {
   @Override
   public void switchGui() {
     BlockPos pos = te.getLocation().getBlockPos();
-    GuiID.GUI_ID_TELEPAD_TRAVEL.openClientGui(te.getWorld(), pos, mc.thePlayer, null);
+    GuiID.GUI_ID_TELEPAD_TRAVEL.openClientGui(te.getWorld(), pos, mc.player, null);
     PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, GuiID.GUI_ID_TELEPAD_TRAVEL));
   }
 

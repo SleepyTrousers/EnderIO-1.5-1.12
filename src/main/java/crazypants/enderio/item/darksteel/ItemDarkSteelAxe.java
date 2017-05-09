@@ -125,15 +125,15 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @Override
   public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
-    if (!player.worldObj.isRemote && player.isSneaking()) {
-      IBlockState bs = player.worldObj.getBlockState(pos);
+    if (!player.world.isRemote && player.isSneaking()) {
+      IBlockState bs = player.world.getBlockState(pos);
       Block block = bs.getBlock();
       if (isLog(bs)) {
         int powerStored = EnergyUpgrade.getEnergyStored(itemstack);
 
         TreeHarvestUtil harvester = new TreeHarvestUtil();
         HarvestResult res = new HarvestResult();
-        harvester.harvest(player.worldObj, pos, res);
+        harvester.harvest(player.world, pos, res);
 
         List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res.getHarvestedBlocks());
         harvestComparator.refPoint = pos;
@@ -142,7 +142,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
         int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;
         int numUsedPower = 0;
         for (int i = 0; numUsedPower < maxBlocks && i < sortedTargets.size(); i++) {
-          if (doMultiHarvest(player, player.worldObj, sortedTargets.get(i), block)) {
+          if (doMultiHarvest(player, player.world, sortedTargets.get(i), block)) {
             numUsedPower++;
           }
         }
@@ -152,24 +152,24 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return false;
   }
 
-  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockPos bc, Block refBlock) {
+  private boolean doMultiHarvest(EntityPlayer player, World world, BlockPos bc, Block refBlock) {
 
-    IBlockState bs = worldObj.getBlockState(bc);
+    IBlockState bs = world.getBlockState(bc);
     Block block = bs.getBlock();
-    bs = bs.getActualState(worldObj, bc);
+    bs = bs.getActualState(world, bc);
     ItemStack held = player.getHeldItemMainhand();
 
-    List<ItemStack> itemDrops = block.getDrops(worldObj, bc, bs, 0);
-    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, worldObj, bc, bs,
+    List<ItemStack> itemDrops = block.getDrops(world, bc, bs, 0);
+    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, world, bc, bs,
         EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
         EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, held) != 0, player);
 
-    worldObj.setBlockToAir(bc);
+    world.setBlockToAir(bc);
     boolean usedPower = false;
     if (itemDrops != null) {
       for (ItemStack stack : itemDrops) {
-        if (worldObj.rand.nextFloat() <= chance) {
-          worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+        if (world.rand.nextFloat() <= chance) {
+          world.spawnEntityInWorld(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
           if (block == refBlock) { // other wise leaves
             EnergyUpgrade.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
             usedPower = true;

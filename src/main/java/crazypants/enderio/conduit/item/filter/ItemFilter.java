@@ -333,7 +333,7 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
     for (int i = 0; i < numItems; i++) {
       NBTBase tag = nbtRoot.getTag("item" + i);
       if (tag instanceof NBTTagCompound) {
-        items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
+        items[i] = new ItemStack((NBTTagCompound) tag);
       } else {
         items[i] = Prep.getEmpty();
       }
@@ -502,7 +502,7 @@ public class ItemFilter implements IInventory, ILimitedItemFilter {
     public void putStack(ItemStack stack) {
       if (Prep.isValid(stack)) {
         stack = stack.copy();
-        stack.stackSize = MathHelper.clamp_int(stack.stackSize, 1, stackSizeLimit);
+        stack.setCount(MathHelper.clamp(stack.getCount(), 1, stackSizeLimit));
       }
       items[slot] = stack;
       cb.run();

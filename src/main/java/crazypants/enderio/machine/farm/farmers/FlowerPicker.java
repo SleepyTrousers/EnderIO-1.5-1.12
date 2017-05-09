@@ -48,7 +48,7 @@ public class FlowerPicker implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
-    World worldObj = farm.getWorld();
+    World world = farm.getWorld();
     List<ItemStack> drops = null;
 
     if (block instanceof IShearable) {
@@ -57,17 +57,17 @@ public class FlowerPicker implements IFarmerJoe {
         return null;
       }
       ItemStack shears = farm.getTool(ToolType.SHEARS);
-      if (!((IShearable) block).isShearable(shears, worldObj, bc)) {
+      if (!((IShearable) block).isShearable(shears, world, bc)) {
         return null;
       }
-      drops = ((IShearable) block).onSheared(shears, worldObj, bc, farm.getMaxLootingValue());
+      drops = ((IShearable) block).onSheared(shears, world, bc, farm.getMaxLootingValue());
       farm.damageShears(block, bc);
     } else {
       if (!farm.hasHoe()) {
         farm.setNotification(FarmNotification.NO_HOE);
         return null;
       }
-      drops = block.getDrops(worldObj, bc, meta, farm.getMaxLootingValue());
+      drops = block.getDrops(world, bc, meta, farm.getMaxLootingValue());
       farm.damageHoe(1, bc);
     }
     farm.actionPerformed(false);
@@ -76,12 +76,12 @@ public class FlowerPicker implements IFarmerJoe {
     if (drops != null) {
       for (ItemStack stack : drops) {
         if (Prep.isValid(stack)) {
-          result.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+          result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
         }
       }
     }
 
-    worldObj.setBlockToAir(bc);
+    world.setBlockToAir(bc);
 
     return new HarvestResult(result, bc);
   }

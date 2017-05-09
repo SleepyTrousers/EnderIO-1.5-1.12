@@ -48,7 +48,7 @@ public class ItemFrankenSkull extends Item implements IHaveRenderers {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
     return FrankenSkull.values()[i].unlocalisedName;
   }
 
@@ -63,7 +63,7 @@ public class ItemFrankenSkull extends Item implements IHaveRenderers {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack) {
-    int meta = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
+    int meta = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1);
     return FrankenSkull.values()[meta].isAnimated;
   }
 

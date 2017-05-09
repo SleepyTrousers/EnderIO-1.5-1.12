@@ -167,10 +167,10 @@ public class TileTelePad extends TileTravelAnchor
       return null;
     }
     BlockPos materPos = getPos().add(offset.getX(), offset.getY(), offset.getZ());
-    if (!worldObj.isBlockLoaded(materPos)) {
+    if (!world.isBlockLoaded(materPos)) {
       return null;
     }
-    TileEntity res = worldObj.getTileEntity(materPos);
+    TileEntity res = world.getTileEntity(materPos);
     if (res instanceof TileTelePad) {
       return (TileTelePad) res;
     }
@@ -189,10 +189,10 @@ public class TileTelePad extends TileTravelAnchor
     }
 
     if (target.getDimension() == Integer.MIN_VALUE) {
-      target.setDimension(worldObj.provider.getDimension());
+      target.setDimension(world.provider.getDimension());
     }
 
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       updateEntityClient();
       return;
     }
@@ -240,7 +240,7 @@ public class TileTelePad extends TileTravelAnchor
   protected void updateEntityClient() {
     updateRotations();
     if (activeSound != null) {
-      activeSound.setPitch(MathHelper.clamp_float(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
+      activeSound.setPitch(MathHelper.clamp(0.5f + (spinSpeed / 1.5f), 0.5f, 2));
     }
     if (active()) {
       if (activeSound == null) {
@@ -263,7 +263,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   private void updateQueuedEntities() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       if (active()) {
         getCurrentTarget().getEntityData().setFloat(PROGRESS_KEY, getProgress());
       }
@@ -298,7 +298,7 @@ public class TileTelePad extends TileTravelAnchor
   @Override
   public void invalidate() {
     super.invalidate();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       stopPlayingSound();
     }
   }
@@ -306,7 +306,7 @@ public class TileTelePad extends TileTravelAnchor
   @Override
   public void onChunkUnload() {
     super.onChunkUnload();
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       stopPlayingSound();
     }
   }
@@ -324,7 +324,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   private int calculateTeleportPower() {
-    if (worldObj.provider.getDimension() == target.getDimension()) {
+    if (world.provider.getDimension() == target.getDimension()) {
       int distance = (int) Math.ceil(pos.getDistance(target.getLocation().getX(), target.getLocation().getY(), target.getLocation().getZ()));
       double base = Math.log((0.005 * distance) + 1);
       requiredPower = (int) (base * Config.telepadPowerCoefficient);
@@ -332,7 +332,7 @@ public class TileTelePad extends TileTravelAnchor
       requiredPower = Config.telepadPowerInterdimensional;
     }
     // Max out at the inter dim. value
-    int res = MathHelper.clamp_int(requiredPower, 5000, Config.telepadPowerInterdimensional);
+    int res = MathHelper.clamp(requiredPower, 5000, Config.telepadPowerInterdimensional);
     return res;
   }
 
@@ -505,7 +505,7 @@ public class TileTelePad extends TileTravelAnchor
     if (m == null) {
       return;
     }
-    if (m.worldObj.isRemote) {
+    if (m.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketTeleportTrigger(m));
     } else {
       for (Entity e : m.getEntitiesInRange()) {
@@ -515,7 +515,7 @@ public class TileTelePad extends TileTravelAnchor
   }
 
   private List<Entity> getEntitiesInRange() {
-    return worldObj.getEntitiesWithinAABB(Entity.class, getRange());
+    return world.getEntitiesWithinAABB(Entity.class, getRange());
   }
 
   private boolean isEntityInRange(Entity entity) {
@@ -535,7 +535,7 @@ public class TileTelePad extends TileTravelAnchor
     entity.getEntityData().setBoolean(TELEPORTING_KEY, true);
     toTeleport.add(entity);
     if (sendUpdate) {
-      if (entity.worldObj.isRemote) {
+      if (entity.world.isRemote) {
         // NOP
       } else {
         PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.BEGIN, this, entity));
@@ -550,7 +550,7 @@ public class TileTelePad extends TileTravelAnchor
     toTeleport.remove(entity);
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
     if (sendUpdate) {
-      if (worldObj.isRemote) {
+      if (world.isRemote) {
         // NOP
       } else {
         PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.END, this, entity));
@@ -580,7 +580,7 @@ public class TileTelePad extends TileTravelAnchor
     }
 
     entity.getEntityData().setBoolean(TELEPORTING_KEY, false);
-    wasBlocked = !(entity.worldObj.isRemote ? clientTeleport(entity) : serverTeleport(entity));
+    wasBlocked = !(entity.world.isRemote ? clientTeleport(entity) : serverTeleport(entity));
     PacketHandler.INSTANCE.sendToAll(new PacketTeleport(PacketTeleport.Type.TELEPORT, this, wasBlocked));
     if (entity instanceof EntityPlayer) {
       ((EntityPlayer) entity).closeScreen();

@@ -60,7 +60,7 @@ public class ItemAlloy extends Item implements IHaveRenderers {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, numItems - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, numItems - 1);
     if (i < Alloy.values().length) {
       return Alloy.values()[i].unlocalisedName;
     } else {

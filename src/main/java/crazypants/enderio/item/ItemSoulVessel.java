@@ -136,7 +136,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         if (itemstack.stackSize == 0) {
           player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(this));
         } else if (!player.inventory.addItemStackToInventory(new ItemStack(this))) {
-          player.worldObj.spawnEntityInWorld(new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, new ItemStack(this)));
+          player.world.spawnEntityInWorld(new EntityItem(player.world, player.posX, player.posY, player.posZ, new ItemStack(this)));
         }
         player.inventoryContainer.detectAndSendChanges();
       } else {
@@ -149,7 +149,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-    if (entity.worldObj.isRemote || player == null) {
+    if (entity.world.isRemote || player == null) {
       return false;
     }
     boolean isCreative = player.capabilities.isCreativeMode;
@@ -182,7 +182,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
       if (entity.isDead) {
         item.stackSize--;
         if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-          entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+          entity.world.spawnEntityInWorld(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
         }
         player.setHeldItem(hand, item);
         ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
@@ -191,7 +191,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
     } else {
       //Inventory full, drop it in the world!
       if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-        entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        entity.world.spawnEntityInWorld(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
       }
       ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
       return true;
@@ -236,7 +236,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return itemStack == null ? null : getUnlocalizedName(itemStack);
+    return itemStack.isEmpty() ? null : getUnlocalizedName(itemStack);
   }
 
   @Override

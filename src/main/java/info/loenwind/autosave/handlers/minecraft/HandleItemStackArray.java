@@ -51,7 +51,7 @@ public class HandleItemStackArray implements IHandler<ItemStack[]> {
       }
       for (int i = 0; i < object.length; i++) {
         if (tag.hasKey(i + "")) {
-          object[i] = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(i + ""));
+          object[i] = new ItemStack(tag.getCompoundTag(i + ""));
         } else {
           object[i] = null;
         }

@@ -26,11 +26,11 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
       float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
 
     ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    if (itemstack == null || itemstack.getItem() == null || !itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
+    if (itemStack.isEmpty() || itemstack.getItem() == null || !itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
       return;
     }
 
-    ItemStack paintSource = ItemStack.loadItemStackFromNBT(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
+    ItemStack paintSource = new ItemStack(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
     if (paintSource == null) {
       return;
     }

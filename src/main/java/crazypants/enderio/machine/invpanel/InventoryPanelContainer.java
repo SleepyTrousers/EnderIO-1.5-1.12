@@ -75,9 +75,9 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   public InventoryPanelContainer(InventoryPlayer playerInv, TileInventoryPanel te) {
     super(playerInv, te);
     te.eventHandler = this;
-    playerWorld = playerInv.player.worldObj;
+    playerWorld = playerInv.player.world;
 
-    if (!te.hasWorldObj() || te.getWorld().isRemote) {
+    if (!te.hasworld() || te.getWorld().isRemote) {
       changedItems = null;
     } else {
       changedItems = new HashSet<ItemEntry>();
@@ -127,7 +127,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if (getInv().hasWorldObj() && !getInv().getWorld().isRemote) {
+    if (getInv().hasworld() && !getInv().getWorld().isRemote) {
       getInv().eventHandler = null;
     }
     removeChangeLog();
@@ -412,7 +412,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if (!getInv().hasWorldObj() || getInv().getWorld().isRemote) {
+    if (!getInv().hasworld() || getInv().getWorld().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;

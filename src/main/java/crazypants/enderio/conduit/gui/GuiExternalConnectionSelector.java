@@ -65,7 +65,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   @Override
   protected void keyTyped(char typedChar, int keyCode) throws IOException {
     if (keyCode == 1 || keyCode == mc.gameSettings.keyBindInventory.getKeyCode()) {
-      mc.thePlayer.closeScreen();
+      mc.player.closeScreen();
     }
 
     if (won && keyCode == mc.gameSettings.keyBindForward.getKeyCode()) {
@@ -94,7 +94,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   protected void findBlockDataForDirection(EnumFacing direction) {
-    World world = cb.getBundleWorldObj();
+    World world = cb.getBundleworld();
     BlockPos blockPos = cb.getLocation().getLocation(direction).getBlockPos();
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);
@@ -169,7 +169,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     drawString(fontRendererObj, txt, x, y, ColorUtil.getARGB(Color.white));
 
-    if (Minecraft.getMinecraft().thePlayer.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
+    if (Minecraft.getMinecraft().player.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
       x = width / 2 - (fontRendererObj.getStringWidth(txt) / 2);
       y = height / 2 + BUTTON_HEIGHT * 3 - 5;
@@ -204,7 +204,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     int my = height / 2;
     if (dir.getFrontOffsetY() == 0) {
 
-      float playerAngle = Minecraft.getMinecraft().thePlayer.rotationYaw * deg2rad;
+      float playerAngle = Minecraft.getMinecraft().player.rotationYaw * deg2rad;
       float dirAngle = dir.getHorizontalIndex() * headg2rad;
       float buttonAngle = dirAngle - playerAngle - 90 * deg2rad;
 

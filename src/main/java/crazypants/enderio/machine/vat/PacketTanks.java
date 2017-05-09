@@ -50,7 +50,7 @@ public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageH
   @Override
   public IMessage onMessage(PacketTanks message, MessageContext ctx) {
     EntityPlayer player = ctx.side == Side.SERVER ? ctx.getServerHandler().playerEntity : EnderIO.proxy.getClientPlayer();
-    TileVat tile = message.getTileEntity(player.worldObj);
+    TileVat tile = message.getTileEntity(player.world);
     if (tile == null) {
       return null;
     }

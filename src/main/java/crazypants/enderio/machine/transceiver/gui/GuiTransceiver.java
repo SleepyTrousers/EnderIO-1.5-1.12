@@ -67,7 +67,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
           return;
         }
       }
-      mc.thePlayer.closeScreen();
+      mc.player.closeScreen();
     }
 
     for (int i = 0; i < tabs.size(); i++) {

@@ -56,7 +56,7 @@ public class NetworkedInventory {
     this.con = con;
     this.conDir = conDir;
     this.location = location.getBlockPos();
-    world = con.getBundle().getBundleWorldObj();
+    world = con.getBundle().getBundleworld();
 
     IBlockState bs = world.getBlockState(location.getBlockPos());
     invName = bs.getBlock().getLocalizedName();

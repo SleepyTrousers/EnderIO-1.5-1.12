@@ -75,7 +75,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implem
 
   @Override
   public IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
-    TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+    TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
     if (te != null) {
       switch (msg.cmd) {
       case CMD_SET_RANGE:

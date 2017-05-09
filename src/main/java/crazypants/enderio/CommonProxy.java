@@ -22,6 +22,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -144,18 +145,18 @@ public class CommonProxy {
     return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
-  public void markBlock(World worldObj, BlockPos pos, Vector4f color) {
+  public void markBlock(World world, BlockPos pos, Vector4f color) {
   }
 
   public boolean isDedicatedServer() {
     return true;
   }
 
-  public CreativeTabs getCreativeTab(ItemStack stack) {
+  public CreativeTabs getCreativeTab(@Nonnull ItemStack stack) {
     return null;
   }
 
-  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
     subItems.add(new ItemStack(itemIn));
   }
 

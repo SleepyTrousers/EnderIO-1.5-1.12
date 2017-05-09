@@ -56,7 +56,7 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
       Iterator<EntityLivingBase> iterator = relocationQueue.keySet().iterator();
       while (iterator.hasNext()) {
         EntityLivingBase mob = iterator.next();
-        if (mob == null || mob.isDead || worldObj.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 2 * 60 * 20 || relocationQueue.size() > 100) {
+        if (mob == null || mob.isDead || world.getEntityByID(mob.getEntityId()) == null || mob.ticksExisted > 2 * 60 * 20 || relocationQueue.size() > 100) {
           iterator.remove();
         } else if (hasPower() && rand.nextFloat() < .025f) {
           AxisAlignedBB mobbb = mob.getEntityBoundingBox();
@@ -71,17 +71,17 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
             double dz = mobbb.maxZ - mobbb.minZ;
             AxisAlignedBB bb = new AxisAlignedBB(x - dx / 2, y, z - dz / 2, x + dx / 2, y + dy, z + dz / 2);
 
-            boolean spaceClear = worldObj.checkNoEntityCollision(bb, mob) && worldObj.getCollisionBoxes(mob, bb).isEmpty()
-                && (worldObj.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
+            boolean spaceClear = world.checkNoEntityCollision(bb, mob) && world.getCollisionBoxes(mob, bb).isEmpty()
+                && (world.containsAnyLiquid(bb) == mob.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
 
             if (spaceClear) {
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
+                  new TargetPoint(world.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               mob.setPositionAndUpdate(x - dx / 2, y, z - dz / 2);
               mob.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
               PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(new BlockPos(mob.posX, mob.posY, mob.posZ)),
-                  new TargetPoint(worldObj.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
+                  new TargetPoint(world.provider.getDimension(), mob.posX, mob.posY, mob.posZ, 64));
               iterator.remove();
             }
           }

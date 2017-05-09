@@ -93,7 +93,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     if (dir == null || slotDefinition.getNumOutputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasStuffToPush()) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPushLimit(), worldObj, getPos(), dir, getPos().offset(dir), dir.getOpposite());
+    MoveResult res = ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite());
     if (res == MoveResult.MOVED) {
       return true;
     }
@@ -105,7 +105,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     if (dir == null || slotDefinition.getNumInputSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPullLimit(), worldObj, getPos().offset(dir), dir.getOpposite(), getPos(), dir);
+    MoveResult res = ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), getPos(), dir);
     if (res == MoveResult.MOVED) {
       return true;
     }
@@ -191,7 +191,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
       if (inventory[slot].stackSize > getInventoryStackLimit(slot)) {
         inventory[slot].stackSize = getInventoryStackLimit(slot);
         contents.stackSize -= getInventoryStackLimit(slot);
-        Block.spawnAsEntity(worldObj, pos, contents);
+        Block.spawnAsEntity(world, pos, contents);
       }
     }
     markDirty();

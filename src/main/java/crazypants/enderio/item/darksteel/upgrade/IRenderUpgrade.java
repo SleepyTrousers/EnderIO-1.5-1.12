@@ -26,7 +26,7 @@ public interface IRenderUpgrade {
     }
 
     public static void translateToHeadLevel(EntityPlayer player) {
-      GlStateManager.translate(0, (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
+      GlStateManager.translate(0, (player != Minecraft.getMinecraft().player ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
     }
   }
 

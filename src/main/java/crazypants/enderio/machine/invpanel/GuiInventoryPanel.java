@@ -116,7 +116,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
     } 
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     tfFilter = new TextFieldEnder(fr, 24 + 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
@@ -454,15 +454,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   protected void drawFakeItemStack(int x, int y, ItemStack stack) {
     FontRenderer font = stack.getItem().getFontRenderer(stack);
     if(font == null) {
-      font = fontRendererObj;
+      font = fontRenderer;
     }
     
     boolean smallText = Config.inventoryPanelScaleText;    
     String str = null;
-    if(stack.stackSize >= 1000) {
+    if(stack.getCount() >= 1000) {
       String unit = "k";
       int units = 1000;
-      int value = stack.stackSize / units;      
+      int value = stack.getCount() / units;
       
       if (smallText) {
         if (value >= units) {
@@ -470,7 +470,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           value /= 1000;
           unit = "m";
         }
-        double val = (stack.stackSize % units) / (double) units;
+        double val = (stack.getCount() % units) / (double) units;
         int bit = (int) Math.floor(val * 10);
         if (bit > 0) {
           unit = "." + bit + unit;
@@ -478,8 +478,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
             
       str = value + unit;
-    } else if(stack.stackSize > 1) {
-      str = Integer.toString(stack.stackSize);
+    } else if(stack.getCount() > 1) {
+      str = Integer.toString(stack.getCount());
     }
     itemRender.renderItemAndEffectIntoGUI(stack, x, y);
     if(str != null) {
@@ -510,7 +510,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
     ItemStack stack = slot.getStack();
     if(stack != null) {
-      ghostSlotTooltipStacksize = stack.stackSize;
+      ghostSlotTooltipStacksize = stack.getCount();
       try {
         renderToolTip(stack, mouseX, mouseY);
       } finally {
@@ -660,8 +660,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           InvSlot invSlot = (InvSlot) hoverGhostSlot;
           InventoryDatabaseClient db = getDatabase();
           if (invSlot.getStack() != null && invSlot.entry != null && db != null) {
-            ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
-            if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
+            ItemStack itemStack = mc.player.inventory.getItemStack();
+            if (itemStack.isEmpty() || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
           }
@@ -677,11 +677,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       InventoryDatabaseClient db = getDatabase();
       if (invSlot.entry != null && invSlot.getStack() != null && db != null) {
         int targetSlot;
-        int count = Math.min(invSlot.getStack().stackSize, invSlot.getStack().getMaxStackSize());
+        int count = Math.min(invSlot.getStack().getCount(), invSlot.getStack().getMaxStackSize());
 
         if(button == 0) {
           if(isShiftKeyDown()) {
-            InventoryPlayer playerInv = mc.thePlayer.inventory;
+            InventoryPlayer playerInv = mc.player.inventory;
             targetSlot = playerInv.getFirstEmptyStack();
             if(targetSlot >= 0) {
               targetSlot = getContainer().getSlotIndex(playerInv, targetSlot);

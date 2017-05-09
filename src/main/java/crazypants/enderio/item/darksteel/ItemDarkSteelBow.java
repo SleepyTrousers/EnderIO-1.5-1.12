@@ -121,11 +121,11 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       return;
     }
 
-    if (itemstack == null && hasInfinateArrows) {
+    if (itemStack.isEmpty() && hasInfinateArrows) {
       itemstack = new ItemStack(Items.ARROW);
     }
 
-    if (itemstack == null) {
+    if (itemStack.isEmpty()) {
       return;
     }
 

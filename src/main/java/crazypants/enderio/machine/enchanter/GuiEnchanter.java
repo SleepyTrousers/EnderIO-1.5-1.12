@@ -49,7 +49,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       
       int col;
-      if(container.playerHasEnoughLevels(Minecraft.getMinecraft().thePlayer)) {
+      if(container.playerHasEnoughLevels(Minecraft.getMinecraft().player)) {
         col = 8453920; //all good
       } else {
         col  = 16736352; //not enough levels

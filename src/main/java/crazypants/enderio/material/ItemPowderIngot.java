@@ -49,7 +49,7 @@ public class ItemPowderIngot extends Item implements IHaveRenderers {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, PowderIngot.values().length - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, PowderIngot.values().length - 1);
     return PowderIngot.values()[i].unlocalisedName;
   }
 

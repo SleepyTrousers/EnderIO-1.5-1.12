@@ -232,12 +232,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   @Override
-  public void onChunkUnload(World worldObj) {
+  public void onChunkUnload(World world) {
     RedstoneConduitNetwork network = (RedstoneConduitNetwork) getNetwork();
     if (network != null) {
       Multimap<SignalSource, Signal> oldSignals = ArrayListMultimap.create(network.getSignals());
       List<IRedstoneConduit> conduits = Lists.newArrayList(network.getConduits());
-      super.onChunkUnload(worldObj);
+      super.onChunkUnload(world);
       network.afterChunkUnload(conduits, oldSignals);
     }
   }

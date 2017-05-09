@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
@@ -67,7 +68,7 @@ public class BlockDecoration extends Block implements IHaveRenderers {
     GameRegistry.register(this);
     GameRegistry.register(new ItemBlockDecoration(this, getName()) {
       @Override
-      public String getUnlocalizedName(ItemStack stack) {
+      public String getUnlocalizedName(@Nonnull ItemStack stack) {
         return EnumDecoBlock.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
     });
@@ -80,7 +81,7 @@ public class BlockDecoration extends Block implements IHaveRenderers {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       for (EnumDecoBlock type : EnumDecoBlock.values()) {
         list.add(new ItemStack(itemIn, 1, EnumDecoBlock.getMetaFromType(type)));

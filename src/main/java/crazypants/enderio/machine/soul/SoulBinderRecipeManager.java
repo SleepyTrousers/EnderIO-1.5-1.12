@@ -135,7 +135,7 @@ public class SoulBinderRecipeManager {
     if(stackRoot == null) {
       return null;
     }
-    return ItemStack.loadItemStackFromNBT(stackRoot);
+    return new ItemStack(stackRoot);
   }
 
 }

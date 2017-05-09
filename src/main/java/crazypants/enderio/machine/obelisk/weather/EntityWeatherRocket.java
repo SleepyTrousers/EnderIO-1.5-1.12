@@ -43,7 +43,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
-    if (worldObj.isRemote && ticksExisted % (MAX_AGE / 10) == 0 && ticksExisted > 30) {
+    if (world.isRemote && ticksExisted % (MAX_AGE / 10) == 0 && ticksExisted > 30) {
       doEffect();
     }
   }
@@ -57,7 +57,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   public void setDead() {
     super.setDead();
     WeatherTask task = WeatherTask.values()[dataManager.get(DATA_ID)];
-    task.complete(worldObj);
+    task.complete(world);
   }
   
   @Override
@@ -70,7 +70,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
     if (ticksExisted > 40) {    
       se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST_FAR;
     }
-    worldObj.playSound(this.posX, this.posY, this.posZ, se, SoundCategory.BLOCKS, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
+    world.playSound(this.posX, this.posY, this.posZ, se, SoundCategory.BLOCKS, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
 
     double d1 = this.posX;
     double d2 = this.posY;
@@ -85,9 +85,9 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
           double d4 = k + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
           double d5 = j + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
           double d6 = l + (this.rand.nextDouble() - this.rand.nextDouble()) * 0.5D;
-          double d7 = MathHelper.sqrt_double(d4 * d4 + d5 * d5 + d6 * d6) / speed + this.rand.nextGaussian() * 0.05D;
+          double d7 = MathHelper.sqrt(d4 * d4 + d5 * d5 + d6 * d6) / speed + this.rand.nextGaussian() * 0.05D;
 
-          ParticleFirework.Spark entityfireworksparkfx = new ParticleFirework.Spark(this.worldObj, d1, d2, d3, d4 / d7, d5 / d7, d6 / d7,
+          ParticleFirework.Spark entityfireworksparkfx = new ParticleFirework.Spark(this.world, d1, d2, d3, d4 / d7, d5 / d7, d6 / d7,
               Minecraft.getMinecraft().effectRenderer);
 
           entityfireworksparkfx.setTrail(true);

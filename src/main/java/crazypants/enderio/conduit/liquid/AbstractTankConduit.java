@@ -193,7 +193,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     int lightValue = getLightValue();
     if(lastLightValue != lightValue) {
       BlockCoord bc = getLocation();      
-      getBundle().getBundleWorldObj().checkLightFor(EnumSkyBlock.BLOCK, bc.getBlockPos());
+      getBundle().getBundleworld().checkLightFor(EnumSkyBlock.BLOCK, bc.getBlockPos());
       lastLightValue = lightValue;
     }
     super.updateEntity(world);

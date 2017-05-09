@@ -152,7 +152,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
                 inventory[0] = containedItem;
               } else {
                 decrStackSize(0, 1);
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
+                world.spawnEntityInWorld(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
               }
             } else {
               decrStackSize(0, 1);
@@ -177,7 +177,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (!canExtractItem(0, inventory[0], dir)) {
       return false;
     }
-    MoveResult res = ItemTools.move(getPushLimit(), worldObj, getPos(), dir, getPos().offset(dir), dir.getOpposite());
+    MoveResult res = ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite());
     if(res == MoveResult.MOVED) {
       markDirty();
       return true;
@@ -205,7 +205,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (canTransmit <= 0) {
       return false;
     }
-    int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
+    int transmitted = powerDis.transmitEnergy(world, canTransmit);
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

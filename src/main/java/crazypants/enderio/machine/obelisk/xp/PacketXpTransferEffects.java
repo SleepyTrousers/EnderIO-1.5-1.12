@@ -57,9 +57,9 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
       }
 
       for (int i = 0; i < particleCount; i++) {
-        float xOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
-        float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
-        float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
+        float xOffset = 0.1F - player.world.rand.nextFloat() * 0.2F;
+        float yOffset = 0.1F - player.world.rand.nextFloat() * 0.2F;
+        float zOffset = 0.1F - player.world.rand.nextFloat() * 0.2F;
 
         Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), message.x + xOffset, message.y
             + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);

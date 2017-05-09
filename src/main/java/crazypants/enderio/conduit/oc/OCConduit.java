@@ -248,7 +248,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
       setSignalColor(res.component.dir, col);
       return true;
     } else if (ConduitUtil.isProbeEquipped(player, hand)) {
-      if (!player.worldObj.isRemote) {
+      if (!player.world.isRemote) {
         BlockCoord bc = getLocation();
         if (network != null) {
           boolean noconnections = true;
@@ -324,7 +324,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   private void addMissingNodeConnections() {
     BlockCoord loc = getLocation();
     if (loc != null && network != null) {
-      World world = getBundle().getBundleWorldObj();
+      World world = getBundle().getBundleworld();
       EnumSet<EnumFacing> conns = getConnections();
       for (DyeColor color : DyeColor.values()) {
         Set<Node> should = new HashSet<Node>();
@@ -355,7 +355,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   private void disconnectNode(EnumFacing direction) {
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     TileEntity te = getLocation().getLocation(direction).getTileEntity(world);
     Node other = null;
     if (te instanceof SidedEnvironment) {
@@ -390,7 +390,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
       return;
     }
 
-    World world = getBundle().getBundleWorldObj();
+    World world = getBundle().getBundleworld();
     EnumSet<EnumFacing> conns = getConnections();
     // we need to check if that node has another way of connecting to our
     // network. First find out which of our neighbor(s) it belongs to. May
@@ -469,9 +469,9 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public boolean canConnectToExternal(EnumFacing direction, boolean ignoreConnectionMode) {
-    TileEntity te = getLocation().getLocation(direction).getTileEntity(getBundle().getBundleWorldObj());
+    TileEntity te = getLocation().getLocation(direction).getTileEntity(getBundle().getBundleworld());
     if (te instanceof SidedEnvironment) {
-      if (getBundle().getBundleWorldObj().isRemote) {
+      if (getBundle().getBundleworld().isRemote) {
         return ((SidedEnvironment) te).canConnect(direction.getOpposite());
       } else {
         return ((SidedEnvironment) te).sidedNode(direction.getOpposite()) != null;

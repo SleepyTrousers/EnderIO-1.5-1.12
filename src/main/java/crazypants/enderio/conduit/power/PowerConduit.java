@@ -117,7 +117,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public boolean onBlockActivated(EntityPlayer player, EnumHand hand, RaytraceResult res, List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if(ConduitUtil.isProbeEquipped(player, hand)) {
-      if(!player.worldObj.isRemote) {
+      if(!player.world.isRemote) {
         PacketConduitProbe.sendInfoMessage(player, this);
       }
       return true;
@@ -256,7 +256,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public void setEnergyStored(int energyStored) {
-    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored(null));
+    energyStoredRF = MathHelper.clamp(energyStored, 0, getMaxEnergyStored(null));
   }
 
  
@@ -287,11 +287,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   private boolean recievedRfThisTick(EnumFacing dir) {
-    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getBundleWorldObj() == null) {
+    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getBundleworld() == null) {
       return false;
     }
 
-    long curTick = getBundle().getBundleWorldObj().getTotalWorldTime();
+    long curTick = getBundle().getBundleworld().getTotalWorldTime();
     long recT = recievedTicks.get(dir);
     if(curTick - recT <= 5) {
       return true;
@@ -328,7 +328,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
           recievedTicks = new EnumMap<EnumFacing, Long>(EnumFacing.class);
         }
         if(from != null) {
-          recievedTicks.put(from, getBundle().getBundleWorldObj().getTotalWorldTime());
+          recievedTicks.put(from, getBundle().getBundleworld().getTotalWorldTime());
         }
       }
 

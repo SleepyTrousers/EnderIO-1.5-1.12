@@ -234,7 +234,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     } else {
       for (ResultStack result : results) {
         if (Prep.isValid(result.item)) {
-          Block.spawnAsEntity(worldObj, pos, result.item);
+          Block.spawnAsEntity(world, pos, result.item);
           result.item.stackSize = 0;
         } else if (result.fluid != null) {
           mergeFluidResult(result);

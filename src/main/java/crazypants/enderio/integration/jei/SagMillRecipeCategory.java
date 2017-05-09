@@ -159,7 +159,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     }
     if(slotIndex == 5) {
       if(ballsTT.shouldHandleItem(ingredient)) {
-        ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().thePlayer, tooltip, true);
+        ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().player, tooltip, true);
       }
       return;
     }

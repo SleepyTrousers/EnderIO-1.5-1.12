@@ -170,7 +170,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
     if (player instanceof EntityPlayer && isActive(itemstack) && hasPower(itemstack) && ((EntityPlayer) player).getHealth() > 0f) {
       controller.doHoover((EntityPlayer) player);
-      if (!player.worldObj.isRemote && player.worldObj.getTotalWorldTime() % 20 == 0) {
+      if (!player.world.isRemote && player.world.getTotalWorldTime() % 20 == 0) {
         // mustn't change the item that is in the slot or Baubles will ignore the change
         ItemStack changedStack = itemstack.copy();
         ItemMagnet.drainPerSecondPower(changedStack);

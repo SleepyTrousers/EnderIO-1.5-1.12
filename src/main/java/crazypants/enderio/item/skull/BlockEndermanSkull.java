@@ -142,7 +142,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
     if (world != null && pos != null) {
       if (player != null) {
-        int inc = MathHelper.floor_double(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
+        int inc = MathHelper.floor(player.rotationYaw * 16.0F / 360.0F + 0.5D) & 15;
         float facingYaw = -22.5f * inc;
         TileEndermanSkull te = getTileEntity(world, pos);
         if (te != null) {

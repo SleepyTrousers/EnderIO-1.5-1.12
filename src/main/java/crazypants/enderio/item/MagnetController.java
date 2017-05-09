@@ -45,7 +45,7 @@ public class MagnetController {
     ActiveMagnet mag = getMagnet(event.player, true);
     if (mag != null && event.player.getHealth() > 0f) {
       doHoover(event.player);
-      if(event.side == Side.SERVER && event.player.worldObj.getTotalWorldTime() % 20 == 0) {
+      if(event.side == Side.SERVER && event.player.world.getTotalWorldTime() % 20 == 0) {
         ItemMagnet.drainPerSecondPower(mag.item);
         event.player.inventory.setInventorySlotContents(mag.slot, mag.item);
         event.player.inventory.markDirty();
@@ -82,7 +82,7 @@ public class MagnetController {
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
         
-    List<Entity> interestingItems = selectEntitiesWithinAABB(player.worldObj, aabb);
+    List<Entity> interestingItems = selectEntitiesWithinAABB(player.world, aabb);
 
     if (interestingItems != null) {
       for (Entity entity : interestingItems) {
@@ -139,19 +139,19 @@ public class MagnetController {
       itemsRemaining = Integer.MAX_VALUE;
     }
 
-    final int minChunkX = MathHelper.floor_double((bb.minX) / 16.0D);
-    final int maxChunkX = MathHelper.floor_double((bb.maxX) / 16.0D);
-    final int minChunkZ = MathHelper.floor_double((bb.minZ) / 16.0D);
-    final int maxChunkZ = MathHelper.floor_double((bb.maxZ) / 16.0D);
-    final int minChunkY = MathHelper.floor_double((bb.minY) / 16.0D);
-    final int maxChunkY = MathHelper.floor_double((bb.maxY) / 16.0D);
+    final int minChunkX = MathHelper.floor((bb.minX) / 16.0D);
+    final int maxChunkX = MathHelper.floor((bb.maxX) / 16.0D);
+    final int minChunkZ = MathHelper.floor((bb.minZ) / 16.0D);
+    final int maxChunkZ = MathHelper.floor((bb.maxZ) / 16.0D);
+    final int minChunkY = MathHelper.floor((bb.minY) / 16.0D);
+    final int maxChunkY = MathHelper.floor((bb.maxY) / 16.0D);
 
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
         Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
         final ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
-        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, entityLists.length - 1);
-        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, entityLists.length - 1);
+        final int minChunkYClamped = MathHelper.clamp(minChunkY, 0, entityLists.length - 1);
+        final int maxChunkYClamped = MathHelper.clamp(maxChunkY, 0, entityLists.length - 1);
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead) {

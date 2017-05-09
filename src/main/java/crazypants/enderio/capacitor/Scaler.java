@@ -51,7 +51,7 @@ public interface Scaler {
     LINEAR_0_8(new Scaler() { // 1-2-3
           @Override
           public float scaleValue(float idx) {
-            return MathHelper.clamp_float(idx, 0, 8);
+            return MathHelper.clamp(idx, 0, 8);
           }
         }),
     QUADRATIC(new Scaler() { // 1-2-4
@@ -63,7 +63,7 @@ public interface Scaler {
     QUADRATIC_1_8(new Scaler() { // 1-2-4
           @Override
           public float scaleValue(float idx) {
-            return (float) MathHelper.clamp_double(Math.pow(2, idx - 1), 1, 8);
+            return (float) MathHelper.clamp(Math.pow(2, idx - 1), 1, 8);
           }
         }),
     CUBIC(new Scaler() { // 1-3-9

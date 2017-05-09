@@ -26,7 +26,7 @@ public class ItemEndermanSkull extends ItemBlock {
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, SkullType.values().length - 1);
+    meta = MathHelper.clamp(meta, 0, SkullType.values().length - 1);
     return "tile.blockEndermanSkull." + SkullType.values()[meta].name;
   }
 

@@ -30,7 +30,7 @@ public class ConduitProbeOverlayRenderer {
   }
 
   private ItemStack getEquippedProbe() {
-    ItemStack equipped = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
+    ItemStack equipped = Minecraft.getMinecraft().player.getHeldItemMainhand();
     if (equipped != null && equipped.getItem() == itemConduitProbe.getItem()) {
       return equipped;
     }

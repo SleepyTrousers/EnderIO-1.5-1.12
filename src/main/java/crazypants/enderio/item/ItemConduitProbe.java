@@ -66,7 +66,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
       }
     }
 
-    if(isCopy && performedAction && player.worldObj.isRemote) {
+    if(isCopy && performedAction && player.world.isRemote) {
       ChatUtil.sendNoSpamClient("Copied conduit settings");
     }
     

@@ -34,7 +34,7 @@ public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
   @Override
   protected void renderTileEntity(@Nonnull TileKillerJoe te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     if (MinecraftForgeClient.getRenderPass() == 0) {       
-      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().thePlayer.getPrimaryHand() == EnumHandSide.LEFT);
+      renderSword(te.facing, te.getStackInSlot(0), te.getSwingProgress(partialTicks), Minecraft.getMinecraft().player.getPrimaryHand() == EnumHandSide.LEFT);
     } else if (MinecraftForgeClient.getRenderPass() == 1) {
       HalfBakedList buffer = TankRenderHelper.mkTank(te.tank, 2.51, 1, 14, false);
       if (buffer != null) {         
@@ -58,7 +58,7 @@ public class KillerJoeRenderer extends ManagedTESR<TileKillerJoe> {
     GlStateManager.pushMatrix();
     if(swingProgress > 0) {
       float f6 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
-      float f7 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI);
+      float f7 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float) Math.PI);
       GlStateManager.rotate(f6 * 5.0F, 1.0F, 0.0F, 0.0F);
       GlStateManager.rotate(-f7 * 30.0F, 0.0F, 0.0F, 1.0F);
     }

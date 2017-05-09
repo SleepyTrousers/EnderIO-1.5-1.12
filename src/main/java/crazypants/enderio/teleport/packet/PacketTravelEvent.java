@@ -70,7 +70,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
   @Override
   public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
-    Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity : ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.entityId);
+    Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity : ctx.getServerHandler().playerEntity.world.getEntityByID(message.entityId);
 
     if (toTp != ctx.getServerHandler().playerEntity) {
       ctx.getServerHandler().playerEntity.connection.kickPlayerFromServer("Teleporting others around denied. (" + toTp + ")");
@@ -98,7 +98,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     y = evt.targetY;
     z = evt.targetZ;
 
-    SoundHelper.playSound(toTp.worldObj, toTp, source.sound, 1.0F, 1.0F);
+    SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
 
     if(player != null) {
       player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
@@ -106,7 +106,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       toTp.setPosition(x, y, z);
     }
 
-    SoundHelper.playSound(toTp.worldObj, toTp, source.sound, 1.0F, 1.0F);
+    SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
 
     toTp.fallDistance = 0;
 

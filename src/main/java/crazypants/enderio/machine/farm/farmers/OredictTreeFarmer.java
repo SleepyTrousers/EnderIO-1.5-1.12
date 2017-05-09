@@ -38,31 +38,31 @@ public class OredictTreeFarmer extends TreeFarmer {
 
   @Override
   protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
-    World worldObj = farm.getWorld();
+    World world = farm.getWorld();
     final ItemStack currentSapling = farm.getSeedTypeInSuppliesFor(bc);
-    if (canPlant(worldObj, bc, currentSapling)) {
+    if (canPlant(world, bc, currentSapling)) {
       ItemStack seed = farm.takeSeedFromSupplies(currentSapling, bc, false);
       if (Prep.isValid(seed)) {
-        return plant(farm, worldObj, bc, seed);
+        return plant(farm, world, bc, seed);
       }
     }
     return false;
   }
 
-  protected boolean canPlant(World worldObj, BlockPos bc, ItemStack saplingIn) {
+  protected boolean canPlant(World world, BlockPos bc, ItemStack saplingIn) {
     if (!saplings.contains(saplingIn)) {
       return false;
     }
     BlockPos grnPos = bc.down();
-    IBlockState bs = worldObj.getBlockState(grnPos);
+    IBlockState bs = world.getBlockState(grnPos);
     Block ground = bs.getBlock();
     Block saplingBlock = Block.getBlockFromItem(saplingIn.getItem());
     if (saplingBlock == null) {
       return false;
     }
-    if (saplingBlock.canPlaceBlockAt(worldObj, bc)) {
+    if (saplingBlock.canPlaceBlockAt(world, bc)) {
       if (saplingBlock instanceof IPlantable) {
-        return ground.canSustainPlant(bs, worldObj, grnPos, EnumFacing.UP, (IPlantable) saplingBlock);
+        return ground.canSustainPlant(bs, world, grnPos, EnumFacing.UP, (IPlantable) saplingBlock);
       }
       return true;
     }
@@ -70,11 +70,11 @@ public class OredictTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockPos bc, ItemStack seed) {
-    if (canPlant(worldObj, bc, seed)) {
-      worldObj.setBlockToAir(bc);
+  protected boolean plant(TileFarmStation farm, World world, BlockPos bc, ItemStack seed) {
+    if (canPlant(world, bc, seed)) {
+      world.setBlockToAir(bc);
       final Item item = seed.getItem();
-      worldObj.setBlockState(bc, Block.getBlockFromItem(item).getStateFromMeta(item.getMetadata(seed.getMetadata())), 1 | 2);
+      world.setBlockState(bc, Block.getBlockFromItem(item).getStateFromMeta(item.getMetadata(seed.getMetadata())), 1 | 2);
       farm.actionPerformed(false);
       return true;
     } else {

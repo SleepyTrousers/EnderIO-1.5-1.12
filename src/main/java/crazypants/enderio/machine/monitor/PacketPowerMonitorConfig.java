@@ -42,7 +42,7 @@ public class PacketPowerMonitorConfig extends MessageTileEntity<TilePowerMonitor
 
     @Override
     public IMessage onMessage(PacketPowerMonitorConfig msg, MessageContext ctx) {
-      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+      TilePowerMonitor te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
       if (te != null) {
         te.setEngineControlEnabled(msg.engineControlEnabled);
         te.setStartLevel(msg.startLevel);

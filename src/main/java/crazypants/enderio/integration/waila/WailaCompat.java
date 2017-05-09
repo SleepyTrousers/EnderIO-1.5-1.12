@@ -86,7 +86,7 @@ public class WailaCompat implements IWailaDataProvider {
       if(te == null) {
         return null;
       }
-      te.setWorldObj(this);
+      te.setworld(this);
       te.setPos(pos);
       return te;
     }
@@ -250,7 +250,7 @@ public class WailaCompat implements IWailaDataProvider {
   }
 
   private void getWailaBodyConduitBundle(ItemStack itemStack, List<String> currenttip) {
-    if(itemStack == null) {
+    if(itemStack.isEmpty()) {
       return;
     }
 

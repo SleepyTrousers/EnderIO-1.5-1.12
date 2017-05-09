@@ -151,7 +151,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   @Override
   public void setMaxOutput(int max) {
-    maxEnergySent = MathHelper.clamp_int(max, 0, maxIO);
+    maxEnergySent = MathHelper.clamp(max, 0, maxIO);
   }
 
   @Override
@@ -161,7 +161,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   @Override
   public void setMaxInput(int max) {
-    maxEnergyRecieved = MathHelper.clamp_int(max, 0, maxIO);
+    maxEnergyRecieved = MathHelper.clamp(max, 0, maxIO);
   }
 
   public double getEnergyStoredRatio() {

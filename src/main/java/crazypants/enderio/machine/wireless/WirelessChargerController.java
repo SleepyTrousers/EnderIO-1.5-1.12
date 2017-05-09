@@ -39,7 +39,7 @@ public class WirelessChargerController {
     if(charger == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getWorldObj());
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
     chargers.put(charger.getLocation(), charger);
     changeCount++;
   }
@@ -48,7 +48,7 @@ public class WirelessChargerController {
     if(capBank == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorldObj());
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getworld());
     chargers.remove(capBank.getLocation());
     changeCount++;
   }
@@ -75,7 +75,7 @@ public class WirelessChargerController {
   }
 
   public void chargePlayersItems(EntityPlayer player) {
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(player.worldObj);
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(player.world);
     if(chargers.isEmpty()) {
       return;
     }

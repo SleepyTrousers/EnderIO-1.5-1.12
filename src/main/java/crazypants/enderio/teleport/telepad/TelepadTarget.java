@@ -273,7 +273,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     if (tag == null || !tag.hasKey("targetIcon")) {
       return null;
     }
-    return ItemStack.loadItemStackFromNBT(tag.getCompoundTag("targetIcon"));
+    return new ItemStack(tag.getCompoundTag("targetIcon"));
   }
 
   private static String getName(NBTTagCompound tag) {

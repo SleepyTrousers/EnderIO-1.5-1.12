@@ -49,7 +49,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       YetaUtil.refresh(this);
       if (formed != formedRender) {
         formedRender = formed;
@@ -82,7 +82,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private void doHoover() {
     boolean pickUpThisTick = xpCon.getFluidAmount() == 0;
-    for (EntityXPOrb entity : worldObj.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) { // note the Predicate parameter
+    for (EntityXPOrb entity : world.getEntitiesWithinAABB(EntityXPOrb.class, getBounds(), this)) { // note the Predicate parameter
       double x = (pos.getX() + 0.5D - entity.posX);
       double y = (pos.getY() + 0.5D - entity.posY);
       double z = (pos.getZ() + 0.5D - entity.posZ);
@@ -108,7 +108,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   }
 
   private void hooverEntity(EntityXPOrb entity) {
-    if (!worldObj.isRemote && !entity.isDead) {
+    if (!world.isRemote && !entity.isDead) {
       int xpValue = entity.getXpValue();
       xpCon.addExperience(xpValue);
       entity.setDead();
@@ -163,7 +163,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   private void doPush() {
     for (EnumFacing dir : EnumFacing.values()) {
-      if (xpCon.getFluidAmount() > 0 && FluidWrapper.transfer(xpCon, worldObj, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
+      if (xpCon.getFluidAmount() > 0 && FluidWrapper.transfer(xpCon, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }

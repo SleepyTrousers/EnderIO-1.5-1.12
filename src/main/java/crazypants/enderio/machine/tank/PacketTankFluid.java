@@ -43,7 +43,7 @@ public class PacketTankFluid extends MessageTileEntity<TileTank> implements IMes
   @Override
   public IMessage onMessage(PacketTankFluid message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileTank tile = message.getTileEntity(player.worldObj);
+    TileTank tile = message.getTileEntity(player.world);
     if(tile == null) {
       return null;
     }

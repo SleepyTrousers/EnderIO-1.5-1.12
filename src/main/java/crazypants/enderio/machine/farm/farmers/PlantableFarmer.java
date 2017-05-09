@@ -106,28 +106,28 @@ public class PlantableFarmer implements IFarmerJoe {
   // }
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, IPlantable plantable) {
-    World worldObj = farm.getWorld();
-    if (canPlant(worldObj, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
-      return plant(farm, worldObj, bc, plantable);
+    World world = farm.getWorld();
+    if (canPlant(world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
+      return plant(farm, world, bc, plantable);
     }
     return false;
   }
 
-  protected boolean plant(TileFarmStation farm, World worldObj, BlockPos bc, IPlantable plantable) {
-    worldObj.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
+  protected boolean plant(TileFarmStation farm, World world, BlockPos bc, IPlantable plantable) {
+    world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
     IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
-    worldObj.setBlockState(bc, target, 1 | 2);
+    world.setBlockState(bc, target, 1 | 2);
     farm.actionPerformed(false);
     return true;
   }
 
-  protected boolean canPlant(World worldObj, BlockPos bc, IPlantable plantable) {
+  protected boolean canPlant(World world, BlockPos bc, IPlantable plantable) {
     IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
     BlockPos groundPos = bc.down();
-    IBlockState groundBS = worldObj.getBlockState(groundPos);
+    IBlockState groundBS = world.getBlockState(groundPos);
     Block ground = groundBS.getBlock();
-    if (target != null && target.getBlock().canPlaceBlockAt(worldObj, bc)
-        && ground.canSustainPlant(groundBS, worldObj, groundPos, EnumFacing.UP, plantable)) {
+    if (target != null && target.getBlock().canPlaceBlockAt(world, bc)
+        && ground.canSustainPlant(groundBS, world, groundPos, EnumFacing.UP, plantable)) {
       return true;
     }
     return false;
@@ -151,29 +151,29 @@ public class PlantableFarmer implements IFarmerJoe {
       return null;
     }
 
-    World worldObj = farm.getWorld();
+    World world = farm.getWorld();
     List<EntityItem> result = new ArrayList<EntityItem>();
     final EntityPlayerMP fakePlayer = farm.getFakePlayer();
     final int fortune = farm.getMaxLootingValue();
 
     ItemStack removedPlantable = Prep.getEmpty();
 
-    List<ItemStack> drops = block.getDrops(worldObj, bc, meta, fortune);
-    float chance = ForgeEventFactory.fireBlockHarvesting(drops, worldObj, bc, meta, fortune, 1.0F, false, fakePlayer);
+    List<ItemStack> drops = block.getDrops(world, bc, meta, fortune);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, bc, meta, fortune, 1.0F, false, fakePlayer);
     farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     if (drops != null) {
       for (ItemStack stack : drops) {
-        if (Prep.isValid(stack) && stack.stackSize > 0 && worldObj.rand.nextFloat() <= chance) {
+        if (Prep.isValid(stack) && stack.stackSize > 0 && world.rand.nextFloat() <= chance) {
           if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(stack, block)) {
             removedPlantable = stack.copy();
             removedPlantable.stackSize = 1;
             stack.stackSize--;
             if (stack.stackSize > 0) {
-              result.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+              result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
             }
           } else {
-            result.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+            result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
           }
         }
       }
@@ -184,17 +184,17 @@ public class PlantableFarmer implements IFarmerJoe {
       ItemStack stack = inv[slot];
       if (Prep.isValid(stack)) {
         inv[slot] = Prep.getEmpty();
-        result.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 1, bc.getZ() + 0.5, stack));
+        result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 1, bc.getZ() + 0.5, stack));
       }
     }
 
     if (Prep.isValid(removedPlantable)) {
-      if (!plant(farm, worldObj, bc, (IPlantable) removedPlantable.getItem())) {
-        result.add(new EntityItem(worldObj, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, removedPlantable.copy()));
-        worldObj.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
+      if (!plant(farm, world, bc, (IPlantable) removedPlantable.getItem())) {
+        result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, removedPlantable.copy()));
+        world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
       }
     } else {
-      worldObj.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
+      world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
     }
 
     return new HarvestResult(result, bc);

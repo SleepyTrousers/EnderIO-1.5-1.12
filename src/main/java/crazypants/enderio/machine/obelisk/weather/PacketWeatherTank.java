@@ -38,7 +38,7 @@ public class PacketWeatherTank extends MessageTileEntity<TileWeatherObelisk> imp
   @Override
   public IMessage onMessage(PacketWeatherTank message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileWeatherObelisk tile = message.getTileEntity(player.worldObj);
+    TileWeatherObelisk tile = message.getTileEntity(player.world);
     if (tile != null) {
       tile.getInputTank().readFromNBT(message.tag);
     }

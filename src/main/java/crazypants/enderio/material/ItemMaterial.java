@@ -44,7 +44,7 @@ public class ItemMaterial extends Item implements IHaveRenderers {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
+    int i = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
     return Material.values()[i].unlocalisedName;
   }
 
@@ -59,10 +59,10 @@ public class ItemMaterial extends Item implements IHaveRenderers {
   @Override
   @SideOnly(Side.CLIENT)
   public boolean hasEffect(ItemStack par1ItemStack) {
-    if (par1ItemStack == null) {
+    if (par1itemStack.isEmpty()) {
       return false;
     }
-    int damage = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
+    int damage = MathHelper.clamp(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
     return Material.values()[damage].hasEffect;
   }
 

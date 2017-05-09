@@ -378,7 +378,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public void onChunkUnload(World worldObj) {
+  public void onChunkUnload(World world) {
     AbstractConduitNetwork<?, ?> network = getNetwork();
     if (network != null) {
       network.destroyNetwork();

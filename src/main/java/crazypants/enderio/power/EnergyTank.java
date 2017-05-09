@@ -178,7 +178,7 @@ public class EnergyTank implements IEnergyStorage {
   }
 
   private void setEnergyStored(int stored) {
-    int newEnergy = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
+    int newEnergy = MathHelper.clamp(stored, 0, getMaxEnergyStored());
     if (newEnergy != storedEnergy) {
       storedEnergy = newEnergy;
       onChange();

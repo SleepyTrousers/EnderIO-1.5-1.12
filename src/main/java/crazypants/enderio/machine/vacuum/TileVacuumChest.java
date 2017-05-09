@@ -70,7 +70,7 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
 
   @Override
   public void doUpdate() {
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       YetaUtil.refresh(this);
     }
     if (redstoneStateDirty) {
@@ -97,19 +97,19 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
   private List<EntityItem> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
     List<EntityItem> result = new ArrayList<EntityItem>();
 
-    final int minChunkX = MathHelper.floor_double((bb.minX) / 16.0D);
-    final int maxChunkX = MathHelper.floor_double((bb.maxX) / 16.0D);
-    final int minChunkZ = MathHelper.floor_double((bb.minZ) / 16.0D);
-    final int maxChunkZ = MathHelper.floor_double((bb.maxZ) / 16.0D);
-    final int minChunkY = MathHelper.floor_double((bb.minY) / 16.0D);
-    final int maxChunkY = MathHelper.floor_double((bb.maxY) / 16.0D);
+    final int minChunkX = MathHelper.floor((bb.minX) / 16.0D);
+    final int maxChunkX = MathHelper.floor((bb.maxX) / 16.0D);
+    final int minChunkZ = MathHelper.floor((bb.minZ) / 16.0D);
+    final int maxChunkZ = MathHelper.floor((bb.maxZ) / 16.0D);
+    final int minChunkY = MathHelper.floor((bb.minY) / 16.0D);
+    final int maxChunkY = MathHelper.floor((bb.maxY) / 16.0D);
 
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
         Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
         final ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
-        final int minChunkYClamped = MathHelper.clamp_int(minChunkY, 0, entityLists.length - 1);
-        final int maxChunkYClamped = MathHelper.clamp_int(maxChunkY, 0, entityLists.length - 1);
+        final int minChunkYClamped = MathHelper.clamp(minChunkY, 0, entityLists.length - 1);
+        final int maxChunkYClamped = MathHelper.clamp(maxChunkY, 0, entityLists.length - 1);
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersectsWith(bb)
@@ -150,7 +150,7 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
   }
 
   private void hooverEntity(Entity entity) {
-    if (!worldObj.isRemote) {
+    if (!world.isRemote) {
       if (entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();

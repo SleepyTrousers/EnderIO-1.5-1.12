@@ -50,7 +50,7 @@ public class PacketExperianceContainer extends MessageTileEntity<TileEntity> imp
   @Override
   public IMessage onMessage(PacketExperianceContainer message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity tile = message.getTileEntity(player.worldObj);
+    TileEntity tile = message.getTileEntity(player.world);
     if (tile instanceof IHaveExperience) {      
       IHaveExperience xpTile = (IHaveExperience)tile;
       xpTile.getContainer().set(message.xpCon);

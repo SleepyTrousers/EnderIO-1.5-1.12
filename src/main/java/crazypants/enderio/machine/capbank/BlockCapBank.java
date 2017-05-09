@@ -387,7 +387,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
     if (neigbours.isEmpty()) {
         if (player != null) {
-          int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+          int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
           EnumFacing dir = getDirForHeading(heading);
           cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
         }

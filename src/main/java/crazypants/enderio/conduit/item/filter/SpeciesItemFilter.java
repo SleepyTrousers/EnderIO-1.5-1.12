@@ -199,7 +199,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
       NBTBase tag = nbtRoot.getTag("item" + i);
       ItemStack itemStack = null;
       if (tag instanceof NBTTagCompound) {
-        itemStack = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
+        itemStack = new ItemStack((NBTTagCompound) tag);
       }
       setItem(i, itemStack);
     }

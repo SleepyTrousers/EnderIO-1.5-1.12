@@ -75,10 +75,11 @@ import static crazypants.enderio.EnderIO.VERSION;
 import static crazypants.enderio.ModObject.itemSoulVessel;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:Waila;after:JEI@[3.13.4,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:hwyla;after:jei@[3.13.4,)", guiFactory = "crazypants"
+    + ".enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
-  public static final @Nonnull String MODID = "EnderIO";
+  public static final @Nonnull String MODID = "enderio";
   public static final @Nonnull String DOMAIN = NullHelper.notnullJ(MODID.toLowerCase(Locale.US), "String.toLowerCase()");
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
@@ -283,7 +284,7 @@ public class EnderIO {
           }
         }
       } catch (Exception e) {
-        Log.error("Error occured handling IMC message " + key + " from " + msg.getSender());
+        Log.error("Error occurred handling IMC message " + key + " from " + msg.getSender());
       }
     }
   }

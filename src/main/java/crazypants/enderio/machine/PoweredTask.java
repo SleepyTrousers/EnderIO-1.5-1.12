@@ -58,7 +58,7 @@ public class PoweredTask implements IPoweredTask {
 
     this.recipe = recipe;
     this.usedEnergy = usedEnergy;
-    this.chance = MathHelper.clamp_float(chance, 0, 1);
+    this.chance = MathHelper.clamp(chance, 0, 1);
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
     bonusType = recipe.getBonusType(inputsIn);
   }
@@ -77,7 +77,7 @@ public class PoweredTask implements IPoweredTask {
 
   @Override
   public float getProgress() {
-    return MathHelper.clamp_float(usedEnergy / requiredEnergy, 0, 1);
+    return MathHelper.clamp(usedEnergy / requiredEnergy, 0, 1);
   }
 
 

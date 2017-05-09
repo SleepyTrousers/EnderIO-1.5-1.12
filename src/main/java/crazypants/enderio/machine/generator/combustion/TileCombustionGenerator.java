@@ -94,12 +94,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && fuelTank.getFluidAmount() < fuelTank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), fuelTank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), fuelTank, IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }
     if (dir != null && coolantTank.getFluidAmount() < coolantTank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), coolantTank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), coolantTank, IO_MB_TICK) > 0) {
         setTanksDirty();
         }
     }
@@ -184,7 +184,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     if (powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(world, Math.min(maxOutputTick, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
@@ -269,7 +269,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     if (getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    if (worldObj.isRemote) {
+    if (world.isRemote) {
       curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
       updateCoolantFromTank();
     }

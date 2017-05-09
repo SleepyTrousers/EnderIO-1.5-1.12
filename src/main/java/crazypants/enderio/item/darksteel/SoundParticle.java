@@ -50,11 +50,11 @@ public class SoundParticle extends Particle {
       ageScale = 2 - ageScale;
       ageScale = ageScale * ageScale;
     }
-    float volumeScale = MathHelper.clamp_float(ss.volume / 3f + .5f, .5f, 1f);
+    float volumeScale = MathHelper.clamp(ss.volume / 3f + .5f, .5f, 1f);
     float scale = 0.5F * ageScale * volumeScale;
 
 
-    float alpha = MathHelper.clamp_float((ss.volume + 1) / 3f, .6f, .4f);
+    float alpha = MathHelper.clamp((ss.volume + 1) / 3f, .6f, .4f);
     float brightness = 1.0f;
 
     float x1 = (float) (prevPosX + (posX - prevPosX) * partialTicks - interpPosX);

@@ -165,7 +165,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       player.inventory.currentItem = slot;
       Minecraft mc = Minecraft.getMinecraft();
        
-      EnumActionResult result = mc.playerController.processRightClickBlock(mc.thePlayer, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);
+      EnumActionResult result = mc.playerController.processRightClickBlock(mc.player, mc.theWorld, player.inventory.mainInventory[slot], pos, side, new Vec3d(par8, par9, par10), hand);
       player.inventory.currentItem = current;
       return result;
     }

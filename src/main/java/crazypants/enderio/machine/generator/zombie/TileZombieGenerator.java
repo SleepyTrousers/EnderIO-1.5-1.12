@@ -73,7 +73,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   protected boolean doPull(@Nullable EnumFacing dir) {
     boolean res = super.doPull(dir);
     if (dir != null && tank.getFluidAmount() < tank.getCapacity()) {
-      if (FluidWrapper.transfer(worldObj, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
+      if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), tank, IO_MB_TICK) > 0) {
         setTanksDirty();
       }
     }
@@ -170,7 +170,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(world, Math.min(outputPerTick * 2, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

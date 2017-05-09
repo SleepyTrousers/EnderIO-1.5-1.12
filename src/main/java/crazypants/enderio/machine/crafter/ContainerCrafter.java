@@ -89,7 +89,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
     public boolean isItemValid(@Nullable ItemStack itemStack) {
 
       ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
-      if (refStack == null || itemStack == null) {
+      if (refStack == null || itemStack.isEmpty()) {
         return false;
       }
       return TileCrafter.compareDamageable(itemStack, refStack);

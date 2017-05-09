@@ -33,7 +33,7 @@ public class BlockItemElectricLight extends ItemBlock implements IResourceToolti
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, LightType.values().length - 1);
+    meta = MathHelper.clamp(meta, 0, LightType.values().length - 1);
     return LightType.values()[meta].unlocName;
   }
 

@@ -46,7 +46,7 @@ public class PacketGuiSettingsUpdated extends MessageTileEntity<TileInventoryPan
   @Override
   public IMessage onMessage(PacketGuiSettingsUpdated message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(message.getPos());
+    TileEntity te = player.world.getTileEntity(message.getPos());
     if (te instanceof TileInventoryPanel) {
       TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
       teInvPanel.setGuiParameter(message.sortMode, message.filterString, message.sync);

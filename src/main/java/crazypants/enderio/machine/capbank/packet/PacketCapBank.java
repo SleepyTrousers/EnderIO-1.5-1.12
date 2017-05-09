@@ -34,7 +34,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
   @Override
   protected World getWorld(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
-      return ctx.getServerHandler().playerEntity.worldObj;
+      return ctx.getServerHandler().playerEntity.world;
     } else {
       return EnderIO.proxy.getClientWorld();
     }

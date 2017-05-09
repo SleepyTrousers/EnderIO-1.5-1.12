@@ -24,7 +24,7 @@ public class TeleportUtil {
 
   
   public static boolean doTeleport(Entity entityLiving, BlockPos pos, int targetDim, boolean conserveMotion, TravelSource source) {
-    if (entityLiving.worldObj.isRemote) {
+    if (entityLiving.world.isRemote) {
       return checkClientTeleport(entityLiving, pos, targetDim, source);
     }       
     return serverTeleport(entityLiving, pos, targetDim, conserveMotion, source);
@@ -95,8 +95,8 @@ public class TeleportUtil {
     
     
     //Force the chunk to load
-    if(!entity.worldObj.isBlockLoaded(pos)) {           
-      entity.worldObj.getChunkFromBlockCoords(pos);      
+    if(!entity.world.isBlockLoaded(pos)) {
+      entity.world.getChunkFromBlockCoords(pos);
     }
 
     if(player != null) {
@@ -107,7 +107,7 @@ public class TeleportUtil {
 
     entity.fallDistance = 0;
     if(source != null) {
-      SoundHelper.playSound(entity.worldObj, entity, source.sound, 1.0F, 1.0F);
+      SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
     }
 
     if(player != null) {
@@ -139,9 +139,9 @@ public class TeleportUtil {
 
     @Override
     public void placeInPortal(Entity entity, float rotationYaw) {
-      int x = MathHelper.floor_double(entity.posX);
-      int y = MathHelper.floor_double(entity.posY) - 1;
-      int z = MathHelper.floor_double(entity.posZ);
+      int x = MathHelper.floor(entity.posX);
+      int y = MathHelper.floor(entity.posY) - 1;
+      int z = MathHelper.floor(entity.posZ);
 
       entity.setLocationAndAngles(x, y, z, entity.rotationPitch, entity.rotationYaw);
       entity.motionX = 0;
