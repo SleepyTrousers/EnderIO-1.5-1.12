@@ -266,4 +266,24 @@ public class InventoryDatabaseServer extends InventoryDatabase<ItemEntry> {
     return inventories[aiIndex];
   }
 
+  /**
+   * Called when a conduit that has an awareness upgrade is notified by one of its neighbors about a TE change. This will try to find a matching inventory and
+   * mark it to be scanned for changes.
+   *
+   * @param x
+   *          The x pos of the neighbor
+   * @param y
+   *          The y pos of the neighbor
+   * @param z
+   *          The z pos of the neighbor
+   */
+  public void onNeighborChange(int x,int y,int z) {
+    if(inventories == null) {
+      return;
+    }
+    for (AbstractInventory abstractInventory : inventories) {
+      abstractInventory.markForScanning(x,y,z);
+    }
+  }
+
 }
