@@ -17,18 +17,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockWall;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityGuardian;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.SkeletonType;
-import net.minecraft.entity.monster.ZombieType;
-import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.monster.EntityElderGuardian;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -39,6 +34,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -46,28 +42,27 @@ import net.minecraft.world.World;
 
 import static crazypants.enderio.ModObject.itemSoulVessel;
 
-public class CapturedMob {
+public class CapturedMob { // TODO: DONE111
 
-  public static final String SKELETON_ENTITY_NAME = "Skeleton";
-  public static final String ZOMBIE_ENTITY_NAME = "Zombie";
-  public static final String ENTITY_KEY = "entity";
-  public static final String ENTITY_ID_KEY = "entityId";
-  public static final String CUSTOM_NAME_KEY = "customName";
-  public static final String VARIANT_KEY = "isVariant";
+  private static final @Nonnull ResourceLocation PIG = new ResourceLocation("pig");
+  private static final @Nonnull ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
 
-  private final static List<String> blacklist = new ArrayList<String>();
-  private final static List<String> unspawnablelist = new ArrayList<String>();
+  public static final @Nonnull String ENTITY_KEY = "entity";
+  public static final @Nonnull String ENTITY_ID_KEY = "entityId";
+  public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
+
+  private final static List<ResourceLocation> blacklist = new ArrayList<ResourceLocation>();
+  private final static List<ResourceLocation> unspawnablelist = new ArrayList<ResourceLocation>();
 
   private final @Nullable NBTTagCompound entityNbt;
-  private final @Nonnull String entityId;
+  private final @Nonnull ResourceLocation entityId;
   private final @Nullable String customName;
-  private final @Nullable Enum<?> variant;
 
   private CapturedMob(@Nonnull EntityLivingBase entity) {
 
-    String id = EntityList.getEntityString(entity);
+    ResourceLocation id = EntityList.getKey(entity);
 
-    entityId = id == null ? "Pig" : id; // nbt will have nothing else
+    entityId = id == null ? PIG : id; // nbt will have nothing else
 
     entityNbt = entity.serializeNBT();
 
@@ -84,13 +79,6 @@ public class CapturedMob {
       customName = null;
     }
 
-    if (entity instanceof EntitySkeleton) {
-      variant = ((EntitySkeleton) entity).func_189771_df();
-    } else if (entity instanceof EntityZombie) {
-      variant = ((EntityZombie) entity).func_189777_di();
-    } else {
-      variant = null;
-    }
   }
 
   private CapturedMob(@Nonnull NBTTagCompound nbt) {
@@ -99,69 +87,57 @@ public class CapturedMob {
     } else {
       entityNbt = null;
     }
+    String id = null;
     if (nbt.hasKey(ENTITY_ID_KEY)) {
-      String id = nbt.getString(ENTITY_ID_KEY);
-      entityId = id == null ? "Pig" : id;
+      id = nbt.getString(ENTITY_ID_KEY);
     } else if (entityNbt != null && entityNbt.hasKey("id")) {
-      String id = NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("id");
-      entityId = id == null ? "Pig" : id;
-    } else {
-      entityId = "Pig";
+      id = NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("id");
     }
+    entityId = id == null || id.isEmpty() ? PIG : new ResourceLocation(id);
     if (nbt.hasKey(CUSTOM_NAME_KEY)) {
       customName = nbt.getString(CUSTOM_NAME_KEY);
     } else {
       customName = null;
     }
-    if(nbt.hasKey(VARIANT_KEY)) {
-      short ord = nbt.getShort(VARIANT_KEY);
-      variant = mkEnumForType(ord);
-    } else {
-      variant = null;
-    }
   }
 
-  private CapturedMob(@Nonnull String entityId, @Nullable Enum<?> variant) {
+  private CapturedMob(@Nonnull ResourceLocation entityId) {
     this.entityNbt = null;
     this.entityId = entityId;
     this.customName = null;
-    this.variant = variant;
   }
 
   public static @Nullable CapturedMob create(@Nullable Entity entity) {
-    if (!(entity instanceof EntityLivingBase) || entity.world == null || entity.world.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
+    if (!(entity instanceof EntityLivingBase) || entity.world.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
       return null;
     }
     return new CapturedMob((EntityLivingBase) entity);
   }
 
-  public static @Nullable CapturedMob create(@Nullable String entityId, Enum<?> variant) {
-    if (entityId == null || !EntityList.isStringValidEntityName(entityId)) {
+  public static @Nullable CapturedMob create(@Nullable ResourceLocation entityId) {
+    if (entityId == null || !EntityList.isRegistered(entityId)) {
       return null;
     }
-    return new CapturedMob(entityId, variant);
+    return new CapturedMob(entityId);
   }
 
-  public @Nonnull ItemStack toStack(Item item, int meta, int amount) {
+  public @Nonnull ItemStack toStack(@Nonnull Item item, int meta, int amount) {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
-    if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVessel.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       NullHelper.notnullM(stack.getTagCompound(), "getTagCompound() doesn't produce value that was set with setTagCompound()").setString(CUSTOM_NAME_KEY,
           EnderIO.lang.localize("easteregg.piginabottle"));
     }
     return stack;
   }
 
-  public @Nonnull ItemStack toGenericStack(Item item, int meta, int amount) {
+  public @Nonnull ItemStack toGenericStack(@Nonnull Item item, int meta, int amount) {
     NBTTagCompound data = new NBTTagCompound();
     if (isUnspawnable(entityId)) {
       return toStack(item, meta, amount);
     }
-    data.setString(ENTITY_ID_KEY, entityId);
-    if (variant != null) {
-      data.setShort(VARIANT_KEY, (short) variant.ordinal());
-    }
-    if (item == itemSoulVessel.getItem() && customName == null && "Pig".equals(entityId) && Math.random() < 0.01) {
+    data.setString(ENTITY_ID_KEY, entityId.toString());
+    if (item == itemSoulVessel.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       data.setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
     }
     ItemStack stack = new ItemStack(item, amount, meta);
@@ -171,15 +147,12 @@ public class CapturedMob {
 
   public @Nonnull NBTTagCompound toNbt(@Nullable NBTTagCompound nbt) {
     NBTTagCompound data = nbt != null ? nbt : new NBTTagCompound();
-    data.setString(ENTITY_ID_KEY, entityId);
+    data.setString(ENTITY_ID_KEY, entityId.toString());
     if (entityNbt != null) {
       data.setTag(ENTITY_KEY, entityNbt.copy());
     }
     if (customName != null) {
       data.setString(CUSTOM_NAME_KEY, customName);
-    }
-    if (variant != null) {
-      data.setShort(VARIANT_KEY, (short)variant.ordinal());
     }
     return data;
   }
@@ -189,12 +162,12 @@ public class CapturedMob {
   }
 
   @SuppressWarnings("null")
-  public static boolean containsSoul(@Nullable ItemStack stack) {
+  public static boolean containsSoul(@Nonnull ItemStack stack) {
     return Prep.isValid(stack) && stack.hasTagCompound() && containsSoul(stack.getTagCompound());
   }
 
   @SuppressWarnings("null")
-  public static @Nullable CapturedMob create(@Nullable ItemStack stack) {
+  public static @Nullable CapturedMob create(@Nonnull ItemStack stack) {
     if (containsSoul(stack)) {
       return new CapturedMob(stack.getTagCompound());
     } else {
@@ -211,9 +184,9 @@ public class CapturedMob {
   }
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
-    String entityId = EntityList.getEntityString(entity);
-    if (entityId == null || entityId.trim().isEmpty() || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())
-        || (!Config.soulVesselCapturesBosses && entity instanceof EntityGuardian && ((EntityGuardian) entity).isElder())) {
+    ResourceLocation entityId = EntityList.getKey(entity);
+    if (entityId == null || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())
+        || (!Config.soulVesselCapturesBosses && entity instanceof EntityElderGuardian)) {
       return true;
     }
     return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
@@ -247,9 +220,9 @@ public class CapturedMob {
       ((EntityLiving) entity).setCustomNameTag(customName);
     }
 
-    if (!world.spawnEntityInWorld(entity)) {
+    if (!world.spawnEntity(entity)) {
       entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
-      if (!world.spawnEntityInWorld(entity)) {
+      if (!world.spawnEntity(entity)) {
         return false;
       }
     }
@@ -257,20 +230,6 @@ public class CapturedMob {
     if (entity instanceof EntityLiving) {
       ((EntityLiving) entity).playLivingSound();
     }
-
-    //TODO: 1.10, need to figure out how this works now
-//    Entity riddenByEntity = entity.riddenByEntity;
-//    while (riddenByEntity != null) {
-//      riddenByEntity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0.0F);
-//      if (world.spawnEntityInWorld(riddenByEntity)) {
-//        if (riddenByEntity instanceof EntityLiving) {
-//          ((EntityLiving) riddenByEntity).playLivingSound();
-//        }
-//        riddenByEntity = riddenByEntity.riddenByEntity;
-//      } else {
-//        riddenByEntity = null;
-//      }
-//    }
 
     return true;
   }
@@ -287,14 +246,14 @@ public class CapturedMob {
 
     if (entityNbt != null && (clone || isUnspawnable(entityId))) {
       final Entity entity = EntityList.createEntityFromNBT(entityNbt, world);
-      if (!clone) {
+      if (!clone && entity != null) {
         // The caller doesn't expect a clone, but we return one. Give it a unique/new ID to avoid problems with duplicate entities.
         entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
       }
       return entity;
     }
 
-    Entity entity = EntityList.createEntityByName(entityId, world);
+    Entity entity = EntityList.createEntityByIDFromName(entityId, world);
     if (entity == null) {
       return null;
     }
@@ -308,86 +267,28 @@ public class CapturedMob {
         difficulty = world.getDifficultyForLocation(pos);
       }
       if (difficulty != null) {
-        IEntityLivingData livingData = null;
-        if (variant != null && entity instanceof EntityZombie) {
-          livingData = new IEntityLivingData() {
-          };
-        }
-        ((EntityLiving) entity).onInitialSpawn(difficulty, livingData);
+        ((EntityLiving) entity).onInitialSpawn(difficulty, null);
       }
     }
 
-    if (entity instanceof EntityGuardian && entityNbt != null) {
-      final Entity entityOriginal = EntityList.createEntityFromNBT(entityNbt, world);
-      ((EntityGuardian) entity).setElder(entityOriginal instanceof EntityGuardian && ((EntityGuardian) entityOriginal).isElder());
-    }
-
-    if (variant != null) {
-      if (entity instanceof EntitySkeleton) {
-        EntitySkeleton skel = (EntitySkeleton) entity;
-        skel.func_189768_a((SkeletonType) variant);
-        if (variant == SkeletonType.WITHER) {
-          skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
-          skel.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, null);
-          skel.setItemStackToSlot(EntityEquipmentSlot.CHEST, null);
-          skel.setItemStackToSlot(EntityEquipmentSlot.FEET, null);
-          skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, null);
-          skel.setItemStackToSlot(EntityEquipmentSlot.LEGS, null);
-
-          skel.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-          skel.setCombatTask();
-
+    if (entity instanceof EntityWitherSkeleton) {
           if (Celeb.H31.isOn() && Math.random() < 0.25) {
-            skel.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
-            skel.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
+        entity.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Math.random() < 0.1 ? Blocks.LIT_PUMPKIN : Blocks.PUMPKIN));
+        ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
           } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
-            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
+        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
           } else if (Math.random() < 0.1) {
-            skel.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
-            skel.setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
+        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(DarkSteelItems.itemDarkSteelSword));
+        ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
           }
-        }
-      } else if (entity instanceof EntityZombie) {
-        boolean isChild = world.rand.nextFloat() < net.minecraftforge.common.ForgeModContainer.zombieBabyChance;
-        ((EntityZombie) entity).func_189778_a((ZombieType) variant);
-        if (((ZombieType) variant).func_190154_b()) {
-          do {
-            net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession((EntityZombie) entity, world.rand);
-          } while (((EntityZombie) entity).getVillagerTypeForge() == null && !((EntityZombie) entity).func_189777_di().func_190154_b());
-        }
-        if (isChild) {
-          ((EntityZombie) entity).setChild(true);
-          if (world.rand.nextFloat() < 0.05D) {
-            EntityChicken entitychicken1 = new EntityChicken(world);
-            entitychicken1.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
-            entitychicken1.onInitialSpawn(difficulty, (IEntityLivingData) null);
-            entitychicken1.setChickenJockey(true);
-            world.spawnEntityInWorld(entitychicken1);
-            entity.startRiding(entitychicken1);
-          }
-        }
-      }
     }
 
     return entity;
   }
 
   public @Nonnull String getDisplayName() {
-    String baseName = null;
-    if (variant != null && SKELETON_ENTITY_NAME.equals(entityId)) {
-      // The value is in the enum but not exposed, need to fix this
-      String typeName = variant == SkeletonType.NORMAL ? entityId : variant == SkeletonType.WITHER ? "WitherSkeleton" : "Stray";
-      baseName = EntityUtil.getDisplayNameForEntity(typeName);
-    } else if (variant != null && ZOMBIE_ENTITY_NAME.equals(entityId)) {
-      if (((ZombieType) NullHelper.notnullJ(variant, "private final field changed its value")).func_190154_b()) {
-        baseName = EntityUtil.getDisplayNameForEntity("ZombieVillager");
-      } else {
-        baseName = ((ZombieType) NullHelper.notnullJ(variant, "private final field changed its value")).func_190145_d().getUnformattedText();
-      }
-    } else {
-      baseName = EntityUtil.getDisplayNameForEntity(entityId);
-    }
-    if (baseName == null || baseName.trim().isEmpty()) {
+    String baseName = I18n.format("entity." + EntityList.getTranslationName(entityId) + ".name");
+    if (baseName.trim().isEmpty()) {
       if (customName != null && !customName.trim().isEmpty()) {
         return NullHelper.notnullJ(customName, "private final field changed its value");
       } else {
@@ -451,65 +352,44 @@ public class CapturedMob {
     return null;
   }
 
-  public static void addToBlackList(String entityName) {
+  public static void addToBlackList(ResourceLocation entityName) {
     blacklist.add(entityName);
   }
 
-  public static void addToUnspawnableList(String entityName) {
+  public static void addToUnspawnableList(ResourceLocation entityName) {
     unspawnablelist.add(entityName);
   }
 
-  private boolean isUnspawnable(String entityName) {
+  private boolean isUnspawnable(ResourceLocation entityName) {
     return Config.soulVesselUnspawnableList.contains(entityId) || unspawnablelist.contains(entityName);
   }
 
-  public @Nullable String getEntityName() {
+  public @Nonnull ResourceLocation getEntityName() {
     return entityId;
   }
 
   public boolean isSameType(Entity entity) {
-    return entity != null && EntityList.getEntityString(entity) != null && EntityList.getEntityString(entity).equals(getEntityName())
-        && (!(entity instanceof EntitySkeleton) || isSameSkeleton(((EntitySkeleton) entity).func_189771_df(), variant))
-        && (!(entity instanceof EntityZombie) || isSameZombie(((EntityZombie) entity).func_189777_di(), variant));
+    return entity != null && getEntityName().equals(EntityList.getKey(entity));
   }
 
   @Override
   public String toString() {
-    return "CapturedMob [" + "entityId=" + entityId + ", " + (customName != null ? "customName=" + customName + ", " : "") + "variant=" + variant + ", "
+    return "CapturedMob [" + "entityId=" + entityId + ", " + (customName != null ? "customName=" + customName + ", " : "")
         + (entityNbt != null ? "entityNbt=" + entityNbt + ", " : "") + "getDisplayName()="
         + getDisplayName() + ", getHealth()=" + getHealth() + ", getMaxHealth()=" + getMaxHealth() + ", "
         + (getColor() != null ? "getColor()=" + getColor() + ", " : "") + (getFluidName() != null ? "getFluidName()=" + getFluidName() : "") + "]";
-  }
-
-  // we treat normal zombies and all villager zombies as the same kind of zombie for the pressure plate and the obelisks
-  private static boolean isSameZombie(ZombieType a, Enum<?> b) {
-    return a == b || (a != ZombieType.HUSK && b != ZombieType.HUSK) || b == null;
-  }
-
-  private static boolean isSameSkeleton(SkeletonType a, Enum<?> b) {
-    return a == b || b == null;
   }
 
   /*
    * Note: The Ender Dragon cannot be spawned as expected. All of its logic (moving, fighting, being hit, ...) is a special manager class, which is very
    * hardcoded to the specifics of the vanilla dragon fight.
    */
-  public static @Nonnull List<CapturedMob> getSouls(List<String> mobs) {
-    List<CapturedMob> result = new ArrayList<CapturedMob>(mobs.size());
-    for (String mobName : mobs) {
-      CapturedMob soul = create(mobName, null);
-      if (soul != null && !"EnderDragon".equals(mobName)) {
-        if (SKELETON_ENTITY_NAME.equals(mobName)) {
-          for (SkeletonType type : SkeletonType.values()) {
-            result.add(create(mobName, type));
-          }
-        } else if (ZOMBIE_ENTITY_NAME.equals(mobName)) {
-          result.add(create(mobName, ZombieType.NORMAL));
-          result.add(create(mobName, ZombieType.VILLAGER_BUTCHER)); // Forge will randomize these
-          result.add(create(mobName, ZombieType.HUSK));
-        } else {
+  public static @Nonnull List<CapturedMob> getSouls(List<ResourceLocation> list) {
+    List<CapturedMob> result = new ArrayList<CapturedMob>(list.size());
+    for (ResourceLocation mobName : list) {
+      CapturedMob soul = create(mobName);
+      if (soul != null && !DRAGON.equals(mobName)) {
           result.add(soul);
-        }
       }
     }
     return result;
@@ -519,13 +399,4 @@ public class CapturedMob {
     return getSouls(EntityUtil.getAllRegisteredMobNames());
   }
 
-  private Enum<?> mkEnumForType(int ordinal) {
-    if (SKELETON_ENTITY_NAME.equals(entityId)) {
-      return SkeletonType.values()[ordinal];
-    }
-    if (ZOMBIE_ENTITY_NAME.equals(entityId)) {
-      return ZombieType.values()[ordinal];
-  }
-    return null;
-  }
 }

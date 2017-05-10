@@ -426,8 +426,8 @@ public final class Config {
   public static boolean enableOCConduits = true;
   public static boolean enableOCConduitsAnimatedTexture = true;
 
-  public static List<String> soulVesselBlackList = Collections.<String> emptyList();
-  public static List<String> soulVesselUnspawnableList = new ArrayList<String>();
+  public static List<ResourceLocation> soulVesselBlackList = Collections.<ResourceLocation> emptyList();
+  public static List<ResourceLocation> soulVesselUnspawnableList = new ArrayList<ResourceLocation>();
   static {
     soulVesselUnspawnableList.add("chickens.ChickensChicken");
   }

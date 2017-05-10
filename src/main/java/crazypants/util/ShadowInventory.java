@@ -1,6 +1,6 @@
 package crazypants.util;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.Util;
 
@@ -9,16 +9,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
-public class ShadowInventory implements IInventory {
+public class ShadowInventory implements IInventory { // TODO: DONE111
   private final ItemStack[] items;
   private final IInventory master;
 
   public ShadowInventory(IInventory master) {
     this.master = master;
     items = new ItemStack[master.getSizeInventory()];
-    for (int i = 0; i < master.getSizeInventory(); i++) {
-      items[i] = master.getStackInSlot(i);
-    }
   }
 
   @Override
@@ -27,18 +24,19 @@ public class ShadowInventory implements IInventory {
   }
 
   @Override
-  public ItemStack getStackInSlot(int p_70301_1_) {
-    return items[p_70301_1_];
+  public @Nonnull ItemStack getStackInSlot(int index) {
+    final ItemStack itemStack = items[index];
+    return itemStack == null ? master.getStackInSlot(index) : itemStack;
   }
 
   @Override
-  public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-    return Util.decrStackSize(this, p_70298_1_, p_70298_2_);
+  public @Nonnull ItemStack decrStackSize(int index, int count) {
+    return Util.decrStackSize(this, index, count);
   }
 
   @Override
-  public void setInventorySlotContents(int p_70299_1_, @Nullable ItemStack p_70299_2_) {
-    items[p_70299_1_] = p_70299_2_;
+  public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+    items[index] = stack;
   }
 
   @Override
@@ -51,18 +49,12 @@ public class ShadowInventory implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-    return master.isUseableByPlayer(p_70300_1_);
-  }
-
-
-  @Override
-  public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-    return master.isItemValidForSlot(p_94041_1_, p_94041_2_);
+  public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+    return master.isItemValidForSlot(index, stack);
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return master.getName();
   }
 
@@ -72,22 +64,24 @@ public class ShadowInventory implements IInventory {
   }
 
   @Override
-  public ITextComponent getDisplayName() {
+  public @Nonnull ITextComponent getDisplayName() {
     return master.getDisplayName();
   }
 
   @Override
-  public ItemStack removeStackFromSlot(int index) {    
-    return master.removeStackFromSlot(index);
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
+    ItemStack stack = getStackInSlot(index);
+    setInventorySlotContents(index, Prep.getEmpty());
+    return stack;
   }
 
   @Override
-  public void openInventory(EntityPlayer player) {
+  public void openInventory(@Nonnull EntityPlayer player) {
     master.openInventory(player);    
   }
 
   @Override
-  public void closeInventory(EntityPlayer player) {
+  public void closeInventory(@Nonnull EntityPlayer player) {
     master.closeInventory(player);    
   }
 
@@ -109,7 +103,24 @@ public class ShadowInventory implements IInventory {
 
   @Override
   public void clear() {
-    master.clear();    
+    for (int i = 0; i < items.length; i++) {
+      removeStackFromSlot(i);
+    }
+  }
+
+  @Override
+  public boolean isEmpty() {
+    for (int i = 0; i < items.length; i++) {
+      if (!getStackInSlot(i).isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+    return master.isUsableByPlayer(player);
   }
 
 }

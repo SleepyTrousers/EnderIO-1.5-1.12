@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.liquid;
 
+import com.enderio.core.EnderCore;
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.util.ClientUtil;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.TileConduitBundle;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -11,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketFluidLevel, IMessage>{
+public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketFluidLevel, IMessage> {// TODO: DONE111
 
   public NBTTagCompound tc;
 
@@ -36,10 +38,18 @@ public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements I
     tc = ByteBufUtils.readTag(buf);
   }
 
-  
   @Override
   public IMessage onMessage(PacketFluidLevel message, MessageContext ctx) {
-      ClientUtil.doFluidLevelUpdate(message.x, message.y, message.z, message);
+    TileEntity tile = message.getTileEntity(EnderCore.proxy.getClientWorld());
+    if (message.tc == null || !(tile instanceof IConduitBundle)) {
       return null;
+    }
+    IConduitBundle bundle = (IConduitBundle) tile;
+    ILiquidConduit con = bundle.getConduit(ILiquidConduit.class);
+    if (con == null) {
+      return null;
+    }
+    con.readFromNBT(message.tc, TileConduitBundle.NBT_VERSION);
+    return null;
   }
 }

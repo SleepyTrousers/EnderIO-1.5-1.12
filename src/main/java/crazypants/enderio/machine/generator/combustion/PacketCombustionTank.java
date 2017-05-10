@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.network.NetworkUtil;
+
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.enderio.core.common.network.MessageTileEntity;
-import com.enderio.core.common.network.NetworkUtil;
-
-import crazypants.util.ClientUtil;
 
 public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenerator> implements IMessageHandler<PacketCombustionTank, IMessage> {
 
@@ -18,7 +19,7 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
   public PacketCombustionTank() {
   }
 
-  public PacketCombustionTank(TileCombustionGenerator tile) {
+  public PacketCombustionTank(@Nonnull TileCombustionGenerator tile) { // TODO: DONE111
     super(tile);
     nbtRoot = new NBTTagCompound();
     if (tile.getCoolantTank().getFluidAmount() > 0) {
@@ -47,7 +48,21 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
 
   @Override
   public IMessage onMessage(PacketCombustionTank message, MessageContext ctx) {
-    ClientUtil.setTankNBT(message, message.getPos());
+    TileCombustionGenerator tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+    if (tile != null) {
+      if (message.nbtRoot.hasKey("coolantTank")) {
+        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");
+        tile.getCoolantTank().readFromNBT(tankRoot);
+      } else {
+        tile.getCoolantTank().setFluid(null);
+      }
+      if (message.nbtRoot.hasKey("fuelTank")) {
+        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("fuelTank");
+        tile.getFuelTank().readFromNBT(tankRoot);
+      } else {
+        tile.getFuelTank().setFluid(null);
+      }
+    }
     return null;
   }
 

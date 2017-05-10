@@ -38,11 +38,7 @@ public class HandleItemStack implements IHandler<ItemStack> {
       @Nullable ItemStack object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       NBTTagCompound tag = nbt.getCompoundTag(name);
-      if (object != null) {
-        object.readFromNBT(tag);
-      } else {
-        return new ItemStack(tag);
-      }
+      return new ItemStack(tag);
     }
     return object;
   }

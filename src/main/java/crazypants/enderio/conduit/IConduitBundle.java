@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import appeng.api.networking.IGridHost;
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 
+import appeng.api.networking.IGridHost;
 import cofh.api.energy.IEnergyReceiver;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -21,7 +23,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,11 +36,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI|energy")
 })
-public interface IConduitBundle extends IInternalPowerReceiver, IFluidHandler, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
+public interface IConduitBundle extends IInternalPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
 
+  @Nonnull
   TileEntity getEntity();
 
   @Override
+  @Nonnull
   BlockCoord getLocation();
 
   // conduits
