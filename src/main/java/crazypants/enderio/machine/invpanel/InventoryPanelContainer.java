@@ -457,7 +457,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       }
     } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
       if (!player.getEntityWorld().isRemote) {
-        return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).canInteractWith(player.getHeldItemMainhand(), player);
+        return ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).canInteractWith(player.getHeldItemOffhand(), player);
       } else {
         return true;
       }
@@ -471,7 +471,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       if ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() instanceof ItemRemoteInvAccess)) {
         ((ItemRemoteInvAccess) player.getHeldItemMainhand().getItem()).tick(player.getHeldItemMainhand(), player);
       } else if ((player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() instanceof ItemRemoteInvAccess)) {
-        ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemMainhand(), player);
+        ((ItemRemoteInvAccess) player.getHeldItemOffhand().getItem()).tick(player.getHeldItemOffhand(), player);
       }
     }
   }
