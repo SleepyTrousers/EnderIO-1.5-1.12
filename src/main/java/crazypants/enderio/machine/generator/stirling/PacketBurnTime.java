@@ -46,7 +46,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player != null && player.worldObj != null) {
-      TileEntityStirlingGenerator tile = getTileEntity(player.worldObj);
+      TileEntityStirlingGenerator tile = message.getTileEntity(player.worldObj);
       if (tile != null) {
         tile.burnTime = message.burnTime;
         tile.totalBurnTime = message.totalBurnTime;
