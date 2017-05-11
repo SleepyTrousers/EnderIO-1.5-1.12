@@ -64,7 +64,7 @@ public enum GuiID {
   GUI_ID_INVENTORY_PANEL,
   GUI_ID_SPAWN_RELOCATOR,
   GUI_ID_INVENTORY_PANEL_SENSOR,
-  GUI_ID_INVENTORY_PANEL_REMOTE,
+  GUI_ID_INVENTORY_PANEL_REMOTE(null, false, false),
   GUI_ID_LOCATION_PRINTOUT {
     @Override
     protected void registerNode() {
@@ -78,24 +78,29 @@ public enum GuiID {
   GUI_ID_CAP_BANK_WITH_BAUBLES7(GUI_ID_CAP_BANK);
 
   private final GuiID basePermission;
-  private final boolean synthetic;
+  private final boolean synthetic, hasBlockPosInXYZ;
   private IGuiHandler handler = null;
 
   private GuiID() {
-    this(null, false);
+    this(null, false, true);
   }
 
   private GuiID(GuiID basePermission) {
-    this(basePermission, false);
+    this(basePermission, false, true);
   }
 
   private GuiID(boolean synthetic) {
-    this(null, synthetic);
+    this(null, synthetic, true);
   }
 
   private GuiID(GuiID basePermission, boolean synthetic) {
+    this(basePermission, synthetic, true);
+  }
+
+  private GuiID(GuiID basePermission, boolean synthetic, boolean hasBlockPosInXYZ) {
     this.basePermission = basePermission;
     this.synthetic = synthetic;
+    this.hasBlockPosInXYZ = hasBlockPosInXYZ;
   }
 
   public boolean is(int id) {
@@ -212,8 +217,9 @@ public enum GuiID {
     NetworkRegistry.INSTANCE.registerGuiHandler(EnderIO.instance, new IGuiHandler() {
       @Override
       public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        IGuiHandler handler = byID(id).handler;
-        if (handler != null && world != null && world.isBlockLoaded(new BlockPos(x, y, z))) {
+        final GuiID guid = byID(id);
+        IGuiHandler handler = guid.handler;
+        if (handler != null && world != null && (!guid.hasBlockPosInXYZ || world.isBlockLoaded(new BlockPos(x, y, z)))) {
           final Object guiElement = handler.getServerGuiElement(id, player, world, x, y, z);
           if (guiElement instanceof IRemoteExec) {
             ((IRemoteExec) guiElement).setGuiID(id);
