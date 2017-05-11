@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;

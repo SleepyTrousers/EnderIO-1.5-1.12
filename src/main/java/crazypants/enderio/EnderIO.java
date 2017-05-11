@@ -50,7 +50,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Things;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;

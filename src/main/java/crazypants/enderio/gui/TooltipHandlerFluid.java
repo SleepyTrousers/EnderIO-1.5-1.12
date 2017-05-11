@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
@@ -36,7 +37,8 @@ public class TooltipHandlerFluid implements ITooltipCallback {
       if (fuel != null) {
         list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
         list.add(TextFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
-        list.add(TextFormatting.ITALIC + " " + TextUtil.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), fuel.getTotalBurningTime()));
+        Object[] objects = { fuel.getTotalBurningTime() };
+        list.add(TextFormatting.ITALIC + " " + MessageFormat.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), objects));
       } else {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {

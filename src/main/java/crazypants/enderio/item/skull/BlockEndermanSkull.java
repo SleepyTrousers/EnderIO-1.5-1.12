@@ -10,7 +10,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.util.ClientUtil;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;

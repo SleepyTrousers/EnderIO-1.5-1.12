@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.capbank;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +46,7 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import crazypants.util.TextUtil;
 import info.loenwind.autosave.Reader;
 import net.minecraft.block.Block;
@@ -211,7 +212,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         }
         if (count > 0) {
           String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
-          list.add(TextFormatting.GOLD + TextUtil.format(msg, count));
+          Object[] objects = { count };
+          list.add(TextFormatting.GOLD + MessageFormat.format(msg, objects));
         }
       }
     }

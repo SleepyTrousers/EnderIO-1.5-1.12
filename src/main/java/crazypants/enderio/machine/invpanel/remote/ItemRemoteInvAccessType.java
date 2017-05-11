@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;

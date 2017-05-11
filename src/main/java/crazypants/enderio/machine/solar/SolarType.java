@@ -5,7 +5,7 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.config.Config;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
 

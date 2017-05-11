@@ -1,4 +1,4 @@
-@API(apiVersion = EnderIOAPIProps.VERSION, owner = "EnderIO", provides = "EnderIOAPI|Tools")
+@API(apiVersion = EnderIOAPIProps.VERSION, owner = "enderio", provides = "enderioapi|tools")
 package crazypants.enderio.api.tool;
 
 import crazypants.enderio.api.EnderIOAPIProps;

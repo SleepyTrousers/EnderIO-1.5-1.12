@@ -6,7 +6,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
+
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

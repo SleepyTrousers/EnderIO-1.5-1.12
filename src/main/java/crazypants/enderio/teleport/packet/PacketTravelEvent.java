@@ -94,9 +94,9 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
     if(MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }
-    x = evt.targetX;
-    y = evt.targetY;
-    z = evt.targetZ;
+    x = evt.getTargetX();
+    y = evt.getTargetY();
+    z = evt.getTargetZ();
 
     SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
 

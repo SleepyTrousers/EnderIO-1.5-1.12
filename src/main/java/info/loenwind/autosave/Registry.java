@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.machine.sagmill.GrindingMultiplierNBT;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.endercore.HandleBlockCoord;
+import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
 import info.loenwind.autosave.handlers.enderio.HandleCapturedMob;
 import info.loenwind.autosave.handlers.enderio.HandleEnderInventory;
 import info.loenwind.autosave.handlers.enderio.HandleExperienceContainer;
@@ -18,7 +18,6 @@ import info.loenwind.autosave.handlers.enderio.HandlePoweredTask;
 import info.loenwind.autosave.handlers.enderio.HandleResettingFlag;
 import info.loenwind.autosave.handlers.enderio.HandleSmartTank;
 import info.loenwind.autosave.handlers.enderio.HandleStatCollector;
-import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
 import info.loenwind.autosave.handlers.forge.HandleFluid;
 import info.loenwind.autosave.handlers.forge.HandleFluidStack;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
@@ -81,7 +80,6 @@ public class Registry {
     GLOBAL_REGISTRY.register(new HandleStorable<Object>());
 
     // EnderCore types
-    GLOBAL_REGISTRY.register(new HandleBlockCoord());
 
     // Ender IO types
     GLOBAL_REGISTRY.register(new HandleSmartTank());

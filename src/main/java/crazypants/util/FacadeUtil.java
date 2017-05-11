@@ -21,23 +21,23 @@ public class FacadeUtil {
 
     @Override
     @Method(modid = "ChiselAPI")
-    public boolean isFacaded(IBlockState state) {
+    public boolean isFacaded(@Nullable IBlockState state) {
       return state != null && state.getBlock() instanceof IFacade;
     }
 
     @Override
     @Method(modid = "ChiselAPI")
-    public IBlockState getFacade(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-      return isFacaded(state) ? ((IFacade) state.getBlock()).getFacade(world, pos, side) : null;
+    public @Nullable IBlockState getFacade(@Nullable IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+      return state != null && isFacaded(state) ? ((IFacade) state.getBlock()).getFacade(world, pos, side) : null;
     }
 
   }
 
-  public boolean isFacaded(IBlockState state) {
+  public boolean isFacaded(@Nullable IBlockState state) {
     return false;
   }
 
-  public IBlockState getFacade(IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
+  public @Nullable IBlockState getFacade(@Nullable IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     return null;
   }
 

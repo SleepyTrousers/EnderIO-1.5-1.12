@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 
 /**
  * Restore an object's fields from NBT data.

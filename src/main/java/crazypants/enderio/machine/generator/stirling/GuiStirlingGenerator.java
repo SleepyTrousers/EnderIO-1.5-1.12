@@ -63,7 +63,8 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     int remainingTicks = (int) (remaining * totalBurnTime);
     int remainingSecs = remainingTicks / 20;
     int remainingRF = getTileEntity().getPowerUsePerTick() * remainingTicks;
-    return TextUtil.format(EnderIO.lang.localize("stirlingGenerator.remaining"), remaining, remainingSecs / 60, remainingSecs % 60, remainingRF);
+    Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingRF };
+    return MessageFormat.format(EnderIO.lang.localize("stirlingGenerator.remaining"), objects);
   }
 
   @Override

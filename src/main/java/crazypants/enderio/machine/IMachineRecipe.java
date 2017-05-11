@@ -2,7 +2,11 @@ package crazypants.enderio.machine;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.machine.recipe.RecipeBonusType;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,6 +25,7 @@ public interface IMachineRecipe {
    * 
    * @return
    */
+  @Nonnull
   String getUid();
 
   /**
@@ -38,6 +43,7 @@ public interface IMachineRecipe {
   /**
    * Returns the how bonus should be handled for this input
    **/
+  @Nonnull
   RecipeBonusType getBonusType(MachineRecipeInput... inputs);
 
   /**
@@ -63,6 +69,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
+  @Nonnull
   ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs);
 
   /**
@@ -73,7 +80,7 @@ public interface IMachineRecipe {
    * @param output
    * @return
    */
-  float getExperienceForOutput(ItemStack output);
+  float getExperienceForOutput(@Nonnull ItemStack output);
 
   /**
    * Should return true if the specified parameter is can be used in this
@@ -82,13 +89,14 @@ public interface IMachineRecipe {
    * @param input
    * @return
    */
-  boolean isValidInput(MachineRecipeInput input);
+  boolean isValidInput(@Nonnull MachineRecipeInput input);
 
   /**
    * The name of the machine this recipe can be crafted by.
    * 
    * @return
    */
+  @Nonnull
   String getMachineName();
 
   /**
@@ -97,25 +105,26 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs);
+  @Nonnull
+  List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput... inputs);
 
   public static class ResultStack {
 
-    public final ItemStack item;
-    public final FluidStack fluid;
+    public final @Nonnull ItemStack item;
+    public final @Nullable FluidStack fluid;
 
-    public ResultStack(ItemStack item, FluidStack fluid) {
+    public ResultStack(@Nonnull ItemStack item, @Nullable FluidStack fluid) {
       this.item = item;
       this.fluid = fluid;
     }
 
-    public ResultStack(ItemStack item) {
+    public ResultStack(@Nonnull ItemStack item) {
       this.item = item;
       this.fluid = null;
     }
 
-    public ResultStack(FluidStack fluid) {
-      this.item = null;
+    public ResultStack(@Nonnull FluidStack fluid) {
+      this.item = Prep.getEmpty();
       this.fluid = fluid;
     }
 

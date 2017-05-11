@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
@@ -24,16 +25,13 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
     TileEntityStirlingGenerator gen = getStirlingGen(itemstack);
     if (isStirlingGen(itemstack, gen)) {
       int rate = gen.getPowerUsePerTick();
-      String msg = TextUtil.format(EnderIO.lang.localize("power.generates"),
-          PowerDisplayUtil.formatPower((long)gen.getBurnTime(itemstack) * rate),
-          PowerDisplayUtil.abrevation(),
-          PowerDisplayUtil.formatPower(rate),
-          PowerDisplayUtil.abrevation(),
-          PowerDisplayUtil.perTickStr());
+      Object[] objects = { PowerDisplayUtil.formatPower((long)gen.getBurnTime(itemstack) * rate), PowerDisplayUtil.abrevation(), PowerDisplayUtil.formatPower(rate), PowerDisplayUtil.abrevation(), PowerDisplayUtil.perTickStr() };
+      String msg = MessageFormat.format(EnderIO.lang.localize("power.generates"), objects);
 
       list.add(msg);
     } else if (Config.addFurnaceFuelTootip && (time = TileEntityFurnace.getItemBurnTime(itemstack)) > 0) {
-      list.add(TextUtil.format(EnderIO.lang.localize("tooltip.burntime"), time));
+      Object[] objects = { time };
+      list.add(MessageFormat.format(EnderIO.lang.localize("tooltip.burntime"), objects));
     }
   }
 

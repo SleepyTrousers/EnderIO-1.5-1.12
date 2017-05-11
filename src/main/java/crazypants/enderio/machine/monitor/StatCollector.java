@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
+import javax.annotation.Nonnull;
+
 public class StatCollector {
 
   public static final int MAX_VALUES = StatArray.MAX_VALUES;
@@ -64,7 +66,7 @@ public class StatCollector {
     return result;
   }
 
-  public byte[] getData() {
+  public @Nonnull byte[] getData() {
     byte[] data = new byte[StatArray.BYTES * 2];
     mins.store(data, 0);
     maxs.store(data, StatArray.BYTES);

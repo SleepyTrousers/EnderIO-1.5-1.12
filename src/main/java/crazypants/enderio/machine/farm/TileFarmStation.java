@@ -26,7 +26,7 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Prep;
 import crazypants.util.Things;
 import info.loenwind.autosave.annotations.Storable;

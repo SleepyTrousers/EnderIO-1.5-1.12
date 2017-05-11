@@ -42,7 +42,7 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
       try {
         NBTTagCompound tag = (NBTTagCompound) nbt.getTag(name);
         String className = tag.getString("class");
-        if (className != null && !className.isEmpty()) {
+        if (!className.isEmpty()) {
           Class<?> clazz = Class.forName(className);
           if (clazz != null) {
             Method method = clazz.getDeclaredMethod("readFromNBT", NBTTagCompound.class);

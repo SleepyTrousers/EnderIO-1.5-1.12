@@ -27,7 +27,7 @@ import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

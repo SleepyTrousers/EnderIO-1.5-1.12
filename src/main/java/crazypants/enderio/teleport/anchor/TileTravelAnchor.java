@@ -16,7 +16,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.util.UserIdent;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.enderio.HandleUserIdent;
+import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

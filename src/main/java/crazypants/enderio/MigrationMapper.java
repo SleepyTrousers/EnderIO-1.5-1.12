@@ -20,13 +20,11 @@ public class MigrationMapper {
           mapping.remap(ModObject.itemConduitFacade.getItem());
         } else {
           try {
-            ModObject modObject = ModObject.valueOf(resourcePath.toLowerCase(Locale.ENGLISH));
-            if (modObject != null) {
-              if (mapping.type == Type.BLOCK && modObject.getBlock() != null) {
-                mapping.remap(modObject.getBlock());
-              } else if (mapping.type == Type.ITEM && modObject.getItem() != null) {
-                mapping.remap(modObject.getItem());
-              }
+            ModObject modObject = ModObject.valueOf(resourcePath.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH));
+            if (mapping.type == Type.BLOCK && modObject.getBlock() != null) {
+              mapping.remap(modObject.getBlockNN());
+            } else if (mapping.type == Type.ITEM && modObject.getItem() != null) {
+              mapping.remap(modObject.getItemNN());
             }
           } catch (Exception e) {
           }

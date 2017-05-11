@@ -68,7 +68,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
     if (isTeleportPrevented(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
       event.setCanceled(true);
     }
-    if (isTeleportPrevented(event.getEntity().world, event.targetX, event.targetY, event.targetZ)) {
+    if (isTeleportPrevented(event.getEntity().world, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
       event.setCanceled(true);
     }
   }

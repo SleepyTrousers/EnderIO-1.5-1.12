@@ -103,7 +103,7 @@ public class EnderInventory implements IItemHandler {
     return new View(type);
   }
 
-  public NBTTagCompound writeToNBT() {
+  public @Nonnull NBTTagCompound writeToNBT() {
     NBTTagCompound tag = new NBTTagCompound();
     writeToNBT(tag);
     return tag;

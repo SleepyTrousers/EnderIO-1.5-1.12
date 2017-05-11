@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.enderio;
+package info.loenwind.autosave.handlers.endercore;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -6,7 +6,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.util.UserIdent;
+import com.enderio.core.common.util.UserIdent;
+
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.annotations.Store.StoreFor;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;

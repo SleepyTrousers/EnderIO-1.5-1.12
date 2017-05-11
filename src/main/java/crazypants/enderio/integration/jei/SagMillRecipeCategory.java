@@ -1,5 +1,6 @@
 package crazypants.enderio.integration.jei;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,7 +171,8 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
     float chance = output.getChance();
     if(chance > 0 && chance < 1) {
       int chanceInt = (int) (chance * 100);
-      tooltip.add(TextFormatting.GRAY + TextUtil.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
+      Object[] objects = { chanceInt };
+      tooltip.add(TextFormatting.GRAY + MessageFormat.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), objects));
     }    
   }
   

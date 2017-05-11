@@ -20,7 +20,7 @@ import crazypants.enderio.render.model.CollectedItemQuadBakedBlockModel;
 import crazypants.enderio.render.model.RelayingBakedModel;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.util.ItemQuadCollector;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

@@ -1,4 +1,4 @@
-@API(apiVersion = EnderIOAPIProps.VERSION, owner = "EnderIO", provides = "EnderIOAPI|Teleport")
+@API(apiVersion = EnderIOAPIProps.VERSION, owner = "enderio", provides = "enderioapi|teleport")
 package crazypants.enderio.api.teleport;
 
 import crazypants.enderio.api.EnderIOAPIProps;

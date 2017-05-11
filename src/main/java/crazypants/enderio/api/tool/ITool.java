@@ -1,16 +1,15 @@
 package crazypants.enderio.api.tool;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
-
-
 public interface ITool extends IHideFacades {
-  
-  boolean canUse(@Nonnull ItemStack stack, EntityPlayer player, BlockPos pos);
 
-  void used(@Nonnull ItemStack stack, EntityPlayer player, BlockPos pos);
+  boolean canUse(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos);
+
+  void used(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull BlockPos pos);
 
 }

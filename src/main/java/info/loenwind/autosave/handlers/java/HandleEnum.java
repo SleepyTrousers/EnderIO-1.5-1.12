@@ -24,9 +24,7 @@ public class HandleEnum implements IHandler<Enum<?>> {
 
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull Enum<?> object)
-      throws IllegalArgumentException, IllegalAccessException {
-//    System.out.println("HandleEnum.store: " + object);
+      @Nonnull Enum<?> object) throws IllegalArgumentException, IllegalAccessException {
     nbt.setInteger(name, object.ordinal());
     return true;
   }
@@ -34,13 +32,18 @@ public class HandleEnum implements IHandler<Enum<?>> {
   @Override
   public Enum<?> read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Enum<?> object) {
-    if (nbt.hasKey(name) && (object != null || field != null)) {
-      Enum<?>[] enumConstants = (Enum<?>[]) (object != null ? object.getClass().getEnumConstants() : field.getType().getEnumConstants());
-      Enum<?> res = enumConstants[MathHelper.clamp(nbt.getInteger(name), 0, enumConstants.length - 1)];
-      return  res;
-    } else {
-      return object;
+    if (nbt.hasKey(name)) {
+      Enum<?>[] enumConstants = null;
+      if (object != null) {
+        enumConstants = object.getClass().getEnumConstants();
+      } else if (field != null) {
+        enumConstants = (Enum<?>[]) field.getType().getEnumConstants();
+      }
+      if (enumConstants != null) {
+        return enumConstants[MathHelper.clamp(nbt.getInteger(name), 0, enumConstants.length - 1)];
+      }
     }
+    return object;
   }
 
 }

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.block.BlockColdFire;
 import crazypants.enderio.block.BlockDarkIronBars;
@@ -110,7 +113,6 @@ import crazypants.enderio.teleport.telepad.BlockTelePad;
 import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.teleport.telepad.ItemLocationPrintout;
 import crazypants.enderio.teleport.telepad.ItemRodOfReturn;
-import crazypants.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -223,31 +225,31 @@ public enum ModObject implements IModObject {
     protected void preInitElem(FMLPreInitializationEvent event) {
       BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
       block = slabs[0];
-      item = Item.getItemFromBlock(block);
+      item = Item.getItemFromBlock(NullHelper.notnull(slabs[0], "BlockPaintedSlab failed to create"));
       blockPaintedDoubleSlab.block = slabs[1];
+      blockPaintedDoubleSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[1], "BlockPaintedSlab failed to create"));
       blockPaintedStoneSlab.block = slabs[2];
+      blockPaintedStoneSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[2], "BlockPaintedSlab failed to create"));
       blockPaintedStoneDoubleSlab.block = slabs[3];
+      blockPaintedStoneDoubleSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[3], "BlockPaintedSlab failed to create"));
     }
   },
   blockPaintedDoubleSlab {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
-      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedStoneSlab {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
-      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedStoneDoubleSlab {
     @Override
     protected void preInitElem(FMLPreInitializationEvent event) {
       // see blockPaintedSlab
-      item = Item.getItemFromBlock(block);
     }
   },
   blockPaintedGlowstone(BlockPaintedGlowstone.class),
@@ -307,10 +309,10 @@ public enum ModObject implements IModObject {
 
   private final @Nonnull String unlocalisedName;
 
-  protected Block block;
-  protected Item item;
+  protected @Nullable Block block;
+  protected @Nullable Item item;
   
-  protected final Class<?> clazz;
+  protected final @Nullable Class<?> clazz;
   protected final @Nonnull String methodName;
   protected final @Nullable Class<? extends TileEntity> teClazz;
   
@@ -318,20 +320,20 @@ public enum ModObject implements IModObject {
     this(null);
   }
 
-  ModObject(Class<?> clazz) {
+  private ModObject(@Nullable Class<?> clazz) {
     this(clazz, "create", null);
   }
 
-  ModObject(Class<?> clazz, Class<? extends TileEntity> teClazz) {
+  private ModObject(@Nullable Class<?> clazz, Class<? extends TileEntity> teClazz) {
     this(clazz, "create", teClazz);
   }
   
-  ModObject(Class<?> clazz, @Nonnull String methodName) {
+  private ModObject(@Nullable Class<?> clazz, @Nonnull String methodName) {
     this(clazz, methodName, null);
   }
 
-  ModObject(Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
-    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()");
+  private ModObject(@Nullable Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()").replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
     this.clazz = clazz;
     this.methodName = methodName;
     this.teClazz = teClazz;
@@ -343,40 +345,45 @@ public enum ModObject implements IModObject {
   }
 
   @Override
-  public Block getBlock() {
+  public @Nullable Block getBlock() {
     return block;
   }
 
   @Override
-  public Item getItem() {
+  public @Nullable Item getItem() {
     return item;
   }
 
+  public @Nonnull Block getBlockNN() {
+    return NullHelper.notnull(block, "Block " + this + " is unexpectedly missing");
+  }
+
+  public @Nonnull Item getItemNN() {
+    return NullHelper.notnull(item, "Item " + this + " is unexpectedly missing");
+  }
+
   protected void preInitElem(FMLPreInitializationEvent event) {
-    if(clazz == null) {
+    final Class<?> clazz2 = clazz; // because final fields may unexpectedly become null, according to our compiler warnings
+    if (clazz2 == null) {
       Log.debug(this + ".preInitElem() missing");
       return;
     }
     Object obj = null;
     try {
-      obj = clazz.getDeclaredMethod(methodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { this });
-    } catch (Throwable e0) {
-      try {
-        obj = clazz.getDeclaredMethod(methodName, (Class<?>[]) null).invoke(null, (Object[]) null);
-      } catch (Throwable e) {
-        String str = "ModObject:create: Could not create instance for " + clazz + " using method " + methodName;
-        Log.error(str + " Exception: " + e0 + " / " + e);
-        throw new RuntimeException(str, e);
-      }
+      obj = clazz2.getDeclaredMethod(methodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { this });
+    } catch (Throwable e) {
+      String str = "ModObject:create: Could not create instance for " + clazz + " using method " + methodName;
+      Log.error(str + " Exception: " + e);
+      throw new RuntimeException(str, e);
     }
-    if(obj instanceof Item) {
+    if (obj instanceof Item) {
       item = (Item)obj;
-    } else {
+    } else if (obj instanceof Block) {
       block = (Block)obj;
       item = Item.getItemFromBlock(block);
-    }
-    if (block instanceof BlockEio<?>) {
-      ((BlockEio<?>) block).preInit(event);
+      if (block instanceof BlockEio<?>) {
+        ((BlockEio<?>) block).preInit(event);
+      }
     }
   }
 
@@ -394,7 +401,7 @@ public enum ModObject implements IModObject {
         if (!clazzes.containsKey(elem.teClazz)) {
           clazzes.put(elem.teClazz, new ArrayList<String>());
         }
-        clazzes.get(elem.teClazz).add(elem.unlocalisedName + "TileEntity");
+        clazzes.get(elem.teClazz).add(elem.unlocalisedName + "_tile_entity");
       }
     }
 

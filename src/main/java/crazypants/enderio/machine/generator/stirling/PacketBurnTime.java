@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.network.MessageTileEntity;
+
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import crazypants.enderio.EnderIO;
 
 public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
 
@@ -19,7 +20,7 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   public PacketBurnTime() {
   }
 
-  public PacketBurnTime(TileEntityStirlingGenerator tile) {
+  public PacketBurnTime(@Nonnull TileEntityStirlingGenerator tile) {
     super(tile);
     burnTime = tile.burnTime;
     totalBurnTime = tile.totalBurnTime;
@@ -45,8 +46,8 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
   @Override
   public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player != null && player.world != null) {
-      TileEntityStirlingGenerator tile = getTileEntity(player.world);
+    if (player != null) {
+      TileEntityStirlingGenerator tile = message.getTileEntity(player.world);
       if (tile != null) {
         tile.burnTime = message.burnTime;
         tile.totalBurnTime = message.totalBurnTime;
@@ -55,4 +56,5 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
     }
     return null;
   }
+
 }

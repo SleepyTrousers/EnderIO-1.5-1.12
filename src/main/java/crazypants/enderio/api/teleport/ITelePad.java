@@ -1,5 +1,6 @@
 package crazypants.enderio.api.teleport;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
@@ -10,8 +11,7 @@ import net.minecraft.util.math.BlockPos;
 public interface ITelePad extends ITravelAccessable {
 
   /**
-   * If this piece of the telepad is the master, meaning it is connected on all
-   * 4 sides. This does <i>not</i> guarantee that it is in a connected state.
+   * If this piece of the telepad is the master, meaning it is connected on all 4 sides. This does <i>not</i> guarantee that it is in a connected state.
    * 
    * @return True if this TE is the master TE, false otherwise.
    */
@@ -20,55 +20,48 @@ public interface ITelePad extends ITravelAccessable {
   /**
    * Gets the master telepad that this one is connected to.
    * 
-   * @return The master telepad TE. {@code null} if not in a network. Itself if
-   *         it is the master.
+   * @return The master telepad TE. {@code null} if not in a network. Itself if it is the master.
    */
   @Nullable
   ITelePad getMaster();
 
   /**
-   * If this telepad piece is in a network, meaning it is connected and in a
-   * valid configuration.
+   * If this telepad piece is in a network, meaning it is connected and in a valid configuration.
    * 
    * @return True if this TE is in a network, false otherwise.
    */
   boolean inNetwork();
 
   /**
-   * The X coordinate stored in this telepad network. Always 0 if this is
-   * {@link #inNetwork()} returns false.
+   * The X coordinate stored in this telepad network. Always 0 if this is {@link #inNetwork()} returns false.
    * 
    * @return The target X coordinate.
    */
   int getX();
 
   /**
-   * The Y coordinate stored in this telepad network. Always 0 if this is
-   * {@link #inNetwork()} returns false.
+   * The Y coordinate stored in this telepad network. Always 0 if this is {@link #inNetwork()} returns false.
    * 
    * @return The target Y coordinate.
    */
   int getY();
 
   /**
-   * The Z coordinate stored in this telepad network. Always 0 if this is
-   * {@link #inNetwork()} returns false.
+   * The Z coordinate stored in this telepad network. Always 0 if this is {@link #inNetwork()} returns false.
    * 
    * @return The target Z coordinate.
    */
   int getZ();
 
   /**
-   * The target dimension ID for the telepad. Defaults to the dimension the
-   * block is placed in.
+   * The target dimension ID for the telepad. Defaults to the dimension the block is placed in.
    * 
    * @return An int dimension ID.
    */
   int getTargetDim();
 
   /**
-   * Sets the target X coordinate of the network. Has no effect if
-   * {@link #inNetwork()} returns false.
+   * Sets the target X coordinate of the network. Has no effect if {@link #inNetwork()} returns false.
    * 
    * @param x
    *          The X coord.
@@ -76,8 +69,7 @@ public interface ITelePad extends ITravelAccessable {
   void setX(int x);
 
   /**
-   * Sets the target Y coordinate of the network. Has no effect if
-   * {@link #inNetwork()} returns false.
+   * Sets the target Y coordinate of the network. Has no effect if {@link #inNetwork()} returns false.
    * 
    * @param y
    *          The Y coord.
@@ -85,8 +77,7 @@ public interface ITelePad extends ITravelAccessable {
   void setY(int y);
 
   /**
-   * Sets the target Z coordinate of the network. Has no effect if
-   * {@link #inNetwork()} returns false.
+   * Sets the target Z coordinate of the network. Has no effect if {@link #inNetwork()} returns false.
    * 
    * @param z
    *          The Z coord.
@@ -94,8 +85,7 @@ public interface ITelePad extends ITravelAccessable {
   void setZ(int z);
 
   /**
-   * Sets the target dimension of the network. Has no effect if
-   * {@link #inNetwork()} returns false.
+   * Sets the target dimension of the network. Has no effect if {@link #inNetwork()} returns false.
    * 
    * @param dimID
    *          The dimension ID.
@@ -112,7 +102,7 @@ public interface ITelePad extends ITravelAccessable {
    * @param coords
    *          The coords to set this telepad to.
    */
-  void setCoords(BlockPos coords);
+  void setCoords(@Nonnull BlockPos coords);
 
   /**
    * Teleports a specific entity to the destination if:
@@ -124,11 +114,10 @@ public interface ITelePad extends ITravelAccessable {
    * @param entity
    *          The entity to teleport
    */
-  void teleportSpecific(Entity entity);
+  void teleportSpecific(@Nonnull Entity entity);
 
   /**
-   * Teleports all entities in range (in no particular order) until either there
-   * are none left or the power runs out.
+   * Teleports all entities in range (in no particular order) until either there are none left or the power runs out.
    */
   void teleportAll();
 }

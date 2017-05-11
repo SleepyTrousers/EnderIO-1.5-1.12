@@ -1,15 +1,14 @@
 package crazypants.enderio.api.teleport;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.UserIdent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.util.UserIdent;
 
 public interface ITravelAccessable {
 
@@ -19,19 +18,20 @@ public interface ITravelAccessable {
     PROTECTED
   }
 
-  boolean canBlockBeAccessed(EntityPlayer playerName);
+  boolean canBlockBeAccessed(@Nonnull EntityPlayer playerName);
 
-  boolean canSeeBlock(EntityPlayer playerName);
+  boolean canSeeBlock(@Nonnull EntityPlayer playerName);
 
-  boolean canUiBeAccessed(EntityPlayer username);
+  boolean canUiBeAccessed(@Nonnull EntityPlayer username);
 
-  boolean getRequiresPassword(EntityPlayer username);
+  boolean getRequiresPassword(@Nonnull EntityPlayer username);
 
-  boolean authoriseUser(EntityPlayer username, @Nonnull ItemStack[] password);
+  boolean authoriseUser(@Nonnull EntityPlayer username, @Nonnull ItemStack[] password);
 
+  @Nonnull
   AccessMode getAccessMode();
 
-  void setAccessMode(AccessMode accessMode);
+  void setAccessMode(@Nonnull AccessMode accessMode);
 
   @Nonnull ItemStack[] getPassword();
 
@@ -41,20 +41,18 @@ public interface ITravelAccessable {
   
   void setItemLabel(@Nonnull ItemStack lableIcon);
   
+  @Nullable
   String getLabel();
   
-  void setLabel(String label);
-
-  @Deprecated
-  UUID getPlacedBy();
+  void setLabel(@Nullable String label);
 
   @Nonnull
   UserIdent getOwner();
 
-  void setPlacedBy(EntityPlayer player);
+  void setPlacedBy(@Nonnull EntityPlayer player);
 
   public void clearAuthorisedUsers();
 
-  public BlockCoord getLocation();
+  public @Nonnull BlockCoord getLocation();
 
 }

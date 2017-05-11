@@ -683,7 +683,7 @@ public class TravelController {
       return false;
     }
 
-    bc = new BlockCoord(evt.targetX, evt.targetY, evt.targetZ);
+    bc = new BlockCoord(evt.getTargetX(), evt.getTargetY(), evt.getTargetZ());
     PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source, hand);
     PacketHandler.INSTANCE.sendToServer(p);
     return true;

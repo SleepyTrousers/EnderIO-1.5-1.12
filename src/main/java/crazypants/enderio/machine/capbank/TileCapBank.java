@@ -35,7 +35,7 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.NbtValue;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.annotations.Store.StoreFor;

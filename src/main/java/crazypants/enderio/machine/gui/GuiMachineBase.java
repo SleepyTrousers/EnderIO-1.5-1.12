@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.gui;
 
 import java.awt.Rectangle;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,7 +178,8 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   protected String formatProgressTooltip(int scaledProgress, float progress) {
-    return TextUtil.format(EnderIO.lang.localize("gui.progress"), scaledProgress);
+    Object[] objects = { scaledProgress };
+    return MessageFormat.format(EnderIO.lang.localize("gui.progress"), objects);
   }
 
   protected int scaleProgressForTooltip(float progress) {

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;

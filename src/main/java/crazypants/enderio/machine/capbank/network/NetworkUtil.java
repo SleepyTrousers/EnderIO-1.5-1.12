@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.util.NullHelper;
+import com.enderio.core.common.util.NullHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
