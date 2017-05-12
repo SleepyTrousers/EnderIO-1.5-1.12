@@ -8,8 +8,8 @@ import java.util.Set;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitUtil;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,8 +23,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   private int maxFlowsPerTick = 10;
   private int lastFlowIndex = 0;
-
-  private boolean printFlowTiming = false;
 
   private int lastPushToken = 0;
 
@@ -43,7 +41,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   @Override
-  public void doNetworkTick() {
+  public void doNetworkTick(Profiler theProfiler) {
     List<LiquidConduit> cons = getConduits();
     if(cons == null || cons.isEmpty()) {
       return;
@@ -67,12 +65,9 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if(liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
       if(curTime % (visc / 500) == 0) {
-        long start = System.nanoTime();
-        if(doFlow() && printFlowTiming) {
-          long took = System.nanoTime() - start;
-          double secs = took / 1000000000.0;
-          Log.info("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
-        }
+        theProfiler.startSection("flow");
+        doFlow();
+        theProfiler.endSection();
       }
     }
   }

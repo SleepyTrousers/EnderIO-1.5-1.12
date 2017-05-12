@@ -12,6 +12,7 @@ import crazypants.enderio.conduit.item.NetworkedInventory.Target;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -213,19 +214,25 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   @Override
-  public void doNetworkTick() {
+  public void doNetworkTick(Profiler theProfiler) {
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
+        theProfiler.startSection("updateInsertOrder");
         ni.updateInsertOrder();
+        theProfiler.endSection();
       }
+      theProfiler.startSection("NetworkedInventoryTick");
       ni.onTick();
+      theProfiler.endSection();
     }
     if(requiresSort) {
       requiresSort = false;
       changeCount++;
     }
     if(database != null) {
+      theProfiler.startSection("DatabaseTick");
       database.tick();
+      theProfiler.endSection();
     }
   }
 

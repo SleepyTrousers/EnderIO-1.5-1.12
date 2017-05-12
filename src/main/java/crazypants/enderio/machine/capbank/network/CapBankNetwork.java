@@ -31,6 +31,7 @@ import crazypants.enderio.power.PerTickIntAverageCalculator;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -225,13 +226,17 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
   //--------- Tick Handling
 
   @Override
-  public void tickEnd(TickEvent.ServerTickEvent evt) {
+  public void tickEnd(TickEvent.ServerTickEvent evt, Profiler theProfiler) {
+    theProfiler.startSection("ItemCharging");
     chargeItems(inventory.getStacks());
+    theProfiler.endStartSection("EnergyTransmitting");
     transmitEnergy();
 
     if(energyStored != prevEnergyStored) {
+      theProfiler.endStartSection("EnergyBalancing");
       distributeEnergyToBanks();
     }
+    theProfiler.endSection();
     powerTrackerIn.tick(energyReceived);
     powerTrackerOut.tick(energySend);
     prevEnergyStored = energyStored;

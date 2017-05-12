@@ -12,6 +12,7 @@ import crazypants.enderio.diagnostics.ConduitNeighborUpdateTracker;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -231,6 +232,6 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
     return "AbstractConduitNetwork@" + Integer.toHexString(hashCode()) + " [conduits=" + sb.toString() + "]";
   }
 
-  public void doNetworkTick() {
+  public void doNetworkTick(Profiler theProfiler) {
   }
 }
