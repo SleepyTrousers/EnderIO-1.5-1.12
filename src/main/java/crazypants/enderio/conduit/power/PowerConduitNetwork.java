@@ -12,6 +12,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.power.IPowerInterface;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -103,8 +104,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void doNetworkTick() {
-    powerManager.applyRecievedPower();
+  public void doNetworkTick(Profiler theProfiler) {
+    powerManager.applyRecievedPower(theProfiler);
   }
 
   public static class ReceptorEntry {

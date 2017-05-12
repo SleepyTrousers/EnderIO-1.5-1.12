@@ -14,6 +14,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -106,9 +107,9 @@ public class NetworkPowerManager {
   private int errorSupressionA = 0;
   private int errorSupressionB = 0;
 
-  public void applyRecievedPower() {
+  public void applyRecievedPower(Profiler theProfiler) {
     try {
-      doApplyRecievedPower();
+      doApplyRecievedPower(theProfiler);
     } catch (Exception e) {
       if (errorSupressionA-- <= 0) {
         Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
@@ -122,16 +123,19 @@ public class NetworkPowerManager {
     }
   }
 
-  public void doApplyRecievedPower() {
+  public void doApplyRecievedPower(Profiler theProfiler) {
 
     trackerStartTick();
 
+    theProfiler.startSection("checkReceptors");
     checkReceptors();
 
     // Update our energy stored based on what's in our conduits
+    theProfiler.endStartSection("updateNetorkStorage");
     updateNetorkStorage();
     networkPowerTracker.tickStart(energyStored);
 
+    theProfiler.endStartSection("capSupplyInit");
     capSupply.init();
 
     int appliedCount = 0;
@@ -142,9 +146,11 @@ public class NetworkPowerManager {
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
       trackerEndTick();
       networkPowerTracker.tickEnd(energyStored);
+      theProfiler.endSection();
       return;
     }
 
+    theProfiler.endStartSection("sendEnergy");
     while (available > 0 && appliedCount < numReceptors) {
 
       if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
@@ -154,7 +160,9 @@ public class NetworkPowerManager {
       IPowerInterface pp = r.powerInterface;
       if(pp != null) {
         int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+        theProfiler.startSection("otherMod_receiveEnergy");
         int used = pp.receiveEnergy(canOffer, false);
+        theProfiler.endSection();
         used = Math.max(0, used);
         trackerSend(r.emmiter, used, false);
         available -= used;
@@ -169,6 +177,7 @@ public class NetworkPowerManager {
     // use all the capacator storage first
     energyStored -= used;
 
+    theProfiler.endStartSection("capBankUpdate");
     if(!capSupply.capBanks.isEmpty()) {
       int capBankChange = 0;
       if(energyStored < 0) {
@@ -190,11 +199,13 @@ public class NetworkPowerManager {
       capSupply.balance();
     }
 
+    theProfiler.endStartSection("conduitUpdate");
     distributeStorageToConduits();
 
     trackerEndTick();
 
     networkPowerTracker.tickEnd(energyStored);
+    theProfiler.endSection();
   }
 
   private void trackerStartTick() {

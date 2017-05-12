@@ -9,6 +9,7 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.IConduit;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -94,9 +95,11 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void doNetworkTick() {
+  public void doNetworkTick(Profiler theProfiler) {
     if(liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
+      theProfiler.startSection("updateActiveState");
       updateActiveState();
+      theProfiler.endSection();
       return;
     }
 
@@ -104,8 +107,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       outputIterator = outputs.iterator();
     }
 
+    theProfiler.startSection("updateActiveState");
     updateActiveState();
 
+    theProfiler.endStartSection("pushFluid");
     int numVisited = 0;
     while (!tank.isEmpty() && numVisited < outputs.size()) {
       if(!outputIterator.hasNext()) {
@@ -113,10 +118,14 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       }
       LiquidOutput output = outputIterator.next();
       if(output != null) {
+        theProfiler.startSection("otherMod_getTankContainer");
         IFluidWrapper cont = getTankContainer(output);
+        theProfiler.endSection();
         if(cont != null) {
           FluidStack offer = tank.getFluid().copy();
+          theProfiler.startSection("otherMod_fill");
           int filled = cont.fill(offer);
+          theProfiler.endSection();
           if(filled > 0) {
             tank.addAmount(-filled);
 
@@ -126,6 +135,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       numVisited++;
     }
 
+    theProfiler.endSection();
   }
 
   private void updateActiveState() {
