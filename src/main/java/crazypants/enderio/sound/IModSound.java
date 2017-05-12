@@ -1,5 +1,7 @@
 package crazypants.enderio.sound;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 
@@ -14,14 +16,16 @@ public interface IModSound {
 
   /**
    * 
-   * @return the soundEvent to play. Must not return null if isValid() is true.
+   * @return the soundEvent to play. Will throw an exception if isValid() is false.
    */
+  @Nonnull
   SoundEvent getSoundEvent();
 
   /**
    * 
-   * @return the SoundCategory to use for playing the sound. Must not return null if isValid() is true.
+   * @return the SoundCategory to use for playing the sound. Will throw an exception if isValid() is false.
    */
+  @Nonnull
   SoundCategory getSoundCategory();
 
 }

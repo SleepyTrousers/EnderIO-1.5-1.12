@@ -14,6 +14,7 @@ import com.google.gson.JsonParser;
 import crazypants.enderio.Log;
 import crazypants.util.IoUtil;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class PoweredSpawnerConfig {
 
@@ -107,9 +108,9 @@ public class PoweredSpawnerConfig {
     
   }
 
-  public void addToBlacklist(String entityName) {
-    if(entityName != null) {
-      blackList.add(entityName);
+  public void addToBlacklist(ResourceLocation value) {
+    if (value != null) {
+      blackList.add(value);
     }
   }
 

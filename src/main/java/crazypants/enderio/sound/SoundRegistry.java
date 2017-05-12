@@ -1,5 +1,10 @@
 package crazypants.enderio.sound;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.EnderIO;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -17,16 +22,16 @@ public enum SoundRegistry implements IModSound {
 
   ;
 
-  private final ResourceLocation resourceLocation;
-  private final SoundCategory soundCategory;
-  private SoundEvent soundEvent = null;
+  private final @Nonnull ResourceLocation resourceLocation;
+  private final @Nonnull SoundCategory soundCategory;
+  private @Nullable SoundEvent soundEvent = null;
 
-  private SoundRegistry(SoundCategory soundCategory, ResourceLocation resourceLocation) {
+  private SoundRegistry(@Nonnull SoundCategory soundCategory, @Nonnull ResourceLocation resourceLocation) {
     this.soundCategory = soundCategory;
     this.resourceLocation = resourceLocation;
   }
 
-  private SoundRegistry(SoundCategory soundCategory, String name) {
+  private SoundRegistry(@Nonnull SoundCategory soundCategory, @Nonnull String name) {
     this(soundCategory, new ResourceLocation(EnderIO.DOMAIN, name));
   }
 
@@ -47,12 +52,12 @@ public enum SoundRegistry implements IModSound {
   }
 
   @Override
-  public SoundEvent getSoundEvent() {
-    return soundEvent;
+  public @Nonnull SoundEvent getSoundEvent() {
+    return NullHelper.notnull(soundEvent, "trying to play unregistered sound");
   }
 
   @Override
-  public SoundCategory getSoundCategory() {
+  public @Nonnull SoundCategory getSoundCategory() {
     return soundCategory;
   }
 

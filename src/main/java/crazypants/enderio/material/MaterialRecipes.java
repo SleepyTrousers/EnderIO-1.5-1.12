@@ -22,7 +22,7 @@ public class MaterialRecipes {
     // mod exists
     for (PowderIngot powder : PowderIngot.values()) {
       if (powder.hasDependancy() && powder.isDependancyMet()) {
-        OreDictionary.registerOre(powder.oreDictName, new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
+        OreDictionary.registerOre(powder.getOreDictName(), new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
         powder.setRegistered();
       }
     }
@@ -32,7 +32,7 @@ public class MaterialRecipes {
     // Ore Dictionary Registration
     for (PowderIngot powder : PowderIngot.values()) {
       if (!powder.hasDependancy()) {
-        OreDictionary.registerOre(powder.oreDictName, new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
+        OreDictionary.registerOre(powder.getOreDictName(), new ItemStack(itemPowderIngot.getItem(), 1, powder.ordinal()));
       }
     }
 

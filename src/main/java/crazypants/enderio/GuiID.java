@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,45 +115,43 @@ public enum GuiID {
     return null;
   }
 
-  public String getPermission() {
+  public @Nonnull String getPermission() {
     return basePermission != null ? basePermission.getPermission() : EnderIO.DOMAIN + ".gui." + name().toLowerCase(Locale.ENGLISH);
   }
 
-  public void openGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public void openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
     if (!world.isRemote) {
-      if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(),
-          new BlockPosContext(entityPlayer, pos, world.getBlockState(pos), side))) {
-        entityPlayer.openGui(EnderIO.instance, ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+      if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(), new BlockPosContext(entityPlayer, pos, world.getBlockState(pos), side))) {
+        entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
       } else {
-        entityPlayer.addChatMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
+        entityPlayer.sendMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
       }
     }
   }
 
-  public void openGui(World world, EntityPlayer entityPlayer, int a, int b, int c) {
+  public void openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
     if (!world.isRemote) {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(), new PlayerContext(entityPlayer))) {
-        entityPlayer.openGui(EnderIO.instance, ordinal(), world, a, b, c);
+        entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, a, b, c);
       } else {
-        entityPlayer.addChatMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
+        entityPlayer.sendMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
       }
     }
   }
 
-  public void openClientGui(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side) {
+  public void openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
     if (world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+      entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
     }
   }
 
-  public void openClientGui(World world, EntityPlayer entityPlayer, int a, int b, int c) {
+  public void openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
     if (world.isRemote) {
-      entityPlayer.openGui(EnderIO.instance, ordinal(), world, a, b, c);
+      entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, a, b, c);
     }
   }
 
-  static @Nonnull
-  public EnumFacing guiid2facing(GuiID id) {
+  static public @Nonnull EnumFacing guiid2facing(@Nonnull GuiID id) {
     switch (id) {
     case GUI_ID_EXTERNAL_CONNECTION_DOWN:
       return EnumFacing.DOWN;
@@ -171,8 +170,7 @@ public enum GuiID {
     }
   }
 
-  static @Nonnull
-  public GuiID facing2guiid(EnumFacing facing) {
+  static public @Nonnull GuiID facing2guiid(@Nonnull EnumFacing facing) {
     switch (facing) {
     case DOWN:
       return GUI_ID_EXTERNAL_CONNECTION_DOWN;
@@ -191,13 +189,11 @@ public enum GuiID {
     }
   }
 
-  public static void registerGuiHandler(GuiID id, IGuiHandler handler) {
-    if (id != null && handler != null) {
-      if (id.handler != null) {
-        throw new InvalidParameterException("Handler for " + id + " already set to " + id.handler);
-      }
-      id.handler = handler;
+  public static void registerGuiHandler(@Nonnull GuiID id, @Nonnull IGuiHandler handler) {
+    if (id.handler != null) {
+      throw new InvalidParameterException("Handler for " + id + " already set to " + id.handler);
     }
+    id.handler = handler;
   }
 
   protected void registerNode() {
@@ -214,7 +210,7 @@ public enum GuiID {
       id.registerNode();
     }
 
-    NetworkRegistry.INSTANCE.registerGuiHandler(EnderIO.instance, new IGuiHandler() {
+    NetworkRegistry.INSTANCE.registerGuiHandler(EnderIO.getInstance(), new IGuiHandler() {
       @Override
       public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         final GuiID guid = byID(id);

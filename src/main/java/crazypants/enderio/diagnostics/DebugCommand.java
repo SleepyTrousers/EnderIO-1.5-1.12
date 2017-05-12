@@ -2,6 +2,7 @@ package crazypants.enderio.diagnostics;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.command.CommandBase;
@@ -15,8 +16,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class DebugCommand extends CommandBase {
 
-  public static final DebugCommand SERVER = new DebugCommand(Side.SERVER);
-  public static final DebugCommand CLIENT = new DebugCommand(Side.CLIENT);
+  public static final @Nonnull DebugCommand SERVER = new DebugCommand(Side.SERVER);
+  public static final @Nonnull DebugCommand CLIENT = new DebugCommand(Side.CLIENT);
 
   private final Side side;
 

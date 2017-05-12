@@ -3,14 +3,13 @@ package crazypants.enderio;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
@@ -27,7 +26,6 @@ import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.integration.te.TEIntegration;
 import crazypants.enderio.integration.tic.TicProxy;
-import crazypants.enderio.integration.waila.WailaIMC;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.loot.Loot;
@@ -41,6 +39,7 @@ import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vat.VatRecipeManager;
+import crazypants.enderio.material.MaterialCraftingHandler;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.PacketHandler;
@@ -50,10 +49,11 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
-import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Things;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -69,25 +69,16 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
-import static crazypants.enderio.ModObject.itemSoulVessel;
 import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:hwyla;after:jei@[3.13.4,)", guiFactory = "crazypants"
-    + ".enderio.config.ConfigFactoryEIO")
+@Mod(modid = crazypants.enderio.EnderIO.MODID, name = crazypants.enderio.EnderIO.MOD_NAME, version = crazypants.enderio.EnderIO.VERSION, //
+    dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final @Nonnull String MODID = "enderio";
-  public static final @Nonnull String DOMAIN = NullHelper.notnullJ(MODID.toLowerCase(Locale.US), "String.toLowerCase()");
+  public static final @Nonnull String DOMAIN = MODID;
   public static final String MOD_NAME = "Ender IO";
   public static final String VERSION = "@VERSION@";
-  
-  //Enable this to use forge buckets
-//  static {
-//    FluidRegistry.enableUniversalBucket();
-//  }
 
   @Instance(MODID)
   public static EnderIO instance;
@@ -104,6 +95,7 @@ public class EnderIO {
 
   // prePreInit
   static {
+    FluidRegistry.enableUniversalBucket();
     CapInjectHandler.loadClass();
   }
 
@@ -121,7 +113,6 @@ public class EnderIO {
     // Dummy blocks that contain the models for all the other blocks
     BlockMachineBase.create();
     BlockMachineIO.create();
-    // TODO: find some block that can take those models as extra
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
@@ -130,16 +121,10 @@ public class EnderIO {
 
     TicProxy.init(event);
 
-    URL authlib = this.getClass().getClassLoader().getResource("com/mojang/authlib/GameProfile.class");
-    if (authlib == null || !authlib.toString().contains("/tlauncher/")) {
-      // 3rd-party launcher using "accounts" sold by 3rd-party site
-      ModObject.preInit(event);
-    }
+    ModObject.preInit(event);
 
     DarkSteelItems.createDarkSteelArmorItems();
     DarkSteelController.instance.register();
-
-    WailaIMC.init(event);
 
     MaterialRecipes.registerOresInDictionary();
 
@@ -152,7 +137,7 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-    Things.init(event);
+    Things.init(event); // FIXME do this in ec
 
     Config.init(event);
 
@@ -168,16 +153,18 @@ public class EnderIO {
 
     MaterialRecipes.registerDependantOresInDictionary();
 
+    MaterialCraftingHandler.create();
+
     proxy.init(event);
   }
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
-    
+
     Config.postInit();
 
     LootManager.register();
-    
+
     // Register the enchants
     Enchantments.register();
 
@@ -194,15 +181,17 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    //should have been registered by open  blocks
+    // should have been registered by open blocks
     if (Fluids.fluidXpJuice == null) {
       fluids.forgeRegisterXPJuice();
     }
     if (Config.dumpMobNames) {
       dumpMobNamesToFile();
     }
-    addModIntegration();
 
+    // ThaumcraftCompat.load();
+    BuildcraftIntegration.init();
+    TEIntegration.init();
     TicProxy.init(event);
 
     proxy.init(event);
@@ -216,7 +205,7 @@ public class EnderIO {
     // Some mods send IMCs during PostInit, so we catch them here.
     processImc(FMLInterModComms.fetchRuntimeMessages(this));
   }
-  
+
   @EventHandler
   public void serverStarted(FMLServerStartedEvent event) {
     ServerChannelRegister.load();
@@ -232,12 +221,6 @@ public class EnderIO {
   public void onImc(IMCEvent evt) {
     processImc(evt.getMessages());
   }
-  
-  private void addModIntegration() {
-    // ThaumcraftCompat.load();
-    BuildcraftIntegration.init();
-    TEIntegration.init();
-  }
 
   private void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
@@ -251,18 +234,21 @@ public class EnderIO {
             SagMillRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.ALLOY_RECIPE.equals(key)) {
             AlloyRecipeManager.getInstance().addCustomRecipes(value);
-          } else if (IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
-            PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             TRAVEL_BLACKLIST.add(value);
-          } else if (IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel.getItem() != null) {
-            CapturedMob.addToBlackList(value);
-          } else if (IMC.SOUL_VIAL_UNSPAWNABLELIST.equals(key)) {
-            CapturedMob.addToUnspawnableList(value);
           } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
+          }
+        } else if (msg.isResourceLocationMessage()) {
+          ResourceLocation value = msg.getResourceLocationValue();
+          if (IMC.SOUL_VIAL_BLACKLIST.equals(key)) {
+            CapturedMob.addToBlackList(value);
+          } else if (IMC.SOUL_VIAL_UNSPAWNABLELIST.equals(key)) {
+            CapturedMob.addToUnspawnableList(value);
+          } else if (IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
+            PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           }
         } else if (msg.isNBTMessage()) {
           if (IMC.SOUL_BINDER_RECIPE.equals(key)) {
@@ -288,15 +274,15 @@ public class EnderIO {
       }
     }
   }
-  
+
   private void dumpMobNamesToFile() {
     File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
-    List<String> names = EntityUtil.getAllRegisteredMobNames();
+    List<ResourceLocation> names = EntityUtil.getAllRegisteredMobNames();
 
     try {
       BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));
-      for (String name : names) {
-        br.append(name);
+      for (ResourceLocation name : names) {
+        br.append(name.toString());
         br.newLine();
       }
       br.flush();
@@ -311,9 +297,8 @@ public class EnderIO {
     MigrationMapper.handleMappings(event);
   }
 
-  static {
-    // uncomment to always use the universal bucket. leave it out to only use it if another mod requests it.
-    // net.minecraftforge.fluids.FluidRegistry.enableUniversalBucket();
+  public static @Nonnull EnderIO getInstance() {
+    return NullHelper.notnullF(instance, "instance is missing");
   }
 
 }

@@ -1,8 +1,7 @@
 package crazypants.enderio;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -10,6 +9,7 @@ import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.RecipeLoader;
 import crazypants.enderio.diagnostics.DebugCommand;
+import crazypants.enderio.integration.top.TOPUtil;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.machine.MachineRecipes;
@@ -28,9 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -63,9 +61,7 @@ public class CommonProxy {
   }
   
   public void init(FMLPreInitializationEvent event) {
-    if (Loader.isModLoaded("theoneprobe")) {
-      FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.integration.top.TOPCompatibility");
-    }
+    TOPUtil.create();
   }
   
   public void init(FMLInitializationEvent event) {
@@ -138,7 +134,7 @@ public class CommonProxy {
     }
   }
 
-  private static final String TEXTURE_PATH = ":textures/gui/23/";
+  private static final String TEXTURE_PATH = ":textures/gui/40/";
   private static final String TEXTURE_EXT = ".png";
 
   public @Nonnull ResourceLocation getGuiTexture(String name) {
@@ -156,7 +152,7 @@ public class CommonProxy {
     return null;
   }
 
-  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     subItems.add(new ItemStack(itemIn));
   }
 
