@@ -15,7 +15,7 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.PacketExperienceContainer;
 import crazypants.enderio.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -55,7 +55,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     if (xpCont.isDirty()) {
-      PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
+      PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
     }
     return false;

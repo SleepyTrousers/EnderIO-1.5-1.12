@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
@@ -11,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.IRemoteExec;
@@ -29,9 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IRemoteExec.IGui {
 
-  private final List<ResourceLocation> guiTextures = new ArrayList<ResourceLocation>();
+  private final NNList<ResourceLocation> guiTextures = new NNList<ResourceLocation>();
 
-  public GuiContainerBaseEIO(Container par1Container, String... guiTexture) {
+  public GuiContainerBaseEIO(@Nonnull Container par1Container, String... guiTexture) {
     super(par1Container);
     for (String string : guiTexture) {
       guiTextures.add(EnderIO.proxy.getGuiTexture(string));
@@ -46,8 +48,13 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     RenderUtil.bindTexture(getGuiTexture(id));
   }
 
-  protected ResourceLocation getGuiTexture(int id) {
-    return guiTextures.size() > id ? guiTextures.get(id) : null;
+  protected @Nonnull ResourceLocation getGuiTexture(int id) {
+    return guiTextures.size() > id ? guiTextures.get(id) : new ResourceLocation(EnderIO.DOMAIN, "texture_missing");
+  }
+
+  @Override
+  protected @Nonnull ResourceLocation getGuiTexture() {
+    return getGuiTexture(0);
   }
 
   private final List<Rectangle> tabAreas = new ArrayList<Rectangle>();

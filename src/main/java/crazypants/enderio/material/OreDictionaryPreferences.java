@@ -1,11 +1,13 @@
 package crazypants.enderio.material;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.OreDictionaryHelper;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.ShortCallback;
+import com.enderio.core.common.util.NNMap;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.util.Prep;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,63 +20,76 @@ public final class OreDictionaryPreferences {
     OreDictionaryPreferenceParser.loadConfig();
   }
 
-  private Map<String, ItemStack> preferences = new HashMap<String, ItemStack>();
-  private Map<StackKey, ItemStack> stackCache = new HashMap<StackKey, ItemStack>();
+  private NNMap<String, ItemStack> preferences = new NNMap<String, ItemStack>(Prep.getEmpty());
+  private NNMap<StackKey, ItemStack> stackCache = new NNMap<StackKey, ItemStack>(Prep.getEmpty());
 
-  public void setPreference(String oreDictName, ItemStack stack) {
-    if(oreDictName == null || stack == null) {
-      return;
-    }
+  public void setPreference(@Nonnull String oreDictName, @Nonnull ItemStack stack) {
     preferences.put(oreDictName, stack.copy());
   }
 
-  public ItemStack getPreferred(String oreDictName, boolean createIfNull) {
-    ItemStack result = null;
-    if(preferences.containsKey(oreDictName)) {
-      result = preferences.get(oreDictName);
-    } else if(createIfNull) {
-      List<ItemStack> ores = OreDictionaryHelper.getOres(oreDictName);
-      for (ItemStack ore : ores) {
-        if (result == null || (result.getMetadata() == OreDictionary.WILDCARD_VALUE && ore.getMetadata() != OreDictionary.WILDCARD_VALUE)) {
-          result = ore.copy();
-        }
+  public @Nonnull ItemStack getPreferred(@Nonnull final String oreDictName, boolean createIfNull) {
+    if (!preferences.containsKey(oreDictName) && createIfNull) {
+      final WildcardFilter filter = new WildcardFilter(oreDictName);
+      if (!NNList.wrap(OreDictionary.getOres(oreDictName)).apply(filter)) {
+        preferences.put(oreDictName, filter.getResult());
       }
-      preferences.put(oreDictName, result);
     }
-    return result;
+    return preferences.get(oreDictName);
   }
 
-  public ItemStack getPreferred(ItemStack stack) {
-    if(stack == null || stack.getItem() == null) {
+  public @Nonnull ItemStack getPreferred(@Nonnull ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
       return stack;
     }
+    ItemStack result = Prep.getEmpty();
     StackKey key = new StackKey(stack);
     if (stackCache.containsKey(key)) {
-      return stackCache.get(key);
-    }
-    ItemStack result = null;
-    int[] ids = OreDictionary.getOreIDs(stack);
-    if(ids != null) {
-      for (int i = 0; i < ids.length && result == null; i++) {
-        String oreDict = OreDictionary.getOreName(ids[i]);
+      result = stackCache.get(key);
+    } else {
+      int[] ids = NullHelper.notnullF(OreDictionary.getOreIDs(stack), "OreDictionary.getOreIDs() returned 'null'");
+      for (int i = 0; i < ids.length && Prep.isInvalid(result); i++) {
+        String oreDict = NullHelper.notnullF(OreDictionary.getOreName(ids[i]), "invalid ore dictionary ID 'null'");
         result = getPreferred(oreDict, false);
+        if (result.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+          result = Prep.getEmpty();
+        }
       }
+      stackCache.put(key, result);
+    }
+    return Prep.isInvalid(result) ? stack : result;
+  }
+
+  private class WildcardFilter implements ShortCallback<ItemStack> {
+    private final String oreDictName;
+    private ItemStack result = null;
+
+    @Nonnull
+    ItemStack getResult() {
+      return NullHelper.first(result, Prep.getEmpty());
     }
 
-    if (result == null || result.getMetadata() == OreDictionary.WILDCARD_VALUE) {
-      result = stack.copy();
+    private WildcardFilter(String oreDictName) {
+      this.oreDictName = oreDictName;
     }
-    stackCache.put(key, result);
-    return stack;
 
+    @Override
+    public boolean apply(@Nonnull ItemStack ore) {
+      if (ore.getMetadata() != OreDictionary.WILDCARD_VALUE) {
+        preferences.put(oreDictName, ore);
+        return true;
+      } else if (result == null) {
+        result = ore;
+      }
+      return false;
+    }
   }
 
   private static class StackKey {
 
-    Item item;
-    int damage;
+    private final @Nonnull Item item;
+    private final int damage;
 
-    StackKey(ItemStack stack) {
+    StackKey(@Nonnull ItemStack stack) {
       item = stack.getItem();
       damage = stack.getItemDamage();
     }
@@ -84,7 +99,7 @@ public final class OreDictionaryPreferences {
       final int prime = 31;
       int result = 1;
       result = prime * result + damage;
-      result = prime * result + ((item == null) ? 0 : item.hashCode());
+      result = prime * result + item.hashCode();
       return result;
     }
 
@@ -103,11 +118,7 @@ public final class OreDictionaryPreferences {
       if(damage != other.damage) {
         return false;
       }
-      if(item == null) {
-        if(other.item != null) {
-          return false;
-        }
-      } else if(!item.equals(other.item)) {
+      if (!item.equals(other.item)) {
         return false;
       }
       return true;

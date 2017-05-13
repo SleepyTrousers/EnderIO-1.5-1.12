@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +42,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileExperienceObelisk te = getTileEntity(world, new BlockPos(x, y, z));
     if (te != null) {
-      return new ContainerNoInv(te);
+      return new ContainerExperienceObelisk(te);
     }
     return null;
   }

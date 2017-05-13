@@ -4,6 +4,7 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.PacketRedstoneMode;
+import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +39,7 @@ public class PacketHandler {
   public static void init(FMLInitializationEvent event) {
     INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
 }

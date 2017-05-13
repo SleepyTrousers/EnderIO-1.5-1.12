@@ -2,6 +2,7 @@ package crazypants.enderio.network;
 
 import crazypants.enderio.Log;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -173,19 +174,26 @@ public class GuiPacket implements IMessage {
     PacketHandler.INSTANCE.sendToServer(this);
   }
 
+  private EntityPlayerMP player;
+
+  public EntityPlayerMP getPlayer() {
+    return player;
+  }
+
   public static class Handler implements IMessageHandler<GuiPacket, IMessage> {
 
     @Override
     public IMessage onMessage(GuiPacket message, MessageContext ctx) {
-      final Container openContainer = ctx.getServerHandler().playerEntity.openContainer;
+      message.player = ctx.getServerHandler().player;
+      final Container openContainer = message.player.openContainer;
       if (openContainer instanceof IRemoteExec.IContainer && ((IRemoteExec.IContainer) openContainer).getGuiID() == message.guiID && message.guiID >= 0) {
-        ((IRemoteExec.IContainer) openContainer).networkExec(message.msgID, message);
-        Log.debug("Exec ok (" + message.guiID + "/" + message.msgID + "/" + message.pattern + "): cont=" + openContainer);
+        Log.debug("Exec (" + message.guiID + "/" + message.msgID + "/" + message.pattern + "): cont=" + openContainer);
+        return ((IRemoteExec.IContainer) openContainer).networkExec(message.msgID, message);
       } else {
         Log.debug("Invalid network packet received (" + message.guiID + "/" + message.msgID + "/" + message.pattern + "): cont=" + openContainer + " id="
             + ((openContainer instanceof IRemoteExec.IContainer) ? ((IRemoteExec.IContainer) openContainer).getGuiID() : "n/a"));
+        return null;
       }
-      return null;
     }
 
   }
@@ -198,7 +206,7 @@ public class GuiPacket implements IMessage {
 
   public <E extends Enum<?>> E getEnum(int idx, Class<E> clazz) {
     E[] enumConstants = clazz.getEnumConstants();
-    return enumConstants[MathHelper.clamp_int(getInt(idx), 0, enumConstants.length - 1)];
+    return enumConstants[MathHelper.clamp(getInt(idx), 0, enumConstants.length - 1)];
   }
 
   public boolean getBoolean(int idx) {

@@ -15,7 +15,7 @@ import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
-import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -34,7 +34,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
 
   public static BlockSoulBinder create() {
     PacketDrainPlayerXP.register();
-    PacketExperianceContainer.register();
+    PacketExperienceContainer.register();
     BlockSoulBinder result = new BlockSoulBinder();
     result.init();
     return result;

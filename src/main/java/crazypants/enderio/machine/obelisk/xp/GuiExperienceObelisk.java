@@ -2,35 +2,33 @@ package crazypants.enderio.machine.obelisk.xp;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.ContainerNoInv;
 import crazypants.enderio.machine.gui.GuiMachineBase;
-import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.xp.ExperienceBarRenderer;
-import crazypants.enderio.xp.PacketDrainPlayerXP;
-import crazypants.enderio.xp.PacketGivePlayerXP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> {
 
-  private IconButton p;
-  private IconButton pp;
-  private IconButton ppp;
+  private @Nonnull IconButton p;
+  private @Nonnull IconButton pp;
+  private @Nonnull IconButton ppp;
 
-  private IconButton m;
-  private IconButton mm;
-  private IconButton mmm;
+  private @Nonnull IconButton m;
+  private @Nonnull IconButton mm;
+  private @Nonnull IconButton mmm;
 
-  public GuiExperienceObelisk(InventoryPlayer playerInv, TileExperienceObelisk te) {
-    super(te, new ContainerNoInv(te), "experianceObelisk");
+  public GuiExperienceObelisk(@Nonnull InventoryPlayer playerInv, @Nonnull TileExperienceObelisk te) {
+    super(te, new ContainerExperienceObelisk(te), "experience_obelisk");
     ySize = 116;
 
     int spacing = 5;
@@ -92,7 +90,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   }
 
   @Override
-  protected void actionPerformed(GuiButton b) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     int levels = 0;
     if (b == p) {
@@ -116,23 +114,21 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
       int currLevel = player.experienceLevel;
       int targetLevel = Math.max(0, currLevel + levels);
 
-      PacketDrainPlayerXP packet = new PacketDrainPlayerXP(getTileEntity(), targetLevel, false);
-      PacketHandler.INSTANCE.sendToServer(packet);
+      GuiPacket.send(this, ContainerExperienceObelisk.DWN_XP, targetLevel);
     } else {
-      PacketGivePlayerXP packet = new PacketGivePlayerXP(getTileEntity(), levels);
-      PacketHandler.INSTANCE.sendToServer(packet);
+      GuiPacket.send(this, ContainerExperienceObelisk.ADD_XP, levels);
     }
 
   }
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture();
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);    
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     int width1 = 110;
     ExperienceBarRenderer.render(this, getGuiLeft() + xSize / 2 - width1 / 2, getGuiTop() + 55, width1, getTileEntity().getContainer());

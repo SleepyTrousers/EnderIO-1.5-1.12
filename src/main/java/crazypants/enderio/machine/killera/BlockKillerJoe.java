@@ -16,7 +16,7 @@ import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.PacketExperienceContainer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -57,7 +57,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
     PacketGivePlayerXP.register();
-    PacketExperianceContainer.register();
+    PacketExperienceContainer.register();
     
     BlockKillerJoe res = new BlockKillerJoe();
     MinecraftForge.EVENT_BUS.register(res);

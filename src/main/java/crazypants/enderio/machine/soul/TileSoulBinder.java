@@ -21,7 +21,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.PacketExperienceContainer;
 import crazypants.enderio.xp.XpUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -85,7 +85,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
     if(xpCont.isDirty()) {
-      PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
+      PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
     }
     if (isActive()) {

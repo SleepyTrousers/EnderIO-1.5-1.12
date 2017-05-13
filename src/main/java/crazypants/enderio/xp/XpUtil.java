@@ -1,5 +1,7 @@
 package crazypants.enderio.xp;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -28,16 +30,13 @@ public class XpUtil {
     return experienceToLiquid(getExperienceForLevel(level));
   }
 
-  private static final Integer[] xpmap = new Integer[256];
-
-  static {
-    for (int i = 0; i < xpmap.length; i++) {
-      xpmap[i] = getExperienceForLevelImpl(i);
-    }
-  }
+  private static final int[] xpmap = new int[256];
 
   public static int getExperienceForLevel(int level) {
     if (level >= 0 && level < xpmap.length) {
+      if (xpmap[level] <= 0) {
+        xpmap[level] = getExperienceForLevelImpl(level);
+      }
       return xpmap[level];
     }
     if (level >= 21863) {
@@ -67,23 +66,18 @@ public class XpUtil {
   }
 
   public static int getLevelForExperience(int experience) {
-    for (int i = 0; i < xpmap.length; i++) {
-      if (xpmap[i] > experience) {
-        return i - 1;
-      }
-    }
-    int i = xpmap.length;
+    int i = 1;
     while (getExperienceForLevel(i) <= experience) {
       i++;
     }
     return i - 1;
   }
 
-  public static int getPlayerXP(EntityPlayer player) {
+  public static int getPlayerXP(@Nonnull EntityPlayer player) {
     return (int) (getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
   }
 
-  public static void addPlayerXP(EntityPlayer player, int amount) {
+  public static void addPlayerXP(@Nonnull EntityPlayer player, int amount) {
     int experience = Math.max(0, getPlayerXP(player) + amount);
     player.experienceTotal = experience;
     player.experienceLevel = getLevelForExperience(experience);

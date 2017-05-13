@@ -1,5 +1,7 @@
 package crazypants.enderio.network;
 
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
 public interface IRemoteExec {
 
   void setGuiID(int id);
@@ -8,7 +10,7 @@ public interface IRemoteExec {
 
   public static interface IContainer extends IRemoteExec {
 
-    void networkExec(int id, GuiPacket message);
+    IMessage networkExec(int id, GuiPacket message);
 
   }
 
