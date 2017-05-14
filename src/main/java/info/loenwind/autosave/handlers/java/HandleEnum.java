@@ -23,14 +23,14 @@ public class HandleEnum implements IHandler<Enum<?>> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull Enum<?> object) throws IllegalArgumentException, IllegalAccessException {
     nbt.setInteger(name, object.ordinal());
     return true;
   }
 
   @Override
-  public Enum<?> read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public Enum<?> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Enum<?> object) {
     if (nbt.hasKey(name)) {
       Enum<?>[] enumConstants = null;

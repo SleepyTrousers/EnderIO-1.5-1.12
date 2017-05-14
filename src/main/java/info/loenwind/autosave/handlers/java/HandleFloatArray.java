@@ -22,7 +22,7 @@ public class HandleFloatArray implements IHandler<float[]> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull float[] object) throws IllegalArgumentException, IllegalAccessException {
     int len = 0;
     for (int i = object.length; i > 0; i--) {
@@ -40,7 +40,7 @@ public class HandleFloatArray implements IHandler<float[]> {
   }
 
   @Override
-  public float[] read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public float[] read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable float[] object) {
     if (nbt.hasKey(name) && object != null) {
       int[] tmp = nbt.getIntArray(name);

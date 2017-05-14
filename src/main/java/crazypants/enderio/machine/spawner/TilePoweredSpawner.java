@@ -23,7 +23,7 @@ import crazypants.util.CapturedMob;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -48,7 +48,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private CapturedMob capturedMob = null;
   @Store
   private boolean isSpawnMode = true;

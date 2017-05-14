@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +28,7 @@ public class HandleDisplayMode implements IHandler<Map<EnumFacing, InfoDisplayTy
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull Map<EnumFacing, InfoDisplayType> object) throws IllegalArgumentException, IllegalAccessException, InstantiationException,
       NoHandlerFoundException {
     long value = 0;
@@ -44,7 +44,7 @@ public class HandleDisplayMode implements IHandler<Map<EnumFacing, InfoDisplayTy
   }
 
   @Override
-  public Map<EnumFacing, InfoDisplayType> read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+  public Map<EnumFacing, InfoDisplayType> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
       @Nonnull String name, @Nullable Map<EnumFacing, InfoDisplayType> object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {

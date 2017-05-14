@@ -35,22 +35,22 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class GuiPacket implements IMessage {
 
   public static void send(IRemoteExec gui, int msgID) {
-    GuiPacket p = new GuiPacket(gui, msgID, 0, null);
+    GuiPacket p = new GuiPacket(gui, msgID, 0, null, null, null);
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, int data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data });
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data }, null, null);
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, Enum<?> data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data.ordinal() });
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data.ordinal() }, null, null);
     p.send();
   }
 
   public static void send(IRemoteExec gui, int msgID, boolean data) {
-    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data ? 1 : 0 });
+    GuiPacket p = new GuiPacket(gui, msgID, 1, new int[] { data ? 1 : 0 }, null, null);
     p.send();
   }
 
@@ -81,14 +81,6 @@ public class GuiPacket implements IMessage {
     this.ints = ints;
     this.longs = longs;
     this.strings = strings;
-  }
-
-  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints, long[] longs) {
-    this(gui, msgID, pattern, ints, longs, null);
-  }
-
-  private GuiPacket(IRemoteExec gui, int msgID, int pattern, int[] ints) {
-    this(gui, msgID, pattern, ints, null, null);
   }
 
   public GuiPacket() {

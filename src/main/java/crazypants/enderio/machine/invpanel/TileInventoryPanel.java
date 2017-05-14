@@ -31,7 +31,7 @@ import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.handlers.enderio.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -61,7 +61,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean active;
   @Store
   private boolean extractionDisabled;

@@ -8,7 +8,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -41,7 +41,7 @@ public class PacketPrimeInventoryPanelRemote implements IMessage, IMessageHandle
   public IMessage onMessage(PacketPrimeInventoryPanelRemote message, MessageContext ctx) {
     ClientRemoteGuiManager.targetTEtime = EnderIO.proxy.getTickCount() + 10;
     TileInventoryPanel te = new TileInventoryPanel();
-    Reader.read(StoreFor.CLIENT, message.tag, te);
+    Reader.read(NBTAction.CLIENT, message.tag, te);
     ClientRemoteGuiManager.targetTE = te;
     return null;
   }

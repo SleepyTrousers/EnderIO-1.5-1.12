@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.machine.IPoweredTask;
 import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +26,7 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IPoweredTask object)
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IPoweredTask object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     object.writeToNBT(tag);
@@ -36,7 +36,7 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
   }
 
   @Override
-  public IPoweredTask read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public IPoweredTask read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable IPoweredTask object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       try {

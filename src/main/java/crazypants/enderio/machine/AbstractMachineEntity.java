@@ -24,7 +24,7 @@ import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -44,12 +44,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   private static final Limit PULL_PUSH_LIMIT = new Limit(1, 64);
   
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected ResettingFlag forceClientUpdate = new ResettingFlag();
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
@@ -57,7 +57,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store
   protected RedstoneControlMode redstoneControlMode;
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;
@@ -70,7 +70,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @SideOnly(Side.CLIENT)
   private MachineSound sound;
 
-  @Store(StoreFor.SAVE)
+  @Store(NBTAction.SAVE)
   private @Nullable UserIdent owner;
 
   private final ResourceLocation soundRes;
@@ -340,7 +340,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (root == null) {
       return;
     }
-    Reader.read(StoreFor.ITEM, root, this);
+    Reader.read(NBTAction.ITEM, root, this);
     if (root.hasKey("eio.abstractMachine")) {
       try {
         doingOtherNbt = true;
@@ -384,7 +384,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     } finally {
       doingOtherNbt = false;
     }
-    Writer.write(StoreFor.ITEM, root, this);
+    Writer.write(NBTAction.ITEM, root, this);
 
     if (this instanceof IPaintable.IPaintableTileEntity) {
       PainterUtil2.writeNbt(root, paintSource);

@@ -1,18 +1,16 @@
 package crazypants.enderio;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.TileEntityBase;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.config.Config;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
-import info.loenwind.autosave.annotations.Store.StoreFor;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,8 +18,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public abstract class TileEntityEio extends TileEntityBase {
 
-  private static final Vector4f COLOR = new Vector4f(1, 182f / 255f, 0, 0.4f);
-  protected boolean doingOtherNbt = false;
+  private static final @Nonnull Vector4f COLOR = new Vector4f(1, 182f / 255f, 0, 0.4f);
 
   protected TileEntityEio() {
     super();
@@ -59,72 +56,34 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   @Override
-  public final SPacketUpdateTileEntity getUpdatePacket() {
-    NBTTagCompound root = createClientUpdateNBT();
-    
-    return new SPacketUpdateTileEntity(getPos(), 1, root);
-  }
-  
-  @Override
-  public NBTTagCompound getUpdateTag() {    
-    return createClientUpdateNBT();
-  }
-
-  protected NBTTagCompound createClientUpdateNBT() {
-    NBTTagCompound root = new NBTTagCompound();
-    try {
-      doingOtherNbt = true;
-      super.writeToNBT(root);
-    } finally {
-      doingOtherNbt = false;
-    }
-    Writer.write(StoreFor.CLIENT, root, this);
-    return root;
+  protected void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
+    Writer.write(action, root, this);
   }
 
   @Override
-  public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-    NBTTagCompound root = pkt.getNbtCompound();
-    Reader.read(StoreFor.CLIENT, root, this);
-    try {
-      doingOtherNbt = true;
-      super.readFromNBT(root);
-    } finally {
-      doingOtherNbt = false;
-    }
-    onAfterDataPacket();
-    if (Config.debugUpdatePackets) {
-      EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
+  protected void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
+    Reader.read(action, root, this);
+    if (action == NBTAction.SYNC || action == NBTAction.UPDATE) {
+      onAfterDataPacket();
+      if (Config.debugUpdatePackets) {
+        EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
+      }
     }
   }
 
   protected void onAfterDataPacket() {
   }
 
-  @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    if (!doingOtherNbt) {
-      Writer.write(StoreFor.SAVE, root, this);
-    }
+  public void readContentsFromNBT(@Nonnull NBTTagCompound nbtRoot) {
+    Reader.read(NBTAction.ITEM, nbtRoot, this);
   }
 
-  @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    if (!doingOtherNbt) {
-      Reader.read(StoreFor.SAVE, root, this);
-    }
+  public void writeContentsToNBT(@Nonnull NBTTagCompound nbtRoot) {
+    Writer.write(NBTAction.ITEM, nbtRoot, this);
   }
 
-  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
-    Reader.read(StoreFor.ITEM, nbtRoot, this);
-  }
-
-  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
-    Writer.write(StoreFor.ITEM, nbtRoot, this);
-  }
-
-  private final static List<TileEntity> notTickingTileEntitiesS = new ArrayList<TileEntity>();
-  private final static List<TileEntity> notTickingTileEntitiesC = new ArrayList<TileEntity>();
+  private final static NNList<TileEntity> notTickingTileEntitiesS = new NNList<TileEntity>();
+  private final static NNList<TileEntity> notTickingTileEntitiesC = new NNList<TileEntity>();
   /**
    * Called on each tick. Do not call super from any subclass, that will disable ticking this TE again.
    */

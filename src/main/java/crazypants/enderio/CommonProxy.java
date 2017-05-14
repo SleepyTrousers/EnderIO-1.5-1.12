@@ -60,11 +60,11 @@ public class CommonProxy {
   public void loadIcons() {
   }
   
-  public void init(FMLPreInitializationEvent event) {
+  public void init(@Nonnull FMLPreInitializationEvent event) {
     TOPUtil.create();
   }
   
-  public void init(FMLInitializationEvent event) {
+  public void init(@Nonnull FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
     SoundRegistry.init();
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
@@ -80,7 +80,7 @@ public class CommonProxy {
     // registerCommands(); // debug command disabled because it is not needed at the moment
   }
 
-  public void init(FMLPostInitializationEvent event) {
+  public void init(@Nonnull FMLPostInitializationEvent event) {
   }
 
   public void stopWithErrorScreen(String... message) {
@@ -106,7 +106,7 @@ public class CommonProxy {
     return false;
   }
 
-  public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
+  public void setInstantConfusionOnPlayer(@Nonnull EntityPlayer ent, int duration) {
     ent.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, duration, 1, true, true));
   }
 
@@ -120,14 +120,14 @@ public class CommonProxy {
   public final class TickTimer {
 
     @SubscribeEvent
-    public void onTick(ServerTickEvent evt) {
+    public void onTick(@Nonnull ServerTickEvent evt) {
       if(evt.phase == Phase.END) {
         onServerTick();
       }
     }
 
     @SubscribeEvent
-    public void onTick(ClientTickEvent evt) {
+    public void onTick(@Nonnull ClientTickEvent evt) {
       if(evt.phase == Phase.END) {
         onClientTick();
       }
@@ -137,11 +137,11 @@ public class CommonProxy {
   private static final String TEXTURE_PATH = ":textures/gui/40/";
   private static final String TEXTURE_EXT = ".png";
 
-  public @Nonnull ResourceLocation getGuiTexture(String name) {
+  public @Nonnull ResourceLocation getGuiTexture(@Nonnull String name) {
     return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
-  public void markBlock(World world, BlockPos pos, Vector4f color) {
+  public void markBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color) {
   }
 
   public boolean isDedicatedServer() {

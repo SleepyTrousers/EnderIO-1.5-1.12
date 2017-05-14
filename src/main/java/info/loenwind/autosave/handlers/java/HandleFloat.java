@@ -22,14 +22,14 @@ public class HandleFloat implements IHandler<Float> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull Float object)
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull Float object)
       throws IllegalArgumentException, IllegalAccessException {
     nbt.setFloat(name, object);
     return true;
   }
 
   @Override
-  public Float read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public Float read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Float object) {
     return nbt.hasKey(name) ? nbt.getFloat(name) : object != null ? object : 0f;
   }

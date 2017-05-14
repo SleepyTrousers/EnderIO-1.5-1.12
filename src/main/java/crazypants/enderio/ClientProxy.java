@@ -3,6 +3,9 @@ package crazypants.enderio;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.EnderCoreModConflictException;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -39,7 +42,6 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.util.ClientUtil;
-import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -60,8 +62,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -88,14 +88,13 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void init(FMLPreInitializationEvent event) {
+  public void init(@Nonnull FMLPreInitializationEvent event) {
     super.init(event);
 
-    SpecialTooltipHandler tt = SpecialTooltipHandler.INSTANCE;
-    tt.addCallback(new TooltipHandlerGrinding());
-    tt.addCallback(new TooltipHandlerBurnTime());
+    SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
+    SpecialTooltipHandler.addCallback(new TooltipHandlerBurnTime());
     if (Config.addFuelTooltipsToAllFluidContainers) {
-      tt.addCallback(new TooltipHandlerFluid());
+      SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
     }
     PaintTooltipUtil.create();
 
@@ -139,8 +138,8 @@ public class ClientProxy extends CommonProxy {
     ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Overlays
-    new YetaWrenchOverlayRenderer();
-    new ConduitProbeOverlayRenderer();
+    MinecraftForge.EVENT_BUS.register(new YetaWrenchOverlayRenderer());
+    MinecraftForge.EVENT_BUS.register(new ConduitProbeOverlayRenderer());
 
     // Items
     DarkSteelItems.onClientPreInit();
@@ -163,14 +162,14 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void init(FMLInitializationEvent event) {
+  public void init(@Nonnull FMLInitializationEvent event) {
     super.init(event);
     SmartModelAttacher.registerColoredBlocksAndItems();
     MinecraftForge.EVENT_BUS.register(ClientNetworkManager.getInstance());
   }
 
   @Override
-  public void init(FMLPostInitializationEvent event) {
+  public void init(@Nonnull FMLPostInitializationEvent event) {
     super.init(event);
     ConduitBundleRenderManager.instance.init(event);
   }
@@ -184,7 +183,7 @@ public class ClientProxy extends CommonProxy {
   }
 
   @Override
-  public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
+  public void setInstantConfusionOnPlayer(@Nonnull EntityPlayer ent, int duration) {
     ent.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, duration, 1, true, true));
     Minecraft.getMinecraft().player.timeInPortal = 1;
   }
@@ -196,14 +195,14 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   protected void onClientTick() {
-    if (!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().world != null) {
+    if (!Minecraft.getMinecraft().isGamePaused()) {
       ++clientTickCount;
       YetaUtil.onClientTick();
     }
   }
 
   @Override
-  public void markBlock(World world, BlockPos pos, Vector4f color) {
+  public void markBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color) {
     Minecraft.getMinecraft().effectRenderer.addEffect(new MarkerParticle(world, pos, color));
   }
 
@@ -219,14 +218,15 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public CreativeTabs getCreativeTab(@Nonnull ItemStack stack) {
-    return Prep.isInvalid(stack) ? null : stack.getItem().getCreativeTab();
+    return stack.getItem().getCreativeTab();
   }
 
   @Override
-  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     itemIn.getSubItems(itemIn, tab, subItems);
   }
 
+  @SuppressWarnings("null")
   @Override
   public void stopWithErrorScreen(String... message) {
     EnderIOCrashCallable.registerStopScreenMessage(message);

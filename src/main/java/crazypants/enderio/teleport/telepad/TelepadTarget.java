@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 
 import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.java.HandleArrayList;
@@ -250,7 +250,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull TelepadTarget object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
     NBTTagCompound root = new NBTTagCompound();
@@ -260,7 +260,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if(nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);

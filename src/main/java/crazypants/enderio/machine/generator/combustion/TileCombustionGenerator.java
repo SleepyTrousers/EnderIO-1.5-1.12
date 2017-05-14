@@ -25,7 +25,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -59,16 +59,16 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   };
   private boolean tanksDirty;
 
-  @Store({ StoreFor.ITEM, StoreFor.SAVE })
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
   private int ticksRemaingFuel;
-  @Store({ StoreFor.ITEM, StoreFor.SAVE })
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
   private int ticksRemaingCoolant;
-  @Store(StoreFor.CLIENT)
+  @Store(NBTAction.CLIENT)
   private boolean active;
 
   private PowerDistributor powerDis;
 
-  @Store(StoreFor.CLIENT)
+  @Store(NBTAction.CLIENT)
   private int generated;
 
   private boolean inPause = false;

@@ -18,7 +18,7 @@ import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -31,8 +31,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   protected ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
   protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
-  @Store({ StoreFor.SAVE, StoreFor.CLIENT })
-  // Not StoreFor.ITEM to keep the storedEnergy tag out in the open
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
 

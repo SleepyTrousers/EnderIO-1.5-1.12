@@ -61,7 +61,7 @@ public interface IHandler<T> {
    * @throws InstantiationException
    * @throws NoHandlerFoundException
    */
-  boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull T object)
+  boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull T object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException;
 
   /**
@@ -93,6 +93,6 @@ public interface IHandler<T> {
    * @throws InstantiationException
    * @throws NoHandlerFoundException
    */
-  T read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  T read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable T object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException;
 }

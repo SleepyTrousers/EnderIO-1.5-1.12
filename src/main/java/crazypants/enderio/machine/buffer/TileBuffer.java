@@ -14,7 +14,7 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,11 +25,11 @@ import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean hasPower;
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean hasInventory;
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean isCreative;
 
   private PowerDistributor dist;

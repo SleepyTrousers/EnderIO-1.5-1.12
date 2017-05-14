@@ -100,7 +100,7 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void preInit(FMLPreInitializationEvent event) {
+  public void preInit(@Nonnull FMLPreInitializationEvent event) {
 
     EnderIOCrashCallable.create();
 
@@ -136,7 +136,7 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void load(FMLInitializationEvent event) {
+  public void load(@Nonnull FMLInitializationEvent event) {
     Things.init(event); // FIXME do this in ec
 
     Config.init(event);
@@ -159,7 +159,7 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
+  public void postInit(@Nonnull FMLPostInitializationEvent event) {
 
     Config.postInit();
 
@@ -201,24 +201,24 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void loadComplete(FMLLoadCompleteEvent event) {
+  public void loadComplete(@Nonnull FMLLoadCompleteEvent event) {
     // Some mods send IMCs during PostInit, so we catch them here.
     processImc(FMLInterModComms.fetchRuntimeMessages(this));
   }
 
   @EventHandler
-  public void serverStarted(FMLServerStartedEvent event) {
+  public void serverStarted(@Nonnull FMLServerStartedEvent event) {
     ServerChannelRegister.load();
   }
 
   @EventHandler
-  public void serverStopped(FMLServerStoppedEvent event) {
+  public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
     ServerChannelRegister.store();
     ConduitNetworkTickHandler.instance.flush();
   }
 
   @EventHandler
-  public void onImc(IMCEvent evt) {
+  public void onImc(@Nonnull IMCEvent evt) {
     processImc(evt.getMessages());
   }
 

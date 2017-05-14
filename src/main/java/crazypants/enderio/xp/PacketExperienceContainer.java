@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketExperienceContainer extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketExperienceContainer, IMessage> {
-  private ExperienceContainer xpCon;
+  private @Nonnull ExperienceContainer xpCon;
 
   public PacketExperienceContainer() {
     xpCon = new ExperienceContainer();

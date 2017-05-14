@@ -1,5 +1,8 @@
 package crazypants.enderio.gui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
@@ -160,13 +163,13 @@ public enum IconEIO implements IWidgetIcon {
   public final int y;
   public final int width;
   public final int height;
-  public final IconEIO overlay;
+  public final @Nullable IconEIO overlay;
 
-  public static final ResourceLocation TEXTURE = EnderIO.proxy.getGuiTexture("widgetsv2");
+  public static final @Nonnull ResourceLocation TEXTURE = EnderIO.proxy.getGuiTexture("widgetsv2");
 
-  public static final IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
+  public static final @Nonnull IWidgetMap map = new IWidgetMap.WidgetMapImpl(TEX_SIZE, TEXTURE) {
     @Override
-    public void render(IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw,
+    public void render(@Nonnull IWidgetIcon widget, double x, double y, double width, double height, double zLevel, boolean doDraw,
         boolean flipY) {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       super.render(widget, x, y, width, height, zLevel, doDraw, flipY);
@@ -174,10 +177,10 @@ public enum IconEIO implements IWidgetIcon {
   };
 
   IconEIO(int x, int y) {
-    this(x, y, null);
+    this(x, y, 16, 16, null);
   }
 
-  IconEIO(int x, int y, IconEIO overlay) {
+  IconEIO(int x, int y, @Nonnull IconEIO overlay) {
     this(x, y, 16, 16, overlay);
   }
 
@@ -185,7 +188,7 @@ public enum IconEIO implements IWidgetIcon {
     this(x, y, width, height, null);
   }
 
-  private IconEIO(int x, int y, int width, int height, IconEIO overlay) {
+  private IconEIO(int x, int y, int width, int height, @Nullable IconEIO overlay) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -194,7 +197,7 @@ public enum IconEIO implements IWidgetIcon {
   }
 
   @Override
-  public IWidgetMap getMap() {
+  public @Nonnull IWidgetMap getMap() {
     return map;
   }
 
@@ -219,7 +222,7 @@ public enum IconEIO implements IWidgetIcon {
   }
 
   @Override
-  public IconEIO getOverlay() {
+  public @Nullable IconEIO getOverlay() {
     return overlay;
   }
 

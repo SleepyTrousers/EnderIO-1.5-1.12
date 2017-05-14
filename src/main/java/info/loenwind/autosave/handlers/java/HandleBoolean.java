@@ -22,14 +22,14 @@ public class HandleBoolean implements IHandler<Boolean> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull Boolean object) throws IllegalArgumentException, IllegalAccessException {
     nbt.setBoolean(name, object);
     return true;
   }
 
   @Override
-  public Boolean read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public Boolean read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Boolean object) {
     return nbt.hasKey(name) ? nbt.getBoolean(name) : object != null ? object : false;
   }

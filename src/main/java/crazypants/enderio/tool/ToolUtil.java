@@ -3,8 +3,12 @@ package crazypants.enderio.tool;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,30 +25,31 @@ import net.minecraftforge.server.permission.context.BlockPosContext;
 
 public class ToolUtil {
 
-  public static boolean isToolEquipped(EntityPlayer player, EnumHand hand) {
+  public static boolean isToolEquipped(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     return getInstance().isToolEquippedImpl(player, hand);
   }
 
-  public static ITool getEquippedTool(EntityPlayer player, EnumHand hand) {
+  public static ITool getEquippedTool(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     return getInstance().getEquippedToolImpl(player, hand);
   }
 
-  public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer, EnumHand hand, String permissionNode) {
+  public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, int x, int y, int z, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nonnull String permissionNode) {
     return breakBlockWithTool(block, world, new BlockPos(x, y, z), null, entityPlayer, hand, permissionNode);
   }
-  
-  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EnumFacing side, EntityPlayer entityPlayer, EnumHand hand,
-      String permissionNode) {
+
+  public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing side,
+      @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull String permissionNode) {
     return breakBlockWithTool(block, world, pos, side, entityPlayer, entityPlayer.getHeldItem(hand), permissionNode);
   }
 
-  public static boolean breakBlockWithTool(Block block, World world, BlockPos pos, EnumFacing side, EntityPlayer entityPlayer, ItemStack heldItem,
-      String permissionNode) {
+  public static boolean breakBlockWithTool(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing side,
+      @Nonnull EntityPlayer entityPlayer, @Nonnull ItemStack heldItem, @Nonnull String permissionNode) {
     ITool tool = ToolUtil.getToolFromStack(heldItem);
     if (tool != null && entityPlayer.isSneaking() && tool.canUse(heldItem, entityPlayer, pos)) {
       IBlockState bs = world.getBlockState(pos);
       if (!PermissionAPI.hasPermission(entityPlayer.getGameProfile(), permissionNode, new BlockPosContext(entityPlayer, pos, bs, side))) {
-        entityPlayer.addChatMessage(new TextComponentString(EnderIO.lang.localize("wrench.permission.denied")));
+        entityPlayer.sendMessage(new TextComponentString(EnderIO.lang.localize("wrench.permission.denied")));
         return false;
       }
       BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, bs, entityPlayer);
@@ -52,7 +57,7 @@ public class ToolUtil {
       if (MinecraftForge.EVENT_BUS.post(event)) {
         return false;
       }
-      if(block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
+      if (block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
         block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), heldItem);
       }
       tool.used(heldItem, entityPlayer, pos);
@@ -61,55 +66,48 @@ public class ToolUtil {
     return false;
   }
 
-  private static ToolUtil instance;
+  private static final @Nonnull ToolUtil instance = new ToolUtil();
 
-  public static ToolUtil getInstance() {
-    if(instance == null) {
-      instance = new ToolUtil();
-    }
+  public static @Nonnull ToolUtil getInstance() {
     return instance;
   }
 
-  private final List<IToolProvider> toolProviders = new ArrayList<IToolProvider>();
+  private final @Nonnull List<IToolProvider> toolProviders = new ArrayList<IToolProvider>();
 
   private ToolUtil() {
   }
 
-  public void registerToolProvider(IToolProvider toolProvider) {
+  public void registerToolProvider(@Nonnull IToolProvider toolProvider) {
     toolProviders.add(toolProvider);
   }
 
-  private boolean isToolEquippedImpl(EntityPlayer player, EnumHand hand) {
+  private boolean isToolEquippedImpl(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     return getEquippedToolImpl(player, hand) != null;
   }
 
-  private ITool getEquippedToolImpl(EntityPlayer player, EnumHand hand) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
-      return null;
-    }
+  private @Nullable ITool getEquippedToolImpl(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     ItemStack equipped = player.getHeldItem(hand);
     return getToolFromStack(equipped);
   }
 
-  public static ITool getToolFromStack(ItemStack equipped) {
-    if(equipped == null) {
+  public static @Nullable ITool getToolFromStack(@Nonnull ItemStack equipped) {
+    if (Prep.isInvalid(equipped)) {
       return null;
     }
-    if(equipped.getItem() instanceof ITool) {
+    if (equipped.getItem() instanceof ITool) {
       return (ITool) equipped.getItem();
     }
     return getInstance().getToolImpl(equipped);
   }
 
-  private ITool getToolImpl(ItemStack equipped) {
+  private ITool getToolImpl(@Nonnull ItemStack equipped) {
     for (IToolProvider provider : toolProviders) {
       ITool result = provider.getTool(equipped);
-      if(result != null) {
+      if (result != null) {
         return result;
       }
     }
     return null;
   }
- 
+
 }

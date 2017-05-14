@@ -2,7 +2,7 @@ package info.loenwind.autosave;
 
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.engine.StorableEngine;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
@@ -33,8 +33,8 @@ public class Reader {
    *          The {@link Registry} to look up {@link IHandler}s for the fields
    *          of the given object
    * @param phase
-   *          A set of {@link StoreFor}s to indicate which fields to process.
-   *          Only fields that are annotated with a matching {@link StoreFor}
+   *          A set of {@link NBTAction}s to indicate which fields to process.
+   *          Only fields that are annotated with a matching {@link NBTAction}
    *          are restored.
    * @param tag
    *          A {@link NBTTagCompound} to read from. This NBTTagCompound
@@ -42,7 +42,7 @@ public class Reader {
    * @param object
    *          The object that should be restored
    */
-  public static <T> void read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object) {
+  public static <T> void read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull T object) {
     try {
       StorableEngine.read(registry, phase, tag, object);
     } catch (IllegalAccessException e) {
@@ -63,8 +63,8 @@ public class Reader {
    * See also: {@link Store} for the field annotation.
    * 
    * @param phase
-   *          A set of {@link StoreFor}s to indicate which fields to process.
-   *          Only fields that are annotated with a matching {@link StoreFor}
+   *          A set of {@link NBTAction}s to indicate which fields to process.
+   *          Only fields that are annotated with a matching {@link NBTAction}
    *          are restored.
    * @param tag
    *          A {@link NBTTagCompound} to read from. This NBTTagCompound
@@ -72,7 +72,7 @@ public class Reader {
    * @param object
    *          The object that should be restored
    */
-  public static <T> void read(@Nullable Set<Store.StoreFor> phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
+  public static <T> void read(@Nullable Set<NBTAction> phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
     read(Registry.GLOBAL_REGISTRY, NullHelper.notnull(phase, "Missing phase"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
@@ -87,8 +87,8 @@ public class Reader {
    *          The {@link Registry} to look up {@link IHandler}s for the fields
    *          of the given object
    * @param phase
-   *          A s{@link StoreFor} to indicate which fields to process. Only
-   *          fields that are annotated with a matching {@link StoreFor} are
+   *          A s{@link NBTAction} to indicate which fields to process. Only
+   *          fields that are annotated with a matching {@link NBTAction} are
    *          restored.
    * @param tag
    *          A {@link NBTTagCompound} to read from. This NBTTagCompound
@@ -96,7 +96,7 @@ public class Reader {
    * @param object
    *          The object that should be restored
    */
-  public static <T> void read(@Nonnull Registry registry, @Nonnull StoreFor phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
+  public static <T> void read(@Nonnull Registry registry, @Nonnull NBTAction phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
     read(registry, NullHelper.notnullJ(EnumSet.of(phase), "EnumSet.of()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
@@ -109,8 +109,8 @@ public class Reader {
    * See also: {@link Store} for the field annotation.
    * 
    * @param phase
-   *          A s{@link StoreFor} to indicate which fields to process. Only
-   *          fields that are annotated with a matching {@link StoreFor} are
+   *          A s{@link NBTAction} to indicate which fields to process. Only
+   *          fields that are annotated with a matching {@link NBTAction} are
    *          restored.
    * @param tag
    *          A {@link NBTTagCompound} to read from. This NBTTagCompound
@@ -118,13 +118,13 @@ public class Reader {
    * @param object
    *          The object that should be restored
    */
-  public static <T> void read(@Nonnull StoreFor phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
+  public static <T> void read(@Nonnull NBTAction phase, @Nullable NBTTagCompound tag, @Nonnull T object) {
     read(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.of(phase), "EnumSet.of()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
   /**
    * Restore an object's fields from NBT data as if its class was annotated
-   * {@link Storable} without a special handler, ignoring {@link StoreFor}
+   * {@link Storable} without a special handler, ignoring {@link NBTAction}
    * restrictions.
    * 
    * <p>
@@ -140,13 +140,13 @@ public class Reader {
    *          The object that should be restored
    */
   public static <T> void read(@Nonnull Registry registry, @Nullable NBTTagCompound tag, @Nonnull T object) {
-    read(registry, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
+    read(registry, NullHelper.notnullJ(EnumSet.allOf(NBTAction.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
   /**
    * Restore an object's fields from NBT data as if its class was annotated
    * {@link Storable} without a special handler using the {@link Registry}
-   * {@link Registry#GLOBAL_REGISTRY GLOBAL_REGISTRY}, ignoring {@link StoreFor}
+   * {@link Registry#GLOBAL_REGISTRY GLOBAL_REGISTRY}, ignoring {@link NBTAction}
    * restrictions.
    * 
    * <p>
@@ -159,7 +159,7 @@ public class Reader {
    *          The object that should be restored
    */
   public static <T> void read(@Nullable NBTTagCompound tag, @Nonnull T object) {
-    read(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
+    read(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(NBTAction.class), "EnumSet.allOf()"), NullHelper.notnull(tag, "Missing NBT"), object);
   }
 
   /**
@@ -177,7 +177,7 @@ public class Reader {
    */
   public static <T> T readField(@Nullable NBTTagCompound tag, @Nullable Class<T> fieldClass, @Nullable String fieldName, @Nullable T object) {
     try {
-      return StorableEngine.getSingleField(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(StoreFor.class), "EnumSet.allOf()"),
+      return StorableEngine.getSingleField(Registry.GLOBAL_REGISTRY, NullHelper.notnullJ(EnumSet.allOf(NBTAction.class), "EnumSet.allOf()"),
           NullHelper.notnull(tag, "Missing NBT"), NullHelper.notnull(fieldName, "Missing field name"), NullHelper.notnull(fieldClass, "Missing field class"),
           object);
     } catch (InstantiationException e) {

@@ -1,10 +1,14 @@
 package crazypants.enderio.tool;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.api.tool.ITool;
 import net.minecraft.item.ItemStack;
 
 public interface IToolProvider {
 
-  ITool getTool(ItemStack stack);
+  @Nullable
+  ITool getTool(@Nonnull ItemStack stack);
 
 }

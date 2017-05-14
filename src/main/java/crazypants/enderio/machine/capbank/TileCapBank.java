@@ -38,7 +38,7 @@ import crazypants.util.NbtValue;
 import com.enderio.core.common.util.NullHelper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.handlers.enderio.HandleDisplayMode;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
@@ -70,7 +70,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Store
   private CapBankType type;
 
-  @Store({ StoreFor.SAVE, StoreFor.CLIENT })
+  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private int energyStored;
   @Store
   private int maxInput = -1;

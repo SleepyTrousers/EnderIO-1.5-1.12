@@ -16,7 +16,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,9 +26,9 @@ import net.minecraft.util.EnumFacing;
 @Storable
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
 
-  @Store({ StoreFor.SAVE, StoreFor.ITEM })
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
   protected IPoweredTask currentTask = null;
-  @Store({ StoreFor.SAVE, StoreFor.ITEM })
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
   protected IMachineRecipe lastCompletedRecipe;
   protected IMachineRecipe cachedNextRecipe;
 

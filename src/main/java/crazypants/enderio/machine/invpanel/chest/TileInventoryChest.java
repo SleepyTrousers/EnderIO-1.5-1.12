@@ -17,7 +17,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -118,7 +118,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   private final EnumChestSize size;
 
-  @Store({ StoreFor.SAVE, StoreFor.ITEM })
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
   private final EnderInventory chestInventory;
 
   // called by our block

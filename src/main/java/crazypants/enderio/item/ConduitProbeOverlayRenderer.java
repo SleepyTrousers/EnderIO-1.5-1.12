@@ -1,45 +1,44 @@
 package crazypants.enderio.item;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.IconEIO;
+import crazypants.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import static crazypants.enderio.ModObject.itemConduitProbe;
 
 public class ConduitProbeOverlayRenderer {
 
-  //private ItemConduitProbe probe;
-
   public ConduitProbeOverlayRenderer() {
-    MinecraftForge.EVENT_BUS.register(this);
   }
 
   @SubscribeEvent
-  public void renderOverlay(RenderGameOverlayEvent.Post event) {
+  public void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event) {
     ItemStack equippedProbe = getEquippedProbe();
-    if(equippedProbe != null && event.getType() == ElementType.ALL) {
+    if (event.getType() == ElementType.ALL && Prep.isValid(equippedProbe)) {
       doRenderOverlay(event, equippedProbe);
     }
   }
 
-  private ItemStack getEquippedProbe() {
+  private @Nonnull ItemStack getEquippedProbe() {
     ItemStack equipped = Minecraft.getMinecraft().player.getHeldItemMainhand();
-    if (equipped != null && equipped.getItem() == itemConduitProbe.getItem()) {
+    if (equipped.getItem() == itemConduitProbe.getItem()) {
       return equipped;
     }
-    return null;
+    return Prep.getEmpty();
   }
 
-  private void doRenderOverlay(RenderGameOverlayEvent event, ItemStack equippedProbe) {
+  private void doRenderOverlay(RenderGameOverlayEvent event, @Nonnull ItemStack equippedProbe) {
     IconEIO icon1, icon2;
-    if(equippedProbe.getItemDamage() == 0) {
+    if (equippedProbe.getItemDamage() == 0) {
       icon1 = IconEIO.PROBE_OVERLAY_PROBE;
       icon2 = IconEIO.PROBE_OVERLAY_COPY_OFF;
     } else {

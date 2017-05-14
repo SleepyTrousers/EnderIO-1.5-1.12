@@ -22,14 +22,14 @@ public class HandleInteger implements IHandler<Integer> {
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull Integer object) throws IllegalArgumentException, IllegalAccessException {
     nbt.setInteger(name, object);
     return true;
   }
 
   @Override
-  public Integer read(@Nonnull Registry registry, @Nonnull Set<Store.StoreFor> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public Integer read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
       @Nullable Integer object) {
     return nbt.hasKey(name) ? nbt.getInteger(name) : object != null ? object : 0;
   }

@@ -25,7 +25,7 @@ import crazypants.enderio.paint.YetaUtil;
 import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -375,7 +375,7 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
     return 0;
   }
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected IBlockState sourceBlock;
 
   @Override

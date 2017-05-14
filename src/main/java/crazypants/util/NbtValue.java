@@ -22,6 +22,7 @@ public enum NbtValue { // TODO: DONE111
   ENERGY("Energy"),
   FLUIDAMOUNT("famount"),
   BLOCKSTATE("paint"),
+  DISPLAYMODE("enderio.displaymode"),
 
   ;
 

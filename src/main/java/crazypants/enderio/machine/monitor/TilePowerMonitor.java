@@ -29,9 +29,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-import static info.loenwind.autosave.annotations.Store.StoreFor.CLIENT;
-import static info.loenwind.autosave.annotations.Store.StoreFor.ITEM;
-import static info.loenwind.autosave.annotations.Store.StoreFor.SAVE;
+import static com.enderio.core.common.NBTAction.CLIENT;
+import static com.enderio.core.common.NBTAction.ITEM;
+import static com.enderio.core.common.NBTAction.SAVE;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {

@@ -19,7 +19,7 @@ import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
@@ -61,7 +61,7 @@ public class StorableEngine {
   public static final @Nonnull String NULL_POSTFIX = "__null";
   public static final @Nonnull String SUPERCLASS_KEY = "__superclass";
   private final @Nonnull Map<Class<?>, List<Field>> fieldCache = new HashMap<Class<?>, List<Field>>();
-  private final @Nonnull Map<Field, Set<StoreFor>> phaseCache = new HashMap<Field, Set<StoreFor>>();
+  private final @Nonnull Map<Field, Set<NBTAction>> phaseCache = new HashMap<Field, Set<NBTAction>>();
   private final @Nonnull Map<Field, List<IHandler>> fieldHandlerCache = new HashMap<Field, List<IHandler>>();
   private final @Nonnull Map<Class<?>, Class<?>> superclassCache = new HashMap<Class<?>, Class<?>>();
   private final @Nonnull Map<Class<?>, List<IHandler>> superclassHandlerCache = new HashMap<Class<?>, List<IHandler>>();
@@ -69,17 +69,17 @@ public class StorableEngine {
   private StorableEngine() {
   }
 
-  public static <T> void read(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
+  public static <T> void read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
       throws IllegalAccessException, InstantiationException, NoHandlerFoundException {
     INSTANCE.get().read_impl(registry, phase, tag, object);
   }
 
-  public static <T> void store(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
+  public static <T> void store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
       throws IllegalAccessException, InstantiationException, NoHandlerFoundException {
     INSTANCE.get().store_impl(registry, phase, tag, object);
   }
 
-  public <T> void read_impl(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
+  public <T> void read_impl(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
       throws IllegalAccessException, InstantiationException, NoHandlerFoundException {
     Class<? extends Object> clazz = object.getClass();
     if (!fieldCache.containsKey(clazz)) {
@@ -124,7 +124,7 @@ public class StorableEngine {
     Log.livetraceNBT("Read NBT data for object ", object, " of class ", clazz);
   }
 
-  public <T> void store_impl(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
+  public <T> void store_impl(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull T object)
       throws IllegalAccessException, InstantiationException, NoHandlerFoundException {
     Class<? extends Object> clazz = object.getClass();
     if (!fieldCache.containsKey(clazz)) {
@@ -167,7 +167,7 @@ public class StorableEngine {
     Log.livetraceNBT("Saved NBT data for object ", object, " of class ", clazz);
   }
 
-  public static <T> T getSingleField(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
+  public static <T> T getSingleField(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
       @Nonnull Class<T> clazz, @Nullable T object) throws InstantiationException, IllegalAccessException, IllegalArgumentException, NoHandlerFoundException {
     if (!tag.hasKey(fieldName + NULL_POSTFIX)) {
       for (IHandler<T> handler : registry.findHandlers(clazz)) {
@@ -180,7 +180,7 @@ public class StorableEngine {
     return null;
   }
 
-  public static <T> void setSingleField(@Nonnull Registry registry, @Nonnull Set<StoreFor> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
+  public static <T> void setSingleField(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound tag, @Nonnull String fieldName,
       @Nonnull Class<T> clazz, @Nullable T fieldData) throws InstantiationException, IllegalAccessException, IllegalArgumentException, NoHandlerFoundException {
     if (fieldData != null) {
       tag.removeTag(fieldName + NULL_POSTFIX);
@@ -213,7 +213,7 @@ public class StorableEngine {
           if (handlerList.isEmpty()) {
             throw new NoHandlerFoundException(field, clazz);
           }
-          EnumSet<StoreFor> enumSet = EnumSet.noneOf(StoreFor.class);
+          EnumSet<NBTAction> enumSet = EnumSet.noneOf(NBTAction.class);
           enumSet.addAll(Arrays.asList(annotation.value()));
           phaseCache.put(field, enumSet);
           field.setAccessible(true);

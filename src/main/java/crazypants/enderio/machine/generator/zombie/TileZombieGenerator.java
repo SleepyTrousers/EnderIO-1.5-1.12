@@ -23,7 +23,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -45,7 +45,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
-  @Store(StoreFor.CLIENT)
+  @Store(NBTAction.CLIENT)
   private boolean active = false;
   private PowerDistributor powerDis;
 

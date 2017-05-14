@@ -16,7 +16,7 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.annotations.Store.StoreFor;
+import com.enderio.core.common.NBTAction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.EnumFacing;
@@ -36,7 +36,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   private boolean formed = false;
   private boolean formedRender = false;
 
-  @Store({ StoreFor.SAVE, StoreFor.ITEM })
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
   private final ExperienceContainer xpCon;
 
   public TileXPVacuum() {
@@ -129,7 +129,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     return super.equals(obj);
   }
 
-  @Store({ StoreFor.CLIENT, StoreFor.SAVE })
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   protected IBlockState sourceBlock;
 
   @Override

@@ -139,7 +139,7 @@ public enum ModObject implements IModObject {
   itemPowerItemFilter(ItemPowerItemFilter.class),
   itemSpeciesItemFilter(ItemSpeciesItemFilter.class) {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       if (Loader.isModLoaded("forestry")) {
         super.preInitElem(event);
       }
@@ -222,7 +222,7 @@ public enum ModObject implements IModObject {
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
   blockPaintedSlab {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
       block = slabs[0];
       item = Item.getItemFromBlock(NullHelper.notnull(slabs[0], "BlockPaintedSlab failed to create"));
@@ -236,19 +236,19 @@ public enum ModObject implements IModObject {
   },
   blockPaintedDoubleSlab {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
   blockPaintedStoneSlab {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
   blockPaintedStoneDoubleSlab {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       // see blockPaintedSlab
     }
   },
@@ -288,7 +288,7 @@ public enum ModObject implements IModObject {
 
   blockFusedQuartz(BlockFusedQuartz.class) {
     @Override
-    protected void preInitElem(FMLPreInitializationEvent event) {
+    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
       super.preInitElem(event);
       BlockColoredFusedQuartz.create();
     }
@@ -297,7 +297,7 @@ public enum ModObject implements IModObject {
 
   itemSoulVessel(ItemSoulVessel.class) {
     @Override
-    protected void initElem(FMLInitializationEvent event) {
+    protected void initElem(@Nonnull FMLInitializationEvent event) {
       ItemSoulVessel.initPhase();
     }
   },
@@ -333,7 +333,7 @@ public enum ModObject implements IModObject {
   }
 
   private ModObject(@Nullable Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
-    unlocalisedName = NullHelper.notnullJ(name(), "Enum.name()").replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
+    unlocalisedName = NullHelper.notnullJ(name().replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH), "Enum.name()");
     this.clazz = clazz;
     this.methodName = methodName;
     this.teClazz = teClazz;
@@ -362,7 +362,7 @@ public enum ModObject implements IModObject {
     return NullHelper.notnull(item, "Item " + this + " is unexpectedly missing");
   }
 
-  protected void preInitElem(FMLPreInitializationEvent event) {
+  protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
     final Class<?> clazz2 = clazz; // because final fields may unexpectedly become null, according to our compiler warnings
     if (clazz2 == null) {
       Log.debug(this + ".preInitElem() missing");
@@ -387,7 +387,7 @@ public enum ModObject implements IModObject {
     }
   }
 
-  protected void initElem(FMLInitializationEvent event) {
+  protected void initElem(@Nonnull FMLInitializationEvent event) {
     if (block instanceof BlockEio<?>) {
       ((BlockEio<?>) block).init(event);
     }
@@ -419,14 +419,14 @@ public enum ModObject implements IModObject {
     }
   }
 
-  public static void preInit(FMLPreInitializationEvent event) {
+  public static void preInit(@Nonnull FMLPreInitializationEvent event) {
     for (ModObject elem : values()) {
       elem.preInitElem(event);
     }
     registerTeClasses();
   }
 
-  public static void init(FMLInitializationEvent event) {
+  public static void init(@Nonnull FMLInitializationEvent event) {
     for (ModObject elem : values()) {
       elem.initElem(event);
     }

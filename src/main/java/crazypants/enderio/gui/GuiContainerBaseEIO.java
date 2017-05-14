@@ -13,9 +13,11 @@ import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.IRemoteExec;
+import crazypants.util.Prep;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -31,12 +33,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IRemoteExec.IGui {
 
-  private final NNList<ResourceLocation> guiTextures = new NNList<ResourceLocation>();
+  private final @Nonnull NNList<ResourceLocation> guiTextures = new NNList<ResourceLocation>();
 
   public GuiContainerBaseEIO(@Nonnull Container par1Container, String... guiTexture) {
     super(par1Container);
     for (String string : guiTexture) {
-      guiTextures.add(EnderIO.proxy.getGuiTexture(string));
+      guiTextures.add(EnderIO.proxy.getGuiTexture(NullHelper.notnull(string, "invalid gui texture name")));
     }
   }
 
@@ -57,8 +59,8 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return getGuiTexture(0);
   }
 
-  private final List<Rectangle> tabAreas = new ArrayList<Rectangle>();
-  private final static Rectangle NO_TAB = new Rectangle(0, 0, 0, 0);
+  private final @Nonnull List<Rectangle> tabAreas = new ArrayList<Rectangle>();
+  private final static @Nonnull Rectangle NO_TAB = new Rectangle(0, 0, 0, 0);
 
   public List<Rectangle> getBlockingAreas() {
     // return a new object every time so equals() actually checks the contents
@@ -87,31 +89,31 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return -1;
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, boolean isActive) {
-    return renderStdTab(sx, sy, tabNo, null, null, null, isActive);
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, boolean isActive) {
+    return renderStdTab(sx, sy, tabNo, Prep.getEmpty(), null, null, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable ItemStack stack, boolean isActive) {
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nonnull ItemStack stack, boolean isActive) {
     return renderStdTab(sx, sy, tabNo, stack, null, null, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable IWidgetIcon icon, boolean isActive) {
-    return renderStdTab(sx, sy, tabNo, null, icon, null, isActive);
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable IWidgetIcon icon, boolean isActive) {
+    return renderStdTab(sx, sy, tabNo, Prep.getEmpty(), icon, null, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable GuiButton button, boolean isActive) {
-    return renderStdTab(sx, sy, tabNo, null, null, button, isActive);
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable GuiButton button, boolean isActive) {
+    return renderStdTab(sx, sy, tabNo, Prep.getEmpty(), null, button, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable ItemStack stack, @Nullable GuiButton button, boolean isActive) {
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nonnull ItemStack stack, @Nullable GuiButton button, boolean isActive) {
     return renderStdTab(sx, sy, tabNo, stack, null, button, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable IWidgetIcon icon, @Nullable GuiButton button, boolean isActive) {
-    return renderStdTab(sx, sy, tabNo, null, icon, button, isActive);
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable IWidgetIcon icon, @Nullable GuiButton button, boolean isActive) {
+    return renderStdTab(sx, sy, tabNo, Prep.getEmpty(), icon, button, isActive);
   }
 
-  public Rectangle renderStdTab(int sx, int sy, int tabNo, @Nullable ItemStack stack, @Nullable IWidgetIcon icon, @Nullable GuiButton button,
+  public @Nonnull Rectangle renderStdTab(int sx, int sy, int tabNo, @Nonnull ItemStack stack, @Nullable IWidgetIcon icon, @Nullable GuiButton button,
       boolean isActive) {
     int tabX = sx + xSize + -3;
     int tabY = sy + 4 + 24 * tabNo;
@@ -135,7 +137,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return result;
   }
 
-  public Rectangle renderTab(int x, int y, int w, @Nullable ItemStack stack, @Nullable IWidgetIcon icon, boolean isActive) {
+  public @Nonnull Rectangle renderTab(int x, int y, int w, @Nonnull ItemStack stack, @Nullable IWidgetIcon icon, boolean isActive) {
     int bg_x = isActive ? 0 : 3;
     int bg_w = w - 3 - bg_x;
     int l_x = isActive ? 0 : 3;
@@ -163,7 +165,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     }
     Tessellator.getInstance().draw();
 
-    if (stack != null) {
+    if (Prep.isValid(stack)) {
       RenderHelper.enableGUIStandardItemLighting();
       itemRender.renderItemIntoGUI(stack, x + w / 2 - 8, y + IconEIO.TAB_BG.getHeight() / 2 - 8);
       RenderHelper.disableStandardItemLighting();
@@ -172,7 +174,7 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return new Rectangle(x + bg_x, y - 1, bg_w + 3 + 1, IconEIO.TAB_BG.getHeight() + 2);
   }
 
-  private void renderTabPart(VertexBuffer tes, int x, int y, int u, int v, int w, int h) {
+  private void renderTabPart(@Nonnull VertexBuffer tes, int x, int y, int u, int v, int w, int h) {
     double minU = (double) u / IconEIO.map.getSize();
     double maxU = (double) (u + w) / IconEIO.map.getSize();
     double minV = (double) v / IconEIO.map.getSize();
