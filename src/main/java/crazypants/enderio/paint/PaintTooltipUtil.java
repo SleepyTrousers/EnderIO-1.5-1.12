@@ -1,7 +1,10 @@
 package crazypants.enderio.paint;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.util.Prep;
-import crazypants.util.Things;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,8 +12,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Adds a tooltip with paint information to items thatc an be painted.
@@ -61,7 +62,7 @@ public class PaintTooltipUtil {
    * <li>it was registered as being paintable.
    * </ul>
    */
-  public static boolean isPaintable(ItemStack stack) {
+  public static boolean isPaintable(@Nonnull ItemStack stack) {
     if (Prep.isInvalid(stack)) {
       return false;
     }
@@ -69,7 +70,7 @@ public class PaintTooltipUtil {
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void addTooltip(ItemTooltipEvent evt) {
+  public static void addTooltip(@Nonnull ItemTooltipEvent evt) {
     if (isPaintable(evt.getItemStack())) {
       evt.getToolTip().add(PainterUtil2.getTooltTipText(evt.getItemStack()));
     }

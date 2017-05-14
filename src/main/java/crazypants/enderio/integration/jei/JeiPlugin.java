@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
@@ -34,7 +35,7 @@ public class JeiPlugin extends BlankModPlugin {
   private static IJeiRuntime jeiRuntime = null;
 
   @Override
-  public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+  public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeRecipeCategory.registerSubtypes(subtypeRegistry);
   }
 
@@ -43,11 +44,11 @@ public class JeiPlugin extends BlankModPlugin {
 
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
-        
-    AlloyRecipeCategory.register(registry,guiHelper);
-    SagMillRecipeCategory.register(registry,guiHelper);
-    EnchanterRecipeCategory.register(registry,guiHelper);
-    SliceAndSpliceRecipeCategory.register(registry,guiHelper);
+
+    AlloyRecipeCategory.register(registry, guiHelper);
+    SagMillRecipeCategory.register(registry, guiHelper);
+    EnchanterRecipeCategory.register(registry, guiHelper);
+    SliceAndSpliceRecipeCategory.register(registry, guiHelper);
     SoulBinderRecipeCategory.register(registry, guiHelper);
     PainterRecipeCategory.register(registry, jeiHelpers);
     VatRecipeCategory.register(registry, guiHelper);
@@ -58,28 +59,28 @@ public class JeiPlugin extends BlankModPlugin {
     InventoryPanelRecipeTransferHandler.register(registry);
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
-    
-    //Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
+
+    // Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
     List<ItemStack> inputs = new ArrayList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(Buckets.itemBucketNutrientDistillation.copy());
-    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
-    
-    ItemStack tank = new ItemStack(blockTank.getBlock());
-    IFluidHandler cap = FluidUtil.getFluidHandlerCapability(tank);
-    cap.fill(new FluidStack(Fluids.fluidNutrientDistillation,  8 * Fluid.BUCKET_VOLUME), true);
+
+    ItemStack tank = new ItemStack(blockTank.getBlockNN());
+    IFluidHandler cap = NullHelper.notnull(FluidUtil.getFluidHandlerCapability(tank), "internal error---fluid cap awol");
+    cap.fill(new FluidStack(Fluids.fluidNutrientDistillation, 8 * Fluid.BUCKET_VOLUME), true);
     inputs = new ArrayList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
     inputs.add(tank);
-    res = new ShapelessRecipes(new ItemStack(itemMaterial.getItem(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
+    res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
-    
+
   }
 
   @Override
-  public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime) {
-    JeiPlugin.jeiRuntime = jeiRuntime;
+  public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntimeIn) {
+    JeiPlugin.jeiRuntime = jeiRuntimeIn;
     JeiAccessor.jeiRuntimeAvailable = true;
   }
 

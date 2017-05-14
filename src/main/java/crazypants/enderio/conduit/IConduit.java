@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -33,6 +35,7 @@ public interface IConduit {
   int getTabOrderForConduit(IConduit con);
 
   // Base functionality
+  @Nonnull
   Class<? extends IConduit> getBaseConduitType();
 
   ItemStack createItem();

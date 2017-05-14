@@ -41,7 +41,7 @@ public class BaublesUtil {
   private static final BaublesUtil instance = new BaublesUtil();
   private static final boolean baublesLoaded;
   static {
-    baublesLoaded = Config.enableBaublesIntegration && Loader.isModLoaded("Baubles");
+    baublesLoaded = Config.enableBaublesIntegration && Loader.isModLoaded("baubles");
   }
 
   private BaublesUtil() {

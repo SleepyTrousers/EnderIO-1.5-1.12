@@ -12,8 +12,8 @@ public class MFRUtil {
   }
 
   public static void addMFR() {
-    Block cropBlock = FarmersRegistry.findBlock("MineFactoryReloaded", "rubberwood.sapling");
-    Block woodBlock = FarmersRegistry.findBlock("MineFactoryReloaded", "rubberwood.log");
+    Block cropBlock = FarmersRegistry.findBlock("minefactoryreloaded", "rubberwood.sapling");
+    Block woodBlock = FarmersRegistry.findBlock("minefactoryreloaded", "rubberwood.log");
     if (cropBlock != null && woodBlock != null) {
       FarmersCommune.joinCommune(new TreeFarmer(cropBlock, woodBlock));
       Log.info("Farming Station: MFR integration fully loaded");

@@ -12,7 +12,7 @@ public class ExU2Util {
 
   public static void addExtraUtilities2() {
     int count = 0;
-    CustomSeedFarmer farmer = FarmersRegistry.addSeed("extrautils2", "EnderLilly", "EnderLilly");
+    CustomSeedFarmer farmer = FarmersRegistry.addSeed("extrautils2", "enderlilly", "enderlilly");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
       farmer.setRequiresFarmland(false); // disables tilling
@@ -23,7 +23,7 @@ public class ExU2Util {
       farmer.addTilledBlock(Blocks.END_STONE);
       count++;
     }
-    farmer = FarmersRegistry.addSeed("extrautils2", "RedOrchid", "RedOrchid");
+    farmer = FarmersRegistry.addSeed("extrautils2", "redorchid", "redorchid");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
       farmer.setRequiresFarmland(false); // disables tilling
@@ -39,7 +39,7 @@ public class ExU2Util {
     } else if (count == 0) {
       Log.info("Farming Station: Extra Utilities 2 integration not loaded");
     } else {
-      Log.info("Farming Station: Extra Utilities 2 integration partially loaded (" + count + " of 12)");
+      Log.info("Farming Station: Extra Utilities 2 integration partially loaded (" + count + " of 2)");
     }
 
   }

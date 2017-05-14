@@ -44,7 +44,7 @@ public class BotaniaUtil {
   }
 
   public static void addBotania() {
-    FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower",
+    FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleflower1", "block:botania:doubleflower2", "block:botania:shinyflower",
         "block:botania:mushroom");
     PlaceableFarmer farmer = new PlaceableFarmer("item:botania:petal");
     farmer.addDirt("block:minecraft:grass");

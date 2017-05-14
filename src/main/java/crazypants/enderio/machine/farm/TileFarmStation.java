@@ -372,15 +372,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return Math.max(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
 
-  public EntityPlayerMP getFakePlayer() {
+  public @Nonnull EntityPlayerMP getFakePlayer() {
     return farmerJoe;
   }
 
-  public Block getBlock(BlockPos posIn) {
+  public @Nonnull Block getBlock(@Nonnull BlockPos posIn) {
     return getBlockState(posIn).getBlock();
   }
 
-  public IBlockState getBlockState(BlockPos posIn) {
+  public @Nonnull IBlockState getBlockState(@Nonnull BlockPos posIn) {
     return world.getBlockState(posIn);
   }
 
@@ -650,7 +650,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return takeSeedFromSupplies(stack, forBlock, true);
   }
 
-  public ItemStack takeSeedFromSupplies(ItemStack stack, BlockPos forBlock, boolean matchMetadata) {
+  public @Nonnull ItemStack takeSeedFromSupplies(ItemStack stack, BlockPos forBlock, boolean matchMetadata) {
     if (Prep.isInvalid(stack) || forBlock == null) {
       return null;
     }

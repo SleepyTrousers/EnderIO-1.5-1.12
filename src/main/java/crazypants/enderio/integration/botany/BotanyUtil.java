@@ -8,7 +8,7 @@ public class BotanyUtil {
   }
 
   public static void addBotany() {
-    FarmersRegistry.registerFlower("block:Botany:flower");
+    FarmersRegistry.registerFlower("block:botany:flower");
   }
 
 }

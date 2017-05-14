@@ -3,6 +3,8 @@ package crazypants.enderio.paint;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.item.ItemStack;
@@ -11,6 +13,7 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.util.Prep;
 
 public class PaintSourceValidator {
 
@@ -19,8 +22,8 @@ public class PaintSourceValidator {
   private final List<RecipeInput> whitelist = new ArrayList<RecipeInput>();
   private final List<RecipeInput> blacklist = new ArrayList<RecipeInput>();
 
-  public boolean isValidSourceDefault(ItemStack paintSource) {
-    if(paintSource == null) {
+  public boolean isValidSourceDefault(@Nonnull ItemStack paintSource) {
+    if (Prep.isInvalid(paintSource)) {
       return false;
     }
     Block block = PainterUtil2.getBlockFromItem(paintSource);
@@ -39,15 +42,15 @@ public class PaintSourceValidator {
     return true;
   }
 
-  public boolean isWhitelisted(ItemStack paintSource) {
+  public boolean isWhitelisted(@Nonnull ItemStack paintSource) {
     return isInList(paintSource, whitelist);
   }
 
-  public boolean isBlacklisted(ItemStack paintSource) {
+  public boolean isBlacklisted(@Nonnull ItemStack paintSource) {
     return isInList(paintSource, blacklist);
   }
 
-  public void addToWhitelist(ItemStack input) {
+  public void addToWhitelist(@Nonnull ItemStack input) {
     addToWhitelist(new RecipeInput(input, true));
   }
 
@@ -55,7 +58,7 @@ public class PaintSourceValidator {
     whitelist.add(input);
   }
 
-  public void addToBlacklist(ItemStack input) {
+  public void addToBlacklist(@Nonnull ItemStack input) {
     addToBlacklist(new RecipeInput(input, true));
   }
 
@@ -71,8 +74,8 @@ public class PaintSourceValidator {
     removeFromList(input, blacklist);
   }
 
-  protected boolean isInList(ItemStack paintSource, List<RecipeInput> list) {
-    if(paintSource == null) {
+  protected boolean isInList(@Nonnull ItemStack paintSource, List<RecipeInput> list) {
+    if (Prep.isInvalid(paintSource)) {
       return false;
     }
     for (RecipeInput ri : list) {
@@ -85,7 +88,7 @@ public class PaintSourceValidator {
 
   protected void removeFromList(RecipeInput input, List<RecipeInput> list) {
     ItemStack inStack = input.getInput();
-    if(inStack == null) {
+    if (Prep.isInvalid(inStack)) {
       return;
     }
     RecipeInput toRemove = null;

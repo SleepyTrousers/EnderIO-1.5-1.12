@@ -23,9 +23,8 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
-import crazypants.enderio.integration.buildcraft.BuildcraftUtil;
 import crazypants.enderio.integration.chiselsandbits.CABIMC;
-import crazypants.enderio.integration.te.TEIntegration;
+import crazypants.enderio.integration.te.TEUtil;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
@@ -117,7 +116,6 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     FluidFuelRegister.create();
-    BuildcraftUtil.registerFuelRegistry();
     fluids = new Fluids();
     fluids.registerFluids();
 
@@ -187,7 +185,7 @@ public class EnderIO {
 
     // ThaumcraftCompat.load();
     BuildcraftIntegration.init();
-    TEIntegration.init();
+    TEUtil.create();
     TicProxy.init(event);
 
     proxy.init(event);

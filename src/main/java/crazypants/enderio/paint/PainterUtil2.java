@@ -1,10 +1,12 @@
 package crazypants.enderio.paint;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.properties.IProperty;
@@ -23,8 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.util.NbtValue.BLOCKSTATE;
-import static crazypants.util.NbtValue.SOURCE_BLOCK;
-import static crazypants.util.NbtValue.SOURCE_META;
 
 public class PainterUtil2 {
 
@@ -166,7 +166,7 @@ public class PainterUtil2 {
     }
   }
 
-  public static ItemStack getPaintAsStack(IBlockState state) {
+  public static @Nonnull ItemStack getPaintAsStack(IBlockState state) {
     if (state != null) {
       Block block = state.getBlock();
       Item itemFromBlock = Item.getItemFromBlock(block);
@@ -174,7 +174,7 @@ public class PainterUtil2 {
         return new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
       }
     }
-    return null;
+    return Prep.getEmpty();
   }
 
   public interface IWithPaintName {

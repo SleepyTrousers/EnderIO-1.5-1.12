@@ -7,6 +7,7 @@ import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
 import crazypants.enderio.BlockEio;
@@ -17,6 +18,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.util.CapturedMob;
 import crazypants.util.NbtValue;
+import crazypants.util.Prep;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
@@ -82,7 +84,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       probeInfo.text(blockState.toString());
     }
     if (probeInfo != null && world != null && blockState != null && hitData != null && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
-      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, hitData.getPos());
+      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"));
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
 
@@ -237,10 +239,10 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.isPainted) {
       IProbeInfo info = eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.PAINTING))
           .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(TextFormatting.YELLOW + EnderIO.lang.localize("top.paint.header"));
-      if (data.paint2 != null) {
+      if (Prep.isValid(data.paint2)) {
         info.horizontal(eiobox.center()).item(data.paint2).text(data.paint2.getDisplayName());
       }
-      if (data.paint1 != null) {
+      if (Prep.isValid(data.paint1)) {
         info.horizontal(eiobox.center()).item(data.paint1).text(data.paint1.getDisplayName());
       }
     }
@@ -323,7 +325,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.tankData != null && !data.tankData.isEmpty()) {
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
         for (ITankData tank : data.tankData) {
-          ItemStack stack = new ItemStack(blockTank.getBlock());
+          ItemStack stack = new ItemStack(blockTank.getBlockNN());
           String content1 = null;
           String content2 = null;
           final FluidStack fluid = tank.getContent();
@@ -331,7 +333,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             FluidStack fluid2 = fluid.copy();
             fluid2.amount = fluid.amount * 16000 / tank.getCapacity();
             FluidAndStackResult fillContainer = FluidUtil.tryFillContainer(stack, fluid2);
-            if (fillContainer.result.itemStack != null) {
+            if (Prep.isValid(fillContainer.result.itemStack)) {
               stack = fillContainer.result.itemStack;
               NbtValue.FAKE.setInt(stack, 1);
             }

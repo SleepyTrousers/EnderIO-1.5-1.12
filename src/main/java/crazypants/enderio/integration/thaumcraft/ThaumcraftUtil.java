@@ -5,9 +5,9 @@ import java.util.List;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import net.minecraftforge.fml.common.Loader;
 
-public class ThaumcraftCompat {
+public class ThaumcraftUtil {
 
-  public static void load() {
+  public static void create() {
     if(Loader.isModLoaded("Thaumcraft")) {
       loadAspects();
     }

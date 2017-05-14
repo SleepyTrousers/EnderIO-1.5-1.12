@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.recipe;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -58,7 +60,7 @@ public class RecipeInput {
     return fluid != null;
   }
 
-  public ItemStack getInput() {
+  public @Nonnull ItemStack getInput() {
     return input;
   }
 

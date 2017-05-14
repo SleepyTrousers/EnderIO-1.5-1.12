@@ -95,7 +95,7 @@ public class InventorySlot implements IItemHandler {
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     return slot == 0 ? itemStack : Prep.getEmpty();
   }
 

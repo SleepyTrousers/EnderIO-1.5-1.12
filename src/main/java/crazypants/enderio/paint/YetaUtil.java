@@ -21,10 +21,11 @@ public class YetaUtil {
   private static volatile @Nonnull YetaDisplayMode lastCheckResult = new YetaDisplayMode();
   private static boolean toggled = false;
 
-  public static boolean shouldHeldItemHideFacades(EntityPlayer player) {
+  public static boolean shouldHeldItemHideFacades(@Nonnull EntityPlayer player) {
+    @Nonnull
     ItemStack held = player.getHeldItemMainhand();
     boolean checkResult;
-    if (held != null && held.getItem() instanceof IHideFacades) {
+    if (held.getItem() instanceof IHideFacades) {
       checkResult = ((IHideFacades) held.getItem()).shouldHideFacades(held, player);
     } else {
       checkResult = ToolUtil.isToolEquipped(player, EnumHand.MAIN_HAND);
@@ -55,7 +56,7 @@ public class YetaUtil {
     return new YetaDisplayMode(lastCheckResult);
   }
 
-  public static void refresh(TileEntity te) {
+  public static void refresh(@Nonnull TileEntity te) {
     if (toggled && te instanceof IPaintable.IPaintableTileEntity && ((IPaintable.IPaintableTileEntity) te).getPaintSource() != null) {
       BlockPos pos = te.getPos();
       IBlockState bs = te.getWorld().getBlockState(pos);
@@ -63,24 +64,15 @@ public class YetaUtil {
     }
   }
 
-  public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
+  public static @Nonnull ConduitDisplayMode getDisplayMode(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
     if (player == null) {
       return ConduitDisplayMode.ALL;
     }
-    ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null) {
-      return ConduitDisplayMode.ALL;
-    }
-  
-    ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
-    if (result == null) {
-      return ConduitDisplayMode.ALL;
-    }
-    return result;
+    return ConduitDisplayMode.getDisplayMode(player.getHeldItemMainhand());
   }
 
-  public static boolean isFacadeHidden(IPaintableTileEntity bundle, EntityPlayer player) {
+  public static boolean isFacadeHidden(@Nonnull IPaintableTileEntity bundle, EntityPlayer player) {
     if (bundle.getPaintSource() == null) {
       return false;
     }
@@ -90,29 +82,29 @@ public class YetaUtil {
     return shouldHeldItemHideFacades(player);
   }
 
-  public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
+  public static boolean isSolidFacadeRendered(@Nonnull IConduitBundle bundle, EntityPlayer player) {
     return bundle.hasFacade() && !isFacadeHidden(bundle, player);
   }
 
-  public static boolean renderConduit(EntityPlayer player, Class<? extends IConduit> conduitType) {
+  public static boolean renderConduit(EntityPlayer player, @Nonnull Class<? extends IConduit> conduitType) {
     if (player == null || player.world.isRemote) {
       return lastCheckResult.renderConduit(conduitType);
     }
     return getDisplayMode(player).renderConduit(conduitType);
   }
 
-  public static boolean renderConduit(EntityPlayer player, IConduit con) {
+  public static boolean renderConduit(EntityPlayer player, @Nonnull IConduit con) {
     return renderConduit(player, con.getBaseConduitType());
   }
 
   public static class YetaDisplayMode {
     private boolean hideFacades = false;
-    private ConduitDisplayMode displayMode = ConduitDisplayMode.ALL;
+    private @Nonnull ConduitDisplayMode displayMode = ConduitDisplayMode.ALL;
 
     private YetaDisplayMode() {
     }
 
-    private YetaDisplayMode(YetaDisplayMode global) {
+    private YetaDisplayMode(@Nonnull YetaDisplayMode global) {
       hideFacades = global.hideFacades;
       displayMode = global.displayMode;
     }
@@ -121,7 +113,7 @@ public class YetaUtil {
       return hideFacades;
     }
 
-    public ConduitDisplayMode getDisplayMode() {
+    public @Nonnull ConduitDisplayMode getDisplayMode() {
       return displayMode;
     }
 
@@ -129,15 +121,15 @@ public class YetaUtil {
       this.hideFacades = hideFacades;
     }
 
-    void setDisplayMode(ConduitDisplayMode displayMode) {
+    void setDisplayMode(@Nonnull ConduitDisplayMode displayMode) {
       this.displayMode = displayMode;
     }
 
-    public boolean renderConduit(Class<? extends IConduit> conduitType) {
+    public boolean renderConduit(@Nonnull Class<? extends IConduit> conduitType) {
       return displayMode.renderConduit(conduitType);
     }
 
-    public boolean renderConduit(IConduit con) {
+    public boolean renderConduit(@Nonnull IConduit con) {
       return renderConduit(con.getBaseConduitType());
     }
 

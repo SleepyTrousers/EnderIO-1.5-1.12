@@ -3,9 +3,9 @@ package crazypants.enderio.integration.te;
 import crazypants.enderio.Log;
 import net.minecraftforge.fml.common.ModAPIManager;
 
-public class TEIntegration {
+public class TEUtil {
 
-  public static void init() {
+  public static void create() {
     if (ModAPIManager.INSTANCE.hasAPI("cofhapi|item")) {
       // Add support for TE wrench
       try {

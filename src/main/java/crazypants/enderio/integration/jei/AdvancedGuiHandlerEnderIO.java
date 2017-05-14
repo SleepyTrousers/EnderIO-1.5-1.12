@@ -22,13 +22,13 @@ public class AdvancedGuiHandlerEnderIO implements IAdvancedGuiHandler<GuiContain
 
   @Override
   @Nullable
-  public List<Rectangle> getGuiExtraAreas(GuiContainerBaseEIO guiContainer) {
+  public List<Rectangle> getGuiExtraAreas(@Nonnull GuiContainerBaseEIO guiContainer) {
     return guiContainer.getBlockingAreas();
   }
 
   @Override
   @Nullable
-  public Object getIngredientUnderMouse(GuiContainerBaseEIO guiContainer, int mouseX, int mouseY) {
+  public Object getIngredientUnderMouse(@Nonnull GuiContainerBaseEIO guiContainer, int mouseX, int mouseY) {
     return guiContainer.getIngredientUnderMouse(mouseX - guiContainer.getGuiLeft(), mouseY - guiContainer.getGuiTop());
   }
 

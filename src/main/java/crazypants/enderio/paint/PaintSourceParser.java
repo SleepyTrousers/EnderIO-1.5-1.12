@@ -21,8 +21,8 @@ import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class PaintSourceParser extends DefaultHandler {
 
-  private static final String CORE_FILE_NAME = "PainterPaintSources_Core.xml";
-  private static final String CUSTOM_FILE_NAME = "PainterPaintSources_User.xml";
+  private static final String CORE_FILE_NAME = "painter_paint_sources_core.xml";
+  private static final String CUSTOM_FILE_NAME = "painter_paint_sources_user.xml";
 
   public static void loadConfig() {
     File coreFile = new File(Config.configDirectory, CORE_FILE_NAME);
@@ -35,7 +35,7 @@ public class PaintSourceParser extends DefaultHandler {
       e.printStackTrace();
       return;
     }
-    if(!coreFile.exists()) {
+    if (!coreFile.exists()) {
       Log.error("Could not load default lists from " + coreFile + " as the file does not exist.");
       return;
     }
@@ -50,7 +50,7 @@ public class PaintSourceParser extends DefaultHandler {
     String userConfigStr = null;
     try {
       userConfigStr = RecipeConfig.readRecipes(userFile, CUSTOM_FILE_NAME, false);
-      if(userConfigStr == null || userConfigStr.trim().length() == 0) {
+      if (userConfigStr == null || userConfigStr.trim().length() == 0) {
         Log.error("Empty user config file: " + userFile.getAbsolutePath());
       } else {
         parse(userConfigStr);
@@ -94,34 +94,34 @@ public class PaintSourceParser extends DefaultHandler {
 
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-    if(ELEMENT_WHITELIST.equals(localName)) {
+    if (ELEMENT_WHITELIST.equals(localName)) {
       isWhitelist = true;
       isBlacklist = false;
       return;
     }
-    if(ELEMENT_BLACKLIST.equals(localName)) {
+    if (ELEMENT_BLACKLIST.equals(localName)) {
       isWhitelist = false;
       isBlacklist = true;
       return;
     }
-    if(ELEMENT_ITEM_STACK.equals(localName)) {
-      if(!isWhitelist && !isBlacklist) {
+    if (ELEMENT_ITEM_STACK.equals(localName)) {
+      if (!isWhitelist && !isBlacklist) {
         Log.warn("PaintSourceParser: Item stack found outside of whitlist/blacklist elements. It will be ignored");
         return;
       }
       RecipeInput stack = RecipeConfigParser.getItemStack(attributes);
-      if(stack == null) {
+      if (stack == null) {
         return;
       }
       boolean isRemove = RecipeConfigParser.getBooleanValue(AT_REMOVE, attributes, false);
-      if(isBlacklist) {
-        if(isRemove) {
+      if (isBlacklist) {
+        if (isRemove) {
           PaintSourceValidator.instance.removeFromBlackList(stack);
         } else {
           PaintSourceValidator.instance.addToBlacklist(stack);
         }
       } else {
-        if(isRemove) {
+        if (isRemove) {
           PaintSourceValidator.instance.removeFromWhitelist(stack);
         } else {
           PaintSourceValidator.instance.addToWhitelist(stack);
@@ -132,11 +132,11 @@ public class PaintSourceParser extends DefaultHandler {
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    if(ELEMENT_WHITELIST.equals(localName)) {
+    if (ELEMENT_WHITELIST.equals(localName)) {
       isWhitelist = false;
       return;
     }
-    if(ELEMENT_BLACKLIST.equals(localName)) {
+    if (ELEMENT_BLACKLIST.equals(localName)) {
       isBlacklist = false;
       return;
     }

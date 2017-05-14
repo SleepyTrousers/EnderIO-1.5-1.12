@@ -1,5 +1,7 @@
 package crazypants.enderio.integration.forestry;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IFarmerJoe;
@@ -17,10 +19,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
 public class ForestryFarmer implements IFarmerJoe {
-  private ITreeRoot root;
-  private Item forestrySapling;
+  private final @Nonnull ITreeRoot root;
+  private final @Nonnull Item forestrySapling;
 
-  private ForestryFarmer(ITreeRoot root, Item forestrySapling) {
+  private ForestryFarmer(@Nonnull ITreeRoot root, @Nonnull Item forestrySapling) {
     this.root = root;
     this.forestrySapling = forestrySapling;
   }
@@ -34,13 +36,13 @@ public class ForestryFarmer implements IFarmerJoe {
 
   @Override
   public boolean canPlant(ItemStack stack) {
-    return Prep.isValid(stack) && stack.getItem() == forestrySapling && root.getType(stack) == EnumGermlingType.SAPLING;
+    return stack.getItem() == forestrySapling && root.getType(stack) == EnumGermlingType.SAPLING;
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState state) {
+  public boolean prepareBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     ItemStack sapling = farm.getSeedTypeInSuppliesFor(bc);
-    if (Prep.isValid(sapling) && sapling.getItem() == forestrySapling) {
+    if (sapling.getItem() == forestrySapling) {
       ITree tree = root.getMember(sapling);
       if (tree != null && tree.canStay(farm.getWorld(), bc)) {
         if (Prep.isValid(farm.takeSeedFromSupplies(sapling, bc, false))) {
@@ -53,12 +55,12 @@ public class ForestryFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState state) {
+  public boolean canHarvest(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState state) {
+  public IHarvestResult harvestBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return null;
   }
 }

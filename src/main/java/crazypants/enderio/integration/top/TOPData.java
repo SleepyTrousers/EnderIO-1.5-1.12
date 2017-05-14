@@ -4,11 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.capability.EnderInventory;
 import crazypants.enderio.capability.InventorySlot;
@@ -37,7 +40,6 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.util.CapturedMob;
 import crazypants.util.Prep;
-import crazypants.util.UserIdent;
 import mcjty.theoneprobe.api.IProbeHitData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -65,8 +67,10 @@ class TOPData {
   List<CapturedMob> mobs;
   TOPData.ProgressResult progressResult = TOPData.ProgressResult.NONE;
   List<ITankData> tankData = null;
-  ItemStack paint1 = null;
-  ItemStack paint2 = null;
+  @Nonnull
+  ItemStack paint1 = Prep.getEmpty();
+  @Nonnull
+  ItemStack paint2 = Prep.getEmpty();
   UserIdent owner = null;
 
   public TOPData(TileEntity tileEntity, IProbeHitData hitData) {
@@ -162,11 +166,9 @@ class TOPData {
 
     if (tileEntity instanceof IHaveExperience) {
       ExperienceContainer experienceContainer = ((IHaveExperience) tileEntity).getContainer();
-      if (experienceContainer != null) {
-        hasXP = true;
+      hasXP = experienceContainer.getMaximumExperiance() > 0;
         experienceLevel = experienceContainer.getExperienceLevel();
         xpBarScaled = experienceContainer.getXpBarScaled(100);
-      }
     }
 
     if (tileEntity instanceof IPaintableTileEntity) {
@@ -174,7 +176,7 @@ class TOPData {
       if (tileEntity instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
         paint2 = PainterUtil2.getPaintAsStack(((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
       }
-      isPainted = paint1 != null || paint2 != null;
+      isPainted = Prep.isValid(paint1) || Prep.isValid(paint2);
     }
 
     if (tileEntity instanceof TileInventoryChest) {
@@ -182,7 +184,7 @@ class TOPData {
       for (InventorySlot slot : ((AbstractCapabilityMachineEntity) tileEntity).getInventory().getView(EnderInventory.Type.INOUT)) {
         if (Prep.isValid(slot.getStackInSlot(0))) {
           fillMax += Math.min(slot.getMaxStackSize(), slot.getStackInSlot(0).getMaxStackSize());
-          fillCur += slot.getStackInSlot(0).stackSize;
+          fillCur += slot.getStackInSlot(0).getCount();
         } else {
           fillMax += slot.getMaxStackSize();
         }

@@ -8,7 +8,7 @@ public class BoPUtil {
   }
 
   public static void addBoP() {
-    FarmersRegistry.registerFlower("block:BiomesOPlenty:flowers", "block:BiomesOPlenty:flowers2");
+    FarmersRegistry.registerFlower("block:biomesoplenty:flowers", "block:biomesoplenty:flowers2");
   }
 
 }

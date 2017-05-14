@@ -1,5 +1,7 @@
 package crazypants.enderio.integration.chiselsandbits;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
@@ -19,9 +21,9 @@ public class CABIMC {
     whitelist(ModObject.blockDecoration2);
   }
 
-  private static void whitelist(ModObject modObject) {
+  private static void whitelist(@Nonnull ModObject modObject) {
     if (modObject.getBlock() != null) {
-      FMLInterModComms.sendMessage("chiselsandbits", "ignoreblocklogic", modObject.getBlock().getRegistryName());
+      FMLInterModComms.sendMessage("chiselsandbits", "ignoreblocklogic", modObject.getBlockNN().getRegistryName());
       Log.info("Sending whitelist message to Chisel and Bits for block ", modObject);
     }
   }

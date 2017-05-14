@@ -15,7 +15,6 @@ import crazypants.enderio.machine.sagmill.GrindingBall;
 import crazypants.enderio.machine.sagmill.GuiSagMill;
 import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.util.TextUtil;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -100,8 +99,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
 
   @Override
   public @Nonnull String getTitle() {
-    String localizedName = blockSagMill.getBlock().getLocalizedName();
-    return localizedName != null ? localizedName : "ERROR";
+    return blockSagMill.getBlockNN().getLocalizedName();
   }
 
   @Override
@@ -120,7 +118,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
       return;
     }
     String energyString = PowerDisplayUtil.formatPower(currentRecipe.getEnergyRequired()) + " " + PowerDisplayUtil.abrevation();
-    minecraft.fontRendererObj.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
+    minecraft.fontRenderer.drawString(energyString, 135 - xOff, 60 - yOff, 0x808080, false);
     GlStateManager.color(1, 1, 1, 1);
   }
 
@@ -129,14 +127,14 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
 
     currentRecipe = recipeWrapper;
 
-    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();    
+    IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
     guiItemStacks.addTooltipCallback(this);
 
     guiItemStacks.init(0, true, 79 - xOff, 11 - yOff);
     guiItemStacks.init(1, false, 48 - xOff, 58 - yOff);
     guiItemStacks.init(2, false, 69 - xOff, 58 - yOff);
     guiItemStacks.init(3, false, 90 - xOff, 58 - yOff);
-    guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);    
+    guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);
     guiItemStacks.init(5, false, 121 - xOff, 22 - yOff);
 
     List<ItemStack> inputs = ingredients.getInputs(ItemStack.class).get(0);
@@ -150,39 +148,39 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCate
         i++;
       }
     }
-    guiItemStacks.set(5, getBalls());       
+    guiItemStacks.set(5, getBalls());
   }
-  
+
   @Override
-  public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {  
-    if(slotIndex == 0) {
+  public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
+    if (slotIndex == 0) {
       return;
     }
-    if(slotIndex == 5) {
-      if(ballsTT.shouldHandleItem(ingredient)) {
+    if (slotIndex == 5) {
+      if (ballsTT.shouldHandleItem(ingredient)) {
         ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().player, tooltip, true);
       }
       return;
     }
-    if(slotIndex - 1 >= currentRecipe.getRecipe().getOutputs().length) {
+    if (slotIndex - 1 >= currentRecipe.getRecipe().getOutputs().length) {
       return;
     }
     RecipeOutput output = currentRecipe.getRecipe().getOutputs()[slotIndex - 1];
     float chance = output.getChance();
-    if(chance > 0 && chance < 1) {
+    if (chance > 0 && chance < 1) {
       int chanceInt = (int) (chance * 100);
       Object[] objects = { chanceInt };
       tooltip.add(TextFormatting.GRAY + MessageFormat.format(I18n.translateToLocal("enderio.nei.sagmill.outputchance"), objects));
-    }    
+    }
   }
-  
+
   private @Nonnull List<ItemStack> getBalls() {
     List<GrindingBall> daBalls = SagMillRecipeManager.getInstance().getBalls();
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(null);
     for (GrindingBall ball : daBalls) {
       res.add(ball.getInput());
-    }    
+    }
     return res;
   }
 

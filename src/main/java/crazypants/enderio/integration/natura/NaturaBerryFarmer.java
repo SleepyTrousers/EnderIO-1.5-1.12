@@ -1,6 +1,8 @@
 package crazypants.enderio.integration.natura;
 
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
@@ -13,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class NaturaBerryFarmer extends PickableFarmer {
 
-  public NaturaBerryFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
+  public NaturaBerryFarmer(@Nonnull Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, @Nonnull ItemStack seeds) {
     super(plantedBlock, plantedBlockMeta, grownBlockMeta, seeds);
     checkGroundForFarmland = requiresFarmland = false;
   }
@@ -62,8 +64,6 @@ public class NaturaBerryFarmer extends PickableFarmer {
   public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState bs) {
     BlockPos checkBlock = bc;
     while (checkBlock.getY() <= 255) {
-      bs = farm.getBlockState(checkBlock);
-      block = bs.getBlock();
       if (block != getPlantedBlock()) {
         return false;
       }
@@ -71,6 +71,8 @@ public class NaturaBerryFarmer extends PickableFarmer {
         return true;
       }
       checkBlock = checkBlock.up();
+      bs = farm.getBlockState(checkBlock);
+      block = bs.getBlock();
     }
     return false;
   }

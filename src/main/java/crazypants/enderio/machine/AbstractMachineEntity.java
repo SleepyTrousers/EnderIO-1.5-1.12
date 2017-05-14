@@ -8,7 +8,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -19,12 +21,10 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.util.ResettingFlag;
-import crazypants.util.UserIdent;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -451,7 +451,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   public UserIdent getOwner() {
-    return owner != null ? owner : UserIdent.nobody;
+    return owner != null ? owner : UserIdent.NOBODY;
   }
 
 }
