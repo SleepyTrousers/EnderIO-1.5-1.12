@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.machine.farm.farmers.PlaceableFarmer;
 import net.minecraft.entity.Entity;
 
 public class BotaniaUtil {
@@ -44,6 +46,11 @@ public class BotaniaUtil {
   public static void addBotania() {
     FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleFlower1", "block:botania:doubleFlower2", "block:botania:shinyFlower",
         "block:botania:mushroom");
+    PlaceableFarmer farmer = new PlaceableFarmer("item:botania:petal");
+    farmer.addDirt("block:minecraft:grass");
+    if (farmer.isValid()) {
+      FarmersCommune.joinCommune(farmer);
+    }
   }
 
 }
