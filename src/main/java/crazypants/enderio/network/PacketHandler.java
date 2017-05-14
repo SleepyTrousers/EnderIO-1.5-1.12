@@ -4,6 +4,7 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.PacketRedstoneMode;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -37,9 +38,10 @@ public class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
-    INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, PacketHandler.nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
   }
 
 }

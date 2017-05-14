@@ -2,6 +2,8 @@ package crazypants.enderio.integration.buildcraft;
 
 import java.lang.reflect.Method;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -32,8 +34,8 @@ public class MpsUtil {
 
   }
 
-  public boolean isPowerFistEquiped(ItemStack equipped) {
-    if(!isMpsInstalled || equipped == null || equipped.getItem() == null) {
+  public boolean isPowerFistEquiped(@Nonnull ItemStack equipped) {
+    if (!isMpsInstalled) {
       return false;
     }
     Item item = equipped.getItem();
@@ -43,8 +45,8 @@ public class MpsUtil {
     return false;
   }
 
-  public boolean isOmniToolActive(ItemStack equipped) {
-    if(!isMpsInstalled || equipped == null || itemActiveMethod == null) {
+  public boolean isOmniToolActive(@Nonnull ItemStack equipped) {
+    if (!isMpsInstalled) {
       return false;
     }
     try {

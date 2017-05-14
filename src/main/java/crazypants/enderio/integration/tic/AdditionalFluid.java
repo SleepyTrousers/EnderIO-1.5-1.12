@@ -1,6 +1,7 @@
 package crazypants.enderio.integration.tic;
 
-import java.util.List;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
@@ -9,7 +10,7 @@ import crazypants.enderio.fluid.BlockFluidEio.MoltenEnder;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenGlowstone;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenRedstone;
 import crazypants.enderio.material.PowderIngot;
-import crazypants.util.Things;
+import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -78,12 +79,10 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+          EnderIO.fluids.registerFluidBlockRendering(f);
         }
       }
-      if (FluidRegistry.isUniversalBucketEnabled()) {
-        FluidRegistry.addBucketForFluid(f);
-      }
+      FluidRegistry.addBucketForFluid(f);
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("fluid", f.getName());
@@ -106,7 +105,7 @@ public class AdditionalFluid {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.GLOWSTONE_DUST), f, 250);
       TicProxy.registerSmelterySmelting(new ItemStack(Blocks.GLOWSTONE), f, 1000);
-      TicProxy.registerBasinCasting(new ItemStack(Blocks.GLOWSTONE), null, f, 1000);
+      TicProxy.registerBasinCasting(new ItemStack(Blocks.GLOWSTONE), Prep.getEmpty(), f, 1000);
     }
   }
 
@@ -127,7 +126,7 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+          EnderIO.fluids.registerFluidBlockRendering(f);
         }
       }
       if (FluidRegistry.isUniversalBucketEnabled()) {
@@ -155,7 +154,7 @@ public class AdditionalFluid {
       // Note: We match the old TE amounts
       TicProxy.registerSmelterySmelting(new ItemStack(Items.REDSTONE), f, 100);
       TicProxy.registerSmelterySmelting(new ItemStack(Blocks.REDSTONE_BLOCK), f, 900);
-      TicProxy.registerBasinCasting(new ItemStack(Blocks.REDSTONE_BLOCK), null, f, 900);
+      TicProxy.registerBasinCasting(new ItemStack(Blocks.REDSTONE_BLOCK), Prep.getEmpty(), f, 900);
     }
   }
 
@@ -176,7 +175,7 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f, f.getName());
+          EnderIO.fluids.registerFluidBlockRendering(f);
         }
       }
       if (FluidRegistry.isUniversalBucketEnabled()) {
@@ -205,12 +204,12 @@ public class AdditionalFluid {
       TicProxy.registerSmelterySmelting(new ItemStack(Items.ENDER_PEARL), f, 250);
       // Need to do this later because of the cast
       Things cast = new Things("tconstruct:cast_custom:2");
-      List<ItemStack> casts = cast.getItemStacks();
+      NNList<ItemStack> casts = cast.getItemStacks();
       if (!casts.isEmpty()) {
         TicProxy.registerTableCast(new ItemStack(Items.ENDER_PEARL), casts.get(0), f, 250);
       }
     }
-    TicProxy.registerSmelterySmelting(new ItemStack(itemPowderIngot.getItem(), 1, PowderIngot.POWDER_ENDER.ordinal()), f, 250 / 9);
+    TicProxy.registerSmelterySmelting(new ItemStack(itemPowderIngot.getItemNN(), 1, PowderIngot.POWDER_ENDER.ordinal()), f, 250 / 9);
   }
 
 }

@@ -8,7 +8,7 @@ public class TicUtil {
   }
 
   public static void addTic() {
-    FarmersRegistry.registerLogs("blockSlimeCongealed");
+    FarmersRegistry.registerLogs("blockSlimeCongealed"); // oreDict
   }
 
 }

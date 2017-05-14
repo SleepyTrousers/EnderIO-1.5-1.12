@@ -23,6 +23,7 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
+import crazypants.enderio.integration.buildcraft.BuildcraftUtil;
 import crazypants.enderio.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.integration.te.TEIntegration;
 import crazypants.enderio.integration.tic.TicProxy;
@@ -49,7 +50,6 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
-import crazypants.util.Things;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
 import net.minecraft.util.ResourceLocation;
@@ -116,6 +116,8 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
+    FluidFuelRegister.create();
+    BuildcraftUtil.registerFuelRegistry();
     fluids = new Fluids();
     fluids.registerFluids();
 
@@ -137,8 +139,6 @@ public class EnderIO {
 
   @EventHandler
   public void load(@Nonnull FMLInitializationEvent event) {
-    Things.init(event); // FIXME do this in ec
-
     Config.init(event);
 
     instance = this;
@@ -181,10 +181,6 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    // should have been registered by open blocks
-    if (Fluids.fluidXpJuice == null) {
-      fluids.forgeRegisterXPJuice();
-    }
     if (Config.dumpMobNames) {
       dumpMobNamesToFile();
     }

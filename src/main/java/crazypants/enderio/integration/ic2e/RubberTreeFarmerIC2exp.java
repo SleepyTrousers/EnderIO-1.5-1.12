@@ -42,7 +42,7 @@ public class RubberTreeFarmerIC2exp extends RubberTreeFarmer {
   @Override
   protected ItemStack makeResin(Random rand) {
     ItemStack copy = stickyResin.copy();
-    copy.stackSize = rand.nextInt(3) + 1;
+    copy.setCount(rand.nextInt(3) + 1);
     return copy;
   }
 

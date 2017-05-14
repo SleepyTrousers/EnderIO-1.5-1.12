@@ -1,20 +1,27 @@
 package crazypants.enderio.fluid;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IFluidRegister {
 
-  IFluidFuel getFuel(FluidStack fluid);
+  @Nullable
+  IFluidFuel getFuel(@Nonnull FluidStack fluid);
 
-  IFluidFuel getFuel(Fluid fluid);
+  @Nullable
+  IFluidFuel getFuel(@Nonnull Fluid fluid);
 
-  void addFuel(Fluid fluid, int powerPerCycleRF, int totalBurnTime);
+  void addFuel(@Nonnull Fluid fluid, int powerPerCycleRF, int totalBurnTime);
 
-  IFluidCoolant getCoolant(FluidStack fluid);
+  @Nullable
+  IFluidCoolant getCoolant(@Nonnull FluidStack fluid);
 
-  IFluidCoolant getCoolant(Fluid fluid);
+  @Nullable
+  IFluidCoolant getCoolant(@Nonnull Fluid fluid);
 
-  void addCoolant(Fluid fluid, float degreesCoolingPerMB);
+  void addCoolant(@Nonnull Fluid fluid, float degreesCoolingPerMB);
 
 }

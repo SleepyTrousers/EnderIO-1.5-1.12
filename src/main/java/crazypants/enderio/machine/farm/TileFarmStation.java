@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.mojang.authlib.GameProfile;
 
@@ -26,7 +27,6 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
-import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Prep;
 import crazypants.util.Things;
 import info.loenwind.autosave.annotations.Storable;

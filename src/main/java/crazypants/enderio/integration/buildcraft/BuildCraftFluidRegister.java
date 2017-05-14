@@ -1,9 +1,12 @@
 package crazypants.enderio.integration.buildcraft;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NullHelper;
+
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import buildcraft.api.fuels.ICoolant;
 import buildcraft.api.fuels.IFuel;
-import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.FluidFuelRegister.CoolantImpl;
 import crazypants.enderio.fluid.FluidFuelRegister.FuelImpl;
 import crazypants.enderio.fluid.IFluidCoolant;
@@ -15,24 +18,23 @@ import net.minecraftforge.fluids.FluidStack;
 public class BuildCraftFluidRegister implements IFluidRegister {
 
   public BuildCraftFluidRegister() throws Exception {
-    //Make it go splat in object construction if an older version of
-    //build craft is installed
+    // Make it go splat in object construction if an older version of
+    // build craft is installed
     Class.forName("buildcraft.api.fuels.BuildcraftFuelRegistry");
-    FluidFuelRegister.instance.addRegister(this);
   }
 
   @Override
-  public void addCoolant(Fluid fluid, float degreesCoolingPerMB) {
-    if(BuildcraftFuelRegistry.coolant != null && BuildcraftFuelRegistry.coolant.getCoolant(fluid) == null) {
+  public void addCoolant(@Nonnull Fluid fluid, float degreesCoolingPerMB) {
+    if (BuildcraftFuelRegistry.coolant != null && BuildcraftFuelRegistry.coolant.getCoolant(fluid) == null) {
       BuildcraftFuelRegistry.coolant.addCoolant(fluid, degreesCoolingPerMB);
     }
   }
 
   @Override
-  public IFluidCoolant getCoolant(Fluid fluid) {
-    if(fluid != null && BuildcraftFuelRegistry.coolant != null) {
+  public IFluidCoolant getCoolant(@Nonnull Fluid fluid) {
+    if (BuildcraftFuelRegistry.coolant != null) {
       ICoolant bcCool = BuildcraftFuelRegistry.coolant.getCoolant(fluid);
-      if(bcCool != null) {
+      if (bcCool != null) {
         return new CoolantBC(bcCool);
       }
     }
@@ -40,28 +42,26 @@ public class BuildCraftFluidRegister implements IFluidRegister {
   }
 
   @Override
-  public IFluidCoolant getCoolant(FluidStack fluid) {
-    if(fluid == null || fluid.getFluid() == null) {
+  public IFluidCoolant getCoolant(@Nonnull FluidStack fluid) {
+    final Fluid fluid2 = fluid.getFluid();
+    if (fluid2 == null) {
       return null;
     }
-    return getCoolant(fluid.getFluid());
+    return getCoolant(fluid2);
   }
 
   @Override
-  public void addFuel(Fluid fluid, int powerPerCycleRF, int totalBurnTime) {
-    if(BuildcraftFuelRegistry.fuel != null && BuildcraftFuelRegistry.fuel.getFuel(fluid) == null) {
+  public void addFuel(@Nonnull Fluid fluid, int powerPerCycleRF, int totalBurnTime) {
+    if (BuildcraftFuelRegistry.fuel != null && BuildcraftFuelRegistry.fuel.getFuel(fluid) == null) {
       BuildcraftFuelRegistry.fuel.addFuel(fluid, powerPerCycleRF, totalBurnTime);
     }
   }
 
   @Override
-  public IFluidFuel getFuel(Fluid fluid) {
-    if(fluid == null) {
-      return null;
-    }
-    if(BuildcraftFuelRegistry.fuel != null) {
+  public IFluidFuel getFuel(@Nonnull Fluid fluid) {
+    if (BuildcraftFuelRegistry.fuel != null) {
       IFuel bcFuel = BuildcraftFuelRegistry.fuel.getFuel(fluid);
-      if(bcFuel != null) {
+      if (bcFuel != null) {
         return new FuelBC(bcFuel);
       }
     }
@@ -69,17 +69,18 @@ public class BuildCraftFluidRegister implements IFluidRegister {
   }
 
   @Override
-  public IFluidFuel getFuel(FluidStack fluid) {
-    if(fluid == null || fluid.getFluid() == null) {
+  public IFluidFuel getFuel(@Nonnull FluidStack fluid) {
+    final Fluid fluid2 = fluid.getFluid();
+    if (fluid2 == null) {
       return null;
     }
-    return getFuel(fluid.getFluid());
+    return getFuel(fluid2);
   }
 
   private static class FuelBC extends FuelImpl {
 
     FuelBC(IFuel fuel) {
-      super(fuel.getFluid(), fuel.getPowerPerCycle(), fuel.getTotalBurningTime());
+      super(NullHelper.notnull(fuel.getFluid(), "invalid fuel " + fuel), fuel.getPowerPerCycle(), fuel.getTotalBurningTime());
     }
 
   }
@@ -87,8 +88,8 @@ public class BuildCraftFluidRegister implements IFluidRegister {
   private static class CoolantBC extends CoolantImpl {
 
     CoolantBC(ICoolant coolant) {
-      //NB: in the current BC impl the temperature to getDegreesCoolingPerMB is ignored
-      super(coolant.getFluid(), coolant.getDegreesCoolingPerMB(100));
+      // NB: in the current BC impl the temperature to getDegreesCoolingPerMB is ignored
+      super(NullHelper.notnull(coolant.getFluid(), "invalid coolant " + coolant), coolant.getDegreesCoolingPerMB(100));
     }
 
   }

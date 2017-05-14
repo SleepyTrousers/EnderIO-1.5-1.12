@@ -16,7 +16,6 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.diagnostics.EnderIOCrashCallable;
-import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
@@ -143,7 +142,6 @@ public class ClientProxy extends CommonProxy {
 
     // Items
     DarkSteelItems.onClientPreInit();
-    Buckets.registerRenderers();
 
     // Item Models
     ItemModelRegistry.create();

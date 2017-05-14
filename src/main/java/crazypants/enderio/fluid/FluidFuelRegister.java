@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -14,46 +19,50 @@ public class FluidFuelRegister implements IFluidRegister {
 
   public static final FluidFuelRegister instance = new FluidFuelRegister();
 
-  private static final String KEY_FLUID_NAME = "fluidName";
-  private static final String KEY_POWER_PER_CYCLE = "powerPerCycle";
-  private static final String KEY_TOTAL_BURN_TIME = "totalBurnTime";
-  private static final String KEY_COOLING_PER_MB = "coolingPerMb";
+  private static final @Nonnull String KEY_FLUID_NAME = "fluidName";
+  private static final @Nonnull String KEY_POWER_PER_CYCLE = "powerPerCycle";
+  private static final @Nonnull String KEY_TOTAL_BURN_TIME = "totalBurnTime";
+  private static final @Nonnull String KEY_COOLING_PER_MB = "coolingPerMb";
 
   private final Map<String, IFluidCoolant> coolants = new HashMap<String, IFluidCoolant>();
   private final Map<String, IFluidFuel> fuels = new HashMap<String, IFluidFuel>();
 
   private final List<IFluidRegister> otherRegisters = new ArrayList<IFluidRegister>();
 
-  private FluidFuelRegister() {
-    addCoolant(FluidRegistry.WATER, 0.0023f);    
+  public static void create() {
+    // NOP, just load the class
   }
-  
+
+  private FluidFuelRegister() {
+    addCoolant(FluidRegistry.WATER, 0.0023f);
+  }
+
   public void addRegister(IFluidRegister register) {
-    if(register != null) {
+    if (register != null) {
       otherRegisters.add(register);
     }
   }
 
   public void addCoolant(NBTTagCompound tag) {
-    if(tag == null) {
+    if (tag == null) {
       return;
     }
-    if(!tag.hasKey(KEY_FLUID_NAME)) {
+    if (!tag.hasKey(KEY_FLUID_NAME)) {
       return;
     }
-    if(!tag.hasKey(KEY_COOLING_PER_MB)) {
+    if (!tag.hasKey(KEY_COOLING_PER_MB)) {
       return;
     }
     addCoolant(tag.getString(KEY_FLUID_NAME), tag.getFloat(KEY_COOLING_PER_MB));
   }
 
   public void addCoolant(String fluidName, float degreesCoolingPerMB) {
-    addCoolant(FluidRegistry.getFluid(fluidName), degreesCoolingPerMB);
+    addCoolant(NullHelper.notnullF(FluidRegistry.getFluid(fluidName), "Invalid fluid " + fluidName), degreesCoolingPerMB);
   }
 
   @Override
-  public void addCoolant(Fluid fluid, float degreesCoolingPerMB) {
-    if(fluid == null || coolants.get(fluid.getName()) != null) {
+  public void addCoolant(@Nonnull Fluid fluid, float degreesCoolingPerMB) {
+    if (coolants.get(fluid.getName()) != null) {
       return;
     }
     coolants.put(fluid.getName(), new CoolantImpl(fluid, degreesCoolingPerMB));
@@ -62,17 +71,13 @@ public class FluidFuelRegister implements IFluidRegister {
     }
   }
 
-
   @Override
-  public IFluidCoolant getCoolant(Fluid fluid) {
-    if(fluid == null) {
-      return null;
-    }
+  public @Nullable IFluidCoolant getCoolant(@Nonnull Fluid fluid) {
     IFluidCoolant res = coolants.get(fluid.getName());
-    if(res == null && !coolants.containsKey(fluid.getName())) {
+    if (res == null && !coolants.containsKey(fluid.getName())) {
       for (IFluidRegister reg : otherRegisters) {
         res = reg.getCoolant(fluid);
-        if(res != null) {
+        if (res != null) {
           break;
         }
       }
@@ -82,36 +87,37 @@ public class FluidFuelRegister implements IFluidRegister {
   }
 
   @Override
-  public IFluidCoolant getCoolant(FluidStack fluid) {
-    if(fluid == null || fluid.getFluid() == null) {
+  public @Nullable IFluidCoolant getCoolant(@Nonnull FluidStack fluid) {
+    final Fluid fluid2 = fluid.getFluid();
+    if (fluid2 == null) {
       return null;
     }
-    return getCoolant(fluid.getFluid());
+    return getCoolant(fluid2);
   }
 
   public void addFuel(NBTTagCompound tag) {
-    if(tag == null) {
+    if (tag == null) {
       return;
     }
-    if(!tag.hasKey(KEY_FLUID_NAME)) {
+    if (!tag.hasKey(KEY_FLUID_NAME)) {
       return;
     }
-    if(!tag.hasKey(KEY_POWER_PER_CYCLE)) {
+    if (!tag.hasKey(KEY_POWER_PER_CYCLE)) {
       return;
     }
-    if(!tag.hasKey(KEY_TOTAL_BURN_TIME)) {
+    if (!tag.hasKey(KEY_TOTAL_BURN_TIME)) {
       return;
     }
     addFuel(tag.getString(KEY_FLUID_NAME), tag.getInteger(KEY_POWER_PER_CYCLE), tag.getInteger(KEY_TOTAL_BURN_TIME));
   }
 
   public void addFuel(String fluidName, int powerPerCycleRF, int totalBurnTime) {
-    addFuel(FluidRegistry.getFluid(fluidName), powerPerCycleRF, totalBurnTime);
+    addFuel(NullHelper.notnullF(FluidRegistry.getFluid(fluidName), "Invalid fluid " + fluidName), powerPerCycleRF, totalBurnTime);
   }
 
   @Override
-  public void addFuel(Fluid fluid, int powerPerCycleRF, int totalBurnTime) {
-    if(fluid == null || fuels.get(fluid.getName()) != null) {
+  public void addFuel(@Nonnull Fluid fluid, int powerPerCycleRF, int totalBurnTime) {
+    if (fuels.get(fluid.getName()) != null) {
       return;
     }
     fuels.put(fluid.getName(), new FuelImpl(fluid, powerPerCycleRF, totalBurnTime));
@@ -121,15 +127,12 @@ public class FluidFuelRegister implements IFluidRegister {
   }
 
   @Override
-  public IFluidFuel getFuel(Fluid fluid) {
-    if(fluid == null) {
-      return null;
-    }
+  public @Nullable IFluidFuel getFuel(@Nonnull Fluid fluid) {
     IFluidFuel res = fuels.get(fluid.getName());
-    if(res == null && !fuels.containsKey(fluid.getName())) {
+    if (res == null && !fuels.containsKey(fluid.getName())) {
       for (IFluidRegister reg : otherRegisters) {
         res = reg.getFuel(fluid);
-        if(res != null) {
+        if (res != null) {
           break;
         }
       }
@@ -139,27 +142,28 @@ public class FluidFuelRegister implements IFluidRegister {
   }
 
   @Override
-  public IFluidFuel getFuel(FluidStack fluid) {
-    if(fluid == null || fluid.getFluid() == null) {
+  public @Nullable IFluidFuel getFuel(@Nonnull FluidStack fluid) {
+    final Fluid fluid2 = fluid.getFluid();
+    if (fluid2 == null) {
       return null;
     }
-    return getFuel(fluid.getFluid());
+    return getFuel(fluid2);
   }
 
   public static class FuelImpl implements IFluidFuel {
 
-    private final Fluid fluid;
+    private final @Nonnull Fluid fluid;
     private final int powerPerCycle;
     private final int totalBurningTime;
 
-    public FuelImpl(Fluid fluid, int powerPerCycle, int totalBurningTime) {
+    public FuelImpl(@Nonnull Fluid fluid, int powerPerCycle, int totalBurningTime) {
       this.fluid = fluid;
       this.powerPerCycle = powerPerCycle;
       this.totalBurningTime = totalBurningTime;
     }
 
     @Override
-    public Fluid getFluid() {
+    public @Nonnull Fluid getFluid() {
       return fluid;
     }
 
@@ -177,16 +181,16 @@ public class FluidFuelRegister implements IFluidRegister {
 
   public static class CoolantImpl implements IFluidCoolant {
 
-    private final Fluid fluid;
+    private final @Nonnull Fluid fluid;
     private final float degreesCoolingPerMB;
 
-    public CoolantImpl(Fluid fluid, float degreesCoolingPerMB) {
+    public CoolantImpl(@Nonnull Fluid fluid, float degreesCoolingPerMB) {
       this.fluid = fluid;
       this.degreesCoolingPerMB = degreesCoolingPerMB;
     }
 
     @Override
-    public Fluid getFluid() {
+    public @Nonnull Fluid getFluid() {
       return fluid;
     }
 
