@@ -69,25 +69,17 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   @Nonnull
   private final YetaDisplayMode yetaDisplayMode = YetaUtil.getYetaDisplayMode();
 
-  public BlockStateWrapperBase(IBlockState state, IBlockAccess world, BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
-    this.state = notnull(state);
-    this.block = notnull(state.getBlock());
-    this.world = notnull(world);
-    this.pos = notnull(pos);
+  public BlockStateWrapperBase(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, IRenderMapper.IBlockRenderMapper renderMapper) {
+    this.state = state;
+    this.block = state.getBlock();
+    this.world = world;
+    this.pos = pos;
     this.renderMapper = renderMapper != null ? renderMapper : nullRenderMapper;
   }
 
-  @Nonnull
-  private static <X> X notnull(@Nullable X x) {
-    if (x == null) {
-      throw new NullPointerException();
-    }
-    return x;
-  }
-
-  protected BlockStateWrapperBase(BlockStateWrapperBase parent, IBlockState state) {
+  protected BlockStateWrapperBase(@Nonnull BlockStateWrapperBase parent, @Nonnull IBlockState state) {
     this.block = parent.block;
-    this.state = notnull(state);
+    this.state = state;
     this.world = parent.world;
     this.pos = parent.pos;
     this.renderMapper = parent.renderMapper;
@@ -95,7 +87,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
     this.model = parent.model;
   }
 
-  protected void putIntoCache(QuadCollector quads) {
+  protected void putIntoCache(@Nonnull QuadCollector quads) {
     cache.put(Pair.of(block, getCacheKey()), quads);
   }
 
@@ -108,27 +100,22 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public Collection<IProperty<?>> getPropertyNames() {
-    return state.getPropertyNames();
-  }
-
-  @Override
-  public <T extends Comparable<T>> T getValue(IProperty<T> property) {
+  public @Nonnull <T extends Comparable<T>> T getValue(@Nonnull IProperty<T> property) {
     return state.getValue(property);
   }
 
   @Override
-  public <T extends Comparable<T>, V extends T> IBlockState withProperty(IProperty<T> property, V value) {
+  public @Nonnull <T extends Comparable<T>, V extends T> IBlockState withProperty(@Nonnull IProperty<T> property, @Nonnull V value) {
     return new BlockStateWrapperBase(this, state.withProperty(property, value));
   }
 
   @Override
-  public <T extends Comparable<T>> IBlockState cycleProperty(IProperty<T> property) {
+  public @Nonnull <T extends Comparable<T>> IBlockState cycleProperty(@Nonnull IProperty<T> property) {
     return new BlockStateWrapperBase(this, state.cycleProperty(property));
   }
 
   @Override
-  public ImmutableMap<IProperty<?>, Comparable<?>> getProperties() {
+  public @Nonnull ImmutableMap<IProperty<?>, Comparable<?>> getProperties() {
     return state.getProperties();
   }
 
@@ -145,7 +132,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   @Override
   public @Nullable TileEntity getTileEntity() {
     if (world instanceof ChunkCache) {
-      return ((ChunkCache) world).func_190300_a(pos, EnumCreateEntityType.CHECK);
+      return ((ChunkCache) world).getTileEntity(pos, EnumCreateEntityType.CHECK);
     }
     return world.getTileEntity(pos);
   }
@@ -243,23 +230,29 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+    public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+        boolean isPainted) {
       return null;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-        QuadCollector quadCollector) {
+    public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+        @Nonnull QuadCollector quadCollector) {
       return null;
     }
 
   };
 
+  @Override
+  public @Nonnull YetaDisplayMode getYetaDisplayMode() {
+    return yetaDisplayMode;
+  }
+
   // And here comes the stupid "we pipe most calls to Block though BlockState" stuff
 
   @Override
-  public Material getMaterial() {
+  public @Nonnull Material getMaterial() {
     return state.getMaterial();
   }
 
@@ -275,7 +268,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getLightOpacity(IBlockAccess world1, BlockPos pos1) {
+  public int getLightOpacity(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1) {
     return state.getLightOpacity(world1, pos1);
   }
 
@@ -286,7 +279,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getLightValue(IBlockAccess world1, BlockPos pos1) {
+  public int getLightValue(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1) {
     return state.getLightValue(world1, pos1);
   }
 
@@ -301,17 +294,17 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public MapColor getMapColor() {
+  public @Nonnull MapColor getMapColor() {
     return state.getMapColor();
   }
 
   @Override
-  public IBlockState withRotation(Rotation rot) {
+  public @Nonnull IBlockState withRotation(@Nonnull Rotation rot) {
     return state.withRotation(rot);
   }
 
   @Override
-  public IBlockState withMirror(Mirror mirrorIn) {
+  public @Nonnull IBlockState withMirror(@Nonnull Mirror mirrorIn) {
     return state.withMirror(mirrorIn);
   }
 
@@ -321,12 +314,12 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public EnumBlockRenderType getRenderType() {
+  public @Nonnull EnumBlockRenderType getRenderType() {
     return state.getRenderType();
   }
 
   @Override
-  public int getPackedLightmapCoords(IBlockAccess source, BlockPos pos1) {
+  public int getPackedLightmapCoords(@Nonnull IBlockAccess source, @Nonnull BlockPos pos1) {
     return state.getPackedLightmapCoords(source, pos1);
   }
 
@@ -351,7 +344,7 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getWeakPower(IBlockAccess blockAccess, BlockPos pos1, EnumFacing side) {
+  public int getWeakPower(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
     return state.getWeakPower(blockAccess, pos1, side);
   }
 
@@ -361,42 +354,37 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public int getComparatorInputOverride(World worldIn, BlockPos pos1) {
+  public int getComparatorInputOverride(@Nonnull World worldIn, @Nonnull BlockPos pos1) {
     return state.getComparatorInputOverride(worldIn, pos1);
   }
 
   @Override
-  public float getBlockHardness(World worldIn, BlockPos pos1) {
+  public float getBlockHardness(@Nonnull World worldIn, @Nonnull BlockPos pos1) {
     return state.getBlockHardness(worldIn, pos1);
   }
 
   @Override
-  public float getPlayerRelativeBlockHardness(EntityPlayer player, World worldIn, BlockPos pos1) {
+  public float getPlayerRelativeBlockHardness(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos1) {
     return state.getPlayerRelativeBlockHardness(player, worldIn, pos1);
   }
 
   @Override
-  public int getStrongPower(IBlockAccess blockAccess, BlockPos pos1, EnumFacing side) {
+  public int getStrongPower(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
     return state.getStrongPower(blockAccess, pos1, side);
   }
 
   @Override
-  public EnumPushReaction getMobilityFlag() {
+  public @Nonnull EnumPushReaction getMobilityFlag() {
     return state.getMobilityFlag();
   }
 
   @Override
-  public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos1) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos1) {
     return state.getActualState(blockAccess, pos1);
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos1) {
-    return state.getCollisionBoundingBox(worldIn, pos1);
-  }
-
-  @Override
-  public boolean shouldSideBeRendered(IBlockAccess blockAccess, BlockPos pos1, EnumFacing facing) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos1, @Nonnull EnumFacing facing) {
     return state.shouldSideBeRendered(blockAccess, pos1, facing);
   }
 
@@ -406,22 +394,17 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos1) {
+  public @Nonnull AxisAlignedBB getSelectedBoundingBox(@Nonnull World worldIn, @Nonnull BlockPos pos1) {
     return state.getSelectedBoundingBox(worldIn, pos1);
   }
 
   @Override
-  public void addCollisionBoxToList(World worldIn, BlockPos pos1, AxisAlignedBB p_185908_3_, List<AxisAlignedBB> p_185908_4_, @Nullable Entity p_185908_5_) {
-    state.addCollisionBoxToList(worldIn, pos1, p_185908_3_, p_185908_4_, p_185908_5_);
-  }
-
-  @Override
-  public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos1) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos1) {
     return state.getBoundingBox(blockAccess, pos1);
   }
 
   @Override
-  public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos1, Vec3d start, Vec3d end) {
+  public @Nonnull RayTraceResult collisionRayTrace(@Nonnull World worldIn, @Nonnull BlockPos pos1, @Nonnull Vec3d start, @Nonnull Vec3d end) {
     return state.collisionRayTrace(worldIn, pos1, start, end);
   }
 
@@ -432,33 +415,60 @@ public class BlockStateWrapperBase extends CacheKey implements IBlockStateWrappe
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockAccess world1, BlockPos pos1, EnumFacing side) {
+  public boolean doesSideBlockRendering(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
     return state.doesSideBlockRendering(world1, pos1, side);
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world1, BlockPos pos1, EnumFacing side) {
+  public boolean isSideSolid(@Nonnull IBlockAccess world1, @Nonnull BlockPos pos1, @Nonnull EnumFacing side) {
     return state.isSideSolid(world1, pos1, side);
   }
 
   @Override
-  public boolean onBlockEventReceived(World worldIn, BlockPos pos1, int id, int param) {
+  public boolean onBlockEventReceived(@Nonnull World worldIn, @Nonnull BlockPos pos1, int id, int param) {
     return state.onBlockEventReceived(worldIn, pos1, id, param);
   }
 
   @Override
-  public void neighborChanged(World worldIn, BlockPos pos1, Block p_189546_3_) {
-    state.neighborChanged(worldIn, pos1, p_189546_3_);
+  public @Nonnull Collection<IProperty<?>> getPropertyKeys() {
+    return state.getPropertyKeys();
   }
 
   @Override
-  public boolean func_189884_a(Entity p_189884_1_) {
-    return state.func_189884_a(p_189884_1_);
+  public void neighborChanged(@Nonnull World worldIn, @Nonnull BlockPos pos1, @Nonnull Block blockIn, @Nonnull BlockPos fromPos) {
+    state.neighborChanged(worldIn, pos1, blockIn, fromPos);
   }
 
   @Override
-  public YetaDisplayMode getYetaDisplayMode() {
-    return yetaDisplayMode;
+  public boolean canEntitySpawn(@Nonnull Entity entityIn) {
+    return state.canEntitySpawn(entityIn);
+  }
+
+  @Override
+  public boolean hasCustomBreakingProgress() {
+    return state.hasCustomBreakingProgress();
+  }
+
+  @Override
+  @Nullable
+  public AxisAlignedBB getCollisionBoundingBox(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos1) {
+    return state.getCollisionBoundingBox(worldIn, pos1);
+  }
+
+  @Override
+  public void addCollisionBoxToList(@Nonnull World worldIn, @Nonnull BlockPos pos1, @Nonnull AxisAlignedBB entityBox,
+      @Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185908_6_) {
+    state.addCollisionBoxToList(worldIn, pos1, entityBox, collidingBoxes, entityIn, p_185908_6_);
+  }
+
+  @Override
+  public @Nonnull Vec3d getOffset(@Nonnull IBlockAccess access, @Nonnull BlockPos pos1) {
+    return state.getOffset(access, pos1);
+  }
+
+  @Override
+  public boolean causesSuffocation() {
+    return state.causesSuffocation();
   }
 
 }

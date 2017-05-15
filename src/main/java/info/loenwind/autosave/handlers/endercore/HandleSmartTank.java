@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.enderio;
+package info.loenwind.autosave.handlers.endercore;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -6,9 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.fluid.SmartTank;
-import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
+import com.enderio.core.common.fluid.SmartTank;
+
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;

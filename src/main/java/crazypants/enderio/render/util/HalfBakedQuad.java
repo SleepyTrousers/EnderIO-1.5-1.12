@@ -1,8 +1,10 @@
 package crazypants.enderio.render.util;
 
 import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
@@ -10,6 +12,8 @@ import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
@@ -28,14 +32,15 @@ import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad.Builder;
 
 public class HalfBakedQuad {
-  private final List<Vertex> corners;
-  private final TextureAtlasSprite tex;
-  private final Vector4f color;
-  private final EnumFacing face;
+  private final @Nonnull NNList<Vertex> corners;
+  private final @Nonnull TextureAtlasSprite tex;
+  private final @Nonnull Vector4f color;
+  private final @Nonnull EnumFacing face;
 
-  private final static Vector4f NO_COLOR = new Vector4f(1, 1, 1, 1);
+  private final static @Nonnull Vector4f NO_COLOR = new Vector4f(1, 1, 1, 1);
 
-  public HalfBakedQuad(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
+  public HalfBakedQuad(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, float umin, float umax, float vmin, float vmax, @Nullable TextureAtlasSprite tex,
+      @Nullable Vector4f color) {
     this.corners = bb.getCornersWithUvForFace(face, umin, umax, vmin, vmax);
     this.tex = tex != null ? tex : IconUtil.instance.errorTexture;
     this.color = color != null ? color : NO_COLOR;
@@ -44,7 +49,7 @@ public class HalfBakedQuad {
 
   private static boolean hasMojangFixedUVXWTextureCoords = false;
 
-  public void bake(List<BakedQuad> quads) {
+  public void bake(@Nonnull List<BakedQuad> quads) {
     float w01 = 1;
     float w23 = 1;
 
@@ -64,7 +69,7 @@ public class HalfBakedQuad {
     quads.add(builder.build());
   }
 
-  private void putVertexData(Builder builder, Vertex v, float w) {
+  private void putVertexData(@Nonnull Builder builder, @Nonnull Vertex v, float w) {
     VertexFormat format = builder.getVertexFormat();
     for (int e = 0; e < format.getElementCount(); e++) {
       switch (format.getElement(e).getUsage()) {
@@ -87,15 +92,18 @@ public class HalfBakedQuad {
     }
   }
 
-  public void transform(VertexTransform... xforms) {
-    for (Vertex vertex : corners) {
-      for (VertexTransform xform : xforms) {
-        xform.apply(vertex);
+  public void transform(final VertexTransform... xforms) {
+    corners.apply(new Callback<Vertex>() {
+      @Override
+      public void apply(@Nonnull Vertex vertex) {
+        for (VertexTransform xform : xforms) {
+          xform.apply(vertex);
+        }
       }
-    }
+    });
   }
 
-  public void render(VertexBuffer tes) {
+  public void render(@Nonnull VertexBuffer tes) {
     for (Vertex v : corners) {
       tes.pos(v.x(), v.y(), v.z()).tex(tex.getInterpolatedU(v.u() * 16), tex.getInterpolatedV(v.v() * 16)).color(color.x, color.y, color.z, color.w)
           .normal(v.nx(), v.ny(), v.nz()).endVertex();
@@ -104,10 +112,10 @@ public class HalfBakedQuad {
 
   public static class HalfBakedList extends AbstractList<HalfBakedQuad> {
 
-    private final List<HalfBakedQuad> store = new ArrayList<HalfBakedQuad>();
+    private final @Nonnull NNList<HalfBakedQuad> store = new NNList<HalfBakedQuad>();
 
     @Override
-    public HalfBakedQuad get(int index) {
+    public @Nonnull HalfBakedQuad get(int index) {
       return store.get(index);
     }
 
@@ -116,11 +124,12 @@ public class HalfBakedQuad {
       return store.size();
     }
 
-    public void add(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
+    public void add(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color) {
       store.add(new HalfBakedQuad(bb, face, umin, umax, vmin, vmax, tex, color));
     }
 
-    public void add(BoundingBox bb, EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex, Vector4f color) {
+    public void add(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex,
+        Vector4f color) {
       store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmin, (float) vmax, tex, color));
     }
 
@@ -128,7 +137,7 @@ public class HalfBakedQuad {
      * Upside-down textures are used for fluids that are gaseous.
      *
      */
-    public void add(BoundingBox bb, EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color,
+    public void add(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, float umin, float umax, float vmin, float vmax, TextureAtlasSprite tex, Vector4f color,
         boolean upsidedown) {
       if (upsidedown) {
         store.add(new HalfBakedQuad(bb, face, umin, umax, vmax, vmin, tex, color));
@@ -141,7 +150,8 @@ public class HalfBakedQuad {
      * Upside-down textures are used for fluids that are gaseous.
      *
      */
-    public void add(BoundingBox bb, EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex, Vector4f color,
+    public void add(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, double umin, double umax, double vmin, double vmax, TextureAtlasSprite tex,
+        Vector4f color,
         boolean upsidedown) {
       if (upsidedown) {
         store.add(new HalfBakedQuad(bb, face, (float) umin, (float) umax, (float) vmax, (float) vmin, tex, color));
@@ -156,20 +166,20 @@ public class HalfBakedQuad {
       }
     }
 
-    public void bake(List<BakedQuad> quads, VertexTransform... xforms) {
+    public void bake(@Nonnull List<BakedQuad> quads, VertexTransform... xforms) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.transform(xforms);
         halfBakedQuad.bake(quads);
       }
     }
 
-    public void bake(List<BakedQuad> quads) {
+    public void bake(@Nonnull List<BakedQuad> quads) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.bake(quads);
       }
     }
 
-    public void render(VertexBuffer tes) {
+    public void render(@Nonnull VertexBuffer tes) {
       for (HalfBakedQuad halfBakedQuad : store) {
         halfBakedQuad.render(tes);
       }

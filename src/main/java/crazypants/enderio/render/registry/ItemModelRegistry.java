@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.render.model.FacadeSmartItemModel;
 import crazypants.enderio.render.model.RotatingSmartItemModel;
@@ -27,43 +29,49 @@ public class ItemModelRegistry {
   }
 
   public static interface Registry {
-    IBakedModel wrap(IBakedModel model);
+    @Nonnull
+    IBakedModel wrap(@Nonnull IBakedModel model);
   }
 
   private static final Map<ModelResourceLocation, Registry> registries = new HashMap<ModelResourceLocation, Registry>();
 
-  public static void register(String resource, Registry registry) {
+  public static void register(@Nonnull String resource, @Nonnull Registry registry) {
     registries.put(new ModelResourceLocation(EnderIO.DOMAIN + ":" + resource + "#inventory"), registry);
   }
 
-  public static void register(ModelResourceLocation resource, Registry registry) {
+  public static void register(@Nonnull ModelResourceLocation resource, @Nonnull Registry registry) {
     registries.put(resource, registry);
   }
 
-  public static void registerRotating(String resource, final int speed) {
+  public static void registerRotating(@Nonnull String resource, final int speed) {
     register(resource, new Registry() {
       @Override
-      public IBakedModel wrap(IBakedModel model) {
+      public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
         return new RotatingSmartItemModel((IPerspectiveAwareModel) model, speed);
       }
     });
   }
 
-  public static void registerFacade(ModelResourceLocation resource) {
+  public static void registerFacade(@Nonnull ModelResourceLocation resource) {
     register(resource, new Registry() {
       @Override
-      public IBakedModel wrap(IBakedModel model) {
+      public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
         return new FacadeSmartItemModel((IPerspectiveAwareModel) model);
       }
     });
   }
 
   @SubscribeEvent()
-  public void bakeModels(ModelBakeEvent event) {
+  public void bakeModels(@Nonnull ModelBakeEvent event) {
     for (Entry<ModelResourceLocation, Registry> entry : registries.entrySet()) {
-      IBakedModel model = event.getModelRegistry().getObject(entry.getKey());
-      event.getModelRegistry().putObject(entry.getKey(), entry.getValue().wrap(model));
-
+      final ModelResourceLocation resource = entry.getKey();
+      if (resource != null) {
+        IBakedModel model = event.getModelRegistry().getObject(resource);
+        final Registry registry = entry.getValue();
+        if (registry != null && model != null) {
+          event.getModelRegistry().putObject(resource, registry.wrap(model));
+        }
+      }
     }
   }
 

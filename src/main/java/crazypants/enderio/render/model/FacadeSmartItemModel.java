@@ -2,6 +2,7 @@ package crazypants.enderio.render.model;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
@@ -9,9 +10,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.util.ItemQuadCollector;
 import crazypants.util.Prep;
@@ -19,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,7 +39,7 @@ public class FacadeSmartItemModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+  public @Nonnull List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return parent.getQuads(state, side, rand);
   }
 
@@ -57,26 +59,26 @@ public class FacadeSmartItemModel implements IPerspectiveAwareModel {
   }
 
   @Override
-  public TextureAtlasSprite getParticleTexture() {
+  public @Nonnull TextureAtlasSprite getParticleTexture() {
     return parent.getParticleTexture();
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
+  public @Nonnull ItemCameraTransforms getItemCameraTransforms() {
     return parent.getItemCameraTransforms();
   }
 
   @Override
-  public Pair<? extends IBakedModel, Matrix4f> handlePerspective(
-      net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType cameraTransformType) {
+  public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
     return parent.handlePerspective(cameraTransformType);
   }
 
-  private final ItemOverrideList overrides = new ItemOverrideList(Lists.<ItemOverride> newArrayList()) {
+  private final @Nonnull ItemOverrideList overrides = new ItemOverrideList(Lists.<ItemOverride> newArrayList()) {
     @Override
-    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-      if (originalModel == null || Prep.isInvalid(stack)) {
+    public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world,
+        @Nullable EntityLivingBase entity) {
+      if (Prep.isInvalid(stack)) {
         return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
       }
 
@@ -84,8 +86,9 @@ public class FacadeSmartItemModel implements IPerspectiveAwareModel {
         IBlockState paintSource = PainterUtil2.getSourceBlock(stack);
         if (paintSource != null) {
           ItemQuadCollector quads = new ItemQuadCollector();
-          quads.addItemBlockState(paintSource, null);
-          quads.addBlockState(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY), null);
+          quads.addItemBlockState(paintSource, Prep.getEmpty());
+          quads.addBlockState(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY),
+              Prep.getEmpty());
           return new CollectedItemQuadBakedBlockModel(originalModel, quads);
         }
       }
@@ -95,7 +98,7 @@ public class FacadeSmartItemModel implements IPerspectiveAwareModel {
   };
 
   @Override
-  public ItemOverrideList getOverrides() {
+  public @Nonnull ItemOverrideList getOverrides() {
     return overrides;
   }
 

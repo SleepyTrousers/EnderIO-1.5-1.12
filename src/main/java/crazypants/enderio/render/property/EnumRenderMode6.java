@@ -2,6 +2,8 @@ package crazypants.enderio.render.property;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -77,7 +79,7 @@ public enum EnumRenderMode6 implements IStringSerializable {
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
 }

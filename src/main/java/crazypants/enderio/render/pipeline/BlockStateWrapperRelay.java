@@ -18,7 +18,7 @@ public class BlockStateWrapperRelay extends BlockStateWrapperBase {
 
   private static final NullModel NULL = new NullModel();
 
-  public BlockStateWrapperRelay(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public BlockStateWrapperRelay(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     super(state, world, pos, null);
   }
 

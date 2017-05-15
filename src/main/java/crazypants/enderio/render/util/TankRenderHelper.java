@@ -1,14 +1,15 @@
 package crazypants.enderio.render.util;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 public class TankRenderHelper {
 
@@ -32,18 +33,20 @@ public class TankRenderHelper {
   public static HalfBakedList mkTank(SmartTank tank, double xzBorder, double miny, double maxy, boolean renderBottom) {
     if (tank != null) {
       float ratio = tank.getFilledRatio();
-      if (ratio > 0) {
+      final FluidStack fluid = tank.getFluid();
+      if (fluid != null && ratio > 0) {
 
         float height = 1 - ratio;
 
-        ResourceLocation still = tank.getFluid().getFluid().getStill(tank.getFluid());
-        int color = tank.getFluid().getFluid().getColor(tank.getFluid());
+        ResourceLocation still = fluid.getFluid().getStill(fluid);
+        int color = fluid.getFluid().getColor(fluid);
         Vector4f vecC = new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
         TextureAtlasSprite sprite = still == null ? null : Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(still.toString());
         if (sprite == null) {
           sprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+          vecC = null;
         }
-        boolean gas = tank.getFluid().getFluid().isGaseous(tank.getFluid());
+        boolean gas = fluid.getFluid().isGaseous(fluid);
 
         BoundingBox bb = gas
             ? new BoundingBox(xzBorder * px, (maxy - (maxy - miny) * ratio) * px, xzBorder * px, (16 - xzBorder) * px, maxy * px, (16 - xzBorder) * px)

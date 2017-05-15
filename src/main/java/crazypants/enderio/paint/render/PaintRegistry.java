@@ -141,7 +141,7 @@ public class PaintRegistry {
 
     private void checkCache(String name, ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> cache1) {
       if (cache1.size() > 200) {
-        crazypants.enderio.Log.warn("Cache for " + name + " is at " + cache1.size() + " objects. Cleaning it...");
+        Log.warn("Cache for " + name + " is at " + cache1.size() + " objects. Cleaning it...");
         cache1.clear();
       }
     }

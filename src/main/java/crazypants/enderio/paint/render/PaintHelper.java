@@ -2,6 +2,8 @@ package crazypants.enderio.paint.render;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,38 +31,23 @@ public class PaintHelper {
   private static final Random rand = new Random();
 
   @SideOnly(Side.CLIENT)
-  public static boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public static boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target,
+      @Nonnull ParticleManager effectRenderer) {
     if (state.getBlock() instanceof IPaintable) {
       BlockPos pos = target.getBlockPos();
-      lastTexture = getPaintTexture(state, world, pos);
-      if (lastTexture == null) {
-        return false;
-      }
       IBlockState paintSource = ((IPaintable) state.getBlock()).getPaintSource(state, world, pos);
-      addBlockHitEffects(world, state, paintSource, lastTexture, pos, target.sideHit, effectRenderer);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  @SideOnly(Side.CLIENT)
-  private static TextureAtlasSprite getPaintTexture(IBlockState state, World world, BlockPos pos) {
-    if (state.getBlock() instanceof IPaintable) {
-      IBlockState state2 = world.getBlockState(pos);
-      if (state.getBlock() == state2.getBlock()) {
-        IBlockState paintSource = ((IPaintable) state.getBlock()).getPaintSource(state, world, pos);
-        if (paintSource != null) {
-          return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
-        }
+      if (paintSource != null) {
+        addBlockHitEffects(world, state, paintSource, pos, target.sideHit, effectRenderer);
+        lastTexture = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
+        return true;
       }
     }
-    return null;
+    return false;
   }
 
   @SideOnly(Side.CLIENT)
-  public static void addBlockHitEffects(World world, IBlockState realBlock, IBlockState paintBlock, TextureAtlasSprite texture, BlockPos pos, EnumFacing side,
-      ParticleManager effectRenderer) {
+  public static void addBlockHitEffects(@Nonnull World world, @Nonnull IBlockState realBlock, @Nonnull IBlockState paintBlock, @Nonnull BlockPos pos,
+      @Nonnull EnumFacing side, @Nonnull ParticleManager effectRenderer) {
     int i = pos.getX();
     int j = pos.getY();
     int k = pos.getZ();
@@ -112,12 +99,18 @@ public class PaintHelper {
       // and that's it, spawn my monkeys, spawn!
     }
   }
-  
-  @SideOnly(Side.CLIENT)
-  public static boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
 
+  @SideOnly(Side.CLIENT)
+  public static boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
+
+    TextureAtlasSprite texture = null;
     IBlockState state = world.getBlockState(pos);
-    TextureAtlasSprite texture = getPaintTexture(state, world, pos);
+    if (state.getBlock() instanceof IPaintable) {
+      IBlockState paintSource = ((IPaintable) state.getBlock()).getPaintSource(state, world, pos);
+      if (paintSource != null) {
+        texture = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
+      }
+    }
     if (texture == null) {
       texture = lastTexture;
       if (texture == null) {
@@ -132,7 +125,7 @@ public class PaintHelper {
           double d0 = pos.getX() + (j + 0.5D) / i;
           double d1 = pos.getY() + (k + 0.5D) / i;
           double d2 = pos.getZ() + (l + 0.5D) / i;
-          ParticleDigging fx = (ParticleDigging) new ParticleDigging.Factory().getEntityFX(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
+          ParticleDigging fx = (ParticleDigging) new ParticleDigging.Factory().createParticle(-1, world, d0, d1, d2, d0 - pos.getX() - 0.5D,
               d1 - pos.getY() - 0.5D, d2 - pos.getZ() - 0.5D, 0);
           fx.setBlockPos(pos);
           fx.setParticleTexture(texture);
@@ -143,6 +136,5 @@ public class PaintHelper {
 
     return true;
   }
-
 
 }

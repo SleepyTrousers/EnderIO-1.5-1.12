@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.EnderIO;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
@@ -16,12 +20,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TextureRegistry {
 
   public static interface TextureSupplier {
-    <T extends Object> T get(Class<T> clazz);
+    <T extends Object> T get(@Nonnull Class<T> clazz);
   }
 
   private static final TextureSupplier noSupplier = new TextureSupplier() {
     @Override
-    public <T> T get(Class<T> clazz) {
+    public <T> T get(@Nonnull Class<T> clazz) {
       return null;
     }
   };
@@ -33,10 +37,10 @@ public class TextureRegistry {
     protected void init() {
     }
 
-    public TextureSupplier registerTexture(final String location, boolean prependDomain) {
+    public TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
       return noSupplier;
     }
-        
+
   }
 
   private static class TextureRegistryClient extends TextureRegistryServer {
@@ -59,15 +63,15 @@ public class TextureRegistry {
     @SubscribeEvent
     public void onIconLoad(TextureStitchEvent.Pre event) {
       for (Entry<String, TextureAtlasSprite> entry : sprites.entrySet()) {
-        entry.setValue(event.getMap().registerSprite(new ResourceLocation(entry.getKey())));
+        entry.setValue(event.getMap().registerSprite(new ResourceLocation(NullHelper.notnull(entry.getKey(), "internal data corruption"))));
       }
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public TextureSupplier registerTexture(final String location, boolean prependModID) {
+    public TextureSupplier registerTexture(final @Nonnull String location, boolean prependModID) {
       String key = location;
-      if(prependModID) {
+      if (prependModID) {
         key = EnderIO.DOMAIN + ":" + location;
       }
       final String keyF = key;
@@ -77,7 +81,7 @@ public class TextureRegistry {
       return new TextureSupplier() {
         @SuppressWarnings("unchecked")
         @Override
-        public <T> T get(Class<T> clazz) {
+        public <T> T get(@Nonnull Class<T> clazz) {
           if (clazz == TextureAtlasSprite.class) {
             return (T) sprites.get(keyF);
           } else {
@@ -90,11 +94,11 @@ public class TextureRegistry {
 
   private static TextureRegistryServer instance;
 
-  public static TextureSupplier registerTexture(final String location) {
+  public static TextureSupplier registerTexture(final @Nonnull String location) {
     return registerTexture(location, true);
   }
-  
-  public static TextureSupplier registerTexture(final String location, boolean prependDomain) {    
+
+  public static TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
     if (instance == null) {
       instance = new TextureRegistryClient();
       instance.init();

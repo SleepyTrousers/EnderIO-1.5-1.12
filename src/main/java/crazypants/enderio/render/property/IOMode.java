@@ -1,8 +1,12 @@
 package crazypants.enderio.render.property;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NNMap;
 
 import net.minecraft.util.EnumFacing;
 
@@ -12,8 +16,8 @@ import net.minecraft.util.EnumFacing;
  */
 public class IOMode implements Comparable<IOMode> {
 
-  private final EnumFacing direction;
-  private final EnumIOMode iomode;
+  private final @Nonnull EnumFacing direction;
+  private final @Nonnull EnumIOMode iomode;
 
   public static enum EnumIOMode {
     NONE,
@@ -42,22 +46,36 @@ public class IOMode implements Comparable<IOMode> {
     CAPACITORBANKLOCKEDSMALL,
     CAPACITORBANKOUTPUTSMALL,
     RESERVOIR;
+
+    public static final NNList<EnumIOMode> IOMODES = NNList.of(EnumIOMode.class);
   }
 
-  private static final Map<String, IOMode> values = new HashMap<String, IOMode>();
+  private static final @Nonnull NNMap<String, IOMode> VALUES = new NNMap.Brutal<String, IOMode>();
+  public static final NNList<IOMode> MODES = new NNList<>();
 
-  public static final PropertyIO IO = PropertyIO.getInstance();
+  public static final @Nonnull PropertyIO IO = PropertyIO.getInstance();
 
-  public static IOMode get(EnumFacing direction, EnumIOMode iomode) {
-    String key = direction.toString().toLowerCase(Locale.US) + "_" + iomode.toString().toLowerCase(Locale.US);
-    if (!values.containsKey(key)) {
-      IOMode result = new IOMode(direction, iomode);
-      values.put(key, result);
+  static {
+    NNIterator<EnumFacing> faces = NNList.FACING.iterator();
+    while (faces.hasNext()) {
+      EnumFacing facing = faces.next();
+      NNIterator<EnumIOMode> iomodes = IOMode.EnumIOMode.IOMODES.iterator();
+      while (iomodes.hasNext()) {
+        MODES.add(IOMode.get(facing, iomodes.next()));
+      }
     }
-    return values.get(key);
   }
 
-  private IOMode(EnumFacing direction, EnumIOMode iomode) {
+  public static @Nonnull IOMode get(@Nonnull EnumFacing direction, @Nonnull EnumIOMode iomode) {
+    String key = direction.toString().toLowerCase(Locale.US) + "_" + iomode.toString().toLowerCase(Locale.US);
+    if (!VALUES.containsKey(key)) {
+      IOMode result = new IOMode(direction, iomode);
+      VALUES.put(key, result);
+    }
+    return VALUES.get(key);
+  }
+
+  private IOMode(@Nonnull EnumFacing direction, @Nonnull EnumIOMode iomode) {
     this.direction = direction;
     this.iomode = iomode;
   }
@@ -66,8 +84,8 @@ public class IOMode implements Comparable<IOMode> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((direction == null) ? 0 : direction.hashCode());
-    result = prime * result + ((iomode == null) ? 0 : iomode.hashCode());
+    result = prime * result + direction.hashCode();
+    result = prime * result + iomode.hashCode();
     return result;
   }
 
@@ -97,8 +115,16 @@ public class IOMode implements Comparable<IOMode> {
   }
 
   @Override
-  public String toString() {
+  public @Nonnull String toString() {
     return direction.toString().toLowerCase(Locale.US) + "_" + iomode.toString().toLowerCase(Locale.US);
+  }
+
+  public @Nonnull EnumFacing getDirection() {
+    return direction;
+  }
+
+  public @Nonnull EnumIOMode getIomode() {
+    return iomode;
   }
 
 }

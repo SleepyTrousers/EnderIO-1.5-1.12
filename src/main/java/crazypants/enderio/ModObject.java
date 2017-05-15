@@ -106,6 +106,8 @@ import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
 import crazypants.enderio.rail.BlockExitRail;
+import crazypants.enderio.render.dummy.BlockMachineBase;
+import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.telepad.BlockDialingDevice;
@@ -122,6 +124,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public enum ModObject implements IModObject {
+
+  block_machine_io(BlockMachineIO.class),
+  block_machine_base(BlockMachineBase.class),
+
   // Enderface
   itemEnderface(ItemEnderface.class),
 

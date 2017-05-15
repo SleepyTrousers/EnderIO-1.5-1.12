@@ -26,6 +26,7 @@ import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.VertexRotation;
 import com.enderio.core.client.render.VertexRotationFacing;
+import com.enderio.core.client.render.VertexScale;
 import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -43,7 +44,6 @@ import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.render.util.ItemQuadCollector;
 import crazypants.enderio.render.util.QuadCollector;
 import crazypants.enderio.render.util.TankRenderHelper;
-import crazypants.enderio.render.util.VertexScale;
 import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 
 public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,

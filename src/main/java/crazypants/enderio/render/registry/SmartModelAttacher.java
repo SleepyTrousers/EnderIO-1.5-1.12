@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
@@ -24,6 +29,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -39,13 +45,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SmartModelAttacher {
 
   private static class RegistrationHolder<T extends Comparable<T>, V extends T> {
-    Block block;
-    IProperty<T> property;
-    V defaultsValue;
-    V autoValue;
+    final @Nonnull Block block;
+    final IProperty<T> property;
+    final V defaultsValue;
+    final V autoValue;
     boolean itemOnly;
 
-    protected RegistrationHolder(Block block, IProperty<T> property, V defaultsValue, V autoValue, boolean itemOnly) {
+    protected RegistrationHolder(@Nonnull Block block, IProperty<T> property, V defaultsValue, V autoValue, boolean itemOnly) {
       this.block = block;
       this.property = property;
       this.defaultsValue = defaultsValue;
@@ -57,7 +63,7 @@ public class SmartModelAttacher {
   @SuppressWarnings("rawtypes")
   private static final List<RegistrationHolder> blocks = new ArrayList<RegistrationHolder>();
 
-  public static void register(Block block) {
+  public static void register(@Nonnull Block block) {
     register(block, EnumRenderMode.RENDER, EnumRenderMode.DEFAULTS, EnumRenderMode.AUTO);
   }
 
@@ -65,19 +71,20 @@ public class SmartModelAttacher {
    * Register a block that does not have one of our special rendering properties. All its blockstates will be rendered by our smart model, so the render mapper
    * cannot reference them and must get its blockstates from elsewhere.
    */
-  public static void registerNoProps(Block block) {
+  public static void registerNoProps(@Nonnull Block block) {
     register(block, null, null, null, false);
   }
 
-  public static void registerItemOnly(Block block) {
+  public static void registerItemOnly(@Nonnull Block block) {
     register(block, null, null, null, true);
   }
 
-  public static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue) {
+  public static <T extends Comparable<T>, V extends T> void register(@Nonnull Block block, IProperty<T> property, V defaultsValue, V autoValue) {
     register(block, property, defaultsValue, autoValue, false);
   }
 
-  private static <T extends Comparable<T>, V extends T> void register(Block block, IProperty<T> property, V defaultsValue, V autoValue, boolean itemOnly) {
+  private static <T extends Comparable<T>, V extends T> void register(@Nonnull Block block, IProperty<T> property, V defaultsValue, V autoValue,
+      boolean itemOnly) {
     blocks.add(new RegistrationHolder<T, V>(block, property, defaultsValue, autoValue, itemOnly));
   }
 
@@ -96,12 +103,13 @@ public class SmartModelAttacher {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
-      if (item != null) {
-        final ResourceLocation registryName = item instanceof ICustomItemResourceLocation
-            ? ((ICustomItemResourceLocation) item).getRegistryNameForCustomModelResourceLocation() : item.getRegistryName();
+      if (item != Items.AIR) {
+        final @Nonnull ResourceLocation registryName = item instanceof ICustomItemResourceLocation
+            ? ((ICustomItemResourceLocation) item).getRegistryNameForCustomModelResourceLocation()
+            : NullHelper.notnullF(item.getRegistryName(), "Item.getItemFromBlock() returned an unregistered item");
         ModelResourceLocation location = new ModelResourceLocation(registryName, "inventory");
         if (item.getHasSubtypes()) {
-          List<ItemStack> list = new ArrayList<ItemStack>();
+          NNList<ItemStack> list = new NNList<ItemStack>();
           item.getSubItems(item, EnderIOTab.tabNoTab, list);
           for (ItemStack itemStack : list) {
             ModelLoader.setCustomModelResourceLocation(item, itemStack.getItemDamage(), location);
@@ -117,14 +125,14 @@ public class SmartModelAttacher {
 
   @SideOnly(Side.CLIENT)
   public static void registerColoredBlocksAndItems() {
-    List<Block> blocklist = new ArrayList<Block>();
-    List<Item> itemlist = new ArrayList<Item>();
+    NNList<Block> blocklist = new NNList<Block>();
+    NNList<Item> itemlist = new NNList<Item>();
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       Item item = Item.getItemFromBlock(block);
       if (block instanceof IPaintable || block instanceof ITintedBlock || block instanceof ITintedItem || item instanceof ITintedItem) {
         blocklist.add(block);
-        if (item != null) {
+        if (item != Items.AIR) {
           itemlist.add(item);
         }
       } else {
@@ -138,21 +146,29 @@ public class SmartModelAttacher {
     }
 
     PaintTintHandler handler = new PaintTintHandler();
-    Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(handler, blocklist.toArray(new Block[0]));
-    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(handler, itemlist.toArray(new Item[0]));
+    Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(handler, blocklist.toArray());
+    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(handler, itemlist.toArray());
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   @SubscribeEvent()
   @SideOnly(Side.CLIENT)
-  public void bakeModels(ModelBakeEvent event) {
+  public void bakeModels(@Nonnull ModelBakeEvent event) {
     for (RegistrationHolder holder : blocks) {
       Block block = holder.block;
       Map<IBlockState, ModelResourceLocation> locations = event.getModelManager().getBlockModelShapes().getBlockStateMapper().getVariants(block);
 
-      if (holder.property != null && block.getDefaultState().getPropertyNames().contains(holder.property)) {
-        IBlockState defaultState = block.getDefaultState().withProperty(holder.property, holder.defaultsValue);
+      final IProperty eclipse_tells_me_final_fields_can_change_their_value_at_any_time = holder.property;
+      final Comparable holder_defaultsValue = holder.defaultsValue;
+      if (eclipse_tells_me_final_fields_can_change_their_value_at_any_time != null
+          && block.getDefaultState().getPropertyKeys().contains(eclipse_tells_me_final_fields_can_change_their_value_at_any_time)
+          && holder_defaultsValue != null) {
+        IBlockState defaultState = block.getDefaultState().withProperty(eclipse_tells_me_final_fields_can_change_their_value_at_any_time, holder_defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
+        if (defaultMrl == null) {
+          throw new RuntimeException(
+              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+        }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
         if (defaultBakedModel == null) {
           throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
@@ -164,29 +180,40 @@ public class SmartModelAttacher {
         event.getModelRegistry().putObject(itemMrl, model);
 
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
-          if (entry.getKey().getValue(holder.property) == holder.autoValue) {
-            event.getModelRegistry().putObject(entry.getValue(), model);
-          } else if (event.getModelRegistry().getObject(entry.getValue()) == null) {
-            event.getModelRegistry().putObject(entry.getValue(), defaultBakedModel);
+          final ModelResourceLocation value = NullHelper.notnullF(entry.getValue(), "BlockModelShapes contains null keys");
+          if (entry.getKey().getValue(eclipse_tells_me_final_fields_can_change_their_value_at_any_time) == holder.autoValue) {
+            event.getModelRegistry().putObject(value, model);
+          } else if (event.getModelRegistry().getObject(value) == null) {
+            event.getModelRegistry().putObject(value, defaultBakedModel);
           }
         }
       } else {
         IBlockState defaultState = block.getDefaultState();
         ModelResourceLocation defaultMrl = locations.get(defaultState);
+        if (defaultMrl == null) {
+          throw new RuntimeException(
+              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+        }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
+        if (defaultBakedModel == null) {
+          throw new RuntimeException(
+              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+        }
 
         if (!holder.itemOnly) {
-          for (ModelResourceLocation mrl : locations.values()) {
+          for (ModelResourceLocation mrl0 : locations.values()) {
+            final ModelResourceLocation mrl = NullHelper.notnullF(mrl0, "BlockModelShapes contains null keys");
             IBakedModel model = event.getModelRegistry().getObject(mrl);
-            event.getModelRegistry().putObject(mrl, new RelayingBakedModel(model != null ? model : defaultBakedModel));
+            event.getModelRegistry().putObject(mrl, new RelayingBakedModel(NullHelper.first(model, defaultBakedModel)));
           }
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
-        if (event.getModelRegistry().getObject(itemMrl) == null) {
+        final IBakedModel model = event.getModelRegistry().getObject(itemMrl);
+        if (model == null) {
           event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
         } else {
-          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(event.getModelRegistry().getObject(itemMrl)));
+          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(model));
         }
       }
     }

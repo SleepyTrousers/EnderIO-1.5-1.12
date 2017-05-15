@@ -3,6 +3,7 @@ package crazypants.enderio.render.model;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
@@ -20,9 +21,10 @@ import net.minecraft.world.World;
 
 public class NullModel implements IBakedModel {
 
-  private static final ItemOverrideList itemOverrideList = new ItemOverrideList(Collections.<ItemOverride> emptyList()) {
+  private static final @Nonnull ItemOverrideList itemOverrideList = new ItemOverrideList(Collections.<ItemOverride> emptyList()) {
     @Override
-    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world,
+        @Nullable EntityLivingBase entity) {
       return originalModel;
     }
   };
@@ -31,7 +33,7 @@ public class NullModel implements IBakedModel {
   }
 
   @Override
-  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+  public @Nonnull List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return Collections.<BakedQuad> emptyList();
   }
 
@@ -51,18 +53,17 @@ public class NullModel implements IBakedModel {
   }
 
   @Override
-  public TextureAtlasSprite getParticleTexture() {
-    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager()
-        .getMissingModel().getParticleTexture();
+  public @Nonnull TextureAtlasSprite getParticleTexture() {
+    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getParticleTexture();
   }
 
   @Override
-  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
+  public @Nonnull ItemCameraTransforms getItemCameraTransforms() {
     return ItemCameraTransforms.DEFAULT;
   }
 
   @Override
-  public ItemOverrideList getOverrides() {
+  public @Nonnull ItemOverrideList getOverrides() {
     return itemOverrideList;
   }
 

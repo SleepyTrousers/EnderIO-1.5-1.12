@@ -5,17 +5,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.render.dummy.BlockMachineIO;
+import com.enderio.core.common.util.NNList.NNIterator;
+
+import crazypants.enderio.ModObject;
 import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.util.QuadCollector;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.DefaultStateMapper;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -24,39 +27,43 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 
 public class OverlayHolder {
 
-  private final static QuadCollector[][] data = new QuadCollector[EnumFacing.values().length][IOMode.EnumIOMode.values().length];
+  private final static @Nonnull QuadCollector[][] data = new QuadCollector[EnumFacing.values().length][IOMode.EnumIOMode.values().length];
 
-  public static void collectOverlayQuads(ModelBakeEvent event) {
-    Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(BlockMachineIO.block);
+  public static void collectOverlayQuads(@Nonnull ModelBakeEvent event) {
+    final Block block = ModObject.block_machine_io.getBlockNN();
+    Map<IBlockState, ModelResourceLocation> locations = event.getModelManager().getBlockModelShapes().getBlockStateMapper().getVariants(block);
 
-    for (EnumFacing face : EnumFacing.values()) {
-      for (EnumIOMode iOMode : EnumIOMode.values()) {
-        IBlockState state = BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode));
-        ModelResourceLocation mrl = locations.get(state);
-        IBakedModel model = event.getModelRegistry().getObject(mrl);
-        if (model == null) {
-          throw new RuntimeException("Model for state " + state + " failed to load from " + mrl + ".");
-        }
-
-        QuadCollector quads = new QuadCollector();
-
-        BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
-        BlockRenderLayer layer = BlockMachineIO.block.getBlockLayer();
-        ForgeHooksClient.setRenderLayer(layer);
-        List<BakedQuad> generalQuads = model.getQuads(state, null, 0);
-        if (generalQuads != null && !generalQuads.isEmpty()) {
-          quads.addQuads(null, layer, generalQuads);
-        }
-        for (EnumFacing face1 : EnumFacing.values()) {
-          List<BakedQuad> faceQuads = model.getQuads(state, face, 0);
-          if (faceQuads != null && !faceQuads.isEmpty()) {
-            quads.addQuads(face1, layer, faceQuads);
-          }
-        }
-        ForgeHooksClient.setRenderLayer(oldRenderLayer);
-
-        data[face.ordinal()][iOMode.ordinal()] = quads;
+    NNIterator<IOMode> modes = crazypants.enderio.render.property.IOMode.MODES.iterator();
+    while (modes.hasNext()) {
+      IOMode mode = modes.next();
+      IBlockState state = block.getDefaultState().withProperty(IOMode.IO, mode);
+      ModelResourceLocation mrl = locations.get(state);
+      if (mrl == null) {
+        throw new RuntimeException("Model for state " + state + " failed to load from " + mrl + ". ");
       }
+      IBakedModel model = event.getModelRegistry().getObject(mrl);
+      if (model == null) {
+        throw new RuntimeException("Model for state " + state + " failed to load from " + mrl + ".");
+      }
+
+      QuadCollector quads = new QuadCollector();
+
+      BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+      BlockRenderLayer layer = block.getBlockLayer();
+      ForgeHooksClient.setRenderLayer(layer);
+      List<BakedQuad> generalQuads = model.getQuads(state, null, 0);
+      if (!generalQuads.isEmpty()) {
+        quads.addQuads(null, layer, generalQuads);
+      }
+      for (EnumFacing face1 : EnumFacing.values()) {
+        List<BakedQuad> faceQuads = model.getQuads(state, mode.getDirection(), 0);
+        if (!faceQuads.isEmpty()) {
+          quads.addQuads(face1, layer, faceQuads);
+        }
+      }
+      ForgeHooksClient.setRenderLayer(oldRenderLayer);
+
+      data[mode.getDirection().ordinal()][mode.getIomode().ordinal()] = quads;
     }
   }
 

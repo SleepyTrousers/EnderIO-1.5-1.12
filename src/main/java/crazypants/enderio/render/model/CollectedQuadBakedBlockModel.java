@@ -3,6 +3,7 @@ package crazypants.enderio.render.model;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.render.util.QuadCollector;
@@ -22,22 +23,23 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 public class CollectedQuadBakedBlockModel implements IBakedModel {
 
-  private final QuadCollector quads;
+  private final @Nonnull QuadCollector quads;
   private TextureAtlasSprite particleTexture = null;
 
-  private static final ItemOverrideList itemOverrideList = new ItemOverrideList(Collections.<ItemOverride> emptyList()) {
+  private static final @Nonnull ItemOverrideList itemOverrideList = new ItemOverrideList(Collections.<ItemOverride> emptyList()) {
     @Override
-    public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    public @Nonnull IBakedModel handleItemState(@Nonnull IBakedModel originalModel, @Nonnull ItemStack stack, @Nullable World world,
+        @Nullable EntityLivingBase entity) {
       return originalModel;
     }
   };
 
-  public CollectedQuadBakedBlockModel(QuadCollector quads) {
+  public CollectedQuadBakedBlockModel(@Nonnull QuadCollector quads) {
     this.quads = quads;
   }
 
   @Override
-  public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+  public @Nonnull List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
     return quads.getQuads(side, MinecraftForgeClient.getRenderLayer());
   }
 
@@ -57,9 +59,9 @@ public class CollectedQuadBakedBlockModel implements IBakedModel {
   }
 
   @Override
-  public TextureAtlasSprite getParticleTexture() {
-    return particleTexture != null ? particleTexture : Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager()
-        .getMissingModel().getParticleTexture();
+  public @Nonnull TextureAtlasSprite getParticleTexture() {
+    return particleTexture != null ? particleTexture
+        : Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel().getParticleTexture();
   }
 
   protected void setParticleTexture(TextureAtlasSprite particleTexture) {
@@ -67,12 +69,12 @@ public class CollectedQuadBakedBlockModel implements IBakedModel {
   }
 
   @Override
-  public net.minecraft.client.renderer.block.model.ItemCameraTransforms getItemCameraTransforms() {
+  public @Nonnull ItemCameraTransforms getItemCameraTransforms() {
     return ItemCameraTransforms.DEFAULT;
   }
 
   @Override
-  public ItemOverrideList getOverrides() {
+  public @Nonnull ItemOverrideList getOverrides() {
     return itemOverrideList;
   }
 

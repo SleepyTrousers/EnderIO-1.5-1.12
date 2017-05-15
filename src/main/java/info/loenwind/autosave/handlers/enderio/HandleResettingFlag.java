@@ -6,9 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
+
 import crazypants.util.ResettingFlag;
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +27,7 @@ public class HandleResettingFlag implements IHandler<ResettingFlag> {
   @Override
   public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
       @Nonnull ResettingFlag object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    nbt.setBoolean(name, phase.contains(NBTAction.CLIENT) ? object.read() : object.peek());
+    nbt.setBoolean(name, phase.contains(NBTAction.UPDATE) ? object.read() : object.peek());
     return true;
   }
 

@@ -19,12 +19,15 @@ import net.minecraft.world.IBlockAccess;
  */
 public interface IBlockStateWrapper extends IBlockState, ICacheKey {
 
+  @Nonnull
   BlockPos getPos();
 
   TileEntity getTileEntity();
 
+  @Nonnull
   IBlockAccess getWorld();
 
+  @Nonnull
   IBlockState getState();
 
   @Override
@@ -33,6 +36,7 @@ public interface IBlockStateWrapper extends IBlockState, ICacheKey {
 
   void bakeModel();
 
+  @Nonnull
   YetaDisplayMode getYetaDisplayMode();
 
 }

@@ -1,5 +1,6 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.render.registry.PaintTintHandler;
@@ -13,6 +14,6 @@ import net.minecraft.world.IBlockAccess;
  */
 public interface ITintedBlock {
 
-  int getBlockTint(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex);
+  int getBlockTint(@Nonnull IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex);
 
 }

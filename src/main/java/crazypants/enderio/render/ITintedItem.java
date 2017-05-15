@@ -1,5 +1,7 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.render.registry.PaintTintHandler;
 import net.minecraft.item.ItemStack;
 
@@ -9,6 +11,6 @@ import net.minecraft.item.ItemStack;
  */
 public interface ITintedItem {
 
-  int getItemTint(ItemStack stack, int tintIndex);
+  int getItemTint(@Nonnull ItemStack stack, int tintIndex);
 
 }

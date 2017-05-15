@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -40,7 +41,6 @@ public enum EnumRenderMode implements IStringSerializable {
   FRONT_ON_WEST(FRONT_ON),
   FRONT_ON_EAST(FRONT_ON);
 
-  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumRenderMode> RENDER = PropertyEnum.<EnumRenderMode> create("render", EnumRenderMode.class);
 
   private final int parentid;

@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
@@ -29,7 +30,6 @@ public enum EnumDecoBlock implements IStringSerializable {
 
   ;
 
-  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumDecoBlock> TYPE = PropertyEnum.<EnumDecoBlock> create("type", EnumDecoBlock.class);
 
   @Override
@@ -37,7 +37,7 @@ public enum EnumDecoBlock implements IStringSerializable {
     return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
   }
 
-  public String getUnlocalizedName(Item me) {
+  public @Nonnull String getUnlocalizedName(Item me) {
     return me.getUnlocalizedName() + "_" + getName();
   }
 
@@ -45,7 +45,7 @@ public enum EnumDecoBlock implements IStringSerializable {
     return values()[meta >= 0 && meta < values().length ? meta : 0];
   }
 
-  public static int getMetaFromType(EnumDecoBlock value) {
+  public static int getMetaFromType(@Nonnull EnumDecoBlock value) {
     return value.ordinal();
   }
 

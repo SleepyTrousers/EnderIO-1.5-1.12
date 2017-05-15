@@ -1,10 +1,12 @@
 package crazypants.enderio.render.registry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.ITintedBlock;
 import crazypants.enderio.render.ITintedItem;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -18,8 +20,8 @@ import net.minecraft.world.IBlockAccess;
 public class PaintTintHandler implements IBlockColor, IItemColor {
 
   @Override
-  public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-    if (stack == null || stack.getItem() == null) {
+  public int getColorFromItemstack(@Nonnull ItemStack stack, int tintIndex) {
+    if (Prep.isInvalid(stack)) {
       return -1;
     }
     Item item = stack.getItem();
@@ -49,18 +51,18 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
   }
 
   @Override
-  public int colorMultiplier(IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-    if (state == null || world == null || pos == null) {
+  public int colorMultiplier(@Nonnull IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+    if (world == null || pos == null) {
       return -1;
     }
     Block block = state.getBlock();
-    
+
     IBlockState paintSource = null;
     if (block instanceof IPaintable) {
       paintSource = ((IPaintable) block).getPaintSource(state, world, pos);
       if (paintSource != null && paintSource.getBlock() != block) {
-        block = paintSource.getBlock();  
-        state = paintSource;        
+        block = paintSource.getBlock();
+        state = paintSource;
       } else {
         paintSource = null;
       }
@@ -71,7 +73,7 @@ public class PaintTintHandler implements IBlockColor, IItemColor {
     if (block instanceof IBlockColor) {
       return ((IBlockColor) block).colorMultiplier(state, world, pos, tintIndex);
     }
-    if(paintSource != null) {
+    if (paintSource != null) {
       return Minecraft.getMinecraft().getBlockColors().colorMultiplier(paintSource, world, pos, tintIndex);
     }
     return -1;

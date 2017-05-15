@@ -1,5 +1,7 @@
 package crazypants.enderio.render;
 
+import javax.annotation.Nonnull;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -11,6 +13,7 @@ public interface ISmartRenderAwareBlock {
    * This is called in a render thread.
    */
   @SideOnly(Side.CLIENT)
+  @Nonnull
   IRenderMapper.IItemRenderMapper getItemRenderMapper();
 
 }

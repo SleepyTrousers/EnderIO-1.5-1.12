@@ -8,10 +8,10 @@ import javax.annotation.Nonnull;
 
 public class CompositeList<E> extends AbstractList<E> {
 
-  private final List<E> list1;
-  private final List<E> list2;
+  private final @Nonnull List<E> list1;
+  private final @Nonnull List<E> list2;
 
-  public CompositeList(List<E> list1, List<E> list2) {
+  public CompositeList(@Nonnull List<E> list1, @Nonnull List<E> list2) {
     this.list1 = list1;
     this.list2 = list2;
   }

@@ -6,8 +6,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
+
 import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import net.minecraft.nbt.NBTTagCompound;
 

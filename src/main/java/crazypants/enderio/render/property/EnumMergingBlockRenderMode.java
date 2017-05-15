@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -67,7 +68,6 @@ public enum EnumMergingBlockRenderMode implements IStringSerializable {
 
   ;
 
-  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumMergingBlockRenderMode> RENDER = PropertyEnum.<EnumMergingBlockRenderMode> create("render",
       EnumMergingBlockRenderMode.class);
 

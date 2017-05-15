@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -26,7 +27,6 @@ public enum EnumRenderPart implements IStringSerializable {
   SOUL_FRAME_WEST(SOUL_FRAME),
   SOUL_FRAME_EAST(SOUL_FRAME);
 
-  @SuppressWarnings("null")
   public static final @Nonnull PropertyEnum<EnumRenderPart> SUB = PropertyEnum.<EnumRenderPart> create("sub", EnumRenderPart.class);
 
   private final int parentid;

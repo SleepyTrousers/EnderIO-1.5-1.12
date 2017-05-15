@@ -3,6 +3,11 @@ package crazypants.enderio.render.pipeline;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.util.QuadCollector;
@@ -27,18 +32,16 @@ public class PaintWrangler {
     boolean doPaint = true;
   }
 
-  private static final ConcurrentHashMap<Block, Memory> cache = new ConcurrentHashMap<Block, Memory>();
+  private static final @Nonnull ConcurrentHashMap<Block, Memory> cache = new ConcurrentHashMap<Block, Memory>();
 
-  public static boolean wrangleBakedModel(IBlockAccess blockAccess, BlockPos pos, IBlockState paintSource, QuadCollector quads) {
-    IBlockState actualPaintSource = paintSource;
-    IBlockState extendedPaintSource = paintSource;
+  public static boolean wrangleBakedModel(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nullable IBlockState paintSource,
+      @Nonnull QuadCollector quads) {
     if (paintSource == null) {
       return false;
     }
+    IBlockState actualPaintSource = paintSource;
+    IBlockState extendedPaintSource = paintSource;
     Block block = paintSource.getBlock();
-    if (block == null) {
-      return false;
-    }
     Memory memory = cache.get(block);
     if (memory == null) {
       memory = new Memory();
@@ -69,7 +72,7 @@ public class PaintWrangler {
     }
 
     IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
-    if (paintModel == null) {
+    if (paintModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel()) {
       if (fakeWorld != null) {
         fakeWorld.free();
       }
@@ -79,7 +82,8 @@ public class PaintWrangler {
     final long positionRandom = MathHelper.getPositionRandom(pos);
     BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
     for (BlockRenderLayer layer : quads.getBlockLayers()) {
-      if (layer == BREAKING || paintSource.getBlock().canRenderInLayer(extendedPaintSource, layer)) {
+      if (layer == BREAKING
+          || paintSource.getBlock().canRenderInLayer(extendedPaintSource, NullHelper.notnullJ(layer, "'a == null || b(a)' gave null to b()"))) {
         ForgeHooksClient.setRenderLayer(layer);
         List<String> errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
         if (errors != null) {

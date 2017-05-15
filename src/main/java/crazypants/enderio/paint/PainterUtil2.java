@@ -9,10 +9,12 @@ import crazypants.enderio.EnderIO;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPiston;
@@ -21,17 +23,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.util.NbtValue.BLOCKSTATE;
 
 public class PainterUtil2 {
 
-  public static boolean isValid(ItemStack paintSource, Block target) {
+  public static boolean isValid(@Nonnull ItemStack paintSource, Block target) {
     boolean solidPaint = false;
     boolean textureOnly = false;
-    if (paintSource != null) {
+    if (Prep.isValid(paintSource)) {
       if (!PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
         return false;
       }
@@ -56,8 +57,8 @@ public class PainterUtil2 {
     }
 
     if (target == null) {
-      return paintSource != null;
-    } else if (paintSource == null) {
+      return Prep.isValid(paintSource);
+    } else if (Prep.isInvalid(paintSource)) {
       return target instanceof IPaintable;
     } else if (target instanceof IPaintable.ITexturePaintableBlock) {
       return true;
@@ -72,13 +73,14 @@ public class PainterUtil2 {
     }
   }
 
-  public static IBlockState rotate(IBlockState paintSource) {
-    //TODO: Need to handle cases like stairs and slabs that have 'upper' and 'lower' so they are included in the rotation
+  public static IBlockState rotate(@Nonnull IBlockState paintSource) {
+    // TODO: Need to handle cases like stairs that have 'upper' and 'lower' so they are included in the rotation
     //cycle
-    for(IProperty<?> prop : paintSource.getPropertyNames()) {
+    for (IProperty<?> prop : paintSource.getPropertyKeys()) {
       if(prop instanceof PropertyDirection) {
-        PropertyDirection pd = (PropertyDirection)prop;               
-        return paintSource.cycleProperty(pd);
+        return paintSource.cycleProperty(prop);
+      } else if (prop == BlockSlab.HALF) {
+        return paintSource.cycleProperty(prop);
       }
     }    
     if(paintSource.getBlock() instanceof BlockLog) {
@@ -87,62 +89,46 @@ public class PainterUtil2 {
     return paintSource;
   }
   
-  @SuppressWarnings("deprecation")
   public static void writeNbt(NBTTagCompound nbtRoot, IBlockState paintSource) {
     if (nbtRoot == null) {
       return;
     }
     if (paintSource == null) {
       BLOCKSTATE.removeTag(nbtRoot);
-      SOURCE_BLOCK.removeTag(nbtRoot);
-      SOURCE_META.removeTag(nbtRoot);
     } else {
-      BLOCKSTATE.setTag(nbtRoot, NBTUtil.func_190009_a(new NBTTagCompound(), paintSource));
+      BLOCKSTATE.setTag(nbtRoot, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
     }
   }
 
-  @SuppressWarnings("deprecation")
   public static IBlockState readNbt(NBTTagCompound nbtRoot) {
-    if (nbtRoot != null) {
-      if (BLOCKSTATE.hasTag(nbtRoot)) {
-        return NBTUtil.func_190008_d(BLOCKSTATE.getTag(nbtRoot));
-      } else if (SOURCE_BLOCK.hasTag(nbtRoot) && SOURCE_META.hasTag(nbtRoot)) { // legacy
-        ResourceLocation res = new ResourceLocation(SOURCE_BLOCK.getString(nbtRoot)); // TODO 1.11 remove legacy
-        if (Block.REGISTRY.containsKey(res)) {
-          Block block = Block.REGISTRY.getObject(res);
-          int meta = SOURCE_META.getInt(nbtRoot);
-          return block.getStateFromMeta(meta);
-        }
+    final NBTTagCompound tag = BLOCKSTATE.getTag(nbtRoot);
+    if (tag != null) {
+      return NBTUtil.readBlockState(tag);
       }
-    }
     return null;
   }
 
-  @SuppressWarnings("deprecation")
-  public static boolean isPainted(ItemStack itemStack) {
-    return BLOCKSTATE.hasTag(itemStack) || (SOURCE_BLOCK.hasTag(itemStack) && SOURCE_META.hasTag(itemStack)); // TODO 1.11 remove legacy
+  public static boolean isPainted(@Nonnull ItemStack itemStack) {
+    return BLOCKSTATE.hasTag(itemStack);
   }
 
-  public static IBlockState getSourceBlock(ItemStack itemStack) {
+  public static IBlockState getSourceBlock(@Nonnull ItemStack itemStack) {
     return readNbt(itemStack.getTagCompound());
   }
 
-  @SuppressWarnings("deprecation")
-  public static void setSourceBlock(ItemStack itemStack, IBlockState paintSource) {
-    if (itemStack.isEmpty()) {
+  public static void setSourceBlock(@Nonnull ItemStack itemStack, IBlockState paintSource) {
+    if (Prep.isInvalid(itemStack)) {
       return;
     }
     if (paintSource == null) {
       BLOCKSTATE.removeTag(itemStack);
-      SOURCE_BLOCK.removeTag(itemStack);
-      SOURCE_META.removeTag(itemStack);
       return;
     } else {
-      BLOCKSTATE.setTag(itemStack, NBTUtil.func_190009_a(new NBTTagCompound(), paintSource));
+      BLOCKSTATE.setTag(itemStack, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
     }
   }
 
-  public static String getTooltTipText(ItemStack itemStack) {
+  public static String getTooltTipText(@Nonnull ItemStack itemStack) {
     String sourceName = null;
     if (itemStack.getItem() instanceof IWithPaintName) {
       sourceName = ((IWithPaintName) itemStack.getItem()).getPaintName(itemStack);
@@ -151,7 +137,7 @@ public class PainterUtil2 {
       if (state != null) {
         Block block = state.getBlock();
         Item itemFromBlock = Item.getItemFromBlock(block);
-        if (itemFromBlock != null) {
+        if (itemFromBlock != Items.AIR) {
           ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
           sourceName = is.getDisplayName();
         } else {
@@ -170,7 +156,7 @@ public class PainterUtil2 {
     if (state != null) {
       Block block = state.getBlock();
       Item itemFromBlock = Item.getItemFromBlock(block);
-      if (itemFromBlock != null) {
+      if (itemFromBlock != Items.AIR) {
         return new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
       }
     }
@@ -195,14 +181,14 @@ public class PainterUtil2 {
       return false;
     }
     EnumBlockRenderType rt = block.getDefaultState().getRenderType();
-    return  rt != null && rt != EnumBlockRenderType.INVISIBLE;
+    return rt != EnumBlockRenderType.INVISIBLE;
   }
 
   public static Block getBlockFromItem(Item itemIn) {
-    if (itemIn instanceof ItemBlock) {
-      return ((ItemBlock) itemIn).getBlock();
-    }
     if (itemIn != null) {
+      if (itemIn instanceof ItemBlock) {
+        return ((ItemBlock) itemIn).getBlock();
+      }
       FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(new ItemStack(itemIn));
       if (fluidStack != null) {
         return fluidStack.getFluid().getBlock();
@@ -211,8 +197,8 @@ public class PainterUtil2 {
     return null;
   }
 
-  public static Block getBlockFromItem(ItemStack itemStack) {
-    if (itemStack != null) {
+  public static Block getBlockFromItem(@Nonnull ItemStack itemStack) {
+    if (Prep.isValid(itemStack)) {
       if (itemStack.getItem() instanceof ItemBlock) {
         return ((ItemBlock) itemStack.getItem()).getBlock();
       }
@@ -226,7 +212,7 @@ public class PainterUtil2 {
 
   private static final BlockRenderLayer BREAKING = null;
 
-  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, BlockRenderLayer blockLayer) {
+  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, @Nonnull BlockRenderLayer blockLayer) {
     if (blockLayer == BREAKING) {
       return true;
     } else if (paintSource != null) {

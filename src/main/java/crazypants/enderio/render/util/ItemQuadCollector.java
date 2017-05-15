@@ -9,6 +9,9 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.common.util.NullHelper;
+
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -50,16 +53,16 @@ public class ItemQuadCollector {
     }
   }
 
-  public List<BakedQuad> getQuads(EnumFacing side) {
-    Integer face = facing2Integer(side);
-    if (table[face] == null) {
+  public @Nonnull List<BakedQuad> getQuads(EnumFacing side) {
+    final List<BakedQuad> result = table[facing2Integer(side)];
+    if (result == null) {
       return Collections.<BakedQuad> emptyList();
     } else {
-      return table[face];
+      return result;
     }
   }
 
-  public void addBlockStates(List<Pair<IBlockState, ItemStack>> states, ItemStack parent, Block parentBlock) {
+  public void addBlockStates(List<Pair<IBlockState, ItemStack>> states, @Nonnull ItemStack parent, Block parentBlock) {
     if (states == null || states.isEmpty()) {
       return;
     }
@@ -69,7 +72,7 @@ public class ItemQuadCollector {
       IBlockState state = pair.getLeft();
       if (state != null) {
         ItemStack stack = pair.getRight();
-        if (stack == null) {
+        if (stack == null || Prep.isInvalid(stack)) {
           if (state.getBlock() == parentBlock) {
             stack = parent;
           } else {
@@ -77,12 +80,12 @@ public class ItemQuadCollector {
           }
         }
         IBakedModel model = modelShapes.getModelForState(state);
-        addBakedModel(model, stack);
+        addBakedModel(model, NullHelper.notnullJ(stack, "If you see this, the world will be ending yesterday half past yellow!"));
       }
     }
   }
 
-  public void addItemBlockStates(List<Pair<IBlockState, ItemStack>> states, ItemStack parent, Block parentBlock) {
+  public void addItemBlockStates(List<Pair<IBlockState, ItemStack>> states, @Nonnull ItemStack parent, Block parentBlock) {
     if (states == null || states.isEmpty()) {
       return;
     }
@@ -91,25 +94,25 @@ public class ItemQuadCollector {
       IBlockState state = pair.getLeft();
       if (state != null) {
         ItemStack stack = pair.getRight();
-        if (stack == null) {
+        if (stack == null || Prep.isInvalid(stack)) {
           if (state.getBlock() == parentBlock) {
             stack = parent;
           } else {
             stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
           }
         }
-        addItemModel(stack);
+        addItemModel(NullHelper.notnullJ(stack, "If you see this, the world will be ending yesterday half past yellow!"));
       }
     }
   }
 
-  public void addBlockState(IBlockState state, ItemStack stack) {
+  public void addBlockState(IBlockState state, @Nonnull ItemStack stack) {
     addBlockState(state, stack, false);
   }
 
-  public void addBlockState(IBlockState state, ItemStack stack, boolean allFacesToGeneral) {
+  public void addBlockState(IBlockState state, @Nonnull ItemStack stack, boolean allFacesToGeneral) {
     if (state != null) {
-      if (stack == null) {
+      if (Prep.isInvalid(stack)) {
         stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
       }
       BlockModelShapes modelShapes = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
@@ -118,30 +121,27 @@ public class ItemQuadCollector {
     }
   }
 
-  public void addItemBlockState(IBlockState state, ItemStack stack) {
+  public void addItemBlockState(IBlockState state, @Nonnull ItemStack stack) {
     if (state != null) {
-      if (stack == null) {
+      if (Prep.isInvalid(stack)) {
         stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
       }
       addItemModel(stack);
     }
   }
 
-  public void addItemModel(ItemStack stack) {
-    if (stack != null && stack.getItem() != null) {
+  public void addItemModel(@Nonnull ItemStack stack) {
+    if (Prep.isValid(stack)) {
       addItemBakedModel(Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null));
     }
   }
 
-  public void addBakedModel(IBakedModel model, ItemStack stack) {
+  public void addBakedModel(IBakedModel model, @Nonnull ItemStack stack) {
     addBakedModel(model, stack, false);
   }
 
-  public void addBakedModel(IBakedModel model, ItemStack stack, boolean allFacesToGeneral) {
+  public void addBakedModel(IBakedModel model, @Nonnull ItemStack stack, boolean allFacesToGeneral) {
     model = model.getOverrides().handleItemState(model, stack, (World) null, (EntityLivingBase) null);
-    if (model == null) {
-      model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel();
-    }
     addItemBakedModel(model, allFacesToGeneral);
   }
 
@@ -151,12 +151,12 @@ public class ItemQuadCollector {
 
   public void addItemBakedModel(IBakedModel model, boolean allFacesToGeneral) {
     List<BakedQuad> generalQuads = model.getQuads((IBlockState) null, (EnumFacing) null, 0L);
-    if (generalQuads != null && !generalQuads.isEmpty()) {
+    if (!generalQuads.isEmpty()) {
       addQuads(null, generalQuads);
     }
     for (EnumFacing face : EnumFacing.values()) {
       List<BakedQuad> faceQuads = model.getQuads((IBlockState) null, face, 0L);
-      if (faceQuads != null && !faceQuads.isEmpty()) {
+      if (!faceQuads.isEmpty()) {
         addQuads(allFacesToGeneral ? null : face, faceQuads);
       }
     }

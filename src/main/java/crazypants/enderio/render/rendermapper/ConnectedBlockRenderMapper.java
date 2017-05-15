@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
@@ -25,20 +31,20 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
   protected boolean skip_top = false, skip_bottom = false, skip_side = false, skip_top_side = false, skip_bottom_side = false;
 
   @SideOnly(Side.CLIENT)
-  protected abstract List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector);
+  protected abstract List<IBlockState> renderBody(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      BlockRenderLayer blockLayer, @Nonnull QuadCollector quadCollector);
 
-  protected abstract boolean isSameKind(IBlockState state, IBlockState other);
-
-  @SideOnly(Side.CLIENT)
-  protected abstract IBlockState getMergedBlockstate(IBlockState state);
+  protected abstract boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other);
 
   @SideOnly(Side.CLIENT)
-  protected abstract IBlockState getBorderedBlockstate(IBlockState state);
+  protected abstract @Nullable IBlockState getMergedBlockstate(@Nonnull IBlockState state);
+
+  @SideOnly(Side.CLIENT)
+  protected abstract @Nullable IBlockState getBorderedBlockstate(@Nonnull IBlockState state);
 
   private final boolean[][][] neighborKinds = new boolean[3][3][3];
 
-  public ConnectedBlockRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public ConnectedBlockRenderMapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     for (int dx = -1; dx <= 1; dx++) {
       for (int dy = -1; dy <= 1; dy++) {
         for (int dz = -1; dz <= 1; dz++) {
@@ -49,12 +55,12 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     }
   }
 
-  protected boolean isSameKind(IBlockState state, IBlockAccess world, BlockPos pos, BlockPos other) {
+  protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos other) {
     IBlockState otherState = world.getBlockState(other).getActualState(world, other);
     if (isSameKind(state, otherState)) {
       return true;
     }
-    if (FacadeUtil.instance.isFacaded(otherState) && other != null) {
+    if (FacadeUtil.instance.isFacaded(otherState)) {
       try {
         IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, other, null);
         if (facade != null) {
@@ -66,7 +72,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     return false;
   }
 
-  protected boolean getNeighbor(BlockPos pos, BlockPos npos) {
+  protected boolean getNeighbor(@Nonnull BlockPos pos, @Nonnull BlockPos npos) {
     int x = cmp(pos.getX(), npos.getX());
     int y = cmp(pos.getY(), npos.getY());
     int z = cmp(pos.getZ(), npos.getZ());
@@ -77,7 +83,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     return a < b ? 0 : a > b ? 2 : 1;
   }
 
-  protected void setNeighbor(BlockPos pos, BlockPos npos, boolean value) {
+  protected void setNeighbor(@Nonnull BlockPos pos, @Nonnull BlockPos npos, boolean value) {
     int x = cmp(pos.getX(), npos.getX());
     int y = cmp(pos.getY(), npos.getY());
     int z = cmp(pos.getZ(), npos.getZ());
@@ -98,7 +104,6 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     return deepHashCode;
   }
 
-
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
@@ -113,8 +118,8 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public @Nullable List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      BlockRenderLayer blockLayer, @Nonnull QuadCollector quadCollector) {
     List<IBlockState> states = renderBody(state, world, pos, blockLayer, quadCollector);
 
     if (states == null) {
@@ -129,7 +134,9 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
     boolean block_up = getNeighbor(pos, pos.offset(EnumFacing.UP));
     boolean block_down = getNeighbor(pos, pos.offset(EnumFacing.DOWN));
-    for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+    NNIterator<EnumFacing> iterator = NNList.FACING_HORIZONTAL.iterator();
+    while (iterator.hasNext()) {
+      EnumFacing facing = iterator.next();
       boolean block_facing = getNeighbor(pos, pos.offset(facing));
       boolean block_right = getNeighbor(pos, pos.offset(facing.rotateYCCW()));
       boolean block_up_facing = getNeighbor(pos, pos.up().offset(facing));
@@ -207,8 +214,8 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
     return !dir1 && !dir2;
   }
 
-  protected <T extends Comparable<T>, V extends T> void add(List<IBlockState> states, boolean skip, boolean border, IBlockState stateBordered,
-      IBlockState stateMerged, IProperty<T> property, V value) {
+  protected <T extends Comparable<T>, V extends T> void add(@Nonnull List<IBlockState> states, boolean skip, boolean border,
+      @Nullable IBlockState stateBordered, @Nullable IBlockState stateMerged, @Nonnull IProperty<T> property, @Nonnull V value) {
     IBlockState state = border ? stateBordered : stateMerged;
     if (!skip && state != null) {
       states.add(state.withProperty(property, value));
