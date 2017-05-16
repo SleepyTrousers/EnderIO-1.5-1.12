@@ -1,8 +1,9 @@
 package crazypants.enderio.block;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockTrapDoor;
@@ -14,15 +15,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IHaveRenderers {
 
-  public static BlockDarkSteelTrapDoor create() {
-    BlockDarkSteelTrapDoor res = new BlockDarkSteelTrapDoor(ModObject.blockDarkSteelTrapdoor, Material.IRON, true);
+  public static BlockDarkSteelTrapDoor create(@Nonnull IModObject modObject) {
+    BlockDarkSteelTrapDoor res = new BlockDarkSteelTrapDoor(modObject, Material.IRON, true);
     res.init();
     return res;
   }
 
-  protected final IModObject modObject;
+  protected final @Nonnull IModObject modObject;
 
-  public BlockDarkSteelTrapDoor(IModObject modObject, Material materialIn, boolean isBlastResistant) {
+  public BlockDarkSteelTrapDoor(@Nonnull IModObject modObject, Material materialIn, boolean isBlastResistant) {
     super(materialIn);
     this.modObject = modObject;
     if (isBlastResistant) {

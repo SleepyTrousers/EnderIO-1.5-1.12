@@ -3,7 +3,6 @@ package crazypants.enderio.block;
 import java.lang.reflect.Field;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.config.Config;
 import crazypants.util.Prep;
@@ -31,12 +30,13 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
   // public at the moment
   // private final Field _materialCost = ReflectionHelper.findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
 
-  public ContainerDarkSteelAnvil(InventoryPlayer playerInv, final World world, final int x, final int y, final int z, EntityPlayer player) {
+  public ContainerDarkSteelAnvil(@Nonnull InventoryPlayer playerInv, final @Nonnull World world, final int x, final int y, final int z,
+      @Nonnull EntityPlayer player) {
     super(playerInv, world, new BlockPos(x, y, z), player);
 
     final BlockPos blockPosIn = new BlockPos(x, y, z);
     final IInventory outputSlot, inputSlots;
-//    final int materialCost;
+    // final int materialCost;
 
     try {
       outputSlot = (IInventory) _outputSlot.get(this);
@@ -58,13 +58,13 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
       }
 
       @Override
-      public boolean canTakeStack(EntityPlayer stack) {
+      public boolean canTakeStack(@Nonnull EntityPlayer stack) {
         return (stack.capabilities.isCreativeMode || stack.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
             && ContainerDarkSteelAnvil.this.maximumCost > 0 && this.getHasStack();
       }
 
       @Override
-      public void onPickupFromSlot(EntityPlayer playerIn, @Nonnull ItemStack stack) {
+      public @Nonnull ItemStack onTake(@Nonnull EntityPlayer playerIn, @Nonnull ItemStack stack) {
         if (!playerIn.capabilities.isCreativeMode) {
           playerIn.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
         }
@@ -96,18 +96,19 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
             world.setBlockToAir(blockPosIn);
             world.playEvent(1029, blockPosIn, 0);
           } else {
-            world.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(l)), 2);
+            world.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, l), 2);
             world.playEvent(1030, blockPosIn, 0);
           }
         } else if (!world.isRemote) {
           world.playEvent(1030, blockPosIn, 0);
         }
+        return stack;
       }
     });
   }
 
   @Override
-  public boolean canInteractWith(EntityPlayer player) {
+  public boolean canInteractWith(@Nonnull EntityPlayer player) {
     return player.world.getBlockState(new BlockPos(x, y, z)).getBlock() == blockDarkSteelAnvil.getBlock();
   }
 }

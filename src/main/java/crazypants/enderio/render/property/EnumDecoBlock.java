@@ -41,8 +41,8 @@ public enum EnumDecoBlock implements IStringSerializable {
     return me.getUnlocalizedName() + "_" + getName();
   }
 
-  public static EnumDecoBlock getTypeFromMeta(int meta) {
-    return values()[meta >= 0 && meta < values().length ? meta : 0];
+  public static @Nonnull EnumDecoBlock getTypeFromMeta(int meta) {
+    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "enum has null members...");
   }
 
   public static int getMetaFromType(@Nonnull EnumDecoBlock value) {

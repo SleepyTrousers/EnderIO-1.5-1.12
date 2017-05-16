@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
@@ -18,7 +21,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -32,16 +34,16 @@ import static crazypants.enderio.config.Config.leversEnabled;
 public class BlockSelfResettingLever extends BlockLever implements IHaveRenderers {
 
   private static List<Integer> delays = new ArrayList<Integer>();
-  private static List<BlockSelfResettingLever> blocks = new ArrayList<BlockSelfResettingLever>();;
+  private static NNList<BlockSelfResettingLever> blocks = new NNList<BlockSelfResettingLever>();;
 
   private final int delay;
-  private final String name;
+  private final @Nonnull String name;
 
-  public String getName() {
+  public @Nonnull String getName() {
     return name;
   }
 
-  public BlockSelfResettingLever(String name, int delay) {
+  public BlockSelfResettingLever(@Nonnull String name, int delay) {
     super();
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.5F);
@@ -52,13 +54,14 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
     setRegistryName(name);
   }
 
-  public static Block create() {
+  public static Block create(@Nonnull IModObject modObject) {
     getLevers();
     blocks.clear();
     for (Integer value : delays) {
-      final String name = ModObject.blockSelfResettingLever.getUnlocalisedName() + value;
+      final String name = modObject.getUnlocalisedName() + value;
       final BlockSelfResettingLever lever = new BlockSelfResettingLever(name, value * 20);
-      GameRegistry.register(new ItemBlock(GameRegistry.register(lever)).setRegistryName(name));
+      GameRegistry.register(lever);
+      GameRegistry.register(new ItemBlock(lever).setRegistryName(name));
       blocks.add(lever);
     }
     return blocks.isEmpty() ? null : blocks.get(0);
@@ -91,7 +94,8 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX,
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side, float hitX,
       float hitY, float hitZ) {
     if (world.isRemote) {
       return true;
@@ -103,8 +107,9 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
     }
   }
 
+  @SuppressWarnings("null")
   @Override
-  public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+  public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
     if (!world.isRemote && state.getValue(POWERED)) {
       super.onBlockActivated(world, pos, state, null, EnumHand.MAIN_HAND, EnumFacing.DOWN, 0f, 0f, 0f);
     }
@@ -113,9 +118,12 @@ public class BlockSelfResettingLever extends BlockLever implements IHaveRenderer
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    for (BlockSelfResettingLever b : blocks) {
-      ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
-    }
+    blocks.apply(new Callback<BlockSelfResettingLever>() {
+      @Override
+      public void apply(@Nonnull BlockSelfResettingLever b) {
+        ClientUtil.registerRenderer(Item.getItemFromBlock(b), b.getName());
+      }
+    });
   }
 
 }

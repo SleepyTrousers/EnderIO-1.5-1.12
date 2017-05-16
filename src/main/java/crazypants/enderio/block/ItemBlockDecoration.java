@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import net.minecraft.block.Block;
@@ -11,10 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public class ItemBlockDecoration extends ItemBlock implements IOverlayRenderAware {
-  public ItemBlockDecoration(Block block, String name) {
+
+  public ItemBlockDecoration(@Nonnull Block block, @Nonnull String name) {
     super(block);
     setHasSubtypes(true);
     setRegistryName(name);
@@ -34,11 +35,6 @@ public class ItemBlockDecoration extends ItemBlock implements IOverlayRenderAwar
   public static void doItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
 
     FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
-
-    if (fr == null) {
-      // The hotbar can be rendered before the render manager is initialized...
-      return;
-    }
 
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();

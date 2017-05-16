@@ -1,14 +1,14 @@
 package crazypants.enderio.block;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.event.AnvilMaxCostEvent;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
@@ -34,36 +34,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers {
 
-  public static BlockDarkSteelAnvil create() {
-    BlockDarkSteelAnvil res = new BlockDarkSteelAnvil();
+  public static BlockDarkSteelAnvil create(@Nonnull IModObject modObject) {
+    BlockDarkSteelAnvil res = new BlockDarkSteelAnvil(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
   }
 
-  private BlockDarkSteelAnvil() {
-    super();
+  private final @Nonnull IModObject modObject;
 
+  private BlockDarkSteelAnvil(@Nonnull IModObject modObject) {
     setHardness(5.0F);
     setSoundType(SoundType.ANVIL);
     setResistance(2000.0F);
 
-    setUnlocalizedName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
-    setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());
-    setCreativeTab(EnderIOTab.tabEnderIO);      
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
+    setCreativeTab(EnderIOTab.tabEnderIO);
+    this.modObject = modObject;
   }
-  
+
   protected void init() {
     GameRegistry.register(this);
     ItemAnvilBlock item = new ItemAnvilBlock(this);
-    item.setRegistryName(ModObject.blockDarkSteelAnvil.getUnlocalisedName());    
+    item.setRegistryName(modObject.getUnlocalisedName());
     GameRegistry.register(item);
-    
+
     GuiID.registerGuiHandler(GuiID.GUI_ID_ANVIL, new IGuiHandler() {
 
       @Override
       public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return new ContainerDarkSteelAnvil(player.inventory, world, x, y, z, player);
+        return new ContainerDarkSteelAnvil(player.inventory, NullHelper.notnullF(world, "getServerGuiElement without world?"), x, y, z, player);
       }
 
       @Override
@@ -74,28 +75,28 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   }
 
   @SubscribeEvent
-  public void onMaxAnvilCost(AnvilMaxCostEvent evt) {    
-    if(evt.getSource() instanceof ContainerDarkSteelAnvil) {      
-      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);  
-    } else if (FMLCommonHandler.instance().getSide() == Side.CLIENT && isClientShowingOurGui()) {             
-      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);      
-    } 
+  public void onMaxAnvilCost(AnvilMaxCostEvent evt) {
+    if (evt.getSource() instanceof ContainerDarkSteelAnvil) {
+      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);
+    } else if (FMLCommonHandler.instance().getSide() == Side.CLIENT && isClientShowingOurGui()) {
+      evt.setMaxAnvilCost(Config.darkSteelAnvilMaxLevel);
+    }
   }
-    
+
   @SideOnly(Side.CLIENT)
   private static boolean isClientShowingOurGui() {
     GuiScreen gui = Minecraft.getMinecraft().currentScreen;
-    return gui != null && GuiDarkSteelAnvil.class == gui.getClass();      
+    return gui != null && GuiDarkSteelAnvil.class == gui.getClass();
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return this.getUnlocalizedName();
   }
 
   @Override
-  public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX,
-      float hitY, float hitZ) {
+  public boolean onBlockActivated(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer playerIn,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     GuiID.GUI_ID_ANVIL.openGui(worldIn, pos, playerIn, side);
     return true;
   }
@@ -104,7 +105,8 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     for (Integer dmg : DAMAGE.getAllowedValues()) {
-      ClientUtil.regRenderer(this, dmg, DAMAGE.getName() + "=" + DAMAGE.getName(dmg) + "," + FACING.getName() + "=" + FACING.getName(EnumFacing.WEST));
+      ClientUtil.regRenderer(this, dmg, DAMAGE.getName() + "=" + DAMAGE.getName(NullHelper.notnullM(dmg, "invalid property")) + "," + FACING.getName() + "="
+          + FACING.getName(EnumFacing.WEST));
     }
   }
 

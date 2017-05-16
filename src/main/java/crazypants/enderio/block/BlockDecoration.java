@@ -1,11 +1,14 @@
 package crazypants.enderio.block;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.property.EnumDecoBlock;
 import net.minecraft.block.Block;
@@ -29,25 +32,22 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockDecoration1;
-
 public class BlockDecoration extends Block implements IHaveRenderers {
 
-  public static BlockDecoration create() {
-    BlockDecoration blockDecoration = new BlockDecoration(blockDecoration1.getUnlocalisedName());
+  public static BlockDecoration create(@Nonnull IModObject modObject) {
+    BlockDecoration blockDecoration = new BlockDecoration(modObject);
     blockDecoration.init();
     return blockDecoration;
   }
 
-  @Nonnull
-  protected final String name;
+  protected final @Nonnull IModObject modObject;
 
-  protected BlockDecoration(@Nonnull String name) {
+  protected BlockDecoration(@Nonnull IModObject modObject) {
     super(Material.ROCK);
-    this.name = name;
+    this.modObject = modObject;
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(name);
-    setRegistryName(name);
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setHardness(0.5F);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
@@ -59,48 +59,42 @@ public class BlockDecoration extends Block implements IHaveRenderers {
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumDecoBlock.TYPE });
   }
 
-
   protected void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new ItemBlockDecoration(this, getName()) {
+    GameRegistry.register(new ItemBlockDecoration(this, modObject.getUnlocalisedName()) {
       @Override
-      public String getUnlocalizedName(@Nonnull ItemStack stack) {
+      public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
         return EnumDecoBlock.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
     });
   }
 
-  @Nonnull
-  public String getName() {
-    return name;
-  }
-
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-    if (tab != null) {
-      for (EnumDecoBlock type : EnumDecoBlock.values()) {
-        list.add(new ItemStack(itemIn, 1, EnumDecoBlock.getMetaFromType(type)));
-      }
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    NNIterator<EnumDecoBlock> iterator = NNList.of(EnumDecoBlock.class).iterator();
+    while (iterator.hasNext()) {
+      EnumDecoBlock type = iterator.next();
+      list.add(new ItemStack(itemIn, 1, EnumDecoBlock.getMetaFromType(type)));
     }
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(EnumDecoBlock.TYPE, EnumDecoBlock.getTypeFromMeta(meta));
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return EnumDecoBlock.getMetaFromType(state.getValue(EnumDecoBlock.TYPE));
   }
 
   @Override
-  public int damageDropped(IBlockState st) {
+  public int damageDropped(@Nonnull IBlockState st) {
     return getMetaFromState(st);
   }
 
@@ -109,7 +103,9 @@ public class BlockDecoration extends Block implements IHaveRenderers {
   public void registerRenderers() {
     Item item = Item.getItemFromBlock(this);
     Map<IBlockState, ModelResourceLocation> locations = new DefaultStateMapper().putStateModelLocations(this);
-    for (EnumDecoBlock type : EnumDecoBlock.TYPE.getAllowedValues()) {
+    NNIterator<EnumDecoBlock> iterator = NNList.of(EnumDecoBlock.class).iterator();
+    while (iterator.hasNext()) {
+      EnumDecoBlock type = iterator.next();
       IBlockState state = getDefaultState().withProperty(EnumDecoBlock.TYPE, type);
       ModelResourceLocation mrl = locations.get(state);
       ModelLoader.setCustomModelResourceLocation(item, EnumDecoBlock.getMetaFromType(type), mrl);
@@ -117,18 +113,18 @@ public class BlockDecoration extends Block implements IHaveRenderers {
   }
 
   @Override
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState state) {
+  public boolean isOpaqueCube(@Nonnull IBlockState state) {
     EnumDecoBlock type = state.getValue(EnumDecoBlock.TYPE);
     return type != EnumDecoBlock.TYPE00 && type != EnumDecoBlock.TYPE14 && type != EnumDecoBlock.TYPE15;
   }
 
   @Override
-  public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public boolean isSideSolid(@Nonnull IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return isOpaqueCube(base_state);
   }
 

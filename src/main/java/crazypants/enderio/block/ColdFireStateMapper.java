@@ -1,5 +1,7 @@
 package crazypants.enderio.block;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.ModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,11 +14,11 @@ public class ColdFireStateMapper extends StateMapperBase {
 
   public static void create() {
     ColdFireStateMapper mapper = new ColdFireStateMapper();
-    ModelLoader.setCustomStateMapper(ModObject.blockColdFire.getBlock(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockColdFire.getBlockNN(), mapper);
   }
 
   @Override
-  protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+  protected @Nonnull ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
     return new ModelResourceLocation(Block.REGISTRY.getNameForObject(Blocks.FIRE), this.getPropertyString(state.getProperties()));
   }
 
