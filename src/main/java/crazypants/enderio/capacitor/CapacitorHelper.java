@@ -3,20 +3,21 @@ package crazypants.enderio.capacitor;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
-
 public class CapacitorHelper {
 
   private CapacitorHelper() {
   }
 
-  public static ICapacitorData getCapacitorDataFromItemStack(ItemStack stack) {
+  public static @Nullable ICapacitorData getCapacitorDataFromItemStack(@Nonnull ItemStack stack) {
     if (Prep.isInvalid(stack)) {
       return null;
     }
@@ -30,7 +31,7 @@ public class CapacitorHelper {
     return null;
   }
 
-  public static boolean isValidUpgrade(ItemStack stack) {
+  public static boolean isValidUpgrade(@Nonnull ItemStack stack) {
     if (Prep.isInvalid(stack)) {
       return false;
     }
@@ -38,16 +39,13 @@ public class CapacitorHelper {
     if (capData != null) {
       return true;
     }
-    if (stack.getItem() == itemBasicCapacitor.getItem()) {
-      return stack.getItemDamage() > 0;
-    }
     if (stack.getItem() instanceof ICapacitorDataItem) {
       return true;
     }
     return false;
   }
 
-  protected static ICapacitorData getNBTCapacitorDataFromItemStack(ItemStack stack) {
+  protected static @Nullable ICapacitorData getNBTCapacitorDataFromItemStack(@Nonnull ItemStack stack) {
     final NBTTagCompound nbtRoot = stack.getTagCompound();
     if (nbtRoot == null) {
       return null;
@@ -73,7 +71,7 @@ public class CapacitorHelper {
     TYPE;
   }
 
-  public static ItemStack addCapData(ItemStack stack, SetType setType, CapacitorKey key, float value) {
+  public static ItemStack addCapData(@Nonnull ItemStack stack, @Nonnull SetType setType, @Nonnull CapacitorKey key, float value) {
     NBTTagCompound root = stack.getTagCompound();
     if (root == null) {
       root = new NBTTagCompound();
@@ -99,22 +97,22 @@ public class CapacitorHelper {
     return stack;
   }
 
-  public static List<Pair<String, Float>> getCapDataRaw(ItemStack stack) {
-    NBTTagCompound tag = stack.getSubCompound("eiocap", false);
+  public static List<Pair<String, Float>> getCapDataRaw(@Nonnull ItemStack stack) {
+    NBTTagCompound tag = stack.getSubCompound("eiocap");
     if (tag == null) {
       return null;
     }
     List<Pair<String, Float>> result = new ArrayList<Pair<String, Float>>();
     for (String key : tag.getKeySet()) {
-      if (tag.hasKey(key, 5)) {
+      if (key != null && tag.hasKey(key, 5)) {
         result.add(Pair.of(key, tag.getFloat(key)));
       }
     }
     return result;
   }
 
-  public static int getCapLevelRaw(ItemStack stack) {
-    NBTTagCompound tag = stack.getSubCompound("eiocap", false);
+  public static int getCapLevelRaw(@Nonnull ItemStack stack) {
+    NBTTagCompound tag = stack.getSubCompound("eiocap");
     if (tag == null) {
       return 1;
     }

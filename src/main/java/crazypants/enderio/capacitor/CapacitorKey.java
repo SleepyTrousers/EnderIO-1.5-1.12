@@ -2,6 +2,9 @@ package crazypants.enderio.capacitor;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
@@ -72,7 +75,8 @@ public enum CapacitorKey implements ICapacitorKey {
 
   SOUL_BINDER_POWER_INTAKE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.QUADRATIC, 1000),
   SOUL_BINDER_POWER_BUFFER(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-  SOUL_BINDER_POWER_USE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 500, sectionPower, "soulBinderLevelOnePowerPerTickRF"),
+  SOUL_BINDER_POWER_USE(ModObject.blockSoulBinder, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 500, sectionPower,
+      "soulBinderLevelOnePowerPerTickRF"),
 
   STIRLING_POWER_BUFFER(ModObject.blockStirlingGenerator, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
   STIRLING_POWER_GEN(ModObject.blockStirlingGenerator, CapacitorKeyType.ENERGY_USE, Scaler.Factory.QUADRATIC, 20),
@@ -81,36 +85,37 @@ public enum CapacitorKey implements ICapacitorKey {
   POWER_MONITOR_POWER_INTAKE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
   POWER_MONITOR_POWER_BUFFER(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 10000),
   POWER_MONITOR_POWER_USE(ModObject.blockPowerMonitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1),
-  
+
   INV_PANEL_SENSOR_POWER_INTAKE(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
   INV_PANEL_SENSOR_POWER_BUFFER(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 10000),
   INV_PANEL_SENSOR_POWER_USE(ModObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1),
 
-  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80, null, null),
-  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000, null, null),
-  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20, null, null),
+  LEGACY_ENERGY_INTAKE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80),
+  LEGACY_ENERGY_BUFFER(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+  LEGACY_ENERGY_USE(ModObject.itemBasicCapacitor, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20),
 
   //
   ;
-  
+
   // /////////////////////////////////////////////////////////////////// //
   // /////////////////////////////////////////////////////////////////// //
   // /////////////////////////////////////////////////////////////////// //
 
-  private final ModObject owner;
-  private final CapacitorKeyType valueType;
-  private Scaler scaler;
-  private final String configKey;
-  private final Section configSection;
-  private final String configComment;
+  private final @Nonnull ModObject owner;
+  private final @Nonnull CapacitorKeyType valueType;
+  private @Nonnull Scaler scaler;
+  private final @Nonnull String configKey;
+  private final @Nonnull Section configSection;
+  private final @Nonnull String configComment;
   private final int defaultBaseValue;
   private int baseValue;
 
-  private CapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, int defaultBaseValue) {
+  private CapacitorKey(@Nonnull ModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue) {
     this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
   }
 
-  private CapacitorKey(ModObject owner, CapacitorKeyType valueType, Scaler scaler, int defaultBaseValue, Section configSection, String configKey) {
+  private @Nullable CapacitorKey(@Nonnull ModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
+      @Nonnull Section configSection, @Nullable String configKey) {
     this.owner = owner;
     this.valueType = valueType;
     this.scaler = scaler;
@@ -120,16 +125,12 @@ public enum CapacitorKey implements ICapacitorKey {
     this.baseValue = this.defaultBaseValue = defaultBaseValue;
   }
 
-  private static String localizeComment(Section configSection, String configKey) {
-    if (configSection == null || configKey == null) {
-      return null;
-    } else {
-      final String langKey = "config.capacitor." + configKey;
-      if (!EnderIO.lang.canLocalize(langKey)) {
-        Log.warn("Missing translation: " + langKey);
-      }
-      return EnderIO.lang.localize(langKey);
+  private static @Nonnull String localizeComment(@Nonnull Section configSection, @Nonnull String configKey) {
+    final String langKey = "config.capacitor." + configKey;
+    if (!EnderIO.lang.canLocalize(langKey)) {
+      Log.warn("Missing translation: " + langKey);
     }
+    return EnderIO.lang.localize(langKey);
   }
 
   /**
@@ -141,47 +142,45 @@ public enum CapacitorKey implements ICapacitorKey {
    * halfway reasonable output levels. Capacitors can choose to report different levels for each and any CapacitorKey.
    */
   @Override
-  public int get(ICapacitorData capacitor) {
+  public int get(@Nonnull ICapacitorData capacitor) {
     return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
   }
 
   /**
-   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make a
-   * difference.
+   * See {@link CapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
+   * a difference.
    */
   @Override
-  public float getFloat(ICapacitorData capacitor) {
+  public float getFloat(@Nonnull ICapacitorData capacitor) {
     return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
   }
 
   @Override
-  public ModObject getOwner() {
+  public @Nonnull ModObject getOwner() {
     return owner;
   }
 
   @Override
-  public CapacitorKeyType getValueType() {
+  public @Nonnull CapacitorKeyType getValueType() {
     return valueType;
   }
-  
+
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
 
   public static void processConfig(Configuration config) {
     for (CapacitorKey key : values()) {
-      if (key.configSection != null && key.configKey != null && key.configComment != null) {
-        key.baseValue = config.get(key.configSection.name, key.configKey, key.defaultBaseValue, key.configComment).getInt(key.baseValue);
-        String string = Scaler.Factory.toString(key.scaler);
-        if (string != null) {
-          String string2 = config.get(key.configSection.name, key.configKey + ".scaler", string, null).getString();
-          Scaler tmp = Scaler.Factory.fromString(string2);
-          if (tmp != null) {
-            key.scaler = tmp;
-          } else {
-            config.get(key.configSection.name, key.configKey + ".scaler", string, null).set(string);
-          }
+      key.baseValue = config.get(key.configSection.name, key.configKey, key.defaultBaseValue, key.configComment).getInt(key.baseValue);
+      String string = Scaler.Factory.toString(key.scaler);
+      if (string != null) {
+        String string2 = config.get(key.configSection.name, key.configKey + ".scaler", string, null).getString();
+        Scaler tmp = Scaler.Factory.fromString(string2);
+        if (tmp != null) {
+          key.scaler = tmp;
+        } else {
+          config.get(key.configSection.name, key.configKey + ".scaler", string, null).set(string);
         }
       }
     }

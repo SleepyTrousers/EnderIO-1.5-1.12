@@ -1,9 +1,9 @@
 package crazypants.enderio.capability;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -14,12 +14,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
 public class LegacyMachineWrapper implements IItemHandler {
-  protected final AbstractInventoryMachineEntity machine;
-  protected final EnumFacing side;
+  protected final @Nonnull AbstractInventoryMachineEntity machine;
+  protected final @Nonnull EnumFacing side;
   protected IoMode lastIoMode = null;
-  protected final List<Integer> slots = new ArrayList<Integer>();
+  protected final @Nonnull NNList<Integer> slots = new NNList<Integer>();
 
-  public LegacyMachineWrapper(AbstractInventoryMachineEntity machine, EnumFacing side) {
+  public LegacyMachineWrapper(@Nonnull AbstractInventoryMachineEntity machine, @Nonnull EnumFacing side) {
     this.machine = machine;
     this.side = side;
   }
@@ -53,12 +53,12 @@ public class LegacyMachineWrapper implements IItemHandler {
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     return machine.getStackInSlot(extSlot2intSlot(slot));
   }
 
   @Override
-  public ItemStack insertItem(int external, ItemStack stack, boolean simulate) {
+  public @Nonnull ItemStack insertItem(int external, @Nonnull ItemStack stack, boolean simulate) {
     if (Prep.isInvalid(stack) || !machine.getIoMode(side).canRecieveInput()) {
       return stack;
     }
@@ -71,23 +71,23 @@ public class LegacyMachineWrapper implements IItemHandler {
     return doInsertItem(slot, stack, simulate);
   }
 
-  protected ItemStack doInsertItem(int internal, ItemStack stack, boolean simulate) {
+  protected @Nonnull ItemStack doInsertItem(int internal, @Nonnull ItemStack stack, boolean simulate) {
     ItemStack existing = machine.getStackInSlot(internal);
     if (Prep.isValid(existing)) {
       int max = Math.min(existing.getMaxStackSize(), machine.getInventoryStackLimit(internal));
-      if (existing.stackSize >= max || !ItemUtil.areStackMergable(existing, stack)) {
+      if (existing.getCount() >= max || !ItemUtil.areStackMergable(existing, stack)) {
         return stack;
       }
-      int movable = Math.min(max - existing.stackSize, stack.stackSize);
+      int movable = Math.min(max - existing.getCount(), stack.getCount());
       if (!simulate) {
-        existing.stackSize += movable;
+        existing.grow(movable);
         machine.markDirty();
       }
-      if (movable >= stack.stackSize) {
+      if (movable >= stack.getCount()) {
         return Prep.getEmpty();
       } else {
         ItemStack copy = stack.copy();
-        copy.stackSize -= movable;
+        copy.shrink(movable);
         return copy;
       }
     } else {
@@ -95,26 +95,26 @@ public class LegacyMachineWrapper implements IItemHandler {
         return stack;
       }
       int max = Math.min(stack.getMaxStackSize(), machine.getInventoryStackLimit(internal));
-      if (max >= stack.stackSize) {
+      if (max >= stack.getCount()) {
         if (!simulate) {
           machine.setInventorySlotContents(internal, stack.copy());
         }
         return Prep.getEmpty();
       } else {
         ItemStack copy = stack.copy();
-        copy.stackSize = max;
+        copy.setCount(max);
         if (!simulate) {
           machine.setInventorySlotContents(internal, copy);
         }
         copy = stack.copy();
-        copy.stackSize -= max;
+        copy.shrink(max);
         return copy;
       }
     }
   }
 
   @Override
-  public ItemStack extractItem(int external, int amount, boolean simulate) {
+  public @Nonnull ItemStack extractItem(int external, int amount, boolean simulate) {
     if (amount <= 0 || !machine.getIoMode(side).canOutput())
       return Prep.getEmpty();
 
@@ -126,27 +126,33 @@ public class LegacyMachineWrapper implements IItemHandler {
     return doExtractItem(slot, amount, simulate);
   }
 
-  protected ItemStack doExtractItem(int internal, int amount, boolean simulate) {
+  protected @Nonnull ItemStack doExtractItem(int internal, int amount, boolean simulate) {
     ItemStack existing = machine.getStackInSlot(internal);
 
     if (Prep.isInvalid(existing)) {
       return Prep.getEmpty();
     }
 
-    int max = Math.min(amount, existing.stackSize);
+    int max = Math.min(amount, existing.getCount());
 
     ItemStack copy = existing.copy();
-    copy.stackSize = max;
+    copy.grow(max);
 
     if (!simulate) {
-      existing.stackSize -= max;
-      if (existing.stackSize <= 0) {
+      existing.shrink(max);
+      if (Prep.isInvalid(existing)) {
         machine.setInventorySlotContents(internal, Prep.getEmpty());
       } else {
         machine.markDirty();
       }
     }
     return copy;
+  }
+
+  @Override
+  public int getSlotLimit(int external) {
+    int internal = extSlot2intSlot(external);
+    return internal >= 0 ? machine.getInventoryStackLimit(internal) : 0;
   }
 
 }

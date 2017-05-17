@@ -3,8 +3,9 @@ package crazypants.enderio.power;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.inventory.InventorySlot;
+
 import crazypants.enderio.IModObject;
-import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.CapacitorKeyType;
@@ -106,7 +107,7 @@ public class EnergyTank implements IEnergyStorage {
   }
 
   @Nonnull
-  private ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+  private ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   @Nonnull
   private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
   @Nullable
@@ -140,11 +141,11 @@ public class EnergyTank implements IEnergyStorage {
     int oldValue = maxEnergyStored.get(capacitorData);
 
     if (slot == null || Prep.isInvalid(slot.getStackInSlot(0))) {
-      capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+      capacitorData = DefaultCapacitorData.NONE;
     } else {
       ICapacitorData newData = CapacitorHelper.getCapacitorDataFromItemStack(slot.getStackInSlot(0));
       if (newData == null) {
-        capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+        capacitorData = DefaultCapacitorData.NONE;
       } else {
         capacitorData = newData;
       }

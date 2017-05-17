@@ -1,5 +1,7 @@
 package crazypants.enderio.capability;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.util.Prep;
@@ -8,18 +10,17 @@ import net.minecraft.util.EnumFacing;
 
 public class LegacyKillerJoeWrapper extends LegacyMachineWrapper {
 
-  public LegacyKillerJoeWrapper(TileKillerJoe machine, EnumFacing side) {
+  public LegacyKillerJoeWrapper(@Nonnull TileKillerJoe machine, @Nonnull EnumFacing side) {
     super(machine, side);
   }
 
   @Override
   public int getSlots() {
-    int result = 0;
     final IoMode ioMode = machine.getIoMode(side);
     if (ioMode.canRecieveInput() || ioMode.canOutput()) {
-      result += machine.getSlotDefinition().getNumInputSlots();
+      return machine.getSlotDefinition().getNumInputSlots();
     }
-    return result;
+    return 0;
   }
 
   @Override
@@ -37,7 +38,7 @@ public class LegacyKillerJoeWrapper extends LegacyMachineWrapper {
   }
 
   @Override
-  public ItemStack extractItem(int external, int amount, boolean simulate) {
+  public @Nonnull ItemStack extractItem(int external, int amount, boolean simulate) {
     if (amount <= 0 || !machine.getIoMode(side).canOutput())
       return Prep.getEmpty();
 

@@ -1,9 +1,12 @@
 package crazypants.enderio.capacitor;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 public interface ICapacitorDataItem {
 
-  ICapacitorData getCapacitorData(ItemStack stack);
+  @Nonnull
+  ICapacitorData getCapacitorData(@Nonnull ItemStack stack);
 
 }

@@ -1,15 +1,17 @@
-package crazypants.enderio.material;
+package crazypants.enderio.capacitor;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
-import crazypants.enderio.capacitor.ICapacitorData;
-import crazypants.enderio.capacitor.ICapacitorDataItem;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
@@ -23,6 +25,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -37,16 +40,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRenderers {
 
-  public static ItemCapacitor create() {
-    ItemCapacitor result = new ItemCapacitor();
+  public static ItemCapacitor create(@Nonnull IModObject modObject) {
+    ItemCapacitor result = new ItemCapacitor(modObject);
     result.init();
     return result;
   }
 
-  protected ItemCapacitor() {
+  protected ItemCapacitor(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setUnlocalizedName(ModObject.itemBasicCapacitor.getUnlocalisedName());
-    setRegistryName(ModObject.itemBasicCapacitor.getUnlocalisedName());
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
@@ -59,61 +62,58 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
-    final ResourceLocation[] resourceLocations = DefaultCapacitorData.getResourceLocations();
-    ModelBakery.registerItemVariants(this, resourceLocations);
-    for (int i = 0; i < resourceLocations.length; i++) {
-      ClientUtil.regRenderer(this, i, resourceLocations[i]);
+    final NNList<ResourceLocation> resourceLocations = DefaultCapacitorData.getResourceLocations();
+    ModelBakery.registerItemVariants(this, resourceLocations.toArray());
+    for (int i = 0; i < resourceLocations.size(); i++) {
+      ClientUtil.regRenderer(this, i, resourceLocations.get(i));
     }
   }
   
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getCapacitorData(stack).getUnlocalizedName();
   }
 
   @Override  
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item par1, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     for (int j = 0; j < DefaultCapacitorData.values().length - 1; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
 
   @Override
-  public int getMetadata(ItemStack stack) {
-    return MathHelper.clamp(stack != null ? stack.getItemDamage() : 0, 0, DefaultCapacitorData.values().length - 1);
+  public int getMetadata(@Nonnull ItemStack stack) {
+    return MathHelper.clamp(stack.getItemDamage(), 0, DefaultCapacitorData.values().length - 1);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-    if (getMetadata(stack) > 0) {
+  public void addInformation(@Nonnull ItemStack stack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean advanced) {
       par3List.add(EnderIO.lang.localize("machine.tooltip.upgrade"));
       if(SpecialTooltipHandler.showAdvancedTooltips()) {
         SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
       } else {
         SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       }
-    }
     if (NbtValue.GLINT.hasTag(stack)) {
       par3List.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
     }
-
   }
 
   @Override
-  public ICapacitorData getCapacitorData(ItemStack stack) {
-    return DefaultCapacitorData.values()[getMetadata(stack)];
+  public @Nonnull ICapacitorData getCapacitorData(@Nonnull ItemStack stack) {
+    return NullHelper.notnullJ(DefaultCapacitorData.values()[getMetadata(stack)], "Enum.values() has a null");
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean hasEffect(@Nonnull ItemStack stack) {
     return super.hasEffect(stack) || NbtValue.GLINT.hasTag(stack);
   }
 
   @Override
-  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-      EnumHand hand) {
+  public @Nonnull EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
+      float hitX, float hitY, float hitZ, @Nonnull EnumHand hand) {
 
     if (world.isRemote || System.getProperty("INDEV") == null) {
       return EnumActionResult.PASS;
@@ -125,9 +125,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
       chest.clear();
 
       LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) world);
-      if (player != null) {
-        lootcontext$builder.withLuck(player.getLuck());
-      }
+      lootcontext$builder.withLuck(player.getLuck());
 
       // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
       LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_IGLOO_CHEST);

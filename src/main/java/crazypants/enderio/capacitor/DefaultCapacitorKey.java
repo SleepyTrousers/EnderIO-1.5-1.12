@@ -1,15 +1,17 @@
 package crazypants.enderio.capacitor;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.IModObject;
 
 public class DefaultCapacitorKey implements ICapacitorKey {
 
-  private final IModObject owner;
-  private final CapacitorKeyType valueType;
-  private final Scaler scaler;
+  private final @Nonnull IModObject owner;
+  private final @Nonnull CapacitorKeyType valueType;
+  private final @Nonnull Scaler scaler;
   private final int baseValue;
 
-  public DefaultCapacitorKey(IModObject owner, CapacitorKeyType valueType, Scaler scaler, int baseValue) {
+  public DefaultCapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int baseValue) {
     this.owner = owner;
     this.valueType = valueType;
     this.scaler = scaler;
@@ -17,27 +19,27 @@ public class DefaultCapacitorKey implements ICapacitorKey {
   }
 
   @Override
-  public int get(ICapacitorData capacitor) {
+  public int get(@Nonnull ICapacitorData capacitor) {
     return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
   }
 
   @Override
-  public float getFloat(ICapacitorData capacitor) {
+  public float getFloat(@Nonnull ICapacitorData capacitor) {
     return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
   }
 
   @Override
-  public IModObject getOwner() {
+  public @Nonnull IModObject getOwner() {
     return owner;
   }
 
   @Override
-  public CapacitorKeyType getValueType() {
+  public @Nonnull CapacitorKeyType getValueType() {
     return valueType;
   }
 
   @Override
-  public String getName() {
+  public @Nonnull String getName() {
     return owner + ":" + valueType;
   }
 

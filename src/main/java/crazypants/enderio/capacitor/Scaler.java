@@ -1,5 +1,8 @@
 package crazypants.enderio.capacitor;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.util.math.MathHelper;
 
 public interface Scaler {
@@ -15,7 +18,7 @@ public interface Scaler {
       this.keyValues = keyValues;
     }
 
-    public String store() {
+    public @Nonnull String store() {
       StringBuffer sb = new StringBuffer();
       sb.append("idx:");
       sb.append(scale);
@@ -87,9 +90,9 @@ public interface Scaler {
     BURNTIME(new IndexedScaler(1f, 1, 1f / 2f, 1f / 1.5f, 1f / 1.5f, 1f / 1.25f, 1f / 1f)),
     ;
 
-    private final Scaler scaler;
+    private final @Nonnull Scaler scaler;
 
-    private Factory(Scaler scaler) {
+    private Factory(@Nonnull Scaler scaler) {
       this.scaler = scaler;
     }
 
@@ -98,7 +101,7 @@ public interface Scaler {
       return scaler.scaleValue(idx);
     }
 
-    public static String toString(Scaler scaler) {
+    public static @Nullable String toString(@Nonnull Scaler scaler) {
       if (scaler instanceof Factory) {
         return ((Factory) scaler).name();
       }
@@ -108,7 +111,7 @@ public interface Scaler {
       return null;
     }
 
-    public static Scaler fromString(String s) {
+    public static @Nullable Scaler fromString(@Nullable String s) {
       if (s == null) {
         return null;
       }

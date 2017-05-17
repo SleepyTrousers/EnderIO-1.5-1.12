@@ -2,6 +2,8 @@ package crazypants.enderio.capacitor;
 
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 public enum CapacitorKeyType {
   ENERGY_BUFFER,
   ENERGY_INTAKE,
@@ -10,7 +12,7 @@ public enum CapacitorKeyType {
   AREA,
   AMOUNT, ;
 
-  public String getName() {
+  public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);
   }
 

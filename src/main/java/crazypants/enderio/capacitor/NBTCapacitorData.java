@@ -1,27 +1,29 @@
 package crazypants.enderio.capacitor;
 
-import net.minecraft.nbt.NBTTagCompound;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTCapacitorData implements ICapacitorData {
 
-  private final String unlocalizedName;
+  private final @Nonnull String unlocalizedName;
   private final int baselevel;
-  private final NBTTagCompound tag;
+  private final @Nonnull NBTTagCompound tag;
 
-  public NBTCapacitorData(String unlocalizedName, int baselevel, NBTTagCompound tag) {
+  public NBTCapacitorData(@Nonnull String unlocalizedName, int baselevel, @Nonnull NBTTagCompound tag) {
     this.unlocalizedName = unlocalizedName;
     this.baselevel = baselevel;
     this.tag = tag;
   }
 
   @Override
-  public String getUnlocalizedName() {
+  public @Nonnull String getUnlocalizedName() {
     return unlocalizedName;
   }
 
   @Override
-  public float getUnscaledValue(ICapacitorKey key) {
+  public float getUnscaledValue(@Nonnull ICapacitorKey key) {
     if (tag.hasKey(key.getName(), 99)) {
       return tag.getFloat(key.getName());
     }
@@ -38,7 +40,7 @@ public class NBTCapacitorData implements ICapacitorData {
   }
 
   @Override
-  public String getLocalizedName() {
+  public @Nonnull String getLocalizedName() {
     return EnderIO.lang.localizeExact(unlocalizedName + ".name");
   }
 

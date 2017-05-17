@@ -2,6 +2,7 @@ package crazypants.enderio.machine;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.ModObject;
@@ -18,7 +19,6 @@ import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
 public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements IInternalPoweredTile {
 
   // Power
-  protected ICapacitorData capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+  protected ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
@@ -166,7 +166,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     } else {
       capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(inventory[slotDefinition.minUpgradeSlot]);
       if (capacitorData == null) {
-        capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
+        capacitorData = DefaultCapacitorData.NONE;
       }
     }
     onCapacitorDataChange();

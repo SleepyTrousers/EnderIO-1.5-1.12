@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -61,35 +63,34 @@ public final class Config {
 
   public static Configuration config;
 
-  public static final Section sectionPower = new Section("Power Settings", "power");
-  public static final Section sectionRecipe = new Section("Recipe Settings", "recipe");
-  public static final Section sectionItems = new Section("Item Enabling", "item");
-  public static final Section sectionEfficiency = new Section("Efficiency Settings", "efficiency");
-  public static final Section sectionPersonal = new Section("Personal Settings", "personal");
-  public static final Section sectionAnchor = new Section("Anchor Settings", "anchor");
-  public static final Section sectionStaff = new Section("Staff Settings", "staff");
-  public static final Section sectionRod = new Section("Rod of Return Settings", "rod");
-  public static final Section sectionDarkSteel = new Section("Dark Steel", "darksteel");
-  public static final Section sectionFarm = new Section("Farm Settings", "farm");
-  public static final Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
-  public static final Section sectionAdvanced = new Section("Advanced Settings", "advanced");
-  public static final Section sectionMagnet = new Section("Magnet Settings", "magnet");
-  public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
-  public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
-  public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
-  public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
-  public static final Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
-  public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
-  public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
-  // public static final Section sectionRailConfig = new Section("Rail", "railconfig");
-  public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
-  public static final Section sectionWeather = new Section("Weather", "weather");
-  public static final Section sectionTelepad = new Section("Telepad", "telepad");
-  public static final Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
-  public static final Section sectionMisc = new Section("Misc", "misc");
-  public static final Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
-  public static final Section sectionTOP = new Section("The One Probe integration", "top");
-  public static final Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
+  public static final @Nonnull Section sectionPower = new Section("Power Settings", "power");
+  public static final @Nonnull Section sectionRecipe = new Section("Recipe Settings", "recipe");
+  public static final @Nonnull Section sectionItems = new Section("Item Enabling", "item");
+  public static final @Nonnull Section sectionEfficiency = new Section("Efficiency Settings", "efficiency");
+  public static final @Nonnull Section sectionPersonal = new Section("Personal Settings", "personal");
+  public static final @Nonnull Section sectionAnchor = new Section("Anchor Settings", "anchor");
+  public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
+  public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
+  public static final @Nonnull Section sectionDarkSteel = new Section("Dark Steel", "darksteel");
+  public static final @Nonnull Section sectionFarm = new Section("Farm Settings", "farm");
+  public static final @Nonnull Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
+  public static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
+  public static final @Nonnull Section sectionMagnet = new Section("Magnet Settings", "magnet");
+  public static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
+  public static final @Nonnull Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
+  public static final @Nonnull Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
+  public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
+  public static final @Nonnull Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
+  public static final @Nonnull Section sectionLootConfig = new Section("Loot Config", "lootconfig");
+  public static final @Nonnull Section sectionMobConfig = new Section("Mob Config", "mobconfig");
+  public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
+  public static final @Nonnull Section sectionWeather = new Section("Weather", "weather");
+  public static final @Nonnull Section sectionTelepad = new Section("Telepad", "telepad");
+  public static final @Nonnull Section sectionInventoryPanel = new Section("InventoryPanel", "inventorypanel");
+  public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
+  public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
+  public static final @Nonnull Section sectionTOP = new Section("The One Probe integration", "top");
+  public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 

@@ -1,13 +1,16 @@
 package crazypants.enderio.capability;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.util.Prep;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -17,8 +20,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.wrapper.InvWrapper;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class ItemTools {
 
@@ -28,30 +29,58 @@ public class ItemTools {
   private ItemTools() {
   }
 
-  public static boolean doPush(IBlockAccess world, BlockPos pos) {
-    boolean result = false;
-    for (EnumFacing facing : EnumFacing.values()) {
-      MoveResult moveResult = move(NO_LIMIT, world, pos, facing, pos.offset(facing), facing.getOpposite());
-      if (moveResult == MoveResult.SOURCE_EMPTY) {
-        return false;
-      } else if (moveResult == MoveResult.MOVED) {
-        result = true;
-      }
-    }
-    return result;
+  public static boolean doPush(@Nonnull final IBlockAccess world, @Nonnull final BlockPos pos) {
+    final CallbackPush callback = new CallbackPush(world, pos);
+    NNList.FACING.apply(callback);
+    return callback.movedSomething;
   }
 
-  public static boolean doPull(IBlockAccess world, BlockPos pos) {
-    boolean result = false;
-    for (EnumFacing facing : EnumFacing.values()) {
+  private static final class CallbackPush implements NNList.ShortCallback<EnumFacing> {
+    private final @Nonnull IBlockAccess world;
+    private final @Nonnull BlockPos pos;
+    boolean movedSomething = false;
+
+    private CallbackPush(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+      this.world = world;
+      this.pos = pos;
+    }
+
+    @Override
+    public boolean apply(@Nonnull EnumFacing facing) {
+      MoveResult moveResult = move(NO_LIMIT, world, pos, facing, pos.offset(facing), facing.getOpposite());
+      if (moveResult == MoveResult.SOURCE_EMPTY) {
+        return true;
+      }
+      movedSomething |= moveResult == MoveResult.MOVED;
+      return false;
+    }
+  }
+
+  public static boolean doPull(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    final CallbackPull callback = new CallbackPull(world, pos);
+    NNList.FACING.apply(callback);
+    return callback.movedSomething;
+  }
+
+  private static final class CallbackPull implements NNList.ShortCallback<EnumFacing> {
+    private final @Nonnull IBlockAccess world;
+    private final @Nonnull BlockPos pos;
+    boolean movedSomething = false;
+
+    private CallbackPull(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+      this.world = world;
+      this.pos = pos;
+    }
+
+    @Override
+    public boolean apply(@Nonnull EnumFacing facing) {
       MoveResult moveResult = move(NO_LIMIT, world, pos.offset(facing), facing.getOpposite(), pos, facing);
       if (moveResult == MoveResult.TARGET_FULL) {
-        return false;
-      } else if (moveResult == MoveResult.MOVED) {
-        result = true;
+        return true;
       }
+      movedSomething |= moveResult == MoveResult.MOVED;
+      return false;
     }
-    return result;
   }
 
   public static enum MoveResult {
@@ -62,34 +91,35 @@ public class ItemTools {
     SOURCE_EMPTY;
   }
 
-  public static MoveResult move(Limit limit, IBlockAccess world, BlockPos sourcePos, EnumFacing sourceFacing, BlockPos targetPos, EnumFacing targetFacing) {
+  public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull BlockPos sourcePos, @Nonnull EnumFacing sourceFacing,
+      @Nonnull BlockPos targetPos, @Nonnull EnumFacing targetFacing) {
     if (!limit.canWork()) {
       return MoveResult.LIMITED;
     }
     boolean movedSomething = false;
     TileEntity source = world.getTileEntity(sourcePos);
-    if (source != null && source.hasworld() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
+    if (source != null && source.hasWorld() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
       TileEntity target = world.getTileEntity(targetPos);
-      if (target != null && target.hasworld() && canPutInto(target, targetFacing)) {
+      if (target != null && target.hasWorld() && canPutInto(target, targetFacing)) {
         IItemHandler sourceHandler = getExternalInventory(world, sourcePos, sourceFacing);
         if (sourceHandler != null && hasItems(sourceHandler)) {
           IItemHandler targetHandler = getExternalInventory(world, targetPos, targetFacing);
           if (targetHandler != null && hasFreeSpace(targetHandler)) {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
-              if (Prep.isValid(removable) && removable.stackSize > 0) {
+              if (Prep.isValid(removable)) {
                 ItemStack unacceptable = ItemHandlerHelper.insertItemStacked(targetHandler, removable, true);
-                int movable = removable.stackSize - (Prep.isInvalid(unacceptable) ? 0 : unacceptable.stackSize);
+                int movable = removable.getCount() - unacceptable.getCount();
                 if (movable > 0) {
                   ItemStack removed = sourceHandler.extractItem(i, movable, false);
-                  if (Prep.isValid(removed) && removed.stackSize > 0) {
+                  if (Prep.isValid(removed)) {
                     ItemStack targetRejected = ItemHandlerHelper.insertItemStacked(targetHandler, removed, false);
-                    if (Prep.isValid(targetRejected) && targetRejected.stackSize > 0) {
+                    if (Prep.isValid(targetRejected)) {
                       ItemStack sourceRejected = ItemHandlerHelper.insertItemStacked(sourceHandler, targetRejected, false);
-                      if (Prep.isValid(sourceRejected) && sourceRejected.stackSize > 0) {
+                      if (Prep.isValid(sourceRejected)) {
                         EntityItem drop = new EntityItem(source.getWorld(), sourcePos.getX() + 0.5, sourcePos.getY() + 0.5, sourcePos.getZ() + 0.5,
                             sourceRejected);
-                        source.getWorld().spawnEntityInWorld(drop);
+                        source.getWorld().spawnEntity(drop);
                         return MoveResult.MOVED;
                       }
                     }
@@ -116,49 +146,49 @@ public class ItemTools {
     }
     return movedSomething ? MoveResult.MOVED : MoveResult.NO_ACTION;
   }
-  
+
   /**
    * 
    * @param inventory
    * @param item
    * @return the number inserted
    */
-  public static int doInsertItem(IItemHandler inventory, ItemStack item) {
+  public static int doInsertItem(@Nullable IItemHandler inventory, @Nonnull ItemStack item) {
     if (inventory == null || Prep.isInvalid(item)) {
       return 0;
     }
-    int startSize = item.stackSize;
+    int startSize = item.getCount();
     ItemStack res = ItemHandlerHelper.insertItemStacked(inventory, item.copy(), false);
-    int val = Prep.isInvalid(res) ? startSize : startSize - res.stackSize;
+    int val = startSize - res.getCount();
     return val;
   }
 
-  public static boolean hasFreeSpace(IItemHandler handler) {
+  public static boolean hasFreeSpace(@Nonnull IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (Prep.isInvalid(stack) || (stack.isStackable() == stack.stackSize < stack.getMaxStackSize())) {
+      if (Prep.isInvalid(stack) || (stack.isStackable() == stack.getCount() < stack.getMaxStackSize())) {
         return true;
       }
     }
     return false;
   }
 
-  public static boolean hasItems(IItemHandler handler) {
+  public static boolean hasItems(@Nonnull IItemHandler handler) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (Prep.isValid(stack) && stack.stackSize > 0) {
+      if (Prep.isValid(stack)) {
         return true;
       }
     }
     return false;
   }
 
-  public static int countItems(IItemHandler handler, ItemStack template) {
+  public static int countItems(@Nonnull IItemHandler handler, @Nonnull ItemStack template) {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
-        count += stack.stackSize;
+      if (ItemUtil.areStacksEqual(template, stack)) {
+        count += stack.getCount();
       }
     }
     return count;
@@ -175,12 +205,12 @@ public class ItemTools {
    *          The limit, meaning the maximum number of items that are allowed in the inventory.
    * @return The number of items that can be inserted without violating the limit.
    */
-  public static int getInsertLimit(IItemHandler handler, ItemStack template, int limit) {
+  public static int getInsertLimit(@Nonnull IItemHandler handler, @Nonnull ItemStack template, int limit) {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
-        count += stack.stackSize;
+      if (ItemUtil.areStacksEqual(template, stack)) {
+        count += stack.getCount();
       }
       if (count >= limit) {
         return 0;
@@ -189,12 +219,12 @@ public class ItemTools {
     return limit - count;
   }
 
-  public static boolean hasAtLeast(IItemHandler handler, ItemStack template, int limit) {
+  public static boolean hasAtLeast(@Nonnull IItemHandler handler, @Nonnull ItemStack template, int limit) {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
       if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
-        count += stack.stackSize;
+        count += stack.getCount();
       }
       if (count >= limit) {
         return true;
@@ -203,7 +233,7 @@ public class ItemTools {
     return false;
   }
 
-  public static boolean canPutInto(TileEntity tileEntity, EnumFacing facing) {
+  public static boolean canPutInto(@Nullable TileEntity tileEntity, @Nonnull EnumFacing facing) {
     if (tileEntity instanceof AbstractMachineEntity) {
       IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(facing);
       return ioMode != IoMode.DISABLED && ioMode != IoMode.PUSH;
@@ -211,7 +241,7 @@ public class ItemTools {
     return true;
   }
 
-  public static boolean canPullFrom(TileEntity tileEntity, EnumFacing facing) {
+  public static boolean canPullFrom(@Nullable TileEntity tileEntity, @Nonnull EnumFacing facing) {
     if (tileEntity instanceof AbstractMachineEntity) {
       IoMode ioMode = ((AbstractMachineEntity) tileEntity).getIoMode(facing);
       return ioMode != IoMode.DISABLED && ioMode != IoMode.PULL;
@@ -219,7 +249,11 @@ public class ItemTools {
     return true;
   }
 
-  public static final Limit NO_LIMIT = new Limit(Integer.MAX_VALUE, Integer.MAX_VALUE);
+  public static final @Nonnull Limit NO_LIMIT = new Limit(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+    @Override
+    public void useItems(int count) {
+    }
+  };
 
   public static class Limit {
     private int stacks, items;
@@ -251,27 +285,16 @@ public class ItemTools {
       return stacks > 0 && items > 0;
     }
 
-    public Limit copy() {
-      return new Limit(stacks,items);
+    public @Nonnull Limit copy() {
+      return new Limit(stacks, items);
     }
 
   }
 
-  public static @Nullable IItemHandler getExternalInventory(IBlockAccess world, BlockPos pos, EnumFacing face) {
-    if (world == null || pos == null || face == null) {
-      return null;
-    }
+  public static @Nullable IItemHandler getExternalInventory(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     TileEntity te = world.getTileEntity(pos);
-    if (te != null && te.hasCapability(ITEM_HANDLER_CAPABILITY, face)) {
-      return te.getCapability(ITEM_HANDLER_CAPABILITY, face);
-    }
-    if (te instanceof ISidedInventory) {
-      // Log.info("ItemConduit.getExternalInventory: Found non-capability sided inv at " + pos);
-      return new SidedInvWrapper((ISidedInventory) te, face);
-    }
-    if (te instanceof IInventory) {
-      // Log.info("ItemConduit.getExternalInventory: Found non-capability inv at " + pos);
-      return new InvWrapper((IInventory) te);
+    if (te != null) {
+      return te.getCapability(NullHelper.notnullF(ITEM_HANDLER_CAPABILITY, "Capability<IItemHandler> is missing"), face);
     }
     return null;
   }

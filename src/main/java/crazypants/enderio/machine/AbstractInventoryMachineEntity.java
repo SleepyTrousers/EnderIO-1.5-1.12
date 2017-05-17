@@ -169,7 +169,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   @Override
-  public ItemStack getStackInSlot(int slot) {
+  public @Nonnull ItemStack getStackInSlot(int slot) {
     if (slot < 0 || slot >= inventory.length) {
       return null;
     }
