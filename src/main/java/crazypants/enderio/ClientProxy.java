@@ -14,7 +14,6 @@ import crazypants.enderio.block.ColdFireStateMapper;
 import crazypants.enderio.conduit.ConduitBundleStateMapper;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
@@ -53,7 +52,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -206,7 +204,6 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   protected void registerCommands() {
-    ClientCommandHandler.instance.registerCommand(DebugCommand.CLIENT);
   }
 
   @Override

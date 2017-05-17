@@ -3,9 +3,10 @@ package crazypants.enderio.config.recipes.xml;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.StaxFactory;
-import crazypants.util.Things;
 
 public class Alias extends AbstractConditional {
 

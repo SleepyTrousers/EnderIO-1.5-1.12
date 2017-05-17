@@ -2,33 +2,37 @@ package crazypants.enderio.config.recipes.xml;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.config.recipes.RecipeConfigElement;
 import crazypants.enderio.config.recipes.StaxFactory;
-import crazypants.util.Things;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 
 public class OptionalItem implements RecipeConfigElement {
 
   protected String name;
-  protected transient ItemStack stack;
+  protected transient @Nonnull ItemStack stack = Prep.getEmpty();
   protected transient Object recipeObject;
   protected transient boolean nullItem;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     if (name == null || name.trim().isEmpty()) {
-      stack = null;
+      stack = Prep.getEmpty();
       recipeObject = null;
       nullItem = true;
       return this;
     }
     Things thing = new Things(name);
-    List<ItemStack> itemStacks = thing.getItemStacksRaw();
-    stack = itemStacks.isEmpty() ? null : itemStacks.get(0);
+    NNList<ItemStack> itemStacks = thing.getItemStacksRaw();
+    stack = itemStacks.isEmpty() ? Prep.getEmpty() : itemStacks.get(0);
     List<Object> recipeObjects = thing.getRecipeObjects();
     if (recipeObjects.size() > 1) {
       throw new InvalidRecipeConfigException("Name \"" + name + "\"> references " + recipeObjects.size() + " different things: " + recipeObjects);
@@ -46,14 +50,14 @@ public class OptionalItem implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return nullItem || (stack != null && recipeObject != null);
+    return nullItem || (Prep.isValid(stack) && recipeObject != null);
   }
 
   public Object getRecipeObject() {
     return recipeObject;
   }
 
-  public ItemStack getItemStack() {
+  public @Nonnull ItemStack getItemStack() {
     return stack;
   }
 

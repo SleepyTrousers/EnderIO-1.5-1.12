@@ -28,6 +28,7 @@ public class RecipeFactory {
       + "<enderio:recipes xmlns:enderio=\"http://enderio.com/recipes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://enderio.com/recipes recipes.xsd \">\n"
       + "\n</enderio:recipes>\n";
 
+  @SuppressWarnings("resource")
   public static <T extends RecipeRoot> T readFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     copyCore("recipes.xsd");
     InputStream userFileStream = null, defaultFileStream = null;

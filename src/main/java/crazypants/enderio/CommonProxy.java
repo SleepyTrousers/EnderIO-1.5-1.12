@@ -8,14 +8,12 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.RecipeLoader;
-import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.integration.top.TOPUtil;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.sound.SoundRegistry;
-import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -27,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -91,7 +88,6 @@ public class CommonProxy {
   }
 
   protected void registerCommands() {
-    ((CommandHandler) FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()).registerCommand(DebugCommand.SERVER);
   }
 
   public long getTickCount() {

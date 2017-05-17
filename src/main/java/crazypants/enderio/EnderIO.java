@@ -46,8 +46,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.power.CapInjectHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.render.dummy.BlockMachineBase;
-import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.util.CapturedMob;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
@@ -108,10 +106,6 @@ public class EnderIO {
     Config.preInit(event);
 
     proxy.loadIcons();
-
-    // Dummy blocks that contain the models for all the other blocks
-    BlockMachineBase.create();
-    BlockMachineIO.create();
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 

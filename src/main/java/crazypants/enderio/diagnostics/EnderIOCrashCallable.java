@@ -9,7 +9,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.EnderIOAPIProps;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.API;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.ModAPIManager;
@@ -42,41 +41,6 @@ public class EnderIOCrashCallable implements ICrashCallable {
           result.add(" * An unknown AE2 API is installed (" + apiVersionString + " from "
               + modContainer.getSource().getName() + ").");
           result.add("   Ender IO was build against API version rv4 and may or may not work with a newer version.");
-        }
-      } else if ("CoFHAPI|energy".equals(modContainer.getModId())) {
-        if ("1.8-BuildCraft-Testing".equals(apiVersionString) || apiVersionString.contains("1.7")) {
-          result.add(" * An unsupportted RF API is installed (" + apiVersionString + " from "
-              + modContainer.getSource().getName() + ").");
-          result.add("   Ender IO needs at least 1.4.0 and will NOT work with older versions.");
-        } else {
-          Package caep = Package.getPackage("cofh.api.energy");
-          if (caep != null) {
-            API api = caep.getAnnotation(API.class);
-            if (api != null) {
-              String apiVersion = api.apiVersion();
-              if (apiVersion != null) {
-                if (!apiVersion.equals(apiVersionString)) {
-                  if ("1.8-BuildCraft-Testing".equals(apiVersion) || apiVersion.contains("1.7")) {
-                    result.add(" * An unsupportted RF API is installed (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps")
-                        + ").");
-                    result.add("   Ender IO needs at least 1.4.0 and will NOT work with older versions.");
-                  } else {
-                    result.add(" * The RF API that is being used (" + apiVersion + " from (guessing) " + whereFrom("cofh.api.CoFHAPIProps.class")
-                        + ") differes from that that is reported as being loaded (" + apiVersionString + " from " + modContainer.getSource().getName()
-                        + ").");
-                    result.add("   It is a supported version, but that difference may lead to problems.");
-                  }
-                }
-              } else {
-                result.add(" * The RF API that is being used has no version number. This may lead to problems.");
-              }
-            } else {
-              result.add(" * The RF API that is being used has no API annotation. This may lead to problems.");
-            }
-          } else {
-            // we run fine without RF API nowadays
-            // result.add(" * No RF API could be found in memory. This may be may due to an early crash.");
-          }
         }
       } else if (modContainer.getModId() != null && modContainer.getModId().startsWith("EnderIOAPI")) {
         if (!EnderIOAPIProps.VERSION.equals(apiVersionString)) {
@@ -121,10 +85,6 @@ public class EnderIOCrashCallable implements ICrashCallable {
       }
       msg += "                 This may (look up the meaning of 'may' in the dictionary if you're not sure what it means) have caused the error. "
           + "Try reproducing the crash WITHOUT this/these mod(s) before reporting it.\n";
-    }
-    msg += "\tDetailed RF API diagnostics:\n";
-    for (String string : rfDiagnostics()) {
-      msg += "                 " + string + "\n";
     }
     msg += "\tDetailed Tesla API diagnostics:\n";
     for (String string : teslaDiagnostics()) {
@@ -192,13 +152,6 @@ public class EnderIOCrashCallable implements ICrashCallable {
     } catch (Throwable t) {
     }
     return "<unknown>";
-  }
-
-  public static List<String> rfDiagnostics() {
-    List<String> result = new ArrayList<String>();
-    apiDiagnostics(result, "RF", "cofh.api.energy.", "EnergyStorage", "IEnergyConnection", "IEnergyContainerItem", "IEnergyHandler", "IEnergyProvider",
-        "IEnergyReceiver", "IEnergyStorage", "ItemEnergyContainer", "TileEnergyHandler");
-    return result;
   }
 
   public static List<String> teslaDiagnostics() {

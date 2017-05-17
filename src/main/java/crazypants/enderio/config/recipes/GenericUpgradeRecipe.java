@@ -1,5 +1,7 @@
 package crazypants.enderio.config.recipes;
 
+import javax.annotation.Nonnull;
+
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -23,13 +25,13 @@ public class GenericUpgradeRecipe extends ShapedOreRecipe {
     super(result, recipe);
   }
 
-  public GenericUpgradeRecipe(ItemStack result, Object... recipe) {
+  public GenericUpgradeRecipe(@Nonnull ItemStack result, Object... recipe) {
     super(result, recipe);
   }
 
   @SuppressWarnings("null")
   @Override
-  public ItemStack getCraftingResult(InventoryCrafting inv) {
+  public @Nonnull ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
     ItemStack result = super.getCraftingResult(inv);
     for (int x = 0; x < inv.getSizeInventory(); x++) {
       ItemStack slot = inv.getStackInSlot(x);

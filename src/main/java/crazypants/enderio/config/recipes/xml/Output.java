@@ -1,5 +1,6 @@
 package crazypants.enderio.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
 import crazypants.enderio.config.recipes.InvalidRecipeConfigException;
@@ -36,14 +37,15 @@ public class Output extends AbstractConditional {
         amount = 1;
       }
     }
-    if (nbt != null) {
-      if (nbt.trim().isEmpty()) {
+    final String nbt_nullchecked = nbt;
+    if (nbt_nullchecked != null) {
+      if (nbt_nullchecked.trim().isEmpty()) {
         tag = null;
       } else {
         try {
-          tag = JsonToNBT.getTagFromJson(nbt);
+          tag = JsonToNBT.getTagFromJson(nbt_nullchecked);
         } catch (NBTException e) {
-          throw new InvalidRecipeConfigException(nbt + " is not valid NBT json.");
+          throw new InvalidRecipeConfigException(nbt_nullchecked + " is not valid NBT json.");
         }
       }
     }
@@ -60,9 +62,9 @@ public class Output extends AbstractConditional {
     return item != null && item.isValid();
   }
 
-  public ItemStack getItemStack() {
+  public @Nonnull ItemStack getItemStack() {
     ItemStack itemStack = item.getItemStack().copy();
-    itemStack.stackSize = amount;
+    itemStack.setCount(amount);
     if (tag != null) {
       itemStack.setTagCompound(tag);
     }
