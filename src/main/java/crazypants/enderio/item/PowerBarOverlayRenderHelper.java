@@ -1,5 +1,7 @@
 package crazypants.enderio.item;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.common.util.FluidUtil;
@@ -50,21 +52,21 @@ public class PowerBarOverlayRenderHelper {
 
   private static final double BAR_W = MIMIC_VANILLA_RENDERBUG ? 13d : 12d;
 
-  protected Vector4i colorShadow = new Vector4i(0, 0, 0, 255);
-  protected Vector4i colorBarLeft = new Vector4i(0x02, 0x03, 0x60, 255);
-  protected Vector4i colorBarRight = new Vector4i(0x2D, 0xCE, 0xFA, 255);
-  protected Vector4i colorBG = new Vector4i(0x00, 0x00, 0x30, 255);
+  protected @Nonnull Vector4i colorShadow = new Vector4i(0, 0, 0, 255);
+  protected @Nonnull Vector4i colorBarLeft = new Vector4i(0x02, 0x03, 0x60, 255);
+  protected @Nonnull Vector4i colorBarRight = new Vector4i(0x2D, 0xCE, 0xFA, 255);
+  protected @Nonnull Vector4i colorBG = new Vector4i(0x00, 0x00, 0x30, 255);
 
   /**
    * Instance for items that always have their power buffer
    */
-  public static final PowerBarOverlayRenderHelper instance = new PowerBarOverlayRenderHelper(false);
+  public static final @Nonnull PowerBarOverlayRenderHelper instance = new PowerBarOverlayRenderHelper(false);
   /**
    * Instance for items that can be upgraded to get a power buffer
    */
-  public static final PowerBarOverlayRenderHelper instance_upgradeable = new PowerBarOverlayRenderHelper(true);
+  public static final @Nonnull PowerBarOverlayRenderHelper instance_upgradeable = new PowerBarOverlayRenderHelper(true);
 
-  public static final FluidBarOverlayRenderHelper instance_fluid = new FluidBarOverlayRenderHelper();
+  public static final @Nonnull FluidBarOverlayRenderHelper instance_fluid = new FluidBarOverlayRenderHelper();
 
   private final boolean isUpgradeableItem;
 
@@ -72,11 +74,11 @@ public class PowerBarOverlayRenderHelper {
     this.isUpgradeableItem = isUpgradeableItem;
   }
 
-  public boolean render(ItemStack stack, int xPosition, int yPosition) {
+  public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     return render(stack, xPosition, yPosition, false);
   }
   
-  public boolean render(ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
+  public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
     IEnergyStorage energyItem = PowerHandlerUtil.getCapability(stack, null);
     
     if(energyItem != null) {
@@ -86,7 +88,7 @@ public class PowerBarOverlayRenderHelper {
         if (alwaysShow || shouldShowBar(maxEnergy, energy)) {
           double level = (double) energy / (double) maxEnergy;
           boolean up = stack.getItem().showDurabilityBar(stack);
-          boolean top = stack.stackSize != 1;
+          boolean top = stack.getCount() != 1;
           render(level, xPosition, yPosition, top ? 12 : up ? 2 : 0, true);
           return true;
         }
@@ -111,8 +113,8 @@ public class PowerBarOverlayRenderHelper {
     return true;
   }
 
-  protected boolean hasEnergyStore(ItemStack stack) {
-    return stack != null && (!isUpgradeableItem || EnergyUpgrade.loadFromItem(stack) != null);
+  protected boolean hasEnergyStore(@Nonnull ItemStack stack) {
+    return !isUpgradeableItem || EnergyUpgrade.loadFromItem(stack) != null;
   }
 
   public void render(double level, int xPosition, int yPosition, int offset, boolean shadow) {
@@ -192,17 +194,16 @@ public class PowerBarOverlayRenderHelper {
       colorBG = new Vector4i(0x00, 0x30, 0x00, 255);
     }
 
-    public boolean render(ItemStack stack, int xPosition, int yPosition, int barOffset) {
+    public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, int barOffset) {
       return render(stack, xPosition, yPosition, barOffset, false);
     }
     
     @Override
-    public boolean render(ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
+    public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, boolean alwaysShow) {
       return render(stack, xPosition, yPosition, 0, alwaysShow);
     }
 
-    public boolean render(ItemStack stack, int xPosition, int yPosition, int barOffset, boolean alwaysShow) {
-      
+    public boolean render(@Nonnull ItemStack stack, int xPosition, int yPosition, int barOffset, boolean alwaysShow) {
       IFluidHandler cap = FluidUtil.getFluidHandlerCapability(stack);
       if (cap == null || cap.getTankProperties() == null || cap.getTankProperties().length <= 0) {
         return false;
@@ -217,7 +218,7 @@ public class PowerBarOverlayRenderHelper {
       if (alwaysShow || shouldShowBar(maxFluid, fluidAmount)) {
         double level = (double) fluidAmount / (double) maxFluid;
         boolean up = stack.getItem().showDurabilityBar(stack);
-        boolean top = stack.stackSize != 1;
+        boolean top = stack.getCount() != 1;
         render(level, xPosition, yPosition, top ? 12 - barOffset : up ? 2 + barOffset : barOffset, (barOffset & 1) == 0);
         return true;
       }

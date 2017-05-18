@@ -8,12 +8,14 @@ import java.util.UUID;
 
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
@@ -30,7 +32,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
-import com.enderio.core.common.util.NullHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.Particle;
@@ -134,7 +135,7 @@ public class DarkSteelController {
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
-    if (event.phase == Phase.START) {
+    if (event.phase == Phase.START && !player.isSpectator()) {
       // boots
       updateStepHeightAndFallDistance(player);
 

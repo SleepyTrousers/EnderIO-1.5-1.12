@@ -8,9 +8,11 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.PowerDisplayUtil;
@@ -23,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -32,7 +35,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -42,20 +44,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
 
-public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IFluidContainerItem {
+public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
   private static final int FLUID_CAPACITY = 1000;
 
-  public static ItemColdFireIgniter create() {
-    ItemColdFireIgniter result = new ItemColdFireIgniter();
+  public static ItemColdFireIgniter create(@Nonnull IModObject modObject) {
+    ItemColdFireIgniter result = new ItemColdFireIgniter(modObject);
     result.init();
     return result;
   }
 
-  protected ItemColdFireIgniter() {
+  protected ItemColdFireIgniter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemColdFireIgniter.getUnlocalisedName());
-    setRegistryName(ModObject.itemColdFireIgniter.getUnlocalisedName());
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setMaxDamage(0);
     setMaxStackSize(1);
   }
@@ -65,35 +67,37 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+  public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+
+    ItemStack stack = player.getHeldItem(hand);
+
     pos = pos.offset(side);
 
-    if (!player.canPlayerEdit(pos, side, stack))
-    {
+    if (!player.canPlayerEdit(pos, side, stack)) {
       return EnumActionResult.FAIL;
     }
 
-    if (world.isAirBlock(pos))
-    {
+    if (world.isAirBlock(pos)) {
       if (Config.coldFireIgniterMbPerUse > 0 && !drain(stack, Config.coldFireIgniterMbPerUse)) {
         Fluid fluid = getFluidType(stack);
         String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("coldfireigniter.chat.outoffluid").replace("{FLUIDNAME}", fluidname)));
+        player.sendMessage(new TextComponentString(EnderIO.lang.localize("coldfireigniter.chat.outoffluid").replace("{FLUIDNAME}", fluidname)));
       } else {
-	world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-	world.setBlockState(pos, ModObject.blockColdFire.getBlock().getDefaultState(), 11);
+        world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
+        world.setBlockState(pos, ModObject.blockColdFire.getBlockNN().getDefaultState(), 11);
       }
     }
 
     return EnumActionResult.SUCCESS;
   }
 
-  public @Nonnull Fluid getFluidType(ItemStack container) {
-    return FluidRegistry.getFluid(Config.coldFireIgniterFluidType);
+  public @Nonnull Fluid getFluidType(@Nonnull ItemStack container) {
+    return NullHelper.notnull(FluidRegistry.getFluid(Config.coldFireIgniterFluidType),
+        Config.coldFireIgniterFluidType + " is missing (config value 'coldFireIgniterFluidType')");
   }
 
-  @Override
-  public FluidStack getFluid(ItemStack container) {
+  private FluidStack getFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
       return new FluidStack(getFluidType(container), amount);
@@ -102,15 +106,12 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     }
   }
 
-  @Override
-  public int getCapacity(ItemStack container) {
+  private int getCapacity(@Nonnull ItemStack container) {
     return FLUID_CAPACITY;
   }
 
-  @Override
-  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-    if (container == null || resource == null || resource.amount <= 0 || resource.getFluid() == null
-        || resource.getFluid() != getFluidType(container)) {
+  private int fill(@Nonnull ItemStack container, FluidStack resource, boolean doFill) {
+    if (resource == null || resource.amount <= 0 || resource.getFluid() == null || resource.getFluid() != getFluidType(container)) {
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
@@ -122,12 +123,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     return toFill;
   }
 
-  @Override
-  public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-    return null;
-  }
-
-  private boolean drain(ItemStack container, int toDrain) {
+  private boolean drain(@Nonnull ItemStack container, int toDrain) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (toDrain > amount) {
       return false;
@@ -138,67 +134,65 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-   return new CapabilityProvider(stack);
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
+    return new CapabilityProvider(stack);
   }
 
   private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
-    protected final ItemStack container;
+    protected final @Nonnull ItemStack container;
 
-    private CapabilityProvider(ItemStack container) {
+    private CapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-      if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-        return (T) this;
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+      if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
       }
       return null;
     }
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-      return new IFluidTankProperties[] {
-	new IFluidTankProperties() {
-	  @Override
-	  @Nullable
-	  public FluidStack getContents() {
-	    return ItemColdFireIgniter.this.getFluid(container);
-	  }
+      return new IFluidTankProperties[] { new IFluidTankProperties() {
+        @Override
+        @Nullable
+        public FluidStack getContents() {
+          return ItemColdFireIgniter.this.getFluid(container);
+        }
 
-	  @Override
-	  public int getCapacity() {
-	    return ItemColdFireIgniter.this.getCapacity(container);
-	  }
+        @Override
+        public int getCapacity() {
+          return ItemColdFireIgniter.this.getCapacity(container);
+        }
 
-	  @Override
-	  public boolean canFill() {
-	    return true;
-	  }
+        @Override
+        public boolean canFill() {
+          return true;
+        }
 
-	  @Override
-	  public boolean canDrain() {
-	    return false;
-	  }
+        @Override
+        public boolean canDrain() {
+          return false;
+        }
 
-	  @Override
-	  public boolean canFillFluidType(FluidStack fluidStack) {
-	    return fluidStack != null && fluidStack.getFluid() == getFluidType(container);
-	  }
+        @Override
+        public boolean canFillFluidType(FluidStack fluidStack) {
+          return fluidStack != null && fluidStack.getFluid() == getFluidType(container);
+        }
 
-	  @Override
-	  public boolean canDrainFluidType(FluidStack fluidStack) {
-	    return false;
-	  }
-	}
-      };
+        @Override
+        public boolean canDrainFluidType(FluidStack fluidStack) {
+          return false;
+        }
+      } };
     }
 
     @Override
@@ -221,34 +215,34 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
+  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     list.add(FLUIDAMOUNT.getInt(itemStack, 0) + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
         + getFluidType(itemStack).getLocalizedName(null));
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName(itemstack));
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addBasicTooltipFromResources(list, getUnlocalizedName(itemstack));
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName(itemstack));
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 0);
   }
 
   @Override
-  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     final ItemStack stack = new ItemStack(itemIn);
     subItems.add(stack.copy());
     FLUIDAMOUNT.setInt(stack, FLUID_CAPACITY);

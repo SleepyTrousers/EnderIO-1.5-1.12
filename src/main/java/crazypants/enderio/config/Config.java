@@ -3,7 +3,6 @@ package crazypants.enderio.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -11,6 +10,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
@@ -97,8 +97,6 @@ public final class Config {
   public static final float EXPLOSION_RESISTANT = 2000f * 3.0f / 5.0f; // obsidian
 
   public static boolean registerRecipes = true;
-
-  public static boolean allowFovControlsInSurvivalMode = false;
 
   public static boolean jeiUseShortenedPainterRecipes = true;
 
@@ -427,10 +425,11 @@ public final class Config {
   public static boolean enableOCConduits = true;
   public static boolean enableOCConduitsAnimatedTexture = true;
 
-  public static List<ResourceLocation> soulVesselBlackList = Collections.<ResourceLocation> emptyList();
-  public static List<ResourceLocation> soulVesselUnspawnableList = new ArrayList<ResourceLocation>();
+  public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
+  public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
   static {
-    soulVesselUnspawnableList.add("chickens.ChickensChicken");
+    // TODO 1.11 move to integrations, find correct RL
+    // soulVesselUnspawnableList.add("chickens.ChickensChicken");
   }
   public static boolean soulVesselCapturesBosses = false;
 
@@ -543,8 +542,6 @@ public final class Config {
   public static boolean paintedGlowstoneRequireSilkTouch = false;
   
   public static boolean enableBaublesIntegration = true;
-
-  public static String leversEnabled = "10,30,60,300";
 
   public static int maxMobsAttracted = 20;
 
@@ -1508,12 +1505,6 @@ public final class Config {
         "If true, the XP level will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
     topShowItemCountDefault = config.getBoolean("topShowItemCountDefault", sectionTOP.name, topShowItemCountDefault,
         "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
-
-    allowFovControlsInSurvivalMode = config.getBoolean("allowFovControlsInSurvivalMode", sectionMisc.name, allowFovControlsInSurvivalMode,
-        "If true, the FOV keyboard controls can be used in survival and advanture mode. Otherwise they are limited to create and spectator modes.");
-
-    leversEnabled = config.getString("leversEnabled", sectionRecipe.name, leversEnabled,
-        "A comma-seperated list of durations in seconds. For these, self-reseting levers will be created. Set to 0 to disable the lever. Please note that you also need to supply a resource pack with matching blockstates and a language file for this to work.");
 
     CapacitorKey.processConfig(config);
   }

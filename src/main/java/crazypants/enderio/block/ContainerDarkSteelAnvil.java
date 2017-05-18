@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.config.Config;
 import crazypants.util.Prep;
 import net.minecraft.block.BlockAnvil;
@@ -50,7 +52,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
     this.y = y;
     this.z = z;
 
-    this.inventorySlots.set(2, new Slot(outputSlot, 2, 134, 47) {
+    this.inventorySlots.set(2, new Slot(NullHelper.notnullM(outputSlot, "ContainerRepair.outputSlot is null"), 2, 134, 47) {
 
       @Override
       public boolean isItemValid(@Nonnull ItemStack stack) {

@@ -160,11 +160,11 @@ public class ConduitDisplayMode {
     DISPLAYMODE.setString(equipped, mode.getName());
   }
 
-  public ConduitDisplayMode next() {
+  public @Nonnull ConduitDisplayMode next() {
     return next(this);
   }
 
-  public ConduitDisplayMode previous() {
+  public @Nonnull ConduitDisplayMode previous() {
     return previous(this);
   }
 
@@ -196,7 +196,7 @@ public class ConduitDisplayMode {
   }
 
   @Override
-  public String toString() {
+  public @Nonnull String toString() {
     return getName();
   }
   

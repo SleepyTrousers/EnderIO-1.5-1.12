@@ -1,9 +1,9 @@
 package crazypants.enderio.item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.lwjgl.input.Keyboard;
 
@@ -13,11 +13,11 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;
+import crazypants.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,12 +28,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
@@ -49,9 +50,9 @@ import net.minecraftforge.server.permission.context.TargetContext;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IHaveRenderers, IOverlayRenderAware {
 
-  private static String permissionPickupOwned = null;
-  private static String permissionPickup = null;
-  private static String permissionPlace = null;
+  private static @Nonnull String permissionPickupOwned = "(item not initialized)";
+  private static @Nonnull String permissionPickup = "(item not initialized)";
+  private static @Nonnull String permissionPlace = "(item not initialized)";
 
   public static void initPhase() {
     permissionPickupOwned = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup_owned", DefaultPermissionLevel.OP,
@@ -62,23 +63,17 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         "Permission to place down an entity with Ender IO's soul vessel");
   }
 
-  public static ItemSoulVessel create() {
-    ItemSoulVessel result = new ItemSoulVessel();
+  public static ItemSoulVessel create(@Nonnull IModObject modObject) {
+    ItemSoulVessel result = new ItemSoulVessel(modObject);
     result.init();
     return result;
   }
 
-  private List<String> blackList;
-
-  protected ItemSoulVessel() {
+  protected ItemSoulVessel(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemSoulVessel.getUnlocalisedName());
-    setRegistryName(ModObject.itemSoulVessel.getUnlocalisedName());
-    setMaxStackSize(64);
-    blackList = new ArrayList<String>();
-    for (String ent : Config.soulVesselBlackList) {
-      blackList.add(ent);
-    }
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
+    setMaxStackSize(16);
   }
 
   protected void init() {
@@ -93,7 +88,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
   }
 
   @Override
-  public int getMetadata(ItemStack stack) {
+  public int getMetadata(@Nonnull ItemStack stack) {
     if (CapturedMob.containsSoul(stack)) {
       return 1;
     }
@@ -102,19 +97,20 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean hasEffect(ItemStack item) {
+  public boolean hasEffect(@Nonnull ItemStack item) {
     return CapturedMob.containsSoul(item);
   }
-  
-  
 
   @Override
-  public @Nonnull EnumActionResult onItemUse(ItemStack itemstack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+  public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side, float hitX,
       float hitY, float hitZ) {
 
-    if (world.isRemote || player == null) {
+    if (world.isRemote) {
       return EnumActionResult.PASS;
     }
+
+    ItemStack itemstack = player.getHeldItem(hand);
 
     CapturedMob capturedMob = CapturedMob.create(itemstack);
     if (capturedMob == null) {
@@ -122,7 +118,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
     }
 
     if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPlace, new BlockPosContext(player, pos, null, side))) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
       return EnumActionResult.SUCCESS;
     }
 
@@ -131,25 +127,22 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
     }
 
     if (!player.capabilities.isCreativeMode) {
-      if (itemstack.stackSize > 1) {
-        itemstack.stackSize--;
-        if (itemstack.stackSize == 0) {
-          player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(this));
-        } else if (!player.inventory.addItemStackToInventory(new ItemStack(this))) {
-          player.world.spawnEntityInWorld(new EntityItem(player.world, player.posX, player.posY, player.posZ, new ItemStack(this)));
+      itemstack.shrink(1);
+      final ItemStack emptyVial = new ItemStack(this);
+      if (Prep.isInvalid(itemstack)) {
+        player.setHeldItem(hand, emptyVial);
+      } else if (!player.inventory.addItemStackToInventory(emptyVial)) {
+        player.dropItem(emptyVial, false);
         }
         player.inventoryContainer.detectAndSendChanges();
-      } else {
-        itemstack.setTagCompound(null);
-      }
     }
     
     return EnumActionResult.SUCCESS;
   }
 
   @Override
-  public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
-    if (entity.world.isRemote || player == null) {
+  public boolean itemInteractionForEntity(@Nonnull ItemStack item, @Nonnull EntityPlayer player, @Nonnull EntityLivingBase entity, @Nonnull EnumHand hand) {
+    if (entity.world.isRemote) {
       return false;
     }
     boolean isCreative = player.capabilities.isCreativeMode;
@@ -160,17 +153,22 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
     // first check if that entity can be picked up at all
     CapturedMob capturedMob = CapturedMob.create(entity);
     if (capturedMob == null) {
+      if (entity instanceof EntityPlayer) {
+        player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.player.denied")));
+      } else if (CapturedMob.isBlacklisted(entity)) {
+        player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.blacklisted.denied")));
+      }
       return false;
     }
 
     // then check for reasons this specific one cannot
     if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
         && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.owned.denied")));
+      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.owned.denied")));
       return false;
     }
     if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPickup, new TargetContext(player, entity))) {
-      player.addChatMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
+      player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
       return false;
     }
     
@@ -180,68 +178,68 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
     if (!isCreative) {
       entity.setDead();
       if (entity.isDead) {
-        item.stackSize--;
-        if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-          entity.world.spawnEntityInWorld(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        item.shrink(1);
+        if (Prep.isInvalid(item)) {
+          player.setHeldItem(hand, capturedMobVessel);
+        } else if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
+          entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
         }
-        player.setHeldItem(hand, item);
-        ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+        player.inventoryContainer.detectAndSendChanges();
         return true;
       }
     } else {
-      //Inventory full, drop it in the world!
       if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-        entity.world.spawnEntityInWorld(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
       }
-      ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+      player.inventoryContainer.detectAndSendChanges();
       return true;
     }
     return false;
   }
 
-  public ItemStack createVesselWithEntityStub(String entityId) {
-    CapturedMob capturedMob = CapturedMob.create(entityId, null);
+  public @Nonnull ItemStack createVesselWithEntityStub(ResourceLocation entityId) {
+    CapturedMob capturedMob = CapturedMob.create(entityId);
     if (capturedMob == null) {
-      return null;
+      return Prep.getEmpty();
     }
 
     return capturedMob.toStack(this, 1, 1);
   }
 
-  public ItemStack createVesselWithEntity(Entity entity) {
+  public @Nonnull ItemStack createVesselWithEntity(Entity entity) {
     CapturedMob capturedMob = CapturedMob.create(entity);
     if (capturedMob == null) {
-      return null;
+      return Prep.getEmpty();
     }
 
     return capturedMob.toStack(this, 1, 1);
   }
 
   @Override
-  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     if (tab == getCreativeTab() || tab == EnderIOTab.tabNoTab) {
       super.getSubItems(itemIn, tab, subItems);
     }
     if (tab == EnderIOTab.tabEnderIO || tab == EnderIOTab.tabNoTab) {
       for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
-        subItems.add(capturedMob.toStack(this, 1, 1));
+        subItems.add(capturedMob.toStack(itemIn, 1, 1));
       }
     }
   }
 
   @Override
-  public CreativeTabs[] getCreativeTabs() {
+  public @Nonnull CreativeTabs[] getCreativeTabs() {
     return new CreativeTabs[] { getCreativeTab(), EnderIOTab.tabEnderIO };
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return itemStack.isEmpty() ? null : getUnlocalizedName(itemStack);
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return getUnlocalizedName(itemStack);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
+  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
     CapturedMob capturedMob = CapturedMob.create(par1ItemStack);
     if (capturedMob != null) {
       par3List.add(capturedMob.getDisplayName());
@@ -262,7 +260,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         Fluid fluid = FluidRegistry.getFluid(fluidName);
         if (fluid != null) {
           String unlocalizedName = fluid.getUnlocalizedName();
-          String name = unlocalizedName == null ? fluidName : I18n.format(unlocalizedName);
+          String name = I18n.format(unlocalizedName);
           par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + name);
         }
       }
@@ -277,12 +275,12 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     doItemOverlayIntoGUI(stack, xPosition, yPosition);
   }
 
   @SideOnly(Side.CLIENT)
-  public static void doItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public static void doItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     if (EnderIO.proxy.getClientPlayer().isSneaking() || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
       CapturedMob capturedMob = CapturedMob.create(stack);
       if (capturedMob != null) {
@@ -291,11 +289,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         name = (name + " " + name).substring(idx, idx + 3);
 
         FontRenderer fr = Minecraft.getMinecraft().getRenderManager().getFontRenderer();
-
-        if (fr == null) {
-          // The hotbar can be rendered before the render manager is initialized...
-          return;
-        }
 
         GlStateManager.disableLighting();
         GlStateManager.disableDepth();

@@ -23,6 +23,7 @@ public enum NbtValue { // TODO: DONE111
   FLUIDAMOUNT("famount"),
   BLOCKSTATE("paint"),
   DISPLAYMODE("enderio.displaymode"),
+  MAGNET_ACTIVE("magnetActive"),
 
   ;
 
@@ -106,6 +107,41 @@ public enum NbtValue { // TODO: DONE111
     final ItemStack stack2 = setIntCopy(stack, value);
     stack2.setCount(stackSize);
       return stack2;
+  }
+
+  // ITEMSTACK BOOL
+
+  @SuppressWarnings("null")
+  public boolean getBoolean(@Nonnull ItemStack stack, boolean _default) {
+    if (Prep.isValid(stack) && stack.hasTagCompound() && stack.getTagCompound().hasKey(key)) {
+      return stack.getTagCompound().getBoolean(key);
+    }
+    return _default;
+  }
+
+  public boolean getBoolean(@Nonnull ItemStack stack) {
+    return getBoolean(stack, false);
+  }
+
+  @SuppressWarnings("null")
+  public @Nonnull ItemStack setBoolean(@Nonnull ItemStack stack, boolean value) {
+    if (Prep.isValid(stack)) {
+      if (!stack.hasTagCompound()) {
+        stack.setTagCompound(new NBTTagCompound());
+      }
+      stack.getTagCompound().setBoolean(key, value);
+    }
+    return stack;
+  }
+
+  public @Nonnull ItemStack setBooleanCopy(@Nonnull ItemStack stack, boolean value) {
+    return setBoolean(stack.copy(), value);
+  }
+
+  public @Nonnull ItemStack setBooleanCopy(@Nonnull ItemStack stack, boolean value, int stackSize) {
+    final ItemStack stack2 = setBooleanCopy(stack, value);
+    stack2.setCount(stackSize);
+    return stack2;
   }
 
   // ITEMSTACK

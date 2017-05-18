@@ -6,21 +6,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketMagnetState implements IMessage, IMessageHandler<PacketMagnetState, IMessage> {
+public class PacketMagnetState implements IMessage {
 
   public enum SlotType {
     INVENTORY,
     ARMOR,
     BAUBLES
   }
-  
-  public PacketMagnetState() {    
+
+  public PacketMagnetState() {
   }
-  
+
   private boolean isActive;
   private SlotType type;
   private int slot;
-  
+
   public PacketMagnetState(SlotType slottype, int slot, boolean isActive) {
     this.type = slottype;
     this.slot = slot;
@@ -31,21 +31,23 @@ public class PacketMagnetState implements IMessage, IMessageHandler<PacketMagnet
   public void toBytes(ByteBuf buf) {
     buf.writeShort(type.ordinal());
     buf.writeInt(slot);
-    buf.writeBoolean(isActive);    
+    buf.writeBoolean(isActive);
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
     type = SlotType.values()[buf.readShort()];
     slot = buf.readInt();
-    isActive = buf.readBoolean();    
+    isActive = buf.readBoolean();
   }
-  
-  @Override
-  public IMessage onMessage(PacketMagnetState message, MessageContext ctx) {
-    EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-    MagnetController.setMagnetActive(player, message.type, message.slot, message.isActive);
-    return null;
+
+  public static class Handler implements IMessageHandler<PacketMagnetState, IMessage> {
+    @Override
+    public IMessage onMessage(PacketMagnetState message, MessageContext ctx) {
+      EntityPlayerMP player = ctx.getServerHandler().player;
+      MagnetController.setMagnetActive(player, message.type, message.slot, message.isActive);
+      return null;
+    }
   }
 
 }

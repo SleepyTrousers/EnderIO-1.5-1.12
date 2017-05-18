@@ -3,21 +3,27 @@ package crazypants.enderio.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.MagnetUtil;
+
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.MagnetUtil;
 import crazypants.util.Prep;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ClassInheritanceMultiMap;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -28,25 +34,23 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.integration.botania.BotaniaUtil.hasSolegnoliaAround;
-import static crazypants.enderio.item.darksteel.ModObject.itemMagnet;
 
 public class MagnetController {
 
   public MagnetController() {
-    PacketHandler.INSTANCE.registerMessage(PacketMagnetState.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
   }
 
-  
   @SubscribeEvent
-  public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    if (event.phase != TickEvent.Phase.END) {
+  public void onPlayerTick(@Nonnull TickEvent.PlayerTickEvent event) {
+    if (event.phase != TickEvent.Phase.END || event.player.getHealth() <= 0f || event.player.isSpectator()) {
       return;
     }
     ActiveMagnet mag = getMagnet(event.player, true);
-    if (mag != null && event.player.getHealth() > 0f) {
+    if (mag != null) {
       doHoover(event.player);
-      if(event.side == Side.SERVER && event.player.world.getTotalWorldTime() % 20 == 0) {
-        ItemMagnet.drainPerSecondPower(mag.item);
+      if (event.side == Side.SERVER && event.player.world.getTotalWorldTime() % 20 == 0) {
+        ((ItemMagnet) mag.item.getItem()).drainPerSecondPower(mag.item);
         event.player.inventory.setInventorySlotContents(mag.slot, mag.item);
         event.player.inventory.markDirty();
       }
@@ -54,34 +58,34 @@ public class MagnetController {
   }
 
   static ActiveMagnet getMagnet(EntityPlayer player, boolean activeOnly) {
-    ItemStack[] inv = player.inventory.mainInventory;
-    int maxSlot = Config.magnetAllowInMainInventory ? 4 * 9 : 9;
-    for (int i = 0; i < maxSlot;i++) {
-      if (ItemMagnet.isMagnet(inv[i]) && (!activeOnly || (ItemMagnet.isActive(inv[i]) && ItemMagnet.hasPower(inv[i])))) {
-        return new ActiveMagnet(inv[i], i);
+    NonNullList<ItemStack> inv = player.inventory.mainInventory;
+    int maxSlot = Config.magnetAllowInMainInventory ? inv.size() : InventoryPlayer.getHotbarSize();
+    for (int i = 0; i < maxSlot; i++) {
+      final ItemStack item = inv.get(i);
+      if (ItemMagnet.isMagnet(item) && (!activeOnly || (ItemMagnet.isActive(item) && ItemMagnet.hasPower(item)))) {
+        return new ActiveMagnet(item, i);
       }
     }
-    if (ItemMagnet.isMagnet(player.inventory.offHandInventory[0])
-        && (!activeOnly || (ItemMagnet.isActive(player.inventory.offHandInventory[0]) && ItemMagnet.hasPower(player.inventory.offHandInventory[0])))) {
-      return new ActiveMagnet(player.inventory.offHandInventory[0], player.inventory.mainInventory.length + player.inventory.armorInventory.length);
+    final ItemStack item = player.inventory.offHandInventory.get(0);
+    if (ItemMagnet.isMagnet(item) && (!activeOnly || (ItemMagnet.isActive(item) && ItemMagnet.hasPower(item)))) {
+      return new ActiveMagnet(item, player.inventory.mainInventory.size() + player.inventory.armorInventory.size());
     }
     return null;
   }
-  
+
   private static final double collisionDistanceSq = 1.25 * 1.25;
   private static final double speed = 0.035;
   private static final double speed4 = speed * 4;
 
   public void doHoover(EntityPlayer player) {
-    
+
     if (blacklist == null) {
       initBlacklist();
     }
 
-    AxisAlignedBB aabb = new AxisAlignedBB(
-        player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
+    AxisAlignedBB aabb = new AxisAlignedBB(player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
-        
+
     List<Entity> interestingItems = selectEntitiesWithinAABB(player.world, aabb);
 
     if (interestingItems != null) {
@@ -112,16 +116,15 @@ public class MagnetController {
   private static void initBlacklist() {
     blacklist = new ArrayList<Item>();
     for (String name : Config.magnetBlacklist) {
-      String[] parts = name.split(":");
-      if (parts.length == 2) {
-        Item item = Item.REGISTRY.getObject(new ResourceLocation(parts[0], parts[1]));        
+      if (name != null && !name.isEmpty()) {
+        Item item = Item.REGISTRY.getObject(new ResourceLocation(name));
         if (item != null) {
           blacklist.add(item);
         }
       }
     }
   }
-  
+
   private static boolean isBlackListed(EntityItem entity) {
     for (Item blacklisted : blacklist) {
       if (blacklisted == entity.getEntityItem().getItem()) {
@@ -156,10 +159,10 @@ public class MagnetController {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead) {
               boolean isValidTarget = false;
-              if(entity.getEntityBoundingBox().intersectsWith(bb)) {
+              if (entity.getEntityBoundingBox().intersectsWith(bb)) {
                 if (entity instanceof EntityItem) {
-                  isValidTarget = !hasSolegnoliaAround(entity) && !isBlackListed((EntityItem)entity);
-                } else if(entity instanceof EntityXPOrb) {
+                  isValidTarget = !hasSolegnoliaAround(entity) && !isBlackListed((EntityItem) entity);
+                } else if (entity instanceof EntityXPOrb) {
                   isValidTarget = true;
                 }
               }
@@ -183,13 +186,13 @@ public class MagnetController {
   }
 
   static class ActiveMagnet {
-    ItemStack item;
-    int slot;
-    
-    ActiveMagnet(ItemStack item, int slot) {    
+    final @Nonnull ItemStack item;
+    final int slot;
+
+    ActiveMagnet(@Nonnull ItemStack item, int slot) {
       this.item = item;
       this.slot = slot;
-    }        
+    }
   }
 
   public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
@@ -213,16 +216,11 @@ public class MagnetController {
       }
       break;
     }
-    if (Prep.isInvalid(stack) || stack.getItem() != itemMagnet || ItemMagnet.isActive(stack) == isActive) {
+    if (stack.getItem() != ModObject.itemMagnet.getItem() || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
     if (!Config.magnetAllowDeactivatedInBaublesSlot && type == SlotType.BAUBLES && !isActive) {
-      ItemStack[] inv = player.inventory.mainInventory;
-      for (int i = 0; i < inv.length && dropOff < 0; i++) {
-        if (Prep.isInvalid(inv[i])) {
-          dropOff = i;
-        }
-      }
+      dropOff = player.inventory.getFirstEmptyStack();
       if (dropOff < 0) {
         return;
       }

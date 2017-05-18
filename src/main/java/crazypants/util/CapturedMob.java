@@ -11,8 +11,8 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -279,7 +279,7 @@ public class CapturedMob { // TODO: DONE111
           } else if (Celeb.C06.isOn() && Math.random() < 0.25) {
         entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Math.random() < 0.25 ? Items.LEATHER_BOOTS : Items.STICK));
           } else if (Math.random() < 0.1) {
-        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModObject.itemDarkSteelSword));
+        entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(ModObject.itemDarkSteelSword.getItemNN()));
         ((EntityWitherSkeleton) entity).setDropChance(EntityEquipmentSlot.MAINHAND, 0.00001F);
           }
     }

@@ -27,7 +27,6 @@ import crazypants.enderio.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.integration.te.TEUtil;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgradePowerAdapter;
 import crazypants.enderio.loot.Loot;
 import crazypants.enderio.loot.LootManager;
@@ -85,9 +84,9 @@ public class EnderIO {
   @SidedProxy(clientSide = "crazypants.enderio.ClientProxy", serverSide = "crazypants.enderio.CommonProxy")
   public static CommonProxy proxy;
 
-  public static final PacketHandler packetPipeline = new PacketHandler();
+  public static final @Nonnull PacketHandler packetPipeline = new PacketHandler();
 
-  public static final Lang lang = new Lang("enderio");
+  public static final @Nonnull Lang lang = new Lang("enderio");
 
   // Blocks
   public static Fluids fluids;

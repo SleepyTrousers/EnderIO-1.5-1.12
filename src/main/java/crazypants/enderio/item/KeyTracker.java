@@ -26,9 +26,9 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.sound.SoundHelper;
 import crazypants.enderio.sound.SoundRegistry;
+import crazypants.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -41,7 +41,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 import static crazypants.enderio.ModObject.itemConduitProbe;
-import static crazypants.enderio.config.Config.allowFovControlsInSurvivalMode;
 
 public class KeyTracker {
 
@@ -51,9 +50,9 @@ public class KeyTracker {
     void execute();
   }
 
-  private final List<Pair<KeyBinding, Action>> keyActions = new ArrayList<Pair<KeyBinding, Action>>();
+  private final @Nonnull List<Pair<KeyBinding, Action>> keyActions = new ArrayList<Pair<KeyBinding, Action>>();
 
-  private final KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
+  private final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
   public KeyTracker() {
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   enderio.category.darksteelarmor", new GlideAction());
@@ -74,13 +73,13 @@ public class KeyTracker {
     fovMinusKeyFast = create("enderio.keybind.fovminusfast", Keyboard.KEY_NONE, "key.categories.misc");
   }
 
-  private KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
+  private @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
     final KeyBinding keyBinding = create(description, keyCode, category);
     keyActions.add(Pair.of(keyBinding, action));
     return keyBinding;
   }
 
-  private KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
+  private @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
     final KeyBinding keyBinding = new KeyBinding(description.trim(), keyCode, category.trim());
     ClientRegistry.registerKeyBinding(keyBinding);
     return keyBinding;
@@ -190,14 +189,11 @@ public class KeyTracker {
     public void execute() {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
       ItemStack equipped = player.getHeldItemMainhand();
-      if (equipped == null) {
+      if (Prep.isInvalid(equipped)) {
         return;
       }
       if (equipped.getItem() instanceof IConduitControl) {
         ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
-        if (curMode == null) {
-          curMode = ConduitDisplayMode.ALL;
-        }
         ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
         ConduitDisplayMode.setDisplayMode(equipped, newMode);
         PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
@@ -273,10 +269,6 @@ public class KeyTracker {
 
   @SubscribeEvent
   public void onFov(FOVModifier event) {
-    final PlayerControllerMP playerController = Minecraft.getMinecraft().playerController;
-    if (!allowFovControlsInSurvivalMode && (playerController == null || playerController.gameIsSurvivalOrAdventure())) {
-      return;
-    }
     long worldTime = EnderIO.proxy.getTickCount();
     while (worldTime > lastWorldTime) {
       if (worldTime - lastWorldTime > 10) {

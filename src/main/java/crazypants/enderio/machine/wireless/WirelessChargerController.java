@@ -55,7 +55,7 @@ public class WirelessChargerController {
 
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    if(event.side == Side.CLIENT || event.phase != TickEvent.Phase.END) {
+    if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || event.player.isSpectator()) {
       return;
     }
     chargePlayersItems(event.player);

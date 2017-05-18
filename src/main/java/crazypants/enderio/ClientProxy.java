@@ -11,6 +11,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.block.ColdFireStateMapper;
+import crazypants.enderio.block.LeverStateMapper;
 import crazypants.enderio.conduit.ConduitBundleStateMapper;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
@@ -23,7 +24,6 @@ import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
 import crazypants.enderio.item.ToolTickHandler;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.upgrade.UpgradeRenderDispatcher;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
@@ -105,6 +105,7 @@ public class ClientProxy extends CommonProxy {
     EnderIOGlassesStateMapper.create();
     ConduitBundleStateMapper.create();
     ColdFireStateMapper.create();
+    LeverStateMapper.create();
 
     // Items of blocks that use smart rendering
     SmartModelAttacher.registerBlockItemModels();
@@ -137,9 +138,6 @@ public class ClientProxy extends CommonProxy {
     // Overlays
     MinecraftForge.EVENT_BUS.register(new YetaWrenchOverlayRenderer());
     MinecraftForge.EVENT_BUS.register(new ConduitProbeOverlayRenderer());
-
-    // Items
-    ModObject.onClientPreInit();
 
     // Item Models
     ItemModelRegistry.create();

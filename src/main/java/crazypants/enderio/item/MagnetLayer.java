@@ -1,5 +1,7 @@
 package crazypants.enderio.item;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.item.darksteel.upgrade.IRenderUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -21,7 +23,8 @@ public class MagnetLayer implements IRenderUpgrade {
   // see LayerCustomHead
 
   @Override
-  public void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
+  public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
+      float p_177141_3_,
       float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
     GlStateManager.pushMatrix();
 

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.IHasPlayerRenderer;
@@ -30,9 +32,9 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
 
   public final static UpgradeRenderDispatcher instance = new UpgradeRenderDispatcher(null);
 
-  private final RenderPlayer renderPlayer;
+  private final @Nonnull RenderPlayer renderPlayer;
 
-  private UpgradeRenderDispatcher(RenderPlayer renderPlayer) {
+  private UpgradeRenderDispatcher(@Nonnull RenderPlayer renderPlayer) {
     this.renderPlayer = renderPlayer;
   }
 
@@ -81,7 +83,7 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
+    public void doRenderLayer(@Nonnull AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
         float netHeadYaw, float headPitch, float scale) {
 
       if (!DarkSteelController.instance.isElytraUpgradeEquipped(entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.CHEST))) {
@@ -97,7 +99,7 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
   }
 
   @Override
-  public void doRenderLayer(AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
+  public void doRenderLayer(@Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_,
       float p_177141_6_, float p_177141_7_, float scale) {
     for (ItemStack piece : entitylivingbaseIn.inventory.armorInventory) {
       if (piece != null && piece.getItem() instanceof IDarkSteelItem) {

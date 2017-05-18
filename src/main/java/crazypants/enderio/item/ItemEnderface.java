@@ -3,6 +3,7 @@ package crazypants.enderio.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
@@ -16,17 +17,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderface extends Item implements IHaveRenderers {
 
-  public static ItemEnderface create() {
-    ItemEnderface result = new ItemEnderface();
+  public static ItemEnderface create(@Nonnull IModObject modObject) {
+    ItemEnderface result = new ItemEnderface(modObject);
     result.init();
     return result;
   }
 
-  protected ItemEnderface() {
+  protected ItemEnderface(@Nonnull IModObject modObject) {
     setCreativeTab(null);
-    setUnlocalizedName("enderio." + ModObject.itemEnderface.name());
+    setUnlocalizedName(modObject.getUnlocalisedName());
     setMaxStackSize(1);
-    setRegistryName(ModObject.itemEnderface.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
   }
 
   protected void init() {

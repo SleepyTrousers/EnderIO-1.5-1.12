@@ -1551,6 +1551,8 @@ enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied
 enderio.soulvial.owned.denied=Permission denied - only owners may pick up owned animals
+enderio.soulvial.player.denied=No! How would you feel if you had to play this game from inside a bottle?
+enderio.soulvial.blacklisted.denied=Permission denied - this entity is blacklisted
 
 tile.blockDarkSteelTrapdoor.name=Dark Steel Trapdoor
 

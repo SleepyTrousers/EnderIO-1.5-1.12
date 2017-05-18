@@ -41,7 +41,6 @@ import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.item.ItemColdFireIgniter;
 import crazypants.enderio.item.ItemConduitProbe;
-import crazypants.enderio.item.ItemEnderFood;
 import crazypants.enderio.item.ItemEnderface;
 import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemSoulVessel;
@@ -110,6 +109,7 @@ import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
+import crazypants.enderio.material.food.ItemEnderFood;
 import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
 import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
@@ -222,7 +222,10 @@ public enum ModObject implements IModObject {
   blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
   blockIngotStorage(BlockIngotStorage.class),
-  blockSelfResettingLever(BlockSelfResettingLever.class),
+  blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
+  blockSelfResettingLever30(BlockSelfResettingLever.class, "create30"),
+  blockSelfResettingLever60(BlockSelfResettingLever.class, "create60"),
+  blockSelfResettingLever300(BlockSelfResettingLever.class, "create300"),
   blockDecoration1(BlockDecoration.class),
   blockDecoration2(BlockDecorationFacing.class),
 

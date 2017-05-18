@@ -12,6 +12,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNMap;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Multimap;
 
@@ -285,15 +286,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
-
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
     if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
-    } else {
-      stack.damageItem(damage, entity);
-    }
-    if(eu != null) {
       eu.writeToItem(stack);
+    } else {
+      stack.damageItem(damage, NullHelper.notnullF(entity, "damageArmor() needs an entity"));
     }
   }
 

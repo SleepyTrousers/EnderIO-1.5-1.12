@@ -3,7 +3,6 @@ package crazypants.enderio.item.skull;
 import java.util.List;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.item.skull.BlockEndermanSkull.SkullType;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

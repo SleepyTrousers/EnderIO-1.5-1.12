@@ -1,5 +1,7 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,7 +18,7 @@ public interface IRenderUpgrade {
    */
   public static class Helper {
 
-    public static void rotateIfSneaking(EntityPlayer player) {
+    public static void rotateIfSneaking(@Nonnull EntityPlayer player) {
       if (player.isSneaking())
         applySneakingRotation();
     }
@@ -25,11 +27,12 @@ public interface IRenderUpgrade {
       GlStateManager.rotate(28.64789F, 1.0F, 0.0F, 0.0F);
     }
 
-    public static void translateToHeadLevel(EntityPlayer player) {
+    public static void translateToHeadLevel(@Nonnull EntityPlayer player) {
       GlStateManager.translate(0, (player != Minecraft.getMinecraft().player ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
     }
   }
 
-  void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
+  void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
+      float p_177141_3_,
       float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale);
 }
