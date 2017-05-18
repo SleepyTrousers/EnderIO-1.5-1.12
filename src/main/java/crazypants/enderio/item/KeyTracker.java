@@ -178,9 +178,9 @@ public class KeyTracker {
       // TODO: Mod Thaumcraft
       // EntityPlayer player = Minecraft.getMinecraft().player;
       // if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
-      // boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
+      // boolean isActive = !ModObject.itemDarkSteelHelmet.isGogglesUgradeActive();
       // sendEnabledChatMessage("darksteel.upgrade.goggles", isActive); // TODO lang key is wrong
-      // DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
+      // ModObject.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
       // }
     }
   }

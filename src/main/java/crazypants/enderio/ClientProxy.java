@@ -139,7 +139,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(new ConduitProbeOverlayRenderer());
 
     // Items
-    DarkSteelItems.onClientPreInit();
+    ModObject.onClientPreInit();
 
     // Item Models
     ItemModelRegistry.create();

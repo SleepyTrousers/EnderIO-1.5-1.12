@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +22,7 @@ public class MachineRecipeInput {
   }
 
   public final int slotNumber;
-  public final ItemStack item;
+  public final @Nonnull ItemStack item;
 
   public final FluidStack fluid;
 

@@ -28,6 +28,7 @@ import crazypants.enderio.integration.te.TEUtil;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgradePowerAdapter;
 import crazypants.enderio.loot.Loot;
 import crazypants.enderio.loot.LootManager;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -50,6 +51,7 @@ import crazypants.util.CapturedMob;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -74,8 +76,8 @@ public class EnderIO {
 
   public static final @Nonnull String MODID = "enderio";
   public static final @Nonnull String DOMAIN = MODID;
-  public static final String MOD_NAME = "Ender IO";
-  public static final String VERSION = "@VERSION@";
+  public static final @Nonnull String MOD_NAME = "Ender IO";
+  public static final @Nonnull String VERSION = "@VERSION@";
 
   @Instance(MODID)
   public static EnderIO instance;
@@ -117,7 +119,7 @@ public class EnderIO {
 
     ModObject.preInit(event);
 
-    DarkSteelItems.createDarkSteelArmorItems();
+    MinecraftForge.EVENT_BUS.register(new EnergyUpgradePowerAdapter());
     DarkSteelController.instance.register();
 
     MaterialRecipes.registerOresInDictionary();

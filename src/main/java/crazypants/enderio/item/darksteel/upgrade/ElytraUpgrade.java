@@ -38,7 +38,7 @@ public class ElytraUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelChestplate) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelChestplate) {
       return false;
     }
     ElytraUpgrade elytraUpgrade = ElytraUpgrade.loadFromItem(stack);

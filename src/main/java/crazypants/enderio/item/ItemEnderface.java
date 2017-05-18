@@ -1,6 +1,7 @@
-package crazypants.enderio.enderface;
+package crazypants.enderio.item;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
@@ -8,6 +9,7 @@ import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,13 +34,13 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   }
 
   @Override
-  public boolean hasEffect(ItemStack stack) {
+  public boolean hasEffect(@Nonnull ItemStack stack) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     if (tab != null) {
       for (int i = 0; i < 4; i++) {
         subItems.add(new ItemStack(itemIn, 1, i));

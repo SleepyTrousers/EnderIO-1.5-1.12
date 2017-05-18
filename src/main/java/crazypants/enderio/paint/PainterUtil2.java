@@ -164,7 +164,8 @@ public class PainterUtil2 {
   }
 
   public interface IWithPaintName {
-    String getPaintName(ItemStack stack);
+    @Nullable
+    String getPaintName(@Nonnull ItemStack stack);
   }
 
   // Note: Config-based white-/blacklisting is done by PaintSourceValidator and checked as part of the input slot validation of the Painter

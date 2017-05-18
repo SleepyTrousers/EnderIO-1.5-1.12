@@ -36,7 +36,7 @@ public class SpoonUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelPickaxe || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelPickaxe || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpoonUpgrade up = loadFromItem(stack);

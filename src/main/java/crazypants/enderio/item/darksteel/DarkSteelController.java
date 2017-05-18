@@ -271,20 +271,20 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
-    if (boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && !player.capabilities.allowFlying) {
+    if (boots != null && boots.getItem() == ModObject.itemDarkSteelBoots && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
       if (costedDistance > 1) { // Elytra flight will limit fall distance to 1.0F in normal flight
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
-        int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
+        int totalEnergy = getPlayerEnergy(player, ModObject.itemDarkSteelBoots);
         if (totalEnergy > 0 && totalEnergy >= energyCost) {
-          usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, energyCost);
+          usePlayerEnergy(player, ModObject.itemDarkSteelBoots, energyCost);
           player.fallDistance -= costedDistance;
         }
       }
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if (jumpUpgrade != null && boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && isStepAssistActive(player)) {
+    if (jumpUpgrade != null && boots != null && boots.getItem() == ModObject.itemDarkSteelBoots && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
       player.stepHeight = 0.6F;
@@ -393,7 +393,7 @@ public class DarkSteelController {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
-    if (jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
+    if (jumpUpgrade == null || boots == null || boots.getItem() != ModObject.itemDarkSteelBoots) {
       return false;
     }
 
@@ -405,13 +405,13 @@ public class DarkSteelController {
 
     int autoJumpOffset = autoJump ? 1 : 0;
     int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);
-    int availablePower = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots);
+    int availablePower = getPlayerEnergy(player, ModObject.itemDarkSteelBoots);
     int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
     if (availablePower > 0 && requiredPower <= availablePower && jumpCount < maxJumps) {
       jumpCount++;
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
       ticksSinceLastJump = 0;
-      usePlayerEnergy(player, DarkSteelItems.itemDarkSteelBoots, requiredPower);
+      usePlayerEnergy(player, ModObject.itemDarkSteelBoots, requiredPower);
       SoundHelper.playSound(player.world, player, SoundRegistry.JUMP, 1.0f, player.world.rand.nextFloat() * 0.5f + 0.75f);
 
       Random rand = player.world.rand;
@@ -422,7 +422,7 @@ public class DarkSteelController {
             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
         Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
-      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, DarkSteelItems.itemDarkSteelBoots.armorType));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, ModObject.itemDarkSteelBoots.armorType));
       return true;
     }
     return false;

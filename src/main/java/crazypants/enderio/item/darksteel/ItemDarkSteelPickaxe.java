@@ -61,7 +61,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     if (Prep.isInvalid(equipped)) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelPickaxe;
+    return equipped.getItem() == ModObject.itemDarkSteelPickaxe;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, EnumHand hand, int requiredPower) {

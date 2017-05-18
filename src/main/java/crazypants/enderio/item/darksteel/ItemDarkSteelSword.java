@@ -75,7 +75,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelSword;
+    return equipped.getItem() == ModObject.itemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, int requiredPower) {

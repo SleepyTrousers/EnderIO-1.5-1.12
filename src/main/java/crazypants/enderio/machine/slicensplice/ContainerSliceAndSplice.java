@@ -51,9 +51,9 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
   static private final Item[] slotItems1 = { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE,
-      Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe };
+      Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe };
   static private final Item[] slotItems2 = { Items.SHEARS, Items.SHEARS, Items.SHEARS, Items.SHEARS,
-      DarkSteelItems.itemDarkSteelShears };
+      ModObject.itemDarkSteelShears };
   static private final Random rand = new Random();
 
   public static final Point[] INPUT_SLOTS = new Point[] {      

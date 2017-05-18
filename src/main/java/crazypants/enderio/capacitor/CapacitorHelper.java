@@ -71,7 +71,7 @@ public class CapacitorHelper {
     TYPE;
   }
 
-  public static ItemStack addCapData(@Nonnull ItemStack stack, @Nonnull SetType setType, @Nonnull CapacitorKey key, float value) {
+  public static @Nonnull ItemStack addCapData(@Nonnull ItemStack stack, @Nonnull SetType setType, @Nullable CapacitorKey key, float value) {
     NBTTagCompound root = stack.getTagCompound();
     if (root == null) {
       root = new NBTTagCompound();
@@ -79,10 +79,25 @@ public class CapacitorHelper {
     }
     NBTTagCompound tag = root.getCompoundTag("eiocap");
     root.setTag("eiocap", tag);
+    if (key == null) {
+      addCapData(tag, setType, value);
+    } else {
+      addCapData(tag, setType, key, value);
+    }
+    return stack;
+  }
+
+  private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, float value) {
     switch (setType) {
     case LEVEL:
       tag.setInteger("level", (int) value);
-      break;
+    default:
+      throw new IllegalArgumentException();
+    }
+  }
+
+  private static void addCapData(@Nonnull NBTTagCompound tag, @Nonnull SetType setType, @Nonnull CapacitorKey key, float value) {
+    switch (setType) {
     case NAME:
       tag.setFloat(key.getName(), value);
       break;
@@ -93,8 +108,9 @@ public class CapacitorHelper {
     case TYPE:
       tag.setFloat(key.getValueType().getName(), value);
       break;
+    default:
+      throw new IllegalArgumentException();
     }
-    return stack;
   }
 
   public static List<Pair<String, Float>> getCapDataRaw(@Nonnull ItemStack stack) {

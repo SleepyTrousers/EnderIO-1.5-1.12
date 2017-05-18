@@ -36,7 +36,7 @@ public class SwimUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelBoots) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelBoots) {
       return false;
     }
     SwimUpgrade up = loadFromItem(stack);

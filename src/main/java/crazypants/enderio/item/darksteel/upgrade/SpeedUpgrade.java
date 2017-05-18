@@ -74,7 +74,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelLeggings || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelLeggings || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpeedUpgrade up = loadFromItem(stack);

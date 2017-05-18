@@ -75,7 +75,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   public static void drainPerSecondPower(ItemStack itemStack) {
-    DarkSteelItems.itemMagnet.extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
+    ModObject.itemMagnet.extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
   }
 
   static MagnetController controller = new MagnetController();

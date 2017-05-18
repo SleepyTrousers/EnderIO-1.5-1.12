@@ -38,10 +38,10 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       slotItemsStacks1.add(new ItemStack(item));
     }
     slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
-    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, DarkSteelItems.itemDarkSteelAxe }) {
+    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
     }
-    for (Item item : new Item[] { Items.SHEARS, DarkSteelItems.itemDarkSteelShears }) {
+    for (Item item : new Item[] { Items.SHEARS, ModObject.itemDarkSteelShears }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
     slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());

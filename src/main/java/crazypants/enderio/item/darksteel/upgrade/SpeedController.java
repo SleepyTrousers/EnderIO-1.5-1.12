@@ -59,7 +59,7 @@ public class SpeedController {
     double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
     costModifier = costModifier + (costModifier * speedUpgrade.getWalkMultiplier());
     int cost = (int) (horzMovement * costModifier);
-    DarkSteelController.instance.usePlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings, cost);
+    DarkSteelController.instance.usePlayerEnergy(player, ModObject.itemDarkSteelLeggings, cost);
     if (player.isSprinting()) {
       moveInst.applyModifier(sprintModifiers[speedUpgrade.getLevel() - 1]);
     } else {
@@ -133,14 +133,14 @@ public class SpeedController {
 
   private SpeedUpgrade getActiveSpeedUpgrade(EntityPlayer player) {
     ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-    if (leggings == null || leggings.getItem() != DarkSteelItems.itemDarkSteelLeggings) {
+    if (leggings == null || leggings.getItem() != ModObject.itemDarkSteelLeggings) {
       return null;
     }
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if (speedUpgrade == null) {
       return null;
     }
-    if (DarkSteelController.instance.isSpeedActive(player) && DarkSteelController.instance.getPlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings) > 0) {
+    if (DarkSteelController.instance.isSpeedActive(player) && DarkSteelController.instance.getPlayerEnergy(player, ModObject.itemDarkSteelLeggings) > 0) {
       return speedUpgrade;
     }
     return null;

@@ -59,7 +59,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     if (Prep.isInvalid(equipped)) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelAxe;
+    return equipped.getItem() == ModObject.itemDarkSteelAxe;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {

@@ -32,12 +32,12 @@ public class GliderUpgrade extends AbstractUpgrade {
   }
 
   public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(DarkSteelItems.itemGliderWing,1,1), Config.darkSteelGliderCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(ModObject.itemGliderWing,1,1), Config.darkSteelGliderCost);
   }  
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelChestplate) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelChestplate) {
       return false;
     }
     ElytraUpgrade elytraUpgrade = ElytraUpgrade.loadFromItem(stack);

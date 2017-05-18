@@ -50,7 +50,7 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelBoots || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelBoots || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     JumpUpgrade up = loadFromItem(stack);

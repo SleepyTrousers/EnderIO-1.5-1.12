@@ -47,7 +47,7 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if (probe == null || stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if (probe == null || stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet) {
       return false;
     }
     TheOneProbeUpgrade up = loadFromItem(stack);

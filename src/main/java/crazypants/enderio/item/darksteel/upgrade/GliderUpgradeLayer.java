@@ -68,7 +68,7 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       GlStateManager.translate(0.0F, 0.55F + 0.15F, 0.1F);
       GlStateManager.scale(3, 3, 0.5);
 
-      ItemStack glider = new ItemStack(DarkSteelItems.itemGliderWing, 1, 1);
+      ItemStack glider = new ItemStack(ModObject.itemGliderWing, 1, 1);
 
       final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;
       Minecraft.getMinecraft().getRenderItem().renderItem(glider, none);

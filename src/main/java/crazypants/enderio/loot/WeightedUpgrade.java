@@ -1,7 +1,9 @@
 package crazypants.enderio.loot;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
 import crazypants.enderio.capacitor.CapacitorKey;
@@ -23,37 +25,37 @@ public enum WeightedUpgrade {
 
   ;
 
-  public final SetType setType;
-  public final CapacitorKey capacitorKey;
-  public final String langKey;
+  public final @Nonnull SetType setType;
+  public final @Nonnull CapacitorKey capacitorKey;
+  public final @Nonnull String langKey;
 
-  private WeightedUpgrade(SetType setType, CapacitorKey capacitorKey, String langKey, int weight) {
+  private WeightedUpgrade(@Nonnull SetType setType, @Nonnull CapacitorKey capacitorKey, @Nonnull String langKey, int weight) {
     this.setType = setType;
     this.capacitorKey = capacitorKey;
     this.langKey = "loot.capacitor." + langKey;
     WeightedUpgradeImpl.weightedUpgrades.add(new WeightedUpgradeImpl(weight, this));
   }
 
-  public static List<WeightedUpgrade.WeightedUpgradeImpl> getWeightedupgrades() {
+  public static @Nonnull NNList<WeightedUpgrade.WeightedUpgradeImpl> getWeightedupgrades() {
     return WeightedUpgradeImpl.weightedUpgrades;
   }
 
   public static class WeightedUpgradeImpl extends WeightedRandom.Item {
-    private static final List<WeightedUpgrade.WeightedUpgradeImpl> weightedUpgrades = new ArrayList<WeightedUpgrade.WeightedUpgradeImpl>();
-    private final WeightedUpgrade upgrade;
+    private static final @Nonnull NNList<WeightedUpgrade.WeightedUpgradeImpl> weightedUpgrades = new NNList<WeightedUpgrade.WeightedUpgradeImpl>();
+    private final @Nonnull WeightedUpgrade upgrade;
 
-    private WeightedUpgradeImpl(int weight, WeightedUpgrade upgrade) {
+    private WeightedUpgradeImpl(int weight, @Nonnull WeightedUpgrade upgrade) {
       super(weight);
       this.upgrade = upgrade;
     }
 
-    public WeightedUpgrade getUpgrade() {
+    public @Nonnull WeightedUpgrade getUpgrade() {
       return upgrade;
     }
 
   }
 
-  public static WeightedUpgrade getByRawString(String raw) {
+  public static @Nullable WeightedUpgrade getByRawString(String raw) {
     for (WeightedUpgrade wa : values()) {
       switch (wa.setType) {
       case NAME:

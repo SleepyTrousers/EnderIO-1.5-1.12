@@ -1,17 +1,18 @@
 package crazypants.enderio.loot;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang3.tuple.Triple;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.item.darksteel.DarkSteelRecipeManager.UpgradePath;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,11 +27,11 @@ public class SetRandomDarkUpgrade extends LootFunction {
   }
 
   @Override
-  public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
+  public @Nonnull ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
     if (Prep.isValid(stack)) {
-      List<Triple<ItemStack, ItemStack, ItemStack>> list = DarkSteelRecipeManager.getAllRecipes(Collections.singletonList(stack));
+      NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(Collections.singletonList(stack));
       if (!list.isEmpty()) {
-        return list.get((int) (rand.nextInt(list.size()) * rand.nextFloat())).getRight();
+        return list.get((int) (rand.nextInt(list.size()) * rand.nextFloat())).getOutput();
       }
     }
     return stack;
@@ -43,11 +44,12 @@ public class SetRandomDarkUpgrade extends LootFunction {
     }
 
     @Override
-    public void serialize(JsonObject object, SetRandomDarkUpgrade functionClazz, JsonSerializationContext serializationContext) {
+    public void serialize(@Nonnull JsonObject object, @Nonnull SetRandomDarkUpgrade functionClazz, @Nonnull JsonSerializationContext serializationContext) {
     }
 
     @Override
-    public SetRandomDarkUpgrade deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
+    public @Nonnull SetRandomDarkUpgrade deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext,
+        @Nonnull LootCondition[] conditionsIn) {
       return new SetRandomDarkUpgrade(conditionsIn);
     }
 

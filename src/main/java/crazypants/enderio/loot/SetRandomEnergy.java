@@ -2,12 +2,14 @@ package crazypants.enderio.loot;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NullHelper;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.IInternalPoweredItem;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -24,14 +26,9 @@ public class SetRandomEnergy extends LootFunction {
   }
 
   @Override
-  public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
-    if (Prep.isValid(stack) && stack.getItem() instanceof IInternalPoweredItem) {
-      IInternalPoweredItem item = (IInternalPoweredItem) stack.getItem();
-      int maxEnergyStored = item.getMaxEnergyStored(stack);
-      int realEnergy = (int) (maxEnergyStored * .1 + maxEnergyStored * .5 * rand.nextFloat());
-      item.setEnergyStored(stack, realEnergy);
-    } else if (Prep.isValid(stack) && stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
-      IEnergyStorage capability = stack.getCapability(CapabilityEnergy.ENERGY, null);
+  public @Nonnull ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
+    if (Prep.isValid(stack)) {
+      IEnergyStorage capability = stack.getCapability(NullHelper.notnullF(CapabilityEnergy.ENERGY, "Forge ran out of energy"), null);
       if (capability != null) {
         int maxEnergyStored = capability.getMaxEnergyStored();
         int realEnergy = (int) (maxEnergyStored * .1 + maxEnergyStored * .5 * rand.nextFloat());
@@ -50,11 +47,12 @@ public class SetRandomEnergy extends LootFunction {
     }
 
     @Override
-    public void serialize(JsonObject object, SetRandomEnergy functionClazz, JsonSerializationContext serializationContext) {
+    public void serialize(@Nonnull JsonObject object, @Nonnull SetRandomEnergy functionClazz, @Nonnull JsonSerializationContext serializationContext) {
     }
 
     @Override
-    public SetRandomEnergy deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
+    public @Nonnull SetRandomEnergy deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext,
+        @Nonnull LootCondition[] conditionsIn) {
       return new SetRandomEnergy(conditionsIn);
     }
 

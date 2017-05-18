@@ -51,7 +51,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     if (equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelShears;
+    return equipped.getItem() == ModObject.itemDarkSteelShears;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {

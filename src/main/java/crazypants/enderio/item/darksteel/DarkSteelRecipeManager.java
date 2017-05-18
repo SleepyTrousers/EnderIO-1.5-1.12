@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.tuple.Triple;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.EnderIO;
@@ -141,7 +142,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public static int getEnchantmentRepairCost(ItemStack itemStack) {
+  public static int getEnchantmentRepairCost(@Nonnull ItemStack itemStack) {
     //derived from ContainerRepair
     int res = 0;
     Map<Enchantment, Integer> map1 = EnchantmentHelper.getEnchantments(itemStack);
@@ -178,7 +179,7 @@ public class DarkSteelRecipeManager {
     return upgrades;
   }
 
-  public void addCommonTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.hasUpgrade(itemstack)) {
         upgrade.addCommonEntries(itemstack, entityplayer, list, flag);
@@ -186,7 +187,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public void addBasicTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.hasUpgrade(itemstack)) {
         upgrade.addBasicEntries(itemstack, entityplayer, list, flag);
@@ -194,7 +195,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public void addAdvancedTooltipEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
 
     List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
     for (IDarkSteelUpgrade upgrade : upgrades) {
@@ -214,7 +215,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public Iterator<IDarkSteelUpgrade> recipeIterator() {
+  public @Nonnull Iterator<IDarkSteelUpgrade> recipeIterator() {
     return ImmutableList.copyOf(upgrades).iterator();
   }
 
@@ -228,7 +229,7 @@ public class DarkSteelRecipeManager {
     return result.isEmpty() ? null : result;
   }
 
-  public List<ItemStack> getRecipes(Set<String> seen, List<Triple<ItemStack, ItemStack, ItemStack>> list, List<ItemStack> input) {
+  public List<ItemStack> getRecipes(Set<String> seen, NNList<UpgradePath> list, List<ItemStack> input) {
     List<ItemStack> output = new ArrayList<ItemStack>();
     for (ItemStack stack : input) {
       for (IDarkSteelUpgrade upgrade : upgrades) {
@@ -238,7 +239,7 @@ public class DarkSteelRecipeManager {
           String id = newStack.getItem() + getUpgradesAsString(newStack);
           if (!seen.contains(id)) {
             seen.add(id);
-            list.add(Triple.of(stack, upgrade.getUpgradeItem(), newStack));
+            list.add(new UpgradePath(stack, upgrade.getUpgradeItem(), newStack));
             output.add(newStack);
           }
         }
@@ -247,14 +248,37 @@ public class DarkSteelRecipeManager {
     return output;
   }
 
-  public static List<Triple<ItemStack, ItemStack, ItemStack>> getAllRecipes(List<ItemStack> validItems) {
-    List<Triple<ItemStack, ItemStack, ItemStack>> list = new ArrayList<Triple<ItemStack, ItemStack, ItemStack>>();
+  public static NNList<UpgradePath> getAllRecipes(List<ItemStack> validItems) {
+    NNList<UpgradePath> list = new NNList<UpgradePath>();
     Set<String> seen = new HashSet<String>();
     List<ItemStack> items = instance.getRecipes(seen, list, validItems);
     while (!items.isEmpty()) {
       items = instance.getRecipes(seen, list, items);
     }
     return list;
+  }
+
+  public static class UpgradePath {
+    public final @Nonnull ItemStack input, upgrade, output;
+
+    UpgradePath(@Nonnull ItemStack input, @Nonnull ItemStack upgrade, @Nonnull ItemStack output) {
+      super();
+      this.input = input;
+      this.upgrade = upgrade;
+      this.output = output;
+    }
+
+    public @Nonnull ItemStack getInput() {
+      return input;
+    }
+
+    public @Nonnull ItemStack getUpgrade() {
+      return upgrade;
+    }
+
+    public @Nonnull ItemStack getOutput() {
+      return output;
+    }
   }
 
 }

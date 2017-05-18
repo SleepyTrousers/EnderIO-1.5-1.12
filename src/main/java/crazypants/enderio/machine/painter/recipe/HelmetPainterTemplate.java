@@ -1,24 +1,31 @@
 package crazypants.enderio.machine.painter.recipe;
 
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.PaintTooltipUtil;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteelArmor> {
 
-  @Override
-  public boolean isValidTarget(ItemStack target) {
-    return target != null && target.getItem() instanceof ItemDarkSteelArmor && ((ItemDarkSteelArmor) target.getItem()).armorType == EntityEquipmentSlot.HEAD;
+  private final @Nonnull ItemDarkSteelArmor helmet;
+
+  public HelmetPainterTemplate(@Nonnull ItemDarkSteelArmor helmet) {
+    this.helmet = helmet;
   }
 
   @Override
-  public ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target) {
-    if (target == null || paintSource == null) {
+  public boolean isValidTarget(@Nonnull ItemStack target) {
+    return target.getItem() == helmet;
+  }
+
+  @Override
+  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+    if (Prep.isInvalid(target) || Prep.isInvalid(paintSource)) {
       return new ResultStack[0];
     }
     if (isValidTarget(paintSource)) {
@@ -43,24 +50,21 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
   }
 
   @Override
-  public boolean isRecipe(ItemStack paintSource, ItemStack target) {
+  public boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     return isValidTarget(target) && isValidPaint(paintSource);
   }
 
   @Override
-  public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
+  public boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     return isValidTarget(target) || isValidPaint(paintSource);
   }
 
-  protected boolean isValidPaint(ItemStack paintSource) {
-    return (paintSource != null && paintSource.getItem() instanceof ItemBlock) || isValidTarget(paintSource);
+  protected boolean isValidPaint(@Nonnull ItemStack paintSource) {
+    return paintSource.getItem() instanceof ItemBlock || isValidTarget(paintSource);
   }
 
   @Override
-  public boolean isValidInput(MachineRecipeInput input) {
-    if (input == null) {
-      return false;
-    }
+  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
     if (input.slotNumber == 0) {
       return isValidTarget(input.item);
     }
@@ -72,7 +76,7 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
 
   @Override
   protected void registerTargetsWithTooltipProvider() {
-    PaintTooltipUtil.registerPaintable(DarkSteelItems.itemDarkSteelHelmet);
+    PaintTooltipUtil.registerPaintable(helmet);
   }
 
 }

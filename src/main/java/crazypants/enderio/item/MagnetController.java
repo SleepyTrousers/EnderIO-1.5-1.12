@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.integration.botania.BotaniaUtil.hasSolegnoliaAround;
-import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
+import static crazypants.enderio.item.darksteel.ModObject.itemMagnet;
 
 public class MagnetController {
 

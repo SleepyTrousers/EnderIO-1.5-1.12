@@ -3,6 +3,8 @@ package crazypants.enderio.machine.painter.recipe;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -24,13 +26,13 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
    */
   protected abstract void registerTargetsWithTooltipProvider();
 
-  public abstract boolean isValidTarget(ItemStack target);
+  public abstract boolean isValidTarget(@Nonnull ItemStack target);
 
-  public abstract ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target);
+  public abstract @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
-  public abstract boolean isRecipe(ItemStack paintSource, ItemStack target);
+  public abstract boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
-  public abstract boolean isPartialRecipe(ItemStack paintSource, ItemStack target);
+  public abstract boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
@@ -38,15 +40,15 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+  public @Nonnull RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
     return RecipeBonusType.NONE;
   }
 
-  public ItemStack getTarget(MachineRecipeInput... inputs) {
+  public @Nonnull ItemStack getTarget(MachineRecipeInput... inputs) {
     return getInputForSlot(0, inputs);
   }
 
-  public ItemStack getPaintSource(MachineRecipeInput... inputs) {
+  public @Nonnull ItemStack getPaintSource(MachineRecipeInput... inputs) {
     return getInputForSlot(1, inputs);
   }
 
@@ -56,17 +58,17 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public final ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  public final @Nonnull ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
   }
 
   @Override
-  public String getMachineName() {
+  public @Nonnull String getMachineName() {
     return ModObject.blockPainter.getUnlocalisedName();
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return getClass().getCanonicalName() + "@" + Integer.toHexString(hashCode());
   }
 
@@ -75,7 +77,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput... inputs) {
     MachineRecipeInput consume = null;
     for (MachineRecipeInput input : inputs) {
       if(input != null && input.slotNumber == 0 && input.item != null) {
@@ -91,11 +93,11 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public float getExperienceForOutput(ItemStack output) {
+  public float getExperienceForOutput(@Nonnull ItemStack output) {
     return 0;
   }
 
   @Override
-  public abstract boolean isValidInput(MachineRecipeInput input);
+  public abstract boolean isValidInput(@Nonnull MachineRecipeInput input);
 
 }

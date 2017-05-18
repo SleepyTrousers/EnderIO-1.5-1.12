@@ -39,12 +39,20 @@ import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
-import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.item.ItemColdFireIgniter;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.item.ItemEnderFood;
+import crazypants.enderio.item.ItemEnderface;
+import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
+import crazypants.enderio.item.darksteel.ItemDarkSteelBow;
+import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
+import crazypants.enderio.item.darksteel.ItemDarkSteelShears;
+import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.item.darksteel.ItemGliderWing;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
@@ -283,8 +291,8 @@ public enum ModObject implements IModObject {
   itemLocationPrintout(ItemLocationPrintout.class),
   itemTravelStaff(ItemTravelStaff.class),
   itemRodOfReturn(ItemRodOfReturn.class),
-  itemMagnet,
-  itemGliderWing,
+  itemMagnet(ItemMagnet.class),
+  itemGliderWing(ItemGliderWing.class),
   blockEndermanSkull(BlockEndermanSkull.class),
   itemFrankenSkull(ItemFrankenSkull.class),
   itemEnderFood(ItemEnderFood.class),
@@ -310,6 +318,16 @@ public enum ModObject implements IModObject {
 
   block_detector_block(BlockDetector.class),
   block_detector_block_silent(BlockDetector.class, "createSilent"),
+
+  itemDarkSteelHelmet(ItemDarkSteelArmor.class, "createDarkSteelHelmet"),
+  itemDarkSteelChestplate(ItemDarkSteelArmor.class, "createDarkSteelChestplate"),
+  itemDarkSteelLeggings(ItemDarkSteelArmor.class, "createDarkSteelLeggings"),
+  itemDarkSteelBoots(ItemDarkSteelArmor.class, "createDarkSteelBoots"),
+  itemDarkSteelSword(ItemDarkSteelSword.class),
+  itemDarkSteelPickaxe(ItemDarkSteelPickaxe.class),
+  itemDarkSteelAxe(ItemDarkSteelAxe.class),
+  itemDarkSteelBow(ItemDarkSteelBow.class),
+  itemDarkSteelShears(ItemDarkSteelShears.class),
 
   ;
 

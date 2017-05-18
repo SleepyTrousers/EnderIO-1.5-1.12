@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -24,12 +26,13 @@ import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
 public class LootSelector extends LootFunction {
+
   public LootSelector(LootCondition[] conditionsIn) {
     super(conditionsIn);
   }
 
   @Override
-  public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
+  public @Nonnull ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
     Map<WeightedUpgrade, Float> keys = new HashMap<WeightedUpgrade, Float>();
 
     float baselevel = getRandomBaseLevel(rand);
@@ -79,7 +82,7 @@ public class LootSelector extends LootFunction {
     return stack;
   }
 
-  private static final List<WeightedInteger> weightedCount = new ArrayList<WeightedInteger>();
+  private static final @Nonnull List<WeightedInteger> weightedCount = new ArrayList<WeightedInteger>();
   static {
     weightedCount.add(new WeightedInteger(1, 5));
     weightedCount.add(new WeightedInteger(3, 4));
@@ -88,11 +91,11 @@ public class LootSelector extends LootFunction {
     weightedCount.add(new WeightedInteger(24, 1));
   }
 
-  private int getRandomCount(Random rand) {
+  private int getRandomCount(@Nonnull Random rand) {
     return WeightedRandom.getRandomItem(rand, weightedCount).getInteger();
   }
 
-  public static String buildBaseName(String name, float level) {
+  public static @Nonnull String buildBaseName(@Nonnull String name, float level) {
     if (level < 1f) {
       name = EnderIO.lang.localize("loot.capacitor.baselevel.10", name);
     } else if (level < 1.5f) {
@@ -107,7 +110,7 @@ public class LootSelector extends LootFunction {
     return name;
   }
 
-  public static String buildName(String name, float level) {
+  public static @Nonnull String buildName(@Nonnull String name, float level) {
     if (level < 1f) {
       name = EnderIO.lang.localize("loot.capacitor.level.10", name);
     } else if (level < 1.5f) {
@@ -128,7 +131,7 @@ public class LootSelector extends LootFunction {
     return name;
   }
 
-  private float getRandomBaseLevel(Random rand) {
+  private float getRandomBaseLevel(@Nonnull Random rand) {
     if (rand.nextFloat() < .3f) {
       return 1f + (rand.nextFloat() - rand.nextFloat()) * .5f;
     } else {
@@ -146,11 +149,11 @@ public class LootSelector extends LootFunction {
    * <p>
    * For baselevel==3: Centered around 3.6, spread from 2.5 to 4.2
    */
-  private static float getRandomLevel(float baseLevel, Random rand) {
+  private static float getRandomLevel(float baseLevel, @Nonnull Random rand) {
     return (getRandomLevel2(baseLevel - .6f, rand) + getRandomLevel2(baseLevel + .5f, rand)) / 2 - .5f;
   }
 
-  private static float getRandomLevel2(float baseLevel, Random rand) {
+  private static float getRandomLevel2(float baseLevel, @Nonnull Random rand) {
     float result = baseLevel + rand.nextFloat() * (4 - baseLevel) / 3;
     for (int i = 1; i < 2; i++) {
       result += rand.nextFloat() / i * 2;
@@ -160,7 +163,7 @@ public class LootSelector extends LootFunction {
     return Math.min(result, 4.75f);
   }
 
-  private WeightedUpgrade getUpgrade(Random rand) {
+  private WeightedUpgrade getUpgrade(@Nonnull Random rand) {
     return WeightedRandom.getRandomItem(rand, WeightedUpgrade.getWeightedupgrades()).getUpgrade();
   }
 
@@ -170,11 +173,12 @@ public class LootSelector extends LootFunction {
     }
 
     @Override
-    public void serialize(JsonObject object, LootSelector functionClazz, JsonSerializationContext serializationContext) {
+    public void serialize(@Nonnull JsonObject object, @Nonnull LootSelector functionClazz, @Nonnull JsonSerializationContext serializationContext) {
     }
 
     @Override
-    public LootSelector deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
+    public @Nonnull LootSelector deserialize(@Nonnull JsonObject object, @Nonnull JsonDeserializationContext deserializationContext,
+        @Nonnull LootCondition[] conditionsIn) {
       return new LootSelector(conditionsIn);
     }
   }

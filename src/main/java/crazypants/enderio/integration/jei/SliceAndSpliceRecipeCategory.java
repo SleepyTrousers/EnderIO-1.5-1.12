@@ -156,14 +156,14 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
     res.add(new ItemStack(Items.IRON_AXE));
     res.add(new ItemStack(Items.GOLDEN_AXE));
     res.add(new ItemStack(Items.DIAMOND_AXE));
-    res.add(new ItemStack(DarkSteelItems.itemDarkSteelAxe));
+    res.add(new ItemStack(ModObject.itemDarkSteelAxe));
     return res;
   }
   
   private @Nonnull List<ItemStack> getShears() {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(new ItemStack(Items.SHEARS));    
-    res.add(new ItemStack(DarkSteelItems.itemDarkSteelShears));
+    res.add(new ItemStack(ModObject.itemDarkSteelShears));
     return res;
   }
 
