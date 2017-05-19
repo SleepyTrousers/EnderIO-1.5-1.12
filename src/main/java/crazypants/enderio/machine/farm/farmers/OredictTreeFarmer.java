@@ -3,7 +3,7 @@ package crazypants.enderio.machine.farm.farmers;
 import crazypants.enderio.machine.farm.FarmStationContainer;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.Prep;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

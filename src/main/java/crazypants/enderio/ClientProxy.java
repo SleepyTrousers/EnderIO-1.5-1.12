@@ -10,8 +10,8 @@ import com.enderio.core.client.EnderCoreModConflictException;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.block.ColdFireStateMapper;
-import crazypants.enderio.block.LeverStateMapper;
+import crazypants.enderio.block.coldfire.ColdFireStateMapper;
+import crazypants.enderio.block.lever.LeverStateMapper;
 import crazypants.enderio.conduit.ConduitBundleStateMapper;
 import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
@@ -29,10 +29,11 @@ import crazypants.enderio.item.darksteel.upgrade.UpgradeRenderDispatcher;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machine.ranged.MarkerParticle;
-import crazypants.enderio.material.fusedQuartz.EnderIOGlassesStateMapper;
+import crazypants.enderio.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.render.IDefaultRenderers;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.registry.ItemModelRegistry;
@@ -119,11 +120,13 @@ public class ClientProxy extends CommonProxy {
     for (ModObject mo : ModObject.values()) {
       final Block block = mo.getBlock();
       if (block instanceof IHaveRenderers) {
-        ((IHaveRenderers) block).registerRenderers();
+        ((IHaveRenderers) block).registerRenderers(mo);
+      } else if (block instanceof IDefaultRenderers) {
+        ClientUtil.registerDefaultItemRenderer(mo);
       } else if (block == null) {
         final Item item = mo.getItem();
         if (item instanceof IHaveRenderers) {
-          ((IHaveRenderers) item).registerRenderers();
+          ((IHaveRenderers) item).registerRenderers(mo);
         } else if (item != null) {
           ClientUtil.registerRenderer(item, mo.getUnlocalisedName());
         }

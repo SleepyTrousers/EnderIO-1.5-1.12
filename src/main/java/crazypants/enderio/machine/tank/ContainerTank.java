@@ -10,7 +10,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;

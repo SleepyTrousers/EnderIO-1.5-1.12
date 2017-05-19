@@ -17,7 +17,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -577,6 +577,8 @@ public final class Config {
       }
     }
   }
+
+  public static final Things TRAVEL_BLACKLIST = new Things(travelStaffBlinkBlackList);
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {

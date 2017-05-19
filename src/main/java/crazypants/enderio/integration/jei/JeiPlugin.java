@@ -11,7 +11,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.material.material.Material;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;

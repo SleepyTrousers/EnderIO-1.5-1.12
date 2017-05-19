@@ -12,6 +12,7 @@ import crazypants.enderio.config.Config;
 
 public class IoUtil {
 
+  @SuppressWarnings("resource")
   public static String copyConfigFromJar(String fileName, boolean replaceIfExists) throws IOException {    
     
     if(replaceIfExists || !getConfigFile(fileName).exists()) {
@@ -20,6 +21,7 @@ public class IoUtil {
     return IOUtils.toString(new FileReader(getConfigFile(fileName)));    
   }
   
+  @SuppressWarnings("resource")
   public static String readConfigFile(String fileName) throws IOException {
     return IOUtils.toString(new FileReader(getConfigFile(fileName)));
   }
@@ -36,6 +38,7 @@ public class IoUtil {
     return new File(Config.configDirectory, name);
   }
   
+  @SuppressWarnings("resource")
   public static String readFileFromClassPath(String fileName) throws IOException {
     InputStream in = IoUtil.class.getResourceAsStream(fileName);
     if(in == null) {

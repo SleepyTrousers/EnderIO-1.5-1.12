@@ -23,7 +23,7 @@ import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

@@ -20,7 +20,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

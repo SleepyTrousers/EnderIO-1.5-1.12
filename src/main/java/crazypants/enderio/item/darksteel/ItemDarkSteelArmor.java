@@ -36,7 +36,7 @@ import crazypants.enderio.item.darksteel.upgrade.PaintedHelmetLayer;
 import crazypants.enderio.item.darksteel.upgrade.SoundDetectorUpgrade;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.HelmetPainterTemplate;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
 import crazypants.util.Prep;

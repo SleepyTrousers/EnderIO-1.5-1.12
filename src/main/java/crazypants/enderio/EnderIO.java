@@ -39,9 +39,9 @@ import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import crazypants.enderio.material.MaterialCraftingHandler;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.material.material.MaterialCraftingHandler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.power.CapInjectHandler;
@@ -66,8 +66,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-
-import static crazypants.util.Things.TRAVEL_BLACKLIST;
 
 @Mod(modid = crazypants.enderio.EnderIO.MODID, name = crazypants.enderio.EnderIO.MOD_NAME, version = crazypants.enderio.EnderIO.VERSION, //
     dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -224,7 +222,7 @@ public class EnderIO {
           } else if (IMC.ALLOY_RECIPE.equals(key)) {
             AlloyRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
-            TRAVEL_BLACKLIST.add(value);
+            Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {

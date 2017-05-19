@@ -18,6 +18,7 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.config.Config.TRAVEL_BLACKLIST;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
@@ -50,7 +51,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.ModObject.blockTelePad;
-import static crazypants.util.Things.TRAVEL_BLACKLIST;
+import static com.enderio.core.common.util.stackable.Things.TRAVEL_BLACKLIST;
 
 public class TravelController {
 
@@ -209,7 +210,7 @@ public class TravelController {
   }
 
   private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {
-    return TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
+    return Config.TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
         && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 

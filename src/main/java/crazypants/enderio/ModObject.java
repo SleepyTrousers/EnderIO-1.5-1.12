@@ -13,16 +13,17 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.block.BlockColdFire;
-import crazypants.enderio.block.BlockDarkIronBars;
-import crazypants.enderio.block.BlockDarkSteelAnvil;
-import crazypants.enderio.block.BlockDarkSteelLadder;
-import crazypants.enderio.block.BlockDarkSteelTrapDoor;
-import crazypants.enderio.block.BlockDecoration;
-import crazypants.enderio.block.BlockDecorationFacing;
-import crazypants.enderio.block.BlockDetector;
-import crazypants.enderio.block.BlockReinforcedObsidian;
-import crazypants.enderio.block.BlockSelfResettingLever;
+import crazypants.enderio.block.coldfire.BlockColdFire;
+import crazypants.enderio.block.darksteel.anvil.BlockDarkSteelAnvil;
+import crazypants.enderio.block.darksteel.bars.BlockDarkIronBars;
+import crazypants.enderio.block.darksteel.ladder.BlockDarkSteelLadder;
+import crazypants.enderio.block.darksteel.obsidian.BlockReinforcedObsidian;
+import crazypants.enderio.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
+import crazypants.enderio.block.decoration.BlockDecoration;
+import crazypants.enderio.block.decoration.BlockDecorationFacing;
+import crazypants.enderio.block.detector.BlockDetector;
+import crazypants.enderio.block.lever.BlockSelfResettingLever;
+import crazypants.enderio.block.rail.BlockExitRail;
 import crazypants.enderio.capacitor.ItemCapacitor;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
@@ -103,17 +104,12 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
-import crazypants.enderio.material.BlockIngotStorage;
-import crazypants.enderio.material.ItemAlloy;
-import crazypants.enderio.material.ItemFrankenSkull;
-import crazypants.enderio.material.ItemMachinePart;
-import crazypants.enderio.material.ItemMaterial;
-import crazypants.enderio.material.ItemPowderIngot;
+import crazypants.enderio.material.alloy.BlockAlloy;
+import crazypants.enderio.material.alloy.ItemAlloy;
 import crazypants.enderio.material.food.ItemEnderFood;
-import crazypants.enderio.material.fusedQuartz.BlockColoredFusedQuartz;
-import crazypants.enderio.material.fusedQuartz.BlockFusedQuartz;
-import crazypants.enderio.material.fusedQuartz.BlockPaintedFusedQuartz;
-import crazypants.enderio.rail.BlockExitRail;
+import crazypants.enderio.material.glass.BlockFusedQuartz;
+import crazypants.enderio.material.glass.BlockPaintedFusedQuartz;
+import crazypants.enderio.material.material.ItemMaterial;
 import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
@@ -170,10 +166,10 @@ public enum ModObject implements IModObject {
 
   // Materials
   itemBasicCapacitor(ItemCapacitor.class),
-  itemAlloy(ItemAlloy.class),
+  blockAlloy(BlockAlloy.class),
+  itemAlloyIngot(ItemAlloy.class),
+  itemAlloyNugget(ItemAlloy.class, "createNuggets"),
   itemMaterial(ItemMaterial.class),
-  itemMachinePart(ItemMachinePart.class),
-  itemPowderIngot(ItemPowderIngot.class),
 
   // Machines
   blockStirlingGenerator(BlockStirlingGenerator.class),
@@ -221,7 +217,6 @@ public enum ModObject implements IModObject {
   blockDarkIronBars(BlockDarkIronBars.class),
   blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
-  blockIngotStorage(BlockIngotStorage.class),
   blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
   blockSelfResettingLever30(BlockSelfResettingLever.class, "create30"),
   blockSelfResettingLever60(BlockSelfResettingLever.class, "create60"),
@@ -297,19 +292,12 @@ public enum ModObject implements IModObject {
   itemMagnet(ItemMagnet.class),
   itemGliderWing(ItemGliderWing.class),
   blockEndermanSkull(BlockEndermanSkull.class),
-  itemFrankenSkull(ItemFrankenSkull.class),
   itemEnderFood(ItemEnderFood.class),
   blockGauge(BlockGauge.class),
   itemRemoteInvAccess(ItemRemoteInvAccess.class),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class),
 
-  blockFusedQuartz(BlockFusedQuartz.class) {
-    @Override
-    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
-      super.preInitElem(event);
-      BlockColoredFusedQuartz.create();
-    }
-  },
+  blockFusedQuartzX(BlockFusedQuartz.class, "createFusedQuartz"),
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
 
   itemSoulVessel(ItemSoulVessel.class) {

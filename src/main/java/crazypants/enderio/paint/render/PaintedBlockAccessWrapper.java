@@ -37,7 +37,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
     super(null);
   }
 
-  public PaintedBlockAccessWrapper setWorld(@Nonnull IBlockAccess ba) {
+  public @Nonnull PaintedBlockAccessWrapper setWorld(@Nonnull IBlockAccess ba) {
     wrapped = ba;
     return this;
   }

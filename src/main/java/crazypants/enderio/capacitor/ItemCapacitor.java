@@ -61,7 +61,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(@Nonnull IModObject modObject) {
     final NNList<ResourceLocation> resourceLocations = DefaultCapacitorData.getResourceLocations();
     ModelBakery.registerItemVariants(this, resourceLocations.toArray());
     for (int i = 0; i < resourceLocations.size(); i++) {

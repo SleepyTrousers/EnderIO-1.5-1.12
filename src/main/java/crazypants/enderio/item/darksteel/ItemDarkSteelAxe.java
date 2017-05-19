@@ -19,7 +19,7 @@ import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

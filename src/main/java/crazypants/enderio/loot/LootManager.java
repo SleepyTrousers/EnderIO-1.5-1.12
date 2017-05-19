@@ -8,7 +8,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Buckets;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.CapturedMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

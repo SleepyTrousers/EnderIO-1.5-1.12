@@ -10,7 +10,7 @@ import crazypants.enderio.machine.obelisk.relocator.TileRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk;
 import crazypants.enderio.machine.obelisk.weather.WeatherObeliskSpecialRenderer;
 import crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.material.material.Material;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import net.minecraft.block.Block;

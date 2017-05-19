@@ -28,7 +28,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Prep;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;

@@ -9,7 +9,6 @@ import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.RecipeLoader;
 import crazypants.enderio.integration.top.TOPUtil;
-import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.material.MaterialRecipes;
@@ -70,7 +69,6 @@ public class CommonProxy {
       MaterialRecipes.addRecipes();
       ConduitRecipes.addRecipes();
       MachineRecipes.addRecipes();
-      ItemRecipes.addRecipes();
       RecipeLoader.addRecipes();
     }
 

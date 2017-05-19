@@ -2,7 +2,7 @@ package crazypants.enderio.integration.bigreactors;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.integration.tic.AdditionalFluid;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class BRRegistrations {

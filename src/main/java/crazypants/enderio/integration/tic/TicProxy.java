@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.common.fluid.BlockFluidEnder;
@@ -15,7 +14,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -314,7 +313,7 @@ public class TicProxy {
 
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString("fluid", f.getName());
-    tag.setString("ore", StringUtils.capitalize(alloy.getBaseName()));
+    tag.setString("ore", alloy.getOreOre());
     tag.setBoolean("toolforge", true);
     FMLInterModComms.sendMessage("tconstruct", "integrateSmeltery", tag);
   }

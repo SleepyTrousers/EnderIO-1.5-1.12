@@ -57,7 +57,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(@Nonnull IModObject modObject) {
     NNList<ResourceLocation> names = EnderFood.resources();
     ModelBakery.registerItemVariants(this, names.toArray());
     for (EnderFood c : EnderFood.values()) {

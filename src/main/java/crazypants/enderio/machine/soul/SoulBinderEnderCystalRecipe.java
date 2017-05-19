@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.soul;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 

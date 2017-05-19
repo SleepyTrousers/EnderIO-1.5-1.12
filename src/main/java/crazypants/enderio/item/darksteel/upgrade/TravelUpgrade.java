@@ -2,7 +2,7 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.material.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

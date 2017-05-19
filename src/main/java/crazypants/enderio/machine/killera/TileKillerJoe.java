@@ -38,7 +38,7 @@ import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.MagnetUtil;
-import crazypants.util.Things;
+import com.enderio.core.common.util.stackable.Things;
 import crazypants.util.UserIdent;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

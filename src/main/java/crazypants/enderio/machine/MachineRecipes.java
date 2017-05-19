@@ -7,9 +7,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.material.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.Alloy.VIBRANT_ALLOY;
-import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
+import static crazypants.enderio.material.alloy.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.alloy.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.material.material.Material.VIBRANT_CYSTAL;
 
 public class MachineRecipes {
 

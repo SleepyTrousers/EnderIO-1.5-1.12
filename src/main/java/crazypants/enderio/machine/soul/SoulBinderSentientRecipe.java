@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.soul;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.FrankenSkull;
+import crazypants.enderio.material.skull.FrankenSkull;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 

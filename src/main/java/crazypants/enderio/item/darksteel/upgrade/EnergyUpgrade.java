@@ -9,7 +9,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
-import crazypants.enderio.material.Material;
+import crazypants.enderio.material.material.Material;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.util.Prep;

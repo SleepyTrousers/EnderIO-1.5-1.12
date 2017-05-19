@@ -11,7 +11,7 @@ import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.block.BlockDarkSteelTrapDoor;
+import crazypants.enderio.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
