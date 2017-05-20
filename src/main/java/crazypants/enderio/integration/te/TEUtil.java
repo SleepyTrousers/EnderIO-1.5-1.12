@@ -1,11 +1,14 @@
 package crazypants.enderio.integration.te;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import net.minecraftforge.fml.common.ModAPIManager;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public class TEUtil {
 
-  public static void create() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     if (ModAPIManager.INSTANCE.hasAPI("cofhapi|item")) {
       // Add support for TE wrench
       try {

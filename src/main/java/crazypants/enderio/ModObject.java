@@ -297,7 +297,12 @@ public enum ModObject implements IModObject {
   itemRemoteInvAccess(ItemRemoteInvAccess.class),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class),
 
-  blockFusedQuartzX(BlockFusedQuartz.class, "createFusedQuartz"),
+  blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
+  blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),
+  blockEnlightenedFusedQuartz(BlockFusedQuartz.class, "createEnlightenedFusedQuartz"),
+  blockEnlightenedFusedGlass(BlockFusedQuartz.class, "createEnlightenedFusedGlass"),
+  blockDarkFusedQuartz(BlockFusedQuartz.class, "createDarkFusedQuartz"),
+  blockDarkFusedGlass(BlockFusedQuartz.class, "createDarkFusedGlass"),
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
 
   itemSoulVessel(ItemSoulVessel.class) {
@@ -434,7 +439,7 @@ public enum ModObject implements IModObject {
     }
   }
 
-  public static void preInit(@Nonnull FMLPreInitializationEvent event) {
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
     for (ModObject elem : values()) {
       elem.preInitElem(event);
     }

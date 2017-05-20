@@ -2,6 +2,8 @@ package crazypants.enderio.material.glass;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Maps;
 
 import crazypants.enderio.ModObject;
@@ -17,19 +19,18 @@ public class EnderIOGlassesStateMapper extends StateMapperBase {
 
   public static void create() {
     EnderIOGlassesStateMapper mapper = new EnderIOGlassesStateMapper();
-    ModelLoader.setCustomStateMapper(ModObject.blockFusedQuartz.getBlock(), mapper);
     for (FusedQuartzType glasstype : FusedQuartzType.values()) {
       ModelLoader.setCustomStateMapper(glasstype.getBlock(), mapper);
     }
   }
 
   @Override
-  protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+  protected @Nonnull ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
     Map<IProperty<?>, Comparable<?>> map = Maps.<IProperty<?>, Comparable<?>> newLinkedHashMap(state.getProperties());
 
     map.remove(BlockColored.COLOR);
 
-    return new ModelResourceLocation(Block.REGISTRY.getNameForObject(ModObject.blockFusedQuartz.getBlock()), this.getPropertyString(map));
+    return new ModelResourceLocation(Block.REGISTRY.getNameForObject(ModObject.blockFusedQuartz.getBlockNN()), this.getPropertyString(map));
   }
 
 }

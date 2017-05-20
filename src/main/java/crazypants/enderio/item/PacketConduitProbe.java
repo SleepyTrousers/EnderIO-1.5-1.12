@@ -13,8 +13,8 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPowerReceiver;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.power.rf.PowerInterfaceRF;
 import io.netty.buffer.ByteBuf;
@@ -56,7 +56,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       TileConduitBundle tcb = (TileConduitBundle) te;
       return tcb.getConduit(IPowerConduit.class) != null || tcb.getConduit(IItemConduit.class) != null;
     }
-    if(te instanceof IInternalPoweredTile) {
+    if(te instanceof ILegacyPoweredTile) {
       return true;
     }
     if (te instanceof IHasConduitProbeData) {
@@ -111,8 +111,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     TileEntity te = world.getTileEntity(pos);
     if(te instanceof TileConduitBundle) {
       sendInfoMessage(player, (TileConduitBundle) te);
-    } else if(te instanceof IInternalPowerReceiver) {
-      IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
+    } else if(te instanceof ILegacyPowerReceiver) {
+      ILegacyPowerReceiver pr = (ILegacyPowerReceiver) te;
       sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
             0, PowerInterfaceRF.getPowerRequest(EnumFacing.NORTH, pr));
 

@@ -1,11 +1,12 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPowerReceiver;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.ItemPowerCapabilityBackend;
@@ -15,37 +16,41 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ForgeAdapter implements IPowerApiAdapter {
 
-  @CapabilityInject(IEnergyStorage.class)
-  public static final Capability<IEnergyStorage> ENERGY_HANDLER = null;
+  private final @Nonnull Capability<IEnergyStorage> ENERGY_HANDLER;
   
-  private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderPower");
+  private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "forgeadapter");
   
-  public static void capRegistered(Capability<?> cap) {
-    PowerHandlerUtil.addAdapter(new ForgeAdapter());
+  public static void capRegistered(@Nonnull Capability<IEnergyStorage> cap) {
+    PowerHandlerUtil.addAdapter(new ForgeAdapter(cap));
     MinecraftForge.EVENT_BUS.register(ForgeAdapter.class);
     ItemPowerCapabilityBackend.register(new InternalPoweredItemWrapper.PoweredItemCapabilityProvider());
     Log.info("Forge Energy integration loaded");
   }
 
+  private ForgeAdapter(@Nonnull Capability<IEnergyStorage> cap) {
+    ENERGY_HANDLER = cap;
+  }
+
   @Override
-  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    IEnergyStorage cap = getCapability(provider, side);
-    if (cap != null) {
-      return new PowerInterfaceForge(provider, cap);
+  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side) {
+    if (provider != null) {
+      IEnergyStorage cap = getCapability(provider, side);
+      if (cap != null) {
+        return new PowerInterfaceForge(provider, cap);
+      }
     }
     return null;
   }
 
   @Override
-  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    if (provider != null && provider.hasCapability(ENERGY_HANDLER, side)) {
+  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side) {
+    if (provider != null) {
       return provider.getCapability(ENERGY_HANDLER, side);
     }
     return null;
@@ -57,10 +62,10 @@ public class ForgeAdapter implements IPowerApiAdapter {
       return;
     }
     TileEntity te = evt.getTileEntity();
-    if (te instanceof IInternalPowerReceiver) {
-      evt.addCapability(KEY, new InternalRecieverTileWrapper.RecieverTileCapabilityProvider((IInternalPowerReceiver) te));
-    } else if (te instanceof IInternalPoweredTile) {
-      evt.addCapability(KEY, new InternalPoweredTileWrapper.PoweredTileCapabilityProvider((IInternalPoweredTile) te));
+    if (te instanceof ILegacyPowerReceiver) {
+      evt.addCapability(KEY, new InternalRecieverTileWrapper.RecieverTileCapabilityProvider((ILegacyPowerReceiver) te));
+    } else if (te instanceof ILegacyPoweredTile) {
+      evt.addCapability(KEY, new InternalPoweredTileWrapper.PoweredTileCapabilityProvider((ILegacyPoweredTile) te));
     }
   }
 

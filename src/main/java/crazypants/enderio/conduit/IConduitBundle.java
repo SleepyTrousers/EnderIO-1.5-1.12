@@ -14,7 +14,7 @@ import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI|energy")
 })
-public interface IConduitBundle extends IInternalPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
+public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
 
   @Nonnull
   TileEntity getEntity();

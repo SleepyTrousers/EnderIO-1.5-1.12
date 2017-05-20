@@ -1,5 +1,6 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.power.IInternalPoweredItem;
@@ -16,12 +17,12 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
   public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityEnergy.ENERGY;
     }
 
     @Override
-    public <T> T getCapability(ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
         return CapabilityEnergy.ENERGY.cast(new InternalPoweredItemWrapper(stack));
       }
@@ -30,10 +31,10 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
 
   }
   
-  protected final ItemStack container;
-  protected IInternalPoweredItem item;
+  protected final @Nonnull ItemStack container;
+  protected @Nonnull IInternalPoweredItem item;
 
-  public InternalPoweredItemWrapper(ItemStack container) {
+  public InternalPoweredItemWrapper(@Nonnull ItemStack container) {
     this.container = container;
     this.item = (IInternalPoweredItem) container.getItem();
   }
@@ -82,7 +83,7 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
 
   @Override
   public boolean canExtract() {
-    if(container.stackSize > 1) {
+    if (container.getCount() > 1) {
       return false;
     }
     return item.getMaxOutput(container) > 0;
@@ -90,7 +91,7 @@ public class InternalPoweredItemWrapper implements IEnergyStorage {
 
   @Override
   public boolean canReceive() {
-    if(container.stackSize > 1) {
+    if (container.getCount() > 1) {
       return false;
     }
     return item.getMaxInput(container) > 0;

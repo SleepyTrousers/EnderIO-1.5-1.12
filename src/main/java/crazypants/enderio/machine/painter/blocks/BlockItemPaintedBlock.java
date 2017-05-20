@@ -1,12 +1,14 @@
 package crazypants.enderio.machine.painter.blocks;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class BlockItemPaintedBlock extends ItemBlock {
 
-  public BlockItemPaintedBlock(Block block, String name) {
+  public BlockItemPaintedBlock(@Nonnull Block block, @Nonnull String name) {
     super(block);
     setHasSubtypes(true);
     setRegistryName(name);
@@ -18,16 +20,16 @@ public class BlockItemPaintedBlock extends ItemBlock {
   }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     if (block instanceof INamedSubBlocks) {
       return ((INamedSubBlocks) block).getUnlocalizedName(stack.getMetadata());
     } else {
-      super.getUnlocalizedName(stack);
+      return super.getUnlocalizedName(stack);
     }
-    return this.block.getUnlocalizedName();
   }
 
   public static interface INamedSubBlocks {
+    @Nonnull
     String getUnlocalizedName(int meta);
   }
 

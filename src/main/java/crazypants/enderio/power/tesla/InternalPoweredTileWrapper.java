@@ -1,8 +1,9 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.util.EnumFacing;
@@ -11,23 +12,22 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class InternalPoweredTileWrapper implements ITeslaHolder {
 
-  
   public static class PoweredTileCapabilityProvider implements ICapabilityProvider {
 
-    private final IInternalPoweredTile tile;
+    private final @Nonnull ILegacyPoweredTile tile;
 
-    public PoweredTileCapabilityProvider(IInternalPoweredTile tile) {
+    public PoweredTileCapabilityProvider(@Nonnull ILegacyPoweredTile tile) {
       this.tile = tile;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_HOLDER;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {
         return (T) new InternalPoweredTileWrapper(tile, facing);
       }
@@ -35,11 +35,11 @@ public class InternalPoweredTileWrapper implements ITeslaHolder {
     }
 
   }
-  
-  private final IInternalPoweredTile tile;
+
+  private final @Nonnull ILegacyPoweredTile tile;
   protected final EnumFacing from;
-  
-  public InternalPoweredTileWrapper(IInternalPoweredTile tile, EnumFacing from) {
+
+  public InternalPoweredTileWrapper(@Nonnull ILegacyPoweredTile tile, EnumFacing from) {
     this.tile = tile;
     this.from = from;
   }
@@ -54,8 +54,4 @@ public class InternalPoweredTileWrapper implements ITeslaHolder {
     return tile.getMaxEnergyStored(from);
   }
 
- 
-  
-  
-  
 }

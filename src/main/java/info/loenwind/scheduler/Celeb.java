@@ -3,13 +3,17 @@ package info.loenwind.scheduler;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+
 public class Celeb implements Event {
 
   public static final Celeb H31 = new Celeb(2015, 10, 31, 0, 0, 2015, 11, 1, 0, 0);
   public static final Celeb C06 = new Celeb(2015, 12, 6, 0, 0, 2015, 12, 7, 0, 0);
   public static final Celeb C24 = new Celeb(2015, 12, 24, 12, 0, 2015, 12, 27, 0, 0);
 
-  public static void create() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     Scheduler.instance.registerEvent(H31);
     Scheduler.instance.registerEvent(C06);
     Scheduler.instance.registerEvent(C24);

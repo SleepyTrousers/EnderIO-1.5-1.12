@@ -30,7 +30,7 @@ import crazypants.enderio.machine.capbank.network.InventoryImpl;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -60,7 +60,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.ModObject.blockCapBank;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
 
   @Store(handler = HandleIOMode.class)
   private Map<EnumFacing, IoMode> faceModes;

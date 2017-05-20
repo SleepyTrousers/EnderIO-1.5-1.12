@@ -45,12 +45,10 @@ import crazypants.enderio.material.material.MaterialCraftingHandler;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.power.CapInjectHandler;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.CapturedMob;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -98,30 +96,29 @@ public class EnderIO {
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
 
-    EnderIOCrashCallable.create();
+    EnderIOCrashCallable.init(event);
 
-    PowerHandlerUtil.create();
-
-    Config.preInit(event);
+    Config.init(event);
 
     proxy.loadIcons();
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    FluidFuelRegister.create();
+    FluidFuelRegister.init(event);
     fluids = new Fluids();
     fluids.registerFluids();
 
     TicProxy.init(event);
 
-    ModObject.preInit(event);
+    ModObject.init(event);
 
-    MinecraftForge.EVENT_BUS.register(new EnergyUpgradePowerAdapter());
-    DarkSteelController.instance.register();
+    EnergyUpgradePowerAdapter.init(event);
 
-    MaterialRecipes.registerOresInDictionary();
+    DarkSteelController.init(event);
 
-    Loot.create();
+    MaterialRecipes.init(event);
+
+    Loot.init(event);
 
     BRProxy.init(event);
 
@@ -132,19 +129,17 @@ public class EnderIO {
   public void load(@Nonnull FMLInitializationEvent event) {
     Config.init(event);
 
-    instance = this;
-
     ModObject.init(event);
 
     CABIMC.init(event);
 
     PacketHandler.init(event);
 
-    GuiID.init();
+    GuiID.init(event);
 
-    MaterialRecipes.registerDependantOresInDictionary();
+    MaterialRecipes.init(event);
 
-    MaterialCraftingHandler.create();
+    MaterialCraftingHandler.init(event);
 
     proxy.init(event);
   }
@@ -152,23 +147,23 @@ public class EnderIO {
   @EventHandler
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
 
-    Config.postInit();
+    Config.init(event);
 
-    LootManager.register();
+    LootManager.init(event);
 
     // Register the enchants
-    Enchantments.register();
+    Enchantments.init(event);
 
     // This must be loaded before parsing the recipes so we get the preferred
     // outputs
-    OreDictionaryPreferences.loadConfig();
+    OreDictionaryPreferences.init(event);
 
     SagMillRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
-    FarmersRegistry.addFarmers();
+    FarmersRegistry.init(event);
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
@@ -177,13 +172,13 @@ public class EnderIO {
     }
 
     // ThaumcraftCompat.load();
-    BuildcraftIntegration.init();
-    TEUtil.create();
+    BuildcraftIntegration.init(event);
+    TEUtil.init(event);
     TicProxy.init(event);
 
     proxy.init(event);
 
-    Celeb.create();
+    Celeb.init(event);
     Scheduler.instance.start();
   }
 

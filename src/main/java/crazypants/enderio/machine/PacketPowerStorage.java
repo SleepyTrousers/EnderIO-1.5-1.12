@@ -1,7 +1,7 @@
 package crazypants.enderio.machine;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,7 +18,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   public PacketPowerStorage() {
   }
 
-  public PacketPowerStorage(IInternalPoweredTile ent) {
+  public PacketPowerStorage(ILegacyPoweredTile ent) {
     pos = ent.getLocation().getBlockPos();
     storedEnergy = ent.getEnergyStored(null);
   }
@@ -42,8 +42,8 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player != null && player.world != null) {
       TileEntity te = player.world.getTileEntity(message.pos);
-      if (te instanceof IInternalPoweredTile) {
-        IInternalPoweredTile me = (IInternalPoweredTile) te;
+      if (te instanceof ILegacyPoweredTile) {
+        ILegacyPoweredTile me = (ILegacyPoweredTile) te;
         me.setEnergyStored(message.storedEnergy);
       }
     }

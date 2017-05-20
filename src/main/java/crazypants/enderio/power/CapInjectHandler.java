@@ -1,5 +1,7 @@
 package crazypants.enderio.power;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.power.forge.ForgeAdapter;
 import crazypants.enderio.power.tesla.TeslaAdapter;
@@ -21,7 +23,7 @@ public class CapInjectHandler {
   }
 
   @CapabilityInject(IEnergyStorage.class)
-  private static void capRegistered1(Capability<?> cap) {
+  private static void capRegistered1(@Nonnull Capability<IEnergyStorage> cap) {
     try {
       ForgeAdapter.capRegistered(cap);
     } catch (Throwable e) {
@@ -31,7 +33,7 @@ public class CapInjectHandler {
   }
 
   @CapabilityInject(ITeslaHolder.class)
-  private static void capRegistered2(Capability<?> cap) {
+  private static void capRegistered2(@Nonnull Capability<ITeslaHolder> cap) {
     try {
       TeslaAdapter.capRegistered(cap);
     } catch (Throwable e) {

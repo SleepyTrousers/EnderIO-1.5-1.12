@@ -8,7 +8,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
-public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
+public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
 
   public static final int MAX_ENERGY_STORED = 200000;
   public static final int MAX_ENERGY_IN = 10000;

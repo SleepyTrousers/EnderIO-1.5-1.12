@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
@@ -49,6 +51,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
@@ -56,6 +59,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class DarkSteelController {
+
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
+    MinecraftForge.EVENT_BUS.register(instance);
+    MinecraftForge.EVENT_BUS.register(speedController);
+  }
 
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
   
@@ -65,7 +73,7 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private final SpeedController speedController;
+  private final static SpeedController speedController = new SpeedController();
 
   private final Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
 
@@ -76,14 +84,8 @@ public class DarkSteelController {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
-    speedController = new SpeedController();
   }
   
-  public void register() {
-    MinecraftForge.EVENT_BUS.register(this);
-    MinecraftForge.EVENT_BUS.register(speedController);
-  }
-
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
     GameProfile gameProfile = player.getGameProfile();

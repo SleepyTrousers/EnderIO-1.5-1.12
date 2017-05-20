@@ -1,13 +1,16 @@
 package crazypants.enderio.integration.buildcraft;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidRegister;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public class BuildcraftIntegration {
 
-  public static void init() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     // Add support for buildcraft wrench
     try {
       Class.forName("crazypants.enderio.integration.buildcraft.BuildCraftToolProvider").newInstance();

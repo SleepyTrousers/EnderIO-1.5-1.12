@@ -1,8 +1,9 @@
 package crazypants.enderio.power.forge;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -11,23 +12,22 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalPoweredTileWrapper implements IEnergyStorage {
 
-  
   public static class PoweredTileCapabilityProvider implements ICapabilityProvider {
 
-    private final IInternalPoweredTile tile;
+    private final @Nonnull ILegacyPoweredTile tile;
 
-    public PoweredTileCapabilityProvider(IInternalPoweredTile tile) {
+    public PoweredTileCapabilityProvider(@Nonnull ILegacyPoweredTile tile) {
       this.tile = tile;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityEnergy.ENERGY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == CapabilityEnergy.ENERGY) {
         return (T) new InternalPoweredTileWrapper(tile, facing);
       }
@@ -35,11 +35,11 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
     }
 
   }
-  
-  private final IInternalPoweredTile tile;
-  protected final EnumFacing from;
-  
-  public InternalPoweredTileWrapper(IInternalPoweredTile tile, EnumFacing from) {
+
+  private final @Nonnull ILegacyPoweredTile tile;
+  protected final @Nullable EnumFacing from;
+
+  public InternalPoweredTileWrapper(@Nonnull ILegacyPoweredTile tile, @Nullable EnumFacing from) {
     this.tile = tile;
     this.from = from;
   }
@@ -53,7 +53,7 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
   public int getMaxEnergyStored() {
     return tile.getMaxEnergyStored(from);
   }
-  
+
   @Override
   public int receiveEnergy(int maxReceive, boolean simulate) {
     return 0;
@@ -73,7 +73,5 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
   public boolean canReceive() {
     return false;
   }
-  
-  
-  
+
 }

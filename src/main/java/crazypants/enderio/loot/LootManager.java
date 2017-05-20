@@ -6,7 +6,6 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.CapturedMob;
@@ -30,9 +29,10 @@ import net.minecraft.world.storage.loot.functions.SetMetadata;
 import net.minecraft.world.storage.loot.functions.SetNBT;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.ModObject.itemAlloy;
+import static crazypants.enderio.ModObject.itemAlloyIngot;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.ModObject.itemConduitProbe;
 import static crazypants.enderio.ModObject.itemTravelStaff;
@@ -44,7 +44,7 @@ public class LootManager {
   private static final @Nonnull LootCondition[] NO_CONDITIONS = new LootCondition[0];
   private static LootManager INSTANCE = new LootManager();
 
-  public static void register() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(INSTANCE);
   }
 
@@ -60,60 +60,38 @@ public class LootManager {
 
     if (evt.getName().equals(LootTableList.CHESTS_SIMPLE_DUNGEON)) {
 
-      if (Config.lootDarkSteel) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25F));
-      }
-      if (Config.lootItemConduitProbe) {
-        lp.addEntry(createLootEntry(itemConduitProbe.getItemNN(), 0.10F));
-      }
-      if (Config.lootQuartz) {
-        lp.addEntry(createLootEntry(Items.QUARTZ, 3, 16, 0.25F));
-      }
-      if (Config.lootNetherWart) {
-        lp.addEntry(createLootEntry(Items.NETHER_WART, 1, 4, 0.20F));
-      }
-      if (Config.lootEnderPearl) {
-        lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.30F));
-      }
-      if (Config.lootTheEnder) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.1F));
-      }
-      if (Config.lootDarkSteelBoots) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
-      }
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.25F));
+      lp.addEntry(createLootEntry(itemConduitProbe.getItemNN(), 0.10F));
+      lp.addEntry(createLootEntry(Items.QUARTZ, 3, 16, 0.25F));
+      lp.addEntry(createLootEntry(Items.NETHER_WART, 1, 4, 0.20F));
+      lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.30F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.1F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.15F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
 
-      if (Config.lootDarkSteel) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.05F));
-      }
-      if (Config.lootEnderPearl) {
-        lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.10F));
-      }
-      if (Config.lootTheEnder) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
-      }
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 1, 3, 0.05F));
+      lp.addEntry(createLootEntry(Items.ENDER_PEARL, 1, 2, 0.10F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
       lp.addEntry(createLootCapacitor(0.15F));
       lp.addEntry(createLootCapacitor(0.05F));
+      lp.addEntry(createLootEntry(ModObject.blockExitRail.getItemNN(), 1, 2, 0.15F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_NETHER_BRIDGE)) {
 
-      if (Config.lootDarkSteelBoots) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
-      }
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 0.1F));
       lp.addEntry(createLootCapacitor(0.15F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
 
       final CapturedMob polarBear = CapturedMob.create(new ResourceLocation("minecraft", "polar_bear"));
       if (polarBear != null) {
-        lp.addEntry(
-            new LootEntryItem(ModObject.itemSoulVessel.getItemNN(), 1, 1,
-                new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) },
-                new LootCondition[] { new RandomChance(.2F) }, "PolarBearSoulVial"));
+        lp.addEntry(new LootEntryItem(ModObject.itemSoulVessel.getItemNN(), 1, 1,
+            new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) }, new LootCondition[] { new RandomChance(.2F) },
+            "PolarBearSoulVial"));
       }
       lp.addEntry(createLootEntry(ModObject.itemSoulVessel.getItemNN(), 1, 3, 0.5F));
       lp.addEntry(createLootCapacitor(0.05F));
@@ -126,49 +104,51 @@ public class LootManager {
 
     } else if (evt.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
 
-      if (Config.lootElectricSteel) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20F));
-      }
-      if (Config.lootRedstoneAlloy) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35F));
-      }
-      if (Config.lootDarkSteel) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35F));
-      }
-      if (Config.lootPhasedIron) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3F));
-      }
-      if (Config.lootPhasedGold) {
-        lp.addEntry(createLootEntry(itemAlloy.getItemNN(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2F));
-      }
-      if (Config.lootTheEnder) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 1, 1, 0.25F));
-      }
-      if (Config.lootDarkSteelBoots) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 1, 1, 0.25F));
-      }
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.ELECTRICAL_STEEL.ordinal(), 2, 6, 0.20F));
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.REDSTONE_ALLOY.ordinal(), 3, 6, 0.35F));
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.DARK_STEEL.ordinal(), 3, 6, 0.35F));
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.PULSATING_IRON.ordinal(), 1, 2, 0.3F));
+      lp.addEntry(createLootEntry(itemAlloyIngot.getItemNN(), Alloy.VIBRANT_ALLOY.ordinal(), 1, 2, 0.2F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 1, 1, 0.25F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBoots.getItemNN(), 1, 1, 0.25F));
       lp.addEntry(createLootCapacitor(0.1F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
 
-      if (Config.lootTheEnder) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
-      }
-      if (Config.lootTravelStaff) {
-        lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 0.1F));
-      }
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 0.2F));
+      lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 0.1F));
       lp.addEntry(createLootCapacitor(25));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
 
-      if (Config.lootTheEnder) {
-        lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 1, 1, 0.25F));
-      }
-      if (Config.lootTravelStaff) {
-        lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 1, 1, 0.1F));
-      }
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelSword.getItemNN(), 1, 1, 0.25F));
+      lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 1, 1, 0.1F));
       lp.addEntry(createLootCapacitor(0.25F));
       lp.addEntry(createLootCapacitor(0.25F));
+
+    } else if (evt.getName().equals(LootTableList.CHESTS_WOODLAND_MANSION)) {
+
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelAxe.getItemNN(), 1, 1, 0.25F));
+      lp.addEntry(createLootCapacitor(0.25F));
+      lp.addEntry(createLootEntry(itemTravelStaff.getItemNN(), 1, 1, 0.1F));
+
+      if (ModObject.itemSpeciesItemFilter.getItem() != null) {
+        lp.addEntry(createLootEntry(ModObject.itemSpeciesItemFilter.getItemNN(), 1, 1, 0.5F));
+      }
+
+    } else if (evt.getName().equals(LootTableList.CHESTS_END_CITY_TREASURE)) {
+
+      final CapturedMob shulker = CapturedMob.create(new ResourceLocation("minecraft", "shulker"));
+      if (shulker != null) {
+        lp.addEntry(
+            new LootEntryItem(ModObject.itemSoulVessel.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, shulker.toNbt(null)) },
+                new LootCondition[] { new RandomChance(.2F) }, "ShulkerSoulVial"));
+      }
+      lp.addEntry(createLootEntry(ModObject.itemSoulVessel.getItemNN(), 1, 3, 0.5F));
+      lp.addEntry(createLootCapacitor(0.05F));
+      lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
+
     }
     table.addPool(lp);
   }
@@ -184,15 +164,15 @@ public class LootManager {
   /*
    * All loot entries are given the same weight, the generation probabilities depend on the RandomChance condition.
    */
-  private @Nonnull LootEntry createLootEntry(@Nonnull Item item, int ordinal, int minStackSize, int maxStackSize, float chance) {
+  private @Nonnull LootEntry createLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
     final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
     if (item.isDamageable()) {
-      return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, ordinal), setEnergy() }, chanceCond,
-          registryName.toString() + ":" + ordinal);
+      return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, meta), setEnergy() }, chanceCond,
+          registryName.toString() + ":" + meta);
     } else {
-      return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(ordinal) }, chanceCond,
-          registryName.toString() + ":" + ordinal);
+      return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(meta) }, chanceCond,
+          registryName.toString() + ":" + meta);
     }
   }
 
@@ -204,11 +184,11 @@ public class LootManager {
     return createDarkSteelLootEntry(item, 0, minSize, maxSize, chance);
   }
 
-  private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, int ordinal, int minStackSize, int maxStackSize, float chance) {
+  private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
     final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
-    return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, ordinal), setUpgrades(), setEnergy() },
-        chanceCond, registryName.toString() + ":" + ordinal);
+    return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, meta), setUpgrades(), setEnergy() },
+        chanceCond, registryName.toString() + ":" + meta);
   }
 
   int capCount = 0; // Each loot entry in a pool must have a unique name

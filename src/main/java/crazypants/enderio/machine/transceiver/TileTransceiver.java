@@ -23,7 +23,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -41,7 +41,7 @@ import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;

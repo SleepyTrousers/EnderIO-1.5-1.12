@@ -13,7 +13,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
@@ -27,7 +27,7 @@ import net.minecraft.world.EnumSkyBlock;
 import static crazypants.enderio.ModObject.blockLightNode;
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
-public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
+public class TileElectricLight extends TileEntityEio implements ILegacyPowerReceiver {
 
   @Store
   private EnumFacing face = EnumFacing.DOWN;

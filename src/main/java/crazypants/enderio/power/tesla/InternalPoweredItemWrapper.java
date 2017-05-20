@@ -1,5 +1,6 @@
 package crazypants.enderio.power.tesla;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.power.IInternalPoweredItem;
@@ -19,13 +20,13 @@ public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder,
   public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
 
     @Override
-    public boolean hasCapability(ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == TeslaCapabilities.CAPABILITY_CONSUMER || capability == TeslaCapabilities.CAPABILITY_HOLDER
           || capability == TeslaCapabilities.CAPABILITY_PRODUCER;
     }
 
     @Override
-    public <T> T getCapability(ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
       if (capability == TeslaCapabilities.CAPABILITY_CONSUMER) {
         return TeslaCapabilities.CAPABILITY_CONSUMER.cast(new InternalPoweredItemWrapper(stack));
       } else if (capability == TeslaCapabilities.CAPABILITY_HOLDER) {
@@ -41,17 +42,17 @@ public class InternalPoweredItemWrapper implements ITeslaConsumer, ITeslaHolder,
 
   }
 
-  protected final ItemStack container;
+  protected final @Nonnull ItemStack container;
   protected int capacity;
   protected int maxInput;
   protected int maxOutput;
 
-  public InternalPoweredItemWrapper(ItemStack stack) {
+  public InternalPoweredItemWrapper(@Nonnull ItemStack stack) {
     this(stack, ((IInternalPoweredItem) stack.getItem()).getMaxEnergyStored(stack), ((IInternalPoweredItem) stack.getItem()).getMaxInput(stack),
         ((IInternalPoweredItem) stack.getItem()).getMaxOutput(stack));
   }
 
-  public InternalPoweredItemWrapper(ItemStack container, int capacity, int maxInput, int maxOutput) {
+  public InternalPoweredItemWrapper(@Nonnull ItemStack container, int capacity, int maxInput, int maxOutput) {
     this.container = container;
     this.capacity = capacity;
     this.maxInput = maxInput;

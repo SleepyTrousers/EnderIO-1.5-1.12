@@ -3,6 +3,8 @@ package crazypants.enderio.material.glass;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
@@ -20,37 +22,39 @@ import static crazypants.enderio.config.Config.glassConnectToTheirColorVariants;
 
 public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
 
-  public FusedQuartzBlockRenderMapper(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public FusedQuartzBlockRenderMapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     super(state, world, pos);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> renderBody(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, QuadCollector quadCollector) {
+  protected List<IBlockState> renderBody(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     return null;
   }
 
   @Override
-  protected boolean isSameKind(IBlockState state, IBlockState other) {
+  protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
     return state.getBlock() == other.getBlock() && state.getValue(FusedQuartzType.KIND).connectTo(other.getValue(FusedQuartzType.KIND))
         && (glassConnectToTheirColorVariants || (state.getValue(BlockColored.COLOR) == other.getValue(BlockColored.COLOR)));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getMergedBlockstate(IBlockState state) {
+  protected IBlockState getMergedBlockstate(@Nonnull IBlockState state) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  protected IBlockState getBorderedBlockstate(IBlockState state) {
+  protected IBlockState getBorderedBlockstate(@Nonnull IBlockState state) {
     return state;
   }
 

@@ -1,5 +1,7 @@
 package crazypants.enderio.power;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 /**
@@ -7,16 +9,16 @@ import net.minecraft.item.ItemStack;
  */
 public interface IInternalPoweredItem {
 
-  int getMaxEnergyStored(ItemStack stack);
-  
-  int getEnergyStored(ItemStack stack);
-  
-  void setEnergyStored(ItemStack container, int energy);
-  
-  int getMaxInput(ItemStack stack);
-  
-  int getMaxOutput(ItemStack stack);
-  
-  
-     
+  // TODO Java8: All these can be default implementations
+
+  int getMaxEnergyStored(@Nonnull ItemStack stack);
+
+  int getEnergyStored(@Nonnull ItemStack stack);
+
+  void setEnergyStored(@Nonnull ItemStack container, int energy);
+
+  int getMaxInput(@Nonnull ItemStack stack);
+
+  int getMaxOutput(@Nonnull ItemStack stack);
+
 }

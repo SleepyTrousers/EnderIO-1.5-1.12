@@ -28,9 +28,9 @@ public class EnergyTank implements IEnergyStorage {
 
   private class Side implements IEnergyStorage {
 
-    private final EnumFacing side;
+    private final @Nonnull EnumFacing side;
 
-    public Side(EnumFacing side) {
+    public Side(@Nonnull EnumFacing side) {
       this.side = side;
     }
 
@@ -99,17 +99,16 @@ public class EnergyTank implements IEnergyStorage {
 
   }
 
-  public IEnergyStorage get(EnumFacing side) {
+  public IEnergyStorage get(@Nullable EnumFacing side) {
     if (side != null && (owner instanceof AbstractMachineEntity)) {
       return new Side(side);
     }
     return this;
   }
 
-  @Nonnull
-  private ICapacitorData capacitorData = DefaultCapacitorData.NONE;
-  @Nonnull
-  private final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
+
+  private @Nonnull final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
   @Nullable
   TileEntity owner = null;
 
@@ -123,7 +122,7 @@ public class EnergyTank implements IEnergyStorage {
     this.maxEnergyUsed = maxEnergyUsed;
   }
 
-  public EnergyTank(TileEntity owner, IModObject modObject) {
+  public EnergyTank(TileEntity owner, @Nonnull IModObject modObject) {
     this.owner = owner;
     this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80);
     this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
@@ -137,10 +136,10 @@ public class EnergyTank implements IEnergyStorage {
     this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
   }
 
-  public boolean updateCapacitorFromSlot(InventorySlot slot) {
+  public boolean updateCapacitorFromSlot(@Nonnull InventorySlot slot) {
     int oldValue = maxEnergyStored.get(capacitorData);
 
-    if (slot == null || Prep.isInvalid(slot.getStackInSlot(0))) {
+    if (Prep.isInvalid(slot.getStackInSlot(0))) {
       capacitorData = DefaultCapacitorData.NONE;
     } else {
       ICapacitorData newData = CapacitorHelper.getCapacitorDataFromItemStack(slot.getStackInSlot(0));
@@ -220,7 +219,7 @@ public class EnergyTank implements IEnergyStorage {
     return true;
   }
 
-  public ICapacitorData getCapacitorData() {
+  public @Nonnull ICapacitorData getCapacitorData() {
     return capacitorData;
   }
 

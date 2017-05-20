@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -18,13 +19,15 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class OreDictionaryPreferenceParser extends DefaultHandler {
 
-  private static final String CORE_FILE_NAME = "OreDictionaryPreferences_Core.xml";
-  private static final String CUSTOM_FILE_NAME = "OreDictionaryPreferences_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "OreDictionaryPreferences_Core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "OreDictionaryPreferences_User.xml";
+  private static final @Nonnull String DISPLAY_NAME = "OreDictionary preferences";
 
   public static void loadConfig() {
     File coreFile = new File(Config.configDirectory, CORE_FILE_NAME);
@@ -33,19 +36,19 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
     try {
       defaultVals = RecipeConfig.readRecipes(coreFile, CORE_FILE_NAME, true);
     } catch (IOException e) {
-      Log.error("Could not load painter lists " + coreFile + " from EnderIO jar: " + e.getMessage());
+      Log.error("Could not load " + DISPLAY_NAME + " " + coreFile + " from EnderIO jar: " + e.getMessage());
       e.printStackTrace();
       return;
     }
     if(!coreFile.exists()) {
-      Log.error("Could not load default lists from " + coreFile + " as the file does not exist.");
+      Log.error("Could not load default " + DISPLAY_NAME + " from " + coreFile + " as the file does not exist.");
       return;
     }
 
     try {
       parse(defaultVals);
     } catch (Exception e) {
-      Log.error("Could not parse default lists from " + coreFile + ": " + e);
+      Log.error("Could not parse default " + DISPLAY_NAME + " from " + coreFile + ": " + e);
     }
 
     File userFile = new File(Config.configDirectory, CUSTOM_FILE_NAME);
@@ -53,12 +56,12 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
     try {
       userConfigStr = RecipeConfig.readRecipes(userFile, CUSTOM_FILE_NAME, false);
       if(userConfigStr == null || userConfigStr.trim().length() == 0) {
-        Log.error("Empty user config file: " + userFile.getAbsolutePath());
+        Log.error("Empty user " + DISPLAY_NAME + " file: " + userFile.getAbsolutePath());
       } else {
         parse(userConfigStr);
       }
     } catch (Exception e) {
-      Log.error("Could not load user defined painter lists from file: " + CUSTOM_FILE_NAME);
+      Log.error("Could not load user " + DISPLAY_NAME + " from file: " + CUSTOM_FILE_NAME);
       e.printStackTrace();
     }
   }
@@ -95,7 +98,7 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
 
   private OreDictionaryPreferences prefs;
   private String oreDictName;
-  private ItemStack prefStack;
+  private @Nonnull ItemStack prefStack = Prep.getEmpty();
 
   private OreDictionaryPreferenceParser(OreDictionaryPreferences prefs) {
     this.prefs = prefs;
@@ -107,9 +110,9 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
       oreDictName = RecipeConfigParser.getStringValue(AT_ORE_DICT, attributes, null);
       return;
     }
-    if(ELEMENT_STACK.equals(localName) && oreDictName != null && prefStack == null) {
+    if (ELEMENT_STACK.equals(localName) && oreDictName != null && Prep.isInvalid(prefStack)) {
       RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
-      if(ri != null && ri.getInput() != null) {
+      if (ri != null && Prep.isValid(ri.getInput())) {
         prefStack = ri.getInput();
       }
       return;
@@ -119,23 +122,24 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
     if(ELEMENT_PREF.equals(localName)) {
-      if(oreDictName != null && prefStack != null) {
+      final String oreDictName_nullchecked = oreDictName;
+      if (oreDictName_nullchecked != null && Prep.isValid(prefStack)) {
         boolean matched = false;
         int[] ids = OreDictionary.getOreIDs(prefStack);
         if(ids != null) {
           for (int i = 0; i < ids.length && !matched; i++) {
-            matched = oreDictName.equals(OreDictionary.getOreName(ids[i]));
+            matched = oreDictName_nullchecked.equals(OreDictionary.getOreName(ids[i]));
           }
         }
         if(matched) {
-          prefs.setPreference(oreDictName, prefStack);
+          prefs.setPreference(oreDictName_nullchecked, prefStack);
         } else {
-          Log.warn("OreDictionaryPreferenceParser: Attempted to register " + prefStack + " as the preffered output for " + oreDictName
-              + " but it is not registered in the OreDictionary as " + oreDictName);
+          Log.warn("OreDictionaryPreferenceParser: Attempted to register " + prefStack + " as the preffered output for " + oreDictName_nullchecked
+              + " but it is not registered in the OreDictionary as " + oreDictName_nullchecked);
         }
       }
       oreDictName = null;
-      prefStack = null;
+      prefStack = Prep.getEmpty();
     }
   }
 

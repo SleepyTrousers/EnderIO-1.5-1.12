@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.EnderIOAPIProps;
@@ -13,11 +15,12 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class EnderIOCrashCallable implements ICrashCallable {
 
-  public static void create() {
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
     FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
   }
 

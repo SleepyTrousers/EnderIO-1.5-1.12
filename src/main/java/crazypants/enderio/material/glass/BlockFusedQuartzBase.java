@@ -11,7 +11,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock;
-import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.render.ICustomItemResourceLocation;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
 import net.minecraft.block.Block;
@@ -34,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock, INamedSubBlocks {
+public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock {
 
   @SuppressWarnings("null")
   public BlockFusedQuartzBase(@Nonnull String name, Class<T> teClass) {
@@ -49,7 +48,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(FusedQuartzType.KIND, FusedQuartzType.getTypeFromMeta(meta));
   }
 
@@ -87,11 +86,9 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    if (par2CreativeTabs != null) {
       for (FusedQuartzType fqt : FusedQuartzType.values()) {
         par3List.add(new ItemStack(par1, 1, fqt.ordinal()));
       }
-    }
   }
 
   @Override
@@ -127,15 +124,9 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     return false;
   }
 
-  @Override
-  public String getUnlocalizedName(int meta) {
-    FusedQuartzType type = FusedQuartzType.getTypeFromMeta(meta);
-    return "enderio.blockFusedQuartz." + type.getUnlocalisedName();
-  }
-
   public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock implements ICustomItemResourceLocation {
 
-    public BlockItemFusedQuartzBase(Block block, String name) {
+    public BlockItemFusedQuartzBase(@Nonnull Block block, @Nonnull String name) {
       super(block, name);
     }
 

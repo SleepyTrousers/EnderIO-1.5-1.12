@@ -12,6 +12,8 @@ import crazypants.enderio.material.material.NutritiousStickRecipe;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -21,7 +23,7 @@ import static crazypants.enderio.ModObject.blockEndermanSkull;
 
 public class MaterialRecipes {
 
-  public static void registerDependantOresInDictionary() {
+  public static void init(@Nonnull FMLInitializationEvent event) {
     // we register late so we can properly check for dependencies
     Material.getActiveMaterials().apply(new Callback<Material>() {
       @Override
@@ -33,7 +35,7 @@ public class MaterialRecipes {
     });
   }
 
-  public static void registerOresInDictionary() {
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
     // Ore Dictionary Registration
     Material.getActiveMaterials().apply(new Callback<Material>() {
       @Override
@@ -67,7 +69,7 @@ public class MaterialRecipes {
     }
 
     for (FusedQuartzType type : FusedQuartzType.values()) {
-      OreDictionary.registerOre(type.getUnlocalisedName(), new ItemStack(type.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
+      OreDictionary.registerOre(type.getOreDictName(), new ItemStack(type.getBlock(), 1, OreDictionary.WILDCARD_VALUE));
     }
 
     // Skulls
@@ -86,7 +88,7 @@ public class MaterialRecipes {
 
     for (EnumDyeColor color : EnumDyeColor.values()) {
       for (FusedQuartzType type : FusedQuartzType.values()) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getUnlocalisedName(),
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(),
             'C', new ItemStack(Items.DYE, 1, color.getDyeDamage())));
       }
     }

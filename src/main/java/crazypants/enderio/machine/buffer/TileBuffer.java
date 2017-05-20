@@ -10,7 +10,7 @@ import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.power.forge.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Store;
@@ -23,7 +23,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
 
-public class TileBuffer extends AbstractPowerConsumerEntity implements IInternalPowerReceiver, IPaintable.IPaintableTileEntity {
+public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean hasPower;

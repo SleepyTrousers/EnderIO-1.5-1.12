@@ -1,36 +1,22 @@
 package crazypants.enderio.power;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
-import crazypants.util.TextUtil;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PowerDisplayUtil {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
-  private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
-  
-  //Handle french local 'non breaking space' character used to separate thousands.
-  //This is not rendered correctly and cannot be parsed by minecraft so replace it with a regular space
-  private static final boolean REPLACE_NBSP;
-  private static final char NBSP = (char)160;
+  private static final @Nonnull NumberFormat INT_NF = NumberFormat.getIntegerInstance();
+  private static final @Nonnull NumberFormat FLOAT_NF = NumberFormat.getInstance();
+
   static {
-    boolean res = false;
-    if(INT_NF instanceof DecimalFormat) {
-      DecimalFormatSymbols syms = ((DecimalFormat)INT_NF).getDecimalFormatSymbols();
-      if(syms.getGroupingSeparator() == NBSP) {
-        res = true;
-      }
-      
-    }
-    REPLACE_NBSP = res;
+    FLOAT_NF.setMinimumFractionDigits(1);
+    FLOAT_NF.setMaximumFractionDigits(1);
   }
 
   public static String perTickStr() {
@@ -39,23 +25,6 @@ public class PowerDisplayUtil {
 
   public static String ofStr() {
     return EnderIO.lang.localize("gui.powerMonitor.of");
-  }
- 
-  static {
-    FLOAT_NF.setMinimumFractionDigits(1);
-    FLOAT_NF.setMaximumFractionDigits(1);
-  }
-
-  public static String getStoredEnergyString(ItemStack item) {
-    if(item == null) {
-      return null;
-    }
-    IEnergyStorage ci = PowerHandlerUtil.getCapability(item, null);
-    if(ci == null) {
-      return null;
-    }
-    return EnderIO.lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored()) + "/"
-    + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation();
   }
 
   public static String formatPowerPerTick(int powerPerTick) {
@@ -67,10 +36,9 @@ public class PowerDisplayUtil {
   }
 
   public static String formatPower(long amount) {
-    return TextUtil.fix(INT_NF.format(amount));
+    return INT_NF.format(amount);
   }
 
-  
   public static String formatInteger(int value) {
     return formatPower(value);
   }
@@ -80,23 +48,20 @@ public class PowerDisplayUtil {
   }
 
   public static String formatPower(int powerRF) {
-    return TextUtil.fix(INT_NF.format(powerRF));
+    return INT_NF.format(powerRF);
   }
-  
+
   public static String formatPowerFloat(float averageRfTickSent) {
     return FLOAT_NF.format(averageRfTickSent);
   }
 
   public static Integer parsePower(String power) {
-    if(power == null) {
+    if (power == null) {
       return null;
     }
     try {
-      if(REPLACE_NBSP) {
-        power = power.replace(' ', NBSP);
-      }
       Number d = INT_NF.parse(power);
-      if(d == null) {
+      if (d == null) {
         return null;
       }
       return d.intValue();
@@ -108,13 +73,13 @@ public class PowerDisplayUtil {
   public static String abrevation() {
     return EnderIO.lang.localize("power.rf");
   }
-  
+
   @SideOnly(Side.CLIENT)
   public static int parsePower(GuiTextField tf) {
     String txt = tf.getText();
     try {
       Integer power = PowerDisplayUtil.parsePower(txt);
-      if(power == null) {
+      if (power == null) {
         return -1;
       }
       return power.intValue();

@@ -8,8 +8,10 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IPowerApiAdapter {
 
-  IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side);
- 
-  IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side);
-  
+  @Nullable
+  IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side);
+
+  @Nullable
+  IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side);
+
 }

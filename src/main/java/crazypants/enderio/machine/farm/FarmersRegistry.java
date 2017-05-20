@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.farm;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.enderio.integration.bop.BoPUtil;
 import crazypants.enderio.integration.botania.BotaniaUtil;
 import crazypants.enderio.integration.botany.BotanyUtil;
@@ -23,13 +27,13 @@ import crazypants.enderio.machine.farm.farmers.PickableFarmer;
 import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
 import crazypants.enderio.machine.farm.farmers.StemFarmer;
 import crazypants.enderio.machine.farm.farmers.TreeFarmer;
-import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public final class FarmersRegistry {
 
@@ -39,7 +43,7 @@ public final class FarmersRegistry {
 
   public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
 
-  public static void addFarmers() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
 
     TechRebornUtil.addTechreborn();
     ExU2Util.addExtraUtilities2();

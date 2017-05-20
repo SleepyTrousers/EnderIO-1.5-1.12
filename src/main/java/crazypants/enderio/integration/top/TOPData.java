@@ -34,7 +34,7 @@ import crazypants.enderio.machine.spawner.TilePoweredSpawner;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.power.EnergyTank;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -92,8 +92,8 @@ class TOPData {
       maxRFIn = te.getMaxInput();
       maxRFOut = te.getMaxOutput();
       avgRF = te.getAverageIOPerTick();
-    } else if (tileEntity instanceof IInternalPoweredTile) {
-      IInternalPoweredTile te = (IInternalPoweredTile) tileEntity;
+    } else if (tileEntity instanceof ILegacyPoweredTile) {
+      ILegacyPoweredTile te = (ILegacyPoweredTile) tileEntity;
       if (te.displayPower()) {
         maxrf = te.getMaxEnergyStored(null);
         rf = te.getEnergyStored(null);

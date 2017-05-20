@@ -15,7 +15,7 @@ import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -25,7 +25,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
 @Storable
-public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements IInternalPoweredTile {
+public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements ILegacyPoweredTile {
 
   // Power
   protected ICapacitorData capacitorData = DefaultCapacitorData.NONE;

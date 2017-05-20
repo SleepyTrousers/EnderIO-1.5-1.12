@@ -11,13 +11,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.network.PacketHandler;
-import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -29,6 +29,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -81,7 +82,6 @@ public final class Config {
   public static final @Nonnull Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   public static final @Nonnull Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
-  public static final @Nonnull Section sectionLootConfig = new Section("Loot Config", "lootconfig");
   public static final @Nonnull Section sectionMobConfig = new Section("Mob Config", "mobconfig");
   public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionWeather = new Section("Weather", "weather");
@@ -461,20 +461,6 @@ public final class Config {
   public static int weatherObeliskRainFluid = 500;
   public static int weatherObeliskThunderFluid = 1000;
 
-  //Loot Defaults
-  public static boolean lootDarkSteel = true;
-  public static boolean lootItemConduitProbe = true;
-  public static boolean lootQuartz = true;
-  public static boolean lootNetherWart = true;
-  public static boolean lootEnderPearl = true;
-  public static boolean lootElectricSteel = true;
-  public static boolean lootRedstoneAlloy = true;
-  public static boolean lootPhasedIron = true;
-  public static boolean lootPhasedGold = true;
-  public static boolean lootTravelStaff = true;
-  public static boolean lootTheEnder = true;
-  public static boolean lootDarkSteelBoots = true;
-
   public static boolean dumpMobNames = false;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
@@ -549,7 +535,7 @@ public final class Config {
   public static boolean debugTraceTELivecycleExtremelyDetailed = false;
   public static boolean debugTraceCapLimitsExtremelyDetailed = false;
 
-  public static void preInit(FMLPreInitializationEvent event) {
+  public static void init(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
@@ -1377,35 +1363,6 @@ public final class Config {
     weatherObeliskThunderFluid = config.get(sectionWeather.name, "weatherObeliskThunderFluid", weatherObeliskThunderFluid,
         "The fluid required (in mB) to set the world to thundering weather").getInt();
 
-    // Loot Config
-    lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");
-    lootItemConduitProbe = config.getBoolean("lootItemConduitProbe", sectionLootConfig.name, lootItemConduitProbe, "Adds ItemConduitProbe to loot tables");
-    lootQuartz = config.getBoolean("lootQuartz", sectionLootConfig.name, lootQuartz, "Adds quartz to loot tables");
-    lootNetherWart = config.getBoolean("lootNetherWart", sectionLootConfig.name, lootNetherWart, "Adds nether wart to loot tables");
-    lootEnderPearl = config.getBoolean("lootEnderPearl", sectionLootConfig.name, lootEnderPearl, "Adds ender pearls to loot tables");
-    lootElectricSteel = config.getBoolean("lootElectricSteel", sectionLootConfig.name, lootElectricSteel, "Adds Electric Steel Ingots to loot tables");
-    lootRedstoneAlloy = config.getBoolean("lootRedstoneAlloy", sectionLootConfig.name, lootRedstoneAlloy, "Adds Redstone Alloy Ingots to loot tables");
-    lootPhasedIron = config.getBoolean("lootPhasedIron", sectionLootConfig.name, lootPhasedIron, "Adds Phased Iron Ingots to loot tables");
-    lootPhasedGold = config.getBoolean("lootPhasedGold", sectionLootConfig.name, lootPhasedGold, "Adds Phased Gold Ingots to loot tables");
-    lootTravelStaff = config.getBoolean("lootTravelStaff", sectionLootConfig.name, lootTravelStaff, "Adds Travel Staff to loot tables");
-    lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
-    lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
-
-    // enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Whether Ender Rails are enabled");
-    // enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions,
-    // "The amount of power required to transport a cart across dimensions").getInt(enderRailPowerRequireCrossDimensions);
-    // enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock,
-    // "The amount of power required to teleport a cart per block in the same dimension").getInt(enderRailPowerRequiredPerBlock);
-    // enderRailCapSameDimensionPowerAtCrossDimensionCost = config.getBoolean("enderRailCapSameDimensionPowerAtCrossDimensionCost", sectionRailConfig.name,
-    // enderRailCapSameDimensionPowerAtCrossDimensionCost,
-    // "When set to true the RF cost of sending a cart within the same dimension will be capped to the cross dimension cost");
-    // enderRailTicksBeforeForceSpawningLinkedCarts = config.get(sectionRailConfig.name, "enderRailTicksBeforeForceSpawningLinkedCarts",
-    // enderRailTicksBeforeForceSpawningLinkedCarts,
-    // "The number of ticks to wait for the track to clear before force spawning the next cart in a (RailCraft) linked
-    // set").getInt(enderRailTicksBeforeForceSpawningLinkedCarts);
-    // enderRailTeleportPlayers = config.getBoolean("enderRailTeleportPlayers", sectionRailConfig.name, enderRailTeleportPlayers, "If true player in minecarts
-    // will be teleported. WARN: WIP, seems to cause a memory leak.");
-
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames,
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
 
@@ -1521,7 +1478,7 @@ public final class Config {
   public static void init(FMLInitializationEvent event) {
   }
 
-  public static void postInit() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 4) {
       throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 4 values");
     }

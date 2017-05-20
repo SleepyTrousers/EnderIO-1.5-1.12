@@ -9,7 +9,6 @@ import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenEnder;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenGlowstone;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenRedstone;
-import crazypants.enderio.material.PowderIngot;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -24,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-import static crazypants.enderio.ModObject.itemPowderIngot;
+import static crazypants.enderio.material.material.Material.POWDER_ENDER;
 
 public class AdditionalFluid {
 
@@ -209,7 +208,7 @@ public class AdditionalFluid {
         TicProxy.registerTableCast(new ItemStack(Items.ENDER_PEARL), casts.get(0), f, 250);
       }
     }
-    TicProxy.registerSmelterySmelting(new ItemStack(itemPowderIngot.getItemNN(), 1, PowderIngot.POWDER_ENDER.ordinal()), f, 250 / 9);
+    TicProxy.registerSmelterySmelting(POWDER_ENDER.getStack(), f, 250 / 9);
   }
 
 }

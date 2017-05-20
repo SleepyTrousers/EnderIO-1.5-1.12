@@ -10,18 +10,19 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.util.Prep;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public final class OreDictionaryPreferences {
 
   public static final OreDictionaryPreferences instance = new OreDictionaryPreferences();
 
-  public static void loadConfig() {
+  public static void init(@Nonnull FMLPostInitializationEvent event) {
     OreDictionaryPreferenceParser.loadConfig();
   }
 
-  private NNMap<String, ItemStack> preferences = new NNMap<String, ItemStack>(Prep.getEmpty());
-  private NNMap<StackKey, ItemStack> stackCache = new NNMap<StackKey, ItemStack>(Prep.getEmpty());
+  private NNMap<String, ItemStack> preferences = new NNMap.Default<String, ItemStack>(Prep.getEmpty());
+  private NNMap<StackKey, ItemStack> stackCache = new NNMap.Default<StackKey, ItemStack>(Prep.getEmpty());
 
   public void setPreference(@Nonnull String oreDictName, @Nonnull ItemStack stack) {
     preferences.put(oreDictName, stack.copy());

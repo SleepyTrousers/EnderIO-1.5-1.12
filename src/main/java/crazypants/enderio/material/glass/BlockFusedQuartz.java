@@ -81,8 +81,8 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
     return block;
   }
 
-  private BlockFusedQuartz(@Nonnull IModObject modObject, FusedQuartzType glasstype) {
-    super(modObject.getUnlocalisedName() + "_" + glasstype.getUnlocalisedName(), null);
+  private BlockFusedQuartz(@Nonnull IModObject modObject, @Nonnull FusedQuartzType glasstype) {
+    super(modObject.getUnlocalisedName(), null);
     this.glasstype = glasstype;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(FusedQuartzType.KIND, glasstype).withProperty(BlockColored.COLOR, DEFAULT_COLOR));
@@ -117,7 +117,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState().withProperty(BlockColored.COLOR, EnumDyeColor.byMetadata(meta));
   }
 
@@ -183,7 +183,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
   public static class BlockItemFusedQuartz extends BlockFusedQuartzBase.BlockItemFusedQuartzBase implements ITintedItem, IWithPaintName {
 
-    public BlockItemFusedQuartz(BlockFusedQuartz block, String name) {
+    public BlockItemFusedQuartz(@Nonnull BlockFusedQuartz block, @Nonnull String name) {
       super(block, name);
     }
 

@@ -8,7 +8,7 @@ import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.teleport.telepad.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.teleport.telepad.packet.PacketTargetList;
 import info.loenwind.autosave.annotations.Store;
@@ -21,7 +21,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import static crazypants.enderio.ModObject.itemLocationPrintout;
 
-public class TileDialingDevice extends TileEntityEio implements IInternalPowerReceiver, IItemHandlerModifiable{
+public class TileDialingDevice extends TileEntityEio implements ILegacyPowerReceiver, IItemHandlerModifiable{
 
   private static final int RF_PER_TICK = 20;
   

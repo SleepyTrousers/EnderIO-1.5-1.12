@@ -4,11 +4,11 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import info.loenwind.autosave.annotations.Storable;
 
 @Storable
-public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEntity implements IInternalPoweredTile {
+public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEntity implements ILegacyPoweredTile {
 
   //RF API Power
 

@@ -2,10 +2,12 @@ package crazypants.enderio.power.tesla;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.enderio.power.ILegacyPowerReceiver;
+import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerApiAdapter;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.ItemPowerCapabilityBackend;
@@ -26,10 +28,9 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class TeslaAdapter implements IPowerApiAdapter {
-  
 
-  private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "EioCapProviderTesla");
-  
+  private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "teslaadapter");
+
   public static void capRegistered(Capability<?> cap) {
     PowerHandlerUtil.addAdapter(new TeslaAdapter());
     MinecraftForge.EVENT_BUS.register(TeslaAdapter.class);
@@ -38,32 +39,25 @@ public class TeslaAdapter implements IPowerApiAdapter {
   }
 
   @Override
-  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    IEnergyStorage cap = getCapability(provider, side);
-    if (cap != null) {
-      return new PowerInterfaceForge(provider, cap);
+  public IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side) {
+    if (provider != null) {
+      IEnergyStorage cap = getCapability(provider, side);
+      if (cap != null) {
+        return new PowerInterfaceForge(provider, cap);
+      }
     }
     return null;
   }
 
   @Override
-  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
-    if(provider == null) {
+  public IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, @Nullable EnumFacing side) {
+    if (provider == null) {
       return null;
     }
-    ITeslaHolder capHolder = null;
-    if (provider.hasCapability(TeslaCapabilities.CAPABILITY_HOLDER, side)) {
-      capHolder = provider.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, side);
-    }
-    ITeslaConsumer capConsumer = null;
-    if (provider.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, side)) {
-      capConsumer = provider.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, side);
-    }
-    ITeslaProducer capProducer = null;
-    if (provider.hasCapability(TeslaCapabilities.CAPABILITY_PRODUCER, side)) {
-      capProducer = provider.getCapability(TeslaCapabilities.CAPABILITY_PRODUCER, side);
-    }
-    if(capHolder == null && capConsumer == null && capProducer == null) {
+    ITeslaHolder capHolder = provider.getCapability(NullHelper.notnull(TeslaCapabilities.CAPABILITY_HOLDER, "Tesla broke"), side);
+    ITeslaConsumer capConsumer = provider.getCapability(NullHelper.notnull(TeslaCapabilities.CAPABILITY_CONSUMER, "Tesla broke"), side);
+    ITeslaProducer capProducer = provider.getCapability(NullHelper.notnull(TeslaCapabilities.CAPABILITY_PRODUCER, "Tesla broke"), side);
+    if (capHolder == null && capConsumer == null && capProducer == null) {
       return null;
     }
     return new TeslaToForgeAdapter(capHolder, capConsumer, capProducer);
@@ -71,14 +65,14 @@ public class TeslaAdapter implements IPowerApiAdapter {
 
   @SubscribeEvent
   public static void attachCapabilities(AttachCapabilitiesEvent.TileEntity evt) {
-    if(evt.getCapabilities().containsKey(KEY)) {
+    if (evt.getCapabilities().containsKey(KEY)) {
       return;
     }
     TileEntity te = evt.getTileEntity();
-    if (te instanceof IInternalPowerReceiver) {
-      evt.addCapability(KEY, new InternalRecieverTileWrapper.RecieverTileCapabilityProvider((IInternalPowerReceiver) te));
-    } else if (te instanceof IInternalPoweredTile) {
-      evt.addCapability(KEY, new InternalPoweredTileWrapper.PoweredTileCapabilityProvider((IInternalPoweredTile) te));
+    if (te instanceof ILegacyPowerReceiver) {
+      evt.addCapability(KEY, new InternalRecieverTileWrapper.RecieverTileCapabilityProvider((ILegacyPowerReceiver) te));
+    } else if (te instanceof ILegacyPoweredTile) {
+      evt.addCapability(KEY, new InternalPoweredTileWrapper.PoweredTileCapabilityProvider((ILegacyPoweredTile) te));
     }
   }
 

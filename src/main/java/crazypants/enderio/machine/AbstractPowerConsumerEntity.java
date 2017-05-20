@@ -2,13 +2,13 @@ package crazypants.enderio.machine;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
 
 @Storable
-public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements IInternalPowerReceiver {
+public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity implements ILegacyPowerReceiver {
 
   @Deprecated
   protected AbstractPowerConsumerEntity(SlotDefinition slotDefinition) {

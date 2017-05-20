@@ -31,16 +31,15 @@ public enum FusedQuartzType implements IStringSerializable {
     DARKENED
   }
 
-  public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = NullHelper.notnullM(PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class),
-      "PropertyEnum.create()");
+  public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class);
 
-  private final @Nonnull String unlocalisedName;
+  private final @Nonnull String oreDictName;
   private final @Nonnull BaseMaterial baseMaterial;
   private final @Nonnull Upgrade upgrade;
   private Block block;
 
-  private FusedQuartzType(@Nonnull String unlocalisedName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade) {
-    this.unlocalisedName = unlocalisedName;
+  private FusedQuartzType(@Nonnull String oreDictName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade) {
+    this.oreDictName = oreDictName;
     this.baseMaterial = baseMaterial;
     this.upgrade = upgrade;
   }
@@ -76,8 +75,8 @@ public enum FusedQuartzType implements IStringSerializable {
     return upgrade == Upgrade.DARKENED ? 255 : 0;
   }
 
-  public @Nonnull String getUnlocalisedName() {
-    return unlocalisedName;
+  public @Nonnull String getOreDictName() {
+    return oreDictName;
   }
 
   public @Nonnull Block getBlock() {

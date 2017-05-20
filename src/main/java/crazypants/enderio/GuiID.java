@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
@@ -205,7 +206,7 @@ public enum GuiID {
     }
   }
 
-  public static void init() {
+  public static void init(@Nonnull FMLInitializationEvent event) {
     for (GuiID id : values()) {
       id.registerNode();
     }
