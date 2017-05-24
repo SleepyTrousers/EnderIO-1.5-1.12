@@ -69,9 +69,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
     dependencies = "after:endercore;after:hwyla;after:jei", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
-  public static final @Nonnull String MODID = "enderio";
-  public static final @Nonnull String DOMAIN = MODID;
-  public static final @Nonnull String MOD_NAME = "Ender IO";
+  public static final @Nonnull String MODID = "enderiobase";
+  public static final @Nonnull String DOMAIN = "enderio";
+  public static final @Nonnull String MOD_NAME = "Ender IO Base";
   public static final @Nonnull String VERSION = "@VERSION@";
 
   @Instance(MODID)

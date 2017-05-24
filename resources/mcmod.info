@@ -1,7 +1,7 @@
 [
 {
-  "modid": "EnderIO",
-  "name": "Ender IO",
+  "modid": "enderiobase",
+  "name": "Ender IO Base",
   "description": "Compact conduits, painted things and all sorts of stuff and bling.",
   "version": "${version}",
   "mcversion": "${mcversion}",
