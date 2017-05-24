@@ -11,12 +11,12 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.vat.ContainerVat;
-import crazypants.enderio.machine.vat.GuiVat;
-import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.RecipeInput;
+import crazypants.enderio.recipe.vat.ContainerVat;
+import crazypants.enderio.recipe.vat.GuiVat;
+import crazypants.enderio.recipe.vat.VatRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -31,10 +31,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.enderio.ModObject.blockVat;
-import static crazypants.enderio.machine.vat.ContainerVat.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.vat.ContainerVat.NUM_RECIPE_SLOT;
+import static crazypants.enderio.recipe.vat.ContainerVat.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.vat.ContainerVat.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.recipe.vat.ContainerVat.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.vat.ContainerVat.NUM_RECIPE_SLOT;
 
 public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.VatRecipeWrapper> {
 

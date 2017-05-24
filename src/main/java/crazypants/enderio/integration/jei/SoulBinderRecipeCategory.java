@@ -9,13 +9,13 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.soul.ContainerSoulBinder;
-import crazypants.enderio.machine.soul.GuiSoulBinder;
-import crazypants.enderio.machine.soul.ISoulBinderRecipe;
-import crazypants.enderio.machine.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.soul.ContainerSoulBinder;
+import crazypants.enderio.recipe.soul.GuiSoulBinder;
+import crazypants.enderio.recipe.soul.ISoulBinderRecipe;
+import crazypants.enderio.recipe.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.util.CapturedMob;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -36,10 +36,10 @@ import net.minecraft.util.ResourceLocation;
 import static crazypants.enderio.ModObject.blockSoulBinder;
 import static crazypants.enderio.ModObject.itemBrokenSpawner;
 import static crazypants.enderio.ModObject.itemSoulVessel;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
+import static crazypants.enderio.recipe.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.recipe.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.soul.ContainerSoulBinder.NUM_RECIPE_SLOT;
 
 public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderRecipeCategory.SoulBinderRecipeWrapper> {
 

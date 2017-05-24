@@ -7,8 +7,8 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.util.Prep;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;

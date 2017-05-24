@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.recipe.painter.BasicPainterTemplate;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

@@ -1,7 +1,7 @@
 package crazypants.enderio.integration.immersiveengineering;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.FarmersCommune;
 
 public class ImmersiveEngineeringUtil {
 

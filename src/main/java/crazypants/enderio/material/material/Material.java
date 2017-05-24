@@ -21,6 +21,8 @@ public enum Material {
   MACHINE_CHASSI("machineChassi"),
   CHASSIPARTS("chassiParts"),
   BASIC_GEAR("basicGear", "gearStone"),
+  GLIDER_WING("gliderWing"),
+  GLIDER_WINGS("gliderWings"),
 
   DARK_GRINDING_BALL("darkGrindingBall"),
   SILICON("silicon"),

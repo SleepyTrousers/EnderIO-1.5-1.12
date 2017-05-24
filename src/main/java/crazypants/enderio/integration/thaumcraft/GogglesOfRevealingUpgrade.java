@@ -1,8 +1,8 @@
 package crazypants.enderio.integration.thaumcraft;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;

@@ -2,7 +2,7 @@ package crazypants.enderio.integration.ic2e;
 
 import java.util.Random;
 
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmer;
+import crazypants.enderio.farming.farmers.RubberTreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

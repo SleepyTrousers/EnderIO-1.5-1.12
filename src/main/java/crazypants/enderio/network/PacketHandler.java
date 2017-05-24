@@ -3,11 +3,11 @@ package crazypants.enderio.network;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.PacketConduitProbe;
-import crazypants.enderio.item.PacketConduitProbeMode;
-import crazypants.enderio.item.YetaWrenchPacketProcessor;
-import crazypants.enderio.machine.PacketRedstoneMode;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbe;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbeMode;
+import crazypants.enderio.item.yetawrench.YetaWrenchPacketProcessor;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.modes.PacketRedstoneMode;
 import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;

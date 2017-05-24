@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;

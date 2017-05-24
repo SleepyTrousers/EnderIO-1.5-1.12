@@ -2,11 +2,11 @@ package crazypants.enderio.integration.immersiveengineering;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
-import crazypants.enderio.machine.farm.farmers.IFarmerJoe;
-import crazypants.enderio.machine.farm.farmers.IHarvestResult;
-import crazypants.enderio.machine.farm.farmers.StemFarmer;
+import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.farmers.CustomSeedFarmer;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
+import crazypants.enderio.farming.farmers.IHarvestResult;
+import crazypants.enderio.farming.farmers.StemFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

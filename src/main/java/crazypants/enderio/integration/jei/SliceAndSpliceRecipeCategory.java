@@ -7,11 +7,11 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice;
-import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
-import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice;
+import crazypants.enderio.recipe.slicensplice.GuiSliceAndSplice;
+import crazypants.enderio.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -28,10 +28,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.ModObject.blockSliceAndSplice;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
+import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.NUM_RECIPE_SLOT;
 
 public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSpliceRecipeCategory.SliceAndSpliceRecipe> {
 

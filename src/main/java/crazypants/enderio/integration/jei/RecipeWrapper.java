@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.RecipeOutput;
 import crazypants.util.Prep;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;

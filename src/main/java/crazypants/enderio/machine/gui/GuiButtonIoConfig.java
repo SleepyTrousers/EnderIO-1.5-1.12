@@ -10,8 +10,8 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.PacketIoMode;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.modes.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.tileentity.TileEntity;
 

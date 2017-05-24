@@ -1,7 +1,7 @@
 package crazypants.enderio.integration.thaumcraft;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
+import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.farmers.CustomSeedFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

@@ -1,9 +1,9 @@
 package crazypants.enderio.integration.mfr;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.TreeFarmer;
 import net.minecraft.block.Block;
 
 public class MFRUtil {

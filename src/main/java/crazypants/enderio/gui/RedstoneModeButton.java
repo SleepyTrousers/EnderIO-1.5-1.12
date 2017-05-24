@@ -4,9 +4,9 @@ import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.CycleButton;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.PacketRedstoneMode;
-import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.machine.modes.PacketRedstoneMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.tileentity.TileEntity;
 

@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;

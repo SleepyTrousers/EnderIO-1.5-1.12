@@ -11,8 +11,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.sagmill.IGrindingMultiplier;
-import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
+import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 
 public class TooltipHandlerGrinding implements ITooltipCallback {
 

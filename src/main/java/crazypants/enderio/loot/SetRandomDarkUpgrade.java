@@ -11,8 +11,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager.UpgradePath;
+import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;

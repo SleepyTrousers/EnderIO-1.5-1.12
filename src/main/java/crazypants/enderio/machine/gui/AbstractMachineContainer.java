@@ -11,8 +11,8 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
-import crazypants.enderio.machine.AbstractInventoryMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;

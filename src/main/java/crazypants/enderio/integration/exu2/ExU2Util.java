@@ -1,8 +1,8 @@
 package crazypants.enderio.integration.exu2;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.farmers.CustomSeedFarmer;
 import net.minecraft.init.Blocks;
 
 public class ExU2Util {

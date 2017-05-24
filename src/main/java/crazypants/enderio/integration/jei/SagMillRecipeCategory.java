@@ -8,13 +8,13 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.RecipeOutput;
-import crazypants.enderio.machine.sagmill.ContainerSagMill;
-import crazypants.enderio.machine.sagmill.GrindingBall;
-import crazypants.enderio.machine.sagmill.GuiSagMill;
-import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.RecipeOutput;
+import crazypants.enderio.recipe.sagmill.ContainerSagMill;
+import crazypants.enderio.recipe.sagmill.GrindingBall;
+import crazypants.enderio.recipe.sagmill.GuiSagMill;
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -33,10 +33,10 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
 import static crazypants.enderio.ModObject.blockSagMill;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
+import static crazypants.enderio.recipe.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.recipe.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
 
 public class SagMillRecipeCategory extends BlankRecipeCategory<SagMillRecipeCategory.SagRecipe> implements ITooltipCallback<ItemStack> {
 

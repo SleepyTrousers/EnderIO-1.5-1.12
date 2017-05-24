@@ -2,14 +2,14 @@ package crazypants.enderio.api;
 
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.item.ItemSoulVessel;
-import crazypants.enderio.machine.alloy.AlloyRecipeManager;
+import crazypants.enderio.item.soulvial.ItemSoulVessel;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
-import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.paint.PaintSourceValidator;
+import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.recipe.slicensplice.SliceAndSpliceRecipeManager;
+import crazypants.enderio.recipe.soul.SoulBinderRecipeManager;
+import crazypants.enderio.recipe.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.recipe.vat.VatRecipeManager;
 import crazypants.enderio.teleport.TravelController;
 
 /**

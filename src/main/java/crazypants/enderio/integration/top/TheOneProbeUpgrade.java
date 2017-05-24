@@ -3,8 +3,8 @@ package crazypants.enderio.integration.top;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;

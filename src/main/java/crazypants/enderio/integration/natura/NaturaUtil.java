@@ -1,13 +1,13 @@
 package crazypants.enderio.integration.natura;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.PickableFarmer;
-import crazypants.enderio.machine.farm.farmers.StemFarmer;
-import crazypants.enderio.machine.farm.farmers.TreeFarmer;
-import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.PickableFarmer;
+import crazypants.enderio.farming.farmers.StemFarmer;
+import crazypants.enderio.farming.farmers.TreeFarmer;
+import crazypants.enderio.farming.farmers.TreeHarvestUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

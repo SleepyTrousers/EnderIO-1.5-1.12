@@ -2,7 +2,7 @@ package crazypants.enderio.integration.thaumcraft;
 
 import java.util.List;
 
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+import crazypants.enderio.handler.darksteel.IDarkSteelUpgrade;
 import net.minecraftforge.fml.common.Loader;
 
 public class ThaumcraftUtil {

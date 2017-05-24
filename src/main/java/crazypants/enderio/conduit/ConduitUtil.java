@@ -20,7 +20,7 @@ import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.conduit.registry.ConduitRegistry;
-import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.sound.IModSound;
 import crazypants.enderio.sound.SoundHelper;

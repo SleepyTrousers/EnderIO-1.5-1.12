@@ -1,6 +1,6 @@
 package crazypants.enderio.integration.botany;
 
-import crazypants.enderio.machine.farm.FarmersRegistry;
+import crazypants.enderio.farming.FarmersRegistry;
 
 public class BotanyUtil {
 

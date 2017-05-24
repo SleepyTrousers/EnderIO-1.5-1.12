@@ -2,8 +2,8 @@ package crazypants.enderio.capability;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.killera.TileKillerJoe;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

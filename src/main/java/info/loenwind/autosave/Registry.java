@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.sagmill.GrindingMultiplierNBT;
+import crazypants.enderio.recipe.sagmill.GrindingMultiplierNBT;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.endercore.HandleEnderInventory;

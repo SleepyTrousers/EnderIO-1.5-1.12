@@ -6,11 +6,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.alloy.AlloyRecipeManager;
-import crazypants.enderio.machine.alloy.ContainerAlloySmelter;
-import crazypants.enderio.machine.alloy.GuiAlloySmelter;
-import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.power.PowerDisplayUtil;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter;
+import crazypants.enderio.recipe.alloysmelter.GuiAlloySmelter;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -27,10 +27,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.ModObject.blockAlloySmelter;
-import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machine.alloy.ContainerAlloySmelter.NUM_RECIPE_SLOT;
+import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.NUM_RECIPE_SLOT;
 
 public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory.AlloyRecipe> {
 

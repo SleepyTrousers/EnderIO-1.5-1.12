@@ -6,8 +6,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;

@@ -5,9 +5,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.machine.AbstractInventoryMachineEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

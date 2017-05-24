@@ -15,8 +15,8 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.modes.IoMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.tileentity.TileEntity;

@@ -1,8 +1,8 @@
 package crazypants.enderio.integration.forestry;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.upgrade.AbstractUpgrade;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;

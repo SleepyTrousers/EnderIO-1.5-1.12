@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.recipe.RecipeInput;
 import crazypants.util.Prep;
 
 public class PaintSourceValidator {

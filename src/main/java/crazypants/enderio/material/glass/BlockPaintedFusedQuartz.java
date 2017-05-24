@@ -11,12 +11,12 @@ import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
-import crazypants.enderio.machine.painter.blocks.TileEntityPaintedBlock;
+import crazypants.enderio.block.painted.TileEntityPaintedBlock;
+import crazypants.enderio.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;

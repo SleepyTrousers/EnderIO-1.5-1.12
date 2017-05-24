@@ -7,7 +7,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.power.PowerDisplayUtil;

@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

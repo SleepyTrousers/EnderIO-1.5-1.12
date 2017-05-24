@@ -23,11 +23,11 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.PacketIoMode;
-import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.recipe.alloysmelter.BlockAlloySmelter;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

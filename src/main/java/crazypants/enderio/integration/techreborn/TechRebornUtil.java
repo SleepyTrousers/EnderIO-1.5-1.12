@@ -1,8 +1,8 @@
 package crazypants.enderio.integration.techreborn;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmer;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.RubberTreeFarmer;
 
 public class TechRebornUtil {
 

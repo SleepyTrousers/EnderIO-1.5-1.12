@@ -14,7 +14,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

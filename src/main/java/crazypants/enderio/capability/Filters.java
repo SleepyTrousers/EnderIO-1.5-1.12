@@ -6,8 +6,8 @@ import com.enderio.core.common.inventory.Filters.PredicateItemStack;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.capacitor.CapacitorHelper;
-import crazypants.enderio.machine.sagmill.SagMillRecipeManager;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import crazypants.util.CapturedMob;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

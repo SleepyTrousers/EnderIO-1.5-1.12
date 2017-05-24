@@ -3,9 +3,9 @@ package crazypants.enderio.integration.botania;
 import java.lang.reflect.Method;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.farm.FarmersRegistry;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.PlaceableFarmer;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.PlaceableFarmer;
 import net.minecraft.entity.Entity;
 
 public class BotaniaUtil {

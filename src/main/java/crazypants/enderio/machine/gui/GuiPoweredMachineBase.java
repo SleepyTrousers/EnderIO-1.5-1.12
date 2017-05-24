@@ -9,7 +9,7 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredMachineEntity;
 import crazypants.enderio.power.PowerDisplayUtil;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.client.renderer.GlStateManager;

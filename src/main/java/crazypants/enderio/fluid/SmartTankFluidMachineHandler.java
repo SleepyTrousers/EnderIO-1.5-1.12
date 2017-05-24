@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.modes.IoMode;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 

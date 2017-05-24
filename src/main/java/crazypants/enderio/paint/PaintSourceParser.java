@@ -15,9 +15,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeConfig;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.recipe.RecipeConfig;
+import crazypants.enderio.recipe.RecipeConfigParser;
+import crazypants.enderio.recipe.RecipeInput;
 
 public class PaintSourceParser extends DefaultHandler {
 

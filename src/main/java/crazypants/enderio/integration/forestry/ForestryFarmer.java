@@ -2,10 +2,10 @@ package crazypants.enderio.integration.forestry;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.IFarmerJoe;
-import crazypants.enderio.machine.farm.farmers.IHarvestResult;
+import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
+import crazypants.enderio.farming.farmers.IHarvestResult;
 import crazypants.util.Prep;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.ITree;
