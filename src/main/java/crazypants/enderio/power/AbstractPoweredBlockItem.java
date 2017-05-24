@@ -17,7 +17,7 @@ public class AbstractPoweredBlockItem extends ItemBlock implements IInternalPowe
   protected int maxInput;
   protected int maxOutput;
 
-  public AbstractPoweredBlockItem(Block block, int maxEneryStored, int maxInput, int maxOutput) {
+  public AbstractPoweredBlockItem(@Nonnull Block block, int maxEneryStored, int maxInput, int maxOutput) {
     super(block);
     this.maxEneryStored = maxEneryStored;
     this.maxInput = maxInput;

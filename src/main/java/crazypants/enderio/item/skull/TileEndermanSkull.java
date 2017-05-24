@@ -8,7 +8,7 @@ import crazypants.enderio.TileEntityEio;
 public class TileEndermanSkull extends TileEntityEio {
 
   @Store
-  protected float yaw;
+  private float yaw;
 
   // Rendering data
   protected long lastTick = -1;
@@ -16,6 +16,10 @@ public class TileEndermanSkull extends TileEntityEio {
 
   public void setYaw(float yaw) {
     this.yaw = yaw;
+  }
+
+  public float getYaw() {
+    return yaw;
   }
 
 }

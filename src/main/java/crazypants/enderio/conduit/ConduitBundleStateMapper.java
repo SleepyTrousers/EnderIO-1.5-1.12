@@ -2,6 +2,8 @@ package crazypants.enderio.conduit;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.Maps;
 
 import crazypants.enderio.ModObject;
@@ -20,7 +22,7 @@ public class ConduitBundleStateMapper extends StateMapperBase {
   }
 
   @Override
-  protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+  protected @Nonnull ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
     Map<IProperty<?>, Comparable<?>> map = Maps.<IProperty<?>, Comparable<?>> newLinkedHashMap(state.getProperties());
 
     map.remove(BlockConduitBundle.OPAQUE);

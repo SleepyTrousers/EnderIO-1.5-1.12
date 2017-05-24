@@ -3,6 +3,9 @@ package crazypants.enderio.network;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.PacketConduitProbe;
+import crazypants.enderio.item.PacketConduitProbeMode;
+import crazypants.enderio.item.YetaWrenchPacketProcessor;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.xp.PacketExperienceContainer;
@@ -42,6 +45,9 @@ public class PacketHandler {
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketConduitProbeMode.class, PacketConduitProbeMode.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
   }
 
 }

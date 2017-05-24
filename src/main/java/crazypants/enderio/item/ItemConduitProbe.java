@@ -2,11 +2,13 @@ package crazypants.enderio.item;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.IModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -29,99 +31,96 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades, IHaveRenderers {
 
-  public static ItemConduitProbe create() {
-
-    PacketHandler.INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketConduitProbeMode.class, PacketConduitProbeMode.class, PacketHandler.nextID(), Side.SERVER);
-
-    ItemConduitProbe result = new ItemConduitProbe();
+  public static ItemConduitProbe create(@Nonnull IModObject modObject) {
+    ItemConduitProbe result = new ItemConduitProbe(modObject);
     result.init();
     return result;
   }
-  
-  public static boolean copyPasteSettings(EntityPlayer player, ItemStack stack, IConduitBundle bundle, EnumFacing dir) {
-    boolean isCopy = player.isSneaking();
-    boolean clearedData = false;
-    NBTTagCompound nbt = stack.getTagCompound();
-    
-    if(nbt == null) {
-      nbt = new NBTTagCompound();
-      stack.setTagCompound(nbt);
-    }
-    
-    boolean performedAction = false;
-    Collection<IConduit> conduits = bundle.getConduits();
-    for(IConduit conduit : conduits) {
-      if(conduit.getExternalConnections().contains(dir)) {
-        if(isCopy && !clearedData) {
-          nbt = new NBTTagCompound();
-          stack.setTagCompound(nbt);
-          clearedData = true;
-        }
-        if(isCopy) {
-          performedAction |= conduit.writeConnectionSettingsToNBT(dir, nbt);
-        } else {
-          performedAction |= conduit.readConduitSettingsFromNBT(dir, nbt);
-        }        
-      }
-    }
 
-    if(isCopy && performedAction && player.world.isRemote) {
-      ChatUtil.sendNoSpamClient("Copied conduit settings");
-    }
-    
-    return performedAction;
-  }
-
-  protected ItemConduitProbe() {
+  protected ItemConduitProbe(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName("enderio." + ModObject.itemConduitProbe.getUnlocalisedName());
-    setRegistryName(ModObject.itemConduitProbe.name());
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
-  }
-  
-  
-  
-  @Override
-  public EnumActionResult onItemUse(ItemStack itemStack, EntityPlayer playerIn, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
-      float hitY, float hitZ) {
-  
-    if(itemStack.getItemDamage() == 0) {      
-      if(PacketConduitProbe.canCreatePacket(world, pos.getX(), pos.getY(), pos.getZ())) {
-        if(world.isRemote) {
-          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos, side));
-        }
-        return EnumActionResult.SUCCESS;
-      }
-    } 
-    return EnumActionResult.PASS;
   }
 
   protected void init() {
     GameRegistry.register(this);
   }
- 
+
+  public static boolean copyPasteSettings(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
+    if (player.world.isRemote) {
+      return true;
+    }
+
+    boolean isCopy = player.isSneaking();
+    boolean clearedData = false;
+
+    if (!isCopy && !stack.hasTagCompound()) {
+      return false;
+    }
+
+    boolean performedAction = false;
+    Collection<IConduit> conduits = bundle.getConduits();
+    for (IConduit conduit : conduits) {
+      if (conduit.getExternalConnections().contains(dir)) {
+        if (isCopy && !clearedData) {
+          clearedData = true;
+        }
+        if (isCopy) {
+          NBTTagCompound nbt = new NBTTagCompound();
+          performedAction |= conduit.writeConnectionSettingsToNBT(dir, nbt);
+          stack.setTagCompound(nbt);
+        } else {
+          NBTTagCompound nbt = stack.getTagCompound();
+          performedAction |= nbt != null && conduit.readConduitSettingsFromNBT(dir, nbt);
+        }
+      }
+    }
+
+    if (isCopy && performedAction) {
+      ChatUtil.sendNoSpam(player, "Copied conduit settings"); // TODO lang
+    }
+
+    return performedAction;
+  }
+
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer playerIn, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    ItemStack itemStack = playerIn.getHeldItem(hand);
+    if (itemStack.getItemDamage() == 0) {
+      if (PacketConduitProbe.canCreatePacket(world, pos)) {
+        if (world.isRemote) {
+          PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(pos, side));
+        }
+        return EnumActionResult.SUCCESS;
+      }
+    }
+    return EnumActionResult.PASS;
+  }
+
+  @Override
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
-  public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {   
+  public boolean doesSneakBypassUse(@Nonnull ItemStack stack, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     return true;
   }
-  
+
   @Override
-  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+  public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
-    ClientUtil.regRenderer(this, 0, ModObject.itemConduitProbe.getUnlocalisedName());
-    ClientUtil.regRenderer(this, 1, ModObject.itemConduitProbe.getUnlocalisedName() + "Variant");
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    ClientUtil.regRenderer(this, 0, modObject.getUnlocalisedName());
+    ClientUtil.regRenderer(this, 1, modObject.getUnlocalisedName() + "_variant");
   }
 
 }

@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,8 +25,8 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   protected ItemEnderface(@Nonnull IModObject modObject) {
     setCreativeTab(null);
     setUnlocalizedName(modObject.getUnlocalisedName());
-    setMaxStackSize(1);
     setRegistryName(modObject.getUnlocalisedName());
+    setMaxStackSize(1);
   }
 
   protected void init() {
@@ -50,11 +49,11 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   }
 
   @Override
-  public void registerRenderers() {
-    ClientUtil.regRenderer(this, 0, ModObject.itemEnderface.getUnlocalisedName());
-    ClientUtil.regRenderer(this, 1, ModObject.itemEnderface.getUnlocalisedName() + "_items");
-    ClientUtil.regRenderer(this, 2, ModObject.itemEnderface.getUnlocalisedName() + "_materials");
-    ClientUtil.regRenderer(this, 3, ModObject.itemEnderface.getUnlocalisedName() + "_machines");
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    ClientUtil.regRenderer(this, 0, modObject.getUnlocalisedName());
+    ClientUtil.regRenderer(this, 1, modObject.getUnlocalisedName() + "_items");
+    ClientUtil.regRenderer(this, 2, modObject.getUnlocalisedName() + "_materials");
+    ClientUtil.regRenderer(this, 3, modObject.getUnlocalisedName() + "_machines");
   }
 
 }

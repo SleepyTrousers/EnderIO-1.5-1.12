@@ -82,9 +82,9 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {    
-    ClientUtil.regRenderer(this, 0, "itemSoulVessel");
-    ClientUtil.regRenderer(this, 1, "itemSoulVesselFull");
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    ClientUtil.regRenderer(this, 0, modObject.getUnlocalisedName());
+    ClientUtil.regRenderer(this, 1, modObject.getUnlocalisedName() + "_full");
   }
 
   @Override
@@ -103,8 +103,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
-      @Nonnull EnumFacing side, float hitX,
-      float hitY, float hitZ) {
+      @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
 
     if (world.isRemote) {
       return EnumActionResult.PASS;
@@ -133,10 +132,10 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         player.setHeldItem(hand, emptyVial);
       } else if (!player.inventory.addItemStackToInventory(emptyVial)) {
         player.dropItem(emptyVial, false);
-        }
-        player.inventoryContainer.detectAndSendChanges();
+      }
+      player.inventoryContainer.detectAndSendChanges();
     }
-    
+
     return EnumActionResult.SUCCESS;
   }
 
@@ -171,7 +170,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
       player.sendMessage(new TextComponentString(EnderIO.lang.localize("soulvial.denied")));
       return false;
     }
-    
+
     ItemStack capturedMobVessel = capturedMob.toStack(this, 1, 1);
 
     player.swingArm(hand);
@@ -269,9 +268,9 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
       if (color != null) {
         par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
       }
-      } else {
-        par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
-      }
+    } else {
+      par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
+    }
   }
 
   @Override

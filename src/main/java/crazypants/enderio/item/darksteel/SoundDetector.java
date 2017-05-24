@@ -23,23 +23,9 @@ public class SoundDetector {
 
   public static SoundDetector instance = new SoundDetector();
 
-  private List<SoundSource> sounds;
-  private ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_PARTICLES);
-
-  private Minecraft mc = Minecraft.getMinecraft();
+  private final ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_PARTICLES);
 
   boolean enabled = false;
-
-  double maxRangeSq = Config.darkSteelSoundLocatorRange * Config.darkSteelSoundLocatorRange;
-
-  // useless on the client, entity is either null or thePlayer
-
-  // @SubscribeEvent
-  // public void onSound(PlaySoundAtEntityEvent evt) {
-  // if (enabled && evt.getEntity() != null && evt.getEntity() != Minecraft.getMinecraft().player && soundQueue.size() < MAX_PARTICLES) {
-  // soundQueue.offer(new SoundSource(evt.getEntity(), evt.getVolume()));
-  // }
-  // }
 
   @SubscribeEvent
   public void onSound(PlaySoundSourceEvent evt) {
@@ -64,20 +50,21 @@ public class SoundDetector {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
 
-    if (!enabled || mc.player == null || mc.player.world == null) {
+    if (!enabled) {
       return;
     }
 
-    sounds = new ArrayList<SoundSource>(MAX_PARTICLES);
+    List<SoundSource> sounds = new ArrayList<SoundSource>(MAX_PARTICLES);
     soundQueue.drainTo(sounds);
 
     try {
-      Vector3d eye = Util.getEyePositionEio(mc.player);
+      final Minecraft minecraft = Minecraft.getMinecraft();
+      Vector3d eye = Util.getEyePositionEio(minecraft.player);
       for (SoundSource ss : sounds) {
         double distSq = ss.pos.distanceSquared(eye);
         int minDist = ss.isEntity ? 4 : 49;
-        if (distSq > minDist && distSq <= maxRangeSq) {
-          Minecraft.getMinecraft().effectRenderer.addEffect(new SoundParticle(mc.player.world, ss));
+        if (distSq > minDist && distSq <= Config.darkSteelSoundLocatorRange * Config.darkSteelSoundLocatorRange) {
+          minecraft.effectRenderer.addEffect(new SoundParticle(minecraft.player.world, ss));
         }
       }
     } catch (Exception ex) {
@@ -101,11 +88,7 @@ public class SoundDetector {
 
     public SoundSource(Entity ent, float volume) {
       AxisAlignedBB bb = ent.getEntityBoundingBox();
-      if (bb != null) {
-        pos = new Vector3d(bb.minX + (bb.maxX - bb.minX) / 2, bb.minY + (bb.maxY - bb.minY) / 2, bb.minZ + (bb.maxZ - bb.minZ) / 2);
-      } else {
-        pos = new Vector3d(ent.posX, ent.posY, ent.posZ);
-      }
+      pos = new Vector3d(bb.minX + (bb.maxX - bb.minX) / 2, bb.minY + (bb.maxY - bb.minY) / 2, bb.minZ + (bb.maxZ - bb.minZ) / 2);
       this.volume = volume;
       isEntity = true;
     }

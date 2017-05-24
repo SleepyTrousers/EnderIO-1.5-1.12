@@ -15,8 +15,9 @@ public enum SkullType implements IStringSerializable {
   TORMENTED("tormented", false),
   REANIMATED_TORMENTED("reanimated_tormented", true);
 
-  final @Nonnull String name;
-  final boolean showEyes;
+  final @Nonnull
+  private String name;
+  private final boolean showEyes;
 
   SkullType(@Nonnull String name, boolean showEyes) {
     this.name = name;
@@ -30,5 +31,9 @@ public enum SkullType implements IStringSerializable {
 
   public static @Nonnull SkullType getTypeFromMeta(int meta) {
     return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
+  }
+
+  public boolean showEyes() {
+    return showEyes;
   }
 }

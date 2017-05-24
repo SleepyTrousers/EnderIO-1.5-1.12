@@ -16,7 +16,6 @@ import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.power.rf.PowerInterfaceRF;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -337,5 +336,11 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
     String[] getConduitProbeData();
 
+  }
+
+  public static boolean
+ canCreatePacket(World world, BlockPos pos2) {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

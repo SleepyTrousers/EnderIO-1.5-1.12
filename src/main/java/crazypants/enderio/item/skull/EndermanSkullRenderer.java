@@ -23,8 +23,6 @@ public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
   @Override
   protected void renderTileEntity(@Nonnull TileEndermanSkull te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
 
-    // RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-
     GlStateManager.translate(0.5f, 0, 0.5f);
     GlStateManager.rotate(getYaw(te), 0, 1, 0);
     GlStateManager.translate(-0.5f, 0, -0.5f);
@@ -39,7 +37,7 @@ public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
         te.lookingAt--;
       }
 
-      Angle yaw = new Angle(360, te.yaw);
+      Angle yaw = new Angle(360, te.getYaw());
 
       EntityPlayerSP player = Minecraft.getMinecraft().player;
       double d = te.getPos().distanceSqToCenter(player.posX, player.posY, player.posZ);
@@ -63,10 +61,10 @@ public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
         yaw.add(1);
       }
 
-      te.yaw = (float) yaw.get();
+      te.setYaw((float) yaw.get());
     }
 
-    return -te.yaw + (te.lookingAt > 0 ? (((te.lastTick & 1) == 0) ? 1 : -1) : 0);
+    return -te.getYaw() + (te.lookingAt > 0 ? (((te.lastTick & 1) == 0) ? 1 : -1) : 0);
   }
 
   private static class Angle {

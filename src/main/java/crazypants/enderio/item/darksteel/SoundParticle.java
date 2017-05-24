@@ -1,5 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.config.Config;
@@ -36,7 +38,8 @@ public class SoundParticle extends Particle {
   }
 
   @Override
-  public void renderParticle(VertexBuffer worldRendererIn, Entity player, float partialTicks, float rotX, float rotZ, float rotYZ, float rotXY, float rotXZ) {
+  public void renderParticle(@Nonnull VertexBuffer worldRendererIn, @Nonnull Entity player, float partialTicks, float rotX, float rotZ, float rotYZ,
+      float rotXY, float rotXZ) {
 
     final IconEIO icon = IconEIO.SOUND;
     double minU = (double) icon.getX() / IconEIO.map.getSize();
@@ -52,7 +55,6 @@ public class SoundParticle extends Particle {
     }
     float volumeScale = MathHelper.clamp(ss.volume / 3f + .5f, .5f, 1f);
     float scale = 0.5F * ageScale * volumeScale;
-
 
     float alpha = MathHelper.clamp((ss.volume + 1) / 3f, .6f, .4f);
     float brightness = 1.0f;

@@ -79,7 +79,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
     return energyStored > 0 && energyStored >= Config.magnetPowerUsePerSecondRF;
   }
 
-  public void drainPerSecondPower(ItemStack itemStack) {
+  public void drainPerSecondPower(@Nonnull ItemStack itemStack) {
     extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
   }
 
@@ -116,7 +116,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
     setEnergyStored(itemStack, 0);
   }
 
-  private void extractEnergyInternal(ItemStack itemStack, int extract) {
+  private void extractEnergyInternal(@Nonnull ItemStack itemStack, int extract) {
     if(extract <= 0) {
       return;
     }

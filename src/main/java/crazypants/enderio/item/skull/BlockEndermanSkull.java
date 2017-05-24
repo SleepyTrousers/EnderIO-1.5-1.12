@@ -67,12 +67,12 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(@Nonnull IModObject modObject) {
     Item item = Item.getItemFromBlock(this);
     int num = SkullType.values().length;
     for (int i = 0; i < num; i++) {
       SkullType st = SkullType.values()[i];
-      ClientUtil.regRenderer(item, i, name + "_" + st.name);
+      ClientUtil.regRenderer(item, i, name + "_" + st.getName());
     }
   }
 
