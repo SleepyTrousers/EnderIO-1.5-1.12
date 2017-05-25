@@ -8,10 +8,10 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;

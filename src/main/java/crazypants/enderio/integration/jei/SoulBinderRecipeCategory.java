@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
@@ -33,9 +33,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockSoulBinder;
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.blockSoulBinder;
+import static crazypants.enderio.init.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.init.ModObject.itemSoulVessel;
 import static crazypants.enderio.recipe.soul.ContainerSoulBinder.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.recipe.soul.ContainerSoulBinder.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.recipe.soul.ContainerSoulBinder.NUM_INVENTORY_SLOT;

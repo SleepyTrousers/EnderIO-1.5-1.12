@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.render;
 
 import java.util.EnumMap;
 
@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 

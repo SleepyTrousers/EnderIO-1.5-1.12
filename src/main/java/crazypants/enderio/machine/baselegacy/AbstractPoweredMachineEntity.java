@@ -1,11 +1,10 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.CapacitorKeyType;
@@ -14,6 +13,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.util.NbtValue;

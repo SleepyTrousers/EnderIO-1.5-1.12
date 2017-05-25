@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
 import java.util.ArrayList;
 import java.util.List;

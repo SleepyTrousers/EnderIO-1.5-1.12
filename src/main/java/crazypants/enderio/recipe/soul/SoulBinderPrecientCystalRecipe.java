@@ -5,7 +5,7 @@ import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public class SoulBinderPrecientCystalRecipe extends AbstractSoulBinderRecipe {
 

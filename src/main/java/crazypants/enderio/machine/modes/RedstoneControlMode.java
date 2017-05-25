@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.modes;
 
 import java.util.List;
 import java.util.Locale;

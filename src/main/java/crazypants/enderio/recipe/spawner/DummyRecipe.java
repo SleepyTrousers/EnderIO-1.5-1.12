@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.RecipeBonusType;

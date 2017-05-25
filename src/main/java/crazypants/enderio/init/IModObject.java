@@ -1,4 +1,4 @@
-package crazypants.enderio;
+package crazypants.enderio.init;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -16,5 +16,17 @@ public interface IModObject {
 
   @Nullable
   Item getItem();
+
+  public static interface Registerable extends IModObject {
+
+    Class<?> getClazz();
+
+    String getMethodName();
+
+    void setItem(Item obj);
+
+    void setBlock(Block obj);
+
+  }
 
 }

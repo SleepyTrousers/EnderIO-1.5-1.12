@@ -26,8 +26,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static crazypants.enderio.ModObject.blockTank;
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.blockTank;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 @JEIPlugin
 public class JeiPlugin extends BlankModPlugin {

@@ -2,7 +2,7 @@ package crazypants.enderio.render;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 
 public interface IHaveRenderers {
 

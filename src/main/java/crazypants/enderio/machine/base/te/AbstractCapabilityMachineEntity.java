@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.base.te;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

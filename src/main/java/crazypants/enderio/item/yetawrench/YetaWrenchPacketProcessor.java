@@ -2,13 +2,13 @@ package crazypants.enderio.item.yetawrench;
 
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<YetaWrenchPacketProcessor, IMessage> {
+public class YetaWrenchPacketProcessor implements IMessage {
 
   private int slot;
   private ConduitDisplayMode mode;
@@ -33,15 +33,16 @@ public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<Yeta
     mode = ConduitDisplayMode.fromName(ByteBufUtils.readUTF8String(buffer));
   }
 
-  @Override
-  public IMessage onMessage(YetaWrenchPacketProcessor message, MessageContext ctx) {
-    ItemStack stack = null;
-    if(message.slot > -1 && message.slot < 9) {
-      stack = ctx.getServerHandler().playerEntity.inventory.getStackInSlot(message.slot);
+  public static class Handler implements IMessageHandler<YetaWrenchPacketProcessor, IMessage> {
+    @Override
+    public IMessage onMessage(YetaWrenchPacketProcessor message, MessageContext ctx) {
+      final ConduitDisplayMode mode_nullchecked = message.mode;
+      if (mode_nullchecked != null && message.slot >= 0 && message.slot < InventoryPlayer.getHotbarSize()) {
+        ConduitDisplayMode.setDisplayMode(ctx.getServerHandler().player.inventory.getStackInSlot(message.slot), mode_nullchecked);
+      }
+      return null;
     }
-    if(stack != null) {
-      ConduitDisplayMode.setDisplayMode(stack, message.mode);
-    }
-    return null;
+
   }
+
 }

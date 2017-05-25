@@ -19,7 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import static crazypants.enderio.ModObject.blockEndermanSkull;
+import static crazypants.enderio.init.ModObject.blockEndermanSkull;
 
 public class MaterialRecipes {
 

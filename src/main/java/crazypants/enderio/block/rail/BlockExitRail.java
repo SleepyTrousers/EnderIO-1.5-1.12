@@ -2,7 +2,7 @@ package crazypants.enderio.block.rail;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IDefaultRenderers;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.IProperty;

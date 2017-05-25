@@ -18,8 +18,6 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelController;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
@@ -28,6 +26,8 @@ import crazypants.enderio.handler.darksteel.IDarkSteelUpgrade;
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
 import crazypants.enderio.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.forestry.ApiaristArmorUpgrade;
 import crazypants.enderio.integration.forestry.NaturalistEyeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
@@ -96,7 +96,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
     final ItemDarkSteelArmor helmet = create(modObject, EntityEquipmentSlot.HEAD);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new HelmetPainterTemplate(helmet));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 

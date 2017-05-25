@@ -12,10 +12,10 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.generator.combustion.GuiCombustionGenerator;
 import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.power.PowerDisplayUtil;

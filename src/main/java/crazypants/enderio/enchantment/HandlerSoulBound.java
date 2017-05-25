@@ -5,7 +5,7 @@ import java.util.ListIterator;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.integration.galacticraft.GalacticraftUtil;
 import crazypants.util.Prep;

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import static crazypants.enderio.ModObject.itemLocationPrintout;
+import static crazypants.enderio.init.ModObject.itemLocationPrintout;
 
 public class PacketUpdateLocationPrintout implements IMessage, IMessageHandler<PacketUpdateLocationPrintout, IMessage> {
 

@@ -7,7 +7,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
 

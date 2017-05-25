@@ -50,8 +50,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockTelePad;
 import static com.enderio.core.common.util.stackable.Things.TRAVEL_BLACKLIST;
+import static crazypants.enderio.init.ModObject.blockTelePad;
 
 public class TravelController {
 

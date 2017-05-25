@@ -1,7 +1,7 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;

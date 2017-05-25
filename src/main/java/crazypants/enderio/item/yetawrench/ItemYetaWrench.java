@@ -13,12 +13,13 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.KeyTracker;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.interfaces.IYetaAwareBlock;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
@@ -47,8 +48,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.ModObject.blockConduitBundle;
 
 @Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core"),
     @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhapi|item") })
@@ -134,7 +133,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public boolean onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     IBlockState bs = player.world.getBlockState(pos);
     Block block = bs.getBlock();
-    if (player.isSneaking() && block == blockConduitBundle.getBlock() && player.capabilities.isCreativeMode) {
+    if (player.isSneaking() && block instanceof IYetaAwareBlock && player.capabilities.isCreativeMode) {
       block.onBlockClicked(player.world, pos, player);
       return true;
     }

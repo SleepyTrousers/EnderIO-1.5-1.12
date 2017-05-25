@@ -8,8 +8,8 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.BlockAnvil;

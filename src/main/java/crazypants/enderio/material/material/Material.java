@@ -14,7 +14,7 @@ import com.enderio.core.common.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public enum Material {
 

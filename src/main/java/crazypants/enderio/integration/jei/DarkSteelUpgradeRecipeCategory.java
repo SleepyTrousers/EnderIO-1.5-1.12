@@ -32,7 +32,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
+import static crazypants.enderio.init.ModObject.blockDarkSteelAnvil;
 
 public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkSteelUpgradeRecipeCategory.DarkSteelUpgradeRecipeWrapper> {
 

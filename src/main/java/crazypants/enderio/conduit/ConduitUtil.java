@@ -41,7 +41,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.itemConduitProbe;
+import static crazypants.enderio.init.ModObject.itemConduitProbe;
 
 public class ConduitUtil {
 

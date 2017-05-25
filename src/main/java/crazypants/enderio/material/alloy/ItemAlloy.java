@@ -7,7 +7,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;

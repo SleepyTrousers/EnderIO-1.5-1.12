@@ -28,7 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockEnchanter;
+import static crazypants.enderio.init.ModObject.blockEnchanter;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;

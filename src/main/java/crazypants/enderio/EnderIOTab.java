@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.ModObject.itemEnderface;
+import static crazypants.enderio.init.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
 

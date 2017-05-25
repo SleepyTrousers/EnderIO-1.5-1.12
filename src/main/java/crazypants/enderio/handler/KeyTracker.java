@@ -45,7 +45,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
-import static crazypants.enderio.ModObject.itemConduitProbe;
+import static crazypants.enderio.init.ModObject.itemConduitProbe;
 
 public class KeyTracker {
 

@@ -19,7 +19,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
 
 public class AnvilCapacitorRecipe {
 

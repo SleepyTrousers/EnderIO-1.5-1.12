@@ -9,7 +9,7 @@ import crazypants.enderio.recipe.spawner.BlockPoweredSpawner;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
+import static crazypants.enderio.init.ModObject.itemBrokenSpawner;
 
 public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
@@ -26,7 +26,7 @@ public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   protected boolean isValidInputSoul(CapturedMob mobType) {
-    return getSupportedSouls().contains(mobType.getEntityName()) && !BlockPoweredSpawner.isBlackListed(mobType.getEntityName());
+    return getSupportedSouls().contains(mobType.getEntityName()) && !BrokenSpawnerHandler.isBlackListed(mobType.getEntityName());
   }
 
   @Override

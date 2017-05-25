@@ -13,8 +13,8 @@ import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -68,7 +68,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockFusedQuartz;
+import static crazypants.enderio.init.ModObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,

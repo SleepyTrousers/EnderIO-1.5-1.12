@@ -1,5 +1,6 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.handler.darksteel;
 
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.ImmutableList;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.painter.ContainerPainter;
 import crazypants.enderio.machine.painter.GuiPainter;
 import crazypants.enderio.power.PowerDisplayUtil;
@@ -40,7 +40,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockPainter;
+import static crazypants.enderio.init.ModObject.blockPainter;
 import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.painter.ContainerPainter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.machine.painter.ContainerPainter.NUM_INVENTORY_SLOT;

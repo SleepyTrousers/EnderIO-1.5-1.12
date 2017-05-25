@@ -1,7 +1,8 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.modes;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.render;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.AbstractMachineRecipe;
 import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;

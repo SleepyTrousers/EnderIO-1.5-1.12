@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config.Section;
+import crazypants.enderio.init.ModObject;
 import net.minecraftforge.common.config.Configuration;
 
 import static crazypants.enderio.config.Config.sectionAttractor;

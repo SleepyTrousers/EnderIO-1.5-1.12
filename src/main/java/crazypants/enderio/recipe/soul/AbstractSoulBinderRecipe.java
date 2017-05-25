@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.RecipeBonusType;
@@ -13,7 +13,7 @@ import crazypants.util.CapturedMob;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemSoulVessel;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 

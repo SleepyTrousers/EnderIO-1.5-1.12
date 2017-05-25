@@ -1,9 +1,11 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.interfaces;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPoweredTask {

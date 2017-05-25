@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockSolarPanel;
+import static crazypants.enderio.init.ModObject.blockSolarPanel;
 
 @SideOnly(Side.CLIENT)
 public class SolarUpgradeLayer implements IRenderUpgrade {

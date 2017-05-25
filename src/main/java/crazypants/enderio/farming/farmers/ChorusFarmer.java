@@ -1,11 +1,11 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.machine.farm.FarmNotification;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
+import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.TileFarmStation.ToolType;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChorusFlower;

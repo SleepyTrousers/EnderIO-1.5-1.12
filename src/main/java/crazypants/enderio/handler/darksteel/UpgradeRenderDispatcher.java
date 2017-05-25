@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel.upgrade;
+package crazypants.enderio.handler.darksteel;
 
 import java.util.List;
 import java.util.Map;
@@ -8,10 +8,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.integration.baubles.BaublesUtil;
-import crazypants.enderio.item.IHasPlayerRenderer;
-import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.item.darksteel.IDarkSteelItem;
+import crazypants.enderio.render.IHasPlayerRenderer;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;

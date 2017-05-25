@@ -43,7 +43,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-import static crazypants.enderio.ModObject.blockTank;
 import static crazypants.enderio.config.Config.topEnabled;
 import static crazypants.enderio.config.Config.topShowItemCountDefault;
 import static crazypants.enderio.config.Config.topShowMobsByDefault;
@@ -54,6 +53,7 @@ import static crazypants.enderio.config.Config.topShowRedstoneByDefault;
 import static crazypants.enderio.config.Config.topShowSideConfigByDefault;
 import static crazypants.enderio.config.Config.topShowTanksByDefault;
 import static crazypants.enderio.config.Config.topShowXPByDefault;
+import static crazypants.enderio.init.ModObject.blockTank;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 

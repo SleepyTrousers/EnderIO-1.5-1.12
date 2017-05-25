@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Lists;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.property.EnumRenderPart;

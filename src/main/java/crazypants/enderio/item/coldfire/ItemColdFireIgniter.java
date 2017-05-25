@@ -12,9 +12,9 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
 import net.minecraft.creativetab.CreativeTabs;

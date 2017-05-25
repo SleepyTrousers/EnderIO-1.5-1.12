@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.paint.PainterUtil2.IWithPaintName;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;

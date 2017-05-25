@@ -1,10 +1,10 @@
-package crazypants.enderio.machine.painter.recipe;
+package crazypants.enderio.recipe.painter;
 
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.PaintTooltipUtil;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

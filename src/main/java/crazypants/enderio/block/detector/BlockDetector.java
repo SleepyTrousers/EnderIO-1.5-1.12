@@ -10,9 +10,9 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock;
 import crazypants.enderio.block.painted.TileEntityPaintedBlock;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;

@@ -2,7 +2,7 @@ package crazypants.enderio.render.dummy;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.property.EnumRenderPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

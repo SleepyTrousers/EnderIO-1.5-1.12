@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,16 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.task.PoweredTask;
+import crazypants.enderio.machine.task.PoweredTaskProgress;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

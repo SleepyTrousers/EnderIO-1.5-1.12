@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.CapturedMob;
 import net.minecraft.init.Items;
@@ -32,10 +32,10 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.ModObject.itemAlloyIngot;
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.ModObject.itemConduitProbe;
-import static crazypants.enderio.ModObject.itemTravelStaff;
+import static crazypants.enderio.init.ModObject.itemAlloyIngot;
+import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.init.ModObject.itemConduitProbe;
+import static crazypants.enderio.init.ModObject.itemTravelStaff;
 
 public class LootManager {
 

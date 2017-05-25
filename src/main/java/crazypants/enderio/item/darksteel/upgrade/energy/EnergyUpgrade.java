@@ -21,8 +21,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.interfaces;
 
 import javax.annotation.Nonnull;
 

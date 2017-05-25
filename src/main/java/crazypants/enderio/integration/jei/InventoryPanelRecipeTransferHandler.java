@@ -26,7 +26,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.blockInventoryPanel;
+import static crazypants.enderio.init.ModObject.blockInventoryPanel;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.machine.invpanel.InventoryPanelContainer.NUM_INVENTORY_SLOT;
 

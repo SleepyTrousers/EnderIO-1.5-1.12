@@ -1,7 +1,7 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.farming.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCocoa;
 import net.minecraft.block.BlockOldLog;

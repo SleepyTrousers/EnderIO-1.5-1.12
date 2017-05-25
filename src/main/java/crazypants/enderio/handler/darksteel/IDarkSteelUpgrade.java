@@ -1,10 +1,10 @@
-package crazypants.enderio.item.darksteel.upgrade;
+package crazypants.enderio.handler.darksteel;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
-import crazypants.enderio.item.IHasPlayerRenderer;
+import crazypants.enderio.render.IHasPlayerRenderer;
 import net.minecraft.item.ItemStack;
 
 public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider, IHasPlayerRenderer {

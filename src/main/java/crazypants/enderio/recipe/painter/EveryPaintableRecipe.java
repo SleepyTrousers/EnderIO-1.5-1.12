@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.painter.recipe;
+package crazypants.enderio.recipe.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

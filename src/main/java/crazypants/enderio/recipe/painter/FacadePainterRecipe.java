@@ -1,9 +1,9 @@
-package crazypants.enderio.machine.painter.recipe;
+package crazypants.enderio.recipe.painter;
 
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

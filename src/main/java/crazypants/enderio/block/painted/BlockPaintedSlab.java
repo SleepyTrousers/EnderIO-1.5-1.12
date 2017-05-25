@@ -12,7 +12,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import com.enderio.core.common.BlockEnder;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;

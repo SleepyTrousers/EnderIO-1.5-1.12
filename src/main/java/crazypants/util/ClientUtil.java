@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.handler.darksteel;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -17,18 +17,19 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.top.TheOneProbeUpgrade;
-import crazypants.enderio.item.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.item.darksteel.upgrade.ElytraUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.JumpUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.NightVisionUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SolarUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SpeedController;
-import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.flippers.SwimUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.glider.GliderUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.jump.JumpUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.solar.SolarUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.speed.SpeedController;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;

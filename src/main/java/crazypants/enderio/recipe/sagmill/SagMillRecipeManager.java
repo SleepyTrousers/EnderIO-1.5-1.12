@@ -9,8 +9,8 @@ import java.util.Set;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;

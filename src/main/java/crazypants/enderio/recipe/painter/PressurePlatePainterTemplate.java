@@ -1,8 +1,8 @@
-package crazypants.enderio.machine.painter.recipe;
+package crazypants.enderio.recipe.painter;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.painter.blocks.BlockPaintedPressurePlate;
+import crazypants.enderio.block.painted.BlockPaintedPressurePlate;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 

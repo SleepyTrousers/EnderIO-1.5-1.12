@@ -13,7 +13,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.CapturedMob;
 import crazypants.util.ClientUtil;

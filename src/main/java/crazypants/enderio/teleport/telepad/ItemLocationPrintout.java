@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import static crazypants.enderio.ModObject.itemLocationPrintout;
+import static crazypants.enderio.init.ModObject.itemLocationPrintout;
 
 public class ItemLocationPrintout extends Item implements IGuiHandler {
 

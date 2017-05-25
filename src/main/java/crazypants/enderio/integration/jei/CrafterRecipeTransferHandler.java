@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.crafter.ContainerCrafter;
 import crazypants.enderio.machine.crafter.ContainerCrafter.DummySlot;
 import crazypants.enderio.machine.crafter.GuiCrafter;

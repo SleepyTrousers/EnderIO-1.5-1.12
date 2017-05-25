@@ -1,9 +1,9 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
 import java.util.ArrayList;
 
-import crazypants.enderio.machine.farm.FarmNotification;
-import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;

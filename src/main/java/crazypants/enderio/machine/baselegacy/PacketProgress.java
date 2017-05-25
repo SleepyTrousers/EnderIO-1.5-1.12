@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.network.MessageTileEntity;

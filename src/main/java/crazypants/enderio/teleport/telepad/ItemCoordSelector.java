@@ -9,7 +9,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

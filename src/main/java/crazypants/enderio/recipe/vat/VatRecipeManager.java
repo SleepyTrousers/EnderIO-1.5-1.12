@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;

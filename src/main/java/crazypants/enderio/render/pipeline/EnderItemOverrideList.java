@@ -12,9 +12,9 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;

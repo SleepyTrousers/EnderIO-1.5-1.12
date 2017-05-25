@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.ILegacyPoweredTile;

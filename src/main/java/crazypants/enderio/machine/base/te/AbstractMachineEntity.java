@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.base.te;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -17,6 +17,12 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.capability.ItemTools.Limit;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.interfaces.IMachine;
+import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
+import crazypants.enderio.machine.sound.MachineSound;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;

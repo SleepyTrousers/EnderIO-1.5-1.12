@@ -10,7 +10,7 @@ import crazypants.util.CapturedMob;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
+import static crazypants.enderio.init.ModObject.blockPaintedPressurePlate;
 
 public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe {
 

@@ -8,10 +8,10 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.recipe.painter.FacadePainterRecipe;
@@ -34,7 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockConduitBundle;
+import static crazypants.enderio.init.ModObject.blockConduitBundle;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider, IHaveRenderers {
 

@@ -8,7 +8,7 @@ import crazypants.enderio.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.itemEnderFood;
+import static crazypants.enderio.init.ModObject.itemEnderFood;
 
 public enum EnderFood {
   ENDERIOS("enderios", 10, 0.8f);

@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import java.util.Locale;
 
+import crazypants.enderio.init.ModObject;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.registry.GameRegistry.Type;

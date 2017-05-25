@@ -30,7 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import static crazypants.enderio.ModObject.blockVat;
+import static crazypants.enderio.init.ModObject.blockVat;
 import static crazypants.enderio.recipe.vat.ContainerVat.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.recipe.vat.ContainerVat.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.recipe.vat.ContainerVat.NUM_INVENTORY_SLOT;

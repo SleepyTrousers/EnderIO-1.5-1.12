@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.InventorySlot;
 
-import crazypants.enderio.IModObject;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.CapacitorKeyType;
@@ -14,6 +13,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;

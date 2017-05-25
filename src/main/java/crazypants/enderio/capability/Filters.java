@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 
 import static com.enderio.core.common.inventory.Filters.and;
 import static com.enderio.core.common.inventory.Filters.not;
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.init.ModObject.itemSoulVessel;
 
 public class Filters {
 

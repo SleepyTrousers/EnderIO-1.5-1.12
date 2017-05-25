@@ -2,7 +2,7 @@ package crazypants.enderio.capacitor;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 
 public class DefaultCapacitorKey implements ICapacitorKey {
 

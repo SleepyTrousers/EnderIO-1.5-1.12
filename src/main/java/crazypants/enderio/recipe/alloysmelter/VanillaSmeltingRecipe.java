@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.alloy;
+package crazypants.enderio.recipe.alloysmelter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.Recipe;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.Recipe;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.RecipeInput;
+import crazypants.enderio.recipe.RecipeOutput;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;

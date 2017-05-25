@@ -1,8 +1,11 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.task;
 
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 
 public class ContinuousTask implements IPoweredTask {
   

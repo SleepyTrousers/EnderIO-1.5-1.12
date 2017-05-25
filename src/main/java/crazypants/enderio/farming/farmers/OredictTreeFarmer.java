@@ -1,7 +1,7 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
-import crazypants.enderio.machine.farm.FarmStationContainer;
-import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.farming.FarmStationContainer;
+import crazypants.enderio.farming.TileFarmStation;
 import crazypants.util.Prep;
 import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;

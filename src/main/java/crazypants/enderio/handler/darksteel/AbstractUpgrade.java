@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel.upgrade;
+package crazypants.enderio.handler.darksteel;
 
 import java.util.List;
 

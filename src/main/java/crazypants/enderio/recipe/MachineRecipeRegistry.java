@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.annotation.Nonnull;
+
 public class MachineRecipeRegistry {
+
+  public static final @Nonnull String PAINTER = "painter";
 
   public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();
 

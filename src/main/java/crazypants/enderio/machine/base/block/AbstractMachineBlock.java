@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.base.block;
 
 import java.util.List;
 import java.util.Random;
@@ -11,9 +11,16 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredMachineEntity;
+import crazypants.enderio.machine.baselegacy.PacketPowerStorage;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.PacketIoMode;
+import crazypants.enderio.machine.modes.PacketIoMode.Handler;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;

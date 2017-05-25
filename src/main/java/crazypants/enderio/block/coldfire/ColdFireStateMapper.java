@@ -2,7 +2,7 @@ package crazypants.enderio.block.coldfire;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

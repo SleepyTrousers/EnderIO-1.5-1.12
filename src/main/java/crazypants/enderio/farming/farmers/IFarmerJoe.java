@@ -1,8 +1,8 @@
-package crazypants.enderio.machine.farm.farmers;
+package crazypants.enderio.farming.farmers;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.farming.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;

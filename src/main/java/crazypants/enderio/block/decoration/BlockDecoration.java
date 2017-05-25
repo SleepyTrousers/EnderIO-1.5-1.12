@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.property.EnumDecoBlock;
 import net.minecraft.block.Block;

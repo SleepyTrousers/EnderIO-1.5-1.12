@@ -8,7 +8,7 @@ import crazypants.enderio.material.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static crazypants.enderio.ModObject.itemMaterial;
+import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public class TravelUpgrade extends AbstractUpgrade {
 

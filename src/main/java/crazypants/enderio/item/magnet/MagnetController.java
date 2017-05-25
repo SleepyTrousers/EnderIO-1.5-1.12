@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.MagnetUtil;
 
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.magnet.PacketMagnetState.SlotType;
 import crazypants.enderio.network.PacketHandler;

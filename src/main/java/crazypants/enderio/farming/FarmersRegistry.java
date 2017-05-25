@@ -1,9 +1,21 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.farming;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.farming.farmers.ChorusFarmer;
+import crazypants.enderio.farming.farmers.CocoaFarmer;
+import crazypants.enderio.farming.farmers.CustomSeedFarmer;
+import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.FlowerPicker;
+import crazypants.enderio.farming.farmers.MelonFarmer;
+import crazypants.enderio.farming.farmers.NetherWartFarmer;
+import crazypants.enderio.farming.farmers.OredictTreeFarmer;
+import crazypants.enderio.farming.farmers.PickableFarmer;
+import crazypants.enderio.farming.farmers.PlantableFarmer;
+import crazypants.enderio.farming.farmers.StemFarmer;
+import crazypants.enderio.farming.farmers.TreeFarmer;
 import crazypants.enderio.integration.bop.BoPUtil;
 import crazypants.enderio.integration.botania.BotaniaUtil;
 import crazypants.enderio.integration.botany.BotanyUtil;
@@ -15,18 +27,6 @@ import crazypants.enderio.integration.mfr.MFRUtil;
 import crazypants.enderio.integration.natura.NaturaUtil;
 import crazypants.enderio.integration.techreborn.TechRebornUtil;
 import crazypants.enderio.integration.tic.TicUtil;
-import crazypants.enderio.machine.farm.farmers.ChorusFarmer;
-import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
-import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.FlowerPicker;
-import crazypants.enderio.machine.farm.farmers.MelonFarmer;
-import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
-import crazypants.enderio.machine.farm.farmers.OredictTreeFarmer;
-import crazypants.enderio.machine.farm.farmers.PickableFarmer;
-import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
-import crazypants.enderio.machine.farm.farmers.StemFarmer;
-import crazypants.enderio.machine.farm.farmers.TreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

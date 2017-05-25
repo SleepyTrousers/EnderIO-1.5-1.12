@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.baselegacy;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,6 +9,7 @@ import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capability.LegacyMachineWrapper;
 import crazypants.enderio.capacitor.CapacitorHelper;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

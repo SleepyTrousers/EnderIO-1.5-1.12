@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.util.QuadCollector;

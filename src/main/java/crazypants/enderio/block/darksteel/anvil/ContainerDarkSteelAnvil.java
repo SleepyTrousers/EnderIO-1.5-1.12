@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-import static crazypants.enderio.ModObject.blockDarkSteelAnvil;
+import static crazypants.enderio.init.ModObject.blockDarkSteelAnvil;
 
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.util.ClientUtil;

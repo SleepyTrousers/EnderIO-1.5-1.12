@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IDefaultRenderers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever;

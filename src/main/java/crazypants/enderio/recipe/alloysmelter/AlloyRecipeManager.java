@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.alloy;
+package crazypants.enderio.recipe.alloysmelter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.CustomTagHandler;
-import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.recipe.CustomTagHandler;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.recipe.ManyToOneRecipeManager;
+import crazypants.enderio.recipe.RecipeConfigParser;
+import crazypants.enderio.recipe.RecipeInput;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 

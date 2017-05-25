@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.IModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IDefaultRenderers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;

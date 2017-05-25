@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 
-import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;

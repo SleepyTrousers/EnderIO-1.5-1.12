@@ -27,7 +27,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockSliceAndSplice;
+import static crazypants.enderio.init.ModObject.blockSliceAndSplice;
 import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.recipe.slicensplice.ContainerSliceAndSplice.NUM_INVENTORY_SLOT;

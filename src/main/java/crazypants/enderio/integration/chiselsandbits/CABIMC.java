@@ -3,7 +3,7 @@ package crazypants.enderio.integration.chiselsandbits;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;

@@ -13,9 +13,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.enchantment.Enchantments;
@@ -23,15 +21,17 @@ import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.handler.darksteel.DarkSteelController;
+import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.integration.bigreactors.BRProxy;
 import crazypants.enderio.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.integration.te.TEUtil;
 import crazypants.enderio.integration.tic.TicProxy;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradePowerAdapter;
+import crazypants.enderio.item.spawner.BrokenSpawnerHandler;
+import crazypants.enderio.item.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.loot.Loot;
 import crazypants.enderio.loot.LootManager;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.material.material.MaterialCraftingHandler;
@@ -42,7 +42,6 @@ import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.recipe.soul.SoulBinderRecipeManager;
-import crazypants.enderio.recipe.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.recipe.vat.VatRecipeManager;
 import crazypants.enderio.transceiver.ServerChannelRegister;
 import crazypants.util.CapturedMob;
@@ -110,7 +109,7 @@ public class EnderIO {
 
     TicProxy.init(event);
 
-    ModObject.init(event);
+    ModObjectRegistry.init(event);
 
     EnergyUpgradePowerAdapter.init(event);
 
@@ -119,6 +118,10 @@ public class EnderIO {
     MaterialRecipes.init(event);
 
     Loot.init(event);
+
+    BrokenSpawnerHandler.init(event);
+
+    PoweredSpawnerConfig.init(event);
 
     BRProxy.init(event);
 
@@ -129,7 +132,7 @@ public class EnderIO {
   public void load(@Nonnull FMLInitializationEvent event) {
     Config.init(event);
 
-    ModObject.init(event);
+    ModObjectRegistry.init(event);
 
     CABIMC.init(event);
 

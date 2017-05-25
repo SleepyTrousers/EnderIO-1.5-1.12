@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.handler.darksteel;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.PacketHandler;

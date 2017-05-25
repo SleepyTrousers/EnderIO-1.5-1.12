@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 

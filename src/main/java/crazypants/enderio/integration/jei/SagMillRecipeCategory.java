@@ -32,7 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
-import static crazypants.enderio.ModObject.blockSagMill;
+import static crazypants.enderio.init.ModObject.blockSagMill;
 import static crazypants.enderio.recipe.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.recipe.sagmill.ContainerSagMill.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.recipe.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;

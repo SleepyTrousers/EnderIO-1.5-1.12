@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.ModObject.blockAlloySmelter;
+import static crazypants.enderio.init.ModObject.blockAlloySmelter;
 import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.FIRST_INVENTORY_SLOT;
 import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.FIRST_RECIPE_SLOT;
 import static crazypants.enderio.recipe.alloysmelter.ContainerAlloySmelter.NUM_INVENTORY_SLOT;

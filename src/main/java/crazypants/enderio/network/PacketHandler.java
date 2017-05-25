@@ -5,8 +5,8 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.item.conduitprobe.PacketConduitProbeMode;
+import crazypants.enderio.item.xptransfer.PacketXpTransferEffects;
 import crazypants.enderio.item.yetawrench.YetaWrenchPacketProcessor;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.modes.PacketRedstoneMode;
 import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -47,7 +47,8 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketConduitProbeMode.class, PacketConduitProbeMode.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(YetaWrenchPacketProcessor.Handler.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketXpTransferEffects.Handler.class, PacketXpTransferEffects.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
 }

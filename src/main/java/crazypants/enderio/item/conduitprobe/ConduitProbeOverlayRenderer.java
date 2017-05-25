@@ -13,7 +13,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.ModObject.itemConduitProbe;
+import static crazypants.enderio.init.ModObject.itemConduitProbe;
 
 public class ConduitProbeOverlayRenderer {
 

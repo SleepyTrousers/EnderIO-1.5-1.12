@@ -1,17 +1,17 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.base.te;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.VecmathUtil;
 
-import crazypants.enderio.IModObject;
 import crazypants.enderio.capability.EnderInventory;
 import crazypants.enderio.capability.EnderInventory.Type;
 import crazypants.enderio.capability.Filters;
 import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.power.EnergyTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

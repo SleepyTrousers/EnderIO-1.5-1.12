@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockSolarPanel;
+import static crazypants.enderio.init.ModObject.blockSolarPanel;
 
 public class SolarUpgrade extends AbstractUpgrade {
 

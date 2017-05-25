@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static crazypants.enderio.ModObject.blockTank;
+import static crazypants.enderio.init.ModObject.blockTank;
 
 public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.TankRecipeWrapper> {
 

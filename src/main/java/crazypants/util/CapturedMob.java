@@ -11,8 +11,8 @@ import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -41,7 +41,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemSoulVessel;
 
 public class CapturedMob { // TODO: DONE111
 
