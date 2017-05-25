@@ -1,55 +1,48 @@
 package crazypants.enderio.item.darksteel.upgrade.solar;
 
-import crazypants.enderio.config.Config;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.init.ModObject.blockSolarPanel;
-
 public class SolarUpgrade extends AbstractUpgrade {
 
-  private static final String KEY_LEVEL = "level";
+  private static final @Nonnull String KEY_LEVEL = "level";
   
-  private static final String UPGRADE_NAME = "solar";
+  private static final @Nonnull String UPGRADE_NAME = "solar";
   
-  public static final SolarUpgrade SOLAR_ONE = new SolarUpgrade("enderio.darksteel.upgrade.solar_one", (byte) 1, Config.darkSteelSolarOneCost);
-  public static final SolarUpgrade SOLAR_TWO = new SolarUpgrade("enderio.darksteel.upgrade.solar_two", (byte) 2, Config.darkSteelSolarTwoCost);
-  public static final SolarUpgrade SOLAR_THREE = new SolarUpgrade("enderio.darksteel.upgrade.solar_three", (byte) 3, Config.darkSteelSolarThreeCost);
-  
-  public static SolarUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+  public static SolarUpgrade loadFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new SolarUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new SolarUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
-  private final byte level;
+  private final int level;
 
-  public SolarUpgrade(NBTTagCompound tag) {
+  public SolarUpgrade(@Nonnull NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
     level = tag.getByte(KEY_LEVEL);
   }
 
-  public SolarUpgrade(String unlocName, byte level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(blockSolarPanel.getBlock(), 1, level - 1), levelCost);
+  public SolarUpgrade(@Nonnull String unlocName, @Nonnull ItemStack item, int level, int levelCost) {
+    super(UPGRADE_NAME, unlocName, item, levelCost);
     this.level = level;
   }
   
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-      if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN() || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
         return false;
       }
       SolarUpgrade up = loadFromItem(stack);
@@ -60,7 +53,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
   
   @Override
-  public boolean hasUpgrade(ItemStack stack) {
+  public boolean hasUpgrade(@Nonnull ItemStack stack) {
     if(!super.hasUpgrade(stack)) {
       return false;
     }
@@ -72,12 +65,12 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
   
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
-    upgradeRoot.setByte(KEY_LEVEL, getLevel());
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    upgradeRoot.setByte(KEY_LEVEL, (byte) getLevel());
   }
 
   public int getRFPerSec() {
-    return getLevel() == 1 ? Config.darkSteelSolarOneGen : getLevel() == 2 ? Config.darkSteelSolarTwoGen : Config.darkSteelSolarThreeGen;
+    return SolarUpgradeManager.getRFforLevel(level);
   }
   
   @Override
@@ -86,7 +79,7 @@ public class SolarUpgrade extends AbstractUpgrade {
     return SolarUpgradeLayer.instance;
   }
 
-  public byte getLevel() {
+  public int getLevel() {
     return level;
   }
 

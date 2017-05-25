@@ -21,7 +21,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.top.TheOneProbeUpgrade;
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.flippers.SwimUpgrade;
@@ -30,7 +29,6 @@ import crazypants.enderio.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.solar.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.speed.SpeedController;
-import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.sound.SoundHelper;
@@ -295,7 +293,7 @@ public class DarkSteelController {
     }
   }
 
-  public void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
+  public void usePlayerEnergy(EntityPlayer player, EntityEquipmentSlot armorSlot, int cost) {
     if (cost == 0) {
       return;
     }
@@ -320,7 +318,7 @@ public class DarkSteelController {
     }
   }
 
-  public int getPlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor) {
+  public int getPlayerEnergy(EntityPlayer player, EntityEquipmentSlot slot) {
     int res = 0;
 
     if (Config.darkSteelDrainPowerFromInventory) {
@@ -331,8 +329,8 @@ public class DarkSteelController {
         }
       }
     }
-    if (armor != null) {
-      ItemStack stack = player.getItemStackFromSlot(armor.armorType);
+    if (slot != null) {
+      ItemStack stack = player.getItemStackFromSlot(slot);
       res = EnergyUpgrade.getEnergyStored(stack);
     }
     return res;

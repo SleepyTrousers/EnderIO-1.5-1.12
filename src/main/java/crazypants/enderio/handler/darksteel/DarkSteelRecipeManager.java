@@ -22,7 +22,6 @@ import crazypants.enderio.item.darksteel.upgrade.flippers.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.solar.SolarUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.spoon.SpoonUpgrade;
@@ -42,6 +41,10 @@ public class DarkSteelRecipeManager {
 
   private List<IDarkSteelUpgrade> upgrades = new ArrayList<IDarkSteelUpgrade>();
 
+  public void addUpgrade(IDarkSteelUpgrade upgrade) {
+    upgrades.add(upgrade);
+  }
+
   public DarkSteelRecipeManager() {
     upgrades.add(EnergyUpgrade.EMPOWERED);
     upgrades.add(EnergyUpgrade.EMPOWERED_TWO);
@@ -60,9 +63,6 @@ public class DarkSteelRecipeManager {
     upgrades.add(NightVisionUpgrade.INSTANCE);
     upgrades.add(TravelUpgrade.INSTANCE);
     upgrades.add(SpoonUpgrade.INSTANCE);
-    upgrades.add(SolarUpgrade.SOLAR_ONE);
-    upgrades.add(SolarUpgrade.SOLAR_TWO);
-    upgrades.add(SolarUpgrade.SOLAR_THREE);
     
     //TODO: Mod Thaumcraft
 //    if(Loader.isModLoaded("Thaumcraft")) {

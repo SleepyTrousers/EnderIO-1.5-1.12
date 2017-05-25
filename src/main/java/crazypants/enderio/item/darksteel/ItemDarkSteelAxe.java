@@ -1,15 +1,16 @@
 package crazypants.enderio.item.darksteel;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.EnderIO;
@@ -19,7 +20,10 @@ import crazypants.enderio.farming.farmers.HarvestResult;
 import crazypants.enderio.farming.farmers.TreeHarvestUtil;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.handler.darksteel.IDarkSteelItem;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
 import crazypants.util.Prep;
@@ -37,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -51,17 +56,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static final @Nonnull String NAME = "darkSteel_axe";
-
   public static boolean isEquipped(EntityPlayer player) {
-    if (player == null) {
-      return false;
-    }
-    ItemStack equipped = player.getHeldItemMainhand();
-    if (Prep.isInvalid(equipped)) {
-      return false;
-    }
-    return equipped.getItem() == ModObject.itemDarkSteelAxe;
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -69,14 +65,11 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   public static int getStoredPower(EntityPlayer player) {
-    if (!isEquipped(player)) {
-      return 0;
-    }
-    return EnergyUpgrade.getEnergyStored(player.getHeldItemMainhand());
+    return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static @Nonnull ItemDarkSteelAxe create() {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe();
+  public static @Nonnull ItemDarkSteelAxe create(@Nonnull IModObject modObject) {
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
@@ -85,59 +78,49 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   private int logOreId = -1;
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
 
-  protected ItemDarkSteelAxe() {
-    //super(ItemDarkSteelSword.MATERIAL); //TODO: 1.10 bug in forge maybe?
-    super(ToolMaterial.DIAMOND);
-    toolMaterial = ItemDarkSteelSword.MATERIAL;
-    damageVsEntity = 8;
-    attackSpeed = -3;
-    
+  protected ItemDarkSteelAxe(@Nonnull IModObject modObject) {
+    super(ItemDarkSteelSword.MATERIAL, 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(NAME);
-    setRegistryName(NAME);
-  }
-
-  @Override
-  public String getItemName() {
-    return NAME;
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
   }
 
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 3;
   }
-  
+
   @Override
-  public boolean isItemForRepair(ItemStack right) {
+  public boolean isItemForRepair(@Nonnull ItemStack right) {
     return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     @Nonnull
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);
+    EnergyUpgradeManager.setPowerFull(is);
     par3List.add(is);
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+  public boolean onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     if (!player.world.isRemote && player.isSneaking()) {
       IBlockState bs = player.world.getBlockState(pos);
       Block block = bs.getBlock();
       if (isLog(bs)) {
-        int powerStored = EnergyUpgrade.getEnergyStored(itemstack);
+        int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
         TreeHarvestUtil harvester = new TreeHarvestUtil();
         HarvestResult res = new HarvestResult();
         harvester.harvest(player.world, pos, res);
 
-        List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res.getHarvestedBlocks());
+        NNList<BlockPos> sortedTargets = new NNList<BlockPos>(res.getHarvestedBlocks());
         harvestComparator.refPoint = pos;
         Collections.sort(sortedTargets, harvestComparator);
 
@@ -154,7 +137,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return false;
   }
 
-  private boolean doMultiHarvest(EntityPlayer player, World world, BlockPos bc, Block refBlock) {
+  private boolean doMultiHarvest(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull Block refBlock) {
 
     IBlockState bs = world.getBlockState(bc);
     Block block = bs.getBlock();
@@ -162,20 +145,17 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     ItemStack held = player.getHeldItemMainhand();
 
     List<ItemStack> itemDrops = block.getDrops(world, bc, bs, 0);
-    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, world, bc, bs,
-        EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
+    float chance = ForgeEventFactory.fireBlockHarvesting(itemDrops, world, bc, bs, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, held), 1,
         EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, held) != 0, player);
 
     world.setBlockToAir(bc);
     boolean usedPower = false;
-    if (itemDrops != null) {
-      for (ItemStack stack : itemDrops) {
-        if (world.rand.nextFloat() <= chance) {
-          world.spawnEntityInWorld(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
-          if (block == refBlock) { // other wise leaves
-            EnergyUpgrade.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
-            usedPower = true;
-          }
+    for (ItemStack stack : itemDrops) {
+      if (world.rand.nextFloat() <= chance) {
+        world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
+        if (block == refBlock) { // other wise leaves
+          EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
+          usedPower = true;
         }
       }
     }
@@ -184,7 +164,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.getState())) {
+    if (evt.getEntityPlayer().isSneaking() && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelAxePowerUsePerDamagePointMultiHarvest)
+        && isLog(evt.getState())) {
       evt.setNewSpeed(evt.getOriginalSpeed() / Config.darkSteelAxeSpeedPenaltyMultiHarvest);
     }
     if (isEquipped(evt.getEntityPlayer()) && evt.getState().getMaterial() == Material.LEAVES) {
@@ -193,8 +174,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public EnumActionResult onItemUse(ItemStack item, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
-      float hitY, float hitZ) {
+  public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     if (world.isRemote) {
       return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, pos, side, hand, hitX, hitY, hitZ);
     }
@@ -202,7 +183,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public void setDamage(ItemStack stack, int newDamage) {
+  public void setDamage(@Nonnull ItemStack stack, int newDamage) {
     int oldDamage = getDamage(stack);
     if (newDamage <= oldDamage) {
       super.setDamage(stack, newDamage);
@@ -215,8 +196,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     }
   }
 
-  private boolean absorbDamageWithEnergy(ItemStack stack, int amount) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+  private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
+    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
       eu.writeToItem(stack);
@@ -227,9 +208,10 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public float getStrVsBlock(ItemStack stack, IBlockState state) {
+  public float getStrVsBlock(@Nonnull ItemStack stack, @Nonnull IBlockState state) {
     if (ItemDarkSteelPickaxe.isToolEffective(state, stack)) {
-      if (Config.darkSteelAxePowerUsePerDamagePoint <= 0 ? EnergyUpgrade.itemHasAnyPowerUpgrade(stack) : EnergyUpgrade.getEnergyStored(stack) > 0) {
+      if (Config.darkSteelAxePowerUsePerDamagePoint <= 0 ? EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
+          : EnergyUpgradeManager.getEnergyStored(stack) > 0) {
         return toolMaterial.getEfficiencyOnProperMaterial() + Config.darkSteelAxeEffeciencyBoostWhenPowered;
       }
       return toolMaterial.getEfficiencyOnProperMaterial();
@@ -255,31 +237,30 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
     return false;
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
+    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
     if (str != null) {
       list.add(str);
     }
-    if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnderIO.lang.localize("item.darkSteel_axe.tooltip.multiHarvest"));
       list.add(TextFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
@@ -306,12 +287,12 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
   @Override
-  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+  public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
   }
 

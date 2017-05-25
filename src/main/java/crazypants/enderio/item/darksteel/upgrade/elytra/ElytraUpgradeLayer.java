@@ -1,5 +1,7 @@
 package crazypants.enderio.item.darksteel.upgrade.elytra;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -13,26 +15,30 @@ import net.minecraft.util.ResourceLocation;
 
 public class ElytraUpgradeLayer implements IRenderUpgrade {
 
-  private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation(EnderIO.DOMAIN, "textures/models/armor/elytra.png");
-  private final ModelElytra modelElytra = new ModelElytra();
+  private static final @Nonnull ResourceLocation TEXTURE_ELYTRA = new ResourceLocation(EnderIO.DOMAIN, "textures/models/armor/elytra.png");
+  private final @Nonnull ModelElytra modelElytra = new ModelElytra();
 
-  public static final ElytraUpgradeLayer instance = new ElytraUpgradeLayer();
+  public static final @Nonnull ElytraUpgradeLayer instance = new ElytraUpgradeLayer();
 
   private ElytraUpgradeLayer() {
   }
 
   @Override
-  public void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float limbSwing, float limbSwingAmount,
-      float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+  public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float limbSwing,
+      float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GlStateManager.enableBlend();
 
-    if (entitylivingbaseIn.isPlayerInfoSet() && entitylivingbaseIn.getLocationElytra() != null) {
-      renderPlayer.bindTexture(entitylivingbaseIn.getLocationElytra());
-    } else if (entitylivingbaseIn.hasPlayerInfo() && entitylivingbaseIn.getLocationCape() != null && entitylivingbaseIn.isWearing(EnumPlayerModelParts.CAPE)) {
-      renderPlayer.bindTexture(entitylivingbaseIn.getLocationCape());
+    final ResourceLocation locationElytra = entitylivingbaseIn.getLocationElytra();
+    if (entitylivingbaseIn.isPlayerInfoSet() && locationElytra != null) {
+      renderPlayer.bindTexture(locationElytra);
     } else {
-      renderPlayer.bindTexture(TEXTURE_ELYTRA);
+      final ResourceLocation locationCape = entitylivingbaseIn.getLocationCape();
+      if (entitylivingbaseIn.hasPlayerInfo() && locationCape != null && entitylivingbaseIn.isWearing(EnumPlayerModelParts.CAPE)) {
+        renderPlayer.bindTexture(locationCape);
+      } else {
+        renderPlayer.bindTexture(TEXTURE_ELYTRA);
+      }
     }
 
     GlStateManager.pushMatrix();

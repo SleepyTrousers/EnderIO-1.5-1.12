@@ -32,6 +32,7 @@ import crazypants.enderio.integration.forestry.ApiaristArmorUpgrade;
 import crazypants.enderio.integration.forestry.NaturalistEyeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
@@ -71,16 +72,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@InterfaceList({
-    @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
+@InterfaceList({ @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "Thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
-    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry")
-})
-public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem,
-    IOverlayRenderAware, IHasPlayerRenderer, IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
-  //TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
+    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
+public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
+    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist {
+  // TODO: Mod Thaumcraft IGoggles, IRevealer, IVisDiscountGear,
 
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
     return create(modObject, EntityEquipmentSlot.FEET);
@@ -109,7 +108,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   public static final ArmorMaterial MATERIAL = createMaterial();
 
   private static ArmorMaterial createMaterial() {
-    Class<?>[] params = new Class<?>[] {String.class, int.class, int[].class, int.class, SoundEvent.class, float.class};
+    Class<?>[] params = new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class };
     return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35, new int[] { 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
   }
 
@@ -143,14 +142,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   protected void init() {
     GameRegistry.register(this);
   }
-  
-  @Override
-  public @Nonnull String getItemName() {
-    String regName = getUnlocalizedName();
-    regName = regName.substring(5, regName.length());
-    return regName;
-  }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
@@ -160,8 +152,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);
-    
+    EnergyUpgradeManager.setPowerFull(is);
+
     Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.instance.recipeIterator();
     while (iter.hasNext()) {
       IDarkSteelUpgrade upgrade = iter.next();
@@ -169,7 +161,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
         upgrade.writeToItem(is);
       }
     }
-    
+
     if (GliderUpgrade.INSTANCE.canAddToItem(is)) {
       ItemStack is2 = is.copy();
       GliderUpgrade.INSTANCE.writeToItem(is2);
@@ -212,14 +204,14 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    if(!Config.addDurabilityTootip) {
+    if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
-    if(str != null) {
+    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
+    if (str != null) {
       list.add(str);
     }
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
       if (itemstack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
@@ -243,10 +235,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
-    if(source.isUnblockable()) {
+    if (source.isUnblockable()) {
       return new ArmorProperties(0, 0, armor.getMaxDamage() + 1 - armor.getItemDamage());
     }
-    double damageRatio = damageReduceAmount + (EnergyUpgrade.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
+    double damageRatio = damageReduceAmount + (EnergyUpgradeManager.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
     damageRatio /= 25D;
     ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
     return ap;
@@ -254,7 +246,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
-    int powerBonus = EnergyUpgrade.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
+    int powerBonus = EnergyUpgradeManager.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
     return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
   }
 
@@ -271,7 +263,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
     if (equipmentSlot == this.armorType) {
-      boolean isPowered = EnergyUpgrade.getEnergyStored(stack) > 0;
+      boolean isPowered = EnergyUpgradeManager.getEnergyStored(stack) > 0;
       if (isPowered) {
         int toughnessBonus = 1;
         multimap.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName());
@@ -289,8 +281,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
       eu.writeToItem(stack);
     } else {
@@ -303,35 +295,35 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return false;
   }
 
-  //TODO: Mod Thaumcraft
+  // TODO: Mod Thaumcraft
 
-//  @Override
-//  @Method(modid = "Thaumcraft")
-//  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
-//    if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
-//      return false;
-//    }
-//    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
-//
-//  }
-//
-//  @Override
-//  @Method(modid = "Thaumcraft")
-//  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
-//    if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
-//      return false;
-//    }
-//    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
-//  }
-//
-//  @Override
-//  @Method(modid = "Thaumcraft")
-//  public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-//    if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet) {
-//      return 0;
-//    }
-//    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
-//  }
+  // @Override
+  // @Method(modid = "Thaumcraft")
+  // public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
+  // if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
+  // return false;
+  // }
+  // return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  //
+  // }
+  //
+  // @Override
+  // @Method(modid = "Thaumcraft")
+  // public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
+  // if(itemStack.isEmpty() || itemstack.getItem() == null || !gogglesUgradeActive) {
+  // return false;
+  // }
+  // return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  // }
+  //
+  // @Override
+  // @Method(modid = "Thaumcraft")
+  // public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+  // if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet) {
+  // return 0;
+  // }
+  // return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+  // }
 
   public boolean isGogglesUgradeActive() {
     return gogglesUgradeActive;
@@ -340,7 +332,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
-  
+
   @Override
   public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);

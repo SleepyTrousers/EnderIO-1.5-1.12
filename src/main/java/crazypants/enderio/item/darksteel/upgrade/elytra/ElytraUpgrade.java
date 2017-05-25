@@ -1,9 +1,11 @@
 package crazypants.enderio.item.darksteel.upgrade.elytra;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.item.darksteel.upgrade.glider.GliderUpgrade;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,25 +15,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ElytraUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "elytra";
+  private static @Nonnull String UPGRADE_NAME = "elytra";
   
-  public static final ElytraUpgrade INSTANCE = new ElytraUpgrade();
+  public static final @Nonnull ElytraUpgrade INSTANCE = new ElytraUpgrade();
   
-  public static ElytraUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+  public static ElytraUpgrade loadFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new ElytraUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new ElytraUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
   
   
-  public ElytraUpgrade(NBTTagCompound tag) {
+  public ElytraUpgrade(@Nonnull NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);    
   }
 
@@ -40,8 +40,8 @@ public class ElytraUpgrade extends AbstractUpgrade {
   }  
   
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ModObject.itemDarkSteelChestplate) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (stack.getItem() != ModObject.itemDarkSteelChestplate.getItem()) {
       return false;
     }
     ElytraUpgrade elytraUpgrade = ElytraUpgrade.loadFromItem(stack);
@@ -59,7 +59,7 @@ public class ElytraUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
   }
 
 }

@@ -1,6 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
+import crazypants.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,12 +28,12 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
       float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
 
     ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    if (itemStack.isEmpty() || itemstack.getItem() == null || !itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
+    if (!itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
       return;
     }
 
     ItemStack paintSource = new ItemStack(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
-    if (paintSource == null) {
+    if (Prep.isInvalid(paintSource)) {
       return;
     }
 

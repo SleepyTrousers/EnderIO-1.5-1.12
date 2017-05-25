@@ -18,8 +18,8 @@ public class EnergyUpgradePowerAdapter {
     MinecraftForge.EVENT_BUS.register(EnergyUpgradePowerAdapter.class);
   }
 
-  private static final ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "powerhandler");
-  private static final ResourceLocation KEY_TESLA = new ResourceLocation(EnderIO.DOMAIN, "teslahandler");
+  private static final @Nonnull ResourceLocation KEY = new ResourceLocation(EnderIO.DOMAIN, "powerhandler");
+  private static final @Nonnull ResourceLocation KEY_TESLA = new ResourceLocation(EnderIO.DOMAIN, "teslahandler");
 
   private static boolean addTesla = Loader.isModLoaded("tesla");
 

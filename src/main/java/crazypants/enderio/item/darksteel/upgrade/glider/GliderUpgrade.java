@@ -1,10 +1,13 @@
 package crazypants.enderio.item.darksteel.upgrade.glider;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.handler.darksteel.IRenderUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
+import crazypants.enderio.material.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,43 +15,33 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GliderUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "glide";
-  
-  public static final GliderUpgrade INSTANCE = new GliderUpgrade();
-  
-  public static GliderUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+  private static final @Nonnull String UPGRADE_NAME = "glide";
+
+  public static final @Nonnull GliderUpgrade INSTANCE = new GliderUpgrade();
+
+  public static GliderUpgrade loadFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new GliderUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new GliderUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
-  
-  
-  public GliderUpgrade(NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);    
+
+  public GliderUpgrade(@Nonnull NBTTagCompound tag) {
+    super(UPGRADE_NAME, tag);
   }
 
   public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(ModObject.itemGliderWing,1,1), Config.darkSteelGliderCost);
-  }  
-  
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", Material.GLIDER_WINGS.getStack(), Config.darkSteelGliderCost);
+  }
+
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ModObject.itemDarkSteelChestplate) {
-      return false;
-    }
-    ElytraUpgrade elytraUpgrade = ElytraUpgrade.loadFromItem(stack);
-    GliderUpgrade gliderUpgrade = GliderUpgrade.loadFromItem(stack);
-    if (elytraUpgrade == null && gliderUpgrade == null) {
-      return true;
-    }
-    return false;
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    return stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN() && ElytraUpgrade.loadFromItem(stack) == null
+        && GliderUpgrade.loadFromItem(stack) == null;
   }
 
   @Override
@@ -58,7 +51,7 @@ public class GliderUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
   }
 
 }

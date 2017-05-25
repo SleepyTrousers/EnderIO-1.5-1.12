@@ -1,6 +1,5 @@
 package crazypants.enderio.handler.darksteel;
 
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -34,8 +33,8 @@ public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<Pac
 
   @Override
   public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
-    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().playerEntity, ItemDarkSteelArmor.forArmorType(message.armorType), message.powerUse);
-    ctx.getServerHandler().playerEntity.fallDistance = 0;
+    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().player, message.armorType, message.powerUse);
+    ctx.getServerHandler().player.fallDistance = 0;
     return null;
   }
 

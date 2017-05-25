@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Multimap;
@@ -19,7 +21,11 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.handler.darksteel.IDarkSteelItem;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.integration.tic.TicUtil;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
@@ -34,8 +40,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -46,6 +52,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,32 +71,32 @@ import static crazypants.enderio.init.ModObject.blockEndermanSkull;
 
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
-  public static final @Nonnull String NAME = "darkSteel_sword";
+  private static final @Nonnull String HIT_BY_DARK_STEEL_SWORD = "hitByDarkSteelSword";
 
-  private static final @Nonnull String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
+  private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
 
-  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25);
-  
-  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredDamageBonus, 0);
-  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered", Config.darkSteelSwordPoweredSpeedBonus, 0);
+  static final @Nonnull ToolMaterial MATERIAL = NullHelper
+      .notnull(EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3, 25), "failed to add tool material");
 
-  public static boolean isEquipped(@Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
-    ItemStack equipped = player.getHeldItem(hand);
-    if (equipped == null) {
-      return false;
-    }
-    return equipped.getItem() == ModObject.itemDarkSteelSword;
+  private final @Nonnull AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered",
+      Config.darkSteelSwordPoweredDamageBonus, 0);
+  private final @Nonnull AttributeModifier swordAttackSpeedPowered = new AttributeModifier(new UUID(63242325, 320981923), "Empowered",
+      Config.darkSteelSwordPoweredSpeedBonus, 0);
+
+  public static boolean isEquipped(EntityPlayer player) {
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
   }
 
-  public static boolean isEquippedAndPowered(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, int requiredPower) {
-    if (!isEquipped(player, hand)) {
-      return false;
-    }
-    return EnergyUpgrade.getEnergyStored(player.getHeldItem(hand)) >= requiredPower;
+  public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
+    return getStoredPower(player) > requiredPower;
   }
 
-  public static ItemDarkSteelSword create() {
-    ItemDarkSteelSword res = new ItemDarkSteelSword();
+  public static int getStoredPower(EntityPlayer player) {
+    return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
+  }
+
+  public static ItemDarkSteelSword create(@Nonnull IModObject modObject) {
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return res;
@@ -97,27 +105,22 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
   private long lastBlickTick = -1;
 
-  public ItemDarkSteelSword() {
+  public ItemDarkSteelSword(@Nonnull IModObject modObject) {
     super(MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(NAME);
-    setRegistryName(NAME);
-  }
-
-  @Override
-  public String getItemName() {
-    return NAME;
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);
+    EnergyUpgradeManager.setPowerFull(is);
     TravelUpgrade.INSTANCE.writeToItem(is);
     par3List.add(is);
   }
@@ -126,15 +129,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   public int getIngotsRequiredForFullRepair() {
     return 3;
   }
-  
+
   @Override
-  public boolean isItemForRepair(ItemStack right) {
+  public boolean isItemForRepair(@Nonnull ItemStack right) {
     return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @SubscribeEvent
   public void onEnderTeleport(EnderTeleportEvent evt) {
-    if (evt.getEntityLiving().getEntityData().getBoolean("hitByDarkSteelSword")) {
+    if (evt.getEntityLiving().getEntityData().getBoolean(HIT_BY_DARK_STEEL_SWORD)) {
       evt.setCanceled(true);
     }
   }
@@ -166,8 +169,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     }
 
     // Special handling for ender pearl drops
-    if (isEquipped(player, EnumHand.MAIN_HAND)) {
-      String name = EntityList.getEntityString(entityLiving);
+    if (isEquipped(player)) {
+      ResourceLocation name = EntityList.getKey(entityLiving);
       if (entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
         int numPearls = 0;
         double chance = Config.darkSteelSwordEnderPearlDropChance;
@@ -179,7 +182,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
           numPearls++;
         }
         for (int i = 0; i < evt.getLootingLevel(); i++) {
-          if (Math.random() <= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
+          chance = Config.darkSteelSwordEnderPearlDropChancePerLooting;
+          while (chance >= 1) {
+            numPearls++;
+            chance--;
+          }
+          if (chance > 0 && Math.random() <= chance) {
             numPearls++;
           }
         }
@@ -187,13 +195,13 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
         int existing = 0;
         for (EntityItem stack : evt.getDrops()) {
           if (stack.getEntityItem().getItem() == Items.ENDER_PEARL) {
-            existing += stack.getEntityItem().stackSize;
+            existing += stack.getEntityItem().getCount();
           }
         }
         int toDrop = numPearls - existing;
         if (toDrop > 0) {
-          evt.getDrops().add(
-              Util.createDrop(player.world, new ItemStack(Items.ENDER_PEARL, toDrop, 0), entityLiving.posX, entityLiving.posY, entityLiving.posZ, false));
+          evt.getDrops()
+              .add(Util.createDrop(player.world, new ItemStack(Items.ENDER_PEARL, toDrop, 0), entityLiving.posX, entityLiving.posY, entityLiving.posZ, false));
         }
 
       }
@@ -213,18 +221,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       return false;
     }
     ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null) {
-      return false;
-    }
     NBTTagCompound tagCompound = equipped.getTagCompound();
     if (tagCompound == null) {
       return false;
     }
-    NBTTagCompound infiToolRoot = tagCompound.getCompoundTag("InfiTool");
 
-    boolean isCleaver = "tconstruct.items.tools.Cleaver".equals(equipped.getItem().getClass().getName());
-    boolean hasBeheading = infiToolRoot.hasKey("Beheading");
-    if (!isCleaver && !hasBeheading) {
+    int beheading = TicUtil.getModifier(tagCompound, TicUtil.BEHEADING);
+    int cleaver = TicUtil.getModifier(tagCompound, TicUtil.CLEAVER);
+
+    if (beheading == 0 && cleaver == 0) {
       // Use default behavior if it is not a cleaver and doesn't have beheading
       return false;
     }
@@ -235,18 +240,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       return true;
     }
 
-    float fromWeapon;
-    if (isCleaver) {
-      fromWeapon = Config.ticCleaverSkullDropChance;
-    } else {
-      fromWeapon = Config.vanillaSwordSkullChance;
+    float chance = Math.max(Config.vanillaSwordSkullChance, cleaver * Config.ticCleaverSkullDropChance) + (Config.ticBeheadingSkullModifier * beheading);
+    if (player instanceof FakePlayer) {
+      chance *= Config.fakePlayerSkullChance;
     }
-    float fromLooting = 0;
-    if (hasBeheading) {
-      fromLooting = Config.ticBeheadingSkullModifier * infiToolRoot.getInteger("Beheading");
+    while (chance >= 1) {
+      dropSkull(evt, player);
+      chance--;
     }
-    float skullDropChance = fromWeapon + fromLooting;
-    if (Math.random() <= skullDropChance) {
+    if (chance > 0 && Math.random() <= chance) {
       dropSkull(evt, player);
     }
     return true;
@@ -254,7 +256,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private double getSkullDropChance(@Nonnull EntityPlayer player, LivingDropsEvent evt) {
     if (isWitherSkeleton(evt)) {
-      if (isEquippedAndPowered(player, EnumHand.MAIN_HAND, Config.darkSteelSwordPowerUsePerHit)) {
+      if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
         return Config.darkSteelSwordWitherSkullChance + (Config.darkSteelSwordWitherSkullLootingModifier * evt.getLootingLevel());
       } else {
         return 0.01;
@@ -262,7 +264,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     }
     float fromWeapon;
     float fromLooting;
-    if (isEquippedAndPowered(player, EnumHand.MAIN_HAND, Config.darkSteelSwordPowerUsePerHit)) {
+    if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
       fromWeapon = Config.darkSteelSwordSkullChance;
       fromLooting = Config.darkSteelSwordSkullLootingModifier * evt.getLootingLevel();
     } else {
@@ -273,10 +275,10 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   protected boolean isWitherSkeleton(LivingDropsEvent evt) {
-    return evt.getEntityLiving() instanceof EntitySkeleton && ((EntitySkeleton) evt.getEntityLiving()).func_189771_df() == SkeletonType.WITHER;
+    return evt.getEntityLiving() instanceof EntityWitherSkeleton;
   }
 
-  private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
+  private boolean containsDrop(LivingDropsEvent evt, @Nonnull ItemStack skull) {
     for (EntityItem ei : evt.getDrops()) {
       if (ei != null && ei.getEntityItem().getItem() == skull.getItem() && ei.getEntityItem().getItemDamage() == skull.getItemDamage()) {
         return true;
@@ -286,18 +288,17 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private ItemStack getSkullForEntity(EntityLivingBase entityLiving) {
+    // ItemSkull: {"skeleton", "wither", "zombie", "char", "creeper", "dragon"}
     if (entityLiving instanceof EntitySkeleton) {
-      if (((EntitySkeleton) entityLiving).func_189771_df() == SkeletonType.WITHER) {
-        return new ItemStack(Items.SKULL, 1, 1);
-      } else {
-        return new ItemStack(Items.SKULL, 1, 0);
-      }
+      return new ItemStack(Items.SKULL, 1, 0);
+    } else if (entityLiving instanceof EntityWitherSkeleton) {
+      return new ItemStack(Items.SKULL, 1, 1);
     } else if (entityLiving instanceof EntityZombie) {
       return new ItemStack(Items.SKULL, 1, 2);
     } else if (entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.SKULL, 1, 4);
     } else if (entityLiving instanceof EntityEnderman) {
-      return new ItemStack(blockEndermanSkull.getBlock());
+      return new ItemStack(blockEndermanSkull.getBlockNN());
     }
 
     return null;
@@ -306,21 +307,21 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   protected void init() {
     GameRegistry.register(this);
   }
-  
+
   @Override
-  public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot equipmentSlot, ItemStack stack) {
+  public @Nonnull Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack stack) {
     Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);
     if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgrade.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
-        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), swordDamageModifierPowered);
-        res.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), swordAttackSpeedPowered);
+      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgradeManager.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
+        res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), swordDamageModifierPowered);
+        res.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), swordAttackSpeedPowered);
       }
     }
     return res;
   }
 
   @Override
-  public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase playerEntity) {
+  public boolean hitEntity(@Nonnull ItemStack stack, @Nonnull EntityLivingBase entity, @Nonnull EntityLivingBase playerEntity) {
 
     if (playerEntity instanceof EntityPlayer) {
 
@@ -328,7 +329,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       ItemStack sword = player.getHeldItemMainhand();
 
       // Durability damage
-      EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+      EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
       if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
         eu.extractEnergy(powerPerDamagePoint, false);
 
@@ -342,10 +343,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
         if (eu.getEnergy() > Config.darkSteelSwordPowerUsePerHit) {
           extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);
-          String name = EntityList.getEntityString(entity);
-          if (entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
-            entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
-          }
+          entity.getEntityData().setBoolean(HIT_BY_DARK_STEEL_SWORD, true);
         }
 
       }
@@ -355,37 +353,36 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public int getEnergyStored(ItemStack container) {
-    return EnergyUpgrade.getEnergyStored(container);
+  public int getEnergyStored(@Nonnull ItemStack container) {
+    return EnergyUpgradeManager.getEnergyStored(container);
   }
 
   @Override
-  public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
     return false;
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
+    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
     if (str != null) {
       list.add(str);
     }
     list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
-    if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
       list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
@@ -397,57 +394,56 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
-    return (ep != null && equipped != null) ? isTravelUpgradeActive(ep, equipped) : false;
+  public boolean isActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
+    return isTravelUpgradeActive(ep, equipped);
   }
 
   @Override
-  public void extractInternal(ItemStack equipped, int power) {
-    EnergyUpgrade.extractEnergy(equipped, power, false);
+  public void extractInternal(@Nonnull ItemStack equipped, int power) {
+    EnergyUpgradeManager.extractEnergy(equipped, power, false);
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
-    return (isEquipped(ep, EnumHand.MAIN_HAND) || isEquipped(ep, EnumHand.OFF_HAND)) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
-  }
-  
-  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped, EnumHand hand) {
-    return ep != null && equipped != null && hand != null && isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-    if (isTravelUpgradeActive(player, stack, hand)) {
-      if (world.isRemote) {
-        if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
-          player.swingArm(hand);
-          return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+    if (hand == EnumHand.MAIN_HAND) {
+      ItemStack stack = player.getHeldItem(hand);
+      if (isTravelUpgradeActive(player, stack)) {
+        if (world.isRemote) {
+          if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
+            player.swingArm(hand);
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+          }
         }
-      }
 
-      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-      if (ticksSinceBlink < 0) {
-        lastBlickTick = -1;
-      }
-      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
-        if (TravelController.instance.doBlink(stack, hand, player)) {
-          player.swingArm(hand);
-          lastBlickTick = EnderIO.proxy.getTickCount();
+        long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
+        if (ticksSinceBlink < 0) {
+          lastBlickTick = -1;
         }
+        if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+          if (TravelController.instance.doBlink(stack, hand, player)) {
+            player.swingArm(hand);
+            lastBlickTick = EnderIO.proxy.getTickCount();
+          }
+        }
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
       }
-      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 
-    return super.onItemRightClick(stack, world, player, hand);
+    return super.onItemRightClick(world, player, hand);
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
   @Override
-  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+  public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+    return slotChanged || oldStack.getItem() != newStack.getItem();
   }
 
 }

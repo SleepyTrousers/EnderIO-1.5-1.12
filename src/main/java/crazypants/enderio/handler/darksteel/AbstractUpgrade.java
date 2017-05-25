@@ -2,10 +2,14 @@ package crazypants.enderio.handler.darksteel;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,69 +19,68 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
-  public static final String KEY_LEVEL_COST = "level_cost";
+  public static final @Nonnull String KEY_LEVEL_COST = "level_cost";
 
-  private static final String KEY_UNLOC_NAME = "unlocalized_name";
+  private static final @Nonnull String KEY_UNLOC_NAME = "unlocalized_name";
 
-  public static final String KEY_UPGRADE_PREFIX = "enderio.darksteel.upgrade.";
+  public static final @Nonnull String KEY_UPGRADE_PREFIX = "enderio.darksteel.upgrade.";
 
-  private static final String KEY_UPGRADE_ITEM = "upgradeItem";
+  private static final @Nonnull String KEY_UPGRADE_ITEM = "upgradeItem";
 
   protected final int levelCost;
-  protected final String id;
-  protected final String unlocName;
+  protected final @Nonnull String id;
+  protected final @Nonnull String unlocName;
 
-  protected ItemStack upgradeItem;
+  protected @Nonnull ItemStack upgradeItem;
 
-  protected AbstractUpgrade(String id, String unlocName, ItemStack upgradeItem, int levelCost) {
+  protected AbstractUpgrade(@Nonnull String id, @Nonnull String unlocName, @Nonnull ItemStack upgradeItem, int levelCost) {
     this.id = KEY_UPGRADE_PREFIX + id;
     this.unlocName = unlocName;
     this.upgradeItem = upgradeItem;
     this.levelCost = levelCost;
   }
 
-  public AbstractUpgrade(String id, NBTTagCompound tag) {
+  public AbstractUpgrade(@Nonnull String id, @Nonnull NBTTagCompound tag) {
     this.id = KEY_UPGRADE_PREFIX + id;
-    levelCost = tag.getInteger(KEY_LEVEL_COST);
-    unlocName = tag.getString(KEY_UNLOC_NAME);
+    this.levelCost = tag.getInteger(KEY_LEVEL_COST);
+    this.unlocName = tag.getString(KEY_UNLOC_NAME);
     if(tag.hasKey(KEY_UPGRADE_ITEM)) {
-      upgradeItem = new ItemStack((NBTTagCompound) tag.getTag(KEY_UPGRADE_ITEM));
+      this.upgradeItem = new ItemStack((NBTTagCompound) tag.getTag(KEY_UPGRADE_ITEM));
+    } else {
+      this.upgradeItem = Prep.getEmpty();
     }
   }
 
   @Override
-  public boolean isUpgradeItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null || getUpgradeItem() == null) {
-      return false;
-    }
-    return stack.isItemEqual(getUpgradeItem()) && stack.stackSize == getUpgradeItem().stackSize;
+  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
+    return Prep.isValid(stack) && stack.isItemEqual(getUpgradeItem()) && stack.getCount() == getUpgradeItem().getCount();
   }
 
   @Override
-  public ItemStack getUpgradeItem() {
+  public @Nonnull ItemStack getUpgradeItem() {
     return upgradeItem;
   }
   
   @Override
-  public String getUpgradeItemName() {
+  public @Nonnull String getUpgradeItemName() {
     return getUpgradeItem().getDisplayName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     list.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
@@ -88,7 +91,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   }
 
   @Override
-  public String getUnlocalizedName() {
+  public @Nonnull String getUnlocalizedName() {
     return unlocName;
   }
   
@@ -99,30 +102,20 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   }
 
   @Override
-  public boolean hasUpgrade(ItemStack stack) {
-    if(stack == null) {
-      return false;
-    }
-    if(stack.getTagCompound() == null) {
-      return false;
-    }
-    return stack.getTagCompound().hasKey(id);
+  public boolean hasUpgrade(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    return tagCompound != null && tagCompound.hasKey(id);
   }
 
   @Override
-  public void writeToItem(ItemStack stack) {
-    if(stack == null) {
-      return;
-    }
+  public void writeToItem(@Nonnull ItemStack stack) {
     NBTTagCompound upgradeRoot = new NBTTagCompound();
     upgradeRoot.setInteger(KEY_LEVEL_COST, levelCost);
     upgradeRoot.setString(KEY_UNLOC_NAME, getUnlocalizedName());
 
-    if(getUpgradeItem() != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
       getUpgradeItem().writeToNBT(itemRoot);
       upgradeRoot.setTag(KEY_UPGRADE_ITEM, itemRoot);
-    }
 
     writeUpgradeToNBT(upgradeRoot);
 
@@ -131,24 +124,22 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     stack.setTagCompound(stackRoot);
   }
 
-  public NBTTagCompound getUpgradeRoot(ItemStack stack) {
-    if(!hasUpgrade(stack)) {
+  public NBTTagCompound getUpgradeRoot(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null || !hasUpgrade(stack)) {
       return null;
     }
-    return (NBTTagCompound) stack.getTagCompound().getTag(id);
+    return (NBTTagCompound) tagCompound.getTag(id);
   }
 
-  public abstract void writeUpgradeToNBT(NBTTagCompound upgradeRoot);
+  public abstract void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot);
 
   @Override
-  public void removeFromItem(ItemStack stack) {
-    if(stack == null) {
-      return;
+  public void removeFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound != null) {
+      tagCompound.removeTag(id);
     }
-    if(stack.getTagCompound() == null) {
-      return;
-    }
-    stack.getTagCompound().removeTag(id);
   }
 
 }

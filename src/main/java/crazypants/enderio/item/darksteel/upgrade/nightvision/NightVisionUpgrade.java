@@ -1,8 +1,10 @@
 package crazypants.enderio.item.darksteel.upgrade.nightvision;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.init.ModObject;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
@@ -11,50 +13,49 @@ import net.minecraft.potion.PotionUtils;
 
 public class NightVisionUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "nightVision";
-  
-  public static final NightVisionUpgrade INSTANCE = new NightVisionUpgrade();
-  
-  public static NightVisionUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+  private static final @Nonnull String UPGRADE_NAME = "nightVision";
+
+  public static final @Nonnull NightVisionUpgrade INSTANCE = new NightVisionUpgrade();
+
+  public static NightVisionUpgrade loadFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new NightVisionUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new NightVisionUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
-  
-  private static ItemStack createUpgradeItem() {
+
+  private static @Nonnull ItemStack createUpgradeItem() {
     ItemStack pot = new ItemStack(Items.POTIONITEM, 1, 0);
     PotionUtils.addPotionToItemStack(pot, PotionTypes.NIGHT_VISION);
     return pot;
   }
-  
-  public NightVisionUpgrade(NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);    
+
+  public NightVisionUpgrade(@Nonnull NBTTagCompound tag) {
+    super(UPGRADE_NAME, tag);
   }
 
   public NightVisionUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.nightVision", createUpgradeItem(), Config.darkSteelNightVisionCost);
-  }  
-  
+  }
+
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItemNN()) {
       return false;
     }
     NightVisionUpgrade up = loadFromItem(stack);
-    if(up == null) {
+    if (up == null) {
       return true;
     }
     return false;
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {    
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
   }
+
 }

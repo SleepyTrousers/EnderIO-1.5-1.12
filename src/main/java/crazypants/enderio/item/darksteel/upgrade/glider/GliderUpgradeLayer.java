@@ -1,5 +1,10 @@
 package crazypants.enderio.item.darksteel.upgrade.glider;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.handler.darksteel.DarkSteelController;
+import crazypants.enderio.handler.darksteel.IRenderUpgrade;
+import crazypants.enderio.material.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -8,9 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.handler.darksteel.DarkSteelController;
-import crazypants.enderio.handler.darksteel.IRenderUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 @SideOnly(Side.CLIENT)
 public class GliderUpgradeLayer implements IRenderUpgrade {
@@ -23,7 +25,8 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
   // This is basically the CapeLayer with minimal (marked) changes to make future updating easier
 
   @Override
-  public void doRenderLayer(RenderPlayer renderPlayer, ItemStack piece, AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_,
+  public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, @Nonnull ItemStack piece, @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_,
+      float p_177141_3_,
       float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
     if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && DarkSteelController.instance.isGlideActive(entitylivingbaseIn)) { // changed
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -69,7 +72,7 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       GlStateManager.translate(0.0F, 0.55F + 0.15F, 0.1F);
       GlStateManager.scale(3, 3, 0.5);
 
-      ItemStack glider = new ItemStack(ModObject.itemGliderWing, 1, 1);
+      ItemStack glider = Material.GLIDER_WINGS.getStack();
 
       final net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType none = net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType.NONE;
       Minecraft.getMinecraft().getRenderItem().renderItem(glider, none);

@@ -5,11 +5,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
@@ -18,9 +20,13 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.handler.darksteel.IDarkSteelItem;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -30,6 +36,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -43,17 +50,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static final String NAME = "darkSteel_shears";
-
   public static boolean isEquipped(EntityPlayer player) {
-    if (player == null) {
-      return false;
-    }
-    ItemStack equipped = player.getHeldItemMainhand();
-    if (equipped == null) {
-      return false;
-    }
-    return equipped.getItem() == ModObject.itemDarkSteelShears;
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -61,14 +59,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   }
 
   public static int getStoredPower(EntityPlayer player) {
-    if (!isEquipped(player)) {
-      return 0;
-    }
-    return EnergyUpgrade.getEnergyStored(player.getHeldItemMainhand());
+    return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelShears create() {
-    ItemDarkSteelShears res = new ItemDarkSteelShears();
+  public static ItemDarkSteelShears create(@Nonnull IModObject modObject) {
+    ItemDarkSteelShears res = new ItemDarkSteelShears(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
@@ -77,43 +72,37 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
   private final EntityComparator entityComparator = new EntityComparator();
 
-  protected ItemDarkSteelShears() {
-    super();
+  protected ItemDarkSteelShears(@Nonnull IModObject modObject) {
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(NAME);
-    setRegistryName(NAME);
-  }
-
-  @Override
-  public String getItemName() {
-    return NAME;
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
   }
 
   @Override
   public int getIngotsRequiredForFullRepair() {
     return 2;
   }
-  
+
   @Override
-  public boolean isItemForRepair(ItemStack right) {
+  public boolean isItemForRepair(@Nonnull ItemStack right) {
     return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);
+    EnergyUpgradeManager.setPowerFull(is);
     par3List.add(is);
   }
 
   @Override
-  public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+  public boolean onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     if (player.world.isRemote) {
       return false;
     }
@@ -140,7 +129,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       }
     }
 
-    List<BlockPos> sortedTargets = new ArrayList<BlockPos>(res);
+    NNList<BlockPos> sortedTargets = new NNList<BlockPos>(res);
     harvestComparator.refPoint = pos;
     Collections.sort(sortedTargets, harvestComparator);
 
@@ -156,11 +145,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     return false;
   }
 
-  Predicate<Entity> selectShearable = new Predicate<Entity>() {
+  private static final @Nonnull Predicate<Entity> selectShearable = new Predicate<Entity>() {
 
     @Override
     public boolean apply(@Nullable Entity entity) {
-      return entity instanceof IShearable && !entity.isDead && ((IShearable) entity).isShearable(null, entity.world, entity.getPosition());
+      return entity instanceof IShearable && !entity.isDead && ((IShearable) entity).isShearable(Prep.getEmpty(), entity.world, entity.getPosition());
     }
 
     @Override
@@ -175,7 +164,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   };
 
   @Override
-  public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity, EnumHand hand) {
+  public boolean itemInteractionForEntity(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player, @Nonnull EntityLivingBase entity,
+      @Nonnull EnumHand hand) {
     if (entity.world.isRemote) {
       return false;
     }
@@ -216,14 +206,14 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   }
 
   @Override
-  public void setDamage(ItemStack stack, int newDamage) {
+  public void setDamage(@Nonnull ItemStack stack, int newDamage) {
     int oldDamage = getDamage(stack);
     if (newDamage <= oldDamage) {
       super.setDamage(stack, newDamage);
     }
     int damage = newDamage - oldDamage;
 
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    EnergyUpgrade eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
@@ -239,8 +229,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   }
 
   @Override
-  public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    // return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
     return false;
   }
 
@@ -250,25 +239,25 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (!Config.addDurabilityTootip) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
+    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
     if (str != null) {
       list.add(str);
     }
-    if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+    if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnderIO.lang.localize("item.darkSteel_shears.tooltip.multiHarvest"));
       list.add(TextFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
           + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
@@ -304,8 +293,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
     @Override
     public int compare(Entity paramT1, Entity paramT2) {
-      double distanceSqToEntity1 = refPoint.getDistanceSqToEntity(paramT1);
-      double distanceSqToEntity2 = refPoint.getDistanceSqToEntity(paramT2);
+      double distanceSqToEntity1 = paramT1 == null ? 0 : refPoint.getDistanceSqToEntity(paramT1);
+      double distanceSqToEntity2 = paramT2 == null ? 0 : refPoint.getDistanceSqToEntity(paramT2);
       if (distanceSqToEntity1 < distanceSqToEntity2)
         return -1;
       if (distanceSqToEntity1 > distanceSqToEntity2)
@@ -318,13 +307,13 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
   }
 
   @Override
-  public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-    return slotChanged || oldStack == null || newStack == null || oldStack.getItem() != newStack.getItem();
+  public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
+    return slotChanged || oldStack.getItem() != newStack.getItem();
   }
 
 }

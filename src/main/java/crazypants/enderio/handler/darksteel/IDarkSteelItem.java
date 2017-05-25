@@ -8,9 +8,6 @@ public interface IDarkSteelItem {
 
   int getIngotsRequiredForFullRepair();
 
-  @Nonnull
-  String getItemName();
-
   boolean isItemForRepair(@Nonnull ItemStack right);
 
 }

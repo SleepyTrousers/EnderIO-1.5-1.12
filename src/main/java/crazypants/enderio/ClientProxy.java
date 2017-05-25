@@ -12,23 +12,19 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.block.coldfire.ColdFireStateMapper;
 import crazypants.enderio.block.lever.LeverStateMapper;
-import crazypants.enderio.conduit.ConduitBundleStateMapper;
-import crazypants.enderio.conduit.render.ConduitBundleRenderManager;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.handler.KeyTracker;
-import crazypants.enderio.handler.darksteel.UpgradeRenderDispatcher;
+import crazypants.enderio.handler.darksteel.UpgradeRenderManager;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.item.conduitprobe.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.darksteel.upgrade.sound.SoundDetector;
 import crazypants.enderio.item.yetawrench.ToolTickHandler;
 import crazypants.enderio.item.yetawrench.YetaWrenchOverlayRenderer;
-import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.YetaUtil;
@@ -40,7 +36,6 @@ import crazypants.enderio.render.ranged.MarkerParticle;
 import crazypants.enderio.render.registry.ItemModelRegistry;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -155,7 +150,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
-    MinecraftForge.EVENT_BUS.register(UpgradeRenderDispatcher.instance);
+    UpgradeRenderManager.init(event);
     MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 

@@ -2,7 +2,9 @@ package crazypants.enderio.item.darksteel.upgrade.energy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
@@ -13,7 +15,6 @@ import crazypants.enderio.handler.darksteel.IDarkSteelItem;
 import crazypants.enderio.material.material.Material;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.ItemTravelStaff;
-import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,159 +27,29 @@ import static crazypants.enderio.init.ModObject.itemMaterial;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
-  public static final AbstractUpgrade EMPOWERED = new EnergyUpgrade(0,
-      "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
-      new ItemStack(itemMaterial.getItem(), 1, Material.VIBRANT_CYSTAL.ordinal()),
-      Config.darkSteelPowerStorageBase,
-      Config.darkSteelPowerStorageBase / 100);
+  public static final @Nonnull EnergyUpgrade EMPOWERED = new EnergyUpgrade(0, "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
+      new ItemStack(itemMaterial.getItemNN(), 1, Material.VIBRANT_CYSTAL.ordinal()), Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 100);
 
-  public static final AbstractUpgrade EMPOWERED_TWO = new EnergyUpgrade(1,
-      "enderio.darksteel.upgrade.empowered_two", Config.darkSteelUpgradePowerOneCost,
-      new ItemStack(itemBasicCapacitor.getItem(), 1, 0),
-      Config.darkSteelPowerStorageLevelOne,
+  public static final @Nonnull EnergyUpgrade EMPOWERED_TWO = new EnergyUpgrade(1, "enderio.darksteel.upgrade.empowered_two",
+      Config.darkSteelUpgradePowerOneCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0), Config.darkSteelPowerStorageLevelOne,
       Config.darkSteelPowerStorageLevelOne / 100);
 
-  public static final AbstractUpgrade EMPOWERED_THREE = new EnergyUpgrade(2,
-      "enderio.darksteel.upgrade.empowered_three", Config.darkSteelUpgradePowerTwoCost,
-      new ItemStack(itemBasicCapacitor.getItem(), 1, 1),
-      Config.darkSteelPowerStorageLevelTwo,
+  public static final @Nonnull EnergyUpgrade EMPOWERED_THREE = new EnergyUpgrade(2, "enderio.darksteel.upgrade.empowered_three",
+      Config.darkSteelUpgradePowerTwoCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1), Config.darkSteelPowerStorageLevelTwo,
       Config.darkSteelPowerStorageLevelTwo / 100);
 
-  public static final AbstractUpgrade EMPOWERED_FOUR = new EnergyUpgrade(3,
-      "enderio.darksteel.upgrade.empowered_four", Config.darkSteelUpgradePowerThreeCost,
-      new ItemStack(itemBasicCapacitor.getItem(), 1, 2),
-      Config.darkSteelPowerStorageLevelThree,
+  public static final @Nonnull EnergyUpgrade EMPOWERED_FOUR = new EnergyUpgrade(3, "enderio.darksteel.upgrade.empowered_four",
+      Config.darkSteelUpgradePowerThreeCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2), Config.darkSteelPowerStorageLevelThree,
       Config.darkSteelPowerStorageLevelThree / 100);
-
-  private static final String UPGRADE_NAME = "energyUpgrade";
-  private static final String KEY_CAPACITY = "capacity";
-  private static final String KEY_ENERGY = "energy";
-  
-  private static final String KEY_MAX_IN = "maxInput";
-  private static final String KEY_MAX_OUT = "maxOuput";
-
-
-  private static final Random RANDOM = new Random();
-  
-  private static final String KEY_LEVEL = "energyUpgradeLevel";
-
-  public static EnergyUpgrade loadFromNBT(NBTTagCompound nbt) {
-    if(nbt == null) {
-      return null;
-    }
-    if(!nbt.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new EnergyUpgrade(nbt.getCompoundTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
-  }
-  
-  public static EnergyUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
-      return null;
-    }
-    EnergyUpgrade upgrade = loadFromNBT(stack.getTagCompound());
-    if (upgrade == null && stack.getItem() instanceof ItemTravelStaff) {
-      stack = stack.copy();
-      stack.getItem().onCreated(stack, null, null);
-      upgrade = loadFromNBT(stack.getTagCompound());
-    }
-    return upgrade;
-    
-  }
-
-  public static boolean itemHasAnyPowerUpgrade(ItemStack itemstack) {
-    return loadFromItem(itemstack) != null;
-  }
-
-  public static AbstractUpgrade next(AbstractUpgrade upgrade) {
-    if(upgrade == null) {
-      return EMPOWERED;
-    } else if(upgrade.unlocName.equals(EMPOWERED.unlocName)) {
-      return EMPOWERED_TWO;
-    } else if(upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
-      return EMPOWERED_THREE;
-    } else if(upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
-      return EMPOWERED_FOUR;
-    }
-    return null;
-  }
-
-  public static int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    int res = eu.extractEnergy(maxExtract, simulate);
-    if(!simulate && res > 0) {
-      eu.writeToItem(container);
-    }
-    return res;
-  }
-
-  public static int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    int res = eu.receiveEnergy(maxReceive, simulate);
-    if(!simulate && res > 0) {
-      eu.writeToItem(container);
-    }
-    return res;
-  }
-  
-  public static void setPowerLevel(ItemStack item, int amount) {
-    if(item == null || !itemHasAnyPowerUpgrade(item)) {
-      return;
-    }
-    amount = Math.min(amount, getMaxEnergyStored(item));
-    EnergyUpgrade eu = loadFromItem(item);
-    eu.setEnergy(amount);
-    eu.writeToItem(item);
-  }
-  
-  public static void setPowerFull(ItemStack item) {
-    if(item == null || !itemHasAnyPowerUpgrade(item)) {
-      return;
-    }
-    EnergyUpgrade eu = loadFromItem(item);
-    eu.setEnergy(eu.getCapacity());
-    eu.writeToItem(item);
-  }
-
-  public static String getStoredEnergyString(ItemStack itemstack) {
-    EnergyUpgrade up = loadFromItem(itemstack);
-    if(up == null) {
-      return null;
-    }
-    return PowerDisplayUtil.formatStoredPower(up.energy, up.capacity);
-  }
-
-  public static int getEnergyStored(ItemStack container) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    return eu.getEnergy();
-  }
-
-  public static int getMaxEnergyStored(ItemStack container) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    return eu.getCapacity();
-  }
 
   protected final int capacity;
   protected final int level;
   protected int energy;
-
   protected final int maxInRF;
   protected final int maxOutRF;
 
-  public EnergyUpgrade(int level, String name, int levels, ItemStack upgradeItem, int capacity, int maxReceiveIO) {
-    super(UPGRADE_NAME, name, upgradeItem, levels);
+  public EnergyUpgrade(int level, @Nonnull String name, int levels, @Nonnull ItemStack upgradeItem, int capacity, int maxReceiveIO) {
+    super(EnergyUpgradeManager.UPGRADE_NAME, name, upgradeItem, levels);
     this.level = level;
     this.capacity = capacity;
     energy = 0;
@@ -186,42 +57,46 @@ public class EnergyUpgrade extends AbstractUpgrade {
     maxOutRF = maxReceiveIO;
   }
 
-  public EnergyUpgrade(NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);
-    level = tag.getInteger(KEY_LEVEL);
-    capacity = tag.getInteger(KEY_CAPACITY);
-    energy = tag.getInteger(KEY_ENERGY);
-    maxInRF = tag.getInteger(KEY_MAX_IN);
-    maxOutRF = tag.getInteger(KEY_MAX_OUT);
+  public EnergyUpgrade(@Nonnull NBTTagCompound tag) {
+    super(EnergyUpgradeManager.UPGRADE_NAME, tag);
+    level = tag.getInteger(EnergyUpgradeManager.KEY_LEVEL);
+    capacity = tag.getInteger(EnergyUpgradeManager.KEY_CAPACITY);
+    energy = tag.getInteger(EnergyUpgradeManager.KEY_ENERGY);
+    maxInRF = tag.getInteger(EnergyUpgradeManager.KEY_MAX_IN);
+    maxOutRF = tag.getInteger(EnergyUpgradeManager.KEY_MAX_OUT);
+  }
+
+  EnergyUpgrade copy() {
+    return new EnergyUpgrade(level, unlocName, levelCost, upgradeItem, maxInRF, maxOutRF);
   }
 
   @Override
-  public boolean hasUpgrade(ItemStack stack) {
-    if (!super.hasUpgrade(stack) && (Prep.isInvalid(stack) || !(stack.getItem() instanceof ItemTravelStaff))) {
+  public boolean hasUpgrade(@Nonnull ItemStack stack) {
+    if (!super.hasUpgrade(stack) && !(stack.getItem() instanceof ItemTravelStaff)) {
       return false;
     }
-    EnergyUpgrade up = loadFromItem(stack);
-    if(up == null) {
+    EnergyUpgrade up = EnergyUpgradeManager.loadFromItem(stack);
+    if (up == null) {
       return false;
     }
     return up.unlocName.equals(unlocName);
   }
 
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null || !(stack.getItem() instanceof IDarkSteelItem)) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (!(stack.getItem() instanceof IDarkSteelItem)) {
       return false;
     }
-    AbstractUpgrade up = next(loadFromItem(stack));
-    if(up == null) {
+    AbstractUpgrade up = EnergyUpgradeManager.next(EnergyUpgradeManager.loadFromItem(stack));
+    if (up == null) {
       return false;
     }
-    return up.unlocName.equals(unlocName);
+    return up.getUnlocalizedName().equals(unlocName);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
 
     List<String> upgradeStr = new ArrayList<String>();
     upgradeStr.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
@@ -241,22 +116,22 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
-    upgradeRoot.setInteger(KEY_LEVEL, level);
-    upgradeRoot.setInteger(KEY_CAPACITY, capacity);
-    upgradeRoot.setInteger(KEY_ENERGY, energy);
-    upgradeRoot.setInteger(KEY_MAX_IN, maxInRF);
-    upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    upgradeRoot.setInteger(EnergyUpgradeManager.KEY_LEVEL, level);
+    upgradeRoot.setInteger(EnergyUpgradeManager.KEY_CAPACITY, capacity);
+    upgradeRoot.setInteger(EnergyUpgradeManager.KEY_ENERGY, energy);
+    upgradeRoot.setInteger(EnergyUpgradeManager.KEY_MAX_IN, maxInRF);
+    upgradeRoot.setInteger(EnergyUpgradeManager.KEY_MAX_OUT, maxOutRF);
   }
 
   public boolean isAbsorbDamageWithPower() {
-    boolean res= RANDOM.nextDouble() < getAbsorptionRatio();
+    boolean res = EnergyUpgradeManager.RANDOM.nextDouble() < getAbsorptionRatio();
     return res;
   }
 
   private double getAbsorptionRatio() {
     int val = level;
-    if(val >= Config.darkSteelPowerDamgeAbsorptionRatios.length) {
+    if (val >= Config.darkSteelPowerDamgeAbsorptionRatios.length) {
       val = 0;
     }
     return Config.darkSteelPowerDamgeAbsorptionRatios[val];
@@ -267,7 +142,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   public void setEnergy(int energy) {
-    if(energy < 0) {
+    if (energy < 0) {
       energy = 0;
     }
     this.energy = energy;
@@ -278,9 +153,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   public int receiveEnergy(int maxRF, boolean simulate) {
-
     int energyReceived = Math.min(capacity - energy, Math.min(maxInRF, maxRF));
-    if(!simulate) {
+    if (!simulate) {
       energy += energyReceived;
     }
     return energyReceived;
@@ -288,7 +162,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public int extractEnergy(int maxExtract, boolean simulate) {
     int energyExtracted = Math.min(energy, Math.min(maxOutRF, maxExtract));
-    if(!simulate) {
+    if (!simulate) {
       energy -= energyExtracted;
     }
     return energyExtracted;
