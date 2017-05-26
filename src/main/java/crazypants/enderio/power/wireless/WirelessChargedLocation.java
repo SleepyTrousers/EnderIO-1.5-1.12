@@ -1,24 +1,26 @@
 package crazypants.enderio.power.wireless;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
-import com.enderio.core.common.util.BlockCoord;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 
 public class WirelessChargedLocation {
 
-  private final TileEntity te;
+  private final @Nonnull TileEntity te;
   private int lastChangeCount;
-  private final List<IWirelessCharger> chargers;
+  private final @Nonnull NNList<IWirelessCharger> chargers;
 
-  public WirelessChargedLocation(TileEntity te) {
+  public WirelessChargedLocation(@Nonnull TileEntity te) {
     this.te = te;
-    this.chargers = new ArrayList<IWirelessCharger>();
+    this.chargers = new NNList<IWirelessCharger>();
     /* Set lastChangeCount to one less than the current change count so that
        the charger list is updated on first use (unless ~4B changes happen in between).
        Do this instead directly updating so that WirelessChargedLocation can be used
@@ -30,14 +32,14 @@ public class WirelessChargedLocation {
     WirelessChargerController wcc = WirelessChargerController.instance;
     chargers.clear();
     lastChangeCount = wcc.getChangeCount();
-    final BlockCoord bc = new BlockCoord(te);
+    final BlockPos bc = te.getPos();
     wcc.getChargers(te.getWorld(), bc, chargers);
     Collections.sort(chargers, new Comparator<IWirelessCharger>() {
       @Override
       public int compare(IWirelessCharger o1, IWirelessCharger o2) {
-        int dist1 = o1.getLocation().getDistSq(bc);
-        int dist2 = o2.getLocation().getDistSq(bc);
-        return dist1 - dist2;
+        double dist1 = o1.getLocation().distanceSq(bc);
+        double dist2 = o2.getLocation().distanceSq(bc);
+        return Double.compare(dist1, dist2);
       }
     });
   }
@@ -48,7 +50,7 @@ public class WirelessChargedLocation {
     }
   }
 
-  public boolean chargeItems(ItemStack[] items) {
+  public boolean chargeItems(NonNullList<ItemStack> items) {
     checkChangeCount();
     for(IWirelessCharger wc : chargers) {
       if(wc.isActive()) {

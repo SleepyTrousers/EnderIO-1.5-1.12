@@ -12,6 +12,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorHelper.SetType;
+import crazypants.enderio.loot.WeightedUpgrade.WeightedUpgradeImpl;
 import crazypants.util.NbtValue;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -73,7 +74,8 @@ public class AnvilCapacitorRecipe {
 
     Map<WeightedUpgrade, Float> result = new HashMap<WeightedUpgrade, Float>();
 
-    for (WeightedUpgrade wa : WeightedUpgrade.values()) {
+    for (WeightedUpgradeImpl wai : WeightedUpgrade.getWeightedupgrades()) {
+      WeightedUpgrade wa = wai.getUpgrade();
       if (data.containsKey(wa)) {
         final float combine = combine(rand, data.get(wa));
         result.put(wa, combine);

@@ -9,10 +9,9 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
@@ -71,7 +70,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     while (iterator.hasNext()) {
       blocks.add(iterator.next().getBlock());
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new GlassPaintingRecipe(this, blocks.toArray()));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new GlassPaintingRecipe(this, blocks.toArray()));
   }
 
   @Override

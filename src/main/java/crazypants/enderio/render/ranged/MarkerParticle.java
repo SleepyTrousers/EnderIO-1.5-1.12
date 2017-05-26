@@ -1,5 +1,7 @@
 package crazypants.enderio.render.ranged;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -17,19 +19,19 @@ import net.minecraft.world.World;
 
 public class MarkerParticle extends Particle {
 
-  private final Vector4f color;
-  private final BlockPos pos;
+  private final @Nonnull Vector4f color;
+  private final @Nonnull BlockPos pos;
   private int tolive, maxage;
 
-  public MarkerParticle(World world, BlockPos pos) {
+  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos) {
     this(world, pos, new Vector4f(1, 1, 1, 0.4f));
   }
 
-  public MarkerParticle(World world, BlockPos pos, Vector4f color) {
+  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color) {
     this(world, pos, color, 34);
   }
 
-  public MarkerParticle(World world, BlockPos pos, Vector4f color, int maxage) {
+  public MarkerParticle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Vector4f color, int maxage) {
     super(world, pos.getX(), pos.getY(), pos.getZ());
     this.pos = pos;
     this.color = color;
@@ -52,8 +54,8 @@ public class MarkerParticle extends Particle {
   }
 
   @Override
-  public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
-      float rotationXY, float rotationXZ) {
+  public void renderParticle(@Nonnull VertexBuffer worldRendererIn, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ,
+      float rotationYZ, float rotationXY, float rotationXZ) {
 
     if (!isAlive()) {
       return;

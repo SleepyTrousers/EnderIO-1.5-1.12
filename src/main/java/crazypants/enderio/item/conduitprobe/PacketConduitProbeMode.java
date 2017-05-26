@@ -8,25 +8,32 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import static crazypants.enderio.init.ModObject.itemConduitProbe;
 
-public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketConduitProbeMode, IMessage>  {
+public class PacketConduitProbeMode implements IMessage, IMessageHandler<PacketConduitProbeMode, IMessage> {
 
-  public PacketConduitProbeMode() {    
+  public PacketConduitProbeMode() {
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
   }
-  
+
   @Override
   public void fromBytes(ByteBuf buf) {
   }
 
   @Override
-  public IMessage onMessage(PacketConduitProbeMode message, MessageContext ctx) {    
-    ItemStack stack = ctx.getServerHandler().playerEntity.inventory.getCurrentItem();    
-    if (stack != null && stack.getItem() == itemConduitProbe.getItem()) {
+  public IMessage onMessage(PacketConduitProbeMode message, MessageContext ctx) {
+    ItemStack stack = ctx.getServerHandler().player.getHeldItemMainhand();
+    if (stack.getItem() == itemConduitProbe.getItem()) {
       int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
-      stack.setItemDamage(newMeta);      
+      stack.setItemDamage(newMeta);
+      return null;
+    }
+    stack = ctx.getServerHandler().player.getHeldItemOffhand();
+    if (stack.getItem() == itemConduitProbe.getItem()) {
+      int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
+      stack.setItemDamage(newMeta);
+      return null;
     }
     return null;
   }

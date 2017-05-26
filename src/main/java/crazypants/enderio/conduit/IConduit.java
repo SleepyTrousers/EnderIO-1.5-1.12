@@ -12,7 +12,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IConduit {
 
   @SideOnly(Side.CLIENT)
-  ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con);
+  ITabPanel createPanelForConduit(Object gui, IConduit con); // TODO 1.11 GuiExternalConnection
 
   @SideOnly(Side.CLIENT)
   int getTabOrderForConduit(IConduit con);
@@ -39,7 +38,7 @@ public interface IConduit {
   Class<? extends IConduit> getBaseConduitType();
 
   ItemStack createItem();
-  
+
   List<ItemStack> getDrops();
 
   int getLightValue();
@@ -85,9 +84,9 @@ public interface IConduit {
 
   void connectionsChanged();
 
-  AbstractConduitNetwork<?, ?> getNetwork();
+  IConduitNetwork<?, ?> getNetwork();
 
-  boolean setNetwork(AbstractConduitNetwork<?, ?> network);
+  boolean setNetwork(IConduitNetwork<?, ?> network);
 
   // External Connections
 
@@ -147,25 +146,23 @@ public interface IConduit {
   void updateEntity(World world);
 
   boolean onNeighborBlockChange(Block blockId);
-  
+
   boolean onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbourPos);
 
-  //For Copy/Paste of connection settings
+  // For Copy/Paste of connection settings
   boolean writeConnectionSettingsToNBT(EnumFacing dir, NBTTagCompound nbt);
 
   boolean readConduitSettingsFromNBT(EnumFacing dir, NBTTagCompound nbt);
-  
-  public AbstractConduitNetwork<?, ?> createNetworkForType();
+
+  public IConduitNetwork<?, ?> createNetworkForType();
 
   /**
-   * Should the texture of the conduit connectors be mirrored around the conduit
-   * node?
+   * Should the texture of the conduit connectors be mirrored around the conduit node?
    */
   boolean shouldMirrorTexture();
 
   void invalidate();
 
   int getExternalRedstoneLevel();
-
 
 }

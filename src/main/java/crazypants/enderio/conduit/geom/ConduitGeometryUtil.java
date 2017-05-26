@@ -3,6 +3,8 @@ package crazypants.enderio.conduit.geom;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -45,9 +47,11 @@ public class ConduitGeometryUtil {
     HWIDTH = WIDTH / 2;
     HHEIGHT = HEIGHT / 2;
 
-    CORE_MIN = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
-    CORE_MAX = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
-    CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
+    final Vector3d core_min = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
+    final Vector3d core_max = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
+    CORE_MIN = core_min;
+    CORE_MAX = core_max;
+    CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
     float connectorWidth = 0.25f + (scale * 0.5f);
     for (EnumFacing dir : EnumFacing.VALUES) {
@@ -125,7 +129,7 @@ public class ConduitGeometryUtil {
     return result;
   }
 
-  public Vector3d getTranslation(EnumFacing dir, Offset offset) {
+  public @Nonnull Vector3d getTranslation(EnumFacing dir, Offset offset) {
     Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, offset.zOffset);
     result.scale(WIDTH);
     return result;

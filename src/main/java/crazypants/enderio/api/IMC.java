@@ -1,10 +1,8 @@
 package crazypants.enderio.api;
 
-import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.item.soulvial.ItemSoulVessel;
 import crazypants.enderio.item.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.recipe.slicensplice.SliceAndSpliceRecipeManager;

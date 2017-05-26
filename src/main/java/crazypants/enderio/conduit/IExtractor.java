@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.machine.modes.RedstoneControlMode;
@@ -7,12 +9,14 @@ import net.minecraft.util.EnumFacing;
 
 public interface IExtractor extends IConduit {
 
-  void setExtractionRedstoneMode(RedstoneControlMode mode, EnumFacing dir);
+  void setExtractionRedstoneMode(@Nonnull RedstoneControlMode mode, @Nonnull EnumFacing dir);
 
-  RedstoneControlMode getExtractionRedstoneMode(EnumFacing dir);
+  @Nonnull
+  RedstoneControlMode getExtractionRedstoneMode(@Nonnull EnumFacing dir);
 
-  void setExtractionSignalColor(EnumFacing dir, DyeColor col);
+  void setExtractionSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-  DyeColor getExtractionSignalColor(EnumFacing dir);
+  @Nonnull
+  DyeColor getExtractionSignalColor(@Nonnull EnumFacing dir);
 
 }

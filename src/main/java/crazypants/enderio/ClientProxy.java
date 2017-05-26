@@ -22,8 +22,8 @@ import crazypants.enderio.handler.darksteel.UpgradeRenderManager;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.item.conduitprobe.ConduitProbeOverlayRenderer;
+import crazypants.enderio.item.conduitprobe.ToolTickHandler;
 import crazypants.enderio.item.darksteel.upgrade.sound.SoundDetector;
-import crazypants.enderio.item.yetawrench.ToolTickHandler;
 import crazypants.enderio.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.material.glass.EnderIOGlassesStateMapper;
 import crazypants.enderio.paint.PaintTooltipUtil;
@@ -144,8 +144,7 @@ public class ClientProxy extends CommonProxy {
 
     // Listeners
     if (Config.useSneakMouseWheelYetaWrench) {
-      ToolTickHandler th = new ToolTickHandler();
-      MinecraftForge.EVENT_BUS.register(th);
+      ToolTickHandler.init(event);
     }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);

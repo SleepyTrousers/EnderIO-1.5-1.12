@@ -10,12 +10,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.integration.forestry.ApiaristArmorUpgrade;
-import crazypants.enderio.integration.forestry.NaturalistEyeUpgrade;
-import crazypants.enderio.integration.top.TheOneProbeUpgrade;
+import crazypants.enderio.integration.forestry.ForestryUtil;
+import crazypants.enderio.integration.top.TOPUtil;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.flippers.SwimUpgrade;
@@ -30,61 +30,50 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class DarkSteelRecipeManager {
 
-  public static DarkSteelRecipeManager instance = new DarkSteelRecipeManager();
+  public static final @Nonnull DarkSteelRecipeManager instance = new DarkSteelRecipeManager();
 
-  private List<IDarkSteelUpgrade> upgrades = new ArrayList<IDarkSteelUpgrade>();
+  private final @Nonnull NNList<IDarkSteelUpgrade> upgrades = new NNList<IDarkSteelUpgrade>();
 
-  public void addUpgrade(IDarkSteelUpgrade upgrade) {
+  public void addUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
     upgrades.add(upgrade);
   }
 
   public DarkSteelRecipeManager() {
-    upgrades.add(EnergyUpgrade.EMPOWERED);
-    upgrades.add(EnergyUpgrade.EMPOWERED_TWO);
-    upgrades.add(EnergyUpgrade.EMPOWERED_THREE);
-    upgrades.add(EnergyUpgrade.EMPOWERED_FOUR);
-    upgrades.add(JumpUpgrade.JUMP_ONE);
-    upgrades.add(JumpUpgrade.JUMP_TWO);
-    upgrades.add(JumpUpgrade.JUMP_THREE);
-    upgrades.add(SpeedUpgrade.SPEED_ONE);
-    upgrades.add(SpeedUpgrade.SPEED_TWO);
-    upgrades.add(SpeedUpgrade.SPEED_THREE);
-    upgrades.add(GliderUpgrade.INSTANCE);
-    upgrades.add(ElytraUpgrade.INSTANCE);
-    upgrades.add(SoundDetectorUpgrade.INSTANCE);
-    upgrades.add(SwimUpgrade.INSTANCE);
-    upgrades.add(NightVisionUpgrade.INSTANCE);
-    upgrades.add(TravelUpgrade.INSTANCE);
-    upgrades.add(SpoonUpgrade.INSTANCE);
+    addUpgrade(EnergyUpgrade.EMPOWERED);
+    addUpgrade(EnergyUpgrade.EMPOWERED_TWO);
+    addUpgrade(EnergyUpgrade.EMPOWERED_THREE);
+    addUpgrade(EnergyUpgrade.EMPOWERED_FOUR);
+    addUpgrade(JumpUpgrade.JUMP_ONE);
+    addUpgrade(JumpUpgrade.JUMP_TWO);
+    addUpgrade(JumpUpgrade.JUMP_THREE);
+    addUpgrade(SpeedUpgrade.SPEED_ONE);
+    addUpgrade(SpeedUpgrade.SPEED_TWO);
+    addUpgrade(SpeedUpgrade.SPEED_THREE);
+    addUpgrade(GliderUpgrade.INSTANCE);
+    addUpgrade(ElytraUpgrade.INSTANCE);
+    addUpgrade(SoundDetectorUpgrade.INSTANCE);
+    addUpgrade(SwimUpgrade.INSTANCE);
+    addUpgrade(NightVisionUpgrade.INSTANCE);
+    addUpgrade(TravelUpgrade.INSTANCE);
+    addUpgrade(SpoonUpgrade.INSTANCE);
     
     //TODO: Mod Thaumcraft
 //    if(Loader.isModLoaded("Thaumcraft")) {
 //      ThaumcraftCompat.loadUpgrades(upgrades);
 //    }
-    if(Loader.isModLoaded("forestry")) {
-      upgrades.add(NaturalistEyeUpgrade.INSTANCE);
-      upgrades.add(ApiaristArmorUpgrade.HELMET);
-      upgrades.add(ApiaristArmorUpgrade.CHEST);
-      upgrades.add(ApiaristArmorUpgrade.LEGS);
-      upgrades.add(ApiaristArmorUpgrade.BOOTS);
-    }
-    if (TheOneProbeUpgrade.INSTANCE.isAvailable()) {
-      upgrades.add(TheOneProbeUpgrade.INSTANCE);
-    }
+    ForestryUtil.addUpgrades(this);
+    TOPUtil.addUpgrades(this);
   }
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if(evt.getLeft() == null || evt.getRight() == null) {
-      return;
-    }
     if(isRepair(evt)) {
       handleRepair(evt);
     } else {
@@ -112,26 +101,27 @@ public class DarkSteelRecipeManager {
     
     double damPerc = (double)targetStack.getItemDamage()/ targetStack.getMaxDamage();
     int requiredIngots = (int)Math.ceil(damPerc * maxIngots);
-    if(ingots.stackSize > requiredIngots) {
+    if (ingots.getCount() > requiredIngots) {
       return;
     }
     
     int damageAddedPerIngot = (int)Math.ceil((double)targetStack.getMaxDamage()/maxIngots);
-    int totalDamageRemoved = damageAddedPerIngot * ingots.stackSize;
+    int totalDamageRemoved = damageAddedPerIngot * ingots.getCount();
     
     ItemStack resultStack = targetStack.copy();
     resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
     
     evt.setOutput(resultStack);
-    evt.setCost(ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2));
+    evt.setCost(ingots.getCount() + (int) Math.ceil(getEnchantmentRepairCost(resultStack) / 2));
   }
 
   private void handleUpgrade(AnvilUpdateEvent evt) {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft())) {
         ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
-        if(evt.getLeft().getTagCompound() != null) {
-          res.setTagCompound(evt.getLeft().getTagCompound().copy());
+        final NBTTagCompound tagCompound = evt.getLeft().getTagCompound();
+        if (tagCompound != null) {
+          res.setTagCompound(tagCompound.copy());
         }
         upgrade.writeToItem(res);
         evt.setOutput(res);
@@ -174,7 +164,7 @@ public class DarkSteelRecipeManager {
     return res;
   }
 
-  public List<IDarkSteelUpgrade> getUpgrades() {
+  public NNList<IDarkSteelUpgrade> getUpgrades() {
     return upgrades;
   }
 
@@ -195,7 +185,6 @@ public class DarkSteelRecipeManager {
   }
 
   public void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-
     List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.hasUpgrade(itemstack)) {
@@ -218,7 +207,7 @@ public class DarkSteelRecipeManager {
     return ImmutableList.copyOf(upgrades).iterator();
   }
 
-  public String getUpgradesAsString(ItemStack stack) {
+  public String getUpgradesAsString(@Nonnull ItemStack stack) {
     String result = "";
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if (upgrade.hasUpgrade(stack)) {
@@ -228,9 +217,11 @@ public class DarkSteelRecipeManager {
     return result.isEmpty() ? null : result;
   }
 
-  public List<ItemStack> getRecipes(Set<String> seen, NNList<UpgradePath> list, List<ItemStack> input) {
-    List<ItemStack> output = new ArrayList<ItemStack>();
-    for (ItemStack stack : input) {
+  public NNList<ItemStack> getRecipes(@Nonnull Set<String> seen, @Nonnull NNList<UpgradePath> list, @Nonnull NNList<ItemStack> input) {
+    NNList<ItemStack> output = new NNList<ItemStack>();
+    NNIterator<ItemStack> iterator = input.iterator();
+    while (iterator.hasNext()) {
+      ItemStack stack = iterator.next();
       for (IDarkSteelUpgrade upgrade : upgrades) {
         if (upgrade.canAddToItem(stack)) {
           ItemStack newStack = stack.copy();
@@ -247,10 +238,10 @@ public class DarkSteelRecipeManager {
     return output;
   }
 
-  public static NNList<UpgradePath> getAllRecipes(List<ItemStack> validItems) {
+  public static @Nonnull NNList<UpgradePath> getAllRecipes(@Nonnull NNList<ItemStack> validItems) {
     NNList<UpgradePath> list = new NNList<UpgradePath>();
     Set<String> seen = new HashSet<String>();
-    List<ItemStack> items = instance.getRecipes(seen, list, validItems);
+    NNList<ItemStack> items = instance.getRecipes(seen, list, validItems);
     while (!items.isEmpty()) {
       items = instance.getRecipes(seen, list, items);
     }

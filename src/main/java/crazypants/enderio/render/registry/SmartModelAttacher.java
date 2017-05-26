@@ -12,7 +12,6 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
-import crazypants.enderio.conduit.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.ICustomItemResourceLocation;
 import crazypants.enderio.render.ITintedBlock;
@@ -220,7 +219,8 @@ public class SmartModelAttacher {
 
     OverlayHolder.collectOverlayQuads(event);
     BlockStateWrapperBase.invalidate();
-    BlockStateWrapperConduitBundle.invalidate();
+    // TODO 1.11 move this to conduit sub-mod
+    // BlockStateWrapperConduitBundle.invalidate();
   }
 
   private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl) {

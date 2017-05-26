@@ -3,6 +3,8 @@ package crazypants.enderio.machine.modes;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.google.common.collect.Lists;
@@ -33,10 +35,10 @@ public enum RedstoneControlMode {
     OFF(RedstoneControlMode.OFF, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL),
     NEVER(RedstoneControlMode.NEVER, IconEIO.REDSTONE_MODE_NEVER);
 
-    private final RedstoneControlMode mode;
-    private final IWidgetIcon icon;
+    private final @Nonnull RedstoneControlMode mode;
+    private final @Nonnull IWidgetIcon icon;
 
-    IconHolder(RedstoneControlMode mode, IWidgetIcon icon) {
+    IconHolder(@Nonnull RedstoneControlMode mode, @Nonnull IWidgetIcon icon) {
       this.mode = mode;
       this.icon = icon;
     }
@@ -46,12 +48,12 @@ public enum RedstoneControlMode {
     }
 
     @Override
-    public IWidgetIcon getIcon() {
+    public @Nonnull IWidgetIcon getIcon() {
       return icon;
     }
 
     @Override
-    public List<String> getTooltipLines() {
+    public @Nonnull List<String> getTooltipLines() {
       return Lists.newArrayList(getTooltip());
     }
 

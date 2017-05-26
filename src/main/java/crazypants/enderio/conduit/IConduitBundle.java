@@ -7,19 +7,23 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
 
 import appeng.api.networking.IGridHost;
-import cofh.api.energy.IEnergyReceiver;
 import crazypants.enderio.conduit.facade.EnumFacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.SidedEnvironment;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,13 +34,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @InterfaceList({
     @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
-    @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),
-    @Interface(iface = "mods.immibis.microblocks.api.IMicroblockSupporterTile", modid = "ImmibisMicroblocks"),
     @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
     @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network"),
-    @Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "CoFHAPI|energy")
 })
-public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IEnergyReceiver, IGridHost {
+public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, Environment, SidedEnvironment, IGridHost, IHasConduitProbeData {
 
   @Nonnull
   TileEntity getEntity();
@@ -120,4 +121,10 @@ public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPainta
   void geometryChanged();
 
   void setGridNode(Object node);
+
+  int getInternalRedstoneSignalForColor(DyeColor col);
+
+  boolean handleFacadeClick(World world, BlockPos placeAt, EntityPlayer player, EnumFacing opposite, ItemStack stack, EnumHand hand, float hitX, float hitY,
+      float hitZ);
+
 }

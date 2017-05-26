@@ -2,6 +2,7 @@ package crazypants.enderio.capacitor;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.config.Config.Section;
 import crazypants.enderio.init.IModObject;
 
 public interface ICapacitorKey {
@@ -30,5 +31,29 @@ public interface ICapacitorKey {
 
   @Nonnull
   String getName();
+
+  public static interface Computable extends ICapacitorKey {
+
+    @Nonnull
+    Scaler getScaler();
+
+    void setScaler(@Nonnull Scaler scaler);
+
+    @Nonnull
+    String getConfigKey();
+
+    @Nonnull
+    Section getConfigSection();
+
+    @Nonnull
+    String getConfigComment();
+
+    int getDefaultBaseValue();
+
+    int getBaseValue();
+
+    void setBaseValue(int baseValue);
+
+  }
 
 }

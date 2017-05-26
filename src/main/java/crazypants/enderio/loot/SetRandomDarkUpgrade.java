@@ -1,6 +1,5 @@
 package crazypants.enderio.loot;
 
-import java.util.Collections;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
@@ -29,7 +28,7 @@ public class SetRandomDarkUpgrade extends LootFunction {
   @Override
   public @Nonnull ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
     if (Prep.isValid(stack)) {
-      NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(Collections.singletonList(stack));
+      NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(new NNList<>(stack));
       if (!list.isEmpty()) {
         return list.get((int) (rand.nextInt(list.size()) * rand.nextFloat())).getOutput();
       }

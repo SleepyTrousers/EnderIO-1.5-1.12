@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.vecmath.Vector4i;
 
-import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -114,7 +114,7 @@ public class PowerBarOverlayRenderHelper {
   }
 
   protected boolean hasEnergyStore(@Nonnull ItemStack stack) {
-    return !isUpgradeableItem || EnergyUpgrade.loadFromItem(stack) != null;
+    return !isUpgradeableItem || EnergyUpgradeManager.loadFromItem(stack) != null;
   }
 
   public void render(double level, int xPosition, int yPosition, int offset, boolean shadow) {

@@ -16,7 +16,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.capacitor.CapacitorKeyHelper;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -1465,7 +1465,7 @@ public final class Config {
     topShowItemCountDefault = config.getBoolean("topShowItemCountDefault", sectionTOP.name, topShowItemCountDefault,
         "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed)");
 
-    CapacitorKey.processConfig(config);
+    CapacitorKeyHelper.processConfig(config);
   }
 
   public static void checkYetaAccess() {

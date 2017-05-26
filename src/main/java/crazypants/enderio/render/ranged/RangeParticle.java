@@ -1,5 +1,7 @@
 package crazypants.enderio.render.ranged;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.IconUtil;
@@ -39,7 +41,7 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
   @Override
   public boolean isAlive() {
-    return age < AGE_LIMIT && ((TileEntity) owner).hasworld() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
+    return age < AGE_LIMIT && ((TileEntity) owner).hasWorld() && !((TileEntity) owner).isInvalid() && owner.isShowingRange()
         && world.getTileEntity(owner.getPos()) == owner;
   }
 
@@ -49,8 +51,8 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
   }
 
   @Override
-  public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ,
-      float rotationXY, float rotationXZ) {
+  public void renderParticle(@Nonnull VertexBuffer worldRendererIn, @Nonnull Entity entityIn, float partialTicks, float rotationX, float rotationZ,
+      float rotationYZ, float rotationXY, float rotationXZ) {
 
     GlStateManager.pushMatrix();
     GlStateManager.enableLighting();

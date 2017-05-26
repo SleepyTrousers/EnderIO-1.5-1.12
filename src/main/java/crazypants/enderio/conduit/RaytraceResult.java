@@ -5,33 +5,30 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
 public class RaytraceResult {
 
-  public static RaytraceResult getClosestHit(Vec3d origin, Collection<RaytraceResult> candidates) {
+  public static RaytraceResult getClosestHit(@Nonnull Vec3d origin, @Nonnull Collection<RaytraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
     RaytraceResult closest = null;
 
     for (RaytraceResult candidate : candidates) {
       RayTraceResult hit = candidate.movingObjectPosition;
-      if(hit != null) {
-        double lengthSquared = hit.hitVec.squareDistanceTo(origin);
-        if(lengthSquared < minLengthSquared) {
-          minLengthSquared = lengthSquared;
-          closest = candidate;
-        }
+      double lengthSquared = hit.hitVec.squareDistanceTo(origin);
+      if (lengthSquared < minLengthSquared) {
+        minLengthSquared = lengthSquared;
+        closest = candidate;
       }
     }
     return closest;
   }
 
-  public static void sort(final Vec3d origin, List<RaytraceResult> toSort) {
-    if(origin == null || toSort == null) {
-      return;
-    }
+  public static void sort(final @Nonnull Vec3d origin, @Nonnull List<RaytraceResult> toSort) {
     Collections.sort(toSort, new Comparator<RaytraceResult>() {
       @Override
       public int compare(RaytraceResult o1, RaytraceResult o2) {
@@ -40,18 +37,15 @@ public class RaytraceResult {
     });
   }
 
-  public final CollidableComponent component;
-  public final RayTraceResult movingObjectPosition;
+  public final @Nonnull CollidableComponent component;
+  public final @Nonnull RayTraceResult movingObjectPosition;
 
-  public RaytraceResult(CollidableComponent component, RayTraceResult movingObjectPosition) {
+  public RaytraceResult(@Nonnull CollidableComponent component, @Nonnull RayTraceResult movingObjectPosition) {
     this.component = component;
     this.movingObjectPosition = movingObjectPosition;
   }
 
-  public double getDistanceTo(Vec3d origin) {
-    if(movingObjectPosition == null || origin == null) {
-      return Double.MAX_VALUE;
-    }
+  public double getDistanceTo(@Nonnull Vec3d origin) {
     return movingObjectPosition.hitVec.squareDistanceTo(origin);
   }
 

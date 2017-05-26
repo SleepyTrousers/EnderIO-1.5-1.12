@@ -22,7 +22,7 @@ import crazypants.enderio.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.item.darksteel.upgrade.flippers.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.jump.JumpUpgrade;
@@ -65,9 +65,9 @@ public class DarkSteelController {
   }
 
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
-  
+
   public static final DarkSteelController instance = new DarkSteelController();
- 
+
   private boolean wasJumping;
   private int jumpCount;
   private int ticksSinceLastJump;
@@ -84,11 +84,11 @@ public class DarkSteelController {
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
   }
-  
+
   private EnumSet<Type> getActiveSet(EntityPlayer player) {
     EnumSet<Type> active;
     GameProfile gameProfile = player.getGameProfile();
-    UUID id = gameProfile == null ? null : gameProfile.getId();
+    UUID id = gameProfile.getId();
     active = id == null ? null : allActive.get(id);
     if (active == null) {
       active = DEFAULT_ACTIVE.clone();
@@ -161,13 +161,12 @@ public class DarkSteelController {
 
     ItemStack helm = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
-    if (upgrade == null
-        || !player.world.canBlockSeeSky(new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY + player.eyeHeight + .25),
-            MathHelper.floor(player.posZ)))) {
+    if (upgrade == null || !player.world
+        .canBlockSeeSky(new BlockPos(MathHelper.floor(player.posX), MathHelper.floor(player.posY + player.eyeHeight + .25), MathHelper.floor(player.posZ)))) {
       return;
     }
 
-    int RFperSecond = Math.round(upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.world));
+    int RFperSecond = Math.round(upgrade.getRFPerSec() * SolarUpgrade.calculateLightRatio(player.world));
 
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.world.getTotalWorldTime() % 20 < leftover;
@@ -179,10 +178,9 @@ public class DarkSteelController {
       int nextIndex = player.getEntityData().getInteger("dsarmor:solar") % 4;
 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
-        ItemStack stack = player.inventory.armorInventory[nextIndex];
+        ItemStack stack = player.inventory.armorInventory.get(nextIndex);
         IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
-        if (cap != null
-            && (EnergyUpgrade.loadFromItem(stack) != null || Config.darkSteelSolarChargeOthers)) {
+        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || Config.darkSteelSolarChargeOthers)) {
           toAdd -= cap.receiveEnergy(toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;
@@ -262,7 +260,7 @@ public class DarkSteelController {
     return isElytraUpgradeEquipped(chestPlate);
   }
 
-  public boolean isElytraUpgradeEquipped(ItemStack chestPlate) {
+  public boolean isElytraUpgradeEquipped(@Nonnull ItemStack chestPlate) {
     ElytraUpgrade glideUpgrade = ElytraUpgrade.loadFromItem(chestPlate);
     if (glideUpgrade == null) {
       return false;
@@ -273,20 +271,20 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
 
-    if (boots != null && boots.getItem() == ModObject.itemDarkSteelBoots && !player.capabilities.allowFlying) {
+    if (boots.getItem() == ModObject.itemDarkSteelBoots.getItem() && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
       if (costedDistance > 1) { // Elytra flight will limit fall distance to 1.0F in normal flight
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
-        int totalEnergy = getPlayerEnergy(player, ModObject.itemDarkSteelBoots);
+        int totalEnergy = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
         if (totalEnergy > 0 && totalEnergy >= energyCost) {
-          usePlayerEnergy(player, ModObject.itemDarkSteelBoots, energyCost);
+          usePlayerEnergy(player, EntityEquipmentSlot.FEET, energyCost);
           player.fallDistance -= costedDistance;
         }
       }
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if (jumpUpgrade != null && boots != null && boots.getItem() == ModObject.itemDarkSteelBoots && isStepAssistActive(player)) {
+    if (jumpUpgrade != null && boots.getItem() == ModObject.itemDarkSteelBoots.getItem() && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if (player.stepHeight == 1.0023F) {
       player.stepHeight = 0.6F;
@@ -300,7 +298,7 @@ public class DarkSteelController {
     int remaining = cost;
     if (Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack);
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
         if (cap != null && cap.canExtract()) {
           int used = cap.extractEnergy(remaining, false);
           remaining -= used;
@@ -310,11 +308,9 @@ public class DarkSteelController {
         }
       }
     }
-    if (armor != null && remaining > 0) {
-      ItemStack stack = player.getItemStackFromSlot(armor.armorType);
-      if (stack != null) {
-        EnergyUpgrade.extractEnergy(stack, remaining, false);
-      }
+    if (armorSlot != null && remaining > 0) {
+      ItemStack stack = player.getItemStackFromSlot(armorSlot);
+      EnergyUpgradeManager.extractEnergy(stack, remaining, false);
     }
   }
 
@@ -323,7 +319,7 @@ public class DarkSteelController {
 
     if (Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        IEnergyStorage cap = PowerHandlerUtil.getCapability(stack);
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
         if (cap != null && cap.canExtract()) {
           res += cap.extractEnergy(Integer.MAX_VALUE, true);
         }
@@ -331,7 +327,7 @@ public class DarkSteelController {
     }
     if (slot != null) {
       ItemStack stack = player.getItemStackFromSlot(slot);
-      res = EnergyUpgrade.getEnergyStored(stack);
+      res = EnergyUpgradeManager.getEnergyStored(stack);
     }
     return res;
   }
@@ -352,12 +348,9 @@ public class DarkSteelController {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     EntityPlayerSP player = Minecraft.getMinecraft().player;
-    if (player == null) {
-      return;
-    }
 
     if (event.phase != TickEvent.Phase.END) {
-      jumpPre = player.movementInput == null ? false : player.movementInput.jump;
+      jumpPre = player.movementInput.jump;
       return;
     }
 
@@ -368,12 +361,12 @@ public class DarkSteelController {
 
     MovementInput input = player.movementInput;
     boolean jumpHandled = false;
-    if (input != null && input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
+    if (input.jump && (!wasJumping || ticksSinceLastJump > 5)) {
       jumpHandled = doJump(player);
     }
 
-    if (!jumpHandled && input != null && input.jump && !jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
-        && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
+    if (!jumpHandled && input.jump && !jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying && isElytraUpgradeEquipped(player)
+        && !isElytraActive(player)) {
       DarkSteelController.instance.setActive(player, Type.ELYTRA, true);
       PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(Type.ELYTRA, true));
     }
@@ -395,7 +388,7 @@ public class DarkSteelController {
     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
-    if (jumpUpgrade == null || boots == null || boots.getItem() != ModObject.itemDarkSteelBoots) {
+    if (jumpUpgrade == null) {
       return false;
     }
 
@@ -407,13 +400,13 @@ public class DarkSteelController {
 
     int autoJumpOffset = autoJump ? 1 : 0;
     int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1 - autoJumpOffset, 2.5);
-    int availablePower = getPlayerEnergy(player, ModObject.itemDarkSteelBoots);
+    int availablePower = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
     int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
     if (availablePower > 0 && requiredPower <= availablePower && jumpCount < maxJumps) {
       jumpCount++;
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (jumpCount - autoJumpOffset);
       ticksSinceLastJump = 0;
-      usePlayerEnergy(player, ModObject.itemDarkSteelBoots, requiredPower);
+      usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);
       SoundHelper.playSound(player.world, player, SoundRegistry.JUMP, 1.0f, player.world.rand.nextFloat() * 0.5f + 0.75f);
 
       Random rand = player.world.rand;
@@ -424,7 +417,7 @@ public class DarkSteelController {
             player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
         Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
       }
-      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, ModObject.itemDarkSteelBoots.armorType));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EntityEquipmentSlot.FEET));
       return true;
     }
     return false;

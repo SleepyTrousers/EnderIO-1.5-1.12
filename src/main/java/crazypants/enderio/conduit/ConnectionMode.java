@@ -1,7 +1,8 @@
 package crazypants.enderio.conduit;
 
-import crazypants.enderio.EnderIO;
+import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
 
 public enum ConnectionMode {
 
@@ -11,28 +12,27 @@ public enum ConnectionMode {
   DISABLED("gui.conduit.ioMode.disabled"),
   NOT_SET("gui.conduit.ioMode.notSet");
 
-  private final String unlocalisedName;
+  private final @Nonnull String unlocalisedName;
 
-  ConnectionMode(String unlocalisedName) {
+  ConnectionMode(@Nonnull String unlocalisedName) {
     this.unlocalisedName = unlocalisedName;
   }
 
-  public String getUnlocalisedName() {
+  public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
   public static ConnectionMode getNext(ConnectionMode mode) {
     int ord = mode.ordinal() + 1;
-    if(ord >= ConnectionMode.values().length) {
+    if (ord >= ConnectionMode.values().length) {
       ord = 0;
     }
     return ConnectionMode.values()[ord];
   }
 
   public static ConnectionMode getPrevious(ConnectionMode mode) {
-
     int ord = mode.ordinal() - 1;
-    if(ord < 0) {
+    if (ord < 0) {
       ord = ConnectionMode.values().length - 1;
     }
     return ConnectionMode.values()[ord];
@@ -46,7 +46,8 @@ public enum ConnectionMode {
     return this == IN_OUT || this == OUTPUT;
   }
 
-  public String getLocalisedName() {
+  public @Nonnull String getLocalisedName() {
     return EnderIO.lang.localize(unlocalisedName);
   }
+
 }

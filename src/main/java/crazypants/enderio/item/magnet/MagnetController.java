@@ -57,7 +57,7 @@ public class MagnetController {
     }
   }
 
-  static ActiveMagnet getMagnet(EntityPlayer player, boolean activeOnly) {
+  public static ActiveMagnet getMagnet(EntityPlayer player, boolean activeOnly) {
     NonNullList<ItemStack> inv = player.inventory.mainInventory;
     int maxSlot = Config.magnetAllowInMainInventory ? inv.size() : InventoryPlayer.getHotbarSize();
     for (int i = 0; i < maxSlot; i++) {
@@ -185,13 +185,21 @@ public class MagnetController {
     return arraylist;
   }
 
-  static class ActiveMagnet {
+  public static class ActiveMagnet {
     final @Nonnull ItemStack item;
     final int slot;
 
     ActiveMagnet(@Nonnull ItemStack item, int slot) {
       this.item = item;
       this.slot = slot;
+    }
+
+    public @Nonnull ItemStack getItem() {
+      return item;
+    }
+
+    public int getSlot() {
+      return slot;
     }
   }
 

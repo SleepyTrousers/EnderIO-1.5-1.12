@@ -13,11 +13,15 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitRenderer;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
-import crazypants.enderio.conduit.render.ConduitRenderer;
+import crazypants.enderio.init.IModObject;
+import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,8 +33,8 @@ public class ConduitRegistry {
     private final @Nonnull Offset none, x, y, z;
     private boolean canConnectToAnything;
     @SideOnly(Side.CLIENT)
-    private @Nullable Collection<ConduitRenderer> renderers;
-    private @Nonnull Collection<Class<? extends IConduit>> members = new ArrayList<Class<? extends IConduit>>();
+    private @Nonnull NNList<IConduitRenderer> renderers = new NNList<>();
+    private @Nonnull NNList<Class<? extends IConduit>> members = new NNList<Class<? extends IConduit>>();
 
     /**
      * Constructs a new ConduitInfo object.
@@ -96,10 +100,7 @@ public class ConduitRegistry {
      * <em>CLIENT only!</em>
      */
     @SideOnly(Side.CLIENT)
-    public void addRenderer(@Nonnull ConduitRenderer renderer) {
-      if (renderers == null) {
-        renderers = new ArrayList<ConduitRenderer>();
-      }
+    public void addRenderer(@Nonnull IConduitRenderer renderer) {
       renderers.add(renderer);
     }
 
@@ -110,10 +111,7 @@ public class ConduitRegistry {
      * <em>CLIENT only!</em>
      */
     @SideOnly(Side.CLIENT)
-    public @Nonnull Collection<ConduitRenderer> getRenderers() {
-      if (renderers == null) {
-        return Collections.<ConduitRenderer> emptyList();
-      }
+    public @Nonnull Collection<IConduitRenderer> getRenderers() {
       return renderers;
     }
 
@@ -325,5 +323,21 @@ public class ConduitRegistry {
     }
 
   };
+
+  private static IModObject conduitBlock = null;
+
+  /**
+   * Returns the conduit block if it exists.
+   */
+  public static @Nullable Block getConduitBlock() {
+    return conduitBlock == null ? null : conduitBlock.getBlock();
+  }
+
+  /**
+   * Sets the conduit block. For internal use by the conduit module only!
+   */
+  public static void registerConduitBlock(@Nonnull IModObject block) {
+    conduitBlock = block;
+  }
 
 }

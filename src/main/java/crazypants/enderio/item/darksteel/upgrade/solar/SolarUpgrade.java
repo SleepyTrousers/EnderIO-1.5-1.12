@@ -8,6 +8,7 @@ import crazypants.enderio.init.ModObject;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -81,6 +82,11 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   public int getLevel() {
     return level;
+  }
+
+  public static int calculateLightRatio(World world) {
+    // TODO 1.11 copy from TE
+    return 0;
   }
 
 }

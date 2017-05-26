@@ -1,17 +1,21 @@
 package crazypants.enderio.power.wireless;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.BlockCoord;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface IWirelessCharger {
 
+  @Nonnull
   World getworld();
 
-  BlockCoord getLocation();
+  @Nonnull
+  BlockPos getLocation();
 
-  boolean chargeItems(ItemStack[] items);
+  boolean chargeItems(NonNullList<ItemStack> items);
 
   int takeEnergy(int max);
 

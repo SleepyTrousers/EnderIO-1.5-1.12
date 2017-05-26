@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockAlloy extends ItemBlock {
 
-  public ItemBlockAlloy(Block block) {
+  public ItemBlockAlloy(@Nonnull Block block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

@@ -24,8 +24,8 @@ import crazypants.enderio.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.item.magnet.ItemMagnet;
 import crazypants.enderio.item.magnet.MagnetController;
-import crazypants.enderio.item.magnet.PacketMagnetState;
 import crazypants.enderio.item.magnet.MagnetController.ActiveMagnet;
+import crazypants.enderio.item.magnet.PacketMagnetState;
 import crazypants.enderio.item.magnet.PacketMagnetState.SlotType;
 import crazypants.enderio.item.yetawrench.YetaWrenchPacketProcessor;
 import crazypants.enderio.network.PacketHandler;
@@ -130,8 +130,8 @@ public class KeyTracker {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
       ActiveMagnet magnet = MagnetController.getMagnet(player, false);
       if (magnet != null) {
-        boolean isActive = !ItemMagnet.isActive(magnet.item);
-        PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, magnet.slot, isActive));
+        boolean isActive = !ItemMagnet.isActive(magnet.getItem());
+        PacketHandler.INSTANCE.sendToServer(new PacketMagnetState(SlotType.INVENTORY, magnet.getSlot(), isActive));
         return;
       }
 

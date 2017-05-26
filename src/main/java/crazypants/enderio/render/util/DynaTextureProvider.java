@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -36,13 +37,13 @@ public class DynaTextureProvider {
   protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
   protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
 
-  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonScreen.png");
+  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon_screen.png");
   protected static final @Nonnull int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMonColor.png");
+  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon_color.png");
   protected static final @Nonnull int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
-  protected static final ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/blockPMon.png");
+  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon.png");
 
-  protected final @Nonnull TilePowerMonitor owner;
+  protected final @Nonnull IDataProvider owner;
   protected final @Nonnull String id;
   protected @Nullable ResourceLocation resourceLocation;
   protected @Nonnull final int[] imageData;
@@ -52,12 +53,12 @@ public class DynaTextureProvider {
   protected final @Nonnull IResourceManager resourceManager;
 
   @SuppressWarnings("null")
-  public DynaTextureProvider(@Nonnull TilePowerMonitor owner) {
+  public DynaTextureProvider(@Nonnull IDataProvider owner) {
     this.owner = owner;
     this.textureManager = Minecraft.getMinecraft().getTextureManager();
     this.resourceManager = Minecraft.getMinecraft().getResourceManager();
 
-    this.id = EnderIO.DOMAIN + "pmon/" + owner.getPos().toLong();
+    this.id = EnderIO.DOMAIN + "pmon/" + owner.getLocation().toLong();
 
     this.dynamicTexture = new DynamicTexture(TEXSIZE, TEXSIZE);
     this.imageData = this.dynamicTexture.getTextureData();
@@ -172,4 +173,13 @@ public class DynaTextureProvider {
     }
   }
 
+  public static interface IDataProvider {
+
+    @Nonnull
+    BlockPos getLocation();
+
+    @Nonnull
+    int[][] getIconValues();
+
+  }
 }
