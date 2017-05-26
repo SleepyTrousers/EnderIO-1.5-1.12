@@ -1,8 +1,10 @@
 package crazypants.enderio.recipe.painter;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.paint.IPaintable;
 
 public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPainterTemplate<T> {
 
@@ -11,30 +13,23 @@ public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPai
   }
 
   @Override
-  public String getUid() {
+  public @Nonnull String getUid() {
     return "\uFFFE" + super.getUid();
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  protected T getTargetBlock(ItemStack target) {
-    if (target != null) {
-      Block blk = Block.getBlockFromItem(target.getItem());
-      if (blk instanceof IPaintable) {
-        return (T) blk;
-      }
+  protected T getTargetBlock(@Nonnull ItemStack target) {
+    Block blk = Block.getBlockFromItem(target.getItem());
+    if (blk instanceof IPaintable) {
+      return (T) blk;
     }
     return null;
   }
 
   @Override
-  public boolean isValidTarget(ItemStack target) {
-    if (target == null) {
-      return false;
-    }
-
-    Block blk = Block.getBlockFromItem(target.getItem());
-    return blk instanceof IPaintable;
+  public boolean isValidTarget(@Nonnull ItemStack target) {
+    return Block.getBlockFromItem(target.getItem()) instanceof IPaintable;
   }
 
 }

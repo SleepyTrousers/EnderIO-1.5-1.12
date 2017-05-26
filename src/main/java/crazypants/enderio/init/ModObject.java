@@ -21,7 +21,7 @@ import crazypants.enderio.block.painted.BlockPaintedFenceGate;
 import crazypants.enderio.block.painted.BlockPaintedGlowstone;
 import crazypants.enderio.block.painted.BlockPaintedPressurePlate;
 import crazypants.enderio.block.painted.BlockPaintedRedstone;
-import crazypants.enderio.block.painted.BlockPaintedSlab;
+import crazypants.enderio.block.painted.BlockPaintedSlabManager;
 import crazypants.enderio.block.painted.BlockPaintedStairs;
 import crazypants.enderio.block.painted.BlockPaintedStone;
 import crazypants.enderio.block.painted.BlockPaintedTrapDoor;
@@ -103,44 +103,16 @@ public enum ModObject implements IModObject.Registerable {
   blockPaintedWall(BlockPaintedWall.class),
   blockPaintedStair(BlockPaintedStairs.class),
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
-  blockPaintedSlab {
-    @Override
-    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
-      BlockPaintedSlab[] slabs = BlockPaintedSlab.create();
-      block = slabs[0];
-      item = Item.getItemFromBlock(NullHelper.notnull(slabs[0], "BlockPaintedSlab failed to create"));
-      blockPaintedDoubleSlab.block = slabs[1];
-      blockPaintedDoubleSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[1], "BlockPaintedSlab failed to create"));
-      blockPaintedStoneSlab.block = slabs[2];
-      blockPaintedStoneSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[2], "BlockPaintedSlab failed to create"));
-      blockPaintedStoneDoubleSlab.block = slabs[3];
-      blockPaintedStoneDoubleSlab.item = Item.getItemFromBlock(NullHelper.notnull(slabs[3], "BlockPaintedSlab failed to create"));
-    }
-  },
-  blockPaintedDoubleSlab {
-    @Override
-    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
-      // see blockPaintedSlab
-    }
-  },
-  blockPaintedStoneSlab {
-    @Override
-    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
-      // see blockPaintedSlab
-    }
-  },
-  blockPaintedStoneDoubleSlab {
-    @Override
-    protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
-      // see blockPaintedSlab
-    }
-  },
+  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood"),
+  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double"),
+  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone"),
+  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double"),
   blockPaintedGlowstone(BlockPaintedGlowstone.class),
   blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
   blockPaintedCarpet(BlockPaintedCarpet.class),
   blockPaintedPressurePlate(BlockPaintedPressurePlate.class),
   blockPaintedRedstone(BlockPaintedRedstone.class),
-  blockPaintedRedstoneSolid,
+  blockPaintedRedstoneSolid(BlockPaintedRedstone.class, "create_solid"),
   blockPaintedStone(BlockPaintedStone.class),
   blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
   blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),

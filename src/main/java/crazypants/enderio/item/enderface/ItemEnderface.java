@@ -41,7 +41,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
-    if (tab != null) {
+    if (tab == EnderIOTab.tabNoTab) {
       for (int i = 0; i < 4; i++) {
         subItems.add(new ItemStack(itemIn, 1, i));
       }

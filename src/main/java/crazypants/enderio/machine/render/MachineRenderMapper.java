@@ -73,7 +73,7 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
     boolean active = tileEntity.isActive();
 
     if (body != null) {
-      states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
+      states.add(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
     }
 
     if (active) {
@@ -109,7 +109,7 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
   public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     if (body != null) {
-      states.add(Pair.of(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body), stack));
+      states.add(Pair.of(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, body), stack));
     }
     states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT), stack));
     return states;

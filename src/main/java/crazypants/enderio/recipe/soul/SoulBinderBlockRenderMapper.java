@@ -34,7 +34,7 @@ public class SoulBinderBlockRenderMapper extends MachineRenderMapper {
     EnumFacing facing = tileEntity.getFacing();
     boolean active = (tileEntity instanceof TileSoulBinder) ? ((TileSoulBinder) tileEntity).isWorking() : tileEntity.isActive();
 
-    states.add(BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
+    states.add(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, body.rotate(facing)));
 
     if (!active) {
       states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT.rotate(facing)));

@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.EnderIOTab;
@@ -185,7 +184,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       if (!arrowIsInfinite) {
         itemstack.shrink(1);
       }
-      entityplayer.addStat(NullHelper.notnullM(StatList.getObjectUseStats(this), "StatList.getObjectUseStats()"));
+      entityplayer.addStat(StatList.getObjectUseStats(this));
     }
 
   }

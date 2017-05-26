@@ -14,10 +14,11 @@ import net.minecraft.item.ItemStack;
 
 public class GlassPaintingRecipe extends BasicPainterTemplate<BlockPaintedFusedQuartz> {
 
-  public GlassPaintingRecipe(@Nonnull BlockPaintedFusedQuartz resultBlock, Block[] validTargetBlocks) {
+  public GlassPaintingRecipe(@Nonnull BlockPaintedFusedQuartz resultBlock, @Nonnull Block[] validTargetBlocks) {
     super(resultBlock, validTargetBlocks);
   }
 
+  @Override
   protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {
     NNIterator<FusedQuartzType> iterator = NNList.of(FusedQuartzType.class).iterator();
     while (iterator.hasNext()) {

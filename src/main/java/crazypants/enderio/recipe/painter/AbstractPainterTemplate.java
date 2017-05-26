@@ -6,10 +6,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.recipe.MachineRecipeInput.getInputForSlot;
@@ -17,7 +18,6 @@ import static crazypants.enderio.recipe.MachineRecipeInput.getInputForSlot;
 public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   public AbstractPainterTemplate() {
-    super();
     registerTargetsWithTooltipProvider();
   }
 
@@ -64,7 +64,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockPainter.getUnlocalisedName();
+    return MachineRecipeRegistry.PAINTER;
   }
 
   @Override
@@ -80,16 +80,16 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput... inputs) {
     MachineRecipeInput consume = null;
     for (MachineRecipeInput input : inputs) {
-      if(input != null && input.slotNumber == 0 && input.item != null) {
+      if (input != null && input.slotNumber == 0 && Prep.isValid(input.item)) {
         ItemStack consumed = input.item.copy();
-        consumed.stackSize = 1;
+        consumed.setCount(1);
         consume = new MachineRecipeInput(input.slotNumber, consumed);
       }
     }
     if(consume != null) {
       return Collections.singletonList(consume);
     }
-    return null;
+    return Collections.emptyList();
   }
 
   @Override

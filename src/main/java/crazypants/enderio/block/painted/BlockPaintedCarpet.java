@@ -8,7 +8,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -20,7 +23,6 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
@@ -42,6 +44,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -55,38 +58,39 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
-  public static BlockPaintedCarpet create() {
-    BlockPaintedCarpet result = new BlockPaintedCarpet();
-    result.init();
+  public static BlockPaintedCarpet create(@Nonnull IModObject modObject) {
+    BlockPaintedCarpet result = new BlockPaintedCarpet(modObject);
+    result.init(modObject);
     return result;
   }
 
-  protected BlockPaintedCarpet() {
+  protected BlockPaintedCarpet(@Nonnull IModObject modObject) {
     super();
-    setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockPaintedCarpet.getUnlocalisedName());
-    setRegistryName(ModObject.blockPaintedCarpet.getUnlocalisedName());
+    this.setCreativeTab(null);
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setHardness(0.1F);
     setSoundType(SoundType.CLOTH);
     setLightOpacity(0);
   }
 
-  private void init() {
+  private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, ModObject.blockPaintedCarpet.getUnlocalisedName()));
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.getUnlocalisedName() + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
+    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, modObject.getUnlocalisedName() + "_tileentity");
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world, int metadata) {
+  public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
     return new TileEntityPaintedBlock();
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
       world.notifyBlockUpdate(pos, state, state, 3);
@@ -94,7 +98,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
@@ -102,29 +106,31 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
+  public void harvestBlock(@Nonnull World worldIn, @Nonnull EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te,
+      @Nonnull ItemStack stack) {
     super.harvestBlock(worldIn, player, pos, state, te, stack);
     super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     for (ItemStack drop : drops) {
-      PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
-      }
+      PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
+    }
     return drops;
   }
 
   @Override
-  public ItemStack getPickBlock(IBlockState state,RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
-    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
+    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(state, world, pos));
     return pickBlock;
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -132,12 +138,12 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
@@ -146,33 +152,29 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
-      blockStateWrapper.addCacheKey(getPaintSource(state, world, pos));
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
-    }
+  public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
+    blockStateWrapper.addCacheKey(getPaintSource(state, world, pos));
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
+  public List<IBakedModel> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -187,40 +189,40 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     return super.shouldSideBeRendered(state, worldIn, pos, side)
         && !(side.getAxis() != EnumFacing.Axis.Y && worldIn.getBlockState(pos.offset(side)).getBlock() instanceof BlockCarpet);
   }
 
   @Override
-  public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFlammability(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     return 20;
   }
 
   @Override
-  public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     return 60;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-    if (tab != null) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (tab == EnderIOTab.tabNoTab) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
+    if (blockLayer == null || PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;
@@ -228,7 +230,8 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 
@@ -240,13 +243,13 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 

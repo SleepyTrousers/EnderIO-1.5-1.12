@@ -8,7 +8,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -21,7 +24,6 @@ import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
@@ -47,6 +49,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -60,40 +63,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPaintedFence extends BlockFence implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
-  public static BlockPaintedFence create() {
-    BlockPaintedFence woodFence = new BlockPaintedFence(Material.WOOD, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.getUnlocalisedName(), SoundType.WOOD);
+  public static BlockPaintedFence create(@Nonnull IModObject modObject) {
+    BlockPaintedFence woodFence = new BlockPaintedFence(modObject, Material.WOOD, BlockPlanks.EnumType.OAK.getMapColor(), SoundType.WOOD);
     woodFence.setHardness(2.0F).setResistance(5.0F);
-    woodFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
-        Blocks.OAK_FENCE, Blocks.ACACIA_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE, Blocks.JUNGLE_FENCE, Blocks.DARK_OAK_FENCE));
+    woodFence.init(modObject);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedFence>(woodFence, Blocks.OAK_FENCE,
+        Blocks.ACACIA_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE, Blocks.JUNGLE_FENCE, Blocks.DARK_OAK_FENCE));
 
     return woodFence;
   }
 
-  public static BlockPaintedFence create_stone() {
-    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.ROCK, MapColor.NETHERRACK, ModObject.blockPaintedStoneFence.getUnlocalisedName(), SoundType.STONE);
+  public static BlockPaintedFence create_stone(@Nonnull IModObject modObject) {
+    BlockPaintedFence stoneFence = new BlockPaintedFence(modObject, Material.ROCK, MapColor.NETHERRACK, SoundType.STONE);
     stoneFence.setHardness(2.0F).setResistance(10.0F);
-    stoneFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
-        Blocks.NETHER_BRICK_FENCE));
+    stoneFence.init(modObject);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER,
+        new BasicPainterTemplate<BlockPaintedFence>(stoneFence, Blocks.NETHER_BRICK_FENCE));
 
     return stoneFence;
   }
 
-  private final String name;
-
-  protected BlockPaintedFence(Material material, MapColor mapColor, String name, SoundType sound) {
+  protected BlockPaintedFence(@Nonnull IModObject modObject, Material material, MapColor mapColor, @Nonnull SoundType sound) {
     super(material, mapColor);
     setCreativeTab(null);
-    this.name = name;
-    setUnlocalizedName(name);
-    setRegistryName(name);
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setSoundType(sound);
   }
 
-  private void init() {
+  private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, name));
+    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_side", new ResourceLocation("minecraft", "block/oak_fence_side"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -101,7 +101,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
+  public boolean canConnectTo(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     if (super.canConnectTo(worldIn, pos)) {
       return true;
     }
@@ -118,12 +118,13 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world, int metadata) {
+  public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
     return new TileEntityPaintedBlock();
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
       world.notifyBlockUpdate(pos, state, state, 3);
@@ -131,7 +132,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
@@ -139,29 +140,31 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
+  public void harvestBlock(@Nonnull World worldIn, @Nonnull EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te,
+      @Nonnull ItemStack stack) {
     super.harvestBlock(worldIn, player, pos, state, te, stack);
     super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     for (ItemStack drop : drops) {
-      PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
-      }
+      PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
+    }
     return drops;
   }
 
   @Override
-  public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
-    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
+    PainterUtil2.setSourceBlock(pickBlock, getPaintSource(state, world, pos));
     return pickBlock;
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -169,12 +172,12 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
@@ -183,26 +186,22 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
-      blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(BlockFence.EAST))
-          .addCacheKey(state.getValue(BlockFence.NORTH)).addCacheKey(state.getValue(BlockFence.SOUTH)).addCacheKey(state.getValue(BlockFence.WEST));
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
-    }
+  public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
+    blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(BlockFence.EAST)).addCacheKey(state.getValue(BlockFence.NORTH))
+        .addCacheKey(state.getValue(BlockFence.SOUTH)).addCacheKey(state.getValue(BlockFence.WEST));
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 
@@ -236,9 +235,9 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
+  public List<IBakedModel> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "fence_inventory", paintSource, new UVLock(null));
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "fence_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION2);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -248,25 +247,25 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState bs, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @Override
-  public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFlammability(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     IBlockState bs = world.getBlockState(pos);
     return bs.getMaterial() == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
-  public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     IBlockState bs = world.getBlockState(pos);
     return bs.getMaterial() == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState bs, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     if (side.getAxis() != EnumFacing.Axis.Y) {
       final BlockPos otherPos = pos.offset(side);
       IBlockState otherBlockState = worldIn.getBlockState(otherPos);
@@ -279,18 +278,18 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-    if (tab != null) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (tab == EnderIOTab.tabNoTab) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
+    if (blockLayer == null || PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
       for (IBakedModel model : mapRender(state, paintSource)) {
         quadCollector.addFriendlybakedModel(blockLayer, model, paintSource, MathHelper.getPositionRandom(pos));
       }
@@ -300,19 +299,20 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 

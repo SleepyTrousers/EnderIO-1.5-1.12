@@ -13,7 +13,7 @@ import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.UserIdent;
 
-import crazypants.enderio.block.painted.TileEntityPaintedBlock;
+import crazypants.enderio.block.painted.TileEntityTwicePaintedBlock;
 import crazypants.enderio.capability.EnderInventory;
 import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -173,8 +173,8 @@ class TOPData {
 
     if (tileEntity instanceof IPaintableTileEntity) {
       paint1 = PainterUtil2.getPaintAsStack(((IPaintableTileEntity) tileEntity).getPaintSource());
-      if (tileEntity instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
-        paint2 = PainterUtil2.getPaintAsStack(((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
+      if (tileEntity instanceof TileEntityTwicePaintedBlock) {
+        paint2 = PainterUtil2.getPaintAsStack(((TileEntityTwicePaintedBlock) tileEntity).getPaintSource2());
       }
       isPainted = Prep.isValid(paint1) || Prep.isValid(paint2);
     }

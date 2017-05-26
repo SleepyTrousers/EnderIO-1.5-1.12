@@ -11,19 +11,19 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.paint.render.PaintRegistry;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
@@ -42,12 +42,12 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -61,41 +61,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
-  public static BlockPaintedSlab[] create() {
-    BlockPaintedHalfSlab woodHalfSlab = new BlockPaintedHalfSlab(Material.WOOD, ModObject.blockPaintedSlab.getUnlocalisedName(), SoundType.WOOD);
-    woodHalfSlab.setHardness(2.0F).setResistance(5.0F);
-    woodHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new BasicPainterTemplate<BlockPaintedSlab>(woodHalfSlab, Blocks.WOODEN_SLAB));
-
-    BlockPaintedDoubleSlab woodDoubleSlab = new BlockPaintedDoubleSlab(Material.WOOD, ModObject.blockPaintedDoubleSlab.getUnlocalisedName(), woodHalfSlab,
-        SoundType.WOOD);
-    woodDoubleSlab.setHardness(2.0F).setResistance(5.0F);
-    woodDoubleSlab.init();
-
-    GameRegistry.register(new BlockItemPaintedSlab(woodHalfSlab, woodDoubleSlab, ModObject.blockPaintedSlab.getUnlocalisedName()));
-
-    BlockPaintedHalfSlab rockHalfSlab = new BlockPaintedHalfSlab(Material.ROCK, ModObject.blockPaintedStoneSlab.getUnlocalisedName(), SoundType.WOOD);
-    rockHalfSlab.setHardness(2.0F).setResistance(5.0F);
-    rockHalfSlab.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new BasicPainterTemplate<BlockPaintedSlab>(rockHalfSlab, Blocks.STONE_SLAB, Blocks.STONE_SLAB));
-
-    BlockPaintedDoubleSlab rockDoubleSlab = new BlockPaintedDoubleSlab(Material.ROCK, ModObject.blockPaintedStoneDoubleSlab.getUnlocalisedName(), rockHalfSlab,
-        SoundType.WOOD);
-    rockDoubleSlab.setHardness(2.0F).setResistance(5.0F);
-    rockDoubleSlab.init();
-
-    GameRegistry.register(new BlockItemPaintedSlab(rockHalfSlab, rockDoubleSlab, ModObject.blockPaintedStoneSlab.getUnlocalisedName()));
-
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.TileEntityTwicePaintedBlock.class, ModObject.blockPaintedSlab.getUnlocalisedName() + "TileEntity");
-
-    return new BlockPaintedSlab[] { woodHalfSlab, woodDoubleSlab, rockHalfSlab, rockDoubleSlab };
-  }
-
   public static class BlockPaintedHalfSlab extends BlockPaintedSlab {
-    public BlockPaintedHalfSlab(Material material, String name, SoundType sound) {
-      super(material, name, null);
+    public BlockPaintedHalfSlab(@Nonnull IModObject modObject, @Nonnull Material material, @Nonnull SoundType sound) {
+      super(modObject, material, null);
       setSoundType(sound);
     }
 
@@ -107,8 +75,8 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   public static class BlockPaintedDoubleSlab extends BlockPaintedSlab {
-    public BlockPaintedDoubleSlab(Material material, String name, Block halfVariant, SoundType sound) {
-      super(material, name, halfVariant);
+    public BlockPaintedDoubleSlab(@Nonnull IModObject modObject, @Nonnull Material material, Block halfVariant, @Nonnull SoundType sound) {
+      super(modObject, material, halfVariant);
       setSoundType(sound);
     }
 
@@ -119,9 +87,9 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   }
 
-  private final Block halfVariant;
+  private final @Nonnull Block halfVariant;
 
-  public BlockPaintedSlab(Material material, String name, Block halfVariant) {
+  public BlockPaintedSlab(@Nonnull IModObject modObject, @Nonnull Material material, @Nullable Block halfVariant) {
     super(material);
     IBlockState iblockstate = this.blockState.getBaseState();
 
@@ -131,13 +99,13 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
     this.setDefaultState(iblockstate);
     this.setCreativeTab(null);
-    setUnlocalizedName(name);
-    setRegistryName(name);
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     this.halfVariant = halfVariant != null ? halfVariant : this;
     useNeighborBrightness = true;
   }
 
-  protected void init() {
+  protected void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("slab_lo", new ResourceLocation("minecraft", "block/half_slab_stone"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -145,22 +113,23 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public Comparable<?> getTypeForItem(ItemStack stack) {
+  public @Nonnull Comparable<?> getTypeForItem(@Nonnull ItemStack stack) {
     throw new NotImplementedException("This method is only used by ItemSlab for vanilla slabs.");
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world, int metadata) {
-    return new TileEntityPaintedBlock.TileEntityTwicePaintedBlock();
+  public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
+    return new TileEntityTwicePaintedBlock();
   }
 
   @Override
-  public String getUnlocalizedName(int meta) {
+  public @Nonnull String getUnlocalizedName(int meta) {
     return getUnlocalizedName();
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player,
+      @Nonnull ItemStack stack) {
     setPaintSource(state, world, pos, PainterUtil2.getSourceBlock(stack));
     if (!world.isRemote) {
       world.notifyBlockUpdate(pos, state, state, 3);
@@ -168,7 +137,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean removedByPlayer(IBlockState bs, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+  public boolean removedByPlayer(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, boolean willHarvest) {
     if (willHarvest) {
       return true;
     }
@@ -176,59 +145,61 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack) {
+  public void harvestBlock(@Nonnull World worldIn, @Nonnull EntityPlayer player, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nullable TileEntity te,
+      @Nonnull ItemStack stack) {
     super.harvestBlock(worldIn, player, pos, state, te, stack);
     super.removedByPlayer(state, worldIn, pos, player, true);
   }
 
   @Override
-  public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+  public @Nonnull List<ItemStack> getDrops(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
     List<ItemStack> drops = super.getDrops(world, pos, state, fortune);
     boolean first = true;
     for (ItemStack drop : drops) {
       if (first || !isDouble()) {
-        PainterUtil2.setSourceBlock(drop, getPaintSource(state, world, pos));
+        PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource(state, world, pos));
         first = false;
       } else {
-        PainterUtil2.setSourceBlock(drop, getPaintSource2(state, world, pos));
+        PainterUtil2.setSourceBlock(NullHelper.notnullM(drop, "null stack from getDrops()"), getPaintSource2(state, world, pos));
       }
     }
     return drops;
   }
 
   @Override
-  public ItemStack getPickBlock(IBlockState bs, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player) {
     final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
     if (!isDouble()) {
-      PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
+      PainterUtil2.setSourceBlock(pickBlock, getPaintSource(bs, world, pos));
     } else {
       if ((target.hitVec.yCoord - (int) target.hitVec.yCoord) > 0.5) {
-        PainterUtil2.setSourceBlock(pickBlock, getPaintSource2(null, world, pos));
+        PainterUtil2.setSourceBlock(pickBlock, getPaintSource2(bs, world, pos));
       } else {
-        PainterUtil2.setSourceBlock(pickBlock, getPaintSource(null, world, pos));
+        PainterUtil2.setSourceBlock(pickBlock, getPaintSource(bs, world, pos));
       }
     }
     return pickBlock;
   }
 
   @Override
-  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+  public @Nonnull Item getItemDropped(@Nonnull IBlockState state, @Nonnull Random rand, int fortune) {
     return Item.getItemFromBlock(halfVariant);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+  public @Nonnull ItemStack getItem(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     return new ItemStack(Item.getItemFromBlock(halfVariant));
   }
 
   @Override
-  public IProperty<?> getVariantProperty() {
-    return null;
+  public @Nonnull IProperty<?> getVariantProperty() {
+    throw new RuntimeException("no such property");
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     if (this.isDouble()) {
       return getDefaultState();
     } else {
@@ -237,7 +208,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     if (this.isDouble()) {
       return 0;
     } else {
@@ -246,32 +217,32 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return this.isDouble() ? new BlockStateContainer(this, new IProperty[] {}) : new BlockStateContainer(this, new IProperty[] { HALF });
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       ((IPaintableTileEntity) te).setPaintSource(paintSource);
     }
   }
 
-  public void setPaintSource2(IBlockState state, IBlockAccess world, BlockPos pos, IBlockState paintSource) {
+  public void setPaintSource2(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
-    if (te instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
-      ((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) te).setPaintSource2(paintSource);
+    if (te instanceof TileEntityTwicePaintedBlock) {
+      ((TileEntityTwicePaintedBlock) te).setPaintSource2(paintSource);
     }
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       return ((IPaintableTileEntity) te).getPaintSource();
@@ -279,11 +250,11 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     return null;
   }
 
-  public IBlockState getPaintSource2(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource2(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     if (isDouble()) {
       TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-      if (te instanceof TileEntityPaintedBlock.TileEntityTwicePaintedBlock) {
-        return ((TileEntityPaintedBlock.TileEntityTwicePaintedBlock) te).getPaintSource2();
+      if (te instanceof TileEntityTwicePaintedBlock) {
+        return ((TileEntityTwicePaintedBlock) te).getPaintSource2();
       }
       return null;
     } else {
@@ -292,29 +263,25 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
-      if (isDouble()) {
-        blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(getPaintSource2(state, world, pos));
-      } else {
-        blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(HALF));
-      }
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
+  public @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IBlockStateWrapper blockStateWrapper = new BlockStateWrapperBase(state, world, pos, this);
+    if (isDouble()) {
+      blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(getPaintSource2(state, world, pos));
     } else {
-      return state;
+      blockStateWrapper.addCacheKey(getPaintSource(state, world, pos)).addCacheKey(state.getValue(HALF));
     }
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return this;
   }
 
@@ -326,9 +293,9 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
+  public List<IBakedModel> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", paintSource, null);
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "slab_lo", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -338,28 +305,28 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @Override
-  public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFlammability(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     IBlockState bs = world.getBlockState(pos);
     return bs.getMaterial() == Material.WOOD ? 20 : super.getFlammability(world, pos, face);
   }
 
   @Override
-  public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     return world.getBlockState(pos).getMaterial() == Material.WOOD ? 5 : super.getFireSpreadSpeed(world, pos, face);
   }
 
   @Override
-  public boolean doesSideBlockRendering(IBlockState bs, IBlockAccess world, BlockPos pos, EnumFacing face) {
+  public boolean doesSideBlockRendering(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     return false;
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockState ourBlockState, IBlockAccess worldIn, BlockPos here, EnumFacing side) {
+  public boolean shouldSideBeRendered(@Nonnull IBlockState ourBlockState, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos here, @Nonnull EnumFacing side) {
     BlockPos there = here.offset(side);
     IBlockState blockState2 = worldIn.getBlockState(there);
     Block block2 = blockState2.getBlock();
@@ -410,21 +377,21 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-    if (tab != null) {
+  public void getSubBlocks(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
+    if (tab == EnderIOTab.tabNoTab) {
       super.getSubBlocks(itemIn, tab, list);
     }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-      QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     for (BlockSlab.EnumBlockHalf half : BlockSlab.EnumBlockHalf.values()) {
       if (isDouble() || half == state.getValue(HALF)) {
         boolean isTop = half == BlockSlab.EnumBlockHalf.TOP;
         IBlockState paintSource = isTop ? getPaintSource2(state, world, pos) : getPaintSource(state, world, pos);
-        if (PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
+        if (blockLayer == null || PainterUtil2.canRenderInLayer(paintSource, blockLayer)) {
           quadCollector.addFriendlybakedModel(blockLayer, PaintRegistry.getModel(IBakedModel.class, isTop ? "slab_hi" : "slab_lo", paintSource, null),
               paintSource, MathHelper.getPositionRandom(pos));
         }
@@ -435,19 +402,20 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     return null;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 

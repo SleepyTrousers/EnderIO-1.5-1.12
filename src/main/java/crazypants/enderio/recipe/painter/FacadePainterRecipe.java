@@ -1,5 +1,7 @@
 package crazypants.enderio.recipe.painter;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
@@ -18,12 +20,12 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
   }
 
   @Override
-  public boolean isValidTarget(ItemStack target) {
+  public boolean isValidTarget(@Nonnull ItemStack target) {
     return Prep.isValid(target) && target.getItem() instanceof ItemConduitFacade;
   }
 
   @Override
-  public ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target) {
+  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     if (Prep.isInvalid(target) || Prep.isInvalid(paintSource)) {
       return new ResultStack[0];
     }
@@ -37,31 +39,28 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
     }
 
     ItemStack result = target.copy();
-    result.stackSize = 1;
+    result.setCount(1);
     PainterUtil2.setSourceBlock(result, paintState);
 
     return new ResultStack[] { new ResultStack(result) };
   }
 
   @Override
-  public boolean isRecipe(ItemStack paintSource, ItemStack target) {
+  public boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     return isValidTarget(target) && isValidPaint(paintSource);
   }
 
   @Override
-  public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
+  public boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     return isValidTarget(target) || isValidPaint(paintSource);
   }
 
-  protected boolean isValidPaint(ItemStack paintSource) {
+  protected boolean isValidPaint(@Nonnull ItemStack paintSource) {
     return Prep.isValid(paintSource) && paintSource.getItem() instanceof ItemBlock;
   }
 
   @Override
-  public boolean isValidInput(MachineRecipeInput input) {
-    if (input == null) {
-      return false;
-    }
+  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
     if (input.slotNumber == 0) {
       return isValidTarget(input.item);
     }

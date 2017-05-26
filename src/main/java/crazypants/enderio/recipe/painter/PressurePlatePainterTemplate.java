@@ -10,7 +10,7 @@ public class PressurePlatePainterTemplate extends BasicPainterTemplate<BlockPain
 
   private final int meta;
 
-  public PressurePlatePainterTemplate(BlockPaintedPressurePlate resultBlock, int meta, Block... validTargetBlocks) {
+  public PressurePlatePainterTemplate(@Nonnull BlockPaintedPressurePlate resultBlock, int meta, @Nonnull Block... validTargetBlocks) {
     super(resultBlock, validTargetBlocks);
     this.meta = meta;
   }
@@ -25,8 +25,9 @@ public class PressurePlatePainterTemplate extends BasicPainterTemplate<BlockPain
   }
 
   @Override
-  public boolean isValidTarget(ItemStack target) {
-    return target != null && Block.getBlockFromItem(target.getItem()) != resultBlock && super.isValidTarget(target);
+  public boolean isValidTarget(@Nonnull ItemStack target) {
+    return Block.getBlockFromItem(target.getItem()) != resultBlock && super.isValidTarget(target);
   }
 
 }
+// TODO 1.11 register those recipes

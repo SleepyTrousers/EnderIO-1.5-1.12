@@ -1,55 +1,58 @@
 package crazypants.enderio.recipe.painter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.recipe.MachineRecipeInput;
-
-import com.enderio.core.common.util.NullHelper;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
 
-  protected final T resultBlock;
-  protected final Block[] validTargets;
+  protected final @Nullable T resultBlock;
+  protected final @Nonnull Block[] validTargets;
   protected final boolean allowEasyConversion;
 
-  public BasicPainterTemplate(boolean allowEasyConversion, T resultBlock, Block... validTargetBlocks) {
+  public BasicPainterTemplate(boolean allowEasyConversion, @Nullable T resultBlock, @Nonnull Block... validTargetBlocks) {
     this.resultBlock = resultBlock;
     this.validTargets = validTargetBlocks;
     this.allowEasyConversion = allowEasyConversion;
     PaintTooltipUtil.registerPaintable(validTargetBlocks);
   }
 
-  public BasicPainterTemplate(T resultBlock, Block... validTargetBlocks) {
+  public BasicPainterTemplate(@Nullable T resultBlock, @Nonnull Block... validTargetBlocks) {
     this(true, resultBlock, validTargetBlocks);
   }
 
   @Override
-  public boolean isRecipe(ItemStack paintSource, ItemStack target) {
-    return paintSource != null && isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
+  public boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+    return isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override
-  public boolean isPartialRecipe(ItemStack paintSource, ItemStack target) {
-    if (paintSource == null) {
+  public boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+    if (Prep.isInvalid(paintSource)) {
       return isValidTarget(target);
     }
-    if (target == null) {
-      return PainterUtil2.isValid(paintSource, getTargetBlock(null));
+    if (Prep.isInvalid(target)) {
+      return PainterUtil2.isValid(paintSource, getTargetBlock(Prep.getEmpty()));
     }
     return isValidTarget(target) && PainterUtil2.isValid(paintSource, getTargetBlock(target));
   }
 
   @Override
-  public ResultStack[] getCompletedResult(ItemStack paintSource, ItemStack target) {
+  public @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
     Block targetBlock = getTargetBlock(target);
-    if (target == null || paintSource == null || targetBlock == null) {
+    if (Prep.isInvalid(target) || Prep.isInvalid(paintSource) || targetBlock == null) {
       return new ResultStack[0];
     }
     Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
@@ -62,7 +65,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     }
 
     ItemStack result = isUnpaintingOp(paintSource, target);
-    if (result == null) {
+    if (Prep.isInvalid(result)) {
       result = mkItemStack(target, targetBlock);
       if (targetBlock == Block.getBlockFromItem(target.getItem()) && target.hasTagCompound()) {
         result.setTagCompound(NullHelper.notnullM(target.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
@@ -83,7 +86,7 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
 
   protected @Nonnull ItemStack mkItemStack(@Nonnull ItemStack target, @Nonnull Block targetBlock) {
     Item itemFromBlock = Item.getItemFromBlock(targetBlock);
-    if (itemFromBlock == null || itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
+    if (itemFromBlock.isDamageable() || itemFromBlock.getHasSubtypes()) {
       return new ItemStack(targetBlock, 1, target.getItemDamage());
     } else {
       return new ItemStack(targetBlock, 1, 0);
@@ -91,32 +94,29 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
   }
 
   @Override
-  public boolean isValidInput(MachineRecipeInput input) {
-    if(input == null) {
-      return false;
-    }
-    if(input.slotNumber == 0) {
+  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+    if (input.slotNumber == 0) {
       return isValidTarget(input.item);
     }
-    if(input.slotNumber == 1) {
+    if (input.slotNumber == 1) {
       return PainterUtil2.isValid(input.item, resultBlock);
     }
     return false;
   }
 
-  protected T getTargetBlock(ItemStack target) {
+  protected @Nullable T getTargetBlock(@Nonnull ItemStack target) {
     return resultBlock;
   }
 
-  public ItemStack isUnpaintingOp(ItemStack paintSource, ItemStack target) {
-    if (paintSource == null || target == null) {
-      return null;
+  public @Nonnull ItemStack isUnpaintingOp(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+    if (Prep.isInvalid(paintSource) || Prep.isInvalid(target)) {
+      return Prep.getEmpty();
     }
 
     Block paintBlock = PainterUtil2.getBlockFromItem(paintSource);
     Block targetBlock = Block.getBlockFromItem(target.getItem());
-    if (paintBlock == null || targetBlock == null) {
-      return null;
+    if (paintBlock == null || targetBlock == Blocks.AIR) {
+      return Prep.getEmpty();
     }
 
     // The paint source is the paintable block we produce with this recipe. We know it must be unpainted, as paint sources that are painted are rejected. So we
@@ -141,19 +141,19 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
       }
     }
 
-    return null;
+    return Prep.getEmpty();
   }
 
   @Override
-  public boolean isValidTarget(ItemStack target) {
+  public boolean isValidTarget(@Nonnull ItemStack target) {
     // first check for exact matches, then check for item blocks
-    if(target == null) {
+    if (Prep.isInvalid(target)) {
       return false;
     }
-    
+
     Block blk = Block.getBlockFromItem(target.getItem());
 
-    if (blk == null) {
+    if (blk == Blocks.AIR) {
       return false;
     }
 
@@ -162,11 +162,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     }
 
     for (int i = 0; i < validTargets.length; i++) {
-      if(validTargets[i] == blk) {
+      if (validTargets[i] == blk) {
         return true;
       }
     }
-    
+
     return false;
   }
 
