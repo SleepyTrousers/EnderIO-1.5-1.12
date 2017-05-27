@@ -250,7 +250,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   private void mkOwner(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (mode == ProbeMode.DEBUG && data.owner != null) {
-      ItemStack skull = new ItemStack(Items.SKULL, 1, 2);
+      ItemStack skull = new ItemStack(Items.SKULL, 1, 3);
       NBTTagCompound nbt = new NBTTagCompound();
       nbt.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), data.owner.getAsGameProfile()));
       skull.setTagCompound(nbt);
