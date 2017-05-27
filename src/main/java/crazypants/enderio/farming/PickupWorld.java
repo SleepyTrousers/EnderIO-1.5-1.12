@@ -72,7 +72,7 @@ public class PickupWorld extends World {
   private final FakePlayerEIO player;
 
   public PickupWorld(World wrapped, FakePlayerEIO player) {
-    super(null, null, wrapped.provider, null, false);
+    super(wrapped.getSaveHandler(), wrapped.getWorldInfo(), wrapped.provider, wrapped.theProfiler, false);
     this.wrapped = wrapped;
     this.player = player;
   }
@@ -1054,12 +1054,14 @@ public class PickupWorld extends World {
 
   @Override
   public ISaveHandler getSaveHandler() {
-    return wrapped.getSaveHandler();
+    // value available from constructor
+    return wrapped == null ? super.saveHandler : wrapped.getSaveHandler();
   }
 
   @Override
   public WorldInfo getWorldInfo() {
-    return wrapped.getWorldInfo();
+    // value available from constructor
+    return wrapped == null ? super.worldInfo : wrapped.getWorldInfo();
   }
 
   @Override
