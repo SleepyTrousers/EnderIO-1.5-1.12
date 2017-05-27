@@ -1,6 +1,6 @@
 package crazypants.enderio.integration.thaumcraft;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.CustomSeedFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ public class ManaBeanFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(TileFarmStation farm, World world, BlockPos bc) {
+  protected boolean canPlant(IFarmer farm, World world, BlockPos bc) {
     return getPlantedBlock().canPlaceBlockOnSide(world, bc, EnumFacing.DOWN);
   }
 }

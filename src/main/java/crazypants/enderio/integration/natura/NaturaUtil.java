@@ -2,7 +2,7 @@ package crazypants.enderio.integration.natura;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.farming.FarmersRegistry;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.FarmersCommune;
 import crazypants.enderio.farming.farmers.PickableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
@@ -71,7 +71,7 @@ public class NaturaUtil {
     if (saguaroBlock != null && saguaroBabyItem != null) {
       FarmersCommune.joinCommune(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
         @Override
-        public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+        public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
           return false;
         }
       });

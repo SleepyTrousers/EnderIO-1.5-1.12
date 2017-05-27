@@ -2,7 +2,7 @@ package crazypants.enderio.integration.immersiveengineering;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.CustomSeedFarmer;
 import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.IHarvestResult;
@@ -37,12 +37,12 @@ public class HempFarmerIE implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return seedFarmer.prepareBlock(farm, bc, block, state);
   }
 
   @Override
-  public boolean canHarvest(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return seedFarmer.canHarvest(farm, bc, block, state);
   }
 
@@ -52,7 +52,7 @@ public class HempFarmerIE implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return stemFarmer.harvestBlock(farm, bc, block, state);
   }
 

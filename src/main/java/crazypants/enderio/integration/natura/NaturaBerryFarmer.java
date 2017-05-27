@@ -4,7 +4,7 @@ package crazypants.enderio.integration.natura;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.HarvestResult;
 import crazypants.enderio.farming.farmers.IHarvestResult;
 import crazypants.enderio.farming.farmers.PickableFarmer;
@@ -21,7 +21,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (block != getPlantedBlock()) {
       return null;
     }
@@ -61,7 +61,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState bs) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState bs) {
     BlockPos checkBlock = bc;
     while (checkBlock.getY() <= 255) {
       if (block != getPlantedBlock()) {

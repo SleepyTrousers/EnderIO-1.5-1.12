@@ -2,7 +2,7 @@ package crazypants.enderio.farming.farmers;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockOldLog;
@@ -25,7 +25,7 @@ public class TreeHarvestUtil {
   public TreeHarvestUtil() {
   }
 
-  public void harvest(TileFarmStation farm, TreeFarmer farmer, BlockPos bc, HarvestResult res) {
+  public void harvest(IFarmer farm, TreeFarmer farmer, BlockPos bc, HarvestResult res) {
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
     origin = farm.getPos().toImmutable();

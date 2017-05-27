@@ -1,6 +1,6 @@
 package crazypants.enderio.farming.farmers;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,7 +15,7 @@ public class NetherWartFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (!farm.isOpen(bc)) {
       return false;
     }

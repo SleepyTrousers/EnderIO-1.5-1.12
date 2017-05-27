@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.FarmStationContainer;
-import crazypants.enderio.farming.TileFarmStation;
-import crazypants.enderio.farming.TileFarmStation.ToolType;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.IFarmer;
+import crazypants.enderio.farming.IFarmer.ToolType;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -24,9 +24,9 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   public RubberTreeFarmer(Block sapling, Block wood, Item treetap, ItemStack resin) {
     super(sapling, wood);
-    TileFarmStation.TREETAPS.add(treetap);
+    IFarmer.TREETAPS.add(treetap);
     stickyResin = resin;
-    FarmStationContainer.slotItemsProduce.add(stickyResin);
+    FarmersRegistry.slotItemsProduce.add(stickyResin);
   }
 
   public boolean isValid() {
@@ -34,7 +34,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block blockIn, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block blockIn, IBlockState meta) {
     if (canPlant(farm.getSeedTypeInSuppliesFor(bc))) {
       // we'll lose some spots in the center, but we can plant in the outer ring, which gives a net gain
       if (Math.abs(farm.getPos().getX() - bc.getX()) % 2 == 0) {
@@ -60,7 +60,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos pos, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos pos, Block block, IBlockState meta) {
     HarvestResult res = new HarvestResult();
     final World world = farm.getWorld();
 
@@ -91,7 +91,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     return res;
   }
 
-  private int harvestLeavesBlock(TileFarmStation farm, HarvestResult res, final World world, final BlockPos pos, int noShearingPercentage, int shearCount) {
+  private int harvestLeavesBlock(IFarmer farm, HarvestResult res, final World world, final BlockPos pos, int noShearingPercentage, int shearCount) {
     IBlockState state = world.getBlockState(pos);
     if (TreeHarvestUtil.isLeaves(state)) {
       List<ItemStack> drops;

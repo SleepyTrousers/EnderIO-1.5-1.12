@@ -2,7 +2,7 @@ package crazypants.enderio.integration.forestry;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.FarmersCommune;
 import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.IHarvestResult;
@@ -40,7 +40,7 @@ public class ForestryFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     ItemStack sapling = farm.getSeedTypeInSuppliesFor(bc);
     if (sapling.getItem() == forestrySapling) {
       ITree tree = root.getMember(sapling);
@@ -55,12 +55,12 @@ public class ForestryFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull TileFarmStation farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return null;
   }
 }

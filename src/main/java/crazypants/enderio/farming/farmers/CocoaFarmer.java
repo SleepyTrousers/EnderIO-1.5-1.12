@@ -1,7 +1,7 @@
 package crazypants.enderio.farming.farmers;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCocoa;
 import net.minecraft.block.BlockOldLog;
@@ -26,12 +26,12 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return block == getPlantedBlock() && meta.getValue(BlockCocoa.AGE) == 2;
   }
 
   @Override
-  protected boolean plant(TileFarmStation farm, World world, BlockPos bc) {
+  protected boolean plant(IFarmer farm, World world, BlockPos bc) {
     EnumFacing dir = getPlantDirection(world, bc);
     if (dir == null) {
       return false;
@@ -45,7 +45,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean canPlant(TileFarmStation farm, World world, BlockPos bc) {
+  protected boolean canPlant(IFarmer farm, World world, BlockPos bc) {
     return getPlantDirection(world, bc) != null;
   }
 

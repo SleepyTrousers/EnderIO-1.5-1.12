@@ -1,39 +1,47 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.BlockPos;
 
 public class HarvestResult implements IHarvestResult {
 
-  List<EntityItem> drops;
-  List<BlockPos> harvestedBlocks;
+  private final @Nonnull NNList<EntityItem> drops;
+  private final @Nonnull NNList<BlockPos> harvestedBlocks;
 
-  public HarvestResult(List<EntityItem> drops, List<BlockPos> harvestedBlocks) {
+  public HarvestResult(@Nonnull List<EntityItem> drops, @Nonnull List<BlockPos> harvestedBlocks) {
+    this.drops = NNList.wrap(drops);
+    this.harvestedBlocks = NNList.wrap(harvestedBlocks);
+  }
+
+  public HarvestResult(@Nonnull NNList<EntityItem> drops, @Nonnull NNList<BlockPos> harvestedBlocks) {
     this.drops = drops;
     this.harvestedBlocks = harvestedBlocks;
   }
 
-  public HarvestResult(List<EntityItem> drops, BlockPos harvestedBlock) {
+  public HarvestResult(@Nonnull NNList<EntityItem> drops, BlockPos harvestedBlock) {
     this.drops = drops;
-    this.harvestedBlocks = new ArrayList<BlockPos>();
+    this.harvestedBlocks = NNList.emptyList();
     harvestedBlocks.add(harvestedBlock);
   }
 
   public HarvestResult() {
-    drops = new ArrayList<EntityItem>();
-    harvestedBlocks = new ArrayList<BlockPos>();
+    drops = NNList.emptyList();
+    harvestedBlocks = NNList.emptyList();
   }
 
   @Override
-  public List<EntityItem> getDrops() {
+  public NNList<EntityItem> getDrops() {
     return drops;
   }
 
   @Override
-  public List<BlockPos> getHarvestedBlocks() {
+  public NNList<BlockPos> getHarvestedBlocks() {
     return harvestedBlocks;
   }
 

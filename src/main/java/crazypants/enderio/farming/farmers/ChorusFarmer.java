@@ -1,11 +1,18 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
-import crazypants.enderio.farming.TileFarmStation.ToolType;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
+import crazypants.enderio.farming.IFarmer;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChorusFlower;
@@ -26,24 +33,24 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class ChorusFarmer implements IFarmerJoe {
 
-  private final Item flowerItem;
+  private final @Nonnull Item flowerItem;
 
   public ChorusFarmer() {
     flowerItem = Item.getItemFromBlock(Blocks.CHORUS_FLOWER);
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
-    return Prep.isValid(stack) && stack.getItem() == flowerItem;
+  public boolean canPlant(@Nonnull ItemStack stack) {
+    return stack.getItem() == flowerItem;
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos pos, Block block, IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState state) {
     final ItemStack seed = farm.getSeedTypeInSuppliesFor(pos);
     final EntityPlayerMP player = farm.getFakePlayer();
     final World world = farm.getWorld();
     if (canPlant(seed) && isValidPlantingSpot(world, pos) && player.canPlayerEdit(pos, EnumFacing.UP, seed)
-        && world.canBlockBePlaced(Blocks.CHORUS_FLOWER, pos, false, EnumFacing.UP, (Entity) null, seed)) {
+        && world.mayPlace(Blocks.CHORUS_FLOWER, pos, false, EnumFacing.UP, (Entity) null)) {
       IBlockState iblockstate1 = Blocks.CHORUS_FLOWER.getDefaultState().withProperty(BlockChorusFlower.AGE, 0);
 
       IBlockState oldState = world.getBlockState(pos);
@@ -61,7 +68,7 @@ public class ChorusFarmer implements IFarmerJoe {
     return false;
   }
 
-  private boolean isValidPlantingSpot(World world, BlockPos pos) {
+  private boolean isValidPlantingSpot(@Nonnull World world, @Nonnull BlockPos pos) {
     for (int x = -1; x <= 1; x++) {
       for (int y = 0; y <= 1; y++) {
         for (int z = -1; z <= 1; z++) {
@@ -74,7 +81,8 @@ public class ChorusFarmer implements IFarmerJoe {
     return true;
   }
 
-  private boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, IBlockState newState) {
+  private boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull IBlockState newState) {
     if (!world.setBlockState(pos, newState, 3))
       return false;
 
@@ -87,13 +95,13 @@ public class ChorusFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState state) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return state.getBlock() == Blocks.CHORUS_PLANT || state.getBlock() == Blocks.CHORUS_FLOWER;
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState state) {
-    if (!farm.hasAxe()) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
+    if (!farm.hasTool(FarmingTool.AXE)) {
       farm.setNotification(FarmNotification.NO_AXE);
       return null;
     }
@@ -104,14 +112,14 @@ public class ChorusFarmer implements IFarmerJoe {
     }
 
     World world = farm.getWorld();
-    final int fortune = farm.getMaxLootingValue();
+    final int fortune = farm.getLootingValue(FarmingTool.AXE);
     HarvestResult result = new HarvestResult();
 
-    while (!walker.flowersToHarvest.isEmpty() && farm.hasAxe() && farm.hasPower()) {
+    while (!walker.flowersToHarvest.isEmpty() && farm.checkAction(FarmingAction.HARVEST, FarmingTool.AXE)) {
       BlockPos remove = walker.flowersToHarvest.remove(0);
       doHarvest(farm, world, farm.getBlockState(remove), remove, fortune, result);
     }
-    while (!walker.stemsToHarvest.isEmpty() && farm.hasAxe() && farm.hasPower()) {
+    while (!walker.stemsToHarvest.isEmpty() && farm.checkAction(FarmingAction.HARVEST, FarmingTool.AXE)) {
       // Note: While stems can be broken by any tool, I decided to use the axe. This way a chorus farm can be used without hoe and the various auto-smelt
       // enchantments on axes can be used for the fruits.
       BlockPos remove = walker.stemsToHarvest.remove(walker.stemsToHarvest.size() - 1);
@@ -121,49 +129,59 @@ public class ChorusFarmer implements IFarmerJoe {
     return result.getDrops().isEmpty() && result.getHarvestedBlocks().isEmpty() ? null : result;
   }
 
-  private void doHarvest(TileFarmStation farm, World world, IBlockState blockState, BlockPos pos, int fortune, HarvestResult result) {
-    farm.setJoeUseItem(farm.getTool(ToolType.AXE));
+  private void doHarvest(@Nonnull final IFarmer farm, @Nonnull final World world, @Nonnull IBlockState blockState, @Nonnull final BlockPos pos, int fortune,
+      @Nonnull final HarvestResult result) {
+    FakePlayerEIO joe = farm.startUsingItem(FarmingTool.AXE);
     List<ItemStack> drops = blockState.getBlock().getDrops(world, pos, blockState, fortune);
-    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, blockState, fortune, 1f, false, farm.getFakePlayer());
-
-    if (drops != null) {
-      for (ItemStack drop : drops) {
-        if (farm.getWorld().rand.nextFloat() <= chance) {
-          result.drops.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
-        }
-      }
-    }
+    final float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, blockState, fortune, 1f, false, joe);
 
     // flowers drop here by spawning their drops into the world (joe's world captures those)
-    blockState.getBlock().harvestBlock(farm.getFakePlayer().worldObj, farm.getFakePlayer(), pos, blockState, null, farm.getFakePlayer().getHeldItemMainhand());
-    farm.clearJoeUseItem(true);
+    blockState.getBlock().harvestBlock(joe.world, joe, pos, blockState, null, joe.getHeldItemMainhand());
 
-    farm.actionPerformed(true);
-    farm.damageAxe(blockState.getBlock(), pos);
+    NNList.wrap(drops).apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack drop) {
+        if (farm.getWorld().rand.nextFloat() <= chance) {
+          result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        }
+      }
+    });
+
+    farm.endUsingItem(FarmingTool.AXE).apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack drop) {
+        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+      }
+    });
+
+    farm.registerAction(FarmingAction.HARVEST, FarmingTool.AXE, blockState, pos);
     world.setBlockToAir(pos);
-    result.harvestedBlocks.add(pos);
+    result.getHarvestedBlocks().add(pos);
   }
 
-  private static final EnumFacing[] GROW_DIRECTIONS = { EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST };
+  private static final @Nonnull NNList<EnumFacing> GROW_DIRECTIONS = new NNList<>(EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST,
+      EnumFacing.EAST);
 
   private static class ChorusWalker {
 
     // Yes, there are some edge cases remaining where a chorus plant is broken improperly. But this is good enough and can deal with all properly grown plants.
 
-    final List<BlockPos> flowersToHarvest = new ArrayList<BlockPos>();
-    final List<BlockPos> stemsToHarvest = new ArrayList<BlockPos>();
-    final TileFarmStation farm;
+    final @Nonnull NNList<BlockPos> flowersToHarvest = new NNList<BlockPos>();
+    final @Nonnull NNList<BlockPos> stemsToHarvest = new NNList<BlockPos>();
+    final @Nonnull IFarmer farm;
 
-    ChorusWalker(TileFarmStation farm, BlockPos pos) {
+    ChorusWalker(@Nonnull IFarmer farm, @Nonnull BlockPos pos) {
       this.farm = farm;
       collect(pos, EnumFacing.DOWN);
     }
 
-    boolean collect(BlockPos pos, EnumFacing from) {
+    boolean collect(@Nonnull BlockPos pos, @Nonnull EnumFacing from) {
       IBlockState state = farm.getWorld().getBlockState(pos);
       if (state.getBlock() == Blocks.CHORUS_PLANT) {
         boolean isNeeded = false;
-        for (EnumFacing side : GROW_DIRECTIONS) {
+        NNIterator<EnumFacing> iterator = GROW_DIRECTIONS.iterator();
+        while (iterator.hasNext()) {
+          EnumFacing side = iterator.next();
           if (side != from) {
             isNeeded |= collect(pos.offset(side), side.getOpposite());
           }

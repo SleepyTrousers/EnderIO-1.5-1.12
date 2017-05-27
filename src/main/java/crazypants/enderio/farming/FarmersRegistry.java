@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.config.Config;
 import crazypants.enderio.farming.farmers.ChorusFarmer;
 import crazypants.enderio.farming.farmers.CocoaFarmer;
 import crazypants.enderio.farming.farmers.CustomSeedFarmer;
@@ -16,6 +17,7 @@ import crazypants.enderio.farming.farmers.PickableFarmer;
 import crazypants.enderio.farming.farmers.PlantableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
 import crazypants.enderio.farming.farmers.TreeFarmer;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.bop.BoPUtil;
 import crazypants.enderio.integration.botania.BotaniaUtil;
 import crazypants.enderio.integration.botany.BotanyUtil;
@@ -37,11 +39,26 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public final class FarmersRegistry {
 
-  private static final Things SAPLINGS = new Things("treeSapling");
-  private static final Things WOODS = new Things("logWood");
-  private static final Things FLOWERS = new Things().add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
+  public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE).add(Items.GOLDEN_HOE)
+      .add(Items.DIAMOND_HOE).add(Config.farmHoes);
+  public static final @Nonnull Things slotItemsHoeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
+      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe.getItemNN());
+  public static final @Nonnull Things slotItemsExtraTools = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears.getItemNN());
+  public static final @Nonnull Things slotItemsSeeds = new Things("treeSapling").add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
+      .add(Blocks.RED_MUSHROOM)
+      .add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS).add(Items.PUMPKIN_SEEDS);
+  public static final @Nonnull Things slotItemsProduce = new Things("logWood").add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
+      .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN).add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
+  public static final @Nonnull Things slotItemsFertilizer = new Things().add(new ItemStack(Items.DYE, 1, 15));
 
-  public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
+  // TODO 1.11: move those treetaps somewhere else
+  // slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());
+
+  private static final @Nonnull Things SAPLINGS = new Things("treeSapling");
+  private static final @Nonnull Things WOODS = new Things("logWood");
+  private static final @Nonnull Things FLOWERS = new Things().add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
+
+  public static final @Nonnull PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
 
   public static void init(@Nonnull FMLPostInitializationEvent event) {
 
@@ -76,7 +93,7 @@ public final class FarmersRegistry {
     FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
 
-  public static void addPickable(String mod, String blockName, String itemName) {
+  public static void addPickable(@Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName) {
     Block cropBlock = findBlock(mod, blockName);
     Item seedItem = findItem(mod, itemName);
     if (cropBlock != null && seedItem != null) {
@@ -84,7 +101,7 @@ public final class FarmersRegistry {
     }
   }
 
-  public static CustomSeedFarmer addSeed(String mod, String blockName, String itemName, Block... extraFarmland) {
+  public static CustomSeedFarmer addSeed(@Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName, Block... extraFarmland) {
     Block cropBlock = findBlock(mod, blockName);
     Item seedItem = findItem(mod, itemName);
     if (cropBlock != null && seedItem != null) {
@@ -102,7 +119,7 @@ public final class FarmersRegistry {
     return null;
   }
 
-  public static Block findBlock(String mod, String blockName) {
+  public static Block findBlock(@Nonnull String mod, @Nonnull String blockName) {
     final ResourceLocation name = new ResourceLocation(mod, blockName);
     if (Block.REGISTRY.containsKey(name)) {
       return Block.REGISTRY.getObject(name);
@@ -110,7 +127,7 @@ public final class FarmersRegistry {
     return null;
   }
 
-  public static Item findItem(String mod, String itemName) {
+  public static Item findItem(@Nonnull String mod, @Nonnull String itemName) {
     final ResourceLocation name = new ResourceLocation(mod, itemName);
     if (Item.REGISTRY.containsKey(name)) {
       return Item.REGISTRY.getObject(name);

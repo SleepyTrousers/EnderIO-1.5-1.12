@@ -1,6 +1,6 @@
 package crazypants.enderio.farming.farmers;
 
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,7 @@ public class MelonFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     int xVal = farm.getLocation().x & 1;
     int zVal = farm.getLocation().z & 1;
     if ((bc.getX() & 1) != xVal || (bc.getZ() & 1) != zVal) {
@@ -27,7 +27,7 @@ public class MelonFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return block == grownBlock;
   }
 

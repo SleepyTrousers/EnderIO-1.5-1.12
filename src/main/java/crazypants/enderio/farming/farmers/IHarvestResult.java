@@ -1,14 +1,18 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.BlockPos;
 
 public interface IHarvestResult {
 
-  List<EntityItem> getDrops();
+  @Nonnull
+  NNList<EntityItem> getDrops();
 
-  List<BlockPos> getHarvestedBlocks();
+  @Nonnull
+  NNList<BlockPos> getHarvestedBlocks();
 
 }

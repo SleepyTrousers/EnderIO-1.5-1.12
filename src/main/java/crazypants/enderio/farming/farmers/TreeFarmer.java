@@ -7,9 +7,9 @@ import java.util.List;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.FarmStationContainer;
-import crazypants.enderio.farming.TileFarmStation;
-import crazypants.enderio.farming.TileFarmStation.ToolType;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.IFarmer;
+import crazypants.enderio.farming.IFarmer.ToolType;
 import crazypants.util.Prep;
 import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
@@ -39,11 +39,11 @@ public class TreeFarmer implements IFarmerJoe {
     this.sapling = sapling;
     if (sapling != null) {
       saplingItem = new ItemStack(sapling);
-      FarmStationContainer.slotItemsSeeds.add(saplingItem);
+      FarmersRegistry.slotItemsSeeds.add(saplingItem);
     }
     woods = wood;
     for (ItemStack awood : woods.getItemStacks()) {
-      FarmStationContainer.slotItemsProduce.add(awood);
+      FarmersRegistry.slotItemsProduce.add(awood);
     }
   }
 
@@ -65,7 +65,7 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState bs) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState bs) {
     return isWood(block);
   }
 
@@ -79,14 +79,14 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (block == sapling) {
       return true;
     }
     return plantFromInventory(farm, bc, block, meta);
   }
 
-  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  protected boolean plantFromInventory(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     World world = farm.getWorld();
     if (canPlant(world, bc)) {
       ItemStack seed = farm.takeSeedFromSupplies(saplingItem, bc, false);
@@ -108,7 +108,7 @@ public class TreeFarmer implements IFarmerJoe {
     return false;
   }
 
-  protected boolean plant(TileFarmStation farm, World world, BlockPos bc, ItemStack seed) {
+  protected boolean plant(IFarmer farm, World world, BlockPos bc, ItemStack seed) {
     world.setBlockToAir(bc);
     if (canPlant(world, bc)) {
       world.setBlockState(bc, sapling.getStateFromMeta(seed.getItemDamage()), 1 | 2);
@@ -119,9 +119,9 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
 
-    boolean hasAxe = farm.hasAxe();
+    boolean hasAxe = farm.hasTool(FarmingTool.AXE);
 
     if (!hasAxe) {
       farm.setNotification(FarmNotification.NO_AXE);
@@ -179,7 +179,7 @@ public class TreeFarmer implements IFarmerJoe {
       farm.actionPerformed(wasWood || wasSheared);
       if (wasAxed) {
         farm.damageAxe(blk, new BlockPos(coord));
-        hasAxe = farm.hasAxe();
+        hasAxe = farm.hasTool(FarmingTool.AXE);
       } else if (wasSheared) {
         farm.damageShears(blk, new BlockPos(coord));
         hasShears = farm.hasShears();
@@ -203,7 +203,7 @@ public class TreeFarmer implements IFarmerJoe {
     return res;
   }
 
-  protected void tryReplanting(TileFarmStation farm, World world, BlockPos bc, HarvestResult res) {
+  protected void tryReplanting(IFarmer farm, World world, BlockPos bc, HarvestResult res) {
     if (!farm.isOpen(bc)) {
       return;
     }

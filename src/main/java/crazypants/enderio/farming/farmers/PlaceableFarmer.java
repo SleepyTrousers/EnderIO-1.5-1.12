@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -52,7 +52,7 @@ public class PlaceableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     Block ground = farm.getBlock(bc.down());
     if (!DIRT.contains(ground)) {
       return false;
@@ -70,7 +70,7 @@ public class PlaceableFarmer implements IFarmerJoe {
     return plant(farm, bc);
   }
 
-  protected boolean plant(TileFarmStation farm, BlockPos bc) {
+  protected boolean plant(IFarmer farm, BlockPos bc) {
     final ItemStack seedStack = farm.takeSeedFromSupplies(bc);
     if (Prep.isValid(seedStack)) {
       EntityPlayerMP fakePlayer = farm.getFakePlayer();
@@ -86,12 +86,12 @@ public class PlaceableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return null;
   }
 

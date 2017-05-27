@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +27,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (plantedBlock == block) {
       return true;
     }
@@ -35,7 +35,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     BlockPos up = bc.up();
     Block upBLock = farm.getBlock(up);
     return upBLock == plantedBlock;
@@ -47,7 +47,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     World world = farm.getWorld();
     final EntityPlayerMP fakePlayer = farm.getFakePlayer();
     final int fortune = farm.getMaxLootingValue();
@@ -100,7 +100,7 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc) {
+  protected boolean plantFromInventory(IFarmer farm, BlockPos bc) {
     World world = farm.getWorld();
     if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
       return plant(farm, world, bc);

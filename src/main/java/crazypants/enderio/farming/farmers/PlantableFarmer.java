@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
@@ -40,7 +40,7 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (block == null) {
       return false;
     }
@@ -105,7 +105,7 @@ public class PlantableFarmer implements IFarmerJoe {
   // return Plains;
   // }
 
-  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, IPlantable plantable) {
+  protected boolean plantFromInventory(IFarmer farm, BlockPos bc, IPlantable plantable) {
     World world = farm.getWorld();
     if (canPlant(world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
       return plant(farm, world, bc, plantable);
@@ -113,7 +113,7 @@ public class PlantableFarmer implements IFarmerJoe {
     return false;
   }
 
-  protected boolean plant(TileFarmStation farm, World world, BlockPos bc, IPlantable plantable) {
+  protected boolean plant(IFarmer farm, World world, BlockPos bc, IPlantable plantable) {
     world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
     IBlockState target = plantable.getPlant(null, new BlockPos(0, 0, 0));
     world.setBlockState(bc, target, 1 | 2);
@@ -134,7 +134,7 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (!harvestExcludes.contains(block) && block instanceof IGrowable && !(block instanceof BlockStem)) {
       return !((IGrowable) block).canGrow(farm.getWorld(), bc, meta, true);
     }
@@ -142,7 +142,7 @@ public class PlantableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (!canHarvest(farm, bc, block, meta)) {
       return null;
     }

@@ -3,7 +3,7 @@ package crazypants.enderio.farming.farmers;
 import java.util.ArrayList;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -28,7 +28,7 @@ public class PickableFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (!canHarvest(farm, bc, block, meta)) {
       return null;
     }

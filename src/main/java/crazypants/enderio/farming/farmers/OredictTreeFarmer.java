@@ -1,7 +1,7 @@
 package crazypants.enderio.farming.farmers;
 
-import crazypants.enderio.farming.FarmStationContainer;
-import crazypants.enderio.farming.TileFarmStation;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
@@ -20,7 +20,7 @@ public class OredictTreeFarmer extends TreeFarmer {
   public OredictTreeFarmer(Things saplings, Things woods) {
     super(null, woods);
     this.saplings = saplings;
-    FarmStationContainer.slotItemsSeeds.addAll(saplings.getItemStacks());
+    FarmersRegistry.slotItemsSeeds.addAll(saplings.getItemStacks());
   }
 
   @Override
@@ -29,7 +29,7 @@ public class OredictTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     if (saplings.contains(block)) {
       return true;
     }
@@ -37,7 +37,7 @@ public class OredictTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  protected boolean plantFromInventory(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  protected boolean plantFromInventory(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     World world = farm.getWorld();
     final ItemStack currentSapling = farm.getSeedTypeInSuppliesFor(bc);
     if (canPlant(world, bc, currentSapling)) {
@@ -70,7 +70,7 @@ public class OredictTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  protected boolean plant(TileFarmStation farm, World world, BlockPos bc, ItemStack seed) {
+  protected boolean plant(IFarmer farm, World world, BlockPos bc, ItemStack seed) {
     if (canPlant(world, bc, seed)) {
       world.setBlockToAir(bc);
       final Item item = seed.getItem();

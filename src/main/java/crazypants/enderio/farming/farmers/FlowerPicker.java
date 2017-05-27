@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.farming.FarmNotification;
-import crazypants.enderio.farming.FarmStationContainer;
-import crazypants.enderio.farming.TileFarmStation;
-import crazypants.enderio.farming.TileFarmStation.ToolType;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.IFarmer;
+import crazypants.enderio.farming.IFarmer.ToolType;
 import crazypants.util.Prep;
 import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
@@ -27,17 +27,17 @@ public class FlowerPicker implements IFarmerJoe {
 
   public FlowerPicker add(Things newFlowers) {
     this.flowers.add(newFlowers);
-    FarmStationContainer.slotItemsProduce.addAll(newFlowers.getItemStacks());
+    FarmersRegistry.slotItemsProduce.addAll(newFlowers.getItemStacks());
     return this;
   }
 
   @Override
-  public boolean prepareBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return false;
   }
 
   @Override
-  public boolean canHarvest(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     return flowers.contains(block) || block instanceof IShearable;
   }
 
@@ -47,7 +47,7 @@ public class FlowerPicker implements IFarmerJoe {
   }
 
   @Override
-  public IHarvestResult harvestBlock(TileFarmStation farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
     World world = farm.getWorld();
     List<ItemStack> drops = null;
 
