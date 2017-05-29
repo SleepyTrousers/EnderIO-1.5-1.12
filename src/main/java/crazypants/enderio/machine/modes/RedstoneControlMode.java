@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
+import com.enderio.core.common.util.NNList;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIO;
@@ -26,7 +27,6 @@ public enum RedstoneControlMode {
    */
   public static final int MIN_ON_LEVEL = 1;
 
-  // @SideOnly(Side.CLIENT)
   @SuppressWarnings("hiding")
   public static enum IconHolder implements ICycleEnum {
 
@@ -43,7 +43,7 @@ public enum RedstoneControlMode {
       this.icon = icon;
     }
 
-    public String getTooltip() {
+    public @Nonnull String getTooltip() {
       return EnderIO.lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase(Locale.US));
     }
 
@@ -57,11 +57,11 @@ public enum RedstoneControlMode {
       return Lists.newArrayList(getTooltip());
     }
 
-    public RedstoneControlMode getMode() {
+    public @Nonnull RedstoneControlMode getMode() {
       return mode;
     }
 
-    public static IconHolder getFromMode(RedstoneControlMode mode) {
+    public static @Nonnull IconHolder getFromMode(@Nonnull RedstoneControlMode mode) {
       for (IconHolder holder : values()) {
         if (holder.mode == mode) {
           return holder;
@@ -72,7 +72,7 @@ public enum RedstoneControlMode {
 
   }
 
-  public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {
+  public static boolean isConditionMet(@Nonnull RedstoneControlMode redstoneControlMode, int powerLevel) {
     switch (redstoneControlMode) {
     case IGNORE:
       return true;
@@ -87,7 +87,7 @@ public enum RedstoneControlMode {
     }
   }
 
-  public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
+  public static boolean isConditionMet(@Nonnull RedstoneControlMode redstoneControlMode, TileEntity te) {
     switch (redstoneControlMode) {
     case IGNORE:
       return true;
@@ -98,23 +98,12 @@ public enum RedstoneControlMode {
     }
   }
 
-  public RedstoneControlMode next() {
-    int ord = ordinal();
-    if(ord == values().length - 1) {
-      ord = 0;
-    } else {
-      ord++;
-    }
-    return values()[ord];
+  public @Nonnull RedstoneControlMode next() {
+    return NNList.<RedstoneControlMode> of(RedstoneControlMode.class).next(this);
   }
 
-  public RedstoneControlMode previous() {
-    int ord = ordinal();
-    ord--;
-    if(ord < 0) {
-      ord = values().length - 1;
-    } 
-    return values()[ord];    
+  public @Nonnull RedstoneControlMode previous() {
+    return NNList.<RedstoneControlMode> of(RedstoneControlMode.class).prev(this);
   }
 
 }

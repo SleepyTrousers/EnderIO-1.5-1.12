@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
@@ -34,11 +36,11 @@ public class PlaceableFarmer implements IFarmerJoe {
     DIRT = new Things(dirt);
   }
 
-  public void addSeed(String seed) {
+  public void addSeed(@Nonnull String seed) {
     SEEDS.add(seed);
   }
 
-  public void addDirt(String dirt) {
+  public void addDirt(@Nonnull String dirt) {
     DIRT.add(dirt);
   }
 
@@ -47,38 +49,37 @@ public class PlaceableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
+  public boolean canPlant(@Nonnull ItemStack stack) {
     return SEEDS.contains(stack);
   }
 
   @Override
-  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
-    Block ground = farm.getBlock(bc.down());
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+    IBlockState blockStateGround = farm.getBlockState(bc.down());
+    Block ground = blockStateGround.getBlock();
     if (!DIRT.contains(ground)) {
       return false;
     }
 
-    int slot = farm.getSupplySlotForCoord(bc);
-    ItemStack seedStack = farm.getSeedTypeInSuppliesFor(slot);
+    ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
     if (!canPlant(seedStack)) {
-      if (!farm.isSlotLocked(slot)) {
+      if (!farm.isSlotLocked(bc)) {
         farm.setNotification(FarmNotification.NO_SEEDS);
       }
       return false;
     }
 
-    return plant(farm, bc);
+    return plant(farm, bc, meta);
   }
 
-  protected boolean plant(IFarmer farm, BlockPos bc) {
+  protected boolean plant(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     final ItemStack seedStack = farm.takeSeedFromSupplies(bc);
     if (Prep.isValid(seedStack)) {
-      EntityPlayerMP fakePlayer = farm.getFakePlayer();
-      farm.setJoeUseItem(seedStack);
-      EnumActionResult res = seedStack.getItem().onItemUse(fakePlayer, fakePlayer.world, bc.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
-      farm.clearJoeUseItem(false);
+      EntityPlayerMP joe = farm.startUsingItem(seedStack);
+      EnumActionResult res = seedStack.getItem().onItemUse(joe, joe.world, bc.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      farm.handleExtraItems(farm.endUsingItem(FarmingTool.HOE), bc);
       if (res == EnumActionResult.SUCCESS) {
-        farm.actionPerformed(false);
+        farm.registerAction(FarmingAction.PLANT, FarmingTool.HOE, state, bc);
         return true;
       }
     }
@@ -86,12 +87,12 @@ public class PlaceableFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     return null;
   }
 

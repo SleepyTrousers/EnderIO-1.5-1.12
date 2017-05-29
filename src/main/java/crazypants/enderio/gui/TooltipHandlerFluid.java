@@ -3,35 +3,37 @@ package crazypants.enderio.gui;
 import java.text.MessageFormat;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
+import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.util.TextUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TooltipHandlerFluid implements ITooltipCallback {
-  
+
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-   
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(itemstack);
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    FluidStack fluid = FluidUtil.getFluidTypeFromItem(itemstack);
     if (fluid != null) {
       IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
       if (fuel != null) {
@@ -47,12 +49,12 @@ public class TooltipHandlerFluid implements ITooltipCallback {
               + EnderIO.lang.localize("coolant.tooltip.degreesPerBucket"));
         }
       }
-    }    
+    }
   }
 
   @Override
-  public boolean shouldHandleItem(ItemStack item) {
-    return FluidContainerRegistry.getFluidForFilledItem(item) != null;
+  public boolean shouldHandleItem(@Nonnull ItemStack item) {
+    return FluidUtil.getFluidTypeFromItem(item) != null;
   }
 
 }

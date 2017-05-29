@@ -35,7 +35,7 @@ public class ForestryFarmer implements IFarmerJoe {
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
+  public boolean canPlant(@Nonnull ItemStack stack) {
     return stack.getItem() == forestrySapling && root.getType(stack) == EnumGermlingType.SAPLING;
   }
 
@@ -45,7 +45,7 @@ public class ForestryFarmer implements IFarmerJoe {
     if (sapling.getItem() == forestrySapling) {
       ITree tree = root.getMember(sapling);
       if (tree != null && tree.canStay(farm.getWorld(), bc)) {
-        if (Prep.isValid(farm.takeSeedFromSupplies(sapling, bc, false))) {
+        if (Prep.isValid(farm.takeSeedFromSupplies(bc))) {
           root.plantSapling(farm.getWorld(), tree, farm.getFakePlayer().getGameProfile(), bc);
           return true;
         }
@@ -63,4 +63,5 @@ public class ForestryFarmer implements IFarmerJoe {
   public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state) {
     return null;
   }
+
 }

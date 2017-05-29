@@ -1,5 +1,7 @@
 package crazypants.enderio.gui;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.CycleButton;
 
@@ -15,20 +17,20 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
   private IRedstoneModeControlable model;
   private T te;
 
-  private String tooltipKey = "enderio.gui.tooltip.redstoneControlMode";
+  private @Nonnull String tooltipKey = "enderio.gui.tooltip.redstoneControlMode";
 
-  public RedstoneModeButton(IGuiScreen gui, int id, int x, int y, IRedstoneModeControlable model) {
+  public RedstoneModeButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull IRedstoneModeControlable model) {
     super(gui, id, x, y, RedstoneControlMode.IconHolder.class);
     this.model = model;
     setModeRaw(RedstoneControlMode.IconHolder.getFromMode(model.getRedstoneControlMode()));
   }
 
-  public RedstoneModeButton(IGuiScreen gui, int id, int x, int y, T te) {
+  public RedstoneModeButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull T te) {
     this(gui, id, x, y, (IRedstoneModeControlable) te);
     this.te = te;
   }
 
-  public void setModeRaw(RedstoneControlMode.IconHolder newMode) {
+  public void setModeRaw(@Nonnull RedstoneControlMode.IconHolder newMode) {
     if (model == null) {
       return;
     }
@@ -37,7 +39,7 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
   }
 
   @Override
-  public void setMode(RedstoneControlMode.IconHolder newMode) {
+  public void setMode(@Nonnull RedstoneControlMode.IconHolder newMode) {
     if (model == null) {
       return;
     }
@@ -48,9 +50,8 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
     }
   }
 
-  public void setTooltipKey(String key) {
+  public void setTooltipKey(@Nonnull String key) {
     tooltipKey = key;
     setToolTip(EnderIO.lang.localizeExact(tooltipKey), getMode().getTooltip());
   }
 }
-

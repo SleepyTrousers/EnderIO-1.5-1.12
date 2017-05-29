@@ -1,9 +1,9 @@
 package crazypants.enderio.integration.natura;
 
-
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import crazypants.enderio.farming.farmers.HarvestResult;
 import crazypants.enderio.farming.farmers.IHarvestResult;
@@ -21,11 +21,11 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     if (block != getPlantedBlock()) {
       return null;
     }
-    if (!farm.hasHoe()) {
+    if (!farm.hasTool(FarmingTool.HOE)) {
       farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
@@ -33,9 +33,9 @@ public class NaturaBerryFarmer extends PickableFarmer {
     IHarvestResult res = new HarvestResult();
 
     BlockPos checkBlock = bc;
-    while (checkBlock != null && checkBlock.getY() <= 255 && farm.hasHoe()) {
+    while (checkBlock != null && checkBlock.getY() <= 255 && farm.hasTool(FarmingTool.HOE)) {
       meta = farm.getBlockState(checkBlock);
-      block = farm.getBlock(checkBlock);
+      block = meta.getBlock();
       if (block != getPlantedBlock()) {
         checkBlock = null;
       } else {
@@ -61,7 +61,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
   }
 
   @Override
-  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState bs) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState bs) {
     BlockPos checkBlock = bc;
     while (checkBlock.getY() <= 255) {
       if (block != getPlantedBlock()) {
@@ -76,4 +76,5 @@ public class NaturaBerryFarmer extends PickableFarmer {
     }
     return false;
   }
+
 }

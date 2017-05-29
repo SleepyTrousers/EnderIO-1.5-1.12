@@ -15,7 +15,6 @@ import org.lwjgl.opengl.GL14;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -27,7 +26,6 @@ import crazypants.enderio.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.modes.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.recipe.alloysmelter.BlockAlloySmelter;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -74,10 +72,10 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
   private final Matrix4d pitchRot = new Matrix4d();
   private final Matrix4d yawRot = new Matrix4d();
 
-  public BlockCoord originBC;
+  public BlockPos originBC;
 
-  private List<BlockCoord> configurables = new ArrayList<BlockCoord>();
-  private List<BlockCoord> neighbours = new ArrayList<BlockCoord>();
+  private List<BlockPos> configurables = new ArrayList<BlockPos>();
+  private List<BlockPos> neighbours = new ArrayList<BlockPos>();
 
   private SelectedFace<E> selection;
 
@@ -88,21 +86,21 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     this(Collections.singletonList(configuarble.getLocation()));
   }
 
-  public IoConfigRenderer(List<BlockCoord> configurables) {
+  public IoConfigRenderer(List<BlockPos> configurables) {
     this.configurables.addAll(configurables);
 
     Vector3d c;
     Vector3d size;
     if (configurables.size() == 1) {
-      BlockCoord bc = configurables.get(0);
-      c = new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+      BlockPos bc = configurables.get(0);
+      c = new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5);
       size = new Vector3d(1, 1, 1);
     } else {
       Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
       Vector3d max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-      for (BlockCoord bc : configurables) {
-        min.set(Math.min(bc.x, min.x), Math.min(bc.y, min.y), Math.min(bc.z, min.z));
-        max.set(Math.max(bc.x, max.x), Math.max(bc.y, max.y), Math.max(bc.z, max.z));
+      for (BlockPos bc : configurables) {
+        min.set(Math.min(bc.getX(), min.x), Math.min(bc.getY(), min.y), Math.min(bc.getZ(), min.z));
+        max.set(Math.max(bc.getX(), max.x), Math.max(bc.getY(), max.y), Math.max(bc.getZ(), max.z));
       }
       size = new Vector3d(max);
       size.sub(min);
@@ -111,7 +109,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
       size.scale(2);
     }
 
-    originBC = new BlockCoord((int) c.x, (int) c.y, (int) c.z);
+    originBC = new BlockPos((int) c.x, (int) c.y, (int) c.z);
     origin.set(c);
     pitchRot.setIdentity();
     yawRot.setIdentity();
@@ -121,9 +119,9 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
     distance = Math.max(Math.max(size.x, size.y), size.z) + 4;
 
-    for (BlockCoord bc : configurables) {
+    for (BlockPos bc : configurables) {
       for (EnumFacing dir : EnumFacing.VALUES) {
-        BlockCoord loc = bc.getLocation(dir);
+        BlockPos loc = bc.offset(dir);
         if (!configurables.contains(loc)) {
           neighbours.add(loc);
         }
@@ -195,11 +193,11 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     end.add(origin);
     List<RayTraceResult> hits = new ArrayList<RayTraceResult>();
 
-    for (BlockCoord bc : configurables) {
-      IBlockState bs = world.getBlockState(bc.getBlockPos());
+    for (BlockPos bc : configurables) {
+      IBlockState bs = world.getBlockState(bc);
       Block block = bs.getBlock();
       if (block != null) {        
-        RayTraceResult hit = bs.collisionRayTrace(world, bc.getBlockPos(), new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
+        RayTraceResult hit = bs.collisionRayTrace(world, bc, new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
         if (hit != null) {
           hits.add(hit);
         }
@@ -324,16 +322,16 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
         yOffset = 5;
       }
 
-      y = vph - mc.fontRendererObj.FONT_HEIGHT - 2;
-      mc.fontRendererObj.drawString(getLabelForMode(mode), 4, y, ColorUtil.getRGB(Color.white));
+      y = vph - mc.fontRenderer.FONT_HEIGHT - 2;
+      mc.fontRenderer.drawString(getLabelForMode(mode), 4, y, ColorUtil.getRGB(Color.white));
       if (ioIcon != null) {
-        int w = mc.fontRendererObj.getStringWidth(mode.getLocalisedName());
+        int w = mc.fontRenderer.getStringWidth(mode.getLocalisedName());
         double xd = (w - ioIcon.width) / 2;
         xd = Math.max(0, w);
         xd /= 2;
         xd += 4;
         xd /= scaledresolution.getScaleFactor();
-        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRendererObj.FONT_HEIGHT - 2 - yOffset, true);
+        ioIcon.getMap().render(ioIcon, xd, y - mc.fontRenderer.FONT_HEIGHT - 2 - yOffset, true);
       }
     }
   }
@@ -398,15 +396,15 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     setGlStateForPass(0, false);
   }
 
-  private void doTileEntityRenderPass(List<BlockCoord> blocks, int pass) {
-    for (BlockCoord bc : blocks) {
-      TileEntity tile = world.getTileEntity(bc.getBlockPos());
+  private void doTileEntityRenderPass(List<BlockPos> blocks, int pass) {
+    for (BlockPos bc : blocks) {
+      TileEntity tile = world.getTileEntity(bc);
       if (tile != null) {
         if (tile.shouldRenderInPass(pass)) {
           Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
-          at.x += bc.x - origin.x;
-          at.y += bc.y - origin.y;
-          at.z += bc.z - origin.z;
+          at.x += bc.getX() - origin.x;
+          at.y += bc.getY() - origin.y;
+          at.z += bc.getZ() - origin.z;
           if(tile.getClass() == TileEntityChest.class) {
             TileEntityChest chest = (TileEntityChest)tile;     
             if(chest.adjacentChestXNeg != null) {
@@ -423,20 +421,20 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     }    
   }
 
-  private void doWorldRenderPass(Vector3d trans, List<BlockCoord> blocks, BlockRenderLayer layer) {
+  private void doWorldRenderPass(Vector3d trans, List<BlockPos> blocks, BlockRenderLayer layer) {
 
     VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
 
     Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
 
-    for (BlockCoord bc : blocks) {
+    for (BlockPos bc : blocks) {
       
-      IBlockState bs = world.getBlockState(bc.getBlockPos());
+      IBlockState bs = world.getBlockState(bc);
       Block block = bs.getBlock();
-      bs = bs.getActualState(world, bc.getBlockPos());                        
+      bs = bs.getActualState(world, bc);
       if (block.canRenderInLayer(bs, layer)) {
-        renderBlock(bs, bc.getBlockPos(), world, Tessellator.getInstance().getBuffer());
+        renderBlock(bs, bc, world, Tessellator.getInstance().getBuffer());
       }
     }
 

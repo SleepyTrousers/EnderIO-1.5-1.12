@@ -47,7 +47,7 @@ public class HempFarmerIE implements IFarmerJoe {
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
+  public boolean canPlant(@Nonnull ItemStack stack) {
     return seedFarmer.canPlant(stack);
   }
 

@@ -1,8 +1,11 @@
 package crazypants.enderio.integration.forestry;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.init.ModObject;
+import crazypants.util.Prep;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -12,47 +15,44 @@ import net.minecraft.util.ResourceLocation;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "naturalistEye";
+  private static final @Nonnull String UPGRADE_NAME = "naturalistEye";
 
-  public static final NaturalistEyeUpgrade INSTANCE = new NaturalistEyeUpgrade();
+  public static final @Nonnull NaturalistEyeUpgrade INSTANCE = new NaturalistEyeUpgrade();
 
-  public static ItemStack getNaturalistEye() {
-    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", "naturalistHelmet"));     
-    if(i != null) {
+  public static @Nonnull ItemStack getNaturalistEye() {
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", "naturalistHelmet"));
+    if (i != null) {
       return new ItemStack(i);
     }
-    return null;
+    return Prep.getEmpty();
   }
 
-  public static NaturalistEyeUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+  public static NaturalistEyeUpgrade loadFromItem(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new NaturalistEyeUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new NaturalistEyeUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
-  public static boolean isUpgradeEquipped(EntityLivingBase player) {
-    ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    return NaturalistEyeUpgrade.loadFromItem(helmet) != null;
+  public static boolean isUpgradeEquipped(@Nonnull EntityLivingBase player) {
+    return NaturalistEyeUpgrade.loadFromItem(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD)) != null;
   }
 
-  public NaturalistEyeUpgrade(NBTTagCompound tag) {
+  public NaturalistEyeUpgrade(@Nonnull NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
   }
 
   public NaturalistEyeUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.naturalistEye",getNaturalistEye(), Config.darkSteelApiaristArmorCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.naturalistEye", getNaturalistEye(), Config.darkSteelApiaristArmorCost);
   }
 
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet || getUpgradeItem() == null) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (stack.getItem() != ModObject.itemDarkSteelHelmet.getItem() || Prep.isInvalid(getUpgradeItem())) {
       return false;
     }
     NaturalistEyeUpgrade up = loadFromItem(stack);
@@ -60,12 +60,12 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
   }
 
   @Override
-  public ItemStack getUpgradeItem() {
-    if(upgradeItem != null) {
+  public @Nonnull ItemStack getUpgradeItem() {
+    if (Prep.isValid(upgradeItem)) {
       return upgradeItem;
     }
     upgradeItem = getNaturalistEye();
@@ -73,10 +73,11 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public String getUpgradeItemName() {
-    if(getUpgradeItem() == null) {
+  public @Nonnull String getUpgradeItemName() {
+    if (Prep.isInvalid(getUpgradeItem())) {
       return "Naturalist Helmet";
     }
     return super.getUpgradeItemName();
   }
+
 }

@@ -1,8 +1,12 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.ArrayList;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,38 +16,46 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class PickableFarmer extends CustomSeedFarmer {
 
-  public PickableFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
+  public PickableFarmer(@Nonnull Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, @Nonnull ItemStack seeds) {
     super(plantedBlock, plantedBlockMeta, grownBlockMeta, seeds);
   }
 
-  public PickableFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
+  public PickableFarmer(@Nonnull Block plantedBlock, int grownBlockMeta, @Nonnull ItemStack seeds) {
     super(plantedBlock, grownBlockMeta, seeds);
   }
 
-  public PickableFarmer(Block plantedBlock, ItemStack seeds) {
+  public PickableFarmer(@Nonnull Block plantedBlock, @Nonnull ItemStack seeds) {
     super(plantedBlock, seeds);
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull final BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     if (!canHarvest(farm, bc, block, meta)) {
       return null;
     }
-    if (!farm.hasHoe()) {
+    if (!farm.hasTool(FarmingTool.HOE)) {
       farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
-    EntityPlayerMP player = farm.getFakePlayer();
-    player.interactionManager.processRightClickBlock(player, player.world, null, EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
+    final HarvestResult result = new HarvestResult();
+    final World world = farm.getWorld();
 
-    farm.clearJoeUseItem(false);
+    EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
+    joe.interactionManager.processRightClickBlock(joe, joe.world, joe.getHeldItemMainhand(), EnumHand.MAIN_HAND, bc, EnumFacing.DOWN, 0, 0, 0);
+    farm.endUsingItem(FarmingTool.HOE).apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack drop) {
+        result.getDrops().add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, drop.copy()));
+      }
+    });
+    farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, bc);
+    result.getHarvestedBlocks().add(bc);
 
-    farm.actionPerformed(false);
-    farm.damageHoe(1, bc);
-    return new HarvestResult(new ArrayList<EntityItem>(), bc);
+    return result;
   }
 
 }

@@ -1,11 +1,17 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+
 import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
@@ -20,14 +26,14 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class StemFarmer extends CustomSeedFarmer {
 
-  private static final HeightCompatator COMP = new HeightCompatator();
+  private static final @Nonnull HeightCompatator COMP = new HeightCompatator();
 
-  public StemFarmer(Block plantedBlock, ItemStack seeds) {
+  public StemFarmer(@Nonnull Block plantedBlock, @Nonnull ItemStack seeds) {
     super(plantedBlock, seeds);
   }
 
   @Override
-  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     if (plantedBlock == block) {
       return true;
     }
@@ -35,51 +41,45 @@ public class StemFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     BlockPos up = bc.up();
-    Block upBLock = farm.getBlock(up);
-    return upBLock == plantedBlock;
+    return farm.getBlockState(up).getBlock() == plantedBlock;
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
+  public boolean canPlant(@Nonnull ItemStack stack) {
     return seeds.isItemEqual(stack);
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
-    World world = farm.getWorld();
-    final EntityPlayerMP fakePlayer = farm.getFakePlayer();
-    final int fortune = farm.getMaxLootingValue();
-    HarvestResult result = new HarvestResult();
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
+    boolean hasHoe = farm.hasTool(FarmingTool.HOE);
+    if (!hasHoe) {
+      return new HarvestResult();
+    }
+    final World world = farm.getWorld();
+    final EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
+    final int fortune = farm.getLootingValue(FarmingTool.HOE);
+    final HarvestResult result = new HarvestResult();
     BlockPos harvestCoord = bc;
     boolean done = false;
     do {
       harvestCoord = harvestCoord.offset(EnumFacing.UP);
-      boolean hasHoe = farm.hasHoe();
-      if (plantedBlock == farm.getBlock(harvestCoord) && hasHoe) {
-        result.harvestedBlocks.add(harvestCoord);
+      final IBlockState harvestState = farm.getBlockState(harvestCoord);
+      if (hasHoe && plantedBlock == harvestState.getBlock()) {
+        result.getHarvestedBlocks().add(harvestCoord);
         List<ItemStack> drops = plantedBlock.getDrops(world, harvestCoord, meta, fortune);
-        float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, harvestCoord, meta, fortune, 1.0F, false, fakePlayer);
-        if (drops != null) {
-          for (ItemStack drop : drops) {
-            if (world.rand.nextFloat() <= chance) {
-              result.drops.add(new EntityItem(world, harvestCoord.getX() + 0.5, harvestCoord.getY() + 0.5, harvestCoord.getZ() + 0.5, drop.copy()));
-            }
-          }
-        }
-        farm.damageHoe(1, harvestCoord);
-        farm.actionPerformed(false);
+        float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestCoord, meta, fortune, 1.0F, false, joe);
 
-        ItemStack[] inv = fakePlayer.inventory.mainInventory;
-        for (int slot = 0; slot < inv.length; slot++) {
-          ItemStack stack = inv[slot];
-          if (Prep.isValid(stack)) {
-            inv[slot] = Prep.getEmpty();
-            EntityItem entityitem = new EntityItem(world, harvestCoord.getX() + 0.5, harvestCoord.getY() + 1, harvestCoord.getZ() + 0.5, stack);
-            result.drops.add(entityitem);
+        BlockPos farmPos = farm.getLocation();
+        for (ItemStack drop : drops) {
+          if (world.rand.nextFloat() <= chance) {
+            result.getDrops().add(new EntityItem(world, farmPos.getX() + 0.5, farmPos.getY() + 0.5, farmPos.getZ() + 0.5, drop.copy()));
           }
         }
+
+        farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, harvestState, harvestCoord);
+        hasHoe = farm.hasTool(FarmingTool.HOE);
       } else {
         if (!hasHoe) {
           farm.setNotification(FarmNotification.NO_HOE);
@@ -90,17 +90,27 @@ public class StemFarmer extends CustomSeedFarmer {
       }
     } while (!done);
 
-    List<BlockPos> toClear = new ArrayList<BlockPos>(result.getHarvestedBlocks());
+    farm.endUsingItem(FarmingTool.HOE).apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack drop) {
+        result.getDrops().add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, drop.copy()));
+      }
+    });
+
+    NNList<BlockPos> toClear = new NNList<BlockPos>(result.getHarvestedBlocks());
     Collections.sort(toClear, COMP);
-    for (BlockPos coord : toClear) {
-      farm.getWorld().setBlockToAir(coord);
-    }
+    toClear.apply(new Callback<BlockPos>() {
+      @Override
+      public void apply(@Nonnull BlockPos coord) {
+        farm.getWorld().setBlockToAir(coord);
+      }
+    });
 
     return result;
   }
 
   @Override
-  protected boolean plantFromInventory(IFarmer farm, BlockPos bc) {
+  protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc) {
     World world = farm.getWorld();
     if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
       return plant(farm, world, bc);
@@ -112,11 +122,7 @@ public class StemFarmer extends CustomSeedFarmer {
 
     @Override
     public int compare(BlockPos o1, BlockPos o2) {
-      return -compare(o1.getY(), o2.getY());
-    }
-
-    public static int compare(int x, int y) {
-      return (x < y) ? -1 : ((x == y) ? 0 : 1);
+      return -Integer.compare(o1.getY(), o2.getY());
     }
 
   }

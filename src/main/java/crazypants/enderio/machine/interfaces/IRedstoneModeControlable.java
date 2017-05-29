@@ -1,12 +1,15 @@
 package crazypants.enderio.machine.interfaces;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 
 public interface IRedstoneModeControlable {
 
+  @Nonnull
   RedstoneControlMode getRedstoneControlMode();
 
-  void setRedstoneControlMode(RedstoneControlMode mode);
+  void setRedstoneControlMode(@Nonnull RedstoneControlMode mode);
 
   boolean getRedstoneControlStatus();
 

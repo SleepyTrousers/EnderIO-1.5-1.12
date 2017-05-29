@@ -107,4 +107,11 @@ public interface IFarmer {
 
   boolean isSlotLocked(@Nonnull BlockPos pos);
 
+  void clearNotification();
+
+  @Nonnull
+  ItemStack takeSeedFromSupplies(@Nonnull ItemStack seeds, @Nonnull BlockPos bc);
+
+  int getFarmSize();
+
 }

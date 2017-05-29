@@ -1,5 +1,7 @@
 package crazypants.enderio.integration.techreborn;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.farming.farmers.RubberTreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -10,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RubberTreeFarmerTechReborn extends RubberTreeFarmer {
 
-  private RubberTreeFarmerTechReborn(Block sapling, Block wood, Item treetap, ItemStack resin) {
+  private RubberTreeFarmerTechReborn(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
     super(sapling, wood, treetap, resin);
   }
 
@@ -28,12 +30,12 @@ public class RubberTreeFarmerTechReborn extends RubberTreeFarmer {
   }
 
   @Override
-  protected boolean hasResin(IBlockState state) {
+  protected boolean hasResin(@Nonnull IBlockState state) {
     return state.getBlock().getMetaFromState(state) >= 3;
   }
 
   @Override
-  protected IBlockState removeResin(IBlockState state) {
+  protected @Nonnull IBlockState removeResin(@Nonnull IBlockState state) {
     return state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) - 3);
   }
 

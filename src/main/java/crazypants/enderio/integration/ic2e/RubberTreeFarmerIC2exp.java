@@ -2,6 +2,8 @@ package crazypants.enderio.integration.ic2e;
 
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.farming.farmers.RubberTreeFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RubberTreeFarmerIC2exp extends RubberTreeFarmer {
 
-  private RubberTreeFarmerIC2exp(Block sapling, Block wood, Item treetap, ItemStack resin) {
+  private RubberTreeFarmerIC2exp(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
     super(sapling, wood, treetap, resin);
   }
 
@@ -30,17 +32,17 @@ public class RubberTreeFarmerIC2exp extends RubberTreeFarmer {
   }
 
   @Override
-  protected boolean hasResin(IBlockState state) {
+  protected boolean hasResin(@Nonnull IBlockState state) {
     return state.getBlock().getMetaFromState(state) > 6;
   }
 
   @Override
-  protected IBlockState removeResin(IBlockState state) {
+  protected @Nonnull IBlockState removeResin(@Nonnull IBlockState state) {
     return state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) - 4);
   }
 
   @Override
-  protected ItemStack makeResin(Random rand) {
+  protected @Nonnull ItemStack makeResin(@Nonnull Random rand) {
     ItemStack copy = stickyResin.copy();
     copy.setCount(rand.nextInt(3) + 1);
     return copy;

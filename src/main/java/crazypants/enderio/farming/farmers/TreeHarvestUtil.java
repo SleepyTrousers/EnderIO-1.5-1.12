@@ -1,5 +1,9 @@
 package crazypants.enderio.farming.farmers;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.farming.IFarmer;
@@ -15,8 +19,8 @@ import net.minecraft.world.World;
 
 public class TreeHarvestUtil {
 
-  private final static Things LEAVES = new Things("treeLeaves");
-  private final static Things NOT_LEAVES = new Things();
+  private final static @Nonnull Things LEAVES = new Things("treeLeaves");
+  private final static @Nonnull Things NOT_LEAVES = new Things();
 
   private int horizontalRange;
   private int verticalRange;
@@ -25,10 +29,10 @@ public class TreeHarvestUtil {
   public TreeHarvestUtil() {
   }
 
-  public void harvest(IFarmer farm, TreeFarmer farmer, BlockPos bc, HarvestResult res) {
+  public void harvest(@Nonnull IFarmer farm, @Nonnull TreeFarmer farmer, @Nonnull BlockPos bc, @Nonnull HarvestResult res) {
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
-    origin = farm.getPos().toImmutable();
+    origin = farm.getLocation().toImmutable();
     if (farmer.getIgnoreMeta()) {
       harvestUp(farm.getWorld(), bc, res, new BaseHarvestTarget(null, farmer));
     } else {
@@ -36,7 +40,7 @@ public class TreeHarvestUtil {
     }
   }
 
-  public void harvest(World world, BlockPos bc, HarvestResult res) {
+  public void harvest(@Nonnull World world, @Nonnull BlockPos bc, @Nonnull HarvestResult res) {
     horizontalRange = 12;
     verticalRange = 30;
     origin = bc.toImmutable();
@@ -44,19 +48,22 @@ public class TreeHarvestUtil {
     harvestUp(world, bc, res, new HarvestTarget(wood, null));
   }
 
-  protected void harvestUp(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
-    if (!isInHarvestBounds(bc) || res.harvestedBlocks.contains(bc)) {
+  protected void harvestUp(@Nonnull final World world, @Nonnull final BlockPos bc, @Nonnull final HarvestResult res, @Nonnull final BaseHarvestTarget target) {
+    if (!isInHarvestBounds(bc) || res.getHarvestedBlocks().contains(bc)) {
       return;
     }
     IBlockState bs = world.getBlockState(bc);
     boolean isLeaves = isLeaves(bs);
     if (target.isTarget(bs) || isLeaves) {
-      res.harvestedBlocks.add(bc);
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        if (dir != EnumFacing.DOWN) {
-          harvestUp(world, bc.offset(dir), res, target);
+      res.getHarvestedBlocks().add(bc);
+      NNList.FACING.apply(new Callback<EnumFacing>() {
+        @Override
+        public void apply(@Nonnull EnumFacing dir) {
+          if (dir != EnumFacing.DOWN) {
+            harvestUp(world, bc.offset(dir), res, target);
+          }
         }
-      }
+      });
     } else {
       // check the sides for connected wood
       harvestAdjacentWood(world, bc, res, target);
@@ -64,32 +71,37 @@ public class TreeHarvestUtil {
       harvestAdjacentWood(world, bc.down(), res, target);
       // and another check for large oaks, where wood can be surrounded by
       // leaves
-      for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-        BlockPos loc = bc.offset(dir);
-        IBlockState locBS = world.getBlockState(loc);
-        if (isLeaves(locBS)) {
-          harvestAdjacentWood(world, loc, res, target);
+      NNList.FACING_HORIZONTAL.apply(new Callback<EnumFacing>() {
+        @Override
+        public void apply(@Nonnull EnumFacing dir) {
+          BlockPos loc = bc.offset(dir);
+          IBlockState locBS = world.getBlockState(loc);
+          if (isLeaves(locBS)) {
+            harvestAdjacentWood(world, loc, res, target);
+          }
         }
-      }
+      });
     }
-
   }
 
-  static boolean isLeaves(IBlockState bs) {
+  static boolean isLeaves(@Nonnull IBlockState bs) {
     return (bs.getMaterial() == Material.LEAVES || LEAVES.contains(bs.getBlock())) && !NOT_LEAVES.contains(bs.getBlock());
   }
 
-  private void harvestAdjacentWood(World world, BlockPos bc, HarvestResult res, BaseHarvestTarget target) {
-    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-      BlockPos targ = bc.offset(dir);
-      if (target.isTarget(world.getBlockState(targ))) {
-        harvestUp(world, targ, res, target);
+  private void harvestAdjacentWood(@Nonnull final World world, @Nonnull final BlockPos bc, @Nonnull final HarvestResult res,
+      @Nonnull final BaseHarvestTarget target) {
+    NNList.FACING_HORIZONTAL.apply(new Callback<EnumFacing>() {
+      @Override
+      public void apply(@Nonnull EnumFacing dir) {
+        BlockPos targ = bc.offset(dir);
+        if (target.isTarget(world.getBlockState(targ))) {
+          harvestUp(world, targ, res, target);
+        }
       }
-    }
+    });
   }
 
-  private boolean isInHarvestBounds(BlockPos bc) {
-
+  private boolean isInHarvestBounds(@Nonnull BlockPos bc) {
     int dist = Math.abs(origin.getX() - bc.getX());
     if (dist > horizontalRange) {
       return false;

@@ -1,5 +1,7 @@
 package crazypants.enderio.integration.natura;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
@@ -76,7 +78,7 @@ public class NaturaUtil {
     if (saguaroBlock != null && saguaroBabyItem != null) {
       FarmersCommune.joinCommune(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
         @Override
-        public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+        public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
           return false;
         }
       });

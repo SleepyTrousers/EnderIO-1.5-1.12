@@ -1,63 +1,64 @@
 package crazypants.enderio.integration.forestry;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.util.Prep;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
 public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
-  private static String UPGRADE_NAME = "apiaristArmor";
+  private static final @Nonnull String UPGRADE_NAME = "apiaristArmor";
 
-  private static final String forestryItemNames[] = {
-      "apiaristBoots", "apiaristLegs", "apiaristChest", "apiaristHelmet"};
+  private static final @Nonnull NNList<String> forestryItemNames = new NNList<>("apiaristBoots", "apiaristLegs", "apiaristChest", "apiaristHelmet");
 
-  public static final ApiaristArmorUpgrade HELMET = new ApiaristArmorUpgrade(3);
-  public static final ApiaristArmorUpgrade CHEST = new ApiaristArmorUpgrade(2);
-  public static final ApiaristArmorUpgrade LEGS = new ApiaristArmorUpgrade(1);
-  public static final ApiaristArmorUpgrade BOOTS = new ApiaristArmorUpgrade(0);
+  public static final @Nonnull ApiaristArmorUpgrade HELMET = new ApiaristArmorUpgrade(EntityEquipmentSlot.HEAD);
+  public static final @Nonnull ApiaristArmorUpgrade CHEST = new ApiaristArmorUpgrade(EntityEquipmentSlot.CHEST);
+  public static final @Nonnull ApiaristArmorUpgrade LEGS = new ApiaristArmorUpgrade(EntityEquipmentSlot.LEGS);
+  public static final @Nonnull ApiaristArmorUpgrade BOOTS = new ApiaristArmorUpgrade(EntityEquipmentSlot.FEET);
 
-  public static ItemStack getApiaristArmor(int slot) {
-    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", forestryItemNames[slot]));         
-    if(i != null) {
+  public static @Nonnull ItemStack getApiaristArmor(EntityEquipmentSlot slot) {
+    Item i = Item.REGISTRY.getObject(new ResourceLocation("Forestry", forestryItemNames.get(slot.getIndex())));
+    if (i != null) {
       return new ItemStack(i);
     }
-    return null;
+    return Prep.getEmpty();
   }
 
   public static ApiaristArmorUpgrade loadFromItem(ItemStack stack) {
-    if(stack == null) {
+    final NBTTagCompound tagCompound = stack.getTagCompound();
+    if (tagCompound == null) {
       return null;
     }
-    if(stack.getTagCompound() == null) {
+    if (!tagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    if(!stack.getTagCompound().hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
-      return null;
-    }
-    return new ApiaristArmorUpgrade((NBTTagCompound) stack.getTagCompound().getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new ApiaristArmorUpgrade((NBTTagCompound) tagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
-  private final int slot;
+  private final EntityEquipmentSlot slot;
 
-  public ApiaristArmorUpgrade(NBTTagCompound tag) {
+  public ApiaristArmorUpgrade(@Nonnull NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
-    this.slot = tag.getInteger("slot");
+    this.slot = EntityEquipmentSlot.fromString(tag.getString("slot"));
   }
 
-  public ApiaristArmorUpgrade(int slot) {
-    super(UPGRADE_NAME,
-            "enderio.darksteel.upgrade.apiaristArmor.".concat(ItemDarkSteelArmor.NAMES[slot]),
-            getApiaristArmor(slot), Config.darkSteelApiaristArmorCost);
+  public ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.apiaristArmor." + slot.getName(), getApiaristArmor(slot), Config.darkSteelApiaristArmorCost);
     this.slot = slot;
   }
 
   @Override
-  public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ItemDarkSteelArmor.forArmorType(slot) || getUpgradeItem() == null) {
+  public boolean canAddToItem(@Nonnull ItemStack stack) {
+    if (!(stack.getItem() instanceof ItemArmor) || ((ItemArmor) stack.getItem()).armorType != slot || Prep.isInvalid(getUpgradeItem())) {
       return false;
     }
     ApiaristArmorUpgrade up = loadFromItem(stack);
@@ -65,18 +66,18 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean hasUpgrade(ItemStack stack) {
-    return super.hasUpgrade(stack) && stack.getItem() == ItemDarkSteelArmor.forArmorType(slot);
+  public boolean hasUpgrade(@Nonnull ItemStack stack) {
+    return super.hasUpgrade(stack) && (stack.getItem() instanceof ItemArmor) && ((ItemArmor) stack.getItem()).armorType == slot;
   }
 
   @Override
-  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
-    upgradeRoot.setByte("slot", (byte)slot);
+  public void writeUpgradeToNBT(@Nonnull NBTTagCompound upgradeRoot) {
+    upgradeRoot.setString("slot", slot.getName());
   }
 
   @Override
-  public ItemStack getUpgradeItem() {
-    if(upgradeItem != null) {
+  public @Nonnull ItemStack getUpgradeItem() {
+    if (Prep.isValid(upgradeItem)) {
       return upgradeItem;
     }
     upgradeItem = getApiaristArmor(slot);
@@ -84,10 +85,11 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public String getUpgradeItemName() {
-    if(getUpgradeItem() == null) {
+  public @Nonnull String getUpgradeItemName() {
+    if (Prep.isInvalid(getUpgradeItem())) {
       return "Apiarist Armor";
     }
     return super.getUpgradeItemName();
   }
+
 }
