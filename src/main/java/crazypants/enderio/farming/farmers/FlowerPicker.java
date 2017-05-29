@@ -1,14 +1,18 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.farming.FarmNotification;
 import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
-import crazypants.enderio.farming.IFarmer.ToolType;
-import crazypants.util.Prep;
-import com.enderio.core.common.util.stackable.Things;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -21,69 +25,68 @@ public class FlowerPicker implements IFarmerJoe {
 
   protected Things flowers = new Things();
 
-  public FlowerPicker(Things flowers) {
+  public FlowerPicker(@Nonnull Things flowers) {
     add(flowers);
   }
 
-  public FlowerPicker add(Things newFlowers) {
+  public FlowerPicker add(@Nonnull Things newFlowers) {
     this.flowers.add(newFlowers);
-    FarmersRegistry.slotItemsProduce.addAll(newFlowers.getItemStacks());
+    FarmersRegistry.slotItemsProduce.add(newFlowers);
     return this;
   }
 
   @Override
-  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     return false;
   }
 
   @Override
-  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     return flowers.contains(block) || block instanceof IShearable;
   }
 
   @Override
-  public boolean canPlant(ItemStack stack) {
+  public boolean canPlant(@Nonnull ItemStack stack) {
     return false;
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
-    World world = farm.getWorld();
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
+    final World world = farm.getWorld();
     List<ItemStack> drops = null;
 
     if (block instanceof IShearable) {
-      if (!farm.hasShears()) {
+      if (!farm.hasTool(FarmingTool.SHEARS)) {
         farm.setNotification(FarmNotification.NO_SHEARS);
         return null;
       }
-      ItemStack shears = farm.getTool(ToolType.SHEARS);
-      if (!((IShearable) block).isShearable(shears, world, bc)) {
+      ItemStack shears = farm.getTool(FarmingTool.SHEARS);
+      if (!((IShearable) block).isShearable(shears, world, pos)) {
         return null;
       }
-      drops = ((IShearable) block).onSheared(shears, world, bc, farm.getMaxLootingValue());
-      farm.damageShears(block, bc);
+      drops = ((IShearable) block).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS));
+      farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, meta, pos);
     } else {
-      if (!farm.hasHoe()) {
+      if (!farm.hasTool(FarmingTool.HOE)) {
         farm.setNotification(FarmNotification.NO_HOE);
         return null;
       }
-      drops = block.getDrops(world, bc, meta, farm.getMaxLootingValue());
-      farm.damageHoe(1, bc);
+      drops = block.getDrops(world, pos, meta, farm.getLootingValue(FarmingTool.HOE));
+      farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, meta, pos);
     }
-    farm.actionPerformed(false);
 
-    List<EntityItem> result = new ArrayList<EntityItem>();
-    if (drops != null) {
-      for (ItemStack stack : drops) {
-        if (Prep.isValid(stack)) {
-          result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
-        }
+    final NNList<EntityItem> result = new NNList<EntityItem>();
+
+    NNList.wrap(drops).apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack drop) {
+        result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
       }
-    }
+    });
 
-    world.setBlockToAir(bc);
+    world.setBlockToAir(pos);
 
-    return new HarvestResult(result, bc);
+    return new HarvestResult(result, pos);
   }
 
 }

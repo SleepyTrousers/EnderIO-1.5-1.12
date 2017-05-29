@@ -1,5 +1,8 @@
 package crazypants.enderio.integration.natura;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.farming.IFarmer;
@@ -38,9 +41,11 @@ public class NaturaUtil {
       }
     }
 
-    for (String berry : new String[] { "overworld_berrybush_raspberry", "overworld_berrybush_blueberry", "overworld_berrybush_blackberry",
+    NNIterator<String> iterator = new NNList<>("overworld_berrybush_raspberry", "overworld_berrybush_blueberry", "overworld_berrybush_blackberry",
         "overworld_berrybush_maloberry", "nether_berrybush_blightberry", "nether_berrybush_duskberry", "nether_berrybush_skyberry",
-        "nether_berrybush_stingberry" }) {
+        "nether_berrybush_stingberry").iterator();
+    while (iterator.hasNext()) {
+      String berry = iterator.next();
       Block berryBlock = FarmersRegistry.findBlock("natura", berry);
       Item berryItem = FarmersRegistry.findItem("natura", berry);
       if (berryBlock != null && berryItem != null) {

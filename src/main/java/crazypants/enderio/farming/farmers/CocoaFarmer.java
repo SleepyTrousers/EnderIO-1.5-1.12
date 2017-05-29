@@ -1,6 +1,14 @@
 package crazypants.enderio.farming.farmers;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+
 import crazypants.enderio.config.Config;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCocoa;
@@ -26,35 +34,37 @@ public class CocoaFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean canHarvest(IFarmer farm, BlockPos bc, Block block, IBlockState meta) {
+  public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
     return block == getPlantedBlock() && meta.getValue(BlockCocoa.AGE) == 2;
   }
 
   @Override
-  protected boolean plant(IFarmer farm, World world, BlockPos bc) {
+  protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc) {
     EnumFacing dir = getPlantDirection(world, bc);
     if (dir == null) {
       return false;
     }
     IBlockState iBlockState = getPlantedBlock().getDefaultState().withProperty(FACING, dir);
     if (world.setBlockState(bc, iBlockState, 1 | 2)) {
-      farm.actionPerformed(false);
+      farm.registerAction(FarmingAction.PLANT, FarmingTool.HAND, iBlockState, bc);
       return true;
     }
     return false;
   }
 
   @Override
-  protected boolean canPlant(IFarmer farm, World world, BlockPos bc) {
+  protected boolean canPlant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc) {
     return getPlantDirection(world, bc) != null;
   }
 
-  private EnumFacing getPlantDirection(World world, BlockPos bc) {
+  private @Nullable EnumFacing getPlantDirection(@Nonnull World world, @Nonnull BlockPos bc) {
     if (!world.isAirBlock(bc)) {
       return null;
     }
 
-    for (EnumFacing dir : EnumFacing.HORIZONTALS) {
+    NNIterator<EnumFacing> iterator = NNList.FACING_HORIZONTAL.iterator();
+    while (iterator.hasNext()) {
+      EnumFacing dir = iterator.next();
       BlockPos p = bc.offset(dir);
       if (validBlock(world.getBlockState(p)))
         return dir;
@@ -63,7 +73,8 @@ public class CocoaFarmer extends CustomSeedFarmer {
     return null;
   }
 
-  private boolean validBlock(IBlockState iblockstate) {
+  private boolean validBlock(@Nonnull IBlockState iblockstate) {
     return iblockstate.getBlock() == Blocks.LOG && iblockstate.getValue(BlockOldLog.VARIANT) == BlockPlanks.EnumType.JUNGLE;
   }
+
 }

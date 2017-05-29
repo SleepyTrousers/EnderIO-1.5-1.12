@@ -26,22 +26,22 @@ public class HarvestResult implements IHarvestResult {
 
   public HarvestResult(@Nonnull NNList<EntityItem> drops, BlockPos harvestedBlock) {
     this.drops = drops;
-    this.harvestedBlocks = NNList.emptyList();
+    this.harvestedBlocks = new NNList<>();
     harvestedBlocks.add(harvestedBlock);
   }
 
   public HarvestResult() {
-    drops = NNList.emptyList();
-    harvestedBlocks = NNList.emptyList();
+    drops = new NNList<>();
+    harvestedBlocks = new NNList<>();
   }
 
   @Override
-  public NNList<EntityItem> getDrops() {
+  public @Nonnull NNList<EntityItem> getDrops() {
     return drops;
   }
 
   @Override
-  public NNList<BlockPos> getHarvestedBlocks() {
+  public @Nonnull NNList<BlockPos> getHarvestedBlocks() {
     return harvestedBlocks;
   }
 

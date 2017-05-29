@@ -18,13 +18,17 @@ import crazypants.enderio.farming.farmers.PlantableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
 import crazypants.enderio.farming.farmers.TreeFarmer;
 import crazypants.enderio.init.ModObject;
+import crazypants.enderio.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.integration.bop.BoPUtil;
 import crazypants.enderio.integration.botania.BotaniaUtil;
 import crazypants.enderio.integration.botany.BotanyUtil;
 import crazypants.enderio.integration.exu2.ExU2Util;
 import crazypants.enderio.integration.forestry.ForestryUtil;
+import crazypants.enderio.integration.gardencore.GardencoreUtil;
 import crazypants.enderio.integration.ic2e.IC2eUtil;
 import crazypants.enderio.integration.immersiveengineering.ImmersiveEngineeringUtil;
+import crazypants.enderio.integration.magicalcrops.MagicalcropsUtil;
+import crazypants.enderio.integration.metallurgy.MetallurgyUtil;
 import crazypants.enderio.integration.mfr.MFRUtil;
 import crazypants.enderio.integration.natura.NaturaUtil;
 import crazypants.enderio.integration.techreborn.TechRebornUtil;
@@ -73,6 +77,10 @@ public final class FarmersRegistry {
     BoPUtil.addBoP();
     BotanyUtil.addBotany();
     TicUtil.addTic();
+    MetallurgyUtil.addMetallurgy();
+    GardencoreUtil.addGardencore();
+    MagicalcropsUtil.addMagicalcrops();
+    ActuallyadditionsUtil.addActuallyadditions();
 
     FarmersCommune.joinCommune(new FlowerPicker(FLOWERS));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));

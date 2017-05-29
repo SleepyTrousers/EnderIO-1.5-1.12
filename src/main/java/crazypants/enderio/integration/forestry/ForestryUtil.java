@@ -3,6 +3,9 @@ package crazypants.enderio.integration.forestry;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.fertilizer.Bonemeal;
+import crazypants.enderio.farming.fertilizer.Fertilizer;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import net.minecraftforge.fml.common.Loader;
 
@@ -14,9 +17,10 @@ public class ForestryUtil {
   public static void addForestry() {
     if (Loader.isModLoaded("forestry")) {
       ForestryFarmer.init();
-      Log.info("Farming Station: Forestry fully loaded");
+      Fertilizer.registerFertilizer(new Bonemeal(FarmersRegistry.findItem("forestry", "fertilizer_compound")));
+      Log.info("Farming Station: Forestry integration fully loaded");
     } else {
-      Log.info("Farming Station: Forestry not loaded");
+      Log.info("Farming Station: Forestry integration not loaded");
     }
   }
 
