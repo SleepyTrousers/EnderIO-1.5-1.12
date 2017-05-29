@@ -15,7 +15,7 @@ public class ExU2Util {
     CustomSeedFarmer farmer = FarmersRegistry.addSeed("extrautils2", "enderlilly", "enderlilly");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
-      farmer.setRequiresFarmland(false); // disables tilling
+      farmer.setRequiresTilling(false); // disables tilling
       farmer.setCheckGroundForFarmland(true); // extra check needed when not tilling
       farmer.clearTilledBlocks(); // remove farmland
       farmer.addTilledBlock(Blocks.DIRT);
@@ -26,7 +26,7 @@ public class ExU2Util {
     farmer = FarmersRegistry.addSeed("extrautils2", "redorchid", "redorchid");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
-      farmer.setRequiresFarmland(false); // disables tilling
+      farmer.setRequiresTilling(false); // disables tilling
       farmer.setCheckGroundForFarmland(true); // extra check needed when not tilling
       farmer.clearTilledBlocks(); // remove farmland
       farmer.addTilledBlock(Blocks.REDSTONE_ORE);

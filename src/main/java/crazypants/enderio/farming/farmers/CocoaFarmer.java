@@ -27,7 +27,7 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 public class CocoaFarmer extends CustomSeedFarmer {
   public CocoaFarmer() {
     super(Blocks.COCOA, new ItemStack(Items.DYE, 1, 3));
-    this.requiresFarmland = false;
+    this.requiresTilling = false;
     if (!Config.farmHarvestJungleWhenCocoa) {
       this.disableTreeFarm = true;
     }

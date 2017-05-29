@@ -23,6 +23,9 @@ public interface IFarmer {
   World getWorld();
 
   @Nonnull
+  BlockPos getLocation();
+
+  @Nonnull
   ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos);
 
   boolean hasTool(@Nonnull FarmingTool tool);
@@ -99,5 +102,9 @@ public interface IFarmer {
   boolean hasSeed(@Nonnull ItemStack seeds, @Nonnull BlockPos pos);
 
   boolean tillBlock(@Nonnull BlockPos pos);
+
+  int isLowOnSaplings(@Nonnull BlockPos pos);
+
+  boolean isSlotLocked(@Nonnull BlockPos pos);
 
 }

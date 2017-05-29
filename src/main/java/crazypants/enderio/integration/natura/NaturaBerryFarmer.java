@@ -17,7 +17,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
 
   public NaturaBerryFarmer(@Nonnull Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, @Nonnull ItemStack seeds) {
     super(plantedBlock, plantedBlockMeta, grownBlockMeta, seeds);
-    checkGroundForFarmland = requiresFarmland = false;
+    checkGroundForFarmland = requiresTilling = false;
   }
 
   @Override

@@ -12,7 +12,7 @@ public class ManaBeanFarmer extends CustomSeedFarmer {
 
   public ManaBeanFarmer(Block block, ItemStack stack) {
     super(block, stack);
-    this.requiresFarmland = false;
+    this.requiresTilling = false;
   }
 
   @Override

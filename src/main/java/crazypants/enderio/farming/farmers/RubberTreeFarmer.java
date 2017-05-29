@@ -1,12 +1,16 @@
 package crazypants.enderio.farming.farmers;
 
-import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.farming.FarmNotification;
 import crazypants.enderio.farming.FarmersRegistry;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
 import crazypants.enderio.farming.IFarmer;
-import crazypants.enderio.farming.IFarmer.ToolType;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -16,31 +20,30 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
 
 public abstract class RubberTreeFarmer extends TreeFarmer {
 
-  protected ItemStack stickyResin;
+  protected final @Nonnull ItemStack stickyResin;
 
-  public RubberTreeFarmer(Block sapling, Block wood, Item treetap, ItemStack resin) {
+  public RubberTreeFarmer(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
     super(sapling, wood);
-    IFarmer.TREETAPS.add(treetap);
+    FarmingTool.TREETAP.items.add(treetap);
     stickyResin = resin;
     FarmersRegistry.slotItemsProduce.add(stickyResin);
   }
 
   public boolean isValid() {
-    return woods != null && !woods.isEmpty() && sapling != null && Prep.isValid(saplingItem) && Prep.isValid(stickyResin);
+    return !saplings.isEmpty() && !woods.isEmpty() && !FarmingTool.TREETAP.items.isEmpty() && Prep.isValid(stickyResin);
   }
 
   @Override
-  public boolean prepareBlock(IFarmer farm, BlockPos bc, Block blockIn, IBlockState meta) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block blockIn, @Nonnull IBlockState meta) {
     if (canPlant(farm.getSeedTypeInSuppliesFor(bc))) {
       // we'll lose some spots in the center, but we can plant in the outer ring, which gives a net gain
-      if (Math.abs(farm.getPos().getX() - bc.getX()) % 2 == 0) {
+      if (Math.abs(farm.getLocation().getX() - bc.getX()) % 2 == 0) {
         return true;
       }
-      if (Math.abs(farm.getPos().getZ() - bc.getZ()) % 2 == 0) {
+      if (Math.abs(farm.getLocation().getZ() - bc.getZ()) % 2 == 0) {
         return true;
       }
       final World world = farm.getWorld();
@@ -60,29 +63,26 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public IHarvestResult harvestBlock(IFarmer farm, BlockPos pos, Block block, IBlockState meta) {
-    HarvestResult res = new HarvestResult();
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull BlockPos pos, @Nonnull Block block, @Nonnull IBlockState meta) {
+    final HarvestResult res = new HarvestResult();
     final World world = farm.getWorld();
 
-    int noShearingPercentage = farm.isLowOnSaplings(pos);
-    int shearCount = 0;
+    setupHarvesting(farm, pos);
 
     while (pos.getY() <= 255) {
       IBlockState state = world.getBlockState(pos);
       if (isWood(state.getBlock())) {
         if (canHarvest(world, pos)) {
-          if (farm.hasTool(ToolType.TREETAP)) {
+          if (farm.hasTool(FarmingTool.TREETAP)) {
             harvest(res, world, pos);
-            farm.damageTool(ToolType.TREETAP, woods.getBlocks().get(0), pos, 1);
+            farm.registerAction(FarmingAction.HARVEST, FarmingTool.TREETAP, state, pos);
           } else {
             farm.setNotification(FarmNotification.NO_TREETAP);
           }
         }
-        for (EnumFacing face : EnumFacing.Plane.HORIZONTAL) {
-          shearCount = harvestLeavesBlock(farm, res, world, pos.offset(face), noShearingPercentage, shearCount);
-        }
+        harvestLeavesAround(farm, world, res, pos);
       } else if (TreeHarvestUtil.isLeaves(state)) {
-        shearCount = harvestLeavesBlock(farm, res, world, pos, noShearingPercentage, shearCount);
+        harvestLeavesBlock(farm, res, world, pos);
       } else {
         return res;
       }
@@ -91,38 +91,29 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     return res;
   }
 
-  private int harvestLeavesBlock(IFarmer farm, HarvestResult res, final World world, final BlockPos pos, int noShearingPercentage, int shearCount) {
+  private void harvestLeavesBlock(@Nonnull final IFarmer farm, @Nonnull final HarvestResult res, final @Nonnull World world, final @Nonnull BlockPos pos) {
     IBlockState state = world.getBlockState(pos);
     if (TreeHarvestUtil.isLeaves(state)) {
-      List<ItemStack> drops;
-      if (state.getBlock() instanceof IShearable && farm.hasShears() && ((shearCount / (res.harvestedBlocks.size() + 1) + noShearingPercentage) < 100)) {
-        drops = ((IShearable) state.getBlock()).onSheared(null, farm.getWorld(), pos, 0);
-        shearCount += 100;
-        farm.damageShears(state.getBlock(), pos);
-      } else if (farm.hasHoe()) {
-        drops = state.getBlock().getDrops(farm.getWorld(), pos, state, farm.getAxeLootingValue());
-        farm.damageHoe(1, pos);
-      } else {
-        return shearCount;
-      }
-      world.setBlockToAir(pos);
-      for (ItemStack drop : drops) {
-        EntityItem dropEnt = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, drop);
-        res.getDrops().add(dropEnt);
-      }
+      harvestSingleBlock(farm, world, res, pos);
       res.getHarvestedBlocks().add(pos);
-      for (EnumFacing face : EnumFacing.Plane.HORIZONTAL) {
-        shearCount = harvestLeavesBlock(farm, res, world, pos.offset(face), noShearingPercentage, shearCount);
-      }
+      harvestLeavesAround(farm, world, res, pos);
     }
-    return shearCount;
   }
 
-  private boolean canHarvest(World world, BlockPos pos) {
+  void harvestLeavesAround(final @Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult res, final @Nonnull BlockPos pos) {
+    NNList.FACING_HORIZONTAL.apply(new NNList.Callback<EnumFacing>() {
+      @Override
+      public void apply(@Nonnull EnumFacing face) {
+        harvestLeavesBlock(farm, res, world, pos.offset(face));
+      }
+    });
+  }
+
+  private boolean canHarvest(@Nonnull World world, @Nonnull BlockPos pos) {
     return hasResin(world.getBlockState(pos));
   }
 
-  private void harvest(HarvestResult res, World world, BlockPos pos) {
+  private void harvest(@Nonnull HarvestResult res, @Nonnull World world, @Nonnull BlockPos pos) {
     world.setBlockState(pos, removeResin(world.getBlockState(pos)), 3);
     ItemStack drop = makeResin(world.rand);
     EntityItem dropEnt = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, drop);
@@ -130,12 +121,12 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     res.getHarvestedBlocks().add(pos);
   }
 
-  protected ItemStack makeResin(Random rand) {
+  protected @Nonnull ItemStack makeResin(@Nonnull Random rand) {
     return stickyResin.copy();
   }
 
-  protected abstract boolean hasResin(IBlockState state);
+  protected abstract boolean hasResin(@Nonnull IBlockState state);
 
-  protected abstract IBlockState removeResin(IBlockState state);
+  protected abstract @Nonnull IBlockState removeResin(@Nonnull IBlockState state);
 
 }

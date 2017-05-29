@@ -11,8 +11,6 @@ import crazypants.enderio.farming.farmers.CustomSeedFarmer;
 import crazypants.enderio.farming.farmers.FarmersCommune;
 import crazypants.enderio.farming.farmers.FlowerPicker;
 import crazypants.enderio.farming.farmers.MelonFarmer;
-import crazypants.enderio.farming.farmers.NetherWartFarmer;
-import crazypants.enderio.farming.farmers.OredictTreeFarmer;
 import crazypants.enderio.farming.farmers.PickableFarmer;
 import crazypants.enderio.farming.farmers.PlantableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
@@ -85,14 +83,14 @@ public final class FarmersRegistry {
     FarmersCommune.joinCommune(new FlowerPicker(FLOWERS));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
-    FarmersCommune.joinCommune(new OredictTreeFarmer(SAPLINGS, WOODS));
+    FarmersCommune.joinCommune(new TreeFarmer(SAPLINGS, WOODS));
     FarmersCommune.joinCommune(new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK));
     FarmersCommune.joinCommune(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK));
     // special case of plantables to get spacing correct
     FarmersCommune.joinCommune(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)));
     FarmersCommune.joinCommune(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)));
     // 'BlockNetherWart' is not an IGrowable
-    FarmersCommune.joinCommune(new NetherWartFarmer());
+    FarmersCommune.joinCommune(new CustomSeedFarmer(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART)).setRequiresTilling(false));
     // Cocoa is odd
     FarmersCommune.joinCommune(new CocoaFarmer());
     // Chorus plant is even odder

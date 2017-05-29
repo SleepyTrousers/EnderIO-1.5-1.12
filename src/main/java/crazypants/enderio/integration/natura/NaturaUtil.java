@@ -51,7 +51,7 @@ public class NaturaUtil {
       if (berryBlock != null && berryItem != null) {
         FarmersRegistry.DEFAULT_FARMER.addHarvestExlude(berryBlock);
         PickableFarmer farmer = new NaturaBerryFarmer(berryBlock, 0, 3, new ItemStack(berryItem, 1, 0));
-        farmer.setRequiresFarmland(false);
+        farmer.setRequiresTilling(false);
         FarmersCommune.joinCommune(farmer);
         TreeHarvestUtil.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
         count++;

@@ -32,9 +32,9 @@ public class CustomSeedFarmer implements IFarmerJoe {
   protected final int plantedBlockMeta;
   protected final int grownBlockMeta;
   protected final @Nonnull ItemStack seeds;
-  protected boolean requiresFarmland = true;
   protected @Nonnull Things tilledBlocks = new Things();
   protected boolean ignoreSustainCheck = false;
+  protected boolean requiresTilling = true;
   protected boolean checkGroundForFarmland = false;
   protected boolean disableTreeFarm;
 
@@ -71,16 +71,18 @@ public class CustomSeedFarmer implements IFarmerJoe {
     return ignoreSustainCheck;
   }
 
-  public void setIgnoreGroundCanSustainCheck(boolean ignoreSustainCheck) {
+  public @Nonnull CustomSeedFarmer setIgnoreGroundCanSustainCheck(boolean ignoreSustainCheck) {
     this.ignoreSustainCheck = ignoreSustainCheck;
+    return this;
   }
 
   public boolean isCheckGroundForFarmland() {
     return checkGroundForFarmland;
   }
 
-  public void setCheckGroundForFarmland(boolean checkGroundForFarmland) {
+  public @Nonnull CustomSeedFarmer setCheckGroundForFarmland(boolean checkGroundForFarmland) {
     this.checkGroundForFarmland = checkGroundForFarmland;
+    return this;
   }
 
   public int getPlantedBlockMeta() {
@@ -115,18 +117,19 @@ public class CustomSeedFarmer implements IFarmerJoe {
     if (!farm.hasSeed(getSeeds(), bc)) {
       return false;
     }
-    if (requiresFarmland() && !isGroundTilled(farm, bc) && !farm.tillBlock(bc)) {
+    if (requiresTilling() && !isGroundTilled(farm, bc) && !farm.tillBlock(bc)) {
       return false;
     }
     return plantFromInventory(farm, bc);
   }
 
-  public boolean requiresFarmland() {
-    return requiresFarmland;
+  public boolean requiresTilling() {
+    return requiresTilling;
   }
 
-  public void setRequiresFarmland(boolean requiresFarmland) {
-    this.requiresFarmland = requiresFarmland;
+  public @Nonnull CustomSeedFarmer setRequiresTilling(boolean requiresFarmland) {
+    this.requiresTilling = requiresFarmland;
+    return this;
   }
 
   protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc) {
@@ -154,7 +157,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     final NNList<EntityItem> result = new NNList<EntityItem>();
 
     List<ItemStack> drops = block.getDrops(world, pos, state, fortune);
-    float chance = ForgeEventFactory.fireBlockHarvesting(drops, world, pos, state, fortune, 1.0F, false, joe);
+    float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, pos, state, fortune, 1.0F, false, joe);
     farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     boolean removed = false;
     for (ItemStack stack : drops) {
@@ -201,7 +204,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     Block ground = bs.getBlock();
     IPlantable plantable = (IPlantable) getPlantedBlock();
     if (target.canPlaceBlockAt(world, bc) && (ground.canSustainPlant(bs, world, groundPos, EnumFacing.UP, plantable) || ignoreSustainCheck)
-        && (!checkGroundForFarmland || isGroundTilled(farm, bc))) {
+        && (!isCheckGroundForFarmland() || isGroundTilled(farm, bc))) {
       return true;
     }
     return false;
