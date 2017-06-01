@@ -3,6 +3,7 @@ package crazypants.enderio.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import net.minecraft.item.ItemStack;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
@@ -22,7 +23,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       return RecipeBonusType.NONE;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
-    return recipe == null ? RecipeBonusType.NONE : recipe.getBonusType();
+    if (recipe == null) {
+      return RecipeBonusType.NONE;
+    } else {
+      return recipe.getBonusType().withoutMultiply(SagMillRecipeManager.getInstance().isExcludedFromBallBonus(inputs));
+    }
   }
 
   public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);

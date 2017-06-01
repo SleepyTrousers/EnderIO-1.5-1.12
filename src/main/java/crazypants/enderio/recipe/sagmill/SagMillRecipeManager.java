@@ -40,8 +40,6 @@ public class SagMillRecipeManager {
 
   private final List<Recipe> recipes = new ArrayList<Recipe>();
 
-  private final List<RecipeInput> ballExcludes = new ArrayList<RecipeInput>();
-
   private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
 
   private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
@@ -72,12 +70,6 @@ public class SagMillRecipeManager {
             }
           }
         }
-      }
-    }
-    for (RecipeInput input : ballExcludes) {
-      if (input != null && input.isInput(inputs[0].item)) {
-        addExcludedStack(inputs[0].item);
-        return true;
       }
     }
 
@@ -119,9 +111,7 @@ public class SagMillRecipeManager {
     GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, th);
     balls.addAll(th.balls.values());
-    ballExcludes.addAll(th.excludes);
     Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
-    Log.info("Excluding " + ballExcludes.size() + " recipes from grinding balls bonus.");
     if (config != null) {
       processConfig(config);
     } else {
@@ -141,7 +131,6 @@ public class SagMillRecipeManager {
     }
 
     balls.addAll(th.balls.values());
-    ballExcludes.addAll(th.excludes);
     if (config == null) {
       Log.error("Could not process custom XML");
       return;

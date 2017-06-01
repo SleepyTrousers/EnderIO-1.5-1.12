@@ -5,7 +5,7 @@
   organized into named groups. A group of recipes can be disabled by setting the attribute 'enabled=false'. A recipe
   group is composed of one or more recipes.
 
- NB: All recipes MUST belong to a group.
+ <blink>NB: All recipes MUST belong to a group!!!</blink>
 
   Examples:
 
@@ -48,7 +48,7 @@
   - 'modID' is the identifier registered by the mod with Forge (for example vanilla blocks use 'minecraft' while Ender IO
   is 'EnderIO'). This value can be found in the details panel of Forge's 'mods' UI.
   - 'itemName' the name used to register the block/item with forge. To write all registered items to
-  config/modObjectsRegistery.txt include: <dumpRegistry modObjects="true/>
+  config/modObjectsRegistery.txt include: <dumpRegistry modObjects="true" />
   - 'oreDictionary' will use the OreDictionary to find the appropriate itemStack. The first entry returned by the
   dictionary will be used. To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt include
   <dumpRegistery oreDictionary="true" />
@@ -92,9 +92,21 @@
 
  Grinding Balls:
   Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and
-  existing ones removed. It is also possible to add or remove items from the 'excludes' list. Items on this list will not
-  have grinding ball bonuses applied and will not reduce the durability of an balls in the mill at the time they are
-  processed.
+  existing ones removed.
+  
+  Use of the grinding ball is restricted by the bonusType of the recipe. If it is set to "none", it will not have any grinding
+  ball bonuses applied and will not reduce the durability of any balls in the mill at the time it is  processed. If it is set
+  to "chance_only", the chance and power multipliers of the grinding balls are applied, but not the grinding multiplier. If it
+  is set to "multiply_output" (default), all multipliers apply.
+  
+  - grindingMultiplier: The recipe output will be produced this many times. e.g. "3.14" would produce 3 copies of the complete
+                        output set and a 14% chance for a forth copy.
+  - chanceMultiplier:   The chances for the different outputs of the recipe are multiplied with this. e.g. if a recipe specifies
+                        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" /> a chanceMultiplier of "3.14" would
+                        make it a 47.1% chance of getting one cobblestone. Results of more than 100% do no give multiples.
+  - powerMultiplier:    The "energyCost" of the recipe is multiplied with this.
+  - durationRF:         This specifies how long one grinding ball will last before it is used up. The unit is the amount of
+                        power used by the SAG Mill.
 
   Examples:
 
@@ -112,14 +124,10 @@
     <grindingBall id="Flint" remove="true" />
   </grindingBalls>
 
-  - Modifiying the excludes list: (removing glowstone, adding sand)
+  - Migrating from an excludes list:
 
-  <grindingBalls>
-    <excludes>
-      <itemStack modID="minecraft" itemName="glowstone" remove="true" />
-      <itemStack modID="minecraft" itemName="sand" />
-    </excludes>
-  </grindingBalls>
+  If you were using grinding ball excludes before, replace them with bonusType="none" (same effect as the old exclude) or
+  bonusType="chance_only" (what you usually want if your recipe has chances) on the recipe.
 
  Item Information and data dumps:
 
@@ -221,7 +229,7 @@
         <itemStack oreDictionary="dustGold" number="1" />
       </output>
     </recipe>
-    <recipe name="EnderPearl" energyCost="1600" >
+    <recipe name="EnderPearl" energyCost="1600" bonusType="none" >
       <input>
         <itemStack modID="minecraft" itemName="ender_pearl" />
       </input>
@@ -310,7 +318,7 @@
         <itemStack oreDictionary="itemFlint" chance="0.05" />
       </output>
     </recipe>
-    <recipe name="Sandstone" energyCost="2400" >
+    <recipe name="Sandstone" energyCost="2400" bonusType="chance_only" >
       <input>
         <itemStack oreDictionary="sandstone" />
       </input>
@@ -355,7 +363,7 @@
         <itemStack oreDictionary="dustSulfur" chance="0.5" />
       </output>
     </recipe>
-    <recipe name="GlowStone" energyCost="2400" >
+    <recipe name="GlowStone" energyCost="2400" bonusType="chance_only" >
       <input>
         <itemStack modID="minecraft" itemName="glowstone" />
       </input>
@@ -385,7 +393,7 @@
     </recipe>
     <recipe name="Wool" energyCost="1200" >
       <input>
-        <itemStack modID="minecraft" itemName="wool" itemMeta="*" />
+        <itemStack modID="minecraft" itemName="wool" itemMeta="*" bonusType="chance_only" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="string" number="3" />
@@ -452,7 +460,7 @@
         <itemStack oreDictionary="dustNetherQuartz" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="Block of Quartz" energyCost="2400" >
+    <recipe name="Block of Quartz" energyCost="2400" bonusType="chance_only" >
       <input>
         <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
       </input>
@@ -461,7 +469,7 @@
         <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="Quartz Stairs" energyCost="1200" >
+    <recipe name="Quartz Stairs" energyCost="1200" bonusType="chance_only" >
       <input>
         <itemStack modID="minecraft" itemName="quartz_stairs" />
       </input>
@@ -470,7 +478,7 @@
         <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
-    <recipe name="Quartz Slab" energyCost="1200" >
+    <recipe name="Quartz Slab" energyCost="1200" bonusType="chance_only" >
       <input>
         <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
       </input>
@@ -859,7 +867,7 @@
         <itemStack oreDictionary="dustCertusQuartz" chance="0.1" />
       </output>
     </recipe>
-    <recipe name="CertusQuartzCrystal" energyCost="800" >
+    <recipe name="CertusQuartzCrystal" energyCost="800" bonusType="none" >
       <input>
         <itemStack oreDictionary="crystalCertusQuartz" />
       </input>
@@ -875,7 +883,7 @@
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
-    <recipe name="FluixCrystal" energyCost="800" >
+    <recipe name="FluixCrystal" energyCost="800" bonusType="none" >
       <input>
         <itemStack oreDictionary="crystalFluix" />
       </input>
@@ -883,7 +891,7 @@
         <itemStack oreDictionary="dustFluix" />
       </output>
     </recipe>
-    <recipe name="NetherQuartz" energyCost="800" >
+    <recipe name="NetherQuartz" energyCost="800" bonusType="none" >
       <input>
         <itemStack modID="minecraft" itemName="quartz" />
       </input>
@@ -3470,20 +3478,6 @@
     <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000" >
       <itemStack oreDictionary="itemDarkGrindingBall" />
     </grindingBall>
-
-    <excludes>
-      <itemStack modID="minecraft" itemName="glowstone" />
-      <itemStack modID="minecraft" itemName="wool" itemMeta="*" />
-      <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
-      <itemStack modID="minecraft" itemName="quartz_stairs" />
-      <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
-      <itemStack modID="minecraft" itemName="quartz" />
-      <itemStack modID="minecraft" itemName="ender_pearl" />
-      <itemStack oreDictionary="sandstone" />
-      <itemStack oreDictionary="crystalCertusQuartz" />
-      <itemStack oreDictionary="crystalFluix" />
-      <itemStack oreDictionary="enderpearl" />
-    </excludes>
   </grindingBalls>
 
 </SAGMillRecipes>
