@@ -29,7 +29,6 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   protected int maxGbUse = 0;
 
   protected int lastSendGbScaled = 0;
-  private boolean useGrindingBall;
 
   public TileSagMill() {
     super(new SlotDefinition(2, 4), CapacitorKey.SAG_MILL_POWER_INTAKE, CapacitorKey.SAG_MILL_POWER_BUFFER, CapacitorKey.SAG_MILL_POWER_USE);
@@ -62,33 +61,35 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     double res = super.usePower();
     boolean sendGB = false;
 
-    if (gb != null && useGrindingBall) {
-      currGbUse += res;
+    if (currentTask != null && currentTask.getBonusType().useBalls()) {
+      if (gb != null) {
+        currGbUse += res;
 
-      if (currGbUse >= gb.getDurationMJ()) {
-        currGbUse = 0;
-        maxGbUse = 0;
-        gb = null;
-        sendGB = true;
-      } else {
-        int newScaled = getBallDurationScaled(16);
-        if (newScaled != lastSendGbScaled) {
+        if (currGbUse >= gb.getDurationMJ()) {
+          currGbUse = 0;
+          maxGbUse = 0;
+          gb = null;
           sendGB = true;
+        } else {
+          int newScaled = getBallDurationScaled(16);
+          if (newScaled != lastSendGbScaled) {
+            sendGB = true;
+          }
         }
       }
-    }
-    if (gb == null) {
-      gb = SagMillRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
-      if (gb != null) {
-        maxGbUse = gb.getDurationMJ();
-        decrStackSize(1, 1);
-        markDirty();
-        sendGB = false; // the tile update will also sync the grinding ball
+      if (gb == null) {
+        gb = SagMillRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
+        if (gb != null) {
+          maxGbUse = gb.getDurationMJ();
+          decrStackSize(1, 1);
+          markDirty();
+          sendGB = false; // the tile update will also sync the grinding ball
+        }
       }
-    }
-    if (sendGB) {
-      PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
-      lastSendGbScaled = getBallDurationScaled(16);
+      if (sendGB) {
+        PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
+        lastSendGbScaled = getBallDurationScaled(16);
+      }
     }
     return res;
   }
@@ -98,8 +99,8 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     IPoweredTask ct = currentTask;
     super.taskComplete();
     // run it again if the ball says so
-    if (gb != null && useGrindingBall && ct != null) {
-      if (ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
+    if (gb != null && ct != null) {
+      if (ct.getBonusType().doMultiply()) {
         float chance = random.nextFloat();
         float mul = gb.getGrindingMultiplier() - 1;
         while (mul > 0) {
@@ -116,10 +117,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   @Override
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
-    useGrindingBall = false;
     if (gb != null) {
-      useGrindingBall = !SagMillRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
-      if (useGrindingBall) {
+      RecipeBonusType bonusType = nextRecipe.getBonusType(getRecipeInputs());
+      if (bonusType.doChances()) {
         res = new PoweredTask(nextRecipe, chance / gb.getChanceMultiplier(), getRecipeInputs());
         res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
       } else {
