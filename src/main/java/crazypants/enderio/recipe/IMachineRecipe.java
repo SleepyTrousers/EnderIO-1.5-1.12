@@ -105,7 +105,7 @@ public interface IMachineRecipe {
    * @return
    */
   @Nonnull
-  List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput... inputs);
+  List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs);
 
   public static class ResultStack {
 

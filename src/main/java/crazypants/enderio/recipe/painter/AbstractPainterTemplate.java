@@ -77,7 +77,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput... inputs) {
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
     MachineRecipeInput consume = null;
     for (MachineRecipeInput input : inputs) {
       if (input != null && input.slotNumber == 0 && Prep.isValid(input.item)) {

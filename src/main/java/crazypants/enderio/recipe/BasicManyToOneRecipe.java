@@ -1,43 +1,43 @@
 package crazypants.enderio.recipe;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   private final int energyRequired;
-  private final ItemStack output;
+  private final @Nonnull ItemStack output;
 
-  private final RecipeBonusType bonusType;
+  private final @Nonnull RecipeBonusType bonusType;
 
-  private final Recipe recipe;
+  private final @Nonnull Recipe recipe;
 
-  public BasicManyToOneRecipe(Recipe recipe) {
+  public BasicManyToOneRecipe(@Nonnull Recipe recipe) {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
     energyRequired = recipe.getEnergyRequired();
-    bonusType = recipe.getBonusType();    
+    bonusType = recipe.getBonusType();
   }
 
   @Override
   public boolean isValidRecipeComponents(ItemStack... items) {
 
-    List<RecipeInput> inputs = new ArrayList<RecipeInput>(Arrays.asList(recipe.getInputs()));
+    NNList<RecipeInput> inputs = new NNList<RecipeInput>(recipe.getInputs());
     for (ItemStack is : items) {
-      if(is != null) {
+      if (is != null && Prep.isValid(is)) {
         RecipeInput remove = null;
         for (RecipeInput ri : inputs) {
-          if(ri.isInput(is)) {
+          if (ri.isInput(is)) {
             remove = ri;
             break;
           }
         }
-        if(remove != null) {
+        if (remove != null) {
           inputs.remove(remove);
         } else {
           return false;
@@ -48,26 +48,26 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public ItemStack getOutput() {
+  public @Nonnull ItemStack getOutput() {
     return output;
   }
 
   @Override
-  public boolean isValidInput(int slot, ItemStack input) {
-    if(input == null) {
+  public boolean isValidInput(int slot, @Nonnull ItemStack input) {
+    if (Prep.isInvalid(input)) {
       return false;
     }
     return getRecipeComponentFromInput(input) != null;
   }
 
   @Override
-  public boolean isValidInput(FluidStack fluid) {
+  public boolean isValidInput(@Nonnull FluidStack fluid) {
     return false;
   }
 
   @Override
   public boolean isValid() {
-    return recipe != null && recipe.isValid();
+    return recipe.isValid();
   }
 
   @Override
@@ -76,7 +76,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public RecipeBonusType getBonusType() {
+  public @Nonnull RecipeBonusType getBonusType() {
     return bonusType;
   }
 
@@ -86,13 +86,13 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public List<ItemStack> getInputStacks() {
+  public @Nonnull NNList<ItemStack> getInputStacks() {
     return recipe.getInputStacks();
   }
 
   @Override
   public boolean isInputForRecipe(MachineRecipeInput... inputs) {
-    if(inputs == null) {
+    if (inputs == null) {
       return false;
     }
     return recipe.isInputForRecipe(inputs);
@@ -104,16 +104,16 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public List<FluidStack> getInputFluidStacks() {
-    return Collections.emptyList();
+  public NNList<FluidStack> getInputFluidStacks() {
+    return NNList.emptyList();
   }
-  
-  private ItemStack getRecipeComponentFromInput(ItemStack input) {
-    if(input == null) {
+
+  private ItemStack getRecipeComponentFromInput(@Nonnull ItemStack input) {
+    if (Prep.isInvalid(input)) {
       return null;
     }
     for (RecipeInput ri : recipe.getInputs()) {
-      if(ri.isInput(input)) {
+      if (ri.isInput(input)) {
         return ri.getInput();
       }
     }
@@ -121,7 +121,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public List<List<ItemStack>> getInputStackAlternatives() {
+  public NNList<NNList<ItemStack>> getInputStackAlternatives() {
     return recipe.getInputStackAlternatives();
   }
 
@@ -129,5 +129,5 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   public String toString() {
     return "BasicManyToOneRecipe [output=" + output + ", recipe=" + recipe + "]";
   }
-  
+
 }

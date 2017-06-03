@@ -3,14 +3,21 @@ package crazypants.enderio.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
-    if(inputs == null || inputs.length <= 0) {
+    if (inputs == null || inputs.length <= 0) {
       return 0;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -18,8 +25,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
-    if(inputs == null || inputs.length <= 0) {
+  public @Nonnull RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    if (inputs == null || inputs.length <= 0) {
       return RecipeBonusType.NONE;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -30,14 +37,14 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     }
   }
 
-  public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);
+  public abstract IRecipe getRecipeForInputs(@Nonnull MachineRecipeInput[] inputs);
 
   @Override
-  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+  public @Nonnull List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull MachineRecipeInput... inputs) {
     IRecipe recipe = getRecipeForInputs(inputs);
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
 
-    //Need to make copies so we can reduce their values as we go
+    // Need to make copies so we can reduce their values as we go
     MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.length];
     int i = 0;
     for (MachineRecipeInput available : inputs) {
@@ -51,11 +58,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       ++i;
     }
 
-    //For each input required by the recipe got through the available machine inputs and consume them
+    // For each input required by the recipe got through the available machine inputs and consume them
     for (RecipeInput required : requiredIngredients) {
       for (MachineRecipeInput available : availableInputs) {
-        if(isValid(available)) {
-          if(consume(required, available, result)) {
+        if (required != null && available != null && isValid(available)) {
+          if (consume(required, available, result)) {
             break;
           }
         }
@@ -64,29 +71,28 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return result;
   }
 
-  protected boolean consume(RecipeInput required, MachineRecipeInput available, List<MachineRecipeInput> consumedInputs) {
+  protected boolean consume(@Nonnull RecipeInput required, @Nonnull MachineRecipeInput available, @Nonnull List<MachineRecipeInput> consumedInputs) {
 
-    if(required.isInput(available.fluid)) {
+    if (required.isInput(available.fluid)) {
       consumedInputs.add(new MachineRecipeInput(available.slotNumber, required.getFluidInput().copy()));
       return true;
     }
 
-
-    if(required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
+    if (required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
 
       ItemStack availableStack = available.item;
       ItemStack requiredStack = required.getInput();
 
       ItemStack consumedStack = requiredStack.copy();
-      consumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
+      consumedStack.setCount(Math.min(requiredStack.getCount(), availableStack.getCount()));
 
-      requiredStack.stackSize -= consumedStack.stackSize;
-      availableStack.stackSize -= consumedStack.stackSize;
+      requiredStack.shrink(consumedStack.getCount());
+      availableStack.shrink(consumedStack.getCount());
 
       consumedInputs.add(new MachineRecipeInput(available.slotNumber, consumedStack));
 
-      if(requiredStack.stackSize <= 0) {
-        //Fully met the requirement
+      if (Prep.isInvalid(requiredStack)) {
+        // Fully met the requirement
         return true;
       }
 
@@ -94,24 +100,21 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     return false;
   }
 
-  protected boolean isValid(MachineRecipeInput input) {
-    if(input == null) {
-      return false;
-    }
-    if(input.item != null && input.item.stackSize > 0) {
+  protected boolean isValid(@Nonnull MachineRecipeInput input) {
+    if (Prep.isValid(input.item)) {
       return true;
     }
     return input.fluid != null && input.fluid.amount > 0;
   }
 
   @Override
-  public float getExperienceForOutput(ItemStack output) {
+  public float getExperienceForOutput(@Nonnull ItemStack output) {
     return 0;
   }
 
   @Override
   public boolean isRecipe(MachineRecipeInput... inputs) {
-    if(inputs == null || inputs.length <= 0) {
+    if (inputs == null || inputs.length <= 0) {
       return false;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -119,29 +122,30 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    if(inputs == null || inputs.length <= 0) {
+  public @Nonnull ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+    if (inputs == null || inputs.length <= 0) {
       return new ResultStack[0];
     }
     IRecipe recipe = getRecipeForInputs(inputs);
-    if(recipe == null) {
+    if (recipe == null) {
       return new ResultStack[0];
     }
     RecipeOutput[] outputs = recipe.getOutputs();
-    if(outputs == null) {
+    if (outputs == null) {
       return new ResultStack[0];
     }
-    List<ResultStack> result = new ArrayList<ResultStack>();
+    NNList<ResultStack> result = new NNList<ResultStack>();
     for (RecipeOutput output : outputs) {
-      if(output.getChance() >= chance) {
-        if(output.isFluid()) {
-          result.add(new ResultStack(output.getFluidOutput().copy()));
+      if (output.getChance() >= chance) {
+        final FluidStack fluidOutput = output.getFluidOutput();
+        if (output.isFluid() && fluidOutput != null) {
+          result.add(new ResultStack(NullHelper.notnullF(fluidOutput.copy(), "FluidStack.copy()")));
         } else {
           result.add(new ResultStack(output.getOutput().copy()));
         }
       }
     }
-    return result.toArray(new ResultStack[result.size()]);
+    return result.toArray();
 
   }
 

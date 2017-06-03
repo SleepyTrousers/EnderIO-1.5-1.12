@@ -2,6 +2,7 @@ package crazypants.enderio.recipe;
 
 import javax.annotation.Nonnull;
 
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -9,50 +10,50 @@ import net.minecraftforge.oredict.OreDictionary;
 public class RecipeInput {
 
   private final int slot;
-  private final ItemStack input;
+  private final @Nonnull ItemStack input;
   private final boolean useMeta;
 
   private final FluidStack fluid;
 
   private final float multiplier;
 
-  public RecipeInput(ItemStack input) {
+  public RecipeInput(@Nonnull ItemStack input) {
     this(input, true);
   }
 
-  public RecipeInput(ItemStack input, boolean useMeta) {
+  public RecipeInput(@Nonnull ItemStack input, boolean useMeta) {
     this(input, useMeta, null, 1, -1);
   }
 
   public RecipeInput(FluidStack fluid) {
-    this(null, false, fluid, 1f, -1);
+    this(Prep.getEmpty(), false, fluid, 1f, -1);
   }
 
   public RecipeInput(FluidStack fluidStack, float mulitplier) {
-    this(null, true, fluidStack, mulitplier, -1);
+    this(Prep.getEmpty(), true, fluidStack, mulitplier, -1);
   }
 
-  public RecipeInput(ItemStack item, boolean useMeta, float multiplier, int slot) {
+  public RecipeInput(@Nonnull ItemStack item, boolean useMeta, float multiplier, int slot) {
     this(item, useMeta, null, multiplier, slot);
   }
 
-  protected RecipeInput(ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier, int slot) {
-    this.input = input == null ? null : input.copy();
+  protected RecipeInput(@Nonnull ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier, int slot) {
+    this.input = input.copy();
     this.useMeta = useMeta;
     this.fluid = fluid == null ? null : fluid.copy();
     this.multiplier = mulitplier;
     this.slot = slot;
   }
 
-  public RecipeInput(RecipeInput copyFrom) {
-    input = copyFrom.input == null ? null : copyFrom.input.copy();
+  public RecipeInput(@Nonnull RecipeInput copyFrom) {
+    input = copyFrom.input.copy();
     fluid = copyFrom.fluid == null ? null : copyFrom.fluid.copy();
     useMeta = copyFrom.useMeta;
     multiplier = copyFrom.multiplier;
     slot = copyFrom.slot;
   }
-  
-  public RecipeInput copy() {
+
+  public @Nonnull RecipeInput copy() {
     return new RecipeInput(this);
   }
 
@@ -76,51 +77,51 @@ public class RecipeInput {
     return slot;
   }
 
-  public boolean isInput(ItemStack test) {
-    if(test == null || input == null) {
+  public boolean isInput(@Nonnull ItemStack test) {
+    if (Prep.isInvalid(test) || Prep.isInvalid(input)) {
       return false;
     }
 
-    if(useMeta) {
+    if (useMeta) {
       return test.getItem() == input.getItem() && test.getItemDamage() == input.getItemDamage();
     }
     return test.getItem() == input.getItem();
   }
 
   public boolean isInput(FluidStack test) {
-    if(test == null || fluid == null) {
+    if (test == null || fluid == null) {
       return false;
     }
     return test.isFluidEqual(fluid);
   }
 
   public ItemStack[] getEquivelentInputs() {
-    if (input == null) {
+    if (Prep.isInvalid(input)) {
       return null;
     } else if (useMeta) {
-      return new ItemStack[] {input};
+      return new ItemStack[] { input };
     } else {
       ItemStack result = input.copy();
       result.setItemDamage(OreDictionary.WILDCARD_VALUE);
-      return new ItemStack[] {result};
+      return new ItemStack[] { result };
     }
   }
 
   @Override
   public String toString() {
-    if(isValid()) {
+    if (isValid()) {
       return "RecipeInput [input=" + input + ", useMeta=" + useMeta + "]";
-    } 
+    }
     return "RecipeInput invalid";
   }
 
   public boolean isValid() {
-    if(isFluid()) {
+    if (isFluid()) {
       return fluid != null && fluid.getFluid() != null;
     } else {
-      return input != null && input.getItem() != null;
+      return Prep.isValid(input);
     }
-    
+
   }
 
 }

@@ -3,6 +3,8 @@ package crazypants.enderio.recipe.sagmill;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -13,17 +15,18 @@ import crazypants.enderio.recipe.RecipeInput;
 
 public class GrindingBallTagHandler implements CustomTagHandler {
 
-  private static final String ELEMENT_ROOT = "grindingBalls";
+  private static final @Nonnull String ELEMENT_ROOT = "grindingBalls";
 
-  private static final String BALL_ROOT = "grindingBall";
+  private static final @Nonnull String BALL_ROOT = "grindingBall";
 
-  private static final String AT_ID = "id";
-  private static final String AT_REMOVE = "remove";
-  private static final String AT_GM = "grindingMultiplier";
-  private static final String AT_PM = "powerMultiplier";
-  private static final String AT_CM = "chanceMultiplier";
-  private static final String AT_DMJ = "durationRF";
+  private static final @Nonnull String AT_ID = "id";
+  private static final @Nonnull String AT_REMOVE = "remove";
+  private static final @Nonnull String AT_GM = "grindingMultiplier";
+  private static final @Nonnull String AT_PM = "powerMultiplier";
+  private static final @Nonnull String AT_CM = "chanceMultiplier";
+  private static final @Nonnull String AT_DMJ = "durationRF";
 
+  @Nonnull
   Map<String, GrindingBall> balls = new HashMap<String, GrindingBall>();
 
   boolean processStack = false;

@@ -6,8 +6,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
+
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,10 +23,10 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
 
   private int durationMJ;
 
-  private static String CM = "grindBall.chanceMultiplier";
-  private static String PM = "grindBall.powerMultiplier";
-  private static String GM = "grindBall.grindingMultiplier";
-  private static String DMJ = "grindBall.durationMJ";
+  private static @Nonnull String CM = "grindBall.chanceMultiplier";
+  private static @Nonnull String PM = "grindBall.powerMultiplier";
+  private static @Nonnull String GM = "grindBall.grindingMultiplier";
+  private static @Nonnull String DMJ = "grindBall.durationMJ";
 
   protected GrindingMultiplierNBT(float chanceMultiplier, float powerMultiplier, float grindingMultiplier, int durationMJ) {
     this.chanceMultiplier = chanceMultiplier;

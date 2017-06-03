@@ -24,7 +24,6 @@ public class MachineRecipeInput {
 
   public final int slotNumber;
   public final @Nonnull ItemStack item;
-
   public final FluidStack fluid;
 
   public MachineRecipeInput(int slotNumber, @Nonnull ItemStack item) {

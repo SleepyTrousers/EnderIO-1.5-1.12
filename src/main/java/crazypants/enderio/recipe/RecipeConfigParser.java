@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.StringReader;
 import java.util.Locale;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -24,6 +25,7 @@ import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.recipe.RecipeConfig.RecipeGroup;
 import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,36 +37,36 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeConfigParser extends DefaultHandler {
 
-  public static final String ELEMENT_RECIPE_GROUP = "recipeGroup";
-  public static final String ELEMENT_RECIPE = "recipe";
-  public static final String ELEMENT_INPUT = "input";
-  public static final String ELEMENT_OUTPUT = "output";
-  public static final String ELEMENT_ITEM_STACK = "itemStack";
-  public static final String ELEMENT_FLUID_STACK = "fluidStack";
-  public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery"; // compat
-  public static final String ELEMENT_DUMP_REGISTRY = "dumpRegistry";
+  public static final @Nonnull String ELEMENT_RECIPE_GROUP = "recipeGroup";
+  public static final @Nonnull String ELEMENT_RECIPE = "recipe";
+  public static final @Nonnull String ELEMENT_INPUT = "input";
+  public static final @Nonnull String ELEMENT_OUTPUT = "output";
+  public static final @Nonnull String ELEMENT_ITEM_STACK = "itemStack";
+  public static final @Nonnull String ELEMENT_FLUID_STACK = "fluidStack";
+  public static final @Nonnull String ELEMENT_DUMP_REGISTERY = "dumpRegistery"; // compat
+  public static final @Nonnull String ELEMENT_DUMP_REGISTRY = "dumpRegistry";
 
-  public static final String AT_NAME = "name";
-  public static final String AT_ENABLED = "enabled";
-  public static final String AT_DUMP_ITEMS = "modObjects";
-  public static final String AT_ORE_DICT = "oreDictionary";
-  public static final String AT_ENERGY_COST = "energyCost";
-  public static final String AT_BONUS_TYPE = "bonusType";
-  public static final String AT_ITEM_META = "itemMeta";
-  public static final String AT_ITEM_NAME = "itemName";
-  public static final String AT_MOD_ID = "modID";
-  public static final String AT_NUMBER = "number";
-  public static final String AT_AMOUNT = "amount";
-  public static final String AT_MULTIPLIER = "multiplier";
-  public static final String AT_SLOT = "slot";
-  public static final String AT_CHANCE = "chance";
-  public static final String AT_EXP = "exp";
-  public static final String AT_ALLOW_MISSING = "allowMissing";
+  public static final @Nonnull String AT_NAME = "name";
+  public static final @Nonnull String AT_ENABLED = "enabled";
+  public static final @Nonnull String AT_DUMP_ITEMS = "modObjects";
+  public static final @Nonnull String AT_ORE_DICT = "oreDictionary";
+  public static final @Nonnull String AT_ENERGY_COST = "energyCost";
+  public static final @Nonnull String AT_BONUS_TYPE = "bonusType";
+  public static final @Nonnull String AT_ITEM_META = "itemMeta";
+  public static final @Nonnull String AT_ITEM_NAME = "itemName";
+  public static final @Nonnull String AT_MOD_ID = "modID";
+  public static final @Nonnull String AT_NUMBER = "number";
+  public static final @Nonnull String AT_AMOUNT = "amount";
+  public static final @Nonnull String AT_MULTIPLIER = "multiplier";
+  public static final @Nonnull String AT_SLOT = "slot";
+  public static final @Nonnull String AT_CHANCE = "chance";
+  public static final @Nonnull String AT_EXP = "exp";
+  public static final @Nonnull String AT_ALLOW_MISSING = "allowMissing";
 
   // Log prefix
-  private static final String LP = "RecipeParser: ";
+  private static final @Nonnull String LP = "RecipeParser: ";
 
-  public static RecipeConfig parse(String str, CustomTagHandler customHandler) throws Exception {
+  public static RecipeConfig parse(@Nonnull String str, CustomTagHandler customHandler) throws Exception {
     StringReader reader = new StringReader(str);
     InputSource is = new InputSource(reader);
     try {
@@ -77,7 +79,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
   }
 
-  public static RecipeConfig parse(File file, CustomTagHandler customHandler) throws Exception {
+  public static RecipeConfig parse(@Nonnull File file, CustomTagHandler customHandler) throws Exception {
     BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
     InputSource is = new InputSource(bis);
     try {
@@ -90,7 +92,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
   }
 
-  public static RecipeConfig parse(InputSource is, CustomTagHandler customHandler) throws Exception {
+  public static RecipeConfig parse(@Nonnull InputSource is, CustomTagHandler customHandler) throws Exception {
 
     RecipeConfigParser parser = new RecipeConfigParser(customHandler);
 
@@ -236,11 +238,16 @@ public class RecipeConfigParser extends DefaultHandler {
       if(recipeGroup != null) {
         Log.warn(LP + "Recipe group " + recipeGroup.getName() + " not closed before encountering a new recipe group.");
       }
-      recipeGroup = root.createRecipeGroup(attributes.getValue(AT_NAME));
-      recipeGroup.setEnabled(getBooleanValue(AT_ENABLED, attributes, true));
-      if(!recipeGroup.isNameValid()) {
-        Log.warn(LP + "A recipe group was found with an invalid name: " + attributes.getValue(AT_NAME));
-        recipeGroup = null;
+      final String value = attributes.getValue(AT_NAME);
+      if (value != null) {
+        recipeGroup = root.createRecipeGroup(value);
+        recipeGroup.setEnabled(getBooleanValue(AT_ENABLED, attributes, true));
+        if (!recipeGroup.isNameValid()) {
+          Log.warn(LP + "A recipe group was found with an invalid name: " + value + ". It will be ignored.");
+          recipeGroup = null;
+        }
+      } else {
+        Log.warn(LP + "A recipe group was found without a name. It will be ignored.");
       }
       return;
     }
@@ -362,7 +369,12 @@ public class RecipeConfigParser extends DefaultHandler {
     if(stack == null) {
       return;
     }
-    recipe.addOutput(new RecipeOutput(stack.getFluidInput()));
+    final FluidStack fluidInput = stack.getFluidInput();
+    if (fluidInput == null) {
+      Log.warn("Invalid fluid when parsing recipes");
+    } else {
+      recipe.addOutput(new RecipeOutput(fluidInput));
+    }
   }
 
   private void addInputFluidStack(Attributes attributes) {
@@ -388,7 +400,6 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   public static RecipeInput getItemStack(Attributes attributes) {
-
     int stackSize = getIntValue(AT_NUMBER, attributes, 1);
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
@@ -397,12 +408,12 @@ public class RecipeConfigParser extends DefaultHandler {
         return null;
       }
       ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict, true);
-      if(stack == null || stack.getItem() == null) {
+      if (Prep.isInvalid(stack)) {
         Log.debug(LP + "Could not find a prefered item  in the ore dictionary for " + oreDict);
         return null;
       }
       stack = stack.copy();
-      stack.stackSize = stackSize;
+      stack.setCount(stackSize);
       if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
         stack.setItemDamage(0);
         Log.warn(LP + "Could not find a specific item in the ore dictionary for " + oreDict + ". Assuming " + stack.getUnlocalizedName() + " with meta=0.");
@@ -418,7 +429,7 @@ public class RecipeConfigParser extends DefaultHandler {
     } else {
       itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
     }
-    ItemStack res = null;
+    ItemStack res = Prep.getEmpty();
 
     String modId = getStringValue(AT_MOD_ID, attributes, null);
     String name = getStringValue(AT_ITEM_NAME, attributes, null);
@@ -435,7 +446,7 @@ public class RecipeConfigParser extends DefaultHandler {
       }
     }
 
-    if(res == null || res.getItem() == null) {
+    if (Prep.isInvalid(res)) {
       Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }
@@ -481,7 +492,7 @@ public class RecipeConfigParser extends DefaultHandler {
     return val;
   }
 
-  public static <E extends Enum<E>> E getEnumValue(String qName, Attributes attributes, Class<E> clazz, E def) {
+  public static @Nonnull <E extends Enum<E>> E getEnumValue(String qName, Attributes attributes, Class<E> clazz, @Nonnull E def) {
     String val = attributes.getValue(qName);
     if(val == null) {
       return def;

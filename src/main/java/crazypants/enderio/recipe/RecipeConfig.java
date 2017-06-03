@@ -8,14 +8,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.commons.io.IOUtils;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
@@ -23,9 +25,9 @@ import net.minecraft.item.ItemStack;
 
 public class RecipeConfig {
 
-  //---------------------------------------------- Loading ------------
+  // ---------------------------------------------- Loading ------------
 
-  public static RecipeConfig loadRecipeConfig(String coreFileName, String customFileName, CustomTagHandler customHandler) {
+  public static RecipeConfig loadRecipeConfig(@Nonnull String coreFileName, @Nonnull String customFileName, @Nullable CustomTagHandler customHandler) {
     File coreFile = new File(Config.configDirectory, coreFileName);
 
     String defaultVals = null;
@@ -37,7 +39,7 @@ public class RecipeConfig {
       return null;
     }
 
-    if(!coreFile.exists()) {
+    if (!coreFile.exists()) {
       Log.error("Could not load default recipes from " + coreFile + " as the file does not exist.");
       return null;
     }
@@ -54,11 +56,15 @@ public class RecipeConfig {
     String userConfigStr = null;
     try {
       userConfigStr = readRecipes(userFile, customFileName, false);
-      if(userConfigStr == null || userConfigStr.trim().length() == 0) {
+      if (userConfigStr.trim().isEmpty()) {
         Log.error("Empty user config file: " + userFile.getAbsolutePath());
       } else {
         RecipeConfig userConfig = RecipeConfigParser.parse(userConfigStr, customHandler);
-        config.merge(userConfig);
+        if (userConfig != null) {
+          config.merge(userConfig);
+        } else {
+          Log.error("Empty user config file: " + userFile.getAbsolutePath());
+        }
       }
     } catch (Exception e) {
       Log.error("Could not load user defined recipes from file: " + customFileName);
@@ -67,28 +73,37 @@ public class RecipeConfig {
     return config;
   }
 
-  public static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
-    if(!replaceIfExists && copyTo.exists()) {
-      return readStream(new FileInputStream(copyTo));
+  public static @Nonnull String readRecipes(@Nonnull File copyTo, @Nonnull String fileName, boolean replaceIfExists) throws IOException {
+    if (!replaceIfExists && copyTo.exists()) {
+      final FileInputStream in = new FileInputStream(copyTo);
+      try {
+        return readStream(in);
+      } finally {
+        IOUtils.closeQuietly(in);
+      }
     }
 
     InputStream in = RecipeConfig.class.getResourceAsStream("/assets/enderio/config/" + fileName);
-    if(in == null) {
-      Log.error("Could load default AlloySmelter recipes.");
-      throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
-    }
-    String output = readStream(in);
-    BufferedWriter writer = null;
     try {
-      writer = new BufferedWriter(new FileWriter(copyTo, false));
-      writer.write(output.toString());
+      if (in == null) {
+        Log.error("Could load default AlloySmelter recipes.");
+        throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
+      }
+      String output = readStream(in);
+      BufferedWriter writer = null;
+      try {
+        writer = new BufferedWriter(new FileWriter(copyTo, false));
+        writer.write(output.toString());
+      } finally {
+        IOUtils.closeQuietly(writer);
+      }
+      return output;
     } finally {
-      IOUtils.closeQuietly(writer);
+      IOUtils.closeQuietly(in);
     }
-    return output.toString();
   }
 
-  private static String readStream(InputStream in) throws IOException {
+  private static @Nonnull String readStream(@Nonnull InputStream in) throws IOException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
     StringBuilder output = new StringBuilder();
     try {
@@ -104,41 +119,41 @@ public class RecipeConfig {
     return output.toString();
   }
 
-  //---------------------------------------------- Class ------------
+  // ---------------------------------------------- Class ------------
 
   private boolean dumpItemRegistery = false;
   private boolean dumpOreDictionary = false;
   private boolean enabled = true;
 
-  private Map<String, RecipeGroup> recipeGroups = new HashMap<String, RecipeConfig.RecipeGroup>();
+  private @Nonnull Map<String, RecipeGroup> recipeGroups = new HashMap<String, RecipeConfig.RecipeGroup>();
 
   public RecipeConfig() {
   }
 
-  public void merge(RecipeConfig userConfig) {
+  public void merge(@Nonnull RecipeConfig userConfig) {
 
-    if(userConfig.dumpItemRegistery) {
+    if (userConfig.dumpItemRegistery) {
       dumpItemRegistery = true;
     }
-    if(userConfig.dumpOreDictionary) {
+    if (userConfig.dumpOreDictionary) {
       dumpOreDictionary = true;
     }
 
     for (RecipeGroup group : userConfig.getRecipeGroups().values()) {
-      if(!group.enabled) {
-        if(recipeGroups.remove(group.name) != null) {
+      if (!group.enabled) {
+        if (recipeGroups.remove(group.name) != null) {
           Log.info("Disabled core recipe group " + group.name + " due to user config.");
         }
       } else {
         RecipeGroup modifyGroup = recipeGroups.get(group.name);
-        if(modifyGroup == null) {
+        if (modifyGroup == null) {
           Log.info("Added user defined recipe group " + group.name);
           modifyGroup = new RecipeGroup(group.name);
           recipeGroups.put(group.name, modifyGroup);
         }
         for (RecipeElement recipe : group.recipes.values()) {
-          if(recipe.isValid()) {
-            if(modifyGroup.recipes.containsKey(recipe.name)) {
+          if (recipe.isValid()) {
+            if (modifyGroup.recipes.containsKey(recipe.name)) {
               Log.info("Replacing core recipe " + recipe.name + "  with user defined recipe.");
             } else {
               Log.info("Added user defined recipe " + recipe.name);
@@ -153,12 +168,12 @@ public class RecipeConfig {
     }
   }
 
-  public RecipeGroup createRecipeGroup(String name) {
+  public @Nonnull RecipeGroup createRecipeGroup(@Nonnull String name) {
     return new RecipeGroup(name);
   }
 
-  public void addRecipeGroup(RecipeGroup group) {
-    if(group.isNameValid()) {
+  public void addRecipeGroup(@Nonnull RecipeGroup group) {
+    if (group.isNameValid()) {
       recipeGroups.put(group.getName(), group);
     }
   }
@@ -171,7 +186,7 @@ public class RecipeConfig {
     this.enabled = enabled;
   }
 
-  public void setRecipeGroups(Map<String, RecipeGroup> recipeGroups) {
+  public void setRecipeGroups(@Nonnull Map<String, RecipeGroup> recipeGroups) {
     this.recipeGroups = recipeGroups;
   }
 
@@ -191,44 +206,38 @@ public class RecipeConfig {
     this.dumpOreDictionary = dumpOreDictionary;
   }
 
-  public List<Recipe> getRecipes(boolean isRecipePerInput) {
-    List<Recipe> result = new ArrayList<Recipe>(32);
+  public NNList<Recipe> getRecipes(boolean isRecipePerInput) {
+    NNList<Recipe> result = new NNList<Recipe>();
     for (RecipeGroup rg : recipeGroups.values()) {
-      if(rg.isEnabled() && rg.isValid()) {
+      if (rg.isEnabled() && rg.isValid()) {
         result.addAll(rg.createRecipes(isRecipePerInput));
       }
     }
     return result;
   }
 
-  public List<Recipe> getRecipesForGroup(String group, boolean isRecipePerInput) {
+  public NNList<Recipe> getRecipesForGroup(String group, boolean isRecipePerInput) {
     RecipeGroup grp = recipeGroups.get(group);
-    if(grp == null) {
-      return Collections.emptyList();
+    if (grp == null) {
+      return NNList.emptyList();
     }
     return grp.createRecipes(isRecipePerInput);
   }
 
-  public Map<String, RecipeGroup> getRecipeGroups() {
+  public @Nonnull Map<String, RecipeGroup> getRecipeGroups() {
     return recipeGroups;
   }
 
   public static class RecipeGroup {
 
-    private final String name;
+    private final @Nonnull String name;
 
-    private Map<String, RecipeElement> recipes = new LinkedHashMap<String, RecipeElement>();
+    private @Nonnull Map<String, RecipeElement> recipes = new LinkedHashMap<String, RecipeElement>();
 
     private boolean enabled = true;
 
-    public RecipeGroup(String name) {
-      if(name != null) {
-        name = name.trim();
-        if (name.length() <= 0) {
-          name = null;
-        }
-      }
-      this.name = name;
+    public RecipeGroup(@Nonnull String name) {
+      this.name = name.trim();
     }
 
     public boolean isEnabled() {
@@ -239,22 +248,22 @@ public class RecipeConfig {
       this.enabled = enabled;
     }
 
-    public RecipeElement createRecipe(String name) {
-      return new RecipeElement(name);
+    public RecipeElement createRecipe(@Nonnull String nameIn) {
+      return new RecipeElement(nameIn);
     }
 
-    public void addRecipe(RecipeElement recipe) {
+    public void addRecipe(@Nonnull RecipeElement recipe) {
       recipes.put(recipe.name, recipe);
     }
 
-    public String getName() {
+    public @Nonnull String getName() {
       return name;
     }
 
-    public List<Recipe> createRecipes(boolean isRecipePerInput) {
-      List<Recipe> result = new ArrayList<Recipe>(recipes.size());
+    public @Nonnull NNList<Recipe> createRecipes(boolean isRecipePerInput) {
+      NNList<Recipe> result = new NNList<Recipe>();
       for (RecipeElement recipe : recipes.values()) {
-        if(recipe.isValid()) {
+        if (recipe.isValid()) {
           result.addAll(recipe.createRecipes(isRecipePerInput));
         }
       }
@@ -266,7 +275,7 @@ public class RecipeConfig {
     }
 
     public boolean isNameValid() {
-      return name != null;
+      return !name.isEmpty();
     }
 
     @Override
@@ -278,41 +287,41 @@ public class RecipeConfig {
 
   public static class RecipeElement {
 
-    private List<RecipeInput> inputs = new ArrayList<RecipeInput>();
+    private @Nonnull NNList<RecipeInput> inputs = new NNList<RecipeInput>();
 
-    private List<RecipeOutput> outputs = new ArrayList<RecipeOutput>();
+    private @Nonnull NNList<RecipeOutput> outputs = new NNList<RecipeOutput>();
 
     private int energyRequired;
 
-    private RecipeBonusType bonusType = RecipeBonusType.MULTIPLY_OUTPUT;
+    private @Nonnull RecipeBonusType bonusType = RecipeBonusType.MULTIPLY_OUTPUT;
 
-    private String name;
+    private @Nonnull String name;
 
     private boolean allowMissing = false;
     private boolean invalidated = false;
 
-    private RecipeElement(String name) {
+    private RecipeElement(@Nonnull String name) {
       this.name = name;
     }
 
-    public void addInput(RecipeInput input) {
+    public void addInput(@Nonnull RecipeInput input) {
       inputs.add(input);
     }
 
-    public void addInput(ItemStack stack, boolean useMetadata) {
+    public void addInput(@Nonnull ItemStack stack, boolean useMetadata) {
       inputs.add(new RecipeInput(stack, useMetadata));
     }
 
-    public void addOutput(RecipeOutput output) {
+    public void addOutput(@Nonnull RecipeOutput output) {
       outputs.add(output);
     }
 
-    public List<Recipe> createRecipes(boolean isRecipePerInput) {
+    public @Nonnull NNList<Recipe> createRecipes(boolean isRecipePerInput) {
 
-      RecipeOutput[] outputArr = outputs.toArray(new RecipeOutput[outputs.size()]);
-      RecipeInput[] inputArr = inputs.toArray(new RecipeInput[inputs.size()]);
-      List<Recipe> result = new ArrayList<Recipe>();
-      if(isRecipePerInput) {
+      RecipeOutput[] outputArr = outputs.toArray();
+      RecipeInput[] inputArr = inputs.toArray();
+      NNList<Recipe> result = new NNList<Recipe>();
+      if (isRecipePerInput) {
         for (RecipeInput input : inputs) {
           result.add(new Recipe(input, energyRequired, bonusType, outputArr));
         }
@@ -340,7 +349,7 @@ public class RecipeConfig {
       return bonusType;
     }
 
-    public void setBonusType(RecipeBonusType bonusType) {
+    public void setBonusType(@Nonnull RecipeBonusType bonusType) {
       this.bonusType = bonusType;
     }
 
@@ -358,8 +367,8 @@ public class RecipeConfig {
 
     @Override
     public String toString() {
-      return "Recipe [" + (invalidated ? "INVALID " : "") + "input=" + inputs + ", outputs=" + outputs + ", energyRequired="
-          + energyRequired + ", bonusType=" + bonusType + "]";
+      return "Recipe [" + (invalidated ? "INVALID " : "") + "input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + ", bonusType="
+          + bonusType + "]";
     }
 
   }

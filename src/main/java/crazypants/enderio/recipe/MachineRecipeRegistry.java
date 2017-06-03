@@ -1,28 +1,28 @@
 package crazypants.enderio.recipe;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 public class MachineRecipeRegistry {
 
   public static final @Nonnull String PAINTER = "painter";
+  public static final @Nonnull String SAGMILL = "sagmill";
 
-  public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();
+  public static final @Nonnull MachineRecipeRegistry instance = new MachineRecipeRegistry();
 
   private final Map<String, Map<String, IMachineRecipe>> machineRecipes = new HashMap<String, Map<String, IMachineRecipe>>();
 
-  public void registerRecipe(String machine, IMachineRecipe recipe) {
+  public void registerRecipe(@Nonnull String machine, @Nonnull IMachineRecipe recipe) {
     getRecipesForMachine(machine).put(recipe.getUid(), recipe);    
   }
 
-  public Map<String, IMachineRecipe> getRecipesForMachine(String machineName) {
+  public @Nonnull Map<String, IMachineRecipe> getRecipesForMachine(@Nonnull String machineName) {
     Map<String, IMachineRecipe> res = machineRecipes.get(machineName);
     if(res == null) {
       res = new LinkedHashMap<String, IMachineRecipe>();
@@ -31,7 +31,7 @@ public class MachineRecipeRegistry {
     return res;
   }
 
-  public void enableRecipeSorting(String machineName) {
+  public void enableRecipeSorting(@Nonnull String machineName) {
     Map<String, IMachineRecipe> res = machineRecipes.get(machineName);
     if (res == null) {
       res = new TreeMap<String, IMachineRecipe>();
@@ -42,10 +42,7 @@ public class MachineRecipeRegistry {
     }
   }
 
-  public IMachineRecipe getRecipeForUid(String uid) {
-    if(uid == null) {
-      return null;
-    }
+  public IMachineRecipe getRecipeForUid(@Nonnull String uid) {
     for (Map<String, IMachineRecipe> recipes : machineRecipes.values()) {
       for (IMachineRecipe recipe : recipes.values()) {
         if(uid.equals(recipe.getUid())) {
@@ -56,12 +53,8 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(String machineName, MachineRecipeInput... inputs) {
-    Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
-    if(recipes == null) {
-      return null;
-    }
-    for (IMachineRecipe recipe : recipes.values()) {
+  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, MachineRecipeInput... inputs) {
+    for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
       if(recipe.isRecipe(inputs)) {
         return recipe;
       }
@@ -69,11 +62,8 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public List<IMachineRecipe> getRecipesForInput(String machineName, MachineRecipeInput input) {
-    if(input == null) {
-      return Collections.emptyList();
-    }
-    List<IMachineRecipe> result = new ArrayList<IMachineRecipe>();
+  public @Nonnull NNList<IMachineRecipe> getRecipesForInput(@Nonnull String machineName, @Nonnull MachineRecipeInput input) {
+    NNList<IMachineRecipe> result = new NNList<IMachineRecipe>();
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
     for (IMachineRecipe recipe : recipes.values()) {
       if(recipe.isValidInput(input)) {

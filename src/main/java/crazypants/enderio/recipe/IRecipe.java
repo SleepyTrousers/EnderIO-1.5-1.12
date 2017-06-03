@@ -1,6 +1,8 @@
 package crazypants.enderio.recipe;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,22 +17,20 @@ public interface IRecipe {
 
   RecipeInput[] getInputs();
 
-  List<ItemStack> getInputStacks();
+  @Nonnull
+  NNList<ItemStack> getInputStacks();
 
-  List<FluidStack> getInputFluidStacks();
+  NNList<FluidStack> getInputFluidStacks();
 
+  @Nonnull
   RecipeBonusType getBonusType();
-
-  //  boolean isInputForRecipe(List<ItemStack> test);
-  //
-  //  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
 
   boolean isInputForRecipe(MachineRecipeInput... inputs);
 
-  boolean isValidInput(int slotNumber, ItemStack item);
+  boolean isValidInput(int slotNumber, @Nonnull ItemStack item);
 
-  boolean isValidInput(FluidStack fluid);
+  boolean isValidInput(@Nonnull FluidStack fluid);
 
-  List<List<ItemStack>> getInputStackAlternatives();
+  NNList<NNList<ItemStack>> getInputStackAlternatives();
 
 }

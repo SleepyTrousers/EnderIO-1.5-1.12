@@ -1,16 +1,17 @@
 package crazypants.enderio.recipe.sagmill;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
@@ -20,6 +21,7 @@ import crazypants.enderio.recipe.RecipeConfig;
 import crazypants.enderio.recipe.RecipeConfigParser;
 import crazypants.enderio.recipe.RecipeInput;
 import crazypants.enderio.recipe.RecipeOutput;
+import crazypants.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -29,34 +31,34 @@ public class SagMillRecipeManager {
 
   public static final int INGOT_ENERGY_COST = 240;
 
-  private static final String CORE_FILE_NAME = "SAGMillRecipes_Core.xml";
-  private static final String CUSTOM_FILE_NAME = "SAGMillRecipes_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "SAGMillRecipes_Core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "SAGMillRecipes_User.xml";
 
-  static final SagMillRecipeManager instance = new SagMillRecipeManager();
+  static final @Nonnull SagMillRecipeManager instance = new SagMillRecipeManager();
 
-  public static SagMillRecipeManager getInstance() {
+  public static @Nonnull SagMillRecipeManager getInstance() {
     return instance;
   }
 
-  private final List<Recipe> recipes = new ArrayList<Recipe>();
+  private final @Nonnull NNList<Recipe> recipes = new NNList<Recipe>();
 
-  private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
+  private final @Nonnull NNList<GrindingBall> balls = new NNList<GrindingBall>();
 
-  private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
+  private final @Nonnull Set<ItemStack> excludedStackCache = new HashSet<ItemStack>();
 
-  public SagMillRecipeManager() {
+  private SagMillRecipeManager() {
   }
 
-  public boolean isValidSagBall(ItemStack stack) {
+  public boolean isValidSagBall(@Nonnull ItemStack stack) {
     return getGrindballFromStack(stack) != null;
   }
 
-  public boolean isExcludedFromBallBonus(MachineRecipeInput[] inputs) {
-    if (inputs == null || inputs.length < 1) {
+  public boolean isExcludedFromBallBonus(@Nonnull MachineRecipeInput[] inputs) {
+    if (inputs.length < 1) {
       return true;
     }
     for (MachineRecipeInput input : inputs) {
-      if (input.item != null) {
+      if (Prep.isValid(input.item)) {
         if (isExcludedStack(input.item)) {
           return true;
         }
@@ -76,20 +78,20 @@ public class SagMillRecipeManager {
     return false;
   }
 
-  private void addExcludedStack(ItemStack item) {
+  private void addExcludedStack(@Nonnull ItemStack item) {
     item = item.copy();
-    item.stackSize = 1;
-    excludedStacks.add(item);
+    item.setCount(1);
+    excludedStackCache.add(item);
   }
 
-  private boolean isExcludedStack(ItemStack item) {
+  private boolean isExcludedStack(@Nonnull ItemStack item) {
     item = item.copy();
-    item.stackSize = 1;
-    return excludedStacks.contains(item);
+    item.setCount(1);
+    return excludedStackCache.contains(item);
   }
 
-  public IGrindingMultiplier getGrindballFromStack(ItemStack stack) {
-    if (stack == null) {
+  public IGrindingMultiplier getGrindballFromStack(@Nonnull ItemStack stack) {
+    if (Prep.isInvalid(stack)) {
       return null;
     }
     for (GrindingBall ball : balls) {
@@ -100,7 +102,7 @@ public class SagMillRecipeManager {
     return null;
   }
 
-  public boolean isValidInput(MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
     if (input.slotNumber == 1) {
       return isValidSagBall(input.item);
     }
@@ -117,10 +119,10 @@ public class SagMillRecipeManager {
     } else {
       Log.error("Could not load recipes for SAG Mill.");
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.getUnlocalisedName(), new SagMillMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SAGMILL, new SagMillMachineRecipe());
   }
 
-  public void addCustomRecipes(String xmlDef) {
+  public void addCustomRecipes(@Nonnull String xmlDef) {
     GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config;
     try {
@@ -138,8 +140,8 @@ public class SagMillRecipeManager {
     processConfig(config);
   }
 
-  public IRecipe getRecipeForInput(ItemStack input) {
-    if (input == null) {
+  public IRecipe getRecipeForInput(@Nonnull ItemStack input) {
+    if (Prep.isInvalid(input)) {
       return null;
     }
     final MachineRecipeInput machineRecipeInput = new MachineRecipeInput(0, input);
@@ -151,7 +153,7 @@ public class SagMillRecipeManager {
     return null;
   }
 
-  private void processConfig(RecipeConfig config) {
+  private void processConfig(@Nonnull RecipeConfig config) {
     if (config.isDumpItemRegistery()) {
       Util.dumpModObjects(new File(Config.configDirectory, "modObjectsRegistery.txt"));
     }
@@ -159,27 +161,30 @@ public class SagMillRecipeManager {
       Util.dumpOreNames(new File(Config.configDirectory, "oreDictionaryRegistery.txt"));
     }
 
-    List<Recipe> newRecipes = config.getRecipes(true);
+    NNList<Recipe> newRecipes = config.getRecipes(true);
     Log.info("Found " + newRecipes.size() + " valid SAG Mill recipes in config.");
-    for (Recipe rec : newRecipes) {
-      addRecipe(rec);
-    }
+    newRecipes.apply(new Callback<Recipe>() {
+      @Override
+      public void apply(@Nonnull Recipe recipe) {
+        addRecipe(recipe);
+      }
+    });
     Log.info("Finished processing SAG Mill recipes. " + recipes.size() + " recipes avaliable.");
   }
 
-  public void addRecipe(ItemStack input, int energyCost, ItemStack output) {
+  public void addRecipe(@Nonnull ItemStack input, int energyCost, @Nonnull ItemStack output) {
     addRecipe(input, energyCost, new RecipeOutput(output, 1));
   }
 
-  public void addRecipe(ItemStack input, int energyCost, RecipeOutput... output) {
-    if (input == null || output == null) {
+  public void addRecipe(@Nonnull ItemStack input, int energyCost, RecipeOutput... output) {
+    if (Prep.isInvalid(input) || output == null) {
       return;
     }
     addRecipe(new Recipe(new RecipeInput(input, false), energyCost, RecipeBonusType.MULTIPLY_OUTPUT, output));
   }
 
-  public void addRecipe(Recipe recipe) {
-    if (recipe == null || !recipe.isValid()) {
+  public void addRecipe(@Nonnull Recipe recipe) {
+    if (!recipe.isValid()) {
       Log.debug("Could not add invalid recipe: " + recipe);
       return;
     }
@@ -191,18 +196,18 @@ public class SagMillRecipeManager {
     recipes.add(recipe);
   }
 
-  public List<Recipe> getRecipes() {
+  public @Nonnull NNList<Recipe> getRecipes() {
     return recipes;
   }
 
-  public static ItemStack getInput(IRecipe recipe) {
-    if (recipe == null || recipe.getInputs() == null || recipe.getInputs().length == 0) {
-      return null;
+  public static @Nonnull ItemStack getInput(@Nonnull IRecipe recipe) {
+    if (recipe.getInputs() == null || recipe.getInputs().length == 0) {
+      return Prep.getEmpty();
     }
     return recipe.getInputs()[0].getInput();
   }
 
-  public List<GrindingBall> getBalls() {
+  public @Nonnull NNList<GrindingBall> getBalls() {
     return balls;
   }
 
