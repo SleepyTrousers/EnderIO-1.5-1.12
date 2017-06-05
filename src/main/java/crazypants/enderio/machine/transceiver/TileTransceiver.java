@@ -436,14 +436,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IInter
   }
 
   
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-  
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {

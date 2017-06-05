@@ -210,14 +210,6 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IInternal
     return hasPower ? super.getMaxEnergyStored() : 0;
   }
 
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return hasPower;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
