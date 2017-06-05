@@ -55,7 +55,7 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
     String userConfigStr = null;
     try {
       userConfigStr = RecipeConfig.readRecipes(userFile, CUSTOM_FILE_NAME, false);
-      if(userConfigStr == null || userConfigStr.trim().length() == 0) {
+      if (userConfigStr.trim().length() == 0) {
         Log.error("Empty user " + DISPLAY_NAME + " file: " + userFile.getAbsolutePath());
       } else {
         parse(userConfigStr);

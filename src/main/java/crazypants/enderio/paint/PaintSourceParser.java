@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -21,8 +22,8 @@ import crazypants.enderio.recipe.RecipeInput;
 
 public class PaintSourceParser extends DefaultHandler {
 
-  private static final String CORE_FILE_NAME = "painter_paint_sources_core.xml";
-  private static final String CUSTOM_FILE_NAME = "painter_paint_sources_user.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "painter_paint_sources_core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "painter_paint_sources_user.xml";
 
   public static void loadConfig() {
     File coreFile = new File(Config.configDirectory, CORE_FILE_NAME);
@@ -50,7 +51,7 @@ public class PaintSourceParser extends DefaultHandler {
     String userConfigStr = null;
     try {
       userConfigStr = RecipeConfig.readRecipes(userFile, CUSTOM_FILE_NAME, false);
-      if (userConfigStr == null || userConfigStr.trim().length() == 0) {
+      if (userConfigStr.trim().length() == 0) {
         Log.error("Empty user config file: " + userFile.getAbsolutePath());
       } else {
         parse(userConfigStr);
@@ -83,11 +84,11 @@ public class PaintSourceParser extends DefaultHandler {
     xmlReader.parse(is);
   }
 
-  public static final String ELEMENT_WHITELIST = "whitelist";
-  public static final String ELEMENT_BLACKLIST = "blacklist";
-  public static final String ELEMENT_ITEM_STACK = "itemStack";
+  public static final @Nonnull String ELEMENT_WHITELIST = "whitelist";
+  public static final @Nonnull String ELEMENT_BLACKLIST = "blacklist";
+  public static final @Nonnull String ELEMENT_ITEM_STACK = "itemStack";
 
-  private static final String AT_REMOVE = "remove";
+  private static final @Nonnull String AT_REMOVE = "remove";
 
   private boolean isWhitelist = false;
   private boolean isBlacklist = false;
