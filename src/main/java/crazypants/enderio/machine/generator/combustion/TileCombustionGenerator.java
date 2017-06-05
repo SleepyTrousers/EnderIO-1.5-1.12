@@ -400,14 +400,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
     return smartTankFluidHandler;
   }
 
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
