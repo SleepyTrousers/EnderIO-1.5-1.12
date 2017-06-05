@@ -1,47 +1,50 @@
 package crazypants.enderio.machine.task;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.MathHelper;
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import crazypants.util.Prep;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.MathHelper;
 
 public class PoweredTask implements IPoweredTask {
 
-  public static final String KEY_INPUT_STACKS = "inputsStacks";
+  public static final @Nonnull String KEY_INPUT_STACKS = "inputsStacks";
 
-  public static final String KEY_RECIPE = "recipeUid";
-  public static final String KEY_USED_ENERGY = "usedEnergy";
-  private static final String KEY_CHANCE = "chance";
+  public static final @Nonnull String KEY_RECIPE = "recipeUid";
+  public static final @Nonnull String KEY_USED_ENERGY = "usedEnergy";
+  private static final @Nonnull String KEY_CHANCE = "chance";
 
   private float usedEnergy = 0;
 
-  private MachineRecipeInput[] inputs;
+  private @Nonnull MachineRecipeInput[] inputs;
 
   private float requiredEnergy;
 
-  private RecipeBonusType bonusType;
+  private @Nonnull RecipeBonusType bonusType;
 
-  private IMachineRecipe recipe;
+  private @Nonnull IMachineRecipe recipe;
 
   private float chance;
 
-  public PoweredTask(IMachineRecipe recipe, float chance, MachineRecipeInput... inputs) {
+  public PoweredTask(@Nonnull IMachineRecipe recipe, float chance, @Nonnull MachineRecipeInput... inputs) {
     this(recipe, 0, chance, inputs);
   }
 
-  protected PoweredTask(IMachineRecipe recipe, float usedEnergy, float chance, MachineRecipeInput... inputsIn) {
+  protected PoweredTask(@Nonnull IMachineRecipe recipe, float usedEnergy, float chance, @Nonnull MachineRecipeInput... inputsIn) {
     this.inputs = inputsIn;
     int numInputs = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if(inputsIn[i] != null && (inputsIn[i].item != null || inputsIn[i].fluid != null)) {
+      if (inputsIn[i] != null && (Prep.isValid(inputsIn[i].item) || inputsIn[i].fluid != null)) {
         numInputs++;
       }
     }
@@ -49,11 +52,11 @@ public class PoweredTask implements IPoweredTask {
     inputs = new MachineRecipeInput[numInputs];
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if(inputsIn[i] != null) {
-        if(inputsIn[i].item != null) {
+      if (inputsIn[i] != null) {
+        if (Prep.isValid(inputsIn[i].item)) {
           inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
           index++;
-        } else if(inputsIn[i].fluid != null) {
+        } else if (inputsIn[i].fluid != null) {
           inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].fluid.copy());
           index++;
         }
@@ -67,7 +70,6 @@ public class PoweredTask implements IPoweredTask {
     bonusType = recipe.getBonusType(inputsIn);
   }
 
-
   @Override
   public void update(float availableEnergy) {
     usedEnergy += availableEnergy;
@@ -78,30 +80,25 @@ public class PoweredTask implements IPoweredTask {
     return usedEnergy >= requiredEnergy;
   }
 
-
   @Override
   public float getProgress() {
     return MathHelper.clamp(usedEnergy / requiredEnergy, 0, 1);
   }
 
-
   @Override
-  public ResultStack[] getCompletedResult() {
+  public @Nonnull ResultStack[] getCompletedResult() {
     return recipe.getCompletedResult(chance, inputs);
   }
 
   @Override
-  public MachineRecipeInput[] getInputs() {
+  public @Nonnull MachineRecipeInput[] getInputs() {
     return inputs;
   }
 
-  public void setInputs(MachineRecipeInput[] inputs) {
+  public void setInputs(@Nonnull MachineRecipeInput[] inputs) {
     this.inputs = inputs;
   }
 
-  /* (non-Javadoc)
-   * @see crazypants.enderio.machine.IPoweredTask#getRequiredEnergy()
-   */
   @Override
   public float getRequiredEnergy() {
     return requiredEnergy;
@@ -111,9 +108,6 @@ public class PoweredTask implements IPoweredTask {
     this.requiredEnergy = requiredEnergy;
   }
 
-  /* (non-Javadoc)
-   * @see crazypants.enderio.machine.IPoweredTask#getChance()
-   */
   @Override
   public float getChance() {
     return chance;
@@ -124,20 +118,15 @@ public class PoweredTask implements IPoweredTask {
   }
 
   @Override
-  public RecipeBonusType getBonusType() {
+  public @Nonnull RecipeBonusType getBonusType() {
     return bonusType;
   }
 
-  /* (non-Javadoc)
-   * @see crazypants.enderio.machine.IPoweredTask#writeToNBT(net.minecraft.nbt.NBTTagCompound)
-   */
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    NBTTagCompound stackRoot;
-
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     NBTTagList inputItems = new NBTTagList();
     for (MachineRecipeInput ri : inputs) {
-      stackRoot = new NBTTagCompound();
+      NBTTagCompound stackRoot = new NBTTagCompound();
       ri.writeToNbt(stackRoot);
       inputItems.appendTag(stackRoot);
     }
@@ -150,18 +139,15 @@ public class PoweredTask implements IPoweredTask {
     nbtRoot.setFloat(KEY_CHANCE, chance);
   }
 
-  public static IPoweredTask readFromNBT(NBTTagCompound nbtRoot) {
+  public static @Nullable IPoweredTask readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     IMachineRecipe recipe;
 
     float usedEnergy = nbtRoot.getFloat(KEY_USED_ENERGY);
     float chance = nbtRoot.getFloat(KEY_CHANCE);
 
     NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUT_STACKS);
-    if(inputItems == null) {
-      return null;
-    }
 
-    List<MachineRecipeInput> ins = new ArrayList<MachineRecipeInput>(3);
+    NNList<MachineRecipeInput> ins = new NNList<MachineRecipeInput>();
     for (int i = 0; i < inputItems.tagCount(); i++) {
       NBTTagCompound stackTag = inputItems.getCompoundTagAt(i);
       MachineRecipeInput mi = MachineRecipeInput.readFromNBT(stackTag);
@@ -170,8 +156,8 @@ public class PoweredTask implements IPoweredTask {
 
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
-    if(recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray(new MachineRecipeInput[ins.size()]));
+    if (recipe != null) {
+      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray());
     }
     return null;
 
@@ -181,4 +167,5 @@ public class PoweredTask implements IPoweredTask {
   public IMachineRecipe getRecipe() {
     return recipe;
   }
+
 }

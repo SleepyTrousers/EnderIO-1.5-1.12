@@ -5,9 +5,11 @@ import java.util.EnumMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.modes.IoMode;
@@ -15,7 +17,6 @@ import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
-import crazypants.enderio.render.dummy.BlockMachineBase;
 import crazypants.enderio.render.property.EnumRenderMode;
 import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
@@ -42,8 +43,8 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
-                                          QuadCollector quadCollector) {
+  public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
+      @Nonnull QuadCollector quadCollector) {
     TileEntity tileEntity = getTileEntity(state, pos);
     Block block = state.getBlock();
 
@@ -53,7 +54,7 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
     return null;
   }
 
-  private TileEntity getTileEntity(IBlockStateWrapper state, BlockPos pos) {
+  private TileEntity getTileEntity(@Nonnull IBlockStateWrapper state, @Nonnull BlockPos pos) {
     IBlockAccess world = state.getWorld();
     if (world instanceof PaintedBlockAccessWrapper) {
       TileEntity te = ((PaintedBlockAccessWrapper) world).getRealTileEntity(pos);
@@ -65,8 +66,8 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
   }
 
   @SideOnly(Side.CLIENT)
-  protected List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer, AbstractMachineEntity tileEntity,
-                                     AbstractMachineBlock<?> block) {
+  protected @Nullable List<IBlockState> render(IBlockState state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
+      AbstractMachineEntity tileEntity, AbstractMachineBlock<?> block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
     EnumFacing facing = tileEntity.getFacing();
@@ -91,7 +92,6 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
     for (EnumFacing face : EnumFacing.values()) {
       IoMode ioMode = tileEntity.getIoMode(face);
       if (ioMode != IoMode.NONE) {
-        @SuppressWarnings("rawtypes")
         EnumIOMode iOMode = block.mapIOMode(ioMode, face);
         result.put(face, iOMode);
       }
@@ -106,10 +106,12 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public @Nullable List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack,
+      @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
-    if (body != null) {
-      states.add(Pair.of(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, body), stack));
+    final EnumRenderPart body_nullchecked = body;
+    if (body_nullchecked != null) {
+      states.add(Pair.of(ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, body_nullchecked), stack));
     }
     states.add(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT), stack));
     return states;
@@ -117,7 +119,8 @@ public class MachineRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
 
   @Override
   @SideOnly(Side.CLIENT)
-  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, boolean isPainted) {
+  public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
+      boolean isPainted) {
     TileEntity tileEntity = state.getTileEntity();
     Block block = state.getBlock();
 

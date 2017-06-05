@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.sound;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.audio.ITickableSound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.util.ResourceLocation;
@@ -12,7 +14,7 @@ public class MachineSound extends PositionedSound implements ITickableSound {
 
   private boolean donePlaying;
 
-  public MachineSound(ResourceLocation sound, float x, float y, float z, float volume, float pitch) {
+  public MachineSound(@Nonnull ResourceLocation sound, float x, float y, float z, float volume, float pitch) {
     super(sound, SoundCategory.BLOCKS);
     this.xPosF = x;
     this.yPosF = y;
@@ -24,7 +26,6 @@ public class MachineSound extends PositionedSound implements ITickableSound {
 
   @Override
   public void update() {
-    ;
   }
 
   @Override
@@ -49,4 +50,5 @@ public class MachineSound extends PositionedSound implements ITickableSound {
     this.pitch = pitch;
     return this;
   }
+
 }

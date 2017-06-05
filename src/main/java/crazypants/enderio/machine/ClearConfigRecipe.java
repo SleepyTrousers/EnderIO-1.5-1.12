@@ -1,15 +1,21 @@
 package crazypants.enderio.machine;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.capbank.BlockItemCapBank;
+import crazypants.enderio.machine.interfaces.IClearableConfiguration;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -18,51 +24,61 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public class ClearConfigRecipe implements IRecipe {
-  
+
   static {
-    RecipeSorter.register("EnderIO:clearConfig", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+    RecipeSorter.register(EnderIO.DOMAIN + ":clear_config", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
 
   @Override
-  public boolean matches(InventoryCrafting inv, World world) {
-    return match(inv) != null;
+  public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
+    return Prep.isValid(match(inv));
   }
 
-  private ItemStack match(InventoryCrafting inv) {
-    ItemStack input = null;
+  private @Nonnull ItemStack match(@Nonnull InventoryCrafting inv) {
+    ItemStack input = Prep.getEmpty();
 
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null) {
-        if (input != null) {
-          return null;
+      if (Prep.isValid(checkStack)) {
+        if (Prep.isValid(input)) {
+          return Prep.getEmpty();
         }
         input = checkStack;
       }
     }
-    if (input != null && Block.getBlockFromItem(input.getItem()) instanceof AbstractMachineBlock && input.hasTagCompound()
-        && input.getTagCompound().getBoolean("eio.abstractMachine")) {
-      return input;
+
+    final NBTTagCompound tagCompound = input.getTagCompound();
+    if (Prep.isValid(input) && tagCompound != null && !tagCompound.hasNoTags()) {
+      final Item item = input.getItem();
+      if (item instanceof IClearableConfiguration) {
+        return clear((IClearableConfiguration) item, input);
+      }
+      Block block = Block.getBlockFromItem(item);
+      if (block instanceof IClearableConfiguration) {
+        return clear((IClearableConfiguration) block, input);
+      }
     }
-    if (input != null && input.getItem() instanceof BlockItemCapBank && input.hasTagCompound() && !input.getTagCompound().hasNoTags()) {
-      return input;
-    }
-    return null;
+
+    return Prep.getEmpty();
   }
 
-  private ItemStack lastOutput = null;
+  private @Nonnull ItemStack clear(@Nonnull IClearableConfiguration owner, @Nonnull ItemStack stack) {
+    stack = stack.copy();
+    if (owner instanceof IClearableConfiguration.Handler) {
+      ((IClearableConfiguration.Handler) owner).clearConfiguration(stack);
+      return stack;
+    } else {
+      stack.setTagCompound(new NBTTagCompound());
+      stack.setCount(1);
+      return stack;
+    }
+  }
+
+  private @Nonnull ItemStack lastOutput = Prep.getEmpty();
 
   @Override
-  public ItemStack getCraftingResult(InventoryCrafting inv) {
-    ItemStack input = match(inv);
-    if (input == null) {
-      lastOutput = null;
-    } else {
-      lastOutput = input.copy();
-      lastOutput.setTagCompound(new NBTTagCompound());
-      lastOutput.stackSize = 1;
-    }
-    return lastOutput;
+  public @Nonnull ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
+    return lastOutput = match(inv);
   }
 
   @Override
@@ -71,24 +87,25 @@ public class ClearConfigRecipe implements IRecipe {
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
-    return null;
+  public @Nonnull ItemStack getRecipeOutput() {
+    return Prep.getEmpty();
   }
-  
+
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (lastOutput != null && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
+    if (ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
       if ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
           && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
           || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
               && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())) {
-          event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
+        event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("machine.tooltip.clearConfig"));
       }
     }
   }
 
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    return new ItemStack[inv.getSizeInventory()];
+  public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
+    return NNList.withSize(inv.getSizeInventory(), Prep.getEmpty());
   }
+
 }

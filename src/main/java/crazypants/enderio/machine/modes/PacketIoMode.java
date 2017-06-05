@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.modes;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.machine.interfaces.IIoConfigurable;
@@ -19,13 +21,13 @@ public class PacketIoMode extends MessageTileEntity<TileEntity> {
   public PacketIoMode() {
   }
 
-  public <E extends TileEntity & IIoConfigurable> PacketIoMode(E cont) {
+  public <E extends TileEntity & IIoConfigurable> PacketIoMode(@Nonnull E cont) {
     super(cont);
     this.mode = IoMode.NONE;
     this.face = null;
   }
 
-  public <E extends TileEntity & IIoConfigurable> PacketIoMode(E cont, EnumFacing face) {
+  public <E extends TileEntity & IIoConfigurable> PacketIoMode(@Nonnull E cont, EnumFacing face) {
     super(cont);
     this.face = face;
     mode = cont.getIoMode(face);
@@ -58,8 +60,8 @@ public class PacketIoMode extends MessageTileEntity<TileEntity> {
 
     @Override
     public IMessage onMessage(PacketIoMode message, MessageContext ctx) {
-      EntityPlayer player = ctx.getServerHandler().playerEntity;
-      TileEntity te = message.getTileEntity(player.worldObj);
+      EntityPlayer player = ctx.getServerHandler().player;
+      TileEntity te = message.getTileEntity(player.world);
       if (te instanceof IIoConfigurable) {
         IIoConfigurable me = (IIoConfigurable) te;
         if (message.face == null) {
@@ -72,4 +74,5 @@ public class PacketIoMode extends MessageTileEntity<TileEntity> {
     }
 
   }
+
 }

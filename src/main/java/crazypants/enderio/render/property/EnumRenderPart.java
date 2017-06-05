@@ -55,7 +55,7 @@ public enum EnumRenderPart implements IStringSerializable {
   }
 
   /* D0-U1-N2-S3-W4-E5 */
-  public EnumRenderPart rotate(@Nonnull EnumFacing facing) {
+  public @Nonnull EnumRenderPart rotate(@Nonnull EnumFacing facing) {
     if (rotates && facing.getIndex() >= 2) {
       return values()[parentid + facing.getIndex() - 2];
     } else {

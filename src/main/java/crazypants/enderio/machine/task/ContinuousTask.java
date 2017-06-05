@@ -1,22 +1,24 @@
 package crazypants.enderio.machine.task;
 
-import net.minecraft.nbt.NBTTagCompound;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContinuousTask implements IPoweredTask {
-  
+
   float powerUserPerTick;
-  
+
   public ContinuousTask(float powerUsePerTick) {
     this.powerUserPerTick = powerUsePerTick;
   }
-  
+
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     nbtRoot.setFloat("powerUserPerTick", powerUserPerTick);
   }
 
@@ -49,7 +51,7 @@ public class ContinuousTask implements IPoweredTask {
   }
 
   @Override
-  public ResultStack[] getCompletedResult() {
+  public @Nonnull ResultStack[] getCompletedResult() {
     return new ResultStack[0];
   }
 
@@ -59,12 +61,13 @@ public class ContinuousTask implements IPoweredTask {
   }
 
   @Override
-  public RecipeBonusType getBonusType() {
+  public @Nonnull RecipeBonusType getBonusType() {
     return RecipeBonusType.NONE;
   }
 
   @Override
-  public MachineRecipeInput[] getInputs() {
+  public @Nonnull MachineRecipeInput[] getInputs() {
     return new MachineRecipeInput[0];
   }
+
 }

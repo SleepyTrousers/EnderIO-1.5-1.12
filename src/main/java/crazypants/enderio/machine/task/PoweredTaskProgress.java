@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.task;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -14,7 +16,7 @@ public class PoweredTaskProgress implements IPoweredTask {
 
   private float progress;
 
-  public PoweredTaskProgress(IPoweredTask task) {
+  public PoweredTaskProgress(@Nonnull IPoweredTask task) {
     progress = task.getProgress();
   }
 
@@ -37,7 +39,7 @@ public class PoweredTaskProgress implements IPoweredTask {
   }
 
   @Override
-  public ResultStack[] getCompletedResult() {
+  public @Nonnull ResultStack[] getCompletedResult() {
     return new ResultStack[0];
   }
 
@@ -52,12 +54,12 @@ public class PoweredTaskProgress implements IPoweredTask {
   }
 
   @Override
-  public RecipeBonusType getBonusType() {
+  public @Nonnull RecipeBonusType getBonusType() {
     return RecipeBonusType.NONE;
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
   }
 
   @Override
@@ -66,7 +68,7 @@ public class PoweredTaskProgress implements IPoweredTask {
   }
 
   @Override
-  public MachineRecipeInput[] getInputs() {
+  public @Nonnull MachineRecipeInput[] getInputs() {
     return new MachineRecipeInput[0];
   }
 
