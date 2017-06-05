@@ -139,11 +139,8 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facing1) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return true;
-    }
-    return super.hasCapability(capability, facing1);
+  public final boolean hasCapability(Capability<?> capability, EnumFacing facing1) {
+    return getCapability(capability, facing1) != null;
   }
 
   @SuppressWarnings("unchecked")
