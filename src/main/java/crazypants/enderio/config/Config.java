@@ -2,7 +2,6 @@ package crazypants.enderio.config;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -11,6 +10,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
@@ -20,8 +21,6 @@ import crazypants.enderio.capacitor.CapacitorKeyHelper;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -154,7 +153,6 @@ public final class Config {
   };
   public static boolean travelStaffOffhandBlinkEnabled = true;
   public static boolean travelStaffOffhandTravelEnabled = true;
-  public static boolean travelStaffOffhandEnderIOEnabled = true;
   public static boolean travelStaffOffhandShowsTravelTargets = true;
 
   public static float travelAnchorZoomScale = 0.2f;
@@ -571,8 +569,8 @@ public final class Config {
     if (event.getModID().equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
-      init(null);
-      postInit();
+      init((FMLPreInitializationEvent) null);
+      init((FMLPostInitializationEvent) null);
     }
   }
 
@@ -582,8 +580,8 @@ public final class Config {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
-      init(null);
-      postInit();
+      init((FMLPreInitializationEvent) null);
+      init((FMLPostInitializationEvent) null);
     }
   }
 
@@ -593,7 +591,7 @@ public final class Config {
   }
 
   
-  public static void processConfig(Configuration config) {
+  public static void processConfig(@SuppressWarnings("hiding") Configuration config) {
 
     capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
         .getInt(capacitorBankMaxIoRF);
@@ -813,10 +811,6 @@ public final class Config {
         .get(sectionStaff.name, "travelStaffOffhandTravelEnabled", travelStaffOffhandTravelEnabled,
             "If set to false: the travel staff can not be used to click teleport to Travel Anchors, when held in the off-hand.")
         .getBoolean(travelStaffOffhandTravelEnabled);
-    travelStaffOffhandEnderIOEnabled = config
-        .get(sectionStaff.name, "travelStaffOffhandEnderIOEnabled", travelStaffOffhandEnderIOEnabled,
-            "If set to false: the travel staff can not be used to activate the Ender IO, when held in the off-hand.")
-        .getBoolean(travelStaffOffhandEnderIOEnabled);
     travelStaffOffhandShowsTravelTargets = config
         .get(sectionStaff.name, "travelStaffOffhandShowsTravelTargets", travelStaffOffhandShowsTravelTargets,
             "If set to false: Teleportation targets will not be highlighted for travel items held in the off-hand.")
@@ -1304,11 +1298,37 @@ public final class Config {
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
 
-    soulVesselBlackList = Arrays.asList(config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList.toArray(new String[0]),
-        "Entities listed here will can not be captured in a Soul Vial"));
-    soulVesselUnspawnableList = Arrays
-        .asList(config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, soulVesselUnspawnableList.toArray(new String[0]),
-            "Entities listed here cannot be spawned and must be cloned from a captured entity instead (Attention: Possibility of item duping!)"));
+    final NNList<String> temp = new NNList<>();
+    soulVesselBlackList.apply(new Callback<ResourceLocation>() {
+      @Override
+      public void apply(@Nonnull ResourceLocation rl) {
+        temp.add(rl.toString());
+      }
+    });
+    String[] list = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, temp.toArray(),
+        "Entities listed here will can not be captured in a Soul Vial");
+    soulVesselBlackList.clear();
+    for (String string : list) {
+      if (string != null) {
+        soulVesselBlackList.add(new ResourceLocation(string));
+      }
+    }
+
+    temp.clear();
+    soulVesselUnspawnableList.apply(new Callback<ResourceLocation>() {
+      @Override
+      public void apply(@Nonnull ResourceLocation rl) {
+        temp.add(rl.toString());
+      }
+    });
+    list = config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, temp.toArray(),
+        "Entities listed here cannot be spawned and must be cloned from a captured entity instead (Attention: Possibility of item duping!)");
+    soulVesselUnspawnableList.clear();
+    for (String string : list) {
+      if (string != null) {
+        soulVesselUnspawnableList.add(new ResourceLocation(string));
+      }
+    }
 
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial. Note: The Ender Dragon can not "
@@ -1390,7 +1410,7 @@ public final class Config {
     String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundRarity.toString(),
         "The rarity of the enchantment. COMMON, UNCOMMON, RARE, VERY_RARE ").getString();
     try {
-      enchantmentSoulBoundRarity = Rarity.valueOf(rareStr);
+      enchantmentSoulBoundRarity = Rarity.valueOf(NullHelper.notnull(rareStr, "invalid config value"));
     } catch (Exception e) {
       Log.warn("Could not set value config entry enchantmentWitherArrowRarity Specified value " + rareStr);
       e.printStackTrace();
@@ -1478,7 +1498,7 @@ public final class Config {
   public static void init(FMLInitializationEvent event) {
   }
 
-  public static void init(@Nonnull FMLPostInitializationEvent event) {
+  public static void init(FMLPostInitializationEvent event) {
     if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 4) {
       throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 4 values");
     }
@@ -1506,17 +1526,6 @@ public final class Config {
     if (remoteInventoryFluidTypes == null || remoteInventoryFluidTypes.length != 3) {
       throw new IllegalArgumentException("Ender IO config value remoteInventoryFluidTypes must have exactly 3 values");
     }
-  }
-
-  public static ItemStack getStackForString(String s) {
-    String[] nameAndMeta = s.split(";");
-    int meta = nameAndMeta.length == 1 ? 0 : Integer.parseInt(nameAndMeta[1]);
-    String[] data = nameAndMeta[0].split(":");
-    Item item = Item.REGISTRY.getObject(new ResourceLocation(data[0], data[1]));
-    if(item == null) {
-      return null;
-    }
-    return new ItemStack(item, 1, meta);
   }
 
   private Config() {

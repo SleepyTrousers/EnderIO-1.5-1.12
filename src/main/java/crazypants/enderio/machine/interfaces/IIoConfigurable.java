@@ -19,6 +19,7 @@ public interface IIoConfigurable {
 
   public void clearAllIoModes();
   
+  @Nonnull
   BlockPos getLocation();
 
 }

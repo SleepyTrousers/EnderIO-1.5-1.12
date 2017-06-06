@@ -125,6 +125,8 @@ public class EnderIO {
 
     BRProxy.init(event);
 
+    ServerChannelRegister.init(event);
+
     proxy.init(event);
   }
 

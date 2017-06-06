@@ -1,10 +1,12 @@
 package crazypants.enderio.transceiver;
 
-import net.minecraft.nbt.NBTTagCompound;
+import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
 
-import crazypants.util.UserIdent;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class Channel {
 
@@ -14,38 +16,38 @@ public class Channel {
     }
     String name = root.getString("name");
     UserIdent user = UserIdent.readfromNbt(root, "user");
-    ChannelType type = ChannelType.values()[root.getShort("type")];
+    ChannelType type = NullHelper.notnullJ(ChannelType.values()[root.getShort("type")], "Enum.values()");
     return new Channel(name, user, type);
   }
 
-  private final String name;
-  private final UserIdent user;
-  final ChannelType type;
+  private final @Nonnull String name;
+  private final @Nonnull UserIdent user;
+  private final @Nonnull ChannelType type;
 
-  public Channel(String name, GameProfile profile, ChannelType type) {
-    this.name = trim(name);
+  public Channel(@Nonnull String name, @Nonnull GameProfile profile, @Nonnull ChannelType type) {
+    this.name = name.trim();
     this.user = UserIdent.create(profile);
     this.type = type;
   }
 
-  public Channel(String name, UserIdent user, ChannelType type) {
-    this.name = trim(name);
+  public Channel(@Nonnull String name, @Nonnull UserIdent user, @Nonnull ChannelType type) {
+    this.name = name.trim();
     this.user = user;
     this.type = type;
   }
 
-  public Channel(String name, ChannelType type) {
-    this.name = trim(name);
-    this.user = UserIdent.nobody;
+  public Channel(@Nonnull String name, @Nonnull ChannelType type) {
+    this.name = name.trim();
+    this.user = UserIdent.NOBODY;
     this.type = type;
   }
 
   public boolean isPublic() {
-    return user == UserIdent.nobody;
+    return user == UserIdent.NOBODY;
   }
 
   public void writeToNBT(NBTTagCompound root) {
-    if (name == null || name.isEmpty()) {
+    if (name.isEmpty()) {
       return;
     }
     root.setString("name", name);
@@ -53,24 +55,13 @@ public class Channel {
     root.setShort("type", (short) type.ordinal());
   }
 
-  private String trim(String str) {
-    if (str == null) {
-      return null;
-    }
-    str = str.trim();
-    if (str.isEmpty()) {
-      return null;
-    }
-    return str;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-    result = prime * result + ((type == null) ? 0 : type.hashCode());
-    result = prime * result + ((user == null) ? 0 : user.hashCode());
+    result = prime * result + name.hashCode();
+    result = prime * result + type.hashCode();
+    result = prime * result + user.hashCode();
     return result;
   }
 
@@ -83,30 +74,24 @@ public class Channel {
     if (getClass() != obj.getClass())
       return false;
     Channel other = (Channel) obj;
-    if (getName() == null) {
-      if (other.getName() != null)
-        return false;
-    } else if (!getName().equals(other.getName()))
+    if (!getName().equals(other.getName()))
       return false;
     if (type != other.type)
       return false;
-    if (user == null) {
-      if (other.user != null)
-        return false;
-    } else if (!user.equals(other.user))
+    if (!user.equals(other.user))
       return false;
     return true;
   }
 
-  public String getName() {
+  public @Nonnull String getName() {
     return name;
   }
 
-  public ChannelType getType() {
+  public @Nonnull ChannelType getType() {
     return type;
   }
 
-  public UserIdent getUser() {
+  public @Nonnull UserIdent getUser() {
     return user;
   }
 

@@ -2,6 +2,8 @@ package crazypants.enderio.machine.gui;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.input.Keyboard;
 
 import com.enderio.core.api.client.gui.IGuiScreen;
@@ -17,10 +19,10 @@ import net.minecraft.tileentity.TileEntity;
 
 public class GuiButtonIoConfig<E extends TileEntity & IIoConfigurable> extends ToggleButton {
 
-  private final E config;
-  private final GuiOverlayIoConfig<E> configOverlay;
+  private final @Nonnull E config;
+  private final @Nonnull GuiOverlayIoConfig<E> configOverlay;
 
-  public GuiButtonIoConfig(IGuiScreen gui, int id, int x, int y, E config, GuiOverlayIoConfig<E> configOverlay) {
+  public GuiButtonIoConfig(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull E config, @Nonnull GuiOverlayIoConfig<E> configOverlay) {
     super(gui, id, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
     this.config = config;
     this.configOverlay = configOverlay;
@@ -31,15 +33,15 @@ public class GuiButtonIoConfig<E extends TileEntity & IIoConfigurable> extends T
 
     ArrayList<String> list = new ArrayList<String>();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.machine.ioMode.overlay.tooltip.visible.line");
-    if(!list.isEmpty()) {
+    if (!list.isEmpty()) {
       setSelectedToolTip(list.toArray(new String[list.size()]));
-    }    
+    }
   }
 
   @Override
   protected boolean toggleSelected() {
-    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-      if(!configOverlay.isVisible()) {
+    if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+      if (!configOverlay.isVisible()) {
         return false;
       }
       config.clearAllIoModes();
@@ -50,4 +52,5 @@ public class GuiButtonIoConfig<E extends TileEntity & IIoConfigurable> extends T
     }
     return true;
   }
+
 }

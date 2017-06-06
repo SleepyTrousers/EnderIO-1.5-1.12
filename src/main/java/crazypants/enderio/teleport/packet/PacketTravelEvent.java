@@ -1,5 +1,8 @@
 package crazypants.enderio.teleport.packet;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -14,119 +17,105 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravelEvent, IMessage> {
+public class PacketTravelEvent implements IMessage {
 
-  int x;
-  int y;
-  int z;
+  long pos;
   int powerUse;
   boolean conserveMotion;
-  int entityId;
   int source;
   int hand;
 
   public PacketTravelEvent() {
   }
 
-  public PacketTravelEvent(Entity entity, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+  public PacketTravelEvent(BlockPos pos, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
+    this.pos = pos.toLong();
     this.powerUse = powerUse;
     this.conserveMotion = conserveMotion;
-    this.entityId = entity instanceof EntityPlayer ? -1 : entity.getEntityId();
     this.source = source.ordinal();
     this.hand = (hand == null ? EnumHand.MAIN_HAND : hand).ordinal();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(x);
-    buf.writeInt(y);
-    buf.writeInt(z);
+    buf.writeLong(pos);
     buf.writeInt(powerUse);
     buf.writeBoolean(conserveMotion);
-    buf.writeInt(entityId);
     buf.writeInt(source);
     buf.writeInt(hand);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    x = buf.readInt();
-    y = buf.readInt();
-    z = buf.readInt();
+    pos = buf.readLong();
     powerUse = buf.readInt();
     conserveMotion = buf.readBoolean();
-    entityId = buf.readInt();
     source = buf.readInt();
     hand = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
-    Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity : ctx.getServerHandler().playerEntity.world.getEntityByID(message.entityId);
+  public static class Handler implements IMessageHandler<PacketTravelEvent, IMessage> {
 
-    if (toTp != ctx.getServerHandler().playerEntity) {
-      ctx.getServerHandler().playerEntity.connection.kickPlayerFromServer("Teleporting others around denied. (" + toTp + ")");
+    @Override
+    public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
+      Entity toTp = ctx.getServerHandler().player;
+
+      TravelSource source = NullHelper.notnullJ(TravelSource.values()[message.source], "Enum.values()");
+      EnumHand hand = NullHelper.notnullJ(EnumHand.values()[message.hand], "Enum.values()");
+
+      doServerTeleport(toTp, BlockPos.fromLong(message.pos), message.powerUse, message.conserveMotion, source, hand);
+
       return null;
     }
 
-    int x1 = message.x, y1 = message.y, z1 = message.z;
+    private boolean doServerTeleport(@Nonnull Entity toTp, @Nonnull BlockPos pos, int powerUse, boolean conserveMotion, @Nonnull TravelSource source,
+        @Nonnull EnumHand hand) {
+      EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
 
-    TravelSource source1 = TravelSource.values()[message.source];
-    EnumHand hand1 = EnumHand.values()[message.hand];
+      TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, pos, toTp.dimension);
+      if (MinecraftForge.EVENT_BUS.post(evt)) {
+        return false;
+      }
+      pos = evt.getTarget();
 
-    doServerTeleport(toTp, x1, y1, z1, message.powerUse, message.conserveMotion, source1, hand1);
+      SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
 
-    return null;
-  }
-
-  private boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source, EnumHand hand) {
-    EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
-    
-    TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z, toTp.dimension);
-    if(MinecraftForge.EVENT_BUS.post(evt)) {
-      return false;
-    }
-    x = evt.getTargetX();
-    y = evt.getTargetY();
-    z = evt.getTargetZ();
-
-    SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
-
-    if(player != null) {
-      player.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
-    } else {
-      toTp.setPosition(x, y, z);
-    }
-
-    SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
-
-    toTp.fallDistance = 0;
-
-    if(player != null) {
-      if(conserveMotion) {
-        Vector3d velocityVex = Util.getLookVecEio(player);
-        SPacketEntityVelocity p = new SPacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
-        ((EntityPlayerMP) player).connection.sendPacket(p);
+      if (player != null) {
+        player.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5);
+      } else {
+        toTp.setPosition(pos.getX(), pos.getY(), pos.getZ());
       }
 
-      if (powerUse > 0 && hand != null) {
-        ItemStack heldItem = player.getHeldItem(hand);
-        if (heldItem != null && heldItem.getItem() instanceof IItemOfTravel) {
-          ItemStack item = heldItem.copy();
-          ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
-          player.setHeldItem(hand, item);
+      SoundHelper.playSound(toTp.world, toTp, source.sound, 1.0F, 1.0F);
+
+      toTp.fallDistance = 0;
+
+      if (player != null) {
+        if (conserveMotion) {
+          Vector3d velocityVex = Util.getLookVecEio(player);
+          SPacketEntityVelocity p = new SPacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
+          ((EntityPlayerMP) player).connection.sendPacket(p);
+        }
+
+        if (powerUse > 0) {
+          ItemStack heldItem = player.getHeldItem(hand);
+          if (heldItem.getItem() instanceof IItemOfTravel) {
+            ItemStack item = heldItem.copy();
+            ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);
+            player.setHeldItem(hand, item);
+          }
         }
       }
+
+      return true;
     }
-    
-    return true;
+
   }
+
 }

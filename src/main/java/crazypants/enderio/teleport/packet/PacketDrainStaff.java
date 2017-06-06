@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainStaff, IMessage> {
+public class PacketDrainStaff implements IMessage {
 
   int powerUse;
   int hand;
@@ -34,17 +34,23 @@ public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainSt
     hand = buffer.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketDrainStaff message, MessageContext ctx) {
-    EntityPlayer ep = ctx.getServerHandler().playerEntity;
-    EnumHand theHand = EnumHand.values()[message.hand];
-    ItemStack heldItemMainhand = ep.getHeldItem(theHand);
-    if(message.powerUse > 0 && heldItemMainhand != null && heldItemMainhand.getItem() instanceof IItemOfTravel) {
-      ItemStack item = heldItemMainhand.copy();
-      ((IItemOfTravel) item.getItem()).extractInternal(item, message.powerUse);
-      ep.setHeldItem(theHand, item);
+  public static class Handler implements IMessageHandler<PacketDrainStaff, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketDrainStaff message, MessageContext ctx) {
+      EntityPlayer ep = ctx.getServerHandler().player;
+      EnumHand theHand = EnumHand.values()[message.hand];
+      if (theHand != null) {
+        ItemStack heldItemMainhand = ep.getHeldItem(theHand);
+        if (message.powerUse > 0 && heldItemMainhand.getItem() instanceof IItemOfTravel) {
+          ItemStack item = heldItemMainhand.copy();
+          ((IItemOfTravel) item.getItem()).extractInternal(item, message.powerUse);
+          ep.setHeldItem(theHand, item);
+        }
+      }
+      return null;
     }
-    return null;
+
   }
 
 }

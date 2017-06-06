@@ -2,6 +2,9 @@ package crazypants.enderio.teleport;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
@@ -12,8 +15,9 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.handler.darksteel.IDarkSteelItem;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,17 +36,16 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   private long lastBlickTick = 0;
 
-  public static ItemTravelStaff create() {
-    ItemTravelStaff result = new ItemTravelStaff();
+  public static ItemTravelStaff create(@Nonnull IModObject modObject) {
+    ItemTravelStaff result = new ItemTravelStaff(modObject);
     result.init();
     return result;
   }
-  
 
-  protected ItemTravelStaff() {
+  protected ItemTravelStaff(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemTravelStaff.getUnlocalisedName());
-    setRegistryName(ModObject.itemTravelStaff.getUnlocalisedName());
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }
@@ -51,18 +55,19 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+  public void onCreated(@Nonnull ItemStack itemStack, @Nonnull World world, @Nonnull EntityPlayer entityPlayer) {
     EnergyUpgrade.EMPOWERED.writeToItem(itemStack);
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack equipped, World world, EntityPlayer player, EnumHand hand) {
-    if(player.isSneaking()) {
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+    ItemStack equipped = player.getHeldItem(hand);
+    if (player.isSneaking()) {
       long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
-      if(ticksSinceBlink < 0) {
+      if (ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
-      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
         if (TravelController.instance.doBlink(equipped, hand, player)) {
           player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
@@ -71,7 +76,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
 
-    if(world.isRemote) {
+    if (world.isRemote) {
       TravelController.instance.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
     }
     player.swingArm(hand);
@@ -79,41 +84,40 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    list.add(EnergyUpgrade.getStoredEnergyString(itemstack));
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    list.add(EnergyUpgradeManager.getStoredEnergyString(itemstack));
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void extractInternal(ItemStack item, int powerUse) {
-    EnergyUpgrade.extractEnergy(item, powerUse, false);
+  public void extractInternal(@Nonnull ItemStack item, int powerUse) {
+    EnergyUpgradeManager.extractEnergy(item, powerUse, false);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
     is = new ItemStack(this);
-    onCreated(is, null, null);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);
+    EnergyUpgradeManager.setPowerFull(is);
     par3List.add(is);
   }
 
   @Override
-  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+  public boolean isActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
     return true;
   }
 
@@ -124,7 +128,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition);
   }
 
@@ -134,19 +138,14 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   }
 
   @Override
-  public String getItemName() {
-    return ModObject.itemTravelStaff.getUnlocalisedName();
-  }
-
-  @Override
-  public boolean isItemForRepair(ItemStack right) {
+  public boolean isItemForRepair(@Nonnull ItemStack right) {
     // not damageable, no repair
     return false;
   }
 
   @Override
-  public int getEnergyStored(ItemStack item) {
-    return EnergyUpgrade.getEnergyStored(item);
+  public int getEnergyStored(@Nonnull ItemStack item) {
+    return EnergyUpgradeManager.getEnergyStored(item);
   }
 
 }

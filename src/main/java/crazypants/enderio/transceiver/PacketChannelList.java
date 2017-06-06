@@ -1,19 +1,18 @@
 package crazypants.enderio.transceiver;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.enderio.core.common.network.NetworkUtil;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.enderio.core.common.network.NetworkUtil;
-
-public class PacketChannelList implements IMessage, IMessageHandler<PacketChannelList, IMessage> {
+public class PacketChannelList implements IMessage {
 
   private List<Channel> channels;
 
@@ -57,12 +56,16 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
 
   }
 
-  @Override
-  public IMessage onMessage(PacketChannelList message, MessageContext ctx) {
-    for (Channel channel : message.channels) {
-      ClientChannelRegister.instance.addChannel(channel);
+  public static class Handler implements IMessageHandler<PacketChannelList, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketChannelList message, MessageContext ctx) {
+      for (Channel channel : message.channels) {
+        ClientChannelRegister.instance.addChannel(channel);
+      }
+      return null;
     }
-    return null;
+
   }
 
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Camera;
@@ -12,17 +14,15 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.config.Config.TRAVEL_BLACKLIST;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -50,14 +50,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static com.enderio.core.common.util.stackable.Things.TRAVEL_BLACKLIST;
-import static crazypants.enderio.init.ModObject.blockTelePad;
-
 public class TravelController {
 
   public static final TravelController instance = new TravelController();
 
-  private Random rand = new Random();
+  private final @Nonnull Random rand = new Random();
 
   private boolean wasJumping = false;
 
@@ -73,13 +70,13 @@ public class TravelController {
 
   private boolean showTargets = false;
 
-  public BlockCoord onBlockCoord;
+  private BlockPos onBlockCoord;
 
-  public BlockCoord selectedCoord;
+  private BlockPos selectedCoord;
 
-  Camera currentView = new Camera();
+  private final @Nonnull Camera currentView = new Camera();
 
-  private final HashMap<BlockCoord, Float> candidates = new HashMap<BlockCoord, Float>();
+  private final @Nonnull HashMap<BlockPos, Float> candidates = new HashMap<>();
 
   private boolean selectionEnabled = true;
 
@@ -90,28 +87,25 @@ public class TravelController {
   private TravelController() {
   }
 
-  private boolean doesHandAllowTravel(EnumHand hand) {
+  private boolean doesHandAllowTravel(@Nonnull EnumHand hand) {
     return Config.travelStaffOffhandTravelEnabled || hand == EnumHand.MAIN_HAND;
   }
 
-  private boolean doesHandAllowBlink(EnumHand hand) {
+  private boolean doesHandAllowBlink(@Nonnull EnumHand hand) {
     return Config.travelStaffOffhandBlinkEnabled || hand == EnumHand.MAIN_HAND;
   }
 
-  private boolean doesHandAllowEnderIO(EnumHand hand) {
-    return Config.travelStaffOffhandEnderIOEnabled || hand == EnumHand.MAIN_HAND;
-  }
-
-  public boolean activateTravelAccessable(ItemStack equipped, EnumHand hand, World world, EntityPlayer player, TravelSource source) {
-    if(!hasTarget()) {
+  public boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
+      @Nonnull TravelSource source) {
+    BlockPos target = selectedCoord;
+    if (target == null) {
       return false;
     }
-    BlockCoord target = selectedCoord;
-    TileEntity te = world.getTileEntity(target.getBlockPos());
-    if(te instanceof ITravelAccessable) {
+    TileEntity te = world.getTileEntity(target);
+    if (te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-      if(ta.getRequiresPassword(player)) {
-        PacketOpenAuthGui p = new PacketOpenAuthGui(target.getBlockPos());
+      if (ta.getRequiresPassword(player)) {
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target);
         PacketHandler.INSTANCE.sendToServer(p);
         return true;
       }
@@ -123,7 +117,7 @@ public class TravelController {
     return true;
   }
 
-  public boolean doBlink(ItemStack equipped, EnumHand hand, EntityPlayer player) {
+  public boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
     if (!doesHandAllowBlink(hand)) {
       return false;
     }
@@ -137,20 +131,20 @@ public class TravelController {
     Vec3d end = new Vec3d(sample.x, sample.y, sample.z);
 
     double playerHeight = player.getYOffset();
-    //if you looking at you feet, and your player height to the max distance, or part there of
+    // if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
     double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
 
     RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
-    if(p == null) {
+    if (p == null) {
 
-      //go as far as possible
+      // go as far as possible
       for (double i = maxDistance; i > 1; i--) {
 
         sample.set(look);
         sample.scale(i);
         sample.add(eye);
-        //we test against our feets location
+        // we test against our feets location
         sample.y -= playerHeight;
         if (doBlinkAround(player, equipped, hand, sample, true)) {
           return true;
@@ -161,9 +155,9 @@ public class TravelController {
 
       List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
       for (RayTraceResult pos : res) {
-        if(pos != null) {
+        if (pos != null) {
           IBlockState hitBlock = player.world.getBlockState(pos.getBlockPos());
-          if(isBlackListedBlock(player, pos, hitBlock)) {
+          if (isBlackListedBlock(player, pos, hitBlock)) {
             BlockPos bp = pos.getBlockPos();
             maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5)) - 1.5 - lookComp);
           }
@@ -181,7 +175,7 @@ public class TravelController {
         sample.set(look);
         sample.scale(sampleDistance);
         sample.add(targetBc);
-        //we test against our feets location
+        // we test against our feets location
         sample.y -= playerHeight;
 
         if (doBlinkAround(player, equipped, hand, sample, false)) {
@@ -196,7 +190,7 @@ public class TravelController {
         sample.set(look);
         sample.scale(sampleDistance);
         sample.add(targetBc);
-        //we test against our feets location
+        // we test against our feets location
         sample.y -= playerHeight;
 
         if (doBlinkAround(player, equipped, hand, sample, false)) {
@@ -209,27 +203,29 @@ public class TravelController {
     return false;
   }
 
-  private boolean isBlackListedBlock(EntityPlayer player, RayTraceResult pos, IBlockState hitBlock) {
+  private boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
     return Config.TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
         && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
-  private boolean doBlinkAround(EntityPlayer player, ItemStack equipped, EnumHand hand, Vector3d sample, boolean conserveMomentum) {
-    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)),
+  private boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
+      boolean conserveMomentum) {
+    if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)),
         conserveMomentum)) {
       return true;
     }
-    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
+    if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
       return true;
     }
-    if (doBlink(player, equipped, hand, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)),
+    if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)),
         conserveMomentum)) {
       return true;
     }
     return false;
   }
 
-  private boolean doBlink(EntityPlayer player, ItemStack equipped, EnumHand hand, BlockCoord coord, boolean conserveMomentum) {
+  private boolean doBlink(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull BlockPos coord,
+      boolean conserveMomentum) {
     return travelToLocation(player, equipped, hand, TravelSource.STAFF_BLINK, coord, conserveMomentum);
   }
 
@@ -239,20 +235,17 @@ public class TravelController {
 
   public void setSelectionEnabled(boolean b) {
     selectionEnabled = b;
-    if(!selectionEnabled) {
+    if (!selectionEnabled) {
       candidates.clear();
     }
   }
 
-  public boolean isBlockSelected(BlockCoord coord) {
-    if(coord == null) {
-      return false;
-    }
+  public boolean isBlockSelected(@Nonnull BlockPos coord) {
     return coord.equals(selectedCoord);
   }
 
-  public void addCandidate(BlockCoord coord) {
-    if(!candidates.containsKey(coord)) {
+  public void addCandidate(@Nonnull BlockPos coord) {
+    if (!candidates.containsKey(coord)) {
       candidates.put(coord, -1f);
     }
   }
@@ -262,7 +255,7 @@ public class TravelController {
   }
 
   @SubscribeEvent
-  public void onRender(RenderWorldLastEvent event) {
+  public void onRender(@Nonnull RenderWorldLastEvent event) {
 
     Minecraft mc = Minecraft.getMinecraft();
     Vector3d eye = Util.getEyePositionEio(mc.player);
@@ -271,8 +264,7 @@ public class TravelController {
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
     float fov = Minecraft.getMinecraft().gameSettings.fovSetting;
-    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth,
-        mc.displayHeight);
+    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth, mc.displayHeight);
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
     currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
@@ -283,36 +275,30 @@ public class TravelController {
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
-  public void onClientTick(TickEvent.ClientTickEvent event) {
-    if(event.phase == TickEvent.Phase.END) {
+  public void onClientTick(@Nonnull TickEvent.ClientTickEvent event) {
+    if (event.phase == TickEvent.Phase.END) {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
-      if(player == null) {
-        return;
-      }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
       showTargets = onBlock || isTravelItemActiveForSelecting(player);
-      if(showTargets) {
+      if (showTargets) {
         updateSelectedTarget(player);
       } else {
         selectedCoord = null;
       }
       MovementInput input = player.movementInput;
-      if(input == null) {
-        return;
-      }
       tempJump = input.jump;
       tempSneak = input.sneak;
 
       // Handles teleportation if a target is selected
-      if((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
+      if ((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
           || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && delayTimer == 0 && Config.travelAnchorSneak)) {
 
         onInput(player);
         delayTimer = timer;
       }
       // If there is no selected coordinate and the input is jump, go up
-      if(input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
+      if (input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
 
         updateVerticalTarget(player, 1);
         onInput(player);
@@ -321,13 +307,13 @@ public class TravelController {
       }
 
       // If there is no selected coordinate and the input is sneak, go down
-      if(input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
+      if (input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
         updateVerticalTarget(player, -1);
         onInput(player);
         delayTimer = timer;
       }
 
-      if(delayTimer != 0) {
+      if (delayTimer != 0) {
         delayTimer--;
       }
 
@@ -337,47 +323,43 @@ public class TravelController {
     }
   }
 
-  private boolean hasTarget() {
-    return selectedCoord != null;
-  }
-
-  private int getEnergyInTravelItem(ItemStack equipped) {
-    if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
+  private int getEnergyInTravelItem(@Nonnull ItemStack equipped) {
+    if (!(equipped.getItem() instanceof IItemOfTravel)) {
       return 0;
     }
     return ((IItemOfTravel) equipped.getItem()).getEnergyStored(equipped);
   }
 
-  public boolean isTravelItemActiveForRendering(EntityPlayer ep) {
-    if (ep == null) {
-      return false;
-    }
+  public boolean isTravelItemActiveForRendering(@Nonnull EntityPlayer ep) {
     return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (Config.travelStaffOffhandShowsTravelTargets && isTravelItemActive(ep, ep.getHeldItemOffhand()));
   }
 
-  private boolean isTravelItemActiveForSelecting(EntityPlayer ep) {
-    if (ep == null) {
-      return false;
-    }
+  private boolean isTravelItemActiveForSelecting(@Nonnull EntityPlayer ep) {
     return isTravelItemActive(ep, ep.getHeldItemMainhand()) || isTravelItemActive(ep, ep.getHeldItemOffhand());
   }
 
-  private boolean isTravelItemActive(EntityPlayer ep, ItemStack equipped) {
-    return equipped != null && equipped.getItem() instanceof IItemOfTravel && ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
+  private boolean isTravelItemActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
+    return equipped.getItem() instanceof IItemOfTravel && ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
   }
 
-  private boolean travelToSelectedTarget(EntityPlayer player, ItemStack equipped, EnumHand hand, TravelSource source, boolean conserveMomentum) {
-    return travelToLocation(player, equipped, hand, source, selectedCoord, conserveMomentum);
+  private boolean travelToSelectedTarget(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+      boolean conserveMomentum) {
+    final BlockPos selectedCoord_nullchecked = selectedCoord;
+    if (selectedCoord_nullchecked == null) {
+      return false;
+    }
+    return travelToLocation(player, equipped, hand, source, selectedCoord_nullchecked, conserveMomentum);
   }
 
-  private boolean travelToLocation(EntityPlayer player, ItemStack equipped, EnumHand hand, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
+  private boolean travelToLocation(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+      @Nonnull BlockPos coord, boolean conserveMomentum) {
 
-    if(source != TravelSource.STAFF_BLINK) {
-      TileEntity te = player.world.getTileEntity(coord.getBlockPos());
-      if(te instanceof ITravelAccessable) {
+    if (source != TravelSource.STAFF_BLINK) {
+      TileEntity te = player.world.getTileEntity(coord);
+      if (te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
-        if(!ta.canBlockBeAccessed(player)) {
-          player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+        if (!ta.canBlockBeAccessed(player)) {
+          player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
           return false;
         }
       }
@@ -385,113 +367,105 @@ public class TravelController {
 
     int requiredPower = 0;
     requiredPower = getRequiredPower(player, equipped, source, coord);
-    if(requiredPower < 0) {
+    if (requiredPower < 0) {
       return false;
     }
 
-    if(!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
-      if(source != TravelSource.STAFF_BLINK) {
-        player.addChatComponentMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
+    if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
+      if (source != TravelSource.STAFF_BLINK) {
+        player.sendMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
       }
       return false;
     }
-    if(!isValidTarget(player, coord, source)) {
-      if(source != TravelSource.STAFF_BLINK) {
-        player.addChatComponentMessage(new TextComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
+    if (!isValidTarget(player, coord, source)) {
+      if (source != TravelSource.STAFF_BLINK) {
+        player.sendMessage(new TextComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
       }
       return false;
     }
     if (doClientTeleport(player, hand, coord, source, requiredPower, conserveMomentum)) {
       for (int i = 0; i < 6; ++i) {
         player.world.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
-            player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
-            (rand.nextDouble() - 0.5D) * 2.0D);
+            player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);
       }
     }
     return true;
   }
 
-  private int getRequiredPower(EntityPlayer player, ItemStack equipped, TravelSource source, BlockCoord coord) {
+  private int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
     if (!isTravelItemActive(player, equipped)) {
       return 0;
     }
     int requiredPower;
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
-    if(requiredPower > canUsePower) {
-      player.addChatComponentMessage(new TextComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+    if (requiredPower > canUsePower) {
+      player.sendMessage(new TextComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
       return -1;
     }
     return requiredPower;
   }
 
-  private boolean isInRangeTarget(EntityPlayer player, BlockCoord bc, float maxSq) {
+  private boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
     return getDistanceSquared(player, bc) <= maxSq;
   }
 
-  private double getDistanceSquared(EntityPlayer player, BlockCoord bc) {
-    if(player == null || bc == null) {
-      return 0;
-    }
+  private double getDistanceSquared(@Nonnull EntityPlayer player, @Nonnull BlockPos bc) {
     Vector3d eye = Util.getEyePositionEio(player);
-    Vector3d target = new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+    Vector3d target = new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5);
     return eye.distanceSquared(target);
   }
 
-  private double getDistance(EntityPlayer player, BlockCoord coord) {
+  private double getDistance(@Nonnull EntityPlayer player, @Nonnull BlockPos coord) {
     return Math.sqrt(getDistanceSquared(player, coord));
   }
 
-  private boolean isValidTarget(EntityPlayer player, BlockCoord bc, TravelSource source) {
-    if(bc == null) {
-      return false;
-    }
+  private boolean isValidTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, @Nonnull TravelSource source) {
     World w = player.world;
-    BlockCoord baseLoc = bc;
-    if(source != TravelSource.STAFF_BLINK) {
-      //targeting a block so go one up
-      baseLoc = bc.getLocation(EnumFacing.UP);
+    BlockPos baseLoc = bc;
+    if (source != TravelSource.STAFF_BLINK) {
+      // targeting a block so go one up
+      baseLoc = bc.offset(EnumFacing.UP);
     }
 
-    return canTeleportTo(player, source, baseLoc, w)
-        && canTeleportTo(player, source, baseLoc.getLocation(EnumFacing.UP), w);
+    return canTeleportTo(player, source, baseLoc, w) && canTeleportTo(player, source, baseLoc.offset(EnumFacing.UP), w);
   }
 
-  private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {
-    if(bc.y < 1) {
+  private boolean canTeleportTo(@Nonnull EntityPlayer player, @Nonnull TravelSource source, @Nonnull BlockPos bc, @Nonnull World w) {
+    if (bc.getY() < 1) {
       return false;
     }
-    if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
+    if (source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
       Vec3d start = Util.getEyePosition(player);
-      Vec3d target = new Vec3d(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
-      if(!canBlinkTo(bc, w, start, target)) {
+      Vec3d target = new Vec3d(bc.getX() + 0.5f, bc.getY() + 0.5f, bc.getZ() + 0.5f);
+      if (!canBlinkTo(bc, w, start, target)) {
         return false;
       }
     }
 
-    IBlockState bs = w.getBlockState(bc.getBlockPos());
+    IBlockState bs = w.getBlockState(bc);
     Block block = bs.getBlock();
-    if(block == null || block.isAir(bs, w, bc.getBlockPos())) {
+    if (block.isAir(bs, w, bc)) {
       return true;
     }
-        
-    final AxisAlignedBB aabb = bs.getBoundingBox(w, bc.getBlockPos());
-    return aabb == null || aabb.getAverageEdgeLength() < 0.7;
+
+    final AxisAlignedBB aabb = bs.getBoundingBox(w, bc);
+    return aabb.getAverageEdgeLength() < 0.7;
   }
 
-  private boolean canBlinkTo(BlockCoord bc, World w, Vec3d start, Vec3d target) {
+  private boolean canBlinkTo(@Nonnull BlockPos bc, @Nonnull World w, @Nonnull Vec3d start, @Nonnull Vec3d target) {
     RayTraceResult p = w.rayTraceBlocks(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
-    if(p != null) {
-      if(!Config.travelStaffBlinkThroughClearBlocksEnabled) {
+    if (p != null) {
+      if (!Config.travelStaffBlinkThroughClearBlocksEnabled) {
         return false;
       }
       IBlockState bs = w.getBlockState(p.getBlockPos());
       Block block = bs.getBlock();
-      if(isClear(w, bs, block, p.getBlockPos())) {
-        if(new BlockCoord(p).equals(bc)) {
+      if (isClear(w, bs, block, p.getBlockPos())) {
+        if (BlockCoord.get(p).equals(bc)) {
           return true;
         }
-        //need to step
+        // need to step
         Vector3d sv = new Vector3d(start.xCoord, start.yCoord, start.zCoord);
         Vector3d rayDir = new Vector3d(target.xCoord, target.yCoord, target.zCoord);
         rayDir.sub(sv);
@@ -506,12 +480,12 @@ public class TravelController {
     return true;
   }
 
-  private boolean isClear(World w, IBlockState bs, Block block, BlockPos bp) {
-    if(block == null || block.isAir(bs, w, bp)) {
+  private boolean isClear(@Nonnull World w, @Nonnull IBlockState bs, @Nonnull Block block, @Nonnull BlockPos bp) {
+    if (block.isAir(bs, w, bp)) {
       return true;
     }
     final AxisAlignedBB aabb = bs.getBoundingBox(w, bp);
-    if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
+    if (aabb.getAverageEdgeLength() < 0.7) {
       return true;
     }
 
@@ -519,32 +493,32 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateVerticalTarget(EntityPlayerSP player, int direction) {
+  private void updateVerticalTarget(@Nonnull EntityPlayerSP player, int direction) {
 
-    BlockCoord currentBlock = getActiveTravelBlock(player);
+    BlockPos currentBlock = getActiveTravelBlock(player);
     World world = Minecraft.getMinecraft().world;
-    for (int i = 0, y = currentBlock.y + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
+    for (int i = 0, y = currentBlock.getY() + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
 
-      //Circumvents the raytracing used to find candidates on the y axis
-      TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.x, y, currentBlock.z));
+      // Circumvents the raytracing used to find candidates on the y axis
+      TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.getX(), y, currentBlock.getZ()));
 
-      if(selectedBlock instanceof ITravelAccessable) {
+      if (selectedBlock instanceof ITravelAccessable) {
         ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
-        BlockCoord targetBlock = new BlockCoord(currentBlock.x, y, currentBlock.z);
+        BlockPos targetBlock = new BlockPos(currentBlock.getX(), y, currentBlock.getZ());
 
-        if(Config.travelAnchorSkipWarning) {
-          if(travelBlock.getRequiresPassword(player)) {
-            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
+        if (Config.travelAnchorSkipWarning) {
+          if (travelBlock.getRequiresPassword(player)) {
+            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
           }
 
-          if(travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
-            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
+          if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
+            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
           }
-          if(!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-            player.addChatComponentMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
+          if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
           }
         }
-        if(travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+        if (travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
           selectedCoord = targetBlock;
           return;
         }
@@ -553,27 +527,27 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateSelectedTarget(EntityPlayerSP player) {
+  private void updateSelectedTarget(@Nonnull EntityPlayerSP player) {
     selectedCoord = null;
-    if(candidates.isEmpty()) {
+    if (candidates.isEmpty()) {
       return;
     }
 
     double closestDistance = Double.MAX_VALUE;
-    for (BlockCoord bc : candidates.keySet()) {
-      if(!bc.equals(onBlockCoord)) {
+    for (BlockPos bc : candidates.keySet()) {
+      if (!bc.equals(onBlockCoord)) {
 
         double d = addRatio(bc);
-        if(d < closestDistance) {
+        if (d < closestDistance) {
           selectedCoord = bc;
           closestDistance = d;
         }
       }
     }
 
-    if(selectedCoord != null) {
+    if (selectedCoord != null) {
 
-      Vector3d blockCenter = new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5);
+      Vector3d blockCenter = new Vector3d(selectedCoord.getX() + 0.5, selectedCoord.getY() + 0.5, selectedCoord.getZ() + 0.5);
       Vector2d blockCenterPixel = currentView.getScreenPoint(blockCenter);
 
       Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
@@ -581,10 +555,10 @@ public class TravelController {
 
       double pixDist = blockCenterPixel.distance(screenMidPixel);
       double rat = pixDist / Minecraft.getMinecraft().displayHeight;
-      if(rat != rat) {
+      if (rat != rat) {
         rat = 0;
       }
-      if(rat > 0.07) {
+      if (rat > 0.07) {
         selectedCoord = null;
       }
 
@@ -592,67 +566,67 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void onInput(EntityPlayerSP player) {
+  private void onInput(@Nonnull EntityPlayerSP player) {
 
     MovementInput input = player.movementInput;
-    BlockCoord target = TravelController.instance.selectedCoord;
-    if(target == null) {
+    BlockPos target = TravelController.instance.selectedCoord;
+    if (target == null) {
       return;
     }
 
-    TileEntity te = player.world.getTileEntity(new BlockPos(target.x, target.y, target.z));
-    if(te instanceof ITravelAccessable) {
+    TileEntity te = player.world.getTileEntity(target);
+    if (te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-      if(ta.getRequiresPassword(player)) {
-        PacketOpenAuthGui p = new PacketOpenAuthGui(target.getBlockPos());
+      if (ta.getRequiresPassword(player)) {
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target);
         PacketHandler.INSTANCE.sendToServer(p);
         return;
       }
     }
 
-    if (travelToSelectedTarget(player, null, null, TravelSource.BLOCK, false)) {
+    if (travelToSelectedTarget(player, Prep.getEmpty(), EnumHand.MAIN_HAND, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {
         ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer) player, 0, "flyToggleTimer", "field_71101_bC");
       } catch (Exception e) {
-        //ignore
+        // ignore
       }
     }
 
   }
 
-  public double getScaleForCandidate(Vector3d loc) {
+  public double getScaleForCandidate(@Nonnull Vector3d loc) {
 
-    if(!currentView.isValid()) {
+    if (!currentView.isValid()) {
       return 1;
     }
 
-    BlockCoord bc = new BlockCoord(loc.x, loc.y, loc.z);
+    BlockPos bc = new BlockPos(loc.x, loc.y, loc.z);
     float ratio = -1;
     Float r = candidates.get(bc);
-    if(r != null) {
+    if (r != null) {
       ratio = r;
     }
-    if(ratio < 0) {
-      //no cached value
+    if (ratio < 0) {
+      // no cached value
       addRatio(bc);
       ratio = candidates.get(bc);
     }
 
-    //smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
+    // smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
     float start = 0.2f;
     float end = 0.01f;
     double mix = MathHelper.clamp((start - ratio) / (start - end), 0, 1);
     double scale = 1;
-    if(mix > 0) {
+    if (mix > 0) {
 
-      Vector3d eyePoint = Util.getEyePositionEio(EnderIO.proxy.getClientPlayer());
+      Vector3d eyePoint = Util.getEyePositionEio(Minecraft.getMinecraft().player);
       scale = tanFovRad * eyePoint.distance(loc);
 
-      //Using this scale will give us the block full screen, we will make it 20% of the screen
+      // Using this scale will give us the block full screen, we will make it 20% of the screen
       scale *= Config.travelAnchorZoomScale;
 
-      //only apply 70% of the scaling so more distance targets are still smaller than closer targets
+      // only apply 70% of the scaling so more distance targets are still smaller than closer targets
       float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
@@ -663,12 +637,12 @@ public class TravelController {
     return scale;
   }
 
-  private double addRatio(BlockCoord bc) {
-    Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5));
+  private double addRatio(@Nonnull BlockPos bc) {
+    Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5));
     Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
     mid.scale(0.5);
     double d = sp.distance(mid);
-    if(d != d) {
+    if (d != d) {
       d = 0f;
     }
     float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
@@ -677,32 +651,30 @@ public class TravelController {
   }
 
   // Note: This is restricted to the current player
-  public boolean doClientTeleport(Entity entity, EnumHand hand, BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+  public boolean doClientTeleport(@Nonnull Entity entity, @Nonnull EnumHand hand, @Nonnull BlockPos bc, @Nonnull TravelSource source, int powerUse,
+      boolean conserveMomentum) {
 
-    TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc.x, bc.y, bc.z, entity.dimension);
-    if(MinecraftForge.EVENT_BUS.post(evt)) {
+    TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc, entity.dimension);
+    if (MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
     }
 
-    bc = new BlockCoord(evt.getTargetX(), evt.getTargetY(), evt.getTargetZ());
-    PacketTravelEvent p = new PacketTravelEvent(entity, bc.x, bc.y, bc.z, powerUse, conserveMomentum, source, hand);
+    PacketTravelEvent p = new PacketTravelEvent(evt.getTarget(), powerUse, conserveMomentum, source, hand);
     PacketHandler.INSTANCE.sendToServer(p);
     return true;
   }
 
   @SideOnly(Side.CLIENT)
-  private BlockCoord getActiveTravelBlock(EntityPlayerSP player) {
+  private BlockPos getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().world;
-    if(world != null && player != null) {
-      int x = MathHelper.floor(player.posX);
-      int y = MathHelper.floor(player.getEntityBoundingBox().minY) - 1;
-      int z = MathHelper.floor(player.posZ);
-      final BlockPos pos = new BlockPos(x, y, z);
-      final Block block = world.getBlockState(pos).getBlock();
-      if (block instanceof BlockTravelAnchor) {
-        if (Config.telepadIsTravelAnchor || block != blockTelePad.getBlock()) {
-          return new BlockCoord(x, y, z);
-        }
+    int x = MathHelper.floor(player.posX);
+    int y = MathHelper.floor(player.getEntityBoundingBox().minY) - 1;
+    int z = MathHelper.floor(player.posZ);
+    final BlockPos pos = new BlockPos(x, y, z);
+    TileEntity tileEntity = world.getTileEntity(pos);
+    if (tileEntity instanceof ITravelAccessable) {
+      if (Config.telepadIsTravelAnchor || !(tileEntity instanceof ITravelAccessable.Secondary)) {
+        return new BlockPos(x, y, z);
       }
     }
     return null;

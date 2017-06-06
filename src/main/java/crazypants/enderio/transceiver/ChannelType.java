@@ -1,10 +1,13 @@
 package crazypants.enderio.transceiver;
 
+import com.enderio.core.common.util.NNList;
+
 public enum ChannelType {
 
   POWER,
   ITEM,
   FLUID;
 
-  public static final ChannelType[] VALUES = values();
+  public static final NNList<ChannelType> VALUES = NNList.of(ChannelType.class);
+
 }

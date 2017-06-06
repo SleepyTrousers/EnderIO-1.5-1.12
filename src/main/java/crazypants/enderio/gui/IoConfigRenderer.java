@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -15,6 +17,8 @@ import org.lwjgl.opengl.GL14;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -26,6 +30,8 @@ import crazypants.enderio.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.modes.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.registry.TextureRegistry;
+import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.teleport.TravelController;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -52,8 +58,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
+
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
+    // only init selectedFaceIcon
+  }
+
+  public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
 
   // protected static final RenderBlocks RB = new RenderBlocks();
 
@@ -63,30 +76,30 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
   private double distance;
   private long initTime;
 
-  private Minecraft mc = Minecraft.getMinecraft();
-  private World world = mc.player.world;
+  private @Nonnull Minecraft mc = Minecraft.getMinecraft();
+  private @Nonnull World world = mc.player.world;
 
-  private final Vector3d origin = new Vector3d();
-  private final Vector3d eye = new Vector3d();
-  private final Camera camera = new Camera();
-  private final Matrix4d pitchRot = new Matrix4d();
-  private final Matrix4d yawRot = new Matrix4d();
+  private final @Nonnull Vector3d origin = new Vector3d();
+  private final @Nonnull Vector3d eye = new Vector3d();
+  private final @Nonnull Camera camera = new Camera();
+  private final @Nonnull Matrix4d pitchRot = new Matrix4d();
+  private final @Nonnull Matrix4d yawRot = new Matrix4d();
 
-  public BlockPos originBC;
+  public @Nonnull BlockPos originBC;
 
-  private List<BlockPos> configurables = new ArrayList<BlockPos>();
-  private List<BlockPos> neighbours = new ArrayList<BlockPos>();
+  private @Nonnull NNList<BlockPos> configurables = new NNList<BlockPos>();
+  private @Nonnull NNList<BlockPos> neighbours = new NNList<BlockPos>();
 
   private SelectedFace<E> selection;
 
   private boolean renderNeighbours = true;
   private boolean inNeigButBounds = false;
 
-  public IoConfigRenderer(IIoConfigurable configuarble) {
-    this(Collections.singletonList(configuarble.getLocation()));
+  public IoConfigRenderer(@Nonnull IIoConfigurable configuarble) {
+    this(new NNList<>(configuarble.getLocation()));
   }
 
-  public IoConfigRenderer(List<BlockPos> configurables) {
+  public @Nullable IoConfigRenderer(@Nonnull final NNList<BlockPos> configurables) {
     this.configurables.addAll(configurables);
 
     Vector3d c;
@@ -119,14 +132,21 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
     distance = Math.max(Math.max(size.x, size.y), size.z) + 4;
 
-    for (BlockPos bc : configurables) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        BlockPos loc = bc.offset(dir);
-        if (!configurables.contains(loc)) {
-          neighbours.add(loc);
-        }
+    configurables.apply(new Callback<BlockPos>() {
+
+      @Override
+      public void apply(@Nonnull final BlockPos pos) {
+        NNList.FACING.apply(new Callback<EnumFacing>() {
+          @Override
+          public void apply(@Nonnull EnumFacing dir) {
+            BlockPos loc = pos.offset(dir);
+            if (!configurables.contains(loc)) {
+              neighbours.add(loc);
+            }
+          }
+        });
       }
-    }
+    });
 
     world = mc.player.world;
   }
@@ -163,7 +183,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
     long elapsed = System.currentTimeMillis() - initTime;
 
-    //Mouse Over
+    // Mouse Over
     int x = Mouse.getEventX();
     int y = Mouse.getEventY();
     Vector3d start = new Vector3d();
@@ -174,7 +194,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
       updateSelection(start, end);
     }
 
-    //Mouse pressed on configurable side
+    // Mouse pressed on configurable side
     if (!Mouse.getEventButtonState() && camera.isValid() && elapsed > 500) {
       if (Mouse.getEventButton() == 1) {
         if (selection != null) {
@@ -188,21 +208,24 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
   }
 
   @SuppressWarnings("unchecked")
-  private void updateSelection(Vector3d start, Vector3d end) {
+  private void updateSelection(@Nonnull final Vector3d start, @Nonnull final Vector3d end) {
     start.add(origin);
     end.add(origin);
-    List<RayTraceResult> hits = new ArrayList<RayTraceResult>();
+    final List<RayTraceResult> hits = new ArrayList<RayTraceResult>();
 
-    for (BlockPos bc : configurables) {
-      IBlockState bs = world.getBlockState(bc);
-      Block block = bs.getBlock();
-      if (block != null) {        
-        RayTraceResult hit = bs.collisionRayTrace(world, bc, new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
-        if (hit != null) {
-          hits.add(hit);
+    configurables.apply(new Callback<BlockPos>() {
+      @Override
+      public void apply(@Nonnull BlockPos pos) {
+        if (!world.isAirBlock(pos)) {
+          IBlockState bs = world.getBlockState(pos);
+          RayTraceResult hit = bs.collisionRayTrace(world, pos, new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
+          if (hit.typeOfHit != RayTraceResult.Type.MISS) {
+            hits.add(hit);
+          }
         }
       }
-    }
+    });
+
     selection = null;
     RayTraceResult hit = getClosestHit(new Vec3d(start.x, start.y, start.z), hits);
     if (hit != null) {
@@ -214,7 +237,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     }
   }
 
-  public static RayTraceResult getClosestHit(Vec3d origin, Collection<RayTraceResult> candidates) {
+  public static RayTraceResult getClosestHit(@Nonnull Vec3d origin, @Nonnull Collection<RayTraceResult> candidates) {
     double minLengthSquared = Double.POSITIVE_INFINITY;
     RayTraceResult closest = null;
 
@@ -230,7 +253,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     return closest;
   }
 
-  public void drawScreen(int par1, int par2, float partialTick, Rectangle vp, Rectangle parentBounds) {
+  public void drawScreen(int par1, int par2, float partialTick, @Nonnull Rectangle vp, @Nonnull Rectangle parentBounds) {
 
     if (!updateCamera(partialTick, vp.x, vp.y, vp.width, vp.height)) {
       return;
@@ -251,13 +274,13 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
     BoundingBox bb = new BoundingBox(selection.config.getLocation());
 
-    TextureAtlasSprite icon = BlockAlloySmelter.selectedFaceIcon.get(TextureAtlasSprite.class);
+    TextureAtlasSprite icon = selectedFaceIcon.get(TextureAtlasSprite.class);
     List<Vertex> corners = bb.getCornersWithUvForFace(selection.face, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV());
 
     GlStateManager.disableDepth();
     GlStateManager.disableLighting();
-    
-    RenderUtil.bindBlockTexture();    
+
+    RenderUtil.bindBlockTexture();
     VertexBuffer tes = Tessellator.getInstance().getBuffer();
 
     GlStateManager.color(1, 1, 1);
@@ -336,44 +359,50 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     }
   }
 
-  protected String getLabelForMode(IoMode mode) {
+  protected @Nonnull String getLabelForMode(@Nonnull IoMode mode) {
     return mode.getLocalisedName();
   }
 
   private void renderScene() {
-    
+
     GlStateManager.enableCull();
     GlStateManager.enableRescaleNormal();
-    
+
     RenderHelper.disableStandardItemLighting();
     mc.entityRenderer.disableLightmap();
     RenderUtil.bindBlockTexture();
-    
+
     GlStateManager.disableLighting();
     GlStateManager.enableTexture2D();
     GlStateManager.enableAlpha();
 
-    Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
-    
+    final Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
+
     BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
     try {
-      for (BlockRenderLayer layer : BlockRenderLayer.values()) {
-        ForgeHooksClient.setRenderLayer(layer);
-        setGlStateForPass(layer, false);
-        doWorldRenderPass(trans, configurables, layer);
-      }
+      NNList.of(BlockRenderLayer.class).apply(new Callback<BlockRenderLayer>() {
+        @Override
+        public void apply(@Nonnull BlockRenderLayer layer) {
+          ForgeHooksClient.setRenderLayer(layer);
+          setGlStateForPass(layer, false);
+          doWorldRenderPass(trans, configurables, layer);
+        }
+      });
 
       if (renderNeighbours) {
-        for (BlockRenderLayer layer : BlockRenderLayer.values()) {
-          ForgeHooksClient.setRenderLayer(layer);
-          setGlStateForPass(layer, true);
-          doWorldRenderPass(trans, neighbours, layer);
-        }
+        NNList.of(BlockRenderLayer.class).apply(new Callback<BlockRenderLayer>() {
+          @Override
+          public void apply(@Nonnull BlockRenderLayer layer) {
+            ForgeHooksClient.setRenderLayer(layer);
+            setGlStateForPass(layer, true);
+            doWorldRenderPass(trans, neighbours, layer);
+          }
+        });
       }
     } finally {
       ForgeHooksClient.setRenderLayer(oldRenderLayer);
     }
-    
+
     RenderHelper.enableStandardItemLighting();
     GlStateManager.enableLighting();
     TileEntityRendererDispatcher.instance.entityX = origin.x - eye.x;
@@ -396,89 +425,95 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     setGlStateForPass(0, false);
   }
 
-  private void doTileEntityRenderPass(List<BlockPos> blocks, int pass) {
-    for (BlockPos bc : blocks) {
-      TileEntity tile = world.getTileEntity(bc);
-      if (tile != null) {
-        if (tile.shouldRenderInPass(pass)) {
-          Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
-          at.x += bc.getX() - origin.x;
-          at.y += bc.getY() - origin.y;
-          at.z += bc.getZ() - origin.z;
-          if(tile.getClass() == TileEntityChest.class) {
-            TileEntityChest chest = (TileEntityChest)tile;     
-            if(chest.adjacentChestXNeg != null) {
-              tile = chest.adjacentChestXNeg;
-              at.x--;
-            }  else if(chest.adjacentChestZNeg != null) {
-              tile = chest.adjacentChestZNeg;
-              at.z--;
+  private void doTileEntityRenderPass(@Nonnull NNList<BlockPos> blocks, final int pass) {
+    blocks.apply(new Callback<BlockPos>() {
+      @Override
+      public void apply(@Nonnull BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile != null) {
+          if (tile.shouldRenderInPass(pass)) {
+            Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
+            at.x += pos.getX() - origin.x;
+            at.y += pos.getY() - origin.y;
+            at.z += pos.getZ() - origin.z;
+            if (tile.getClass() == TileEntityChest.class) {
+              TileEntityChest chest = (TileEntityChest) tile;
+              if (chest.adjacentChestXNeg != null) {
+                tile = chest.adjacentChestXNeg;
+                at.x--;
+              } else if (chest.adjacentChestZNeg != null) {
+                tile = chest.adjacentChestZNeg;
+                at.z--;
+              }
             }
+            TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
           }
-          TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
         }
       }
-    }    
+    });
   }
 
-  private void doWorldRenderPass(Vector3d trans, List<BlockPos> blocks, BlockRenderLayer layer) {
+  private void doWorldRenderPass(@Nonnull Vector3d trans, @Nonnull NNList<BlockPos> blocks, final @Nonnull BlockRenderLayer layer) {
 
     VertexBuffer wr = Tessellator.getInstance().getBuffer();
     wr.begin(7, DefaultVertexFormats.BLOCK);
 
     Tessellator.getInstance().getBuffer().setTranslation(trans.x, trans.y, trans.z);
 
-    for (BlockPos bc : blocks) {
-      
-      IBlockState bs = world.getBlockState(bc);
-      Block block = bs.getBlock();
-      bs = bs.getActualState(world, bc);
-      if (block.canRenderInLayer(bs, layer)) {
-        renderBlock(bs, bc, world, Tessellator.getInstance().getBuffer());
+    blocks.apply(new Callback<BlockPos>() {
+      @Override
+      public void apply(@Nonnull BlockPos pos) {
+
+        IBlockState bs = world.getBlockState(pos);
+        Block block = bs.getBlock();
+        bs = bs.getActualState(world, pos);
+        if (block.canRenderInLayer(bs, layer)) {
+          renderBlock(bs, pos, world, Tessellator.getInstance().getBuffer());
+        }
       }
-    }
+    });
 
     Tessellator.getInstance().draw();
-    Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);    
+    Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
   }
 
-  public void renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, VertexBuffer worldRendererIn) {
+  public void renderBlock(@Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull IBlockAccess blockAccess, @Nonnull VertexBuffer worldRendererIn) {
 
     try {
-      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();      
+      BlockRendererDispatcher blockrendererdispatcher = mc.getBlockRendererDispatcher();
       EnumBlockRenderType type = state.getRenderType();
       if (type != EnumBlockRenderType.MODEL) {
         blockrendererdispatcher.renderBlock(state, pos, blockAccess, worldRendererIn);
         return;
-      }      
+      }
 
       // We only want to change one param here, the check sides
       IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(state);
       state = state.getBlock().getExtendedState(state, world, pos);
       blockrendererdispatcher.getBlockModelRenderer().renderModel(blockAccess, ibakedmodel, state, pos, worldRendererIn, false);
-      
+
     } catch (Throwable throwable) {
       // Just bury a render issue here, it is only the IO screen
     }
   }
 
-  private void setGlStateForPass(BlockRenderLayer layer, boolean isNeighbour) {
+  private void setGlStateForPass(@Nonnull BlockRenderLayer layer, boolean isNeighbour) {
     int pass = layer == BlockRenderLayer.TRANSLUCENT ? 1 : 0;
     setGlStateForPass(pass, isNeighbour);
   }
-  
+
   private void setGlStateForPass(int layer, boolean isNeighbour) {
 
     GlStateManager.color(1, 1, 1);
     if (isNeighbour) {
-      
+
       GlStateManager.enableDepth();
       GlStateManager.enableBlend();
       float alpha = 1f;
       float col = 1f;
-            
+
       GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
-      GL14.glBlendColor(col, col, col, alpha);      
+      GL14.glBlendColor(col, col, col, alpha);
       return;
     }
 
@@ -490,7 +525,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
       GlStateManager.enableBlend();
       GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GlStateManager.depthMask(false);
-      
+
     }
 
   }
@@ -515,19 +550,24 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     GL11.glViewport(vp.x, vp.y, vp.width, vp.height);
     GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
     GL11.glMatrixMode(GL11.GL_PROJECTION);
-    RenderUtil.loadMatrix(camera.getTransposeProjectionMatrix());
+    final Matrix4d camaraViewMatrix = camera.getTransposeProjectionMatrix();
+    if (camaraViewMatrix != null) {
+      RenderUtil.loadMatrix(camaraViewMatrix);
+    }
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
-    RenderUtil.loadMatrix(camera.getTransposeViewMatrix());
+    final Matrix4d cameraViewMatrix = camera.getTransposeViewMatrix();
+    if (cameraViewMatrix != null) {
+      RenderUtil.loadMatrix(cameraViewMatrix);
+    }
     GL11.glTranslatef(-(float) eye.x, -(float) eye.y, -(float) eye.z);
   }
 
   public static class SelectedFace<E extends TileEntity & IIoConfigurable> {
 
-    public E config;
-    public EnumFacing face;
+    public final @Nonnull E config;
+    public final @Nonnull EnumFacing face;
 
-    public SelectedFace(E config, EnumFacing face) {
-      super();
+    public SelectedFace(@Nonnull E config, @Nonnull EnumFacing face) {
       this.config = config;
       this.face = face;
     }

@@ -55,4 +55,8 @@ public interface ITravelAccessable {
 
   public @Nonnull BlockCoord getLocation();
 
+  public static interface Secondary extends ITravelAccessable {
+
+  }
+
 }

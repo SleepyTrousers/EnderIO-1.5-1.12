@@ -1,6 +1,9 @@
 package crazypants.enderio.api.teleport;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
@@ -23,15 +26,11 @@ public class TeleportEntityEvent extends EntityEvent {
   /**
    * The target coords. These can be edited by event handlers.
    */
-  private int targetX;
-
-  private int targetY;
-
-  private int targetZ;
+  private @Nonnull BlockPos targetPos;
 
   private int dimension;
 
-  private final TravelSource source;
+  private final @Nonnull TravelSource source;
 
   /**
    * Fired before an entity teleports to the given location.
@@ -45,37 +44,19 @@ public class TeleportEntityEvent extends EntityEvent {
    * @param z
    *          The target Z coord
    */
-  public TeleportEntityEvent(Entity entity, TravelSource source, int x, int y, int z, int dimension) {
+  public TeleportEntityEvent(@Nonnull Entity entity, @Nonnull TravelSource source, @Nonnull BlockPos pos, int dimension) {
     super(entity);
-    this.setTargetX(x);
-    this.setTargetY(y);
-    this.setTargetZ(z);
+    this.targetPos = pos;
     this.source = source;
     this.setDimension(dimension);
   }
 
-  public int getTargetX() {
-    return targetX;
+  public @Nonnull BlockPos getTarget() {
+    return targetPos;
   }
 
-  public void setTargetX(int targetX) {
-    this.targetX = targetX;
-  }
-
-  public int getTargetY() {
-    return targetY;
-  }
-
-  public void setTargetY(int targetY) {
-    this.targetY = targetY;
-  }
-
-  public int getTargetZ() {
-    return targetZ;
-  }
-
-  public void setTargetZ(int targetZ) {
-    this.targetZ = targetZ;
+  public void setTargetPos(@Nonnull BlockPos target) {
+    this.targetPos = target;
   }
 
   public int getDimension() {
@@ -86,7 +67,7 @@ public class TeleportEntityEvent extends EntityEvent {
     this.dimension = dimension;
   }
 
-  public TravelSource getSource() {
+  public @Nonnull TravelSource getSource() {
     return source;
   }
 }

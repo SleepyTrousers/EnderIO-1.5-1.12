@@ -14,6 +14,7 @@ import crazypants.enderio.block.coldfire.ColdFireStateMapper;
 import crazypants.enderio.block.lever.LeverStateMapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.diagnostics.EnderIOCrashCallable;
+import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.TooltipHandlerBurnTime;
 import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
@@ -91,6 +92,8 @@ public class ClientProxy extends CommonProxy {
       SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
     }
     PaintTooltipUtil.create();
+
+    IoConfigRenderer.init(event);
 
     //conduits
     ConduitBundleRenderManager.instance.init(event);
