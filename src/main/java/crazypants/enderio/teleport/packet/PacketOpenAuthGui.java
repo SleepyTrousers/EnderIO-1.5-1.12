@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAuthGui, IMessage> {
+public class PacketOpenAuthGui implements IMessage {
 
   long pos;
 
@@ -28,10 +28,14 @@ public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAu
     pos = buffer.readLong();
   }
 
-  @Override
-  public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
-    GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().playerEntity.worldObj, BlockPos.fromLong(message.pos),
-        ctx.getServerHandler().playerEntity, null);
-    return null;
+  public static class Handler implements IMessageHandler<PacketOpenAuthGui, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
+      GuiID.GUI_ID_TRAVEL_AUTH.openGui(ctx.getServerHandler().player.world, BlockPos.fromLong(message.pos), ctx.getServerHandler().player, null);
+      return null;
+    }
+
   }
+
 }

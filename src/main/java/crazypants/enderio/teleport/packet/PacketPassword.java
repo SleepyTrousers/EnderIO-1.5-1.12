@@ -1,9 +1,12 @@
 package crazypants.enderio.teleport.packet;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -15,18 +18,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketPassword extends MessageTileEntity<TileEntityBase> {
 
-  private ItemStack stack;
+  private @Nonnull ItemStack stack = Prep.getEmpty();
   private int slot;
   private boolean setLabel;
 
   public PacketPassword() {
   }
 
-  private PacketPassword(TileEntityBase tile) {
+  private PacketPassword(@Nonnull TileEntityBase tile) {
     super(tile);
   }
 
-  public static IMessage setPassword(TileEntityBase te, int slot, ItemStack stack) {
+  public static IMessage setPassword(@Nonnull TileEntityBase te, int slot, @Nonnull ItemStack stack) {
     PacketPassword msg = new PacketPassword(te);
     msg.slot = slot;
     msg.stack = stack;
@@ -34,7 +37,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
     return msg;
   }
 
-  public static PacketPassword setLabel(TileEntityBase te, ItemStack stack) {
+  public static PacketPassword setLabel(@Nonnull TileEntityBase te, @Nonnull ItemStack stack) {
     PacketPassword msg = new PacketPassword(te);
     msg.slot = 0;
     msg.stack = stack;
@@ -62,11 +65,11 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
 
     @Override
     public IMessage onMessage(PacketPassword msg, MessageContext ctx) {
-      TileEntityBase te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
+      TileEntityBase te = msg.getTileEntity(ctx.getServerHandler().player.world);
       if (te instanceof ITravelAccessable) {
-        if (((ITravelAccessable) te).canUiBeAccessed(ctx.getServerHandler().playerEntity)) {
-          if (msg.stack != null) {
-            msg.stack.stackSize = 0;
+        if (((ITravelAccessable) te).canUiBeAccessed(ctx.getServerHandler().player)) {
+          if (Prep.isValid(msg.stack)) {
+            msg.stack.setCount(1);
           }
           if (msg.setLabel) {
             ((ITravelAccessable) te).setItemLabel(msg.stack);
@@ -74,10 +77,10 @@ public class PacketPassword extends MessageTileEntity<TileEntityBase> {
             ((ITravelAccessable) te).getPassword()[msg.slot] = msg.stack;
             ((ITravelAccessable) te).clearAuthorisedUsers();
           }
-          
+
           BlockPos pos = msg.getPos();
           IBlockState bs = te.getWorld().getBlockState(pos);
-          te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);          
+          te.getWorld().notifyBlockUpdate(pos, bs, bs, 3);
         }
       }
       return null;

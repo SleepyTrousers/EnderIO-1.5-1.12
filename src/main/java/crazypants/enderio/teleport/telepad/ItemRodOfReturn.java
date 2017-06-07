@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
@@ -11,6 +12,7 @@ import com.enderio.core.client.ClientUtil;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIO;
@@ -20,7 +22,8 @@ import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.sound.MachineSound;
 import crazypants.enderio.power.AbstractPoweredItem;
 import crazypants.enderio.power.ItemPowerCapabilityBackend;
@@ -42,6 +45,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -62,29 +67,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.util.NbtValue.FLUIDAMOUNT;
+import static crazypants.util.NbtValue.LAST_USED_TICK;
 
 public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
-  public static ItemRodOfReturn create() {
-    ItemRodOfReturn result = new ItemRodOfReturn();
+  public static ItemRodOfReturn create(@Nonnull IModObject modObject) {
+    ItemRodOfReturn result = new ItemRodOfReturn(modObject);
     result.init();
     return result;
   }
   
   private static final int RF_MAX_INPUT = (int) Math.ceil(Config.rodOfReturnPowerStorage / (double) Config.rodOfReturnMinTicksToRecharge);
 
-  private static final String KEY_LAST_USED_TICK = "lastUsedAt";
-  
+  public static final @Nonnull ResourceLocation ACTIVE_RES = AbstractMachineEntity.getSoundFor("telepad.active");
   @SideOnly(Side.CLIENT)
   private MachineSound activeSound;
   
   private final Fluid fluidType;
   
-  protected ItemRodOfReturn() {
+  protected ItemRodOfReturn(@Nonnull IModObject modObject) {
     super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemRodOfReturn.getUnlocalisedName());
-    setRegistryName(ModObject.itemRodOfReturn.getUnlocalisedName());
+    setUnlocalizedName(modObject.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
         
@@ -106,25 +111,26 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-      EnumHand hand) {
+  public @Nonnull EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
+      float hitX, float hitY, float hitZ, @Nonnull EnumHand hand) {
 
     if (world.isRemote || !player.isSneaking()) {
-      // If we dont return pass on the client this wont get called on the server
+      // If we don't return pass on the client this wont get called on the server
       return EnumActionResult.PASS;
     }
+    ItemStack stack = player.getHeldItem(hand);
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof ITelePad) {
       ITelePad tp = (ITelePad)te;
-      pos = tp.getMaster().getLocation().getBlockPos();
+      pos = tp.getMaster().getLocation();
       setTarget(stack, pos, world.provider.getDimension());
-      player.addChatMessage(
+      player.sendMessage(
           new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync.telepad") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
       player.stopActiveHand();
       return EnumActionResult.SUCCESS;
     } else if(Config.rodOfReturnCanTargetAnywhere) {
       setTarget(stack, pos, world.provider.getDimension());
-      player.addChatMessage(
+      player.sendMessage(
           new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
       player.stopActiveHand();
       return EnumActionResult.SUCCESS;
@@ -133,8 +139,9 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-    long lastUsed = getLastUsedTick(stack);
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+    ItemStack stack = player.getHeldItem(hand);
+    long lastUsed = LAST_USED_TICK.getLong(stack);
     if ( (lastUsed < 0 || (world.getTotalWorldTime() - lastUsed) > 20) && getEnergyStored(stack) > 0) {
       player.setActiveHand(hand);
 
@@ -143,7 +150,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
+  public void onUsingTick(@Nonnull ItemStack stack, @Nonnull EntityLivingBase player, int count) {
     if(player.world.isRemote) {
       onUsingClient(stack, player, count);
     }
@@ -152,14 +159,14 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
       if (player.world.isRemote) {
-        player.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+        player.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
       }
       player.stopActiveHand();
     }
   }
 
   @Override
-  public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
+  public void onPlayerStoppedUsing(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityLivingBase player, int timeLeft) {
     if (! (player instanceof EntityPlayer) || !((EntityPlayer)player).capabilities.isCreativeMode) {
       updateStackNBT(stack, world, timeLeft);
     }
@@ -169,7 +176,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
+  public @Nonnull ItemStack onItemUseFinish(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving) {
     boolean hasPower = true;
     boolean hasFluid = true;
     if (! (entityLiving instanceof EntityPlayer) || !((EntityPlayer)entityLiving).capabilities.isCreativeMode) {
@@ -182,16 +189,16 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       if(target == null) {
         if (worldIn.isRemote) {
           stopPlayingSound();
-          entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
+          entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
         }
         return stack;
       }
       TeleportUtil.doTeleport(entityLiving, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       if(!hasPower) {
-        entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+        entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
       } else {
-        entityLiving.addChatMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughFluid", TextFormatting.RED.toString())));
+        entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughFluid", TextFormatting.RED.toString())));
       }
     }
     
@@ -203,38 +210,38 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public boolean shouldCauseReequipAnimation(ItemStack oldS, ItemStack newS, boolean slotChanged) {
-    return slotChanged || oldS == null || newS == null || oldS.getItem() != newS.getItem();
+  public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldS, @Nonnull ItemStack newS, boolean slotChanged) {
+    return slotChanged || oldS.getItem() != newS.getItem();
   }
 
   @Override
-  public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
+  public boolean shouldCauseBlockBreakReset(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack) {
     return shouldCauseReequipAnimation(oldStack, newStack, false);
   }
 
   @Override
-  public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
+  public boolean doesSneakBypassUse(@Nonnull ItemStack stack, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
     return true;
   }
 
   @Override
-  public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
+  public void onCreated(@Nonnull ItemStack itemStack, @Nonnull World world, @Nonnull EntityPlayer entityPlayer) {
     setEnergyStored(itemStack, 0);
   }
 
   @Override
-  public EnumAction getItemUseAction(ItemStack stack) {
+  public @Nonnull EnumAction getItemUseAction(@Nonnull ItemStack stack) {
     return EnumAction.BOW;
   }
 
   @Override
-  public int getMaxItemUseDuration(ItemStack stack) {
+  public int getMaxItemUseDuration(@Nonnull ItemStack stack) {
     return Config.rodOfReturnTicksToActivate;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List<String> list, boolean par4) {
+  public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     String str;
         
@@ -248,7 +255,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     ItemStack is = new ItemStack(this);
     par3List.add(is);
 
@@ -264,7 +271,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  public void renderItemOverlayIntoGUI(ItemStack stack, int xPosition, int yPosition) {
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition, true);
     PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 1, true);
   }
@@ -283,7 +290,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     }
     if (activeSound == null) {
       BlockPos p = player.getPosition();
-      activeSound = new MachineSound(TileTelePad.ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
+      activeSound = new MachineSound(ACTIVE_RES, p.getX(), p.getY(), p.getZ(), 0.3f, 1);
       playSound();
     }
     
@@ -320,7 +327,10 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   @SideOnly(Side.CLIENT)
   private void playSound() {
-    FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound);
+    final MachineSound activeSound_nullchecked = activeSound;
+    if (activeSound_nullchecked != null) {
+      FMLClientHandler.instance().getClient().getSoundHandler().playSound(activeSound_nullchecked);
+    }
   }
   
   @SideOnly(Side.CLIENT)
@@ -333,8 +343,8 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   
   // --------------------- NBT Handling for stacks
 
-  private boolean updateStackNBT(ItemStack stack, World world, int timeLeft) {
-    setLastUsedTick(stack, world.getTotalWorldTime());
+  private boolean updateStackNBT(@Nonnull ItemStack stack, @Nonnull World world, int timeLeft) {
+    LAST_USED_TICK.setLong(stack, world.getTotalWorldTime());
      // half a second before it costs you
     if (timeLeft > (Config.rodOfReturnTicksToActivate - 10)) {
       return false;
@@ -342,21 +352,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     return useEnergy(stack, timeLeft);
   }
 
-  private long getLastUsedTick(ItemStack stack) {
-    if (stack == null || !stack.hasTagCompound() || !stack.getTagCompound().hasKey(KEY_LAST_USED_TICK)) {
-      return -1;
-    }
-    return stack.getTagCompound().getLong(KEY_LAST_USED_TICK);
-  }
-
-  private void setLastUsedTick(ItemStack stack, long tick) {
-    if (!stack.hasTagCompound()) {
-      stack.setTagCompound(new NBTTagCompound());
-    }
-    stack.getTagCompound().setLong(KEY_LAST_USED_TICK, tick);
-  }
-
-  private boolean useEnergy(ItemStack stack, int timeLeft) {
+  private boolean useEnergy(@Nonnull ItemStack stack, int timeLeft) {
     int used = (Config.rodOfReturnTicksToActivate - timeLeft) * Config.rodOfReturnRfPerTick;
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
@@ -368,30 +364,27 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
   
   @Override
-  public void setFull(ItemStack container) {
+  public void setFull(@Nonnull ItemStack container) {
     super.setFull(container);
     FLUIDAMOUNT.setInt(container, Config.rodOfReturnFluidStorage);
   }
 
-  private void setTarget(ItemStack container, BlockPos pos, int dimension) {
-    if (container.getTagCompound() == null) {
-      container.setTagCompound(new NBTTagCompound());
-    }
-    new TelepadTarget(pos, dimension).writeToNBT(container.getTagCompound());
+  private void setTarget(@Nonnull ItemStack container, @Nonnull BlockPos pos, int dimension) {
+    new TelepadTarget(pos, dimension).writeToNBT(container);
   }
   
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addBasicTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
-  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<String> entries = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
     String fluidString = fluidType.getLocalizedName(new FluidStack(fluidType, 1000));
@@ -403,7 +396,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   
   // Fluid handeling
     
-  private boolean useFluid(ItemStack container) {
+  private boolean useFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (Config.rodOfReturnFluidUsePerTeleport > amount) {
       FLUIDAMOUNT.setInt(container, 0);
@@ -414,7 +407,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     }
   }
   
-  public FluidStack getFluid(ItemStack container) {
+  public FluidStack getFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
       return new FluidStack(fluidType, amount);
@@ -423,8 +416,8 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     }
   }
 
-  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-    if (container == null || !(container.getItem() == this) || resource == null || resource.amount <= 0 || resource.getFluid() == null
+  public int fill(@Nonnull ItemStack container, @Nonnull FluidStack resource, boolean doFill) {
+    if (!(container.getItem() == this) || resource.amount <= 0 || resource.getFluid() == null
         || resource.getFluid() != fluidType) {
       return 0;
     }
@@ -439,25 +432,25 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
   
   @Override
-  public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
     return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
   }
 
   private class FluidCapabilityProvider implements IFluidHandler, ICapabilityProvider {
-    protected final ItemStack container;
+    protected final @Nonnull ItemStack container;
 
-    private FluidCapabilityProvider(ItemStack container) {
+    private FluidCapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
       return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY ? (T) this : null;
     }
 
@@ -500,7 +493,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      return ItemRodOfReturn.this.fill(container, resource, doFill);
+      return ItemRodOfReturn.this.fill(container, NullHelper.notnull(resource, "Cannot use null as a fluid stack"), doFill);
     }
 
     @Override
@@ -515,7 +508,5 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       return null;
     }
   }
-
-  
 
 }

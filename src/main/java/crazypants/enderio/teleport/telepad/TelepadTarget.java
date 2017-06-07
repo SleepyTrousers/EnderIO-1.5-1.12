@@ -6,16 +6,19 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.util.NbtValue;
+import crazypants.util.Prep;
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.java.HandleArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
@@ -24,32 +27,32 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   static {
     Registry.GLOBAL_REGISTRY.register(new TelepadTarget());
   }
-  
-  private BlockPos location;
+
+  private @Nonnull BlockPos location;
   private int dimension;
-  private String name;
-  private ItemStack icon;
+  private @Nonnull String name;
+  private @Nonnull ItemStack icon;
 
   public TelepadTarget() {
-    this(new BlockPos(0,-1,0), Integer.MIN_VALUE);
-  }
-  
-  public TelepadTarget(BlockPos location, int dimension) {
-    this(location, dimension, null, null);
+    this(new BlockPos(0, -1, 0), Integer.MIN_VALUE);
   }
 
-  public TelepadTarget(BlockPos location, int dimension, String name, ItemStack icon) {
+  public TelepadTarget(@Nonnull BlockPos location, int dimension) {
+    this(location, dimension, "", Prep.getEmpty());
+  }
+
+  public TelepadTarget(@Nonnull BlockPos location, int dimension, @Nonnull String name, @Nonnull ItemStack icon) {
     this.location = location;
     this.dimension = dimension;
     this.name = name;
     this.icon = icon;
   }
 
-  public TelepadTarget(TelepadTarget newTarget) {
+  public TelepadTarget(@Nonnull TelepadTarget newTarget) {
     this(newTarget.location, newTarget.dimension, newTarget.name, newTarget.icon);
   }
 
-  public BlockPos getLocation() {
+  public @Nonnull BlockPos getLocation() {
     return location;
   }
 
@@ -57,26 +60,26 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     return dimension;
   }
 
-  public String getName() {
+  public @Nonnull String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(@Nonnull String name) {
     this.name = name;
   }
 
-  public ItemStack getIcon() {
+  public @Nonnull ItemStack getIcon() {
     return icon;
   }
 
-  public void setIcon(ItemStack icon) {
+  public void setIcon(@Nonnull ItemStack icon) {
     this.icon = icon;
   }
-  
+
   public int getX() {
     return location.getX();
   }
-  
+
   public TelepadTarget setX(int x) {
     location = new BlockPos(x, getY(), getZ());
     return this;
@@ -85,7 +88,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   public int getY() {
     return location.getY();
   }
-  
+
   public TelepadTarget setY(int y) {
     location = new BlockPos(getX(), y, getZ());
     return this;
@@ -94,40 +97,37 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   public int getZ() {
     return location.getZ();
   }
-  
+
   public TelepadTarget setZ(int z) {
     location = new BlockPos(getX(), getY(), z);
     return this;
   }
-  
-  public TelepadTarget setLocation(BlockPos pos) {
-    if(pos == null) {
-      pos = new BlockPos(0,-1,0);
-    }
+
+  public TelepadTarget setLocation(@Nonnull BlockPos pos) {
     location = pos;
     return this;
   }
-  
+
   public TelepadTarget setDimension(int dimension) {
     this.dimension = dimension;
     return this;
   }
-  
-  public String getChatString() {
+
+  public @Nonnull String getChatString() {
     String res = "";
-    if(name != null) {
+    if (!name.isEmpty()) {
       res += name + " ";
     }
-    res += BlockCoord.chatString(location) + " ";
-    res += getDimenionName(dimension); 
+    res += BlockCoord.chatString(location, TextFormatting.WHITE) + " ";
+    res += getDimenionName(dimension);
     return res;
   }
-  
-  public String getDimenionName() {    
+
+  public @Nonnull String getDimenionName() {
     return getDimenionName(dimension);
   }
 
-  public static String getDimenionName(int dim) {
+  public static @Nonnull String getDimenionName(int dim) {
     if (!DimensionManager.isDimensionRegistered(dim)) {
       return Integer.toString(dim);
     }
@@ -142,29 +142,29 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     }
     return name;
   }
-  
+
   public boolean isValid() {
     return location.getY() >= 0;
   }
-  
+
   @Override
-  public String toString() {
+  public @Nonnull String toString() {
     String res = "";
-    if(name != null) {
+    if (!name.isEmpty()) {
       res += " " + name + " ";
     }
     res += location + " " + dimension;
     return res;
   }
-  
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + dimension;
-    result = prime * result + ((icon == null) ? 0 : icon.hashCode());
-    result = prime * result + ((location == null) ? 0 : location.hashCode());
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + icon.hashCode();
+    result = prime * result + location.hashCode();
+    result = prime * result + name.hashCode();
     return result;
   }
 
@@ -179,125 +179,70 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     TelepadTarget other = (TelepadTarget) obj;
     if (dimension != other.dimension)
       return false;
-    if (icon == null) {
-      if (other.icon != null)
-        return false;
-    } else if (!icon.equals(other.icon))
+    if (!icon.equals(other.icon))
       return false;
-    if (location == null) {
-      if (other.location != null)
-        return false;
-    } else if (!location.equals(other.location))
+    if (!location.equals(other.location))
       return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
+    if (!name.equals(other.name))
       return false;
     return true;
   }
-    
-  //----------------------- I/O -------------- :(
 
-  public void writeToNBT(ItemStack printout) {
-    if (printout == null) {
-      return;
-    }
-    if (!printout.hasTagCompound()) {
-      printout.setTagCompound(new NBTTagCompound());
-    }
-    writeToNBT(printout.getTagCompound());
-    if (getName() != null) {
-      printout.setStackDisplayName(getName());
+  // ----------------------- I/O -------------- :(
+
+  public void writeToNBT(@Nonnull ItemStack stack) {
+    writeToNBT(NbtValue.getRoot(stack));
+    if (!getName().isEmpty()) {
+      stack.setStackDisplayName(getName());
     } else {
-      printout.clearCustomName();
+      stack.clearCustomName();
     }
   }
 
-  public void writeToNBT(NBTTagCompound tag) {
-    if (location != null) {
-      tag.setLong("targetPos", location.toLong());
-    }
-    tag.setInteger("targetDim", dimension);
-    if (name != null) {
-      tag.setString("targetName", name);
-    }
-    if (icon != null) {
-      NBTTagCompound iconRoot = new NBTTagCompound();
-      icon.writeToNBT(iconRoot);
-      tag.setTag("targetIcon", iconRoot);
-    }
+  public void writeToNBT(@Nonnull NBTTagCompound tag) {
+    NbtValue.REMOTE_POS.setBlockPos(tag, location);
+    NbtValue.REMOTE_D.setInt(tag, dimension);
+    NbtValue.REMOTE_NAME.setString(tag, name);
+    NbtValue.REMOTE_ICON.setStack(tag, icon);
   }
 
-  public static TelepadTarget readFromNBT(ItemStack stack) {
-    if (stack == null || !stack.hasTagCompound()) {
+  public static @Nullable TelepadTarget readFromNBT(@Nonnull ItemStack stack) {
+    return readFromNBT(NbtValue.getRoot(stack));
+  }
+
+  public static @Nullable TelepadTarget readFromNBT(@Nonnull NBTTagCompound tag) {
+    if (!NbtValue.REMOTE_POS.hasTag(tag)) {
       return null;
     }
-    return readFromNBT(stack.getTagCompound());
+    return new TelepadTarget(NbtValue.REMOTE_POS.getBlockPos(tag), NbtValue.REMOTE_D.getInt(tag), NbtValue.REMOTE_NAME.getString(tag, ""),
+        NbtValue.REMOTE_ICON.getStack(tag));
   }
 
-  public static TelepadTarget readFromNBT(NBTTagCompound tag) {
-    BlockPos pos = getTargetPos(tag);
-    if (pos == null) {
-      return null;
-    }
-    return new TelepadTarget(pos, getTargetDimension(tag), getName(tag), getIcon(tag));
-  }
-  
   @Override
   public boolean canHandle(Class<?> clazz) {
     return TelepadTarget.class.isAssignableFrom(clazz);
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull TelepadTarget object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {    
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name1,
+      @Nonnull TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound root = new NBTTagCompound();
     object.writeToNBT(root);
-    nbt.setTag(name, root);       
+    nbt.setTag(name1, root);
     return true;
   }
 
   @Override
-  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
-      @Nullable TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    if(nbt.hasKey(name)) {
-      NBTTagCompound root = nbt.getCompoundTag(name);
+  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+      @Nonnull String name1, @Nullable TelepadTarget object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+    if (nbt.hasKey(name1)) {
+      NBTTagCompound root = nbt.getCompoundTag(name1);
       return readFromNBT(root);
     }
-    return new TelepadTarget();    
+    return new TelepadTarget();
   }
 
-  private static ItemStack getIcon(NBTTagCompound tag) {
-    if (tag == null || !tag.hasKey("targetIcon")) {
-      return null;
-    }
-    return new ItemStack(tag.getCompoundTag("targetIcon"));
-  }
-
-  private static String getName(NBTTagCompound tag) {
-    if (tag == null || !tag.hasKey("targetName")) {
-      return null;
-    }
-    return tag.getString("targetName");
-  }
-
-  private static BlockPos getTargetPos(NBTTagCompound tag) {
-    if (tag == null || !tag.hasKey("targetPos")) {
-      return null;
-    }
-    return BlockPos.fromLong(tag.getLong("targetPos"));
-  }
-
-  private static int getTargetDimension(NBTTagCompound tag) {
-    if (tag == null || !tag.hasKey("targetDim")) {
-      return 0;
-    }
-    return tag.getInteger("targetDim");
-  }
-  
-  
   public static class TelepadTargetArrayListHandler extends HandleArrayList<TelepadTarget> {
 
     public TelepadTargetArrayListHandler() {

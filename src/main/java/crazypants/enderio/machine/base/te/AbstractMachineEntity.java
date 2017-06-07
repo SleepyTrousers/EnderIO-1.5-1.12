@@ -81,8 +81,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   private final ResourceLocation soundRes;
 
-  public static ResourceLocation getSoundFor(String sound) {
-    return sound == null ? null : new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
+  public static @Nonnull ResourceLocation getSoundFor(@Nonnull String sound) {
+    return new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
   }
 
   public AbstractMachineEntity() {

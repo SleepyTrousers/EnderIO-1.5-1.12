@@ -3,11 +3,11 @@ package crazypants.enderio.api.teleport;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.UserIdent;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 
 
 public interface ITravelAccessable {
@@ -53,7 +53,7 @@ public interface ITravelAccessable {
 
   public void clearAuthorisedUsers();
 
-  public @Nonnull BlockCoord getLocation();
+  public @Nonnull BlockPos getLocation();
 
   public static interface Secondary extends ITravelAccessable {
 
