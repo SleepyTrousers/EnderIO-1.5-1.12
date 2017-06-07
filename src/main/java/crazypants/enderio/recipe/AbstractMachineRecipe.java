@@ -16,8 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
-  public int getEnergyRequired(MachineRecipeInput... inputs) {
-    if (inputs == null || inputs.length <= 0) {
+  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
+    if (inputs.length <= 0) {
       return 0;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -25,8 +25,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
-    if (inputs == null || inputs.length <= 0) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
+    if (inputs.length <= 0) {
       return RecipeBonusType.NONE;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -113,8 +113,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(MachineRecipeInput... inputs) {
-    if (inputs == null || inputs.length <= 0) {
+  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
+    if (inputs.length <= 0) {
       return false;
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -122,8 +122,8 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public @Nonnull ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
-    if (inputs == null || inputs.length <= 0) {
+  public @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull MachineRecipeInput... inputs) {
+    if (inputs.length <= 0) {
       return new ResultStack[0];
     }
     IRecipe recipe = getRecipeForInputs(inputs);
@@ -131,7 +131,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       return new ResultStack[0];
     }
     RecipeOutput[] outputs = recipe.getOutputs();
-    if (outputs == null) {
+    if (outputs.length == 0) {
       return new ResultStack[0];
     }
     NNList<ResultStack> result = new NNList<ResultStack>();

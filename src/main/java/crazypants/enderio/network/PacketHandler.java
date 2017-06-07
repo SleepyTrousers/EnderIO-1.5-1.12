@@ -41,7 +41,7 @@ public class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
-    INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketRedstoneMode.Handler.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExperienceContainer.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);
     // TODO 1.11 move to sub-mod

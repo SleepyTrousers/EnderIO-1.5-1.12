@@ -17,6 +17,8 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   private final @Nonnull Recipe recipe;
 
+  private boolean synthetic = false;
+
   public BasicManyToOneRecipe(@Nonnull Recipe recipe) {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
@@ -81,7 +83,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public RecipeOutput[] getOutputs() {
+  public @Nonnull RecipeOutput[] getOutputs() {
     return recipe.getOutputs();
   }
 
@@ -99,7 +101,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public RecipeInput[] getInputs() {
+  public @Nonnull RecipeInput[] getInputs() {
     return recipe.getInputs();
   }
 
@@ -121,13 +123,23 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public NNList<NNList<ItemStack>> getInputStackAlternatives() {
+  public @Nonnull NNList<NNList<ItemStack>> getInputStackAlternatives() {
     return recipe.getInputStackAlternatives();
   }
 
   @Override
   public String toString() {
     return "BasicManyToOneRecipe [output=" + output + ", recipe=" + recipe + "]";
+  }
+
+  @Override
+  public boolean isSynthetic() {
+    return synthetic;
+  }
+
+  public BasicManyToOneRecipe setSynthetic() {
+    this.synthetic = true;
+    return this;
   }
 
 }

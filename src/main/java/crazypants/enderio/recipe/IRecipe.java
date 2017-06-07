@@ -13,8 +13,10 @@ public interface IRecipe {
 
   int getEnergyRequired();
 
+  @Nonnull
   RecipeOutput[] getOutputs();
 
+  @Nonnull
   RecipeInput[] getInputs();
 
   @Nonnull
@@ -31,6 +33,9 @@ public interface IRecipe {
 
   boolean isValidInput(@Nonnull FluidStack fluid);
 
+  @Nonnull
   NNList<NNList<ItemStack>> getInputStackAlternatives();
+
+  boolean isSynthetic();
 
 }

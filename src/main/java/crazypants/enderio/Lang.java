@@ -29,8 +29,16 @@ public enum Lang {
     this.key = key;
   }
 
+  public @Nonnull String get() {
+    return EnderIO.lang.localize(key);
+  }
+
   public @Nonnull String get(@Nonnull Object... params) {
     return EnderIO.lang.localize(key, params);
+  }
+
+  public @Nonnull TextComponentString toChat() {
+    return new TextComponentString(EnderIO.lang.localize(key));
   }
 
   public @Nonnull TextComponentString toChat(@Nonnull Object... params) {

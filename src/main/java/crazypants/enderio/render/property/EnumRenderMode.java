@@ -71,7 +71,7 @@ public enum EnumRenderMode implements IStringSerializable {
   /* D0-U1-N2-S3-W4-E5 */
   public @Nonnull EnumRenderMode rotate(@Nonnull EnumFacing facing) {
     if (rotates && facing.getIndex() >= 2) {
-      return values()[parentid + facing.getIndex() - 2];
+      return NullHelper.notnullJ(values()[parentid + facing.getIndex() - 2], "Enum.values()");
     } else {
       return this;
     }

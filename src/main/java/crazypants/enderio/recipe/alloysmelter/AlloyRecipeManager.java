@@ -3,11 +3,12 @@ package crazypants.enderio.recipe.alloysmelter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.recipe.CustomTagHandler;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.recipe.ManyToOneMachineRecipe;
@@ -17,26 +18,27 @@ import crazypants.enderio.recipe.RecipeInput;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
-  private static final String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
-  private static final String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
 
-  static final AlloyRecipeManager instance = new AlloyRecipeManager();
+  static final @Nonnull AlloyRecipeManager instance = new AlloyRecipeManager();
 
   public static AlloyRecipeManager getInstance() {
     return instance;
   }
 
+  @Nonnull
   VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
 
   public AlloyRecipeManager() {
     super(CORE_FILE_NAME, CUSTOM_FILE_NAME, "Alloy Smelter");
   }
 
-  public VanillaSmeltingRecipe getVanillaRecipe() {
+  public @Nonnull VanillaSmeltingRecipe getVanillaRecipe() {
     return vanillaRecipe;
   }
 
-  public void setVanillaRecipe(VanillaSmeltingRecipe vanillaRecipe) {
+  public void setVanillaRecipe(@Nonnull VanillaSmeltingRecipe vanillaRecipe) {
     this.vanillaRecipe = vanillaRecipe;
   }
 
@@ -48,14 +50,14 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe",
-        ModObject.blockAlloySmelter.getUnlocalisedName(), this));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ALLOYSMELTER,
+        new ManyToOneMachineRecipe("AlloySmelterRecipe", MachineRecipeRegistry.ALLOYSMELTER, this));
     // vanilla alloy furnace recipes
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), vanillaRecipe);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ALLOYSMELTER, vanillaRecipe);
   }
 
-  private static final String ELEMENT_ROOT = "vanillaFurnaceRecipes";
-  private static final String ELEMENT_EXCLUDE = "exclude";
+  private static final @Nonnull String ELEMENT_ROOT = "vanillaFurnaceRecipes";
+  private static final @Nonnull String ELEMENT_EXCLUDE = "exclude";
 
   private class VanillaFurnaceTagHandler implements CustomTagHandler {
 
@@ -65,7 +67,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
     private Boolean enabled = null;
 
-    private List<RecipeInput> excludes = new ArrayList<RecipeInput>();
+    private final @Nonnull List<RecipeInput> excludes = new ArrayList<RecipeInput>();
 
     @Override
     public boolean startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {

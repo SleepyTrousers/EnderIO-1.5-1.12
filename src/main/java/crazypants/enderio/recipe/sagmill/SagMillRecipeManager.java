@@ -201,7 +201,7 @@ public class SagMillRecipeManager {
   }
 
   public static @Nonnull ItemStack getInput(@Nonnull IRecipe recipe) {
-    if (recipe.getInputs() == null || recipe.getInputs().length == 0) {
+    if (recipe.getInputs().length == 0) {
       return Prep.getEmpty();
     }
     return recipe.getInputs()[0].getInput();

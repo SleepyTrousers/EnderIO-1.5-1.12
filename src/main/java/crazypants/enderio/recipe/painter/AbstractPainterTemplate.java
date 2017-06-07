@@ -35,30 +35,30 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   public abstract boolean isPartialRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
   @Override
-  public int getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
     return Config.painterEnergyPerTaskRF;
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+  public @Nonnull RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs) {
     return RecipeBonusType.NONE;
   }
 
-  public @Nonnull ItemStack getTarget(MachineRecipeInput... inputs) {
+  public @Nonnull ItemStack getTarget(@Nonnull MachineRecipeInput... inputs) {
     return getInputForSlot(0, inputs);
   }
 
-  public @Nonnull ItemStack getPaintSource(MachineRecipeInput... inputs) {
+  public @Nonnull ItemStack getPaintSource(@Nonnull MachineRecipeInput... inputs) {
     return getInputForSlot(1, inputs);
   }
 
   @Override
-  public final boolean isRecipe(MachineRecipeInput... inputs) {
+  public final boolean isRecipe(@Nonnull MachineRecipeInput... inputs) {
     return isRecipe(getPaintSource(inputs), getTarget(inputs));
   }
 
   @Override
-  public final @Nonnull ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  public final @Nonnull ResultStack[] getCompletedResult(float chance, @Nonnull MachineRecipeInput... inputs) {
     return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
   }
 
@@ -72,7 +72,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
     return getClass().getCanonicalName() + "@" + Integer.toHexString(hashCode());
   }
 
-  public int getQuantityConsumed(MachineRecipeInput input) {
+  public int getQuantityConsumed(@Nonnull MachineRecipeInput input) {
     return input.slotNumber == 0 ? 1 : 0;
   }
 

@@ -139,7 +139,7 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public NNList<NNList<ItemStack>> getInputStackAlternatives() {
+  public @Nonnull NNList<NNList<ItemStack>> getInputStackAlternatives() {
     NNList<NNList<ItemStack>> res = new NNList<NNList<ItemStack>>();
     for (int i = 0; i < inputs.length; i++) {
       RecipeInput in = inputs[i];
@@ -175,12 +175,12 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public RecipeInput[] getInputs() {
+  public @Nonnull RecipeInput[] getInputs() {
     return inputs;
   }
 
   @Override
-  public RecipeOutput[] getOutputs() {
+  public @Nonnull RecipeOutput[] getOutputs() {
     return outputs;
   }
 
@@ -230,6 +230,10 @@ public class Recipe implements IRecipe {
     return "Recipe [input=" + Arrays.toString(inputs) + ", output=" + Arrays.toString(outputs) + ", energyRequired=" + energyRequired + "]";
   }
 
+  @Override
+  public boolean isSynthetic() {
+    return false;
+  }
   
 
 }

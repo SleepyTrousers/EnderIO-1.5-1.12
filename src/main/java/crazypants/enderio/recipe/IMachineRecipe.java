@@ -37,13 +37,13 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  int getEnergyRequired(MachineRecipeInput... inputs);
+  int getEnergyRequired(@Nonnull MachineRecipeInput... inputs);
 
   /**
    * Returns the how bonus should be handled for this input
    **/
   @Nonnull
-  RecipeBonusType getBonusType(MachineRecipeInput... inputs);
+  RecipeBonusType getBonusType(@Nonnull MachineRecipeInput... inputs);
 
   /**
    * Only returns true if output can be generated using these inputs. If
@@ -53,7 +53,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  public boolean isRecipe(MachineRecipeInput... inputs);
+  public boolean isRecipe(@Nonnull MachineRecipeInput... inputs);
 
   /**
    * Returns the output from a single 'cycle' of the recipe (even if the inputs
@@ -69,7 +69,7 @@ public interface IMachineRecipe {
    * @return
    */
   @Nonnull
-  ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs);
+  ResultStack[] getCompletedResult(float randomChance, @Nonnull MachineRecipeInput... inputs);
 
   /**
    * Returns the experience a user gains when this recipe has generated the

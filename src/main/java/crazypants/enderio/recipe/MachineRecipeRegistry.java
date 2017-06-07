@@ -13,6 +13,11 @@ public class MachineRecipeRegistry {
 
   public static final @Nonnull String PAINTER = "painter";
   public static final @Nonnull String SAGMILL = "sagmill";
+  public static final @Nonnull String ALLOYSMELTER = "alloysmelter";
+  public static final @Nonnull String SLICENSPLICE = "slicensplice";
+  public static final @Nonnull String SOULBINDER = "soulbinder";
+  public static final @Nonnull String VAT = "vat";
+  public static final @Nonnull String SPAWNER = "spawner";
 
   public static final @Nonnull MachineRecipeRegistry instance = new MachineRecipeRegistry();
 
@@ -53,7 +58,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, MachineRecipeInput... inputs) {
+  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, @Nonnull MachineRecipeInput... inputs) {
     for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
       if(recipe.isRecipe(inputs)) {
         return recipe;

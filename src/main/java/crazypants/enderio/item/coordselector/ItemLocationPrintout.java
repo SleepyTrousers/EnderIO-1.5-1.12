@@ -13,8 +13,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.Lang;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.item.coordselector.ICoordinateAware.MultipleTargets;
-import crazypants.enderio.item.coordselector.ICoordinateAware.SingleTarget;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
