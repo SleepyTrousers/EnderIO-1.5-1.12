@@ -1,6 +1,7 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.item.coordselector;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
@@ -9,7 +10,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -24,36 +27,36 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
-  public static ItemCoordSelector create() {
-    ItemCoordSelector ret = new ItemCoordSelector();
+  public static ItemCoordSelector create(@Nonnull IModObject modObject) {
+    ItemCoordSelector ret = new ItemCoordSelector(modObject);
     GameRegistry.register(ret);
     return ret;
   }
 
-  private ItemCoordSelector() {
+  private ItemCoordSelector(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setRegistryName(ModObject.itemCoordSelector.name());
-    setUnlocalizedName(ModObject.itemCoordSelector.getUnlocalisedName());
+    setRegistryName(modObject.getUnlocalisedName());
+    setUnlocalizedName(modObject.getUnlocalisedName());
     setMaxStackSize(1);
   }
-  
+
   @Override
-  public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item item, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     ItemStack stack = new ItemStack(item);
     subItems.add(stack);
   }
-  
+
   @Override
-  public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {    
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+    ItemStack stack = player.getHeldItem(hand);
     if (printCoords(stack, world, player)) {
       player.swingArm(hand);
     }
-    return super.onItemRightClick(stack, world, player, hand);
+    return super.onItemRightClick(world, player, hand);
   }
 
+  private boolean printCoords(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player) {
 
-  private boolean printCoords(ItemStack stack, World world, EntityPlayer player) {
-    
     Vector3d headVec = Util.getEyePositionEio(player);
     Vec3d start = headVec.getVec3();
     Vec3d lookVec = player.getLook(1.0F);
@@ -63,20 +66,20 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     if (mop == null) {
       return false;
     }
-    
-    BlockCoord bc = new BlockCoord(mop);
-    if(!player.isSneaking()) {
+
+    BlockPos bc = BlockCoord.get(mop);
+    if (!player.isSneaking()) {
       EnumFacing dir = mop.sideHit;
-      bc = bc.getLocation(dir);
+      bc = bc.offset(dir);
     }
-    
-    GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.openClientGui(world, player, bc.x, bc.y, bc.z);
+
+    GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE.openClientGui(world, player, bc.getX(), bc.getY(), bc.getZ());
 
     return true;
   }
-  
+
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 }

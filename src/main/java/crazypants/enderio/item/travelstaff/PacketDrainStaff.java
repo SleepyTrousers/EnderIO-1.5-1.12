@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.packet;
+package crazypants.enderio.item.travelstaff;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import io.netty.buffer.ByteBuf;

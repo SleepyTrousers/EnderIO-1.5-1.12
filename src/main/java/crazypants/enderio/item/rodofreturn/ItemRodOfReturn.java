@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.item.rodofreturn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.init.IModObject;
+import crazypants.enderio.item.coordselector.TelepadTarget;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.sound.MachineSound;
 import crazypants.enderio.power.AbstractPoweredItem;

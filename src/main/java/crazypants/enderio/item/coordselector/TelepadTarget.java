@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport.telepad;
+package crazypants.enderio.item.coordselector;
 
 import java.lang.reflect.Field;
 import java.util.Set;

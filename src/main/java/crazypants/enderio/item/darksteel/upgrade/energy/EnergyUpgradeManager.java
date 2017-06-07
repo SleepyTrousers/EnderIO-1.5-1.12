@@ -5,8 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.enderio.teleport.ItemTravelStaff;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

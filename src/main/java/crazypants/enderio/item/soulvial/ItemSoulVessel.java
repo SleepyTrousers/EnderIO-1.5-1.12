@@ -26,7 +26,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -181,14 +180,14 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
         if (Prep.isInvalid(item)) {
           player.setHeldItem(hand, capturedMobVessel);
         } else if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-          entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+          player.dropItem(capturedMobVessel, false);
         }
         player.inventoryContainer.detectAndSendChanges();
         return true;
       }
     } else {
       if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-        entity.world.spawnEntity(new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        player.dropItem(capturedMobVessel, false);
       }
       player.inventoryContainer.detectAndSendChanges();
       return true;

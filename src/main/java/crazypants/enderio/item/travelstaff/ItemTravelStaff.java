@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.item.travelstaff;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ import crazypants.enderio.init.IModObject;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
+import crazypants.enderio.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
