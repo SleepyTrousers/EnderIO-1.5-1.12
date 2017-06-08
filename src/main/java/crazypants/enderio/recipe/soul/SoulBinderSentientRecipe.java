@@ -1,32 +1,34 @@
 package crazypants.enderio.recipe.soul;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.skull.FrankenSkull;
+import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.init.ModObject.itemFrankenSkull;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderSentientRecipe extends AbstractSoulBinderRecipe {
 
-  public static SoulBinderSentientRecipe instance = new SoulBinderSentientRecipe();
+  public static final @Nonnull SoulBinderSentientRecipe instance = new SoulBinderSentientRecipe();
 
   private SoulBinderSentientRecipe() {
-    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", "Witch", "enderzoo.WitherWitch");
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", new ResourceLocation("minecraft", "witch"),
+        new ResourceLocation("enderzoo", "witherwitch"));
   }
 
   @Override
-  public ItemStack getInputStack() {
-    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.ENDER_RESONATOR.ordinal());
+  public @Nonnull ItemStack getInputStack() {
+    return Material.ENDER_RESONATOR.getStack();
   }
 
   @Override
-  public ItemStack getOutputStack() {
-    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.SENTIENT_ENDER.ordinal());
+  public @Nonnull ItemStack getOutputStack() {
+    return Material.SENTIENT_ENDER.getStack();
   }
- 
+
   @Override
-  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+  protected @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType) {
     return getOutputStack();
   }
 

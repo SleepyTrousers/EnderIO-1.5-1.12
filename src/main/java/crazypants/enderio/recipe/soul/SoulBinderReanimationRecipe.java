@@ -1,32 +1,34 @@
 package crazypants.enderio.recipe.soul;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.material.skull.FrankenSkull;
+import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.init.ModObject.itemFrankenSkull;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {
 
-  public static SoulBinderReanimationRecipe instance = new SoulBinderReanimationRecipe();
+  public static final @Nonnull SoulBinderReanimationRecipe instance = new SoulBinderReanimationRecipe();
 
   private SoulBinderReanimationRecipe() {
-    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderReanimationRecipe", "Zombie", "SpecialMobs.SpecialZombie");
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderReanimationRecipe", new ResourceLocation("minecraft", "zombie"),
+        new ResourceLocation("minecraft", "zombie_villager"));
   }
 
   @Override
-  public ItemStack getInputStack() {
-    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+  public @Nonnull ItemStack getInputStack() {
+    return Material.ZOMBIE_CONTROLLER.getStack();
   }
 
   @Override
-  public ItemStack getOutputStack() {
-    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
+  public @Nonnull ItemStack getOutputStack() {
+    return Material.FRANKEN_ZOMBIE.getStack();
   }
- 
+
   @Override
-  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+  protected @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType) {
     return getOutputStack();
   }
 

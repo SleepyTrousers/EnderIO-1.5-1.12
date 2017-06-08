@@ -1,21 +1,23 @@
 package crazypants.enderio.recipe.soul;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.block.painted.EnumPressurePlateType;
 import crazypants.enderio.config.Config;
 import crazypants.util.CapturedMob;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.init.ModObject.blockPaintedPressurePlate;
 
 public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe {
 
-  public static SoulBinderTunedPressurePlateRecipe instance1 = new SoulBinderTunedPressurePlateRecipe(false, "iTunesRecipe");
-  public static SoulBinderTunedPressurePlateRecipe instance2 = new SoulBinderTunedPressurePlateRecipe(true, "winampRecipe");
+  public static final @Nonnull SoulBinderTunedPressurePlateRecipe instance1 = new SoulBinderTunedPressurePlateRecipe(false, "iTunesRecipe");
+  public static final @Nonnull SoulBinderTunedPressurePlateRecipe instance2 = new SoulBinderTunedPressurePlateRecipe(true, "winampRecipe");
 
   private final boolean silent;
 
@@ -25,16 +27,16 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
   }
 
   @Override
-  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+  protected @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType) {
     ItemStack result = input.copy();
     result.setItemDamage(EnumPressurePlateType.getMetaFromType(EnumPressurePlateType.TUNED, silent));
     result.setTagCompound(mobType.toNbt(result.getTagCompound()));
-    result.stackSize = 1;
+    result.setCount(1);
     return result;
   }
 
   @Override
-  protected boolean isValidInputItem(ItemStack item) {
+  protected boolean isValidInputItem(@Nonnull ItemStack item) {
     if (Block.getBlockFromItem(item.getItem()) == blockPaintedPressurePlate.getBlock()) {
       EnumPressurePlateType type = EnumPressurePlateType.getTypeFromMeta(item.getMetadata());
       boolean silentFromMeta = EnumPressurePlateType.getSilentFromMeta(item.getMetadata());
@@ -44,19 +46,18 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
   }
 
   @Override
-  public ItemStack getInputStack() {    
-    return new ItemStack(blockPaintedPressurePlate.getBlock(), 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(silent));
+  public @Nonnull ItemStack getInputStack() {
+    return new ItemStack(blockPaintedPressurePlate.getBlockNN(), 1, EnumPressurePlateType.SOULARIUM.getMetaFromType(silent));
   }
 
   @Override
-  public ItemStack getOutputStack() {
-    return new ItemStack(blockPaintedPressurePlate.getBlock(), 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
+  public @Nonnull ItemStack getOutputStack() {
+    return new ItemStack(blockPaintedPressurePlate.getBlockNN(), 1, EnumPressurePlateType.TUNED.getMetaFromType(silent));
   }
 
   @Override
-  public List<String> getSupportedSouls() {
-    List<String> res = EntityUtil.getAllRegisteredMobNames();
-    return res;
+  public @Nonnull NNList<ResourceLocation> getSupportedSouls() {
+    return EntityUtil.getAllRegisteredMobNames();
   }
 
 }

@@ -67,7 +67,7 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedStone>(this, Blocks.COBBLESTONE) {
 
       @Override
-      public int getEnergyRequired(MachineRecipeInput... inputs) {
+      public int getEnergyRequired(@Nonnull MachineRecipeInput... inputs) {
         return super.getEnergyRequired(inputs) * 3;
       }
 

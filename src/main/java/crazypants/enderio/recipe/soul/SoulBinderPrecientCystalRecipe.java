@@ -1,32 +1,34 @@
 package crazypants.enderio.recipe.soul;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.init.ModObject.itemMaterial;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderPrecientCystalRecipe extends AbstractSoulBinderRecipe {
 
-  public static SoulBinderPrecientCystalRecipe instance = new SoulBinderPrecientCystalRecipe();
+  public static final @Nonnull SoulBinderPrecientCystalRecipe instance = new SoulBinderPrecientCystalRecipe();
 
   private SoulBinderPrecientCystalRecipe() {
-    super(Config.soulBinderPrecientCystalRF, Config.soulBinderPrecientCystalLevels, "SoulBinderPrecientCystalRecipe", "Shulker");
+    super(Config.soulBinderPrecientCystalRF, Config.soulBinderPrecientCystalLevels, "SoulBinderPrecientCystalRecipe",
+        new ResourceLocation("minecraft", "shulker"));
   }
 
   @Override
-  public ItemStack getInputStack() {
-    return new ItemStack(itemMaterial.getItem(), 1, Material.VIBRANT_CYSTAL.ordinal());
+  public @Nonnull ItemStack getInputStack() {
+    return Material.VIBRANT_CYSTAL.getStack();
   }
 
   @Override
-  public ItemStack getOutputStack() {
-    return new ItemStack(itemMaterial.getItem(), 1, Material.PRECIENT_CRYSTAL.ordinal());
+  public @Nonnull ItemStack getOutputStack() {
+    return Material.PRECIENT_CRYSTAL.getStack();
   }
 
   @Override
-  protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
+  protected @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType) {
     return getOutputStack();
   }
 
