@@ -109,7 +109,7 @@ public class CapturedMob { // TODO: DONE111
   }
 
   public static @Nullable CapturedMob create(@Nullable Entity entity) {
-    if (!(entity instanceof EntityLivingBase) || entity.world.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
+    if (!(entity instanceof EntityLivingBase) || !entity.isEntityAlive() || entity.world.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
       return null;
     }
     return new CapturedMob((EntityLivingBase) entity);
