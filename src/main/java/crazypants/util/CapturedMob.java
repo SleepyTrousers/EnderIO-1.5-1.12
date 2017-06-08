@@ -129,7 +129,8 @@ public class CapturedMob {
   }
 
   public static @Nullable CapturedMob create(@Nullable Entity entity) {
-    if (!(entity instanceof EntityLivingBase) || entity.worldObj == null || entity.worldObj.isRemote || entity instanceof EntityPlayer || isBlacklisted(entity)) {
+    if (!(entity instanceof EntityLivingBase) || entity.isDead || entity.worldObj == null || entity.worldObj.isRemote || entity instanceof EntityPlayer
+        || isBlacklisted(entity)) {
       return null;
     }
     return new CapturedMob((EntityLivingBase) entity);
