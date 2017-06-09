@@ -242,7 +242,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
       if (notifyNeighbours) {
         getWorld().theProfiler.startSection("neighborNotification");
-        worldObj.notifyBlockOfStateChange(pos, getBlockType());
+        worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
         notifyNeighbours = false;
         getWorld().theProfiler.endSection();
       }
