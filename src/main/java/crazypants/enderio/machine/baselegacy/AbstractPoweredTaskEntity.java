@@ -8,27 +8,23 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.interfaces.IPoweredTask;
-import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.machine.task.PoweredTaskProgress;
 import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 
 @Storable
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IProgressTile {
@@ -46,34 +42,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected float nextChance = Float.NaN;
 
   @Deprecated
-  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
+  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition) {
     super(slotDefinition);
   }
-  
-  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+
+  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  protected AbstractPoweredTaskEntity(SlotDefinition slotDefinition, ModObject modObject) {
+  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, ModObject modObject) {
     super(slotDefinition, modObject);
-  }
-
-  @Override
-  public @Nonnull int[] getSlotsForFace(EnumFacing dir) {
-    IoMode mode = dir == null ? IoMode.DISABLED : getIoMode(dir);
-    if(mode == IoMode.DISABLED) {
-      return new int[0];
-    }
-
-    int[] res = new int[inventory.length - slotDefinition.getNumUpgradeSlots()];
-    int index = 0;
-    for (int i = 0; i < inventory.length; i++) {
-      if(!slotDefinition.isUpgradeSlot(i)) {
-        res[index] = i;
-        index++;
-      }
-    }
-    return res;
   }
 
   @Override
@@ -87,7 +66,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   @Override
-  public TileEntity getTileEntity() {
+  public @Nonnull TileEntity getTileEntity() {
     return this;
   }
 
@@ -100,8 +79,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return currentTask;
   }
 
-  public float getExperienceForOutput(ItemStack output) {
-    if(lastCompletedRecipe == null) {
+  public float getExperienceForOutput(@Nonnull ItemStack output) {
+    if (lastCompletedRecipe == null) {
       return 0;
     }
     return lastCompletedRecipe.getExperienceForOutput(output);
@@ -114,7 +93,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
 
-    if(!redstoneChecksPassed) {
+    if (!redstoneChecksPassed) {
       return false;
     }
 
@@ -122,13 +101,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     // Process any current items
     requiresClientSync |= checkProgress(redstoneChecksPassed);
 
-    if(currentTask != null || !hasPower() || !hasInputStacks()) {
+    if (currentTask != null || !hasPower() || !hasInputStacks()) {
       return requiresClientSync;
     }
 
-    if(startFailed) {
+    if (startFailed) {
       ticksSinceCheckedRecipe++;
-      if(ticksSinceCheckedRecipe < 20) {
+      if (ticksSinceCheckedRecipe < 20) {
         return false;
       }
     }
@@ -136,15 +115,15 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
     // Get a new chance when we don't have one yet
     // If a recipe could not be started we will try with the same chance next time
-    if(Float.isNaN(nextChance)) {
+    if (Float.isNaN(nextChance)) {
       nextChance = random.nextFloat();
     }
 
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(nextChance);
-    if(nextRecipe != null) {
+    if (nextRecipe != null) {
       boolean started = startNextTask(nextRecipe, nextChance);
-      if(started) {
+      if (started) {
         // this chance value has been used up
         nextChance = Float.NaN;
       }
@@ -158,14 +137,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected boolean checkProgress(boolean redstoneChecksPassed) {
-    if(currentTask == null || !hasPower()) {
+    if (currentTask == null || !hasPower()) {
       return false;
     }
     if (redstoneChecksPassed && !currentTask.isComplete()) {
       usePower();
     }
     // then check if we are done
-    if(currentTask.isComplete()) {
+    if (currentTask.isComplete()) {
       taskComplete();
       return false;
     }
@@ -176,26 +155,21 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected double usePower() {
     return usePower(getPowerUsePerTick());
   }
-  
-  @Override
-  public int getEnergyStored() {
-    return getEnergyStored(null);
-  }
 
   public int usePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
     setEnergyStored(Math.max(0, getEnergyStored() - used));
-    if(currentTask != null) {
+    if (currentTask != null) {
       currentTask.update(used);
     }
     return used;
   }
 
   protected void taskComplete() {
-    if(currentTask != null) {
+    if (currentTask != null) {
       lastCompletedRecipe = currentTask.getRecipe();
       ResultStack[] output = currentTask.getCompletedResult();
-      if(output != null && output.length > 0) {
+      if (output.length > 0) {
         mergeResults(output);
       }
     }
@@ -204,14 +178,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     lastProgressScaled = 0;
   }
 
-  protected void mergeResults(ResultStack[] results) {
+  protected void mergeResults(@Nonnull ResultStack[] results) {
     final int numOutputSlots = slotDefinition.getNumOutputSlots();
-    if(numOutputSlots > 0) {
+    if (numOutputSlots > 0) {
 
       List<ItemStack> outputStacks = new ArrayList<ItemStack>(numOutputSlots);
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack it = inventory[i];
-        if (Prep.isValid(it)) {
+        if (it != null && Prep.isValid(it)) {
           it = it.copy();
         }
         outputStacks.add(it);
@@ -221,7 +195,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
         if (Prep.isValid(result.item)) {
           int numMerged = mergeItemResult(result.item, outputStacks);
           if (numMerged > 0) {
-            result.item.stackSize -= numMerged;
+            result.item.shrink(numMerged);
           }
         } else if (result.fluid != null) {
           mergeFluidResult(result);
@@ -231,7 +205,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
       int listIndex = 0;
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack st = outputStacks.get(listIndex);
-        if (Prep.isValid(st)) {
+        if (st != null && Prep.isValid(st)) {
           st = st.copy();
         }
         inventory[i] = st;
@@ -241,8 +215,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     } else {
       for (ResultStack result : results) {
         if (Prep.isValid(result.item)) {
-          Block.spawnAsEntity(world, pos, result.item);
-          result.item.stackSize = 0;
+          Block.spawnAsEntity(world, pos, result.item.copy());
+          result.item.setCount(0);
         } else if (result.fluid != null) {
           mergeFluidResult(result);
         }
@@ -251,17 +225,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     cachedNextRecipe = null;
   }
 
-  protected void mergeFluidResult(ResultStack result) {
+  protected void mergeFluidResult(@Nonnull ResultStack result) {
   }
 
-  protected void drainInputFluid(MachineRecipeInput fluid) {
+  protected void drainInputFluid(@Nonnull MachineRecipeInput fluid) {
   }
 
-  protected boolean canInsertResultFluid(ResultStack fluid) {
+  protected boolean canInsertResultFluid(@Nonnull ResultStack fluid) {
     return false;
   }
 
-  protected int mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
+  protected int mergeItemResult(@Nonnull ItemStack item, @Nonnull List<ItemStack> outputStacks) {
 
     ItemStack copy = item.copy();
     if (Prep.isInvalid(copy)) {
@@ -272,12 +246,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     // try to add it to existing stacks first
     for (int i = 0; i < outputStacks.size(); i++) {
       ItemStack outStack = outputStacks.get(i);
-      if (Prep.isValid(outStack)) {
+      if (outStack != null && Prep.isValid(outStack)) {
         int num = getNumCanMerge(outStack, copy);
-        outStack.stackSize += num;
-        copy.stackSize -= num;
-        if (copy.stackSize <= 0) {
-          return item.stackSize;
+        outStack.grow(num);
+        copy.shrink(num);
+        if (Prep.isInvalid(copy)) {
+          return item.getCount();
         }
       } else if (firstFreeSlot < 0) {
         firstFreeSlot = i;
@@ -287,23 +261,28 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     // Try and add it to an empty slot
     if (firstFreeSlot >= 0) {
       outputStacks.set(firstFreeSlot, copy);
-      return item.stackSize;
+      return item.getCount();
     }
 
     return 0;
   }
 
-  protected MachineRecipeInput[] getRecipeInputs() {
+  protected @Nonnull MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots()];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
-      res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
+      final ItemStack item = inventory[fromSlot];
+      if (item != null) {
+        res[i] = new MachineRecipeInput(fromSlot, item);
+      } else {
+        res[i] = new MachineRecipeInput(fromSlot, Prep.getEmpty());
+      }
       fromSlot++;
     }
     return res;
   }
 
-  protected IMachineRecipe getNextRecipe() {
+  protected @Nullable IMachineRecipe getNextRecipe() {
     if (cachedNextRecipe == null) {
       cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
     }
@@ -312,14 +291,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected IMachineRecipe canStartNextTask(float chance) {
     IMachineRecipe nextRecipe = getNextRecipe();
-    if(nextRecipe == null) {
+    if (nextRecipe == null) {
       return null; // no template
     }
     // make sure we have room for the next output
     return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
   }
 
-  protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
+  protected boolean canInsertResult(float chance, @Nonnull IMachineRecipe nextRecipe) {
     ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
     List<ItemStack> outputStacks = null;
 
@@ -331,9 +310,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack st = inventory[i];
-        if (Prep.isValid(st)) {
+        if (st != null && Prep.isValid(st)) {
           st = st.copy();
-          if (allFull && st.stackSize < st.getMaxStackSize()) {
+          if (allFull && st.getCount() < st.getMaxStackSize()) {
             allFull = false;
           }
         } else {
@@ -364,7 +343,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected boolean hasInputStacks() {
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < slotDefinition.getNumInputSlots(); i++) {
-      if(inventory[fromSlot] != null) {
+      final ItemStack itemStack = inventory[fromSlot];
+      if (itemStack != null && Prep.isValid(itemStack)) {
         return true;
       }
       fromSlot++;
@@ -372,23 +352,23 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return false;
   }
 
-  protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(!itemStack.isItemEqual(result)) {
+  protected int getNumCanMerge(@Nonnull ItemStack itemStack, @Nonnull ItemStack result) {
+    if (!itemStack.isItemEqual(result)) {
       return 0;
     }
-    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
+    return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());
   }
 
-  protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
-    if(hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
+  protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
+    if (hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
       // then get our recipe and take away the source items
       currentTask = createTask(nextRecipe, chance);
       List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());
       for (MachineRecipeInput item : consumed) {
-        if(item != null) {
-          if(item.item != null && item.item.stackSize > 0) {
-            decrStackSize(item.slotNumber, item.item.stackSize);
-          } else if(item.fluid != null) {
+        if (item != null) {
+          if (Prep.isValid(item.item)) {
+            decrStackSize(item.slotNumber, item.item.getCount());
+          } else if (item.fluid != null) {
             drainInputFluid(item);
           }
 
@@ -399,36 +379,31 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return false;
   }
 
-  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected @Nullable IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, float chance) {
     return new PoweredTask(nextRecipe, chance, getRecipeInputs());
   }
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+  protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
     cachedNextRecipe = null;
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
-    if(slotDefinition.isInputSlot(fromSlot)) {
+    if (slotDefinition.isInputSlot(fromSlot)) {
       cachedNextRecipe = null;
     }
     return res;
   }
 
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
-    if(slotDefinition.isInputSlot(slot)) {
+    if (slotDefinition.isInputSlot(slot)) {
       cachedNextRecipe = null;
     }
-  }
-  
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
   }
 
 }

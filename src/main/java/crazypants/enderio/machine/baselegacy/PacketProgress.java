@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketProgress extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketProgress, IMessage>  {
+public class PacketProgress extends MessageTileEntity<TileEntity> {
 
   private float progress;
 
@@ -34,12 +34,17 @@ public class PacketProgress extends MessageTileEntity<TileEntity> implements IMe
     progress = buf.readFloat();
   }
 
-  @Override
-  public IMessage onMessage(PacketProgress message, MessageContext ctx) {
-    TileEntity tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if(tile instanceof IProgressTile) {
-      ((IProgressTile) tile).setProgress(message.progress);
+  public static class Handler implements IMessageHandler<PacketProgress, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketProgress message, MessageContext ctx) {
+      TileEntity tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      if (tile instanceof IProgressTile) {
+        ((IProgressTile) tile).setProgress(message.progress);
+      }
+      return null;
     }
-    return null;
+
   }
+
 }

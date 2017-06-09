@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.capacitor.CapacitorHelper;
 import crazypants.enderio.capacitor.CapacitorKey;
@@ -115,18 +116,16 @@ public class EnergyTank implements IEnergyStorage {
   @Store
   private int storedEnergy;
 
-  public EnergyTank(TileEntity owner, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+  public EnergyTank(TileEntity owner, @Nonnull IModObject modObject, @Nullable ICapacitorKey maxEnergyRecieved, @Nullable ICapacitorKey maxEnergyStored,
+      @Nullable ICapacitorKey maxEnergyUsed) {
     this.owner = owner;
-    this.maxEnergyRecieved = maxEnergyRecieved;
-    this.maxEnergyStored = maxEnergyStored;
-    this.maxEnergyUsed = maxEnergyUsed;
+    this.maxEnergyRecieved = NullHelper.first(maxEnergyRecieved, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80));
+    this.maxEnergyStored = NullHelper.first(maxEnergyStored, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000));
+    this.maxEnergyUsed = NullHelper.first(maxEnergyUsed, new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20));
   }
 
   public EnergyTank(TileEntity owner, @Nonnull IModObject modObject) {
-    this.owner = owner;
-    this.maxEnergyRecieved = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 80);
-    this.maxEnergyStored = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000);
-    this.maxEnergyUsed = new DefaultCapacitorKey(modObject, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 20);
+    this(owner, modObject, null, null, null);
   }
 
   public EnergyTank(TileEntity owner) {
@@ -177,7 +176,7 @@ public class EnergyTank implements IEnergyStorage {
     return false;
   }
 
-  private void setEnergyStored(int stored) {
+  public void setEnergyStored(int stored) {
     int newEnergy = MathHelper.clamp(stored, 0, getMaxEnergyStored());
     if (newEnergy != storedEnergy) {
       storedEnergy = newEnergy;

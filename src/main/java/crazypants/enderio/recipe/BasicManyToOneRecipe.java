@@ -1,5 +1,7 @@
 package crazypants.enderio.recipe;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -123,7 +125,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public @Nonnull NNList<NNList<ItemStack>> getInputStackAlternatives() {
+  public @Nonnull List<List<ItemStack>> getInputStackAlternatives() {
     return recipe.getInputStackAlternatives();
   }
 

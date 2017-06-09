@@ -24,9 +24,7 @@ public class RecipeWrapper extends BlankRecipeWrapper {
   @Override
   public void getIngredients(@Nonnull IIngredients ingredients) {
     List<List<ItemStack>> inputStacks = recipe.getInputStackAlternatives();
-    if (inputStacks != null) {
-      ingredients.setInputLists(ItemStack.class, inputStacks);
-    }
+    ingredients.setInputLists(ItemStack.class, inputStacks);
 
     List<ItemStack> outputs = new ArrayList<ItemStack>();
     for (RecipeOutput out : recipe.getOutputs()) {

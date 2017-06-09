@@ -1,5 +1,7 @@
 package crazypants.enderio.recipe.vat;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -20,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class VatRecipe implements IRecipe {
 
   protected final @Nonnull NNList<ItemStack> inputStacks;
-  private final @Nonnull NNList<NNList<ItemStack>> inputStackAlternatives;
+  private final @Nonnull List<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
   protected final @Nonnull Table<RecipeInput, RecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
@@ -256,13 +258,12 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public @Nonnull NNList<NNList<ItemStack>> getInputStackAlternatives() {
+  public @Nonnull List<List<ItemStack>> getInputStackAlternatives() {
     return inputStackAlternatives;
   }
 
   @Override
   public boolean isSynthetic() {
-    // TODO Auto-generated method stub
     return false;
   }
 

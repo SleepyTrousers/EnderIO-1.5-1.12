@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.init.ModObject.itemEnderface;
 
 public class EnderIOTab extends CreativeTabs {
@@ -25,25 +24,13 @@ public class EnderIOTab extends CreativeTabs {
   private final int meta;
 
   public EnderIOTab(int meta) {
-    super(MODID);
+    super(EnderIO.MOD_NAME);
     this.meta = meta;
   }
 
   public EnderIOTab(int meta, int index) {
-    super(index, MODID);
+    super(index, EnderIO.MOD_NAME);
     this.meta = meta;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull String getTabLabel() {
-    return MODID;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull String getTranslatedTabLabel() {
-    return MODID;
   }
 
   @SuppressWarnings("null")

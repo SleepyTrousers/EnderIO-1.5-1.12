@@ -7,12 +7,19 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.common.fluid.SmartTank;
+
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.util.ItemQuadCollector;
+import crazypants.enderio.render.util.TankRenderHelper;
+import crazypants.util.NbtValue;
+import info.loenwind.autosave.helpers.SmartTankItemAccess;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +37,19 @@ public class FusedQuartzItemRenderMapper implements IRenderMapper.IItemRenderMap
   @Override
   @SideOnly(Side.CLIENT)
   public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
+
+    if (!NbtValue.FAKE.hasTag(stack)) {
+      // this is for the TOP overlay, kind of a hack putting it here, but the alternative would be adding a new item just for this...
+      SmartTank tank = SmartTankItemAccess.getTank(stack);
+      HalfBakedList buffer = TankRenderHelper.mkTank(tank, 0, 0, 16, true);
+      if (buffer != null) {
+        List<BakedQuad> quads = new ArrayList<BakedQuad>();
+        buffer.bake(quads);
+        itemQuadCollector.addQuads(null, quads);
+      }
+      return null;
+    }
+
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
     FusedQuartzType bankType = FusedQuartzType.getTypeFromMeta(stack.getItemDamage());

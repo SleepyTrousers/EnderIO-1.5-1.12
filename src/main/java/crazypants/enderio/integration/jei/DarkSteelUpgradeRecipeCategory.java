@@ -10,10 +10,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import crazypants.enderio.Log;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
@@ -42,10 +41,10 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
 
   public static class DarkSteelUpgradeRecipeWrapper extends BlankRecipeWrapper {
 
-    private final Triple<ItemStack, ItemStack, ItemStack> stacks;
+    private final UpgradePath stacks;
 
-    public DarkSteelUpgradeRecipeWrapper(Triple<ItemStack, ItemStack, ItemStack> stacks) {
-      this.stacks = stacks;
+    public DarkSteelUpgradeRecipeWrapper(UpgradePath rec) {
+      this.stacks = rec;
     }
 
     @Override
@@ -57,41 +56,41 @@ public class DarkSteelUpgradeRecipeCategory extends BlankRecipeCategory<DarkStee
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      ingredients.setInputs(ItemStack.class, Arrays.asList(stacks.getLeft(), stacks.getMiddle()));
-      ingredients.setOutput(ItemStack.class, stacks.getRight());
+      ingredients.setInputs(ItemStack.class, Arrays.asList(stacks.getInput(), stacks.getUpgrade()));
+      ingredients.setOutput(ItemStack.class, stacks.getOutput());
     }
 
   } // -------------------------------------
 
-  
-  private static final List<Triple<ItemStack, ItemStack, ItemStack>> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
+  private static final List<UpgradePath> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
 
   public static void registerSubtypes(ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
     Set<Item> items = new HashSet<Item>();
-    for (Triple<ItemStack, ItemStack, ItemStack> rec : allRecipes) {
-      items.add(rec.getLeft().getItem());
-      items.add(rec.getRight().getItem());
+    for (UpgradePath rec : allRecipes) {
+      items.add(rec.getInput().getItem());
+      items.add(rec.getOutput().getItem());
     }
     for (Item item : items) {
-      subtypeRegistry.registerNbtInterpreter(item, dsusi);
+      if (item != null) {
+        subtypeRegistry.registerSubtypeInterpreter(item, dsusi);
+      }
     }
 
     Log.info(String.format("DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade subtypes to JEI.", allRecipes.size()));
   }
-  
+
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new DarkSteelUpgradeRecipeCategory(guiHelper));
-    registry.addRecipeHandlers(new BaseRecipeHandler<DarkSteelUpgradeRecipeWrapper>(DarkSteelUpgradeRecipeWrapper.class, DarkSteelUpgradeRecipeCategory.UID));
     registry.addRecipeCategoryCraftingItem(new ItemStack(Blocks.ANVIL), DarkSteelUpgradeRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlock()), DarkSteelUpgradeRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(blockDarkSteelAnvil.getBlockNN()), DarkSteelUpgradeRecipeCategory.UID);
 
     List<DarkSteelUpgradeRecipeWrapper> result = new ArrayList<DarkSteelUpgradeRecipeWrapper>();
-    for (Triple<ItemStack, ItemStack, ItemStack> rec : allRecipes) {
+    for (UpgradePath rec : allRecipes) {
       result.add(new DarkSteelUpgradeRecipeWrapper(rec));
     }
-    registry.addRecipes(result);
+    registry.addRecipes(result, DarkSteelUpgradeRecipeCategory.UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerRepair.class, DarkSteelUpgradeRecipeCategory.UID, 0, 2, 3, 4 * 9);
 

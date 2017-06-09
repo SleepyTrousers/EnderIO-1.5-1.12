@@ -116,7 +116,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
 
   @Override
   public String getLabel() {
-    return EnderIO.MODID;
+    return EnderIO.MOD_NAME;
   }
 
   // adapted from http://stackoverflow.com/a/19494116/4105897

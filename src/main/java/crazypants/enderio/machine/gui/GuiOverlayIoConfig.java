@@ -2,16 +2,16 @@ package crazypants.enderio.machine.gui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
@@ -20,6 +20,7 @@ import crazypants.enderio.machine.modes.IoMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implements IGuiOverlay {
 
@@ -28,18 +29,18 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
 
   private IGuiScreen screen;
 
-  private Rectangle bounds;
+  private @Nonnull Rectangle bounds = new Rectangle();
   int height = 80;
 
   private IoConfigRenderer<E> renderer;
 
-  private List<BlockCoord> coords = new ArrayList<BlockCoord>();
+  private @Nonnull NNList<BlockPos> coords = new NNList<BlockPos>();
 
   public GuiOverlayIoConfig(IIoConfigurable ioConf) {
     coords.add(ioConf.getLocation());
   }
 
-  public GuiOverlayIoConfig(Collection<BlockCoord> bc) {
+  public GuiOverlayIoConfig(Collection<BlockPos> bc) {
     coords.addAll(bc);
   }
 
@@ -48,12 +49,12 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
   }
 
   @Override
-  public void init(IGuiScreen screenIn) {
+  public void init(@Nonnull IGuiScreen screenIn) {
     this.screen = screenIn;
     renderer = new IoConfigRenderer<E>(coords) {
 
       @Override
-      protected String getLabelForMode(IoMode mode) {
+      protected @Nonnull String getLabelForMode(@Nonnull IoMode mode) {
         return GuiOverlayIoConfig.this.getLabelForMode(mode);
       }
 
@@ -62,7 +63,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
     bounds = new Rectangle(screenIn.getOverlayOffsetX() + 5, screenIn.getYSize() - height - 5, screenIn.getXSize() - 10, height);
   }
 
-  protected String getLabelForMode(IoMode mode) {
+  protected @Nonnull String getLabelForMode(IoMode mode) {
     return mode.getLocalisedName();
   }
 
@@ -70,22 +71,21 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
   public void draw(int mouseX, int mouseY, float partialTick) {
 
     RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.black));
-    
+
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc);
 
-    int vpx = ( (screen.getGuiLeft() + bounds.x - screen.getOverlayOffsetX())* scaledresolution.getScaleFactor());
+    int vpx = ((screen.getGuiLeft() + bounds.x - screen.getOverlayOffsetX()) * scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiTop() + 4) * scaledresolution.getScaleFactor();
     int w = bounds.width * scaledresolution.getScaleFactor();
     int h = bounds.height * scaledresolution.getScaleFactor();
 
-    renderer.drawScreen(mouseX, mouseY, partialTick, new Rectangle(vpx,vpy,w,h), bounds);
-
+    renderer.drawScreen(mouseX, mouseY, partialTick, new Rectangle(vpx, vpy, w, h), bounds);
   }
 
   @Override
   public boolean handleMouseInput(int x, int y, int b) {
-    if(!isMouseInBounds(x, y)) {
+    if (!isMouseInBounds(x, y)) {
       renderer.handleMouseInput();
       return false;
     }
@@ -98,7 +98,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
   public boolean isMouseInBounds(int mouseX, int mouseY) {
     int x = mouseX - screen.getGuiLeft() + screen.getOverlayOffsetX();
     int y = mouseY - screen.getGuiTop();
-    if(bounds.contains(x,y)) {
+    if (bounds.contains(x, y)) {
       return true;
     }
     return false;
@@ -107,7 +107,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
   @Override
   public void setIsVisible(boolean visible) {
     this.visible = visible;
-    if(configB != null) {
+    if (configB != null) {
       configB.setSelected(visible);
     }
   }
@@ -118,15 +118,16 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
   }
 
   @Override
-  public Rectangle getBounds() {
+  public @Nonnull Rectangle getBounds() {
     return bounds;
   }
 
   public SelectedFace<E> getSelection() {
     return visible ? renderer.getSelection() : null;
   }
-  
+
   @Override
-  public void guiClosed() {            
+  public void guiClosed() {
   }
+
 }

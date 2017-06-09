@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
 import appeng.api.networking.IGridHost;
@@ -44,7 +43,7 @@ public interface IConduitBundle extends ILegacyPowerReceiver, IPaintable.IPainta
 
   @Override
   @Nonnull
-  BlockCoord getLocation();
+  BlockPos getLocation();
 
   // conduits
 

@@ -96,14 +96,14 @@ public class ClientProxy extends CommonProxy {
     IoConfigRenderer.init(event);
 
     //conduits
-    ConduitBundleRenderManager.instance.init(event);
+    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
 
     // Fluids
     EnderIO.fluids.registerRenderers();
 
     // Custom state mappers
     EnderIOGlassesStateMapper.create();
-    ConduitBundleStateMapper.create();
+    // TODO 1.11 ConduitBundleStateMapper.create();
     ColdFireStateMapper.create();
     LeverStateMapper.create();
 
@@ -135,7 +135,7 @@ public class ClientProxy extends CommonProxy {
       }
     }
 
-    ObeliskRenderManager.INSTANCE.registerRenderers();
+    // TODO 1.11 ObeliskRenderManager.INSTANCE.registerRenderers();
 
     // Overlays
     MinecraftForge.EVENT_BUS.register(new YetaWrenchOverlayRenderer());
@@ -153,20 +153,20 @@ public class ClientProxy extends CommonProxy {
     MinecraftForge.EVENT_BUS.register(KeyTracker.instance);
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
     UpgradeRenderManager.init(event);
-    MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
+    // TODO 1.11 MinecraftForge.EVENT_BUS.register(new TeleportEntityRenderHandler());
   }
 
   @Override
   public void init(@Nonnull FMLInitializationEvent event) {
     super.init(event);
     SmartModelAttacher.registerColoredBlocksAndItems();
-    MinecraftForge.EVENT_BUS.register(ClientNetworkManager.getInstance());
+    // TODO 1.11 MinecraftForge.EVENT_BUS.register(ClientNetworkManager.getInstance());
   }
 
   @Override
   public void init(@Nonnull FMLPostInitializationEvent event) {
     super.init(event);
-    ConduitBundleRenderManager.instance.init(event);
+    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
   }
 
   @Override

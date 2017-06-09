@@ -5,7 +5,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
@@ -22,7 +23,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.modes.IoMode;
-import crazypants.util.TextUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -30,30 +30,30 @@ import net.minecraft.inventory.Slot;
 
 public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> extends GuiContainerBaseEIO {
 
-  public static final Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
-  public static final Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
+  public static final @Nonnull Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
+  public static final @Nonnull Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
 
   public static final int BUTTON_SIZE = 16;
   private static final int CONFIG_ID = 8962349;
   private static final int RECIPE_ID = CONFIG_ID + 1;
 
-  private final T tileEntity;
+  private final @Nonnull T tileEntity;
 
-  protected RedstoneModeButton<T> redstoneButton;
+  protected @Nonnull RedstoneModeButton<T> redstoneButton;
 
-  private final GuiOverlayIoConfig<T> configOverlay;
+  private final @Nonnull GuiOverlayIoConfig<T> configOverlay;
 
-  protected final GuiButtonIoConfig<T> configB;
-  
-  protected IconButton recipeButton;
+  protected final @Nonnull GuiButtonIoConfig<T> configB;
+
+  protected @Nonnull IconButton recipeButton;
 
   protected List<GuiToolTip> progressTooltips;
   protected int lastProgressTooltipValue = -1;
 
-  protected GuiMachineBase(T machine, Container par1Container, String... guiTexture) {
+  protected @Nullable GuiMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String... guiTexture) {
     super(par1Container, guiTexture);
     tileEntity = machine;
-    
+
     xSize = getXSize();
     ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
@@ -86,13 +86,13 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);    
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = buttonList.get(i);
       guibutton.drawButton(mc, 0, 0);
     }
 
-    if(showRecipeButton()) {
+    if (showRecipeButton()) {
       recipeButton.visible = true;
     }
 
@@ -103,7 +103,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
   public void renderSlotHighlights() {
     SelectedFace<T> sel = configOverlay.getSelection();
-    if(sel != null) {
+    if (sel != null) {
       IoMode mode = sel.config.getIoMode(sel.face);
       renderSlotHighlights(mode);
     }
@@ -123,47 +123,47 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     }
   }
 
-  protected void renderSlotHighlight(int slot, Vector4f col) {
+  protected void renderSlotHighlight(int slot, @Nonnull Vector4f col) {
     Slot invSlot = inventorySlots.inventorySlots.get(slot);
-    renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+    renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 
-  protected void renderSlotHighlight(Slot invSlot, Vector4f col) {
-    renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+  protected void renderSlotHighlight(Slot invSlot, @Nonnull Vector4f col) {
+    renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 
-  protected void renderSlotHighlight(Vector4f col, int x, int y, int widthIn, int heightIn) {
-    GL11.glEnable(GL11.GL_BLEND);
+  protected void renderSlotHighlight(@Nonnull Vector4f col, int x, int y, int widthIn, int heightIn) {
+    GlStateManager.enableBlend();
     RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, widthIn, heightIn, col);
-    GL11.glDisable(GL11.GL_BLEND);
+    GlStateManager.disableBlend();
   }
-  
+
   protected boolean isConfigOverlayEnabled() {
     return configOverlay.isVisible();
   }
-  
+
   protected T getTileEntity() {
     return tileEntity;
   }
 
   protected void addProgressTooltip(int x, int y, int w, int h) {
-    if(progressTooltips == null) {
+    if (progressTooltips == null) {
       progressTooltips = new ArrayList<GuiToolTip>();
     }
 
-    GuiToolTip tt = new GuiToolTip(new Rectangle(x, y, w, h), (String[])null);
+    GuiToolTip tt = new GuiToolTip(new Rectangle(x, y, w, h), (String[]) null);
     progressTooltips.add(tt);
     addToolTip(tt);
   }
 
   protected final void updateProgressTooltips(int scaledProgress, float progress) {
-    if(lastProgressTooltipValue == scaledProgress || progressTooltips == null) {
+    if (lastProgressTooltipValue == scaledProgress || progressTooltips == null) {
       return;
     }
     lastProgressTooltipValue = scaledProgress;
 
-    if(scaledProgress < 0) {
-      for(GuiToolTip tt : progressTooltips) {
+    if (scaledProgress < 0) {
+      for (GuiToolTip tt : progressTooltips) {
         tt.setIsVisible(false);
       }
       return;
@@ -171,7 +171,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
     String msg = formatProgressTooltip(scaledProgress, progress);
     String[] tooltip = msg.split("\\|");
-    for(GuiToolTip tt : progressTooltips) {
+    for (GuiToolTip tt : progressTooltips) {
       tt.setToolTipText(tooltip);
       tt.setIsVisible(true);
     }
@@ -187,9 +187,9 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   protected boolean shouldRenderProgress() {
-    if(tileEntity instanceof IProgressTile) {
+    if (tileEntity instanceof IProgressTile) {
       float progress = ((IProgressTile) tileEntity).getProgress();
-      if(progress > 0 && progress < 1) {
+      if (progress > 0 && progress < 1) {
         updateProgressTooltips(scaleProgressForTooltip(progress), progress);
         return true;
       } else {
@@ -201,8 +201,8 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   }
 
   protected int getProgressScaled(int scale) {
-    if(getTileEntity() instanceof IProgressTile) {
-      return Util.getProgressScaled(scale, (IProgressTile) getTileEntity());
+    if (tileEntity instanceof IProgressTile) {
+      return Util.getProgressScaled(scale, (IProgressTile) tileEntity);
     }
     return 0;
   }

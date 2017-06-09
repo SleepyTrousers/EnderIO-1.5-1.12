@@ -1,5 +1,7 @@
 package crazypants.enderio.recipe;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -34,7 +36,7 @@ public interface IRecipe {
   boolean isValidInput(@Nonnull FluidStack fluid);
 
   @Nonnull
-  NNList<NNList<ItemStack>> getInputStackAlternatives();
+  List<List<ItemStack>> getInputStackAlternatives();
 
   boolean isSynthetic();
 

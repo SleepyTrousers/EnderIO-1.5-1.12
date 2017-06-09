@@ -1,24 +1,26 @@
 package crazypants.enderio.power;
 
-import com.enderio.core.common.util.BlockCoord;
+import javax.annotation.Nonnull;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public interface ILegacyPoweredTile {
 
-  boolean canConnectEnergy(EnumFacing from);
-  
-  int getEnergyStored(EnumFacing from);
-  
-  int getMaxEnergyStored(EnumFacing from);
-  
+  boolean canConnectEnergy(@Nonnull EnumFacing from);
+
+  int getEnergyStored();
+
+  int getMaxEnergyStored();
+
   void setEnergyStored(int storedEnergy);
 
-  BlockCoord getLocation();
-  
+  @Nonnull
+  BlockPos getLocation();
+
   /**
    * Should the power be displayed in WAILA or other places
    */
   boolean displayPower();
-  
+
 }

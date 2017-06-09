@@ -46,12 +46,12 @@ public class InternalPoweredTileWrapper implements ITeslaHolder {
 
   @Override
   public long getStoredPower() {
-    return tile.getEnergyStored(from);
+    return tile.getEnergyStored();
   }
 
   @Override
   public long getCapacity() {
-    return tile.getMaxEnergyStored(from);
+    return tile.getMaxEnergyStored();
   }
 
 }

@@ -5,8 +5,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.common.BlockEnder;
-import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
@@ -14,11 +13,13 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.util.CapturedMob;
 import crazypants.util.NbtValue;
 import crazypants.util.Prep;
+import info.loenwind.autosave.helpers.SmartTankItemAccess;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.ILayoutStyle;
 import mcjty.theoneprobe.api.IProbeConfig;
@@ -53,7 +54,6 @@ import static crazypants.enderio.config.Config.topShowRedstoneByDefault;
 import static crazypants.enderio.config.Config.topShowSideConfigByDefault;
 import static crazypants.enderio.config.Config.topShowTanksByDefault;
 import static crazypants.enderio.config.Config.topShowXPByDefault;
-import static crazypants.enderio.init.ModObject.blockTank;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
@@ -325,18 +325,14 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (data.tankData != null && !data.tankData.isEmpty()) {
       if (mode != ProbeMode.NORMAL || topShowTanksByDefault) {
         for (ITankData tank : data.tankData) {
-          ItemStack stack = new ItemStack(blockTank.getBlockNN());
+          SmartTank smartTank = new SmartTank(1000);
           String content1 = null;
           String content2 = null;
           final FluidStack fluid = tank.getContent();
           if (fluid != null) {
             FluidStack fluid2 = fluid.copy();
-            fluid2.amount = fluid.amount * 16000 / tank.getCapacity();
-            FluidAndStackResult fillContainer = FluidUtil.tryFillContainer(stack, fluid2);
-            if (Prep.isValid(fillContainer.result.itemStack)) {
-              stack = fillContainer.result.itemStack;
-              NbtValue.FAKE.setInt(stack, 1);
-            }
+            fluid2.amount = fluid.amount * 1000 / tank.getCapacity();
+            smartTank.setFluid(fluid2);
             content1 = fluid.getLocalizedName();
             content2 = EnderIO.lang.localize("top.tank.content", fluid.amount, tank.getCapacity());
           } else {
@@ -354,6 +350,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             content1 = TextFormatting.YELLOW + EnderIO.lang.localize("top.tank.header.storage", TextFormatting.WHITE + content1);
             break;
           }
+          ItemStack stack = new ItemStack(ModObject.blockFusedQuartz.getBlockNN());
+          SmartTankItemAccess.setTank(stack, smartTank);
+          NbtValue.FAKE.setBoolean(stack, true);
 
           eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(content1).text(content2);
 

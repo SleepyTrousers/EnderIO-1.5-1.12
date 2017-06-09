@@ -1305,7 +1305,7 @@ public final class Config {
         temp.add(rl.toString());
       }
     });
-    String[] list = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, temp.toArray(),
+    String[] list = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, temp.isEmpty() ? new String[0] : temp.toArray(),
         "Entities listed here will can not be captured in a Soul Vial");
     soulVesselBlackList.clear();
     for (String string : list) {
@@ -1321,7 +1321,7 @@ public final class Config {
         temp.add(rl.toString());
       }
     });
-    list = config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, temp.toArray(),
+    list = config.getStringList("soulVesselUnspawnableList", sectionSpawner.name, temp.isEmpty() ? new String[0] : temp.toArray(),
         "Entities listed here cannot be spawned and must be cloned from a captured entity instead (Attention: Possibility of item duping!)");
     soulVesselUnspawnableList.clear();
     for (String string : list) {

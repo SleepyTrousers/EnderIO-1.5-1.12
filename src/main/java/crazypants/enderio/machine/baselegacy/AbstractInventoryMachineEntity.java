@@ -3,8 +3,6 @@ package crazypants.enderio.machine.baselegacy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.Util;
-
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capability.LegacyMachineWrapper;
@@ -15,7 +13,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
@@ -25,27 +23,19 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 @Storable
-public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity implements ISidedInventory {
+public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity {
 
   @Store
-  protected ItemStack[] inventory;
-  protected final SlotDefinition slotDefinition;
+  protected @Nonnull ItemStack[] inventory;
+  protected final @Nonnull SlotDefinition slotDefinition;
 
-  private final @Nonnull int[] allSlots;
-
-  public AbstractInventoryMachineEntity(SlotDefinition slotDefinition) {
-    super();
+  public AbstractInventoryMachineEntity(@Nonnull SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
-
     inventory = new ItemStack[slotDefinition.getNumSlots()];
-
-    allSlots = new int[slotDefinition.getNumSlots()];
-    for (int i = 0; i < allSlots.length; i++) {
-      allSlots[i] = i;
-    }
+    clear();
   }
 
-  public SlotDefinition getSlotDefinition() {
+  public @Nonnull SlotDefinition getSlotDefinition() {
     return slotDefinition;
   }
 
@@ -76,8 +66,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return false;
   }
 
-  @Override
-  public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
+  public final boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     if (Prep.isInvalid(itemstack)) {
       return false;
     }
@@ -87,7 +76,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return isMachineItemValidForSlot(i, itemstack);
   }
 
-  public abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
+  public abstract boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack);
 
   @Override
   protected boolean doPush(@Nullable EnumFacing dir) {
@@ -115,7 +104,8 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   protected boolean hasStuffToPush() {
     for (int slot = slotDefinition.minOutputSlot; slot <= slotDefinition.maxOutputSlot; slot++) {
-      if (Prep.isValid(inventory[slot])) {
+      final ItemStack itemStack = inventory[slot];
+      if (itemStack != null && Prep.isValid(itemStack)) {
         return true;
       }
     }
@@ -125,7 +115,9 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   protected boolean hasSpaceToPull() {
     boolean hasSpace = false;
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = Prep.isInvalid(inventory[slot]) ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
+      final ItemStack itemStack = inventory[slot];
+      hasSpace = (itemStack == null || Prep.isInvalid(itemStack)) ? true
+          : itemStack.getCount() < Math.min(itemStack.getMaxStackSize(), getInventoryStackLimit(slot));
     }
     return hasSpace;
   }
@@ -133,26 +125,24 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   // ---- Inventory
   // ------------------------------------------------------------------------------
 
-  @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
   @Override
-  public final boolean hasCapability(Capability<?> capability, EnumFacing facing1) {
+  public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing1) {
     return getCapability(capability, facing1) != null;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing1) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing1) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing1 != null) {
       return (T) new LegacyMachineWrapper(this, facing1);
     }
     return super.getCapability(capability, facing1);
   }
 
-  @Override
   public int getSizeInventory() {
     return slotDefinition.getNumSlots();
   }
@@ -161,119 +151,78 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return getInventoryStackLimit();
   }
 
-  @Override
   public int getInventoryStackLimit() {
     return 64;
   }
 
-  @Override
   public @Nonnull ItemStack getStackInSlot(int slot) {
     if (slot < 0 || slot >= inventory.length) {
-      return null;
+      return Prep.getEmpty();
     }
-    return inventory[slot];
+    final ItemStack itemStack = inventory[slot];
+    return itemStack == null ? Prep.getEmpty() : itemStack;
   }
 
-  @Override
-  public ItemStack decrStackSize(int slot, int amount) {
-    return Util.decrStackSize(this, slot, amount);
+  public @Nonnull ItemStack decrStackSize(int slot, int amount) {
+    ItemStack item = inventory[slot];
+    if (item != null && !item.isEmpty()) {
+      if (item.getCount() <= amount) {
+        ItemStack result = item;
+        inventory[slot] = Prep.getEmpty();
+        markDirty();
+        return result;
+      }
+      ItemStack split = item.splitStack(amount);
+      markDirty();
+      return split;
+    }
+    return Prep.getEmpty();
   }
 
-  @SuppressWarnings("null")
-  @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     if (Prep.isInvalid(contents)) {
       inventory[slot] = Prep.getEmpty();
     } else {
       inventory[slot] = contents.copy();
-      if (inventory[slot].stackSize > getInventoryStackLimit(slot)) {
-        inventory[slot].stackSize = getInventoryStackLimit(slot);
-        contents.stackSize -= getInventoryStackLimit(slot);
+      if (inventory[slot].getCount() > getInventoryStackLimit(slot)) {
+        inventory[slot].setCount(getInventoryStackLimit(slot));
+        contents.shrink(getInventoryStackLimit(slot));
         Block.spawnAsEntity(world, pos, contents);
       }
     }
     markDirty();
   }
 
-  @Override
   public void clear() {
     for (int i = 0; i < inventory.length; ++i) {
-      inventory[i] = null;
+      inventory[i] = Prep.getEmpty();
     }
     markDirty();
   }
 
-  @Override
-  public ItemStack removeStackFromSlot(int index) {
+  public @Nonnull ItemStack removeStackFromSlot(int index) {
     ItemStack res = inventory[index];
     inventory[index] = Prep.getEmpty();
     markDirty();
-    return res;
+    return res == null ? Prep.getEmpty() : res;
   }
 
-  @Override
-  public int getField(int id) {
-    return 0;
-  }
-
-  @Override
-  public void setField(int id, int value) {
-  }
-
-  @Override
-  public int getFieldCount() {
-    return 0;
-  }
-
-  @Override
-  public void openInventory(EntityPlayer player) {
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer player) {
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return getMachineName();
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
-  public @Nonnull ITextComponent getDisplayName() {
-    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
-  }
-
-  @Override
-  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
-    if (isSideDisabled(var1)) {
-      return new int[0];
-    }
-    return allSlots;
-  }
-
-  @Override
-  public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canInsertItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     if (isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
       return false;
     }
     ItemStack existing = inventory[slot];
-    if (existing != null) {
+    if (existing != null && Prep.isValid(existing)) {
       // no point in checking the recipes if an item is already in the slot
       // worst case we get more of the wrong item - but that doesn't change
       // anything
-      return existing.isStackable() && existing.stackSize < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
+      return existing.isStackable() && existing.getCount() < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
     }
     // no need to call isItemValidForSlot as upgrade slots are not input slots
     return isMachineItemValidForSlot(slot, itemstack);
   }
 
-  @Override
-  public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
+  public boolean canExtractItem(int slot, @Nonnull ItemStack itemstack, @Nonnull EnumFacing side) {
     if (isSideDisabled(side)) {
       return false;
     }
@@ -283,11 +232,116 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return canExtractItem(slot, itemstack);
   }
 
-  protected boolean canExtractItem(int slot, ItemStack itemstack) {
-    if (inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+  protected boolean canExtractItem(int slot, @Nonnull ItemStack itemstack) {
+    if (inventory[slot] == null || inventory[slot].getCount() < itemstack.getCount()) {
       return false;
     }
     return itemstack.getItem() == inventory[slot].getItem();
+  }
+
+  public @Nonnull IInventory getAsInventory() {
+    return new InventoryWrapper();
+  }
+
+  private class InventoryWrapper implements IInventory {
+
+    @Override
+    public @Nonnull String getName() {
+      return getMachineName();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+      return false;
+    }
+
+    @Override
+    public @Nonnull ITextComponent getDisplayName() {
+      return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
+    }
+
+    @Override
+    public int getSizeInventory() {
+      return AbstractInventoryMachineEntity.this.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+      for (int i = 0; i < getSizeInventory(); i++) {
+        if (Prep.isValid(getStackInSlot(i))) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    @Override
+    public @Nonnull ItemStack getStackInSlot(int index) {
+      return AbstractInventoryMachineEntity.this.getStackInSlot(index);
+    }
+
+    @Override
+    public @Nonnull ItemStack decrStackSize(int index, int count) {
+      return AbstractInventoryMachineEntity.this.decrStackSize(index, count);
+    }
+
+    @Override
+    public @Nonnull ItemStack removeStackFromSlot(int index) {
+      return AbstractInventoryMachineEntity.this.removeStackFromSlot(index);
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+      AbstractInventoryMachineEntity.this.setInventorySlotContents(index, stack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+      return AbstractInventoryMachineEntity.this.getInventoryStackLimit();
+    }
+
+    @Override
+    public void markDirty() {
+      AbstractInventoryMachineEntity.this.markDirty();
+    }
+
+    @Override
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+      return AbstractInventoryMachineEntity.this.isUseableByPlayer(player);
+    }
+
+    @Override
+    public void openInventory(@Nonnull EntityPlayer player) {
+    }
+
+    @Override
+    public void closeInventory(@Nonnull EntityPlayer player) {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+      return AbstractInventoryMachineEntity.this.isItemValidForSlot(index, stack);
+    }
+
+    @Override
+    public int getField(int id) {
+      return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+    }
+
+    @Override
+    public int getFieldCount() {
+      return 0;
+    }
+
+    @Override
+    public void clear() {
+      AbstractInventoryMachineEntity.this.clear();
+    }
+
   }
 
 }

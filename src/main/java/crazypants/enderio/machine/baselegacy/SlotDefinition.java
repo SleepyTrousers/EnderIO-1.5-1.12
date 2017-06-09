@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.baselegacy;
 
+@Deprecated
 public class SlotDefinition {
 
   public final int minUpgradeSlot;
@@ -17,9 +18,9 @@ public class SlotDefinition {
     this.minOutputSlot = minInputSlot;
     this.maxOutputSlot = maxInputSlot;
     this.minUpgradeSlot = -1;
-    this.maxUpgradeSlot = - 1;
+    this.maxUpgradeSlot = -1;
   }
-  
+
   public SlotDefinition(int numInputs, int numOutputs, int numUpgradeSlots) {
     this.minInputSlot = 0;
     this.maxInputSlot = numInputs - 1;
@@ -60,21 +61,21 @@ public class SlotDefinition {
   }
 
   public int getNumUpgradeSlots() {
-    if(minUpgradeSlot < 0) {
+    if (minUpgradeSlot < 0) {
       return 0;
     }
     return Math.max(0, maxUpgradeSlot - minUpgradeSlot + 1);
   }
 
   public int getNumInputSlots() {
-    if(minInputSlot < 0) {
+    if (minInputSlot < 0) {
       return 0;
     }
     return Math.max(0, maxInputSlot - minInputSlot + 1);
   }
 
   public int getNumOutputSlots() {
-    if(minOutputSlot < 0) {
+    if (minOutputSlot < 0) {
       return 0;
     }
     return Math.max(0, maxOutputSlot - minOutputSlot + 1);

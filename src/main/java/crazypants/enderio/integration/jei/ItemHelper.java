@@ -1,7 +1,5 @@
 package crazypants.enderio.integration.jei;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -20,7 +18,7 @@ public class ItemHelper {
   private ItemHelper() {
   }
 
-  public static @Nonnull List<ItemStack> getValidItems() {
+  public static @Nonnull NNList<ItemStack> getValidItems() {
     final NNList<ItemStack> list = new NNList<ItemStack>();
     final NNList<ItemStack> sublist = new NNList<ItemStack>();
     for (final Item item : GameData.getItemRegistry()) {

@@ -3,9 +3,10 @@ package crazypants.enderio.machine.base.te;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.capability.EnderInventory;
-import crazypants.enderio.capability.EnderInventory.View;
-import crazypants.enderio.capability.InventorySlot;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.View;
+import com.enderio.core.common.inventory.InventorySlot;
+
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.util.Prep;
@@ -99,7 +100,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   protected boolean hasSpaceToPull() {
     for (InventorySlot slot : inputSlots) {
       ItemStack stack = slot.getStackInSlot(0);
-      if (Prep.isInvalid(stack) || stack.stackSize < Math.min(stack.getMaxStackSize(), slot.getMaxStackSize())) {
+      if (Prep.isInvalid(stack) || stack.getCount() < Math.min(stack.getMaxStackSize(), slot.getMaxStackSize())) {
         return true;
       }
     }
@@ -107,16 +108,16 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return true;
+      return facingIn == null || getIoMode(facingIn).canInputOrOutput();
     }
     return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
       return (T) new Side(facingIn);
     }
@@ -156,12 +157,12 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot) {
+    public @Nonnull ItemStack getStackInSlot(int slot) {
       return getView().getStackInSlot(slot);
     }
 
     @Override
-    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+    public @Nonnull ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
       if (Prep.isInvalid(stack)) {
         return Prep.getEmpty();
       }
@@ -169,8 +170,13 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     }
 
     @Override
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+    public @Nonnull ItemStack extractItem(int slot, int amount, boolean simulate) {
       return getView().extractItem(slot, amount, simulate);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+      return getView().getSlotLimit(slot);
     }
 
   }

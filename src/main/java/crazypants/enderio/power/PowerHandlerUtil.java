@@ -47,10 +47,10 @@ public class PowerHandlerUtil {
 
   public static int recieveInternal(@Nonnull ILegacyPowerReceiver target, int maxReceive, EnumFacing from, boolean simulate) {
     int result = Math.min(target.getMaxEnergyRecieved(from), maxReceive);
-    result = Math.min(target.getMaxEnergyStored(from) - target.getEnergyStored(from), result);
+    result = Math.min(target.getMaxEnergyStored() - target.getEnergyStored(), result);
     result = Math.max(0, result);
     if (result > 0 && !simulate) {
-      target.setEnergyStored(target.getEnergyStored(from) + result);
+      target.setEnergyStored(target.getEnergyStored() + result);
     }
     return result;
   }

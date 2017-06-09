@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.baselegacy;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -10,44 +10,44 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
+public class PacketLegacyPowerStorage implements IMessage {
 
-  private BlockPos pos;
+  private long pos;
   private int storedEnergy;
 
-  public PacketPowerStorage() {
+  public PacketLegacyPowerStorage() {
   }
 
-  public PacketPowerStorage(ILegacyPoweredTile ent) {
-    pos = ent.getLocation().getBlockPos();
-    storedEnergy = ent.getEnergyStored(null);
+  public PacketLegacyPowerStorage(ILegacyPoweredTile ent) {
+    pos = ent.getLocation().toLong();
+    storedEnergy = ent.getEnergyStored();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeLong(pos.toLong());
+    buf.writeLong(pos);
     buf.writeInt(storedEnergy);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    if (pos != null)
-      throw new RuntimeException("Oops, seems mc is recycling these messages. Need to copy them over before enqueuing them for the main thread");
-    pos = BlockPos.fromLong(buf.readLong());
+    pos = buf.readLong();
     storedEnergy = buf.readInt();
   }
 
-  @Override
-  public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player != null && player.world != null) {
-      TileEntity te = player.world.getTileEntity(message.pos);
+  public static class Handler implements IMessageHandler<PacketLegacyPowerStorage, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketLegacyPowerStorage message, MessageContext ctx) {
+      EntityPlayer player = Minecraft.getMinecraft().player;
+      TileEntity te = player.world.getTileEntity(BlockPos.fromLong(message.pos));
       if (te instanceof ILegacyPoweredTile) {
         ILegacyPoweredTile me = (ILegacyPoweredTile) te;
         me.setEnergyStored(message.storedEnergy);
       }
+      return null;
     }
-    return null;
+
   }
 
 }

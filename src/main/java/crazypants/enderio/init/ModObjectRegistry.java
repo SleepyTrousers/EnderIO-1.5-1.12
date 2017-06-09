@@ -1,6 +1,7 @@
 package crazypants.enderio.init;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.Log;
@@ -41,11 +44,17 @@ public final class ModObjectRegistry {
     Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
   
     for (ModObject elem : ModObject.values()) {
-      if (elem.teClazz != null) {
-        if (!clazzes.containsKey(elem.teClazz)) {
-          clazzes.put(elem.teClazz, new ArrayList<String>());
+      Class<? extends TileEntity> teClazz = elem.teClazz;
+      if (teClazz == null) {
+        if (elem.getBlock() instanceof BlockEnder) {
+          teClazz = ((BlockEnder<?>) elem.getBlockNN()).getTeClass();
         }
-        clazzes.get(elem.teClazz).add(elem.unlocalisedName + "_tile_entity");
+      }
+      if (teClazz != null) {
+        if (!clazzes.containsKey(teClazz)) {
+          clazzes.put(teClazz, new ArrayList<String>());
+        }
+        clazzes.get(teClazz).add(elem.unlocalisedName + "_tileentity");
       }
     }
   
@@ -58,6 +67,7 @@ public final class ModObjectRegistry {
         for (int i = 0; i < params.length; i++) {
           params[i] = entry.getValue().get(i + 1);
         }
+        Log.debug("Registering TileEntity " + entry.getKey() + " as " + entry.getValue().get(0) + " with aliases " + Arrays.asList(params));
         GameRegistry.registerTileEntityWithAlternatives(entry.getKey(), entry.getValue().get(0), params);
       }
     }

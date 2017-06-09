@@ -1,6 +1,5 @@
 package crazypants.enderio.integration.top;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,30 +10,29 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.block.painted.TileEntityTwicePaintedBlock;
-import crazypants.enderio.capability.EnderInventory;
-import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.interfaces.IHasFillLevel;
 import crazypants.enderio.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
-import crazypants.enderio.machine.invpanel.chest.TileInventoryChest;
+import crazypants.enderio.machine.modes.EntityAction;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.modes.RedstoneControlMode.IconHolder;
-import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import crazypants.enderio.machine.task.ContinuousTask;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.power.EnergyTank;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerStorage;
-import crazypants.enderio.recipe.spawner.TilePoweredSpawner;
 import crazypants.enderio.render.ranged.IRanged;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -95,8 +93,8 @@ class TOPData {
     } else if (tileEntity instanceof ILegacyPoweredTile) {
       ILegacyPoweredTile te = (ILegacyPoweredTile) tileEntity;
       if (te.displayPower()) {
-        maxrf = te.getMaxEnergyStored(null);
-        rf = te.getEnergyStored(null);
+        maxrf = te.getMaxEnergyStored();
+        rf = te.getEnergyStored();
         isPowered = rf > 0;
         hasRF = maxrf > 0;
       }
@@ -145,19 +143,11 @@ class TOPData {
       hasRange = bounds != null;
     }
 
-    if (tileEntity instanceof AbstractMobObelisk) {
-      AbstractMobObelisk te = (AbstractMobObelisk) tileEntity;
-      mobs = te.getMobsInFilter();
-      mobAction = te.getSpawnObeliskAction().getActionString();
-      hasMobs = true;
-    }
-
-    if (tileEntity instanceof TilePoweredSpawner) {
-      if (((TilePoweredSpawner) tileEntity).hasEntity()) {
-        mobs = Collections.singletonList(((TilePoweredSpawner) tileEntity).getEntity());
-        mobAction = AbstractMobObelisk.SpawnObeliskAction.SPAWN.getActionString();
-        hasMobs = true;
-      }
+    if (tileEntity instanceof EntityAction.Implementer) {
+      EntityAction.Implementer te = (EntityAction.Implementer) tileEntity;
+      mobs = te.getEntities();
+      mobAction = te.getEntityAction().getActionString();
+      hasMobs = !mobs.isEmpty();
     }
 
     if (tileEntity instanceof ITankAccess.IExtendedTankAccess) {
@@ -167,8 +157,8 @@ class TOPData {
     if (tileEntity instanceof IHaveExperience) {
       ExperienceContainer experienceContainer = ((IHaveExperience) tileEntity).getContainer();
       hasXP = experienceContainer.getMaximumExperiance() > 0;
-        experienceLevel = experienceContainer.getExperienceLevel();
-        xpBarScaled = experienceContainer.getXpBarScaled(100);
+      experienceLevel = experienceContainer.getExperienceLevel();
+      xpBarScaled = experienceContainer.getXpBarScaled(100);
     }
 
     if (tileEntity instanceof IPaintableTileEntity) {
@@ -179,7 +169,7 @@ class TOPData {
       isPainted = Prep.isValid(paint1) || Prep.isValid(paint2);
     }
 
-    if (tileEntity instanceof TileInventoryChest) {
+    if (tileEntity instanceof IHasFillLevel) {
       fillMax = fillCur = 0L;
       for (InventorySlot slot : ((AbstractCapabilityMachineEntity) tileEntity).getInventory().getView(EnderInventory.Type.INOUT)) {
         if (Prep.isValid(slot.getStackInSlot(0))) {

@@ -174,7 +174,6 @@ public class BrokenSpawnerHandler {
     }
   }
 
-  @SubscribeEvent
   public static boolean isBlackListed(ResourceLocation entityId) {
     return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }

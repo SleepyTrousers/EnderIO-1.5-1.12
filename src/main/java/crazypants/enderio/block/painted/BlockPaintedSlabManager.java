@@ -18,7 +18,6 @@ public class BlockPaintedSlabManager {
   }
 
   public static Block create_wood(@Nonnull IModObject modObject) {
-    GameRegistry.registerTileEntity(TileEntityTwicePaintedBlock.class, modObject.getUnlocalisedName() + "_tileentity");
     return create(modObject, Material.WOOD, SoundType.WOOD, Blocks.WOODEN_SLAB);
   }
 

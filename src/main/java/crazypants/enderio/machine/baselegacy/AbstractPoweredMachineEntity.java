@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.baselegacy;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -20,7 +20,6 @@ import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
@@ -28,20 +27,20 @@ import net.minecraft.util.math.MathHelper;
 public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMachineEntity implements ILegacyPoweredTile {
 
   // Power
-  protected ICapacitorData capacitorData = DefaultCapacitorData.NONE;
-  protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
+  protected @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
+  protected final @Nonnull ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
-  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  @Store({ NBTAction.SAVE, NBTAction.SYNC, NBTAction.UPDATE })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
 
   @Deprecated
-  protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition) {
+  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition) {
     this(slotDefinition, null);
   }
 
-  protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition, ModObject modObject) {
+  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, ModObject modObject) {
     super(slotDefinition);
     if (modObject == null) {
       this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
@@ -54,7 +53,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     }
   }
 
-  public AbstractPoweredMachineEntity(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+  public AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition);
     this.maxEnergyRecieved = maxEnergyRecieved;
     this.maxEnergyStored = maxEnergyStored;
@@ -78,38 +78,30 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
     if(powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
-      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
+      PacketHandler.sendToAllAround(new PacketLegacyPowerStorage(this), this);
     }
   }
 
   //RF API Power
 
   @Override
-  public boolean canConnectEnergy(EnumFacing from) {
+  public boolean canConnectEnergy(@Nonnull EnumFacing from) {
     return !isSideDisabled(from);
   }
   
+  @Override
   public int getMaxEnergyStored() {
-    return getMaxEnergyStored(null);
+    return maxEnergyStored.get(capacitorData);
   }
 
-  @Override
-  public int getMaxEnergyStored(EnumFacing from) {
-    return maxEnergyStored == null ? 0 : maxEnergyStored.get(capacitorData);
-  }
-  
   @Override
   public void setEnergyStored(int stored) {
     storedEnergyRF = MathHelper.clamp(stored, 0, getMaxEnergyStored());
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
-    return storedEnergyRF;
-  }
-  
   public int getEnergyStored() {
-    return getEnergyStored(null);
+    return storedEnergyRF;
   }
   
   //----- Common Machine Functions
@@ -123,7 +115,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     return storedEnergyRF > 0;
   }
 
-  public ICapacitorData getCapacitorData() {
+  public @Nonnull ICapacitorData getCapacitorData() {
     return capacitorData;
   }
 
@@ -135,16 +127,16 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   public void onCapacitorDataChange() {
     //Force a check that the new value is in bounds
-    setEnergyStored(getEnergyStored(null));
+    setEnergyStored(getEnergyStored());
     forceClientUpdate.set();
   }
 
   public int getPowerUsePerTick() {
-    return maxEnergyUsed == null ? 0 : maxEnergyUsed.get(capacitorData);
+    return maxEnergyUsed.get(capacitorData);
   }
 
   @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();
@@ -152,7 +144,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public @Nonnull ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
     if(slotDefinition.isUpgradeSlot(fromSlot)) {
       updateCapacitorFromSlot();
@@ -164,9 +156,12 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     if(slotDefinition.getNumUpgradeSlots() <= 0) {
       capacitorData = DefaultCapacitorData.BASIC_CAPACITOR;
     } else {
-      capacitorData = CapacitorHelper.getCapacitorDataFromItemStack(inventory[slotDefinition.minUpgradeSlot]);
-      if (capacitorData == null) {
+      final ItemStack stack = inventory[slotDefinition.minUpgradeSlot];
+      final ICapacitorData capacitorDataFromItemStack = stack == null ? null : CapacitorHelper.getCapacitorDataFromItemStack(stack);
+      if (capacitorDataFromItemStack == null) {
         capacitorData = DefaultCapacitorData.NONE;
+      } else {
+        capacitorData = capacitorDataFromItemStack;
       }
     }
     onCapacitorDataChange();
@@ -174,43 +169,20 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   //--------- NBT
 
-  /**
-   * Read state common to both block and item
-   */
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+  protected void onAfterNbtRead() {
     updateCapacitorFromSlot();
   }
 
   @Override
-  public void readFromItemStack(ItemStack stack) {
+  public void readFromItemStack(@Nonnull ItemStack stack) {
     super.readFromItemStack(stack);
-    if (stack != null) {
-      NBTTagCompound root = stack.getTagCompound();
-      if (root != null) {
-        int energyStored;
-        if(root.hasKey("storedEnergyRF")) {
-          //handle old key in versions before adding cap support
-          energyStored = root.getInteger("storedEnergyRF");
-        } else {
-          energyStored = NbtValue.ENERGY.getInt(root);
-        }
-        setEnergyStored(energyStored);
-      }
-    }
+    setEnergyStored(NbtValue.ENERGY.getInt(stack));
   }
 
   @Override
-  public void writeToItemStack(ItemStack stack) {
-    if (stack == null) {
-      return;
-    }
+  public void writeToItemStack(@Nonnull ItemStack stack) {
     super.writeToItemStack(stack);
-    NBTTagCompound root = stack.getTagCompound();
-    if (root == null) {
-      stack.setTagCompound(root = new NBTTagCompound());
-    }
     NbtValue.ENERGY.setInt(stack, storedEnergyRF);
   }
 

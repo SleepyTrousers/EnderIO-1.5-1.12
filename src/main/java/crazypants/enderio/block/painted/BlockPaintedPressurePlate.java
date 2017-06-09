@@ -103,7 +103,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedPressurePlate(this, modObject.getUnlocalisedName()));
-    GameRegistry.registerTileEntity(TilePaintedPressurePlate.class, modObject.getUnlocalisedName() + "_tileentity");
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("pressure_plate_down", new ResourceLocation("minecraft", "block/stone_pressure_plate_down"),

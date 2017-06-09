@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.block.coldfire.BlockColdFire;
 import crazypants.enderio.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.block.darksteel.bars.BlockDarkIronBars;
@@ -26,6 +27,9 @@ import crazypants.enderio.block.painted.BlockPaintedStairs;
 import crazypants.enderio.block.painted.BlockPaintedStone;
 import crazypants.enderio.block.painted.BlockPaintedTrapDoor;
 import crazypants.enderio.block.painted.BlockPaintedWall;
+import crazypants.enderio.block.painted.TileEntityPaintedBlock;
+import crazypants.enderio.block.painted.TileEntityTwicePaintedBlock;
+import crazypants.enderio.block.painted.TilePaintedPressurePlate;
 import crazypants.enderio.block.rail.BlockExitRail;
 import crazypants.enderio.capacitor.ItemCapacitor;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
@@ -104,13 +108,13 @@ public enum ModObject implements IModObject.Registerable {
   blockPaintedStair(BlockPaintedStairs.class),
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
   blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood"),
-  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double"),
+  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", TileEntityTwicePaintedBlock.class),
   blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone"),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double"),
+  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", TileEntityTwicePaintedBlock.class),
   blockPaintedGlowstone(BlockPaintedGlowstone.class),
   blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
-  blockPaintedCarpet(BlockPaintedCarpet.class),
-  blockPaintedPressurePlate(BlockPaintedPressurePlate.class),
+  blockPaintedCarpet(BlockPaintedCarpet.class, TileEntityPaintedBlock.class),
+  blockPaintedPressurePlate(BlockPaintedPressurePlate.class, TilePaintedPressurePlate.class),
   blockPaintedRedstone(BlockPaintedRedstone.class),
   blockPaintedRedstoneSolid(BlockPaintedRedstone.class, "create_solid"),
   blockPaintedStone(BlockPaintedStone.class),
@@ -197,7 +201,7 @@ public enum ModObject implements IModObject.Registerable {
 
   @Override
   public @Nonnull String getUnlocalisedName() {
-    return unlocalisedName;
+    return EnderIO.DOMAIN + ":" + unlocalisedName; // TODO 1.11 experimental
   }
 
   @Override

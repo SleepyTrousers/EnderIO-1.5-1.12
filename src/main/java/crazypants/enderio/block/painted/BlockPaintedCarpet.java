@@ -77,7 +77,6 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, modObject.getUnlocalisedName() + "_tileentity");
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);

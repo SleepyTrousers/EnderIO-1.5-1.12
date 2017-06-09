@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.RecipeLoader;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
@@ -67,7 +66,7 @@ public class CommonProxy {
 
     if (Config.registerRecipes) {
       MaterialRecipes.addRecipes();
-      ConduitRecipes.addRecipes();
+      // TODO 1.11 ConduitRecipes.addRecipes();
       MachineRecipes.addRecipes();
       RecipeLoader.addRecipes();
     }

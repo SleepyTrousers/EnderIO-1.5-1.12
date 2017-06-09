@@ -50,7 +50,7 @@ public class MaterialRecipes {
       public void apply(@Nonnull Alloy alloy) {
         OreDictionary.registerOre(alloy.getOreBlock(), alloy.getStackBlock());
         OreDictionary.registerOre(alloy.getOreIngot(), alloy.getStackIngot());
-        OreDictionary.registerOre(alloy.getOreNugget(), alloy.getStackBlock());
+        OreDictionary.registerOre(alloy.getOreNugget(), alloy.getStackNugget());
       }
     });
 

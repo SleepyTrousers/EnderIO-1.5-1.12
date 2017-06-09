@@ -10,7 +10,7 @@ public enum Lang {
   PRINTOUT_SETTARGET("item.itemLocationPrintout.chat.setTarget"),
   PRINTOUT_PRIVATE("gui.travelAccessable.privateBlock"),
   PRINTOUT_NOPAPER("item.itemLocationPrintout.chat.noPaper"),
-  XXXXXX3(""),
+  MACHINE_CONFIGURED("machine.tooltip.configured"),
   XXXXXX4(""),
   XXXXXX5(""),
   XXXXXX6(""),

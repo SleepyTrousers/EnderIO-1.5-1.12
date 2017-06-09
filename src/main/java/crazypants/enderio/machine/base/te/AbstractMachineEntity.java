@@ -9,10 +9,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.capability.ItemTools.Limit;
@@ -23,12 +24,10 @@ import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.sound.MachineSound;
-import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.util.NbtValue;
 import crazypants.util.ResettingFlag;
-import info.loenwind.autosave.Reader;
-import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
@@ -39,31 +38,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public abstract class AbstractMachineEntity extends TileEntityEio
-    implements IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
-  private static final Limit PULL_PUSH_LIMIT = new Limit(1, 64);
-  
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  private static final @Nonnull Limit PULL_PUSH_LIMIT = new Limit(1, 64);
+
+  @Store({ NBTAction.SYNC, NBTAction.UPDATE, NBTAction.SAVE })
   public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  protected ResettingFlag forceClientUpdate = new ResettingFlag();
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
+  protected final @Nonnull ResettingFlag forceClientUpdate = new ResettingFlag();
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
 
   @Store
-  protected RedstoneControlMode redstoneControlMode;
+  protected @Nonnull RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;
@@ -79,14 +78,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store(NBTAction.SAVE)
   private @Nullable UserIdent owner;
 
-  private final ResourceLocation soundRes;
+  private final @Nonnull ResourceLocation soundRes;
 
   public static @Nonnull ResourceLocation getSoundFor(@Nonnull String sound) {
     return new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
   }
 
   public AbstractMachineEntity() {
-    redstoneControlMode = RedstoneControlMode.IGNORE;
     soundRes = getSoundFor(getSoundName());
   }
 
@@ -98,7 +96,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       mode = mode.next();
     }
     setIoMode(faceHit, mode);
-    return mode != null ? mode : IoMode.NONE;
+    return mode;
   }
 
   @Override
@@ -144,12 +142,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public RedstoneControlMode getRedstoneControlMode() {
+  public @Nonnull RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
 
   @Override
-  public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
+  public void setRedstoneControlMode(@Nonnull RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
     updateBlock();
@@ -159,19 +157,19 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     return facing;
   }
 
-  public void setFacing(EnumFacing facing) {
-    this.facing = facing == null ? EnumFacing.SOUTH : facing;
+  public void setFacing(@Nonnull EnumFacing facing) {
+    this.facing = facing;
     markDirty();
   }
 
   public abstract boolean isActive();
 
-  public String getSoundName() {
-    return null;
+  public @Nonnull String getSoundName() {
+    return "";
   }
 
   public boolean hasSound() {
-    return getSoundName() != null;
+    return !getSoundName().isEmpty();
   }
 
   public float getVolume() {
@@ -191,8 +189,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     if (Config.machineSoundsEnabled && hasSound()) {
       if (shouldPlaySound()) {
         if (sound == null) {
-          sound = new MachineSound(soundRes, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch());
-          FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
+          FMLClientHandler.instance().getClient().getSoundHandler()
+              .playSound(sound = new MachineSound(soundRes, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, getVolume(), getPitch()));
         }
       } else if (sound != null) {
         sound.endPlaying();
@@ -206,13 +204,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void doUpdate() {
-    getWorld().theProfiler.startSection(getMachineName());
+    getWorld().profiler.startSection(getMachineName());
     if (world.isRemote) {
-      getWorld().theProfiler.startSection("clientTick");
+      getWorld().profiler.startSection("clientTick");
       updateEntityClient();
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     } else { // else is server, do all logic only on the server
-      getWorld().theProfiler.startSection("serverTick");
+      getWorld().profiler.startSection("serverTick");
 
       boolean requiresClientSync = forceClientUpdate.peek();
       boolean prevRedCheck = redstoneCheckPassed;
@@ -222,19 +220,19 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       }
 
       if (shouldDoWorkThisTick(5)) {
-        getWorld().theProfiler.startSection("sideIO");
+        getWorld().profiler.startSection("sideIO");
         requiresClientSync |= doSideIo();
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
       requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-      getWorld().theProfiler.startSection("tasks");
+      getWorld().profiler.startSection("tasks");
       requiresClientSync |= processTasks(redstoneCheckPassed);
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
 
       if (requiresClientSync) {
-        getWorld().theProfiler.startSection("clientNotification");
+        getWorld().profiler.startSection("clientNotification");
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
@@ -243,19 +241,19 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
         // And this will make sure our current tile entity state is saved
         markDirty();
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
       if (notifyNeighbours) {
-        getWorld().theProfiler.startSection("neighborNotification");
-        world.notifyBlockOfStateChange(pos, getBlockType());
+        getWorld().profiler.startSection("neighborNotification");
+        world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
         notifyNeighbours = false;
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     }
-    getWorld().theProfiler.endSection();
+    getWorld().profiler.endSection();
   }
 
   protected void updateEntityClient() {
@@ -305,11 +303,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   protected abstract boolean doPush(EnumFacing dir);
 
-  protected Limit getPullLimit() {
+  protected @Nonnull Limit getPullLimit() {
     return PULL_PUSH_LIMIT.copy();
   }
-  
-  protected Limit getPushLimit() {
+
+  protected @Nonnull Limit getPushLimit() {
     return PULL_PUSH_LIMIT.copy();
   }
 
@@ -326,104 +324,37 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
   }
 
-  @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    readCommon(nbtRoot);
+  public void readFromItemStack(@Nonnull ItemStack stack) {
+    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    readCustomNBT(NBTAction.ITEM, tagCompound);
+    paintSource = NullHelper.first(PainterUtil2.readNbt(tagCompound), paintSource);
   }
 
-  /**
-   * Read state common to both block and item
-   */
-  public void readCommon(NBTTagCompound nbtRoot) {
-  }
-
-  public void readFromItemStack(ItemStack stack) {
-    if (stack == null) {
-      return;
-    }
-    NBTTagCompound root = stack.getTagCompound();
-    if (root == null) {
-      return;
-    }
-    Reader.read(NBTAction.ITEM, root, this);
-    if (root.hasKey("eio.abstractMachine")) {
-      try {
-        doingOtherNbt = true;
-        readCommon(root);
-      } finally {
-        doingOtherNbt = false;
-      }
-    }
-    if (this instanceof IPaintable.IPaintableTileEntity) {
-      paintSource = PainterUtil2.readNbt(root);
-    }
-    return;
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    writeCommon(nbtRoot);
-  }
-
-  /**
-   * Write state common to both block and item
-   */
-  public void writeCommon(NBTTagCompound nbtRoot) {
-  }
-
-  public void writeToItemStack(ItemStack stack) {
-    if (stack == null) {
-      return;
-    }
-    NBTTagCompound root = stack.getTagCompound();
-    if (root == null) {
-      root = new NBTTagCompound();
-      stack.setTagCompound(root);
-    }
-
-    root.setBoolean("eio.abstractMachine", true);
-    try {
-      doingOtherNbt = true;
-      writeCommon(root);
-    } finally {
-      doingOtherNbt = false;
-    }
-    Writer.write(NBTAction.ITEM, root, this);
-
-    if (this instanceof IPaintable.IPaintableTileEntity) {
-      PainterUtil2.writeNbt(root, paintSource);
-    }
-
-    String name;
-    if (stack.hasDisplayName()) {
-      name = stack.getDisplayName();
-    } else {
-      name = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
-    }
-    name += " " + EnderIO.lang.localize("machine.tooltip.configured");
-    stack.setStackDisplayName(name);
+  public void writeToItemStack(@Nonnull ItemStack stack) {
+    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    writeCustomNBT(NBTAction.ITEM, tagCompound);
+    stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
   }
 
   public boolean isSideDisabled(EnumFacing dir) {
     return getIoMode(dir) == IoMode.DISABLED;
   }
 
-  public void onNeighborBlockChange(Block blockId) {
+  public void onNeighborBlockChange(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull Block blockIn,
+      @Nonnull BlockPos fromPos) {
     redstoneStateDirty = true;
   }
 
   /* IRedstoneConnectable */
 
   @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
+  public boolean shouldRedstoneConduitConnect(@Nonnull World worldIn, @Nonnull BlockPos posIn, @Nonnull EnumFacing from) {
     return true;
   }
-  
+
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public @Nonnull BlockPos getLocation() {
+    return getPos();
   }
 
   @Override
@@ -452,11 +383,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
 
-  void setOwner(EntityPlayer player) {
+  public void setOwner(@Nonnull EntityPlayer player) {
     this.owner = UserIdent.create(player.getGameProfile());
   }
 
-  public UserIdent getOwner() {
+  public @Nonnull UserIdent getOwner() {
     return owner != null ? owner : UserIdent.NOBODY;
   }
 

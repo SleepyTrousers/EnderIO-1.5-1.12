@@ -47,6 +47,7 @@ import crazypants.enderio.transceiver.ServerChannelRegister;
 import crazypants.util.CapturedMob;
 import info.loenwind.scheduler.Celeb;
 import info.loenwind.scheduler.Scheduler;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -61,7 +62,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
 @Mod(modid = crazypants.enderio.EnderIO.MODID, name = crazypants.enderio.EnderIO.MOD_NAME, version = crazypants.enderio.EnderIO.VERSION, //
@@ -167,7 +168,7 @@ public class EnderIO {
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
-    EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
+    // TODO 1.11 EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.init(event);
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
@@ -194,14 +195,14 @@ public class EnderIO {
   }
 
   @EventHandler
-  public void serverStarted(@Nonnull FMLServerStartedEvent event) {
-    ServerChannelRegister.load();
+  public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
+    // TODO 1.11 ConduitNetworkTickHandler.instance.flush();
+    ServerChannelRegister.instance.reset();
   }
 
   @EventHandler
-  public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
-    ServerChannelRegister.store();
-    ConduitNetworkTickHandler.instance.flush();
+  public static void onServerStart(FMLServerAboutToStartEvent event) {
+    ServerChannelRegister.instance.reset();
   }
 
   @EventHandler
@@ -215,6 +216,9 @@ public class EnderIO {
       try {
         if (msg.isStringMessage()) {
           String value = msg.getStringValue();
+          if (value == null) {
+            return;
+          }
           if (IMC.VAT_RECIPE.equals(key)) {
             VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SAG_RECIPE.equals(key)) {
@@ -224,7 +228,7 @@ public class EnderIO {
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.ENCHANTER_RECIPE.equals(key)) {
-            EnchanterRecipeManager.getInstance().addCustomRecipes(value);
+            // TODO 1.11 EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if (IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
             SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           }
@@ -238,16 +242,20 @@ public class EnderIO {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           }
         } else if (msg.isNBTMessage()) {
+          final NBTTagCompound nbtValue = msg.getNBTValue();
+          if (nbtValue == null) {
+            return;
+          }
           if (IMC.SOUL_BINDER_RECIPE.equals(key)) {
-            SoulBinderRecipeManager.getInstance().addRecipeFromNBT(msg.getNBTValue());
+            SoulBinderRecipeManager.getInstance().addRecipeFromNBT(nbtValue);
           } else if (IMC.POWERED_SPAWNER_COST_MULTIPLIER.equals(key)) {
-            PoweredSpawnerConfig.getInstance().addEntityCostFromNBT(msg.getNBTValue());
+            PoweredSpawnerConfig.getInstance().addEntityCostFromNBT(nbtValue);
           } else if (IMC.FLUID_FUEL_ADD.equals(key)) {
-            FluidFuelRegister.instance.addFuel(msg.getNBTValue());
+            FluidFuelRegister.instance.addFuel(nbtValue);
           } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {
-            FluidFuelRegister.instance.addCoolant(msg.getNBTValue());
+            FluidFuelRegister.instance.addCoolant(nbtValue);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
-            InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
+            // TODO 1.11 InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if (msg.isItemStackMessage()) {
           if (IMC.PAINTER_WHITELIST_ADD.equals(key)) {

@@ -40,7 +40,7 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
 
   public static BlockAlloy create(@Nonnull IModObject modObject) {
     BlockAlloy res = new BlockAlloy(modObject);
-    res.init();
+    res.init(modObject);
     return res;
   }
 
@@ -65,10 +65,12 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
 
   @Override
   protected void init() {
+    // unused, see init(modObject)
   }
 
   @Override
   protected ItemBlock createItemBlock() {
+    // unused, see init(modObject)
     return null;
   }
 

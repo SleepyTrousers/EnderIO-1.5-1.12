@@ -65,21 +65,17 @@ public abstract class TileEntityEio extends TileEntityBase {
     Reader.read(action, root, this);
     if (action == NBTAction.SYNC || action == NBTAction.UPDATE) {
       onAfterDataPacket();
-      if (Config.debugUpdatePackets) {
-        EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
-      }
     }
+    onAfterNbtRead();
   }
 
   protected void onAfterDataPacket() {
+    if (Config.debugUpdatePackets) {
+      EnderIO.proxy.markBlock(getWorld(), getPos(), COLOR);
+    }
   }
 
-  public void readContentsFromNBT(@Nonnull NBTTagCompound nbtRoot) {
-    Reader.read(NBTAction.ITEM, nbtRoot, this);
-  }
-
-  public void writeContentsToNBT(@Nonnull NBTTagCompound nbtRoot) {
-    Writer.write(NBTAction.ITEM, nbtRoot, this);
+  protected void onAfterNbtRead() {
   }
 
   private final static NNList<TileEntity> notTickingTileEntitiesS = new NNList<TileEntity>();

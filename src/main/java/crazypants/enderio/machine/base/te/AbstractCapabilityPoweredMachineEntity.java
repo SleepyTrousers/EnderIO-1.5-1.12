@@ -3,70 +3,72 @@ package crazypants.enderio.machine.base.te;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
-import crazypants.enderio.capability.EnderInventory;
-import crazypants.enderio.capability.EnderInventory.Type;
 import crazypants.enderio.capability.Filters;
-import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.base.network.PacketPowerStorage;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.EnergyTank;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Storable
 public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCapabilityMachineEntity {
 
-  protected static final String CAPSLOT = "cap";
-
-  @Store
-  @Nonnull
-  private final EnergyTank energy;
-  protected float lastSyncPowerStored = -1;
-
-  protected AbstractCapabilityPoweredMachineEntity() {
-    this(null, null, null, null, null);
+  static {
+    PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
-  protected AbstractCapabilityPoweredMachineEntity(@Nullable IModObject modObject) {
+  protected static final @Nonnull String CAPSLOT = "cap";
+
+  @Store
+  private final @Nonnull EnergyTank energy;
+  protected float lastSyncPowerStored = -1;
+
+  protected AbstractCapabilityPoweredMachineEntity(@Nonnull IModObject modObject) {
     this(null, modObject, null, null, null);
   }
 
-  protected AbstractCapabilityPoweredMachineEntity(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+  protected AbstractCapabilityPoweredMachineEntity(@Nonnull IModObject modObject, @Nonnull ICapacitorKey maxEnergyRecieved,
+      @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
-    this(null, null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    this(null, modObject, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, IModObject modObject) {
+  protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nonnull IModObject modObject) {
     this(subclassInventory, modObject, null, null, null);
   }
 
-  protected AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nonnull ICapacitorKey maxEnergyRecieved,
-      @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
-    this(subclassInventory, null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-  }
-
-  private AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nullable IModObject modObject,
+  private AbstractCapabilityPoweredMachineEntity(@Nullable EnderInventory subclassInventory, @Nonnull IModObject modObject,
       @Nullable ICapacitorKey maxEnergyRecieved, @Nullable ICapacitorKey maxEnergyStored, @Nullable ICapacitorKey maxEnergyUsed) {
     super(subclassInventory);
     getInventory().add(Type.UPGRADE, CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, 1));
-    if (modObject != null) {
-      energy = new EnergyTank(this, modObject);
-    } else if (maxEnergyRecieved != null && maxEnergyStored != null && maxEnergyUsed != null) {
-      energy = new EnergyTank(this, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-    } else {
-      energy = new EnergyTank(this);
-    }
+    energy = new EnergyTank(this, modObject, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     getEnergy().updateCapacitorFromSlot(getInventory().getSlot(CAPSLOT));
   }
 
   //----- Common Machine Functions
+
+  @Override
+  public void doUpdate() {
+    super.doUpdate();
+    if (!world.isRemote) {
+      if ((lastSyncPowerStored != getEnergy().getEnergyStored() && shouldDoWorkThisTick(10))) {
+        lastSyncPowerStored = getEnergy().getEnergyStored();
+        PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
+      }
+    }
+  }
 
   public boolean displayPower() {
     return true;
@@ -76,11 +78,11 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
     return getEnergy().getEnergyStored() > 0;
   }
 
-  public ICapacitorData getCapacitorData() {
+  public @Nonnull ICapacitorData getCapacitorData() {
     return getEnergy().getCapacitorData();
   }
 
-  public EnergyTank getEnergy() {
+  public @Nonnull EnergyTank getEnergy() {
     return energy;
   }
 
@@ -108,22 +110,21 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
   //--------- NBT
 
   @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+  protected void onAfterNbtRead() {
     updateCapacitorFromSlot();
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return true;
+      return facingIn == null || getIoMode(facingIn).canInputOrOutput();
     }
     return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
       return (T) energy.get(facingIn);
     }

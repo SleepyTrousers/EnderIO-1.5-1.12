@@ -21,8 +21,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ServerChannelRegister extends ChannelRegister implements ICapabilityProvider, IServerChannelRegister {
@@ -36,16 +34,6 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
   @SubscribeEvent
   public static void onWorldCaps(AttachCapabilitiesEvent.World event) {
     event.addCapability(CAP_KEY, instance);
-  }
-
-  @SubscribeEvent
-  public static void onServerStop(FMLServerStoppedEvent event) {
-    instance.reset();
-  }
-
-  @SubscribeEvent
-  public static void onServerStart(FMLServerAboutToStartEvent event) {
-    instance.reset();
   }
 
   @Override

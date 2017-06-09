@@ -21,11 +21,6 @@ public class BaseRecipeHandler<T extends IRecipeWrapper> implements IRecipeHandl
   }
 
   @Override
-  public @Nonnull String getRecipeCategoryUid() {
-    return uid;
-  }
-
-  @Override
   public @Nonnull IRecipeWrapper getRecipeWrapper(@Nonnull T recipe) {
     return recipe;
   }

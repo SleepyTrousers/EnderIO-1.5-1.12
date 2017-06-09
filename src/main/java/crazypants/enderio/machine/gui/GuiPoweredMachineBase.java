@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
@@ -24,7 +26,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   protected static final int POWER_HEIGHT = 42;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  public GuiPoweredMachineBase(T machine, Container container, String... guiTexture) {
+  public GuiPoweredMachineBase(@Nonnull T machine, @Nonnull Container container, String... guiTexture) {
     super(machine, container, guiTexture);
     if(renderPowerBar()) {
       addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {

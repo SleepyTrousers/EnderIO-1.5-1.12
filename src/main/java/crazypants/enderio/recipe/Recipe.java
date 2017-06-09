@@ -139,8 +139,8 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public @Nonnull NNList<NNList<ItemStack>> getInputStackAlternatives() {
-    NNList<NNList<ItemStack>> res = new NNList<NNList<ItemStack>>();
+  public @Nonnull List<List<ItemStack>> getInputStackAlternatives() {
+    NNList<List<ItemStack>> res = new NNList<List<ItemStack>>();
     for (int i = 0; i < inputs.length; i++) {
       RecipeInput in = inputs[i];
       if (in != null) {

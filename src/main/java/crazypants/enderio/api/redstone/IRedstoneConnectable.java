@@ -3,6 +3,7 @@ package crazypants.enderio.api.redstone;
 import javax.annotation.Nonnull;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -12,6 +13,6 @@ import net.minecraft.world.World;
  */
 public interface IRedstoneConnectable {
 
-  boolean shouldRedstoneConduitConnect(@Nonnull World world, int x, int y, int z, @Nonnull EnumFacing from);
+  boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from);
 
 }

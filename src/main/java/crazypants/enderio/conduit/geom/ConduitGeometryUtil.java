@@ -48,8 +48,8 @@ public class ConduitGeometryUtil {
     HHEIGHT = HEIGHT / 2;
 
     final Vector3d core_min = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
-    final Vector3d core_max = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
     CORE_MIN = core_min;
+    final Vector3d core_max = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
     CORE_MAX = core_max;
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
