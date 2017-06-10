@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+	        "particle": "enderio:blocks/block_dark_steel_ladder",
+	        "texture": "enderio:blocks/block_dark_steel_ladder"
+        }
+    },
+	"variants": {
+        "facing": {
+        	"north": { "submodel":{ "s1":{ "model":"enderio:block_dark_steel_ladder", "y":180 } } },
+        	"east": { "submodel":{ "s1":{ "model":"enderio:block_dark_steel_ladder", "y":270 } } },
+        	"south": { "submodel":{ "s1":{ "model":"enderio:block_dark_steel_ladder", "y":0 } } },
+        	"west": { "submodel":{ "s1":{ "model":"enderio:block_dark_steel_ladder", "y":90 } } }
+        }
+	}
+}

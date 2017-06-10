@@ -1,9 +1,9 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "enderio:blocks/blockTransceiverCorner",
-        "1": "enderio:blocks/blockTransceiverOuterBar",
-        "2": "enderio:blocks/blockTransceiverInnerBar"
+        "0": "enderio:blocks/block_transceiver_corner",
+        "1": "enderio:blocks/block_transceiver_outer_bar",
+        "2": "enderio:blocks/block_transceiver_inner_bar"
     },
     "elements": [
         {
