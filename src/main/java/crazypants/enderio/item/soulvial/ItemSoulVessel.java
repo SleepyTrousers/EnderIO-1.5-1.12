@@ -70,8 +70,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider, IH
 
   protected ItemSoulVessel(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setMaxStackSize(16);
   }
 

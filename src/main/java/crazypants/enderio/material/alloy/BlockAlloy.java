@@ -32,7 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -40,21 +39,21 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
 
   public static BlockAlloy create(@Nonnull IModObject modObject) {
     BlockAlloy res = new BlockAlloy(modObject);
-    res.init(modObject);
+    res.init();
     return res;
   }
 
   public static final @Nonnull PropertyEnum<Alloy> VARIANT = PropertyEnum.<Alloy> create("variant", Alloy.class);
 
   private BlockAlloy(@Nonnull IModObject modObject) {
-    super(modObject.getUnlocalisedName(), null, Material.IRON);
+    super(modObject, null, Material.IRON);
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }
 
-  protected void init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(new ItemBlockAlloy(this).setRegistryName(modObject.getUnlocalisedName()));
+  @Override
+  protected void init() {
+    super.init();
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
@@ -64,14 +63,8 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  protected void init() {
-    // unused, see init(modObject)
-  }
-
-  @Override
   protected ItemBlock createItemBlock() {
-    // unused, see init(modObject)
-    return null;
+    return modobject.apply(new ItemBlockAlloy(this));
   }
 
   @Override

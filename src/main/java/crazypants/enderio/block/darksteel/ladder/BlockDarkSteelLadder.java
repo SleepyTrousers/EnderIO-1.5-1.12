@@ -29,8 +29,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   }
 
   protected BlockDarkSteelLadder(@Nonnull IModObject modObject) {
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
@@ -38,9 +37,7 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
 
   protected BlockDarkSteelLadder init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    ItemBlock ib = new ItemBlock(this);
-    ib.setRegistryName(modObject.getUnlocalisedName());
-    GameRegistry.register(ib);
+    GameRegistry.register(modObject.apply(new ItemBlock(this)));
     return this;
   }
 

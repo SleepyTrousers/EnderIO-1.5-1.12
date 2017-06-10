@@ -70,7 +70,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   private final boolean silent;
 
   protected BlockDetector(@Nonnull IModObject modObject, boolean silent) {
-    super(modObject.getUnlocalisedName(), TileEntityPaintedBlock.class);
+    super(modObject, TileEntityPaintedBlock.class);
     this.silent = silent;
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
     initDefaultState();
@@ -130,7 +130,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemPaintedBlock(this, getName());
+    return modobject.apply(new BlockItemPaintedBlock(this));
   }
 
   @Override

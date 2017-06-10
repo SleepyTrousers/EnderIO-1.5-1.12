@@ -14,9 +14,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlastResistantItemBlock extends ItemBlock {
 
-  public BlastResistantItemBlock(Block block, String name) {
+  public BlastResistantItemBlock(Block block) {
     super(block);
-    setRegistryName(name);
   }
 
   @Override

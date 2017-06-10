@@ -75,8 +75,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   protected ItemDarkSteelShears(@Nonnull IModObject modObject) {
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   @Override

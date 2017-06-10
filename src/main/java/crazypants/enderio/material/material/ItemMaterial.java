@@ -28,7 +28,7 @@ public class ItemMaterial extends Item implements IHaveRenderers {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   private ItemMaterial init(@Nonnull IModObject modObject) {

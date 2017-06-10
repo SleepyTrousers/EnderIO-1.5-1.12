@@ -99,8 +99,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
     this.setDefaultState(iblockstate);
     this.setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     this.halfVariant = halfVariant != null ? halfVariant : this;
     useNeighborBrightness = true;
   }

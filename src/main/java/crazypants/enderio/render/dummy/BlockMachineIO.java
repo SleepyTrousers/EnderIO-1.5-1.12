@@ -32,8 +32,7 @@ public class BlockMachineIO extends Block {
   @SuppressWarnings("null")
   public BlockMachineIO(IModObject modObject) {
     super(Material.CIRCUITS);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     this.setDefaultState(this.blockState.getBaseState().withProperty(IOMode.IO, IOMode.get(EnumFacing.DOWN, IOMode.EnumIOMode.NONE)));
     setCreativeTab(null);
     disableStats();

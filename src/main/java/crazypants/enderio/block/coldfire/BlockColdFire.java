@@ -21,8 +21,7 @@ public class BlockColdFire extends BlockFire implements IDefaultRenderers {
   }
 
   private BlockColdFire(@Nonnull IModObject modObject) {
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setTickRandomly(false);
     setHardness(0.0F);
     setLightLevel(1.0F);

@@ -57,13 +57,12 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
     setResistance(10.0F);
     setSoundType(SoundType.STONE);
     setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedStone>(this, Blocks.COBBLESTONE) {
 
       @Override

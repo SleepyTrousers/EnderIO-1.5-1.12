@@ -33,13 +33,12 @@ public class BlockExitRail extends BlockRailBase implements IDefaultRenderers {
     super(false);
     this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
     setCreativeTab(CreativeTabs.TRANSPORTATION);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   private BlockExitRail init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new ItemBlock(this).setRegistryName(modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new ItemBlock(this)));
     return this;
   }
 

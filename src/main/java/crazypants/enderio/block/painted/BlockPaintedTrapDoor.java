@@ -89,7 +89,7 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
   @Override
   protected BlockDarkSteelTrapDoor init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("trapdoor_bottom", new ResourceLocation("minecraft", "block/wooden_trapdoor_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("trapdoor_top", new ResourceLocation("minecraft", "block/wooden_trapdoor_top"), PaintRegistry.PaintMode.ALL_TEXTURES);

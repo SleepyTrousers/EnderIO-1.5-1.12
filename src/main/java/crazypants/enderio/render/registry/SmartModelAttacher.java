@@ -145,8 +145,8 @@ public class SmartModelAttacher {
     }
 
     PaintTintHandler handler = new PaintTintHandler();
-    Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(handler, blocklist.toArray());
-    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(handler, itemlist.toArray());
+    Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(handler, blocklist.toArray(new Block[0]));
+    Minecraft.getMinecraft().getItemColors().registerItemColorHandler(handler, itemlist.toArray(new Item[0]));
   }
 
   @SuppressWarnings({ "rawtypes", "unchecked" })

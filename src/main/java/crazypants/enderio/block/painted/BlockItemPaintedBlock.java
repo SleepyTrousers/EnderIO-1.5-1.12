@@ -8,10 +8,9 @@ import net.minecraft.item.ItemStack;
 
 public class BlockItemPaintedBlock extends ItemBlock {
 
-  public BlockItemPaintedBlock(@Nonnull Block block, @Nonnull String name) {
+  public BlockItemPaintedBlock(@Nonnull Block block) {
     super(block);
     setHasSubtypes(true);
-    setRegistryName(name);
   }
 
   @Override

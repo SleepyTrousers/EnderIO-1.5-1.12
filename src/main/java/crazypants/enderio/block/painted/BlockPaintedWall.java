@@ -71,13 +71,12 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
   public BlockPaintedWall(@Nonnull IModObject modObject) {
     super(Blocks.COBBLESTONE);
     setCreativeTab(null);
-    setRegistryName(modObject.getUnlocalisedName());
-    setUnlocalizedName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("wall_post", new ResourceLocation("minecraft", "block/cobblestone_wall_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("wall_side", new ResourceLocation("minecraft", "block/cobblestone_wall_side"), PaintRegistry.PaintMode.ALL_TEXTURES);

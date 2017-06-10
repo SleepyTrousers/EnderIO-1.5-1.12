@@ -22,14 +22,13 @@ public class BlockDarkIronBars extends BlockPane implements IDefaultRenderers {
     setResistance(2000.0F); // TNT Proof
     setHardness(5.0F);
     setSoundType(SoundType.METAL);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected BlockDarkIronBars init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlastResistantItemBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlastResistantItemBlock(this)));
     return this;
   }
 

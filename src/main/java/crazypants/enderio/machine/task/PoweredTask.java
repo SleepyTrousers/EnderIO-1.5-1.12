@@ -157,7 +157,7 @@ public class PoweredTask implements IPoweredTask {
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if (recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray());
+      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray(new MachineRecipeInput[0]));
     }
     return null;
 

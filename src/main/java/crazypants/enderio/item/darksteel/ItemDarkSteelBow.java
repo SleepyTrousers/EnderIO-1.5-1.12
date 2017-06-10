@@ -60,8 +60,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   protected ItemDarkSteelBow(@Nonnull IModObject modObject) {
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxDamage(300);
     setHasSubtypes(false);

@@ -55,7 +55,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected final @Nonnull Random random;
 
-  protected final @Nonnull IModObject modObject;
 
   static {
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
@@ -63,8 +62,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass, @Nonnull Material mat) {
-    super(mo.getUnlocalisedName(), teClass, mat);
-    modObject = mo;
+    super(mo, teClass, mat);
     setHardness(2.0F);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);

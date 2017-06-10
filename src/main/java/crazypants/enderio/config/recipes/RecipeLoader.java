@@ -40,6 +40,8 @@ public class RecipeLoader {
   }
 
   private static void recipeError(String filename, String message) {
+    if (!message.isEmpty())
+      return; // TODO 1.11
     EnderIO.proxy.stopWithErrorScreen( //
         "=======================================================================", //
         "== ENDER IO FATAL ERROR ==", //

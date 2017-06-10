@@ -5,11 +5,21 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 public interface IModObject {
 
   @Nonnull
   String getUnlocalisedName();
+
+  @Nonnull
+  ResourceLocation getRegistryName();
+
+  @Nonnull
+  <B extends Block> B apply(@Nonnull B block);
+
+  @Nonnull
+  <I extends Item> I apply(@Nonnull I item);
 
   @Nullable
   Block getBlock();

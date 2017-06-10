@@ -92,8 +92,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     super(Material.IRON);
     this.setDefaultState(this.blockState.getBaseState().withProperty(BlockPressurePlateWeighted.POWER, 0));
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setSoundType(SoundType.WOOD);
   }
 
@@ -102,7 +101,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedPressurePlate(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedPressurePlate(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("pressure_plate_down", new ResourceLocation("minecraft", "block/stone_pressure_plate_down"),
@@ -445,8 +444,8 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
   public static class BlockItemPaintedPressurePlate extends BlockItemPaintedBlock {
 
-    public BlockItemPaintedPressurePlate(@Nonnull BlockPaintedPressurePlate block, @Nonnull String name) {
-      super(block, name);
+    public BlockItemPaintedPressurePlate(@Nonnull BlockPaintedPressurePlate block) {
+      super(block);
     }
 
     @Override

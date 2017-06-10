@@ -39,8 +39,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxStackSize(1);
     setHasSubtypes(true);
-    setRegistryName(modObject.getUnlocalisedName());
-    setUnlocalizedName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   @Override
@@ -59,7 +58,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
     NNList<ResourceLocation> names = EnderFood.resources();
-    ModelBakery.registerItemVariants(this, names.toArray());
+    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[0]));
     for (EnderFood c : EnderFood.values()) {
       ClientUtil.regRenderer(this, c.ordinal(), c.unlocalisedName);
     }

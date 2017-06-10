@@ -108,8 +108,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   public ItemDarkSteelSword(@Nonnull IModObject modObject) {
     super(MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   @Override

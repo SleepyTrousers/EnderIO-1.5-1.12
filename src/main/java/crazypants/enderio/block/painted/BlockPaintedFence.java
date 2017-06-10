@@ -86,14 +86,13 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
   protected BlockPaintedFence(@Nonnull IModObject modObject, Material material, MapColor mapColor, @Nonnull SoundType sound) {
     super(material, mapColor);
     setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setSoundType(sound);
   }
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("fence_post", new ResourceLocation("minecraft", "block/oak_fence_post"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_side", new ResourceLocation("minecraft", "block/oak_fence_side"), PaintRegistry.PaintMode.ALL_TEXTURES);

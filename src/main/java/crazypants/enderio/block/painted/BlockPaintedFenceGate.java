@@ -75,14 +75,13 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
   protected BlockPaintedFenceGate(@Nonnull IModObject modObject, BlockPlanks.EnumType material) {
     super(material);
     this.setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setSoundType(SoundType.WOOD);
   }
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("fence_gate_closed", new ResourceLocation("minecraft", "block/oak_fence_gate_closed"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("fence_gate_open", new ResourceLocation("minecraft", "block/oak_fence_gate_open"), PaintRegistry.PaintMode.ALL_TEXTURES);

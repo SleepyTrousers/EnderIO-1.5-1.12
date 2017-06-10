@@ -37,7 +37,7 @@ public class BlockPaintedSlabManager {
     BlockPaintedSlab.BlockPaintedHalfSlab halfSlab = new BlockPaintedSlab.BlockPaintedHalfSlab(modObject, material, sound);
     halfSlab.setHardness(2.0F).setResistance(5.0F);
     halfSlab.init(modObject);
-    GameRegistry.register(new BlockItemPaintedSlab(halfSlab, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedSlab(halfSlab)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedSlab>(halfSlab, paintables));
     return halfSlab;
   }

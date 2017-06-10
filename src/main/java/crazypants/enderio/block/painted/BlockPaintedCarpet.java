@@ -67,8 +67,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   protected BlockPaintedCarpet(@Nonnull IModObject modObject) {
     super();
     this.setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setHardness(0.1F);
     setSoundType(SoundType.CLOTH);
     setLightOpacity(0);
@@ -76,7 +75,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);

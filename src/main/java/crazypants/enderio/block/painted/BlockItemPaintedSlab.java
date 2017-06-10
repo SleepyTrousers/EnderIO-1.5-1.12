@@ -22,12 +22,11 @@ public class BlockItemPaintedSlab extends ItemBlock {
   private final @Nonnull BlockPaintedSlab singleSlab;
   private BlockPaintedSlab doubleSlab;
 
-  public BlockItemPaintedSlab(@Nonnull BlockPaintedSlab singleSlab, @Nonnull String regName) {
+  public BlockItemPaintedSlab(@Nonnull BlockPaintedSlab singleSlab) {
     super(singleSlab);
     this.doubleSlab = this.singleSlab = singleSlab;
     this.setMaxDamage(0);
     this.setHasSubtypes(false);
-    setRegistryName(regName);
   }
 
   void addDoubleSlab(BlockPaintedSlab slab) {

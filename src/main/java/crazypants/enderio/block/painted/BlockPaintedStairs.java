@@ -85,13 +85,12 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
       throw new RuntimeException();
     }
     this.setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   private void init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("stairs", new ResourceLocation("minecraft", "block/oak_stairs"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("outer_stairs", new ResourceLocation("minecraft", "block/oak_outer_stairs"), PaintRegistry.PaintMode.ALL_TEXTURES);

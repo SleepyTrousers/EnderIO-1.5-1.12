@@ -45,7 +45,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 
   private BlockEndermanSkull(@Nonnull IModObject modObject) {
-    super(modObject.getUnlocalisedName(), TileEndermanSkull.class, Material.CIRCUITS);
+    super(modObject, TileEndermanSkull.class, Material.CIRCUITS);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
   }
 
@@ -56,7 +56,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new ItemEndermanSkull(this, name);
+    return modobject.apply(new ItemEndermanSkull(this));
   }
 
   @Override
@@ -72,7 +72,7 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     int num = SkullType.values().length;
     for (int i = 0; i < num; i++) {
       SkullType st = SkullType.values()[i];
-      ClientUtil.regRenderer(item, i, name + "_" + st.getName());
+      ClientUtil.regRenderer(item, i, getUnlocalizedName() + "_" + st.getName());
     }
   }
 

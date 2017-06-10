@@ -10,6 +10,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.render.ICustomItemResourceLocation;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -36,15 +37,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends BlockEio<T> implements ISmartRenderAwareBlock {
 
   @SuppressWarnings("null")
-  public BlockFusedQuartzBase(@Nonnull String name, Class<T> teClass) {
-    super(name, teClass, Material.GLASS);
+  public BlockFusedQuartzBase(@Nonnull IModObject modObject, Class<T> teClass) {
+    super(modObject, teClass, Material.GLASS);
     setSoundType(SoundType.GLASS);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
   
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemFusedQuartzBase(this, getName());
+    return modobject.apply(new BlockItemFusedQuartzBase(this));
   }
 
   @Override
@@ -126,8 +127,8 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
 
   public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock implements ICustomItemResourceLocation {
 
-    public BlockItemFusedQuartzBase(@Nonnull Block block, @Nonnull String name) {
-      super(block, name);
+    public BlockItemFusedQuartzBase(@Nonnull Block block) {
+      super(block);
     }
 
     @Override

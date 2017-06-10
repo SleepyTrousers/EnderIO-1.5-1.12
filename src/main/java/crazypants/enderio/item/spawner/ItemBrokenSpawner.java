@@ -36,8 +36,7 @@ public class ItemBrokenSpawner extends Item {
 
   protected ItemBrokenSpawner(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);

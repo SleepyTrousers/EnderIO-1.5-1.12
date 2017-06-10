@@ -38,7 +38,7 @@ public class BlockReinforcedObsidian extends BlockEio<TileEntityEio> implements 
   }
 
   private BlockReinforcedObsidian(@Nonnull IModObject modObject) {
-    super(modObject.getUnlocalisedName(), null, Material.ROCK);
+    super(modObject, null, Material.ROCK);
     setHardness(50.0F);
     setResistance(2000.0F);
     setSoundType(SoundType.STONE);

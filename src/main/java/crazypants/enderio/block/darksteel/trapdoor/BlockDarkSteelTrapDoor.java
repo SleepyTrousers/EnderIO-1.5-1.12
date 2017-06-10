@@ -30,14 +30,13 @@ public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IDefaultRen
       setSoundType(SoundType.WOOD);
     }
     disableStats();
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected BlockDarkSteelTrapDoor init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new BlastResistantItemBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new BlastResistantItemBlock(this)));
     return this;
   }
 

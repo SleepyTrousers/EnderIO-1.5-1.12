@@ -53,7 +53,7 @@ public class PainterUtil2 {
         if (bs != null) {
           return false;
         }
-      }      
+      }
     }
 
     if (target == null) {
@@ -75,20 +75,20 @@ public class PainterUtil2 {
 
   public static IBlockState rotate(@Nonnull IBlockState paintSource) {
     // TODO: Need to handle cases like stairs that have 'upper' and 'lower' so they are included in the rotation
-    //cycle
+    // cycle
     for (IProperty<?> prop : paintSource.getPropertyKeys()) {
-      if(prop instanceof PropertyDirection) {
+      if (prop instanceof PropertyDirection) {
         return paintSource.cycleProperty(prop);
       } else if (prop == BlockSlab.HALF) {
         return paintSource.cycleProperty(prop);
       }
-    }    
-    if(paintSource.getBlock() instanceof BlockLog) {
+    }
+    if (paintSource.getBlock() instanceof BlockLog) {
       return paintSource.cycleProperty(BlockLog.LOG_AXIS);
     }
     return paintSource;
   }
-  
+
   public static void writeNbt(NBTTagCompound nbtRoot, IBlockState paintSource) {
     if (nbtRoot == null) {
       return;
@@ -104,7 +104,7 @@ public class PainterUtil2 {
     final NBTTagCompound tag = BLOCKSTATE.getTag(nbtRoot);
     if (tag != null) {
       return NBTUtil.readBlockState(tag);
-      }
+    }
     return null;
   }
 
@@ -120,7 +120,7 @@ public class PainterUtil2 {
     if (Prep.isInvalid(itemStack)) {
       return;
     }
-    if (paintSource == null) {
+    if (paintSource == null || paintSource == Blocks.AIR) {
       BLOCKSTATE.removeTag(itemStack);
       return;
     } else {
@@ -136,12 +136,14 @@ public class PainterUtil2 {
       IBlockState state = getSourceBlock(itemStack);
       if (state != null) {
         Block block = state.getBlock();
-        Item itemFromBlock = Item.getItemFromBlock(block);
-        if (itemFromBlock != Items.AIR) {
-          ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
-          sourceName = is.getDisplayName();
-        } else {
-          sourceName = block.getLocalizedName();
+        if (block != Blocks.AIR) {
+          Item itemFromBlock = Item.getItemFromBlock(block);
+          if (itemFromBlock != Items.AIR) {
+            ItemStack is = new ItemStack(itemFromBlock, 1, block.getMetaFromState(state));
+            sourceName = is.getDisplayName();
+          } else {
+            sourceName = block.getLocalizedName();
+          }
         }
       }
     }
@@ -170,10 +172,10 @@ public class PainterUtil2 {
 
   // Note: Config-based white-/blacklisting is done by PaintSourceValidator and checked as part of the input slot validation of the Painter
   public static boolean shouldHaveModel(Block block) {
-    if(block == null) {
+    if (block == null) {
       return false;
     }
-    
+
     return block.getDefaultState().getRenderType() == EnumBlockRenderType.MODEL;
   }
 

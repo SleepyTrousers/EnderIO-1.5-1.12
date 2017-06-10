@@ -349,6 +349,15 @@ public class DarkSteelController {
   public void onClientTick(TickEvent.ClientTickEvent event) {
     EntityPlayerSP player = Minecraft.getMinecraft().player;
 
+    if (NullHelper.untrust(player) == null) {
+      // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.player is marked @Nonnull but it is null.");
+      return;
+    }
+    if (NullHelper.untrust(player.movementInput) == null) {
+      // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.entity.EntityPlayerSP.movementInput is marked @Nonnull but it is null.");
+      return;
+    }
+
     if (event.phase != TickEvent.Phase.END) {
       jumpPre = player.movementInput.jump;
       return;

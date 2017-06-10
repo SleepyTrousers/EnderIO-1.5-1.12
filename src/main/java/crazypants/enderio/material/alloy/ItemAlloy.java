@@ -34,7 +34,7 @@ public class ItemAlloy extends Item implements IHaveRenderers {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     this.suffix = suffix;
   }
 

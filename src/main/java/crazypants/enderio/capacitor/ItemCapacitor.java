@@ -48,8 +48,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   protected ItemCapacitor(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
@@ -63,7 +62,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
     final NNList<ResourceLocation> resourceLocations = DefaultCapacitorData.getResourceLocations();
-    ModelBakery.registerItemVariants(this, resourceLocations.toArray());
+    ModelBakery.registerItemVariants(this, resourceLocations.toArray(new ResourceLocation[0]));
     for (int i = 0; i < resourceLocations.size(); i++) {
       ClientUtil.regRenderer(this, i, resourceLocations.get(i));
     }

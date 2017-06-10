@@ -132,10 +132,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   protected ItemDarkSteelArmor(@Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
     super(MATERIAL, 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
-
+    modObject.apply(this);
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
 

@@ -51,7 +51,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
 
   @SuppressWarnings("null")
   private BlockPaintedFusedQuartz(@Nonnull IModObject modObject) {
-    super(modObject.getUnlocalisedName(), TileEntityPaintedBlock.class);
+    super(modObject, TileEntityPaintedBlock.class);
     setCreativeTab(null);
     setDefaultState(this.blockState.getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
   }
@@ -70,7 +70,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
     while (iterator.hasNext()) {
       blocks.add(iterator.next().getBlock());
     }
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new GlassPaintingRecipe(this, blocks.toArray()));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new GlassPaintingRecipe(this, blocks.toArray(new Block[0])));
   }
 
   @Override

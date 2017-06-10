@@ -82,7 +82,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   }
 
   private BlockFusedQuartz(@Nonnull IModObject modObject, @Nonnull FusedQuartzType glasstype) {
-    super(modObject.getUnlocalisedName(), null);
+    super(modObject, null);
     this.glasstype = glasstype;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(FusedQuartzType.KIND, glasstype).withProperty(BlockColored.COLOR, DEFAULT_COLOR));
@@ -178,13 +178,13 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemFusedQuartz(this, getName());
+    return modobject.apply(new BlockItemFusedQuartz(this));
   }
 
   public static class BlockItemFusedQuartz extends BlockFusedQuartzBase.BlockItemFusedQuartzBase implements ITintedItem, IWithPaintName {
 
-    public BlockItemFusedQuartz(@Nonnull BlockFusedQuartz block, @Nonnull String name) {
-      super(block, name);
+    public BlockItemFusedQuartz(@Nonnull BlockFusedQuartz block) {
+      super(block);
     }
 
     @Override

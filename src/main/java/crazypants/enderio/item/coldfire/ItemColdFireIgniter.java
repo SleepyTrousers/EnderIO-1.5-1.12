@@ -57,8 +57,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
 
   protected ItemColdFireIgniter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setMaxDamage(0);
     setMaxStackSize(1);
   }

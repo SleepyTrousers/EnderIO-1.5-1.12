@@ -54,8 +54,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxStackSize(64);
     setHasSubtypes(true);
-    setRegistryName(modObject.getUnlocalisedName());
-    setUnlocalizedName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   @Override

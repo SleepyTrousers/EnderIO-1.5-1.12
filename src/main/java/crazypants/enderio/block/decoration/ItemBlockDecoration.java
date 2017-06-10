@@ -15,10 +15,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockDecoration extends ItemBlock implements IOverlayRenderAware {
 
-  public ItemBlockDecoration(@Nonnull Block block, @Nonnull String name) {
+  public ItemBlockDecoration(@Nonnull Block block) {
     super(block);
     setHasSubtypes(true);
-    setRegistryName(name);
   }
 
   @Override

@@ -145,8 +145,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
         }
       }
     }
-    return result.toArray();
-
+    return result.toArray(new ResultStack[0]);
   }
 
 }

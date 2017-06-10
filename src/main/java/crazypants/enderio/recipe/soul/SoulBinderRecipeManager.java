@@ -110,7 +110,8 @@ public class SoulBinderRecipeManager {
         return false;
       }
 
-      BasicSoulBinderRecipe recipe = new BasicSoulBinderRecipe(inputStack, outputStack, energyRequired, xpLevelsRequired, recipeUid, entityRLs.toArray());
+      BasicSoulBinderRecipe recipe = new BasicSoulBinderRecipe(inputStack, outputStack, energyRequired, xpLevelsRequired, recipeUid,
+          entityRLs.toArray(new ResourceLocation[0]));
 
       MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, recipe);
 

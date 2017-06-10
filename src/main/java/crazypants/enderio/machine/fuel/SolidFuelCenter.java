@@ -2,6 +2,8 @@ package crazypants.enderio.machine.fuel;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,6 +34,12 @@ public class SolidFuelCenter {
 
   public static ISolidFuelHandler getActiveSolidFuelHandler() {
     EntityPlayer player = Minecraft.getMinecraft().player;
+
+    if (NullHelper.untrust(player) == null) {
+      // Log.warn("(in ItemTooltipEvent) net.minecraft.client.Minecraft.player is marked @Nonnull but it is null.");
+      return DEFAULT;
+    }
+
     if (player.openContainer instanceof ISolidFuelHandler) {
       return (ISolidFuelHandler) player.openContainer;
     } else if (player.openContainer instanceof ISolidFuelHandler.Provider) {

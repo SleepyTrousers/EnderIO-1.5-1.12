@@ -37,23 +37,21 @@ public class BlockSelfResettingLever extends BlockLever implements IDefaultRende
     return create(modObject, 300);
   }
 
-  public static Block create(@Nonnull IModObject modObject, int seconds) {
-    final String name = modObject.getUnlocalisedName() + seconds;
-    final BlockSelfResettingLever lever = new BlockSelfResettingLever(name, seconds * 20);
+  private static Block create(@Nonnull IModObject modObject, int seconds) {
+    final BlockSelfResettingLever lever = new BlockSelfResettingLever(modObject, seconds * 20);
     GameRegistry.register(lever);
-    GameRegistry.register(new ItemBlock(lever).setRegistryName(name));
+    GameRegistry.register(modObject.apply(new ItemBlock(lever)));
     return lever;
   }
 
   private final int delay;
 
-  public BlockSelfResettingLever(@Nonnull String name, int delay) {
+  public BlockSelfResettingLever(@Nonnull IModObject modObject, int delay) {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.5F);
     setSoundType(SoundType.WOOD);
     this.delay = delay;
-    setUnlocalizedName(name);
-    setRegistryName(name);
+    modObject.apply(this);
   }
 
 

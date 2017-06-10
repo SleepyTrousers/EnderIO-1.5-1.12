@@ -25,8 +25,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
 
   protected ItemEnderface(@Nonnull IModObject modObject) {
     setCreativeTab(null);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setMaxStackSize(1);
   }
 

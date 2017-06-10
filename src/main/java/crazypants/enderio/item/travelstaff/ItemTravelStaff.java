@@ -45,8 +45,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   protected ItemTravelStaff(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
   }

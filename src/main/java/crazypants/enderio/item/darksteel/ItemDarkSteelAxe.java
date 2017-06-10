@@ -81,8 +81,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   protected ItemDarkSteelAxe(@Nonnull IModObject modObject) {
     super(ItemDarkSteelSword.MATERIAL, 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
   }
 
   @Override

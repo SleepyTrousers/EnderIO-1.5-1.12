@@ -63,6 +63,7 @@ import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -201,7 +202,7 @@ public enum ModObject implements IModObject.Registerable {
 
   @Override
   public @Nonnull String getUnlocalisedName() {
-    return EnderIO.DOMAIN + ":" + unlocalisedName; // TODO 1.11 experimental
+    return EnderIO.DOMAIN + "_" + unlocalisedName;
   }
 
   @Override
@@ -248,6 +249,26 @@ public enum ModObject implements IModObject.Registerable {
   @Override
   public void setBlock(Block obj) {
     block = obj;
+  }
+
+  @Override
+  @Nonnull
+  public ResourceLocation getRegistryName() {
+    return new ResourceLocation(EnderIO.DOMAIN, unlocalisedName);
+  }
+
+  @Override
+  public @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
+    blockIn.setUnlocalizedName(getUnlocalisedName());
+    blockIn.setRegistryName(getRegistryName());
+    return blockIn;
+  }
+
+  @Override
+  public @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
+    itemIn.setUnlocalizedName(getUnlocalisedName());
+    itemIn.setRegistryName(getRegistryName());
+    return itemIn;
   }
 
 }

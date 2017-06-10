@@ -89,8 +89,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   protected ItemRodOfReturn(@Nonnull IModObject modObject) {
     super(Config.rodOfReturnPowerStorage, RF_MAX_INPUT, 0);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
         

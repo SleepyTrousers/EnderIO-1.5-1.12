@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
@@ -278,6 +279,10 @@ public class TravelController {
   public void onClientTick(@Nonnull TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
+      if (NullHelper.untrust(player) == null) {
+        // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.player is marked @Nonnull but it is null.");
+        return;
+      }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
       showTargets = onBlock || isTravelItemActiveForSelecting(player);
@@ -667,6 +672,10 @@ public class TravelController {
   @SideOnly(Side.CLIENT)
   private BlockPos getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().world;
+    if (NullHelper.untrust(world) == null) {
+      // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.world is marked @Nonnull but it is null.");
+      return null;
+    }
     int x = MathHelper.floor(player.posX);
     int y = MathHelper.floor(player.getEntityBoundingBox().minY) - 1;
     int z = MathHelper.floor(player.posZ);

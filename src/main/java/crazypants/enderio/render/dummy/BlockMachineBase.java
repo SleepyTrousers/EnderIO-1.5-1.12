@@ -30,8 +30,7 @@ public class BlockMachineBase extends Block {
   @SuppressWarnings("null")
   public BlockMachineBase(IModObject modObject) {
     super(Material.CIRCUITS);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     this.setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderPart.SUB, EnumRenderPart.DEFAULTS));
     setCreativeTab(null);
     disableStats();

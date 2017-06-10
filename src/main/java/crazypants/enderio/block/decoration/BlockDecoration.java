@@ -41,8 +41,7 @@ public class BlockDecoration extends Block implements IHaveRenderers {
   protected BlockDecoration(@Nonnull IModObject modObject) {
     super(Material.ROCK);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setHardness(0.5F);
     setSoundType(SoundType.METAL);
     setHarvestLevel("pickaxe", 0);
@@ -60,12 +59,12 @@ public class BlockDecoration extends Block implements IHaveRenderers {
 
   protected BlockDecoration init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new ItemBlockDecoration(this, modObject.getUnlocalisedName()) {
+    GameRegistry.register(modObject.apply(new ItemBlockDecoration(this) {
       @Override
       public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
         return EnumDecoBlock.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
-    });
+    }));
     return this;
   }
 

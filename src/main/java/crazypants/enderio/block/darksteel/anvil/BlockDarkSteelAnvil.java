@@ -43,14 +43,13 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     setHardness(5.0F);
     setSoundType(SoundType.ANVIL);
     setResistance(2000.0F);
-    setUnlocalizedName(modObject.getUnlocalisedName());
-    setRegistryName(modObject.getUnlocalisedName());
+    modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected BlockDarkSteelAnvil init(@Nonnull IModObject modObject) {
     GameRegistry.register(this);
-    GameRegistry.register(new ItemAnvilBlock(this).setRegistryName(modObject.getUnlocalisedName()));
+    GameRegistry.register(modObject.apply(new ItemAnvilBlock(this)));
     GuiID.registerGuiHandler(GuiID.GUI_ID_ANVIL, this);
     return this;
   }

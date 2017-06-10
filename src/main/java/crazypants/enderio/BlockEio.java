@@ -1,13 +1,12 @@
 package crazypants.enderio;
 
-import java.util.Locale;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.material.Material;
@@ -26,9 +25,19 @@ import net.minecraftforge.server.permission.PermissionAPI;
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
+  protected final @Nonnull IModObject modobject;
 
-  protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass) {
-    super(name, teClass);
+  protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass) {
+    super(teClass);
+    this.modobject = modObject;
+    modObject.apply(this);
+    setCreativeTab(EnderIOTab.tabEnderIOMachines);
+  }
+
+  protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass, @Nonnull Material mat) {
+    super(teClass, mat);
+    this.modobject = modObject;
+    modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
@@ -42,13 +51,8 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
    * Stuff that has to be done in the init phase (as opposed to preInit/postInit)
    */
   public void init(@Nonnull FMLInitializationEvent event) {
-    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission to wrench-break the block " + name + " of Ender IO");
-  }
-
-  protected BlockEio(@Nonnull String name, @Nullable Class<T> teClass, @Nonnull Material mat) {
-    super(name, teClass, mat);
-    setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modobject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
+        "Permission to wrench-break the block " + modobject.getUnlocalisedName() + " of Ender IO");
   }
 
   @Override
