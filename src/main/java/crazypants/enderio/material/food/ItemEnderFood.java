@@ -5,20 +5,20 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,17 +51,19 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack itemStack) {
-    return getUnlocalizedName() + "_" + EnderFood.get(itemStack).unlocalisedName;
+    return getUnlocalizedName() + "_" + EnderFood.get(itemStack).getUnlocalisedName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    NNList<ResourceLocation> names = EnderFood.resources();
-    ModelBakery.registerItemVariants(this, names.toArray(new ResourceLocation[0]));
-    for (EnderFood c : EnderFood.values()) {
-      ClientUtil.regRenderer(this, c.ordinal(), c.unlocalisedName);
-    }
+  public void registerRenderers(final @Nonnull IModObject modObject) {
+    NNList.of(EnderFood.class).apply(new Callback<EnderFood>() {
+      @Override
+      public void apply(@Nonnull EnderFood alloy) {
+        ModelLoader.setCustomModelResourceLocation(ItemEnderFood.this, alloy.ordinal(),
+            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getUnlocalisedName()));
+      }
+    });
   }
 
   @Override

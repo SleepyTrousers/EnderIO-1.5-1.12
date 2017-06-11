@@ -2,19 +2,21 @@ package crazypants.enderio.item.skull;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.enderio.render.IHaveTESR;
-import crazypants.util.ClientUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -26,13 +28,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
-public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveRenderers, IHaveTESR { // TODO: Mod Thaumcraft IInfusionStabiliser
+public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements IHaveTESR, IHaveRenderers { // TODO: Mod Thaumcraft IInfusionStabiliser
 
   public static final @Nonnull PropertyEnum<SkullType> VARIANT = PropertyEnum.<SkullType> create("variant", SkullType.class);
 
@@ -63,17 +66,6 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   @SideOnly(Side.CLIENT)
   public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    Item item = Item.getItemFromBlock(this);
-    int num = SkullType.values().length;
-    for (int i = 0; i < num; i++) {
-      SkullType st = SkullType.values()[i];
-      ClientUtil.regRenderer(item, i, getUnlocalizedName() + "_" + st.getName());
-    }
   }
 
   @Override
@@ -137,6 +129,18 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileEndermanSkull.class, new EndermanSkullRenderer());
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers(final @Nonnull IModObject modObject) {
+    NNList.of(SkullType.class).apply(new Callback<SkullType>() {
+      @Override
+      public void apply(@Nonnull SkullType alloy) {
+        ModelLoader.setCustomModelResourceLocation(modObject.getItem(), alloy.ordinal(),
+            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getName()));
+      }
+    });
   }
 
   // TODO: Mod Thaumcraft

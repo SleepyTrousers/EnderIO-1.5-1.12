@@ -9,33 +9,27 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAlloy extends Item implements IHaveRenderers {
 
-  private final @Nonnull String suffix;
-
   public static ItemAlloy create(@Nonnull IModObject modObject) {
-    return new ItemAlloy(modObject, "").init(modObject);
+    return new ItemAlloy(modObject).init(modObject);
   }
 
-  public static ItemAlloy createNuggets(@Nonnull IModObject modObject) {
-    return new ItemAlloy(modObject, "_nugget").init(modObject);
-  }
-
-  private ItemAlloy(@Nonnull IModObject modObject, @Nonnull String suffix) {
+  private ItemAlloy(@Nonnull IModObject modObject) {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     modObject.apply(this);
-    this.suffix = suffix;
   }
 
   private ItemAlloy init(@Nonnull IModObject modObject) {
@@ -45,18 +39,19 @@ public class ItemAlloy extends Item implements IHaveRenderers {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
+  public void registerRenderers(final @Nonnull IModObject modObject) {
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
-        ClientUtil.regRenderer(ItemAlloy.this, Alloy.getMetaFromType(alloy), alloy.getBaseName() + suffix);
+        ModelLoader.setCustomModelResourceLocation(ItemAlloy.this, Alloy.getMetaFromType(alloy),
+            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getBaseName()));
       }
     });
   }
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return Alloy.getTypeFromMeta(stack.getItemDamage()).getBaseName() + suffix;
+    return getUnlocalizedName() + "_" + Alloy.getTypeFromMeta(stack.getItemDamage()).getBaseName();
   }
 
   @Override

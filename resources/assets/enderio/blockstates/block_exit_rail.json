@@ -2,7 +2,7 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "rail": "enderio:blocks/rail_exit"
+            "rail": "enderio:blocks/block_exit_rail"
         }
     },
     "variants": {

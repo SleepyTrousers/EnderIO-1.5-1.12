@@ -2,17 +2,17 @@
   "forge_marker":1,
   "defaults":{
     "textures": {
-        "particle": "enderio:blocks/fused_quartz_item"
+        "particle": "enderio:blocks/block_fused_quartz"
     }
   },
   "variants":{
     "kind":{
-      "fused_quartz":             { "textures": { "side": "enderio:blocks/fused_quartz_item" } },
-      "fused_glass":              { "textures": { "side": "enderio:blocks/fused_glass_item" } },
-      "enlightened_fused_quartz": { "textures": { "side": "enderio:blocks/fused_quartz_item" } },
-      "enlightened_fused_glass":  { "textures": { "side": "enderio:blocks/fused_glass_item" } },
-      "dark_fused_quartz":        { "textures": { "side": "enderio:blocks/fused_quartz_item" } },
-      "dark_fused_glass":         { "textures": { "side": "enderio:blocks/fused_glass_item" } }
+      "fused_quartz":             { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
+      "fused_glass":              { "textures": { "side": "enderio:blocks/block_fused_glass" } },
+      "enlightened_fused_quartz": { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
+      "enlightened_fused_glass":  { "textures": { "side": "enderio:blocks/block_fused_glass" } },
+      "dark_fused_quartz":        { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
+      "dark_fused_glass":         { "textures": { "side": "enderio:blocks/block_fused_glass" } }
     },
     "render":{
       "auto":{ "model":"enderio:null" },

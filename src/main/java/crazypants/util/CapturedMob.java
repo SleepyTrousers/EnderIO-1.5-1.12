@@ -41,7 +41,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
-import static crazypants.enderio.init.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemSoulVial;
 
 public class CapturedMob { // TODO: DONE111
 
@@ -125,7 +125,7 @@ public class CapturedMob { // TODO: DONE111
   public @Nonnull ItemStack toStack(@Nonnull Item item, int meta, int amount) {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
-    if (item == itemSoulVessel.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       NullHelper.notnullM(stack.getTagCompound(), "getTagCompound() doesn't produce value that was set with setTagCompound()").setString(CUSTOM_NAME_KEY,
           EnderIO.lang.localize("easteregg.piginabottle"));
     }
@@ -138,7 +138,7 @@ public class CapturedMob { // TODO: DONE111
       return toStack(item, meta, amount);
     }
     data.setString(ENTITY_ID_KEY, entityId.toString());
-    if (item == itemSoulVessel.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       data.setString(CUSTOM_NAME_KEY, EnderIO.lang.localize("easteregg.piginabottle"));
     }
     ItemStack stack = new ItemStack(item, amount, meta);

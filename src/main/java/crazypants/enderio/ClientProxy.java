@@ -43,6 +43,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -122,11 +124,11 @@ public class ClientProxy extends CommonProxy {
         ((IHaveRenderers) block).registerRenderers(mo);
       } else if (block instanceof IDefaultRenderers) {
         ClientUtil.registerDefaultItemRenderer(mo);
-      } else if (block == null) {
+      } else if (block == null || block == Blocks.AIR) {
         final Item item = mo.getItem();
         if (item instanceof IHaveRenderers) {
           ((IHaveRenderers) item).registerRenderers(mo);
-        } else if (item != null) {
+        } else if (item != null && item != Items.AIR) {
           ClientUtil.registerRenderer(item, mo.getUnlocalisedName());
         }
       }

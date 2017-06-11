@@ -14,7 +14,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +25,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -118,8 +119,8 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
-    ClientUtil.regRenderer(this, 0, modObject.getUnlocalisedName());
-    ClientUtil.regRenderer(this, 1, modObject.getUnlocalisedName() + "_variant");
+    ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(modObject.getRegistryName(), "variant=probe"));
+    ModelLoader.setCustomModelResourceLocation(this, 1, new ModelResourceLocation(modObject.getRegistryName(), "variant=copy"));
   }
 
 }

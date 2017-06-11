@@ -2,8 +2,8 @@
  	"forge_marker": 1,
 	"defaults": {
         "textures": {
-            "particle": "enderio:blocks/dark_iron_trapdoor",
-            "texture": "enderio:blocks/dark_iron_trapdoor"
+            "particle": "enderio:blocks/block_dark_steel_trapdoor",
+            "texture": "enderio:blocks/block_dark_steel_trapdoor"
         }
 	},
     "variants": {

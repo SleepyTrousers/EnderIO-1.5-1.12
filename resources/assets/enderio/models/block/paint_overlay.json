@@ -1,6 +1,6 @@
 {
     "textures":{
-        "overlay":"enderio:items/conduit_facade_overlay"
+        "overlay":"enderio:items/paint_overlay"
     },
     "elements":[
         {

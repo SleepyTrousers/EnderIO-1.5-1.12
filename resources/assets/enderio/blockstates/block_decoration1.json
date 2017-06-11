@@ -6,26 +6,26 @@
   "variants":{
     "type":{
       "type00":             { "textures": {
-        "particle": "enderio:items/machine_chassi",
-        "bottom":   "enderio:items/machine_chassi",
-        "top":      "enderio:items/machine_chassi",
-        "side":     "enderio:items/machine_chassi"
+        "particle": "enderio:items/item_machine_chassi",
+        "bottom":   "enderio:items/item_machine_chassi",
+        "top":      "enderio:items/item_machine_chassi",
+        "side":     "enderio:items/item_machine_chassi"
       }, "model":   "enderio:hollow_cube" },
-      "type01":             { "textures": { "particle": "enderio:blocks/machine_bottom", "all": "enderio:blocks/machine_bottom" } },
-      "type02":             { "textures": { "particle": "enderio:blocks/machine_top",    "all": "enderio:blocks/machine_top" } },
-      "type03":             { "textures": { "particle": "enderio:blocks/machine_side",   "all": "enderio:blocks/machine_side" } },
-      "type04":             { "textures": { "particle": "enderio:blocks/machine_back",   "all": "enderio:blocks/machine_back" } },
+      "type01":             { "textures": { "particle": "enderio:blocks/block_machine_bottom", "all": "enderio:blocks/block_machine_bottom" } },
+      "type02":             { "textures": { "particle": "enderio:blocks/block_machine_top",    "all": "enderio:blocks/block_machine_top" } },
+      "type03":             { "textures": { "particle": "enderio:blocks/block_machine_side",   "all": "enderio:blocks/block_machine_side" } },
+      "type04":             { "textures": { "particle": "enderio:blocks/block_machine_back",   "all": "enderio:blocks/block_machine_back" } },
       "type05":             { "textures": {
-        "particle": "enderio:blocks/machine_bottom",
-        "bottom":   "enderio:blocks/machine_bottom",
-        "top":      "enderio:blocks/machine_top",
-        "side":     "enderio:blocks/machine_side"
+        "particle": "enderio:blocks/block_machine_bottom",
+        "bottom":   "enderio:blocks/block_machine_bottom",
+        "top":      "enderio:blocks/block_machine_top",
+        "side":     "enderio:blocks/block_machine_side"
       }, "model":   "enderio:sided_cube" },
       "type06":             { "textures": {
-        "particle": "enderio:blocks/machine_bottom",
-        "bottom":   "enderio:blocks/machine_bottom",
-        "top":      "enderio:blocks/machine_top",
-        "side":     "enderio:blocks/machine_back"
+        "particle": "enderio:blocks/block_machine_bottom",
+        "bottom":   "enderio:blocks/block_machine_bottom",
+        "top":      "enderio:blocks/block_machine_top",
+        "side":     "enderio:blocks/block_machine_back"
       }, "model":   "enderio:sided_cube" },
       "type07":             { "textures": { "particle": "enderio:blocks/block_soul_machine_bottom", "all": "enderio:blocks/block_soul_machine_bottom" } },
       "type08":             { "textures": { "particle": "enderio:blocks/block_soul_machine_top",    "all": "enderio:blocks/block_soul_machine_top" } },
@@ -43,7 +43,7 @@
         "top":      "enderio:blocks/block_soul_machine_top",
         "side":     "enderio:blocks/block_soul_machine_back"
       }, "model":   "enderio:sided_cube" },
-      "type13":             { "textures": { "particle": "enderio:blocks/capacitor_bank_creative_border", "all": "enderio:blocks/capacitor_bank_creative_border" } },
+      "type13":             { "textures": { "particle": "enderio:blocks/block_capacitor_bank_creative", "all": "enderio:blocks/block_capacitor_bank_creative" } },
       "type14":             { "textures": {
         "particle": "enderio:items/item_broken_spawner",
         "bottom":   "enderio:items/item_broken_spawner",

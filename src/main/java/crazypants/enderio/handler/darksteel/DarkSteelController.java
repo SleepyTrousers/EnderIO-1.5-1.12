@@ -80,9 +80,6 @@ public class DarkSteelController {
   private boolean removeNightvision = false;
 
   private DarkSteelController() {
-    PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
   private EnumSet<Type> getActiveSet(EntityPlayer player) {

@@ -47,7 +47,7 @@ import crazypants.enderio.item.enderface.ItemEnderface;
 import crazypants.enderio.item.magnet.ItemMagnet;
 import crazypants.enderio.item.rodofreturn.ItemRodOfReturn;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
-import crazypants.enderio.item.soulvial.ItemSoulVessel;
+import crazypants.enderio.item.soulvial.ItemSoulVial;
 import crazypants.enderio.item.spawner.ItemBrokenSpawner;
 import crazypants.enderio.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.item.xptransfer.ItemXpTransfer;
@@ -82,7 +82,7 @@ public enum ModObject implements IModObject.Registerable {
   itemBasicCapacitor(ItemCapacitor.class),
   blockAlloy(BlockAlloy.class),
   itemAlloyIngot(ItemAlloy.class),
-  itemAlloyNugget(ItemAlloy.class, "createNuggets"),
+  itemAlloyNugget(ItemAlloy.class),
   itemMaterial(ItemMaterial.class),
 
   itemBrokenSpawner(ItemBrokenSpawner.class),
@@ -146,10 +146,10 @@ public enum ModObject implements IModObject.Registerable {
   blockDarkFusedGlass(BlockFusedQuartz.class, "createDarkFusedGlass"),
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
 
-  itemSoulVessel(ItemSoulVessel.class) {
+  itemSoulVial(ItemSoulVial.class) {
     @Override
     protected void initElem(@Nonnull FMLInitializationEvent event) {
-      ItemSoulVessel.initPhase();
+      ItemSoulVial.initPhase();
     }
   },
 
@@ -202,7 +202,7 @@ public enum ModObject implements IModObject.Registerable {
 
   @Override
   public @Nonnull String getUnlocalisedName() {
-    return EnderIO.DOMAIN + "_" + unlocalisedName;
+    return unlocalisedName;
   }
 
   @Override

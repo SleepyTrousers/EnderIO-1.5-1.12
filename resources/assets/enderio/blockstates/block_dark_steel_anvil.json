@@ -2,16 +2,16 @@
  	"forge_marker": 1,
 	"defaults": {
         "textures": {
-            "particle": "enderio:blocks/anvil_base",
-            "body": "enderio:blocks/anvil_base"
+            "particle": "enderio:blocks/anvil/base",
+            "body": "enderio:blocks/anvil/base"
         },
 	    "model": "anvil"
 	},
     "variants": {
         "damage": {
-            "0": { "textures": { "top": "enderio:blocks/anvil_0" } },
-            "1": { "textures": { "top": "enderio:blocks/anvil_1" } },
-            "2": { "textures": { "top": "enderio:blocks/anvil_2" } }
+            "0": { "textures": { "top": "enderio:blocks/anvil/0" } },
+            "1": { "textures": { "top": "enderio:blocks/anvil/1" } },
+            "2": { "textures": { "top": "enderio:blocks/anvil/2" } }
         },
         "facing": {
             "south": { },

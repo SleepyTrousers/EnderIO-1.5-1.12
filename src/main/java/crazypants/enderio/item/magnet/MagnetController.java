@@ -11,7 +11,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.item.magnet.PacketMagnetState.SlotType;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Prep;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -38,7 +37,6 @@ import static crazypants.enderio.integration.botania.BotaniaUtil.hasSolegnoliaAr
 public class MagnetController {
 
   public MagnetController() {
-    PacketHandler.INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
   }
 
   @SubscribeEvent

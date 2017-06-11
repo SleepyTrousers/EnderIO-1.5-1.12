@@ -70,15 +70,11 @@ public class Fluids {
   public static Fluid fluidXpJuice;
 
   public static ResourceLocation getStill(String fluidName) {
-    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName + "_still");
+    return new ResourceLocation(EnderIO.DOMAIN, "blocks/fluid_" + fluidName + "_still");
   }
 
   public static ResourceLocation getFlowing(String fluidName) {
-    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName + "_flow");
-  }
-
-  public static ResourceLocation getRaw(String fluidName) {
-    return new ResourceLocation(EnderIO.DOMAIN, "blocks/" + fluidName);
+    return new ResourceLocation(EnderIO.DOMAIN, "blocks/fluid_" + fluidName + "_flow");
   }
 
   public static String toCapactityString(IFluidTank tank) {
@@ -149,8 +145,8 @@ public class Fluids {
     fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
     blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.WATER, 0x3f5c5d);
 
-    f = new Fluid(getXPJuiceName(), Fluids.getRaw(Fluids.XP_JUICE_NAME + "still"), Fluids.getRaw(Fluids.XP_JUICE_NAME + "flowing")).setLuminosity(10)
-        .setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+    f = new Fluid(getXPJuiceName(), getStill(Fluids.XP_JUICE_NAME), getFlowing(Fluids.XP_JUICE_NAME)).setLuminosity(10)
+        .setDensity(800).setViscosity(1500);
     if (FluidRegistry.registerFluid(f)) {
       Log.info("XP Juice registered by Ender IO.");
     } else {

@@ -1,7 +1,7 @@
 {
     "parent": "block/block",
     "textures":{
-        "front":"enderio:blocks/machine_side"
+        "front":"enderio:blocks/block_machine_side"
     },
     "elements":[
         {

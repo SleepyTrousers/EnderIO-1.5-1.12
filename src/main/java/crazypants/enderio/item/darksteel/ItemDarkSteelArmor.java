@@ -224,10 +224,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && NightVisionUpgrade.loadFromItem(itemStack) == null
         && SoundDetectorUpgrade.loadFromItem(itemStack) == null)) {
       // LEGS and HELMET without faceplate
-      return EnderIO.DOMAIN + ":textures/models/armor/darkSteel_layer_2.png";
+      return EnderIO.DOMAIN + ":textures/models/armor/dark_steel_layer_2.png";
     }
     // BOOTS, HELMET with faceplate, CHEST
-    return EnderIO.DOMAIN + ":textures/models/armor/darkSteel_layer_1.png";
+    return EnderIO.DOMAIN + ":textures/models/armor/dark_steel_layer_1.png";
   }
 
   @Override

@@ -16,6 +16,7 @@ import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.Log;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -91,7 +92,10 @@ public final class ModObjectRegistry {
       mo.setItem((Item) obj);
     } else if (obj instanceof Block) {
       mo.setBlock((Block) obj);
-      mo.setItem(Item.getItemFromBlock((Block) obj));
+      final Item itemFromBlock = Item.getItemFromBlock((Block) obj);
+      if (itemFromBlock != Items.AIR) {
+        mo.setItem(itemFromBlock);
+      }
       if (obj instanceof BlockEio<?>) {
         ((BlockEio<?>) obj).preInit(event);
       }

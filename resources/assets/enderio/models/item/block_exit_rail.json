@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "enderio:blocks/rail_exit"
+        "layer0": "enderio:blocks/block_exit_rail"
     }
 }

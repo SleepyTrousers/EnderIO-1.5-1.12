@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import static com.enderio.core.common.inventory.Filters.and;
 import static com.enderio.core.common.inventory.Filters.not;
 import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.init.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemSoulVial;
 
 public class Filters {
 
@@ -29,7 +29,7 @@ public class Filters {
   public static final @Nonnull Predicate<ItemStack> SOUL_VIALS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() == itemSoulVessel.getItem();
+      return input.getItem() == itemSoulVial.getItem();
     }
   };
 

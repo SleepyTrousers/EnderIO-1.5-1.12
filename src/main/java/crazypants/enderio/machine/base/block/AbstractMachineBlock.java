@@ -13,11 +13,8 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.machine.baselegacy.PacketLegacyPowerStorage;
 import crazypants.enderio.machine.modes.IoMode;
-import crazypants.enderio.machine.modes.PacketIoMode;
 import crazypants.enderio.machine.render.RenderMappers;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
@@ -54,12 +51,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IGuiHandler, IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   protected final @Nonnull Random random;
-
-
-  static {
-    PacketHandler.INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketLegacyPowerStorage.Handler.class, PacketLegacyPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
-  }
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(mo, teClass, mat);

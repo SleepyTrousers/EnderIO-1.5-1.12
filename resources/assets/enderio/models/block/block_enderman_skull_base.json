@@ -1,10 +1,10 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "particle": "enderio:blocks/enderman_skull_top",
-        "side": "enderio:blocks/enderman_skull_side",
-        "front": "enderio:blocks/enderman_skull_front",
-        "top": "enderio:blocks/enderman_skull_top"
+        "particle": "enderio:blocks/block_enderman_skull_top",
+        "side": "enderio:blocks/block_enderman_skull_side",
+        "front": "enderio:blocks/block_enderman_skull_front",
+        "top": "enderio:blocks/block_enderman_skull_top"
     },
     "elements": [
         {

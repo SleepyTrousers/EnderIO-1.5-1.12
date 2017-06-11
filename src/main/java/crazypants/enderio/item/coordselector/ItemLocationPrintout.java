@@ -13,7 +13,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.Lang;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -33,14 +32,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class ItemLocationPrintout extends Item implements IGuiHandler {
 
   public static ItemLocationPrintout create(@Nonnull IModObject modObject) {
-
-    PacketHandler.INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, PacketHandler.nextID(), Side.SERVER);
-
     ItemLocationPrintout result = new ItemLocationPrintout(modObject);
     GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT, result);
     GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE, result);

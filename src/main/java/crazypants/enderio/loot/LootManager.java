@@ -89,11 +89,11 @@ public class LootManager {
 
       final CapturedMob polarBear = CapturedMob.create(new ResourceLocation("minecraft", "polar_bear"));
       if (polarBear != null) {
-        lp.addEntry(new LootEntryItem(ModObject.itemSoulVessel.getItemNN(), 1, 1,
+        lp.addEntry(new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1,
             new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) }, new LootCondition[] { new RandomChance(.2F) },
             "PolarBearSoulVial"));
       }
-      lp.addEntry(createLootEntry(ModObject.itemSoulVessel.getItemNN(), 1, 3, 0.5F));
+      lp.addEntry(createLootEntry(ModObject.itemSoulVial.getItemNN(), 1, 3, 0.5F));
       lp.addEntry(createLootCapacitor(0.05F));
 
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER)) {
@@ -143,10 +143,10 @@ public class LootManager {
       final CapturedMob shulker = CapturedMob.create(new ResourceLocation("minecraft", "shulker"));
       if (shulker != null) {
         lp.addEntry(
-            new LootEntryItem(ModObject.itemSoulVessel.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, shulker.toNbt(null)) },
+            new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, shulker.toNbt(null)) },
                 new LootCondition[] { new RandomChance(.2F) }, "ShulkerSoulVial"));
       }
-      lp.addEntry(createLootEntry(ModObject.itemSoulVessel.getItemNN(), 1, 3, 0.5F));
+      lp.addEntry(createLootEntry(ModObject.itemSoulVial.getItemNN(), 1, 3, 0.5F));
       lp.addEntry(createLootCapacitor(0.05F));
       lp.addEntry(createDarkSteelLootEntry(ModObject.itemDarkSteelBow.getItemNN(), 1, 1, 0.25F));
 

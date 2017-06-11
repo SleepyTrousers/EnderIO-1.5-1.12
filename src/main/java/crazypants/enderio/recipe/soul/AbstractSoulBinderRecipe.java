@@ -19,7 +19,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-import static crazypants.enderio.init.ModObject.itemSoulVessel;
+import static crazypants.enderio.init.ModObject.itemSoulVial;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -95,7 +95,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
       return new ResultStack[0];
     }
     ItemStack resultStack = getOutputStack(inputItem, mobType);
-    ItemStack soulVessel = new ItemStack(itemSoulVessel.getItemNN());
+    ItemStack soulVessel = new ItemStack(itemSoulVial.getItemNN());
     return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(resultStack)};
   }
 
@@ -114,7 +114,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     ItemStack item = input.item;
     if (slot == 0) {
       CapturedMob mobType = CapturedMob.create(item);
-      return mobType != null && item.getItem() == itemSoulVessel.getItem() && isValidInputSoul(mobType);
+      return mobType != null && item.getItem() == itemSoulVial.getItem() && isValidInputSoul(mobType);
     } 
     if(slot == 1) {
       return isValidInputItem(item);

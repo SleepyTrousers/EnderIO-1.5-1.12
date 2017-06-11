@@ -1,7 +1,7 @@
 package crazypants.enderio.api;
 
 import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.item.soulvial.ItemSoulVessel;
+import crazypants.enderio.item.soulvial.ItemSoulVial;
 import crazypants.enderio.item.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.paint.PaintSourceValidator;
 import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
@@ -74,7 +74,7 @@ public final class IMC {
   public static final String POWERED_SPAWNER_COST_MULTIPLIER = "poweredSpawner:costMultiplier";
 
   /**
-   * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link ItemSoulVessel#addEntityToBlackList(String)} with the string value of
+   * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link ItemSoulVial#addEntityToBlackList(String)} with the string value of
    * the message.
    */
   public static final String SOUL_VIAL_BLACKLIST = "soulVial:blacklist:add";

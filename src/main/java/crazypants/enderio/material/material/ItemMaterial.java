@@ -9,11 +9,12 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,18 +39,19 @@ public class ItemMaterial extends Item implements IHaveRenderers {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
+  public void registerRenderers(final @Nonnull IModObject modObject) {
     NNList.of(Material.class).apply(new Callback<Material>() {
       @Override
       public void apply(@Nonnull Material alloy) {
-        ClientUtil.regRenderer(ItemMaterial.this, Material.getMetaFromType(alloy), alloy.getBaseName());
+        ModelLoader.setCustomModelResourceLocation(ItemMaterial.this, Material.getMetaFromType(alloy),
+            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getBaseName()));
       }
     });
   }
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return Material.getTypeFromMeta(stack.getItemDamage()).getBaseName();
+    return getUnlocalizedName() + "_" + Material.getTypeFromMeta(stack.getItemDamage()).getBaseName();
   }
 
   @Override

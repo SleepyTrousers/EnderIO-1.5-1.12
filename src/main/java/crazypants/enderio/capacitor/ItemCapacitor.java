@@ -7,15 +7,15 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
-import crazypants.util.ClientUtil;
 import crazypants.util.NbtValue;
-import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,7 +26,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -34,6 +33,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,17 +60,20 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    final NNList<ResourceLocation> resourceLocations = DefaultCapacitorData.getResourceLocations();
-    ModelBakery.registerItemVariants(this, resourceLocations.toArray(new ResourceLocation[0]));
-    for (int i = 0; i < resourceLocations.size(); i++) {
-      ClientUtil.regRenderer(this, i, resourceLocations.get(i));
-    }
+  public void registerRenderers(final @Nonnull IModObject modObject) {
+    NNList.of(DefaultCapacitorData.class).apply(new Callback<DefaultCapacitorData>() {
+      @Override
+      public void apply(@Nonnull DefaultCapacitorData alloy) {
+        ModelLoader.setCustomModelResourceLocation(ItemCapacitor.this, alloy.ordinal(),
+            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getUnlocalizedName()));
+      }
+    });
+
   }
   
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return getCapacitorData(stack).getUnlocalizedName();
+    return getUnlocalizedName() + "_" + getCapacitorData(stack).getUnlocalizedName();
   }
 
   @Override  

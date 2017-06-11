@@ -66,7 +66,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     // only init selectedFaceIcon
   }
 
-  public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
+  public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selected_face");
 
   // protected static final RenderBlocks RB = new RenderBlocks();
 
