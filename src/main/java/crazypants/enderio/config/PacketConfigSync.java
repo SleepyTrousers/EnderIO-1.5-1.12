@@ -1,7 +1,6 @@
 package crazypants.enderio.config;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.SlicedByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -30,12 +29,6 @@ public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigS
 
   @Override
   public void fromBytes(ByteBuf data) {
-    byte[] array = ((SlicedByteBuf) data).unwrap().array();
-    System.out.println(((SlicedByteBuf) data).unwrap().arrayOffset());
-    for (byte b : array) {
-      System.out.print(b + " ");
-    }
-    System.out.println();
     Config.travelAnchorMaximumDistance = data.readInt();
     Config.travelStaffBlinkEnabled = data.readBoolean();
     Config.travelStaffBlinkThroughSolidBlocksEnabled = data.readBoolean();

@@ -44,7 +44,6 @@ public class PacketTravelEvent implements IMessage {
 
   @Override
   public void toBytes(ByteBuf buf) {
-    System.out.println("PacketTravelEvent.toBytes");
     buf.writeLong(pos);
     buf.writeInt(powerUse);
     buf.writeBoolean(conserveMotion);
@@ -54,7 +53,6 @@ public class PacketTravelEvent implements IMessage {
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    System.out.println("PacketTravelEvent.fromBytes");
     pos = buf.readLong();
     powerUse = buf.readInt();
     conserveMotion = buf.readBoolean();
