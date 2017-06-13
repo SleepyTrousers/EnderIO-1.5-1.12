@@ -11,8 +11,8 @@
         "power":{
             "0": { },
             "1": { "textures":{ "particle":"enderio:blocks/block_dark_steel_pressure_plate" } },
-            "2": { "textures":{ "particle":"enderio:blocks/soularium_pressure_plate" } },
-            "3": { "textures":{ "particle":"enderio:blocks/soularium_pressure_plate" } },
+            "2": { "textures":{ "particle":"enderio:blocks/block_soularium_pressure_plate" } },
+            "3": { "textures":{ "particle":"enderio:blocks/block_soularium_pressure_plate" } },
             "4": { },
             "5": { },
             "6": { },

@@ -2,7 +2,7 @@
   "forge_marker":1,
   "defaults":{
     "textures": {
-        "particle": "enderio:blocks/fused_quartz_item"
+        "particle": "enderio:blocks/block_fused_quartz"
     },
     "model":"enderio:transform/block"
   },

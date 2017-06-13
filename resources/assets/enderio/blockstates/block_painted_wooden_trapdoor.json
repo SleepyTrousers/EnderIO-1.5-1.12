@@ -9,8 +9,18 @@
     "variants": {
         "inventory": [{}],
         "half":{
-	        "top": { },
-            "bottom": { }
+	        "top": {},
+          "bottom": {}
+        },
+        "facing":{
+        	"east":{},
+        	"west":{},
+        	"north":{},
+        	"south":{}
+        },
+        "open":{
+        	true:{},
+        	false:{}
         }
     }
 }

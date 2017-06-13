@@ -157,21 +157,21 @@ public class SmartModelAttacher {
       Block block = holder.block;
       Map<IBlockState, ModelResourceLocation> locations = event.getModelManager().getBlockModelShapes().getBlockStateMapper().getVariants(block);
 
-      final IProperty eclipse_tells_me_final_fields_can_change_their_value_at_any_time = holder.property;
+      final IProperty holder_property = holder.property;
       final Comparable holder_defaultsValue = holder.defaultsValue;
-      if (eclipse_tells_me_final_fields_can_change_their_value_at_any_time != null
-          && block.getDefaultState().getPropertyKeys().contains(eclipse_tells_me_final_fields_can_change_their_value_at_any_time)
+      final IBakedModel missingModel = event.getModelManager().getMissingModel();
+      if (holder_property != null && block.getDefaultState().getPropertyKeys().contains(holder_property)
           && holder_defaultsValue != null) {
-        IBlockState defaultState = block.getDefaultState().withProperty(eclipse_tells_me_final_fields_can_change_their_value_at_any_time, holder_defaultsValue);
+        IBlockState defaultState = block.getDefaultState().withProperty(holder_property, holder_defaultsValue);
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
           throw new RuntimeException(
-              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
+                  + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
-        if (defaultBakedModel == null) {
-          throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-              + debugOutput(event.getModelRegistry(), defaultMrl));
+        if (defaultBakedModel == null || defaultBakedModel == missingModel) {
+          continue;
         }
         RelayingBakedModel model = new RelayingBakedModel(defaultBakedModel);
 
@@ -179,11 +179,14 @@ public class SmartModelAttacher {
         event.getModelRegistry().putObject(itemMrl, model);
 
         for (Entry<IBlockState, ModelResourceLocation> entry : locations.entrySet()) {
-          final ModelResourceLocation value = NullHelper.notnullF(entry.getValue(), "BlockModelShapes contains null keys");
-          if (entry.getKey().getValue(eclipse_tells_me_final_fields_can_change_their_value_at_any_time) == holder.autoValue) {
-            event.getModelRegistry().putObject(value, model);
-          } else if (event.getModelRegistry().getObject(value) == null) {
-            event.getModelRegistry().putObject(value, defaultBakedModel);
+          final ModelResourceLocation entryMrl = NullHelper.notnullF(entry.getValue(), "BlockModelShapes contains null keys");
+          final IBlockState entryBlockstate = entry.getKey();
+          final IBakedModel existingModel = event.getModelRegistry().getObject(entryMrl);
+
+          if (existingModel == null || existingModel == missingModel) {
+            // TODO uncomment event.getModelRegistry().putObject(entryMrl, defaultBakedModel);
+          } else if (entryBlockstate.getValue(holder_property) == holder.autoValue) {
+            event.getModelRegistry().putObject(entryMrl, model);
           }
         }
       } else {
@@ -191,26 +194,30 @@ public class SmartModelAttacher {
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
           throw new RuntimeException(
-              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
+                  + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
-        if (defaultBakedModel == null) {
-          throw new RuntimeException(
-              "Model for state " + defaultState + " failed to load from " + defaultMrl + ". " + debugOutput(event.getModelRegistry(), defaultMrl));
+        if (defaultBakedModel == null || defaultBakedModel == missingModel) {
+          continue;
         }
 
         if (!holder.itemOnly) {
           for (ModelResourceLocation mrl0 : locations.values()) {
             final ModelResourceLocation mrl = NullHelper.notnullF(mrl0, "BlockModelShapes contains null keys");
             IBakedModel model = event.getModelRegistry().getObject(mrl);
-            event.getModelRegistry().putObject(mrl, new RelayingBakedModel(NullHelper.first(model, defaultBakedModel)));
+            if (model == null || model == missingModel) {
+
+            } else {
+              event.getModelRegistry().putObject(mrl, new RelayingBakedModel(NullHelper.first(model, defaultBakedModel)));
+            }
           }
         }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         final IBakedModel model = event.getModelRegistry().getObject(itemMrl);
-        if (model == null) {
-          event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
+        if (model == null || model == missingModel) {
+          // event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(defaultBakedModel));
         } else {
           event.getModelRegistry().putObject(itemMrl, new RelayingBakedModel(model));
         }
@@ -223,13 +230,14 @@ public class SmartModelAttacher {
     // BlockStateWrapperConduitBundle.invalidate();
   }
 
-  private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl) {
+  @SuppressWarnings("null")
+  private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl, IBakedModel missingModel) {
     String prefix = defaultMrl.getResourceDomain()+ ":" + defaultMrl.getResourcePath();
     if (modelRegistry instanceof RegistrySimple) {
       RegistrySimple<?, ?> rg = (RegistrySimple<?, ?>) modelRegistry;
       StringBuilder sb = new StringBuilder();
       for (Object key : rg.getKeys()) {
-        if (key.toString().startsWith(prefix)) {
+        if (modelRegistry.getObject((ModelResourceLocation) key) != missingModel && key.toString().startsWith(prefix)) {
           sb.append(key + "; ");
         }
       }
