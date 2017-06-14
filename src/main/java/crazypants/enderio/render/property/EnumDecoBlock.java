@@ -38,7 +38,7 @@ public enum EnumDecoBlock implements IStringSerializable {
   }
 
   public @Nonnull String getUnlocalizedName(Item me) {
-    return me.getUnlocalizedName() + "_" + getName();
+    return me.getUnlocalizedName() + "." + getName();
   }
 
   public static @Nonnull EnumDecoBlock getTypeFromMeta(int meta) {

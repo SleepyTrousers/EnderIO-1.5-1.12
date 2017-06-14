@@ -51,7 +51,7 @@ public class ItemMaterial extends Item implements IHaveRenderers {
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return getUnlocalizedName() + "_" + Material.getTypeFromMeta(stack.getItemDamage()).getBaseName();
+    return getUnlocalizedName() + "." + Material.getTypeFromMeta(stack.getItemDamage()).getBaseName();
   }
 
   @Override

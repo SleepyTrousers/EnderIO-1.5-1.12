@@ -10,7 +10,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -140,9 +139,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     if (EnumFacadeType.getTypeFromMeta(itemstack.getMetadata()) != EnumFacadeType.BASIC) {
       list.add("");
-      for (String line : EnderIO.lang.localizeExact(getUnlocalizedName(itemstack) + ".tooltip").split(";")) {
-        list.add(line);
-      }
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName(itemstack));
     }
   }
 

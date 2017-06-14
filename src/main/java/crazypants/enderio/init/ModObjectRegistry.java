@@ -12,13 +12,16 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.Log;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -43,7 +46,7 @@ public final class ModObjectRegistry {
 
   static void registerTeClasses() {
     Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
-  
+
     for (ModObject elem : ModObject.values()) {
       Class<? extends TileEntity> teClazz = elem.teClazz;
       if (teClazz == null) {
@@ -58,7 +61,7 @@ public final class ModObjectRegistry {
         clazzes.get(teClazz).add(elem.unlocalisedName + "_tileentity");
       }
     }
-  
+
     for (Entry<Class<? extends TileEntity>, List<String>> entry : clazzes.entrySet()) {
       if (entry.getValue().size() == 1) {
         GameRegistry.registerTileEntity(entry.getKey(), entry.getValue().get(0));
@@ -106,6 +109,21 @@ public final class ModObjectRegistry {
     final Block block = mo.getBlock();
     if (block instanceof BlockEio<?>) {
       ((BlockEio<?>) block).init(event);
+    }
+    if (block != null) {
+      Log.debug("Block " + block.getRegistryName() + " has localized name " + block.getLocalizedName());
+    }
+    Item item = mo.getItem();
+    if (item != null) {
+      NonNullList<ItemStack> list = new NNList<>();
+      item.getSubItems(item, item.getCreativeTab(), list);
+      if (list.isEmpty()) {
+        Log.debug("Item " + item.getRegistryName() + " has localized name " + new ItemStack(item).getDisplayName());
+      } else {
+        for (ItemStack itemStack : list) {
+          Log.debug("Item " + item.getRegistryName() + ":" + itemStack.getItemDamage() + " has localized name " + itemStack.getDisplayName());
+        }
+      }
     }
   }
 

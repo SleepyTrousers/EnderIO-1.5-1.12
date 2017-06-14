@@ -25,7 +25,7 @@ public class ItemBlockAlloy extends ItemBlock {
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return "tile." + Alloy.getTypeFromMeta(stack.getItemDamage()).getBaseName();
+    return getUnlocalizedName() + "." + Alloy.getTypeFromMeta(stack.getItemDamage()).getBaseName();
   }
   
   @Override

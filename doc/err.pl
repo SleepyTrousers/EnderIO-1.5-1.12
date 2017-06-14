@@ -4,6 +4,7 @@ our $x = {};
 our $y = {};
 our $z = {};
 our $e = {};
+our $l = {};
 
 open F, '<', '/f/github/manual/EnderIO_111/run/logs/fml-client-latest.log';
 
@@ -23,6 +24,9 @@ while (<F>) {
   }
   if (/TEXTURE ERRORS.*(textures\/.*)$/) {
     $e->{$1}++;
+  }
+  if (/has localized name (.*?)\r?$/) {
+    $l->{$1}++;
   }
 }
 
@@ -67,6 +71,9 @@ blockstates/$name.json
 
 ";
 }
+
+print F "\n\n\n\n\n\n\n\nLocalized names:\n";
+print F map {$_."=\n"} sort keys %$l;
 
 close F;
 

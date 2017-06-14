@@ -1,5 +1,264 @@
 //***  Ender IO *****//
 
+// These keys have been confirmed in 1.11
+
+item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
+item.item_alloy_ingot_dark_steel.name=Dark Steel Ingot
+item.item_alloy_ingot_electrical_steel.name=Electrical Steel Ingot
+item.item_alloy_ingot_energetic_alloy.name=Electrical Steel Ingot
+item.item_alloy_ingot_pulsating_iron.name=Pulsating Iron Ingot
+item.item_alloy_ingot_redstone_alloy.name=Redstone Alloy Ingot
+item.item_alloy_ingot_soularium.name=Soularium Ingot
+item.item_alloy_ingot_vibrant_alloy.name=Vibrant Alloy Ingot
+
+item.item_alloy_nugget_conductive_iron.name=Conductive Iron Nugget
+item.item_alloy_nugget_dark_steel.name=Dark Steel Nugget
+item.item_alloy_nugget_electrical_steel.name=Electrical Steel Nugget
+item.item_alloy_nugget_energetic_alloy.name=Energetic Alloy Nugget
+item.item_alloy_nugget_pulsating_iron.name=Pulsating Iron Nugget
+item.item_alloy_nugget_redstone_alloy.name=Redstone Alloy Nugget
+item.item_alloy_nugget_soularium.name=Soularium Nugget
+item.item_alloy_nugget_vibrant_alloy.name=Vibrant Alloy Nugget
+
+item.item_basic_capacitor.activated.name=Double-Layer Capacitor
+item.item_basic_capacitor.basic.name=Basic Capacitor
+item.item_basic_capacitor.ender.name=Octadic Capacitor
+
+item.item_broken_spawner.name=Broken Spawner
+item.item_broken_spawner.tooltip.detailed.line1=Combine with a Powered Spawner
+item.item_broken_spawner.tooltip.detailed.line2=in an Anvil to set spawn type
+
+item.item_cold_fire_igniter.name=Cold Fire Igniter
+item.item_cold_fire_igniter.tooltip.detailed.line1=Allows to place Cold Fire.
+item.item_cold_fire_igniter.tooltip.detailed.line2=Cold Fire will not spread to other blocks.
+
+item.item_conduit_facade.name=Conduit Facade
+item.item_conduit_facade.tooltip.detailed.line1=Painted in the Painting Machine
+item.item_conduit_facade.tooltip.detailed.line2=R-Click on a conduit to place
+item.item_conduit_facade.tooltip.detailed.line3=Hidden when a wrench or conduit
+item.item_conduit_facade.tooltip.detailed.line4=is equipped
+
+item.item_conduit_facade.hardened.name=Hardened Conduit Facade
+item.item_conduit_facade.hardened.tooltip.detailed.line1=Hardened: Resists breaking and explosions
+
+item.item_conduit_facade.transparent.name=Transparent Conduit Facade
+item.item_conduit_facade.transparent.tooltip.detailed.line1=Transparent: Hides the conduits when painted with a non-solid block
+
+item.item_conduit_facade.transparent.hardened.name=Transparent Hardened Conduit Facade
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=Transparent: Hides the conduits when painted with a non-solid block
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=Hardened: Resists breaking and explosions
+
+item.item_conduit_probe.name=Conduit Probe
+item.item_conduit_probe.tooltip.detailed.line1=In probe mode R-Click on a conduit
+item.item_conduit_probe.tooltip.detailed.line2=to display details about its network
+item.item_conduit_probe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
+item.item_conduit_probe.tooltip.detailed.line4=copy a conduit bundles connection settings 
+item.item_conduit_probe.tooltip.detailed.line5=R-Click to paste them
+item.item_conduit_probe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+
+item.item_coord_selector.name=Coordinate Selector
+item.item_coord_selector.tooltip.detailed.line1=Prints coordinates of a block.
+item.item_coord_selector.tooltip.detailed.line2=Right click at block to select
+item.item_coord_selector.tooltip.detailed.line3=the block adjacent on that side.
+item.item_coord_selector.tooltip.detailed.line4=Shift right click at a block to
+item.item_coord_selector.tooltip.detailed.line5=select that specific block.
+item.item_coord_selector.tooltip.detailed.line6=Can select from a distance.
+
+item.item_dark_steel_axe.name=Dark Axe
+
+item.item_dark_steel_boots.name=
+
+item.item_dark_steel_bow.name=
+
+item.item_dark_steel_chestplate.name=
+
+item.item_dark_steel_helmet.name=
+
+item.item_dark_steel_leggings.name=
+
+item.item_dark_steel_pickaxe.name=
+
+item.item_dark_steel_shears.name=
+
+item.item_dark_steel_sword.name=
+
+item.item_ender_food.enderios.name=
+
+item.item_magnet.name=
+
+item.item_material.attractor_crystal.name=
+item.item_material.binder_composite.name=
+item.item_material.chassi_parts.name=
+item.item_material.conduit_binder.name=
+item.item_material.dark_grinding_ball.name=
+item.item_material.dust_wheat.name=
+item.item_material.ender_crystal.name=
+item.item_material.ender_crystal_powder.name=
+item.item_material.gear_energized.name=
+item.item_material.gear_iron.name=
+item.item_material.gear_stone.name=
+item.item_material.gear_vibrant.name=
+item.item_material.gear_wood.name=
+item.item_material.glider_wing.name=
+item.item_material.glider_wings.name=
+item.item_material.machine_chassi.name=
+item.item_material.nutritious_stick.name=
+item.item_material.plantbrown.name=
+item.item_material.plantgreen.name=
+item.item_material.powder_coal.name=
+item.item_material.powder_ender.name=
+item.item_material.powder_gold.name=
+item.item_material.powder_infinity.name=
+item.item_material.powder_iron.name=
+item.item_material.powder_obsidian.name=
+item.item_material.precient_crystal.name=
+item.item_material.precient_powder.name=
+item.item_material.pulsating_crystal.name=
+item.item_material.pulsating_powder.name=
+item.item_material.silicon.name=
+item.item_material.skull_ender_resonator.name=
+item.item_material.skull_sentient_ender.name=
+item.item_material.skull_skeletal_contractor.name=
+item.item_material.skull_zombie_controller.name=
+item.item_material.skull_zombie_electrode.name=
+item.item_material.skull_zombie_frankenstien.name=
+item.item_material.vibrant_crystal.name=
+item.item_material.vibrant_powder.name=
+item.item_material.weather_crystal.name=
+
+item.item_rod_of_return.name=
+
+item.item_travel_staff.name=
+
+item.item_xp_transfer.name=
+
+item.item_yeta_wrench.name=
+
+tile.block_alloy.name=Alloy Block
+tile.block_alloy.conductive_iron.name=Conductive Iron Block
+tile.block_alloy.dark_steel.name=Dark Steel Block
+tile.block_alloy.electrical_steel.name=Electrical Steel Block
+tile.block_alloy.energetic_alloy.name=Energetic Alloy Block
+tile.block_alloy.pulsating_iron.name=Pulsating Iron Block
+tile.block_alloy.redstone_alloy.name=Redstone Alloy Block
+tile.block_alloy.soularium.name=Soularium Block
+tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
+
+tile.block_cold_fire.name=
+
+tile.block_dark_fused_glass.name=
+
+tile.block_dark_fused_quartz.name=
+
+tile.block_dark_iron_bars.name=
+
+tile.block_dark_steel_anvil.intact.name=
+tile.block_dark_steel_anvil.name=
+tile.block_dark_steel_anvil.slightlyDamaged.name=
+tile.block_dark_steel_anvil.veryDamaged.name=
+
+tile.block_dark_steel_ladder.name=
+
+tile.block_dark_steel_trapdoor.name=
+
+tile.block_decoration1.name=
+tile.block_decoration1.type00.name=
+tile.block_decoration1.type01.name=
+tile.block_decoration1.type02.name=
+tile.block_decoration1.type03.name=
+tile.block_decoration1.type04.name=
+tile.block_decoration1.type05.name=
+tile.block_decoration1.type06.name=
+tile.block_decoration1.type07.name=
+tile.block_decoration1.type08.name=
+tile.block_decoration1.type09.name=
+tile.block_decoration1.type10.name=
+tile.block_decoration1.type11.name=
+tile.block_decoration1.type12.name=
+tile.block_decoration1.type13.name=
+tile.block_decoration1.type14.name=
+tile.block_decoration1.type15.name=
+
+tile.block_decoration2.name=
+tile.block_decoration2.type00.name=
+tile.block_decoration2.type01.name=
+tile.block_decoration2.type02.name=
+tile.block_decoration2.type03.name=
+tile.block_decoration2.type04.name=
+tile.block_decoration2.type05.name=
+tile.block_decoration2.type06.name=
+tile.block_decoration2.type07.name=
+tile.block_decoration2.type08.name=
+tile.block_decoration2.type09.name=
+tile.block_decoration2.type10.name=
+tile.block_decoration2.type11.name=
+tile.block_decoration2.type12.name=
+tile.block_decoration2.type13.name=
+tile.block_decoration2.type14.name=
+tile.block_decoration2.type15.name=
+
+tile.block_detector_block.name=Block Detector
+tile.block_detector_block_silent.name=Block Detector (Silent)
+
+tile.block_enderman_skull.base.name=
+tile.block_enderman_skull.name=
+tile.block_enderman_skull.tormented.name=
+
+tile.block_enlightened_fused_glass.name=
+
+tile.block_enlightened_fused_quartz.name=
+
+tile.block_exit_rail.name=
+
+tile.block_fused_glass.name=
+
+tile.block_fused_quartz.name=
+
+tile.block_machine_base.name=
+tile.block_machine_io.name=
+
+tile.block_painted_carpet.name=
+tile.block_painted_dark_steel_trapdoor.name=
+tile.block_painted_double_slab.name=
+tile.block_painted_fence.name=
+tile.block_painted_fence_gate.name=
+tile.block_painted_fused_quartz.name=
+tile.block_painted_glowstone.name=
+tile.block_painted_glowstone_solid.name=
+tile.block_painted_iron_trapdoor.name=
+tile.block_painted_pressure_plate.darksteel.name=
+tile.block_painted_pressure_plate.darksteel.silent.name=
+tile.block_painted_pressure_plate.gold.silent.name=
+tile.block_painted_pressure_plate.iron.silent.name=
+tile.block_painted_pressure_plate.name=
+tile.block_painted_pressure_plate.soularium.name=
+tile.block_painted_pressure_plate.soularium.silent.name=
+tile.block_painted_pressure_plate.stone.silent.name=
+tile.block_painted_pressure_plate.tuned.name=
+tile.block_painted_pressure_plate.tuned.silent.name=
+tile.block_painted_pressure_plate.wood.silent.name=
+tile.block_painted_redstone.name=
+tile.block_painted_redstone_solid.name=
+tile.block_painted_slab.name=
+tile.block_painted_stair.name=
+tile.block_painted_stone.name=
+tile.block_painted_stone_double_slab.name=
+tile.block_painted_stone_fence.name=
+tile.block_painted_stone_slab.name=
+tile.block_painted_stone_stair.name=
+tile.block_painted_wall.name=
+tile.block_painted_wooden_trapdoor.name=
+
+tile.block_reinforced_obsidian.name=
+
+tile.block_self_resetting_lever10.name=
+tile.block_self_resetting_lever30.name=
+tile.block_self_resetting_lever300.name=
+tile.block_self_resetting_lever60.name=
+
+
+// These keys have not (yet) been confirmed in 1.11
+
 //Power
 enderio.power.rf=RF
 enderio.power.tmb=t/mB
@@ -13,18 +272,7 @@ item.enderio.itemEnderface.name=Enderface
 
 //Conduits
 enderio.blockConduitBundle=Conduit Bundle
-item.itemConduitFacade.name=Conduit Facade
-item.itemConduitFacade.hardened.name=Hardened Conduit Facade
-item.itemConduitFacade.transparent.name=Transparent Conduit Facade
-item.itemConduitFacade.transparent.hardened.name=Transparent Hardened Conduit Facade
 enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
-item.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
-item.itemConduitFacade.tooltip.detailed.line2=R-Click on a conduit to place
-item.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
-item.itemConduitFacade.tooltip.detailed.line4=is equipped
-item.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
-item.itemConduitFacade.transparent.tooltip=Transparent: Hides the conduits when painted with a non-solid block
-item.itemConduitFacade.transparent.hardened.tooltip=Transparent: Hides the conduits when painted with a non-solid block;Hardened: Resists breaking and explosions
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
@@ -228,29 +476,6 @@ enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
 
-//Alloys
-enderio.itemAlloy.name=Alloy
-enderio.electricalSteel.name=Electrical Steel
-enderio.energeticAlloy.name=Energetic Alloy
-enderio.vibrantAlloy.name=Vibrant Alloy
-enderio.redstoneAlloy.name=Redstone Alloy
-enderio.conductiveIron.name=Conductive Iron
-enderio.pulsatingIron.name=Pulsating Iron
-enderio.vibrantNugget.name=Vibrant Alloy Nugget
-enderio.darkSteel.name=Dark Steel
-enderio.soularium.name=Soularium
-
-tile.blockIngotStorage.name=Ingot Storage
-tile.enderio.electricalSteel.name=Electrical Steel Block
-tile.enderio.energeticAlloy.name=Energetic Alloy Block
-tile.enderio.vibrantAlloy.name=Vibrant Alloy Block
-tile.enderio.redstoneAlloy.name=Redstone Alloy Block
-tile.enderio.conductiveIron.name=Conductive Iron Block
-tile.enderio.pulsatingIron.name=Pulsating Iron Block
-tile.enderio.vibrantNugget.name=Vibrant Nugget Block
-tile.enderio.darkSteel.name=Dark Steel Block
-tile.enderio.soularium.name=Soularium Block
-
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder
 enderio.powderIron.name=Iron Powder
@@ -262,12 +487,6 @@ enderio.powderObsidian.name=Obsidian Powder
 enderio.powderArdite.name=Ardite Powder
 enderio.powderCobalt.name=Cobalt Powder
 enderio.ingotEnderiumBase.name=Enderium Base
-
-//Capacitors
-enderio.itemBasicCapacitor.name=Capacitor
-enderio.basicCapacitor.name=Basic Capacitor
-enderio.activatedCapacitor.name=Double-Layer Capacitor
-enderio.enderCapacitor.name=Octadic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -511,10 +730,6 @@ tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
 tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
 enderio.blockPoweredSpawner.action=Spawns
-
-item.itemBrokenSpawner.name=Broken Spawner
-item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
-item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 
 tile.blockSoulBinder.name=Soul Binder
 tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
@@ -770,13 +985,6 @@ enderio.itemRodOfReturn.chat.targetNotSet=No destination set
 enderio.itemRodOfReturn.chat.sync=Synchronised with location 
 enderio.itemRodOfReturn.chat.sync.telepad= Synchronised with Telepad
 
-item.itemCoordSelector.name=Coordinate Selector
-item.itemCoordSelector.tooltip.detailed.line1=Prints coordinates of a block.
-item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select
-item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
-item.itemCoordSelector.tooltip.detailed.line4=Shift right click at a block to
-item.itemCoordSelector.tooltip.detailed.line5=select that specific block.
-item.itemCoordSelector.tooltip.detailed.line6=Can select from a distance.
 
 //Painter
 tile.blockPainter.name=Painting Machine
@@ -831,14 +1039,6 @@ item.itemMagnet.everywhere.tooltip.detailed.line2=Shift-R-Click to enable / disa
 item.itemMagnet.everywhere.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.everywhere.tooltip.detailed.line4=inventory (or a Baubles slot) to function
 
-item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit
-item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
-item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
-item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles connection settings 
-item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
-item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
-
 item.itemSoulVessel.name=Soul Vial
 enderio.item.itemSoulVessel.tooltip.health=Health:
 enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
@@ -870,7 +1070,6 @@ item.darkSteel_leggings.name=Dark Leggings
 item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
-item.darkSteel_axe.name=Dark Axe
 item.darkSteel_shears.name=Dark Shears
 item.darkSteelBow.name=Dark Bow
 
@@ -1484,9 +1683,6 @@ item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a 
 
 enderio.coldfireigniter.chat.outoffluid=ERROR: Out of {FLUIDNAME}
 
-item.itemColdFireIgniter.name=Cold Fire Igniter
-item.itemColdFireIgniter.tooltip.detailed.line1=Allows to place Cold Fire.
-item.itemColdFireIgniter.tooltip.detailed.line2=Cold Fire will not spread to other blocks.
 
 
 tile.blockExitRail.name=Exit Rail
@@ -1577,5 +1773,3 @@ fluid.glowstone=Glowgas
 fluid.redstone=Molten Redstone
 fluid.ender=Liquidfied Ender Pearls
 
-tile.block_detector_block.name=Block Detector
-tile.block_detector_block_silent.name=Block Detector (Silent)

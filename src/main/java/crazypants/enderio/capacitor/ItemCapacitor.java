@@ -73,7 +73,7 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return getUnlocalizedName() + "_" + getCapacitorData(stack).getUnlocalizedName();
+    return getUnlocalizedName() + "." + getCapacitorData(stack).getUnlocalizedName();
   }
 
   @Override  

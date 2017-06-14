@@ -533,6 +533,8 @@ public final class Config {
   public static boolean debugTraceTELivecycleExtremelyDetailed = false;
   public static boolean debugTraceCapLimitsExtremelyDetailed = false;
 
+  public static double teleportEffectProbability = 0.03f;
+
   public static void init(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -1406,6 +1408,9 @@ public final class Config {
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
         "If false the soul bound enchantment will not be available");
     
+    teleportEffectProbability = config
+        .get(sectionAdvanced.name, "teleportEffectProbability", teleportEffectProbability, "The probability that Enderios do what they promise.")
+        .getDouble(teleportEffectProbability);
     
     String rareStr = config.get(sectionEnchantments.name, "enchantmentSoulBoundWeight", enchantmentSoulBoundRarity.toString(),
         "The rarity of the enchantment. COMMON, UNCOMMON, RARE, VERY_RARE ").getString();

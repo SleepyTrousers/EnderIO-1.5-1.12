@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.init.ModObject;
+import crazypants.enderio.teleport.RandomTeleportUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockLiquid;
@@ -19,23 +20,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
@@ -470,8 +465,6 @@ public final class BlockFluidEio {
 
   public static class MoltenEnder extends BlockFluidEnder {
 
-    private static final Random rand = new Random();
-    private static final ResourceLocation SOUND = new ResourceLocation("entity.endermen.teleport");
 
     public MoltenEnder(Fluid fluid, Material material, int fogColor) { // 0xff0000
       super(fluid, material, fogColor);
@@ -480,97 +473,11 @@ public final class BlockFluidEio {
     @Override
     public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
       if (!world.isRemote && entity.timeUntilPortal == 0) {
-        teleportEntity(world, entity);
+        RandomTeleportUtil.teleportEntity(world, entity);
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
-    private void teleportEntity(@Nonnull World world, @Nonnull Entity entity) {
-      double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
-      for (int i = 0; i < 5; i++) {
-        double targetX = origX + rand.nextGaussian() * 16f;
-        double targetY = -1;
-        while (targetY < 1.1) {
-          targetY = origY + rand.nextGaussian() * 8f;
-        }
-        double targetZ = origZ + rand.nextGaussian() * 16f;
-        if (isClear(world, entity, targetX, targetY, targetZ) && doTeleport(world, entity, targetX, targetY, targetZ)) {
-          final SoundEvent sound = SoundEvent.REGISTRY.getObject(SOUND);
-          if (sound != null) {
-            world.playSound(null, origX, origY, origZ, sound, SoundCategory.BLOCKS, 1, 1);
-            world.playSound(null, targetX, targetY, targetZ, sound, SoundCategory.BLOCKS, 1, 1);
-          }
-          entity.timeUntilPortal = 5;
-          return;
-        }
-      }
-    }
-
-    private boolean isClear(@Nonnull World world, @Nonnull Entity entity, double targetX, double targetY, double targetZ) {
-      double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
-      try {
-        entity.setPosition(targetX, targetY, targetZ);
-        boolean result = world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity)
-            && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
-        return result;
-      } finally {
-        entity.setPosition(origX, origY, origZ);
-      }
-    }
-
-    private static boolean doTeleport(@Nonnull World world, @Nonnull Entity entity, double targetX, double targetY, double targetZ) {
-      if (entity instanceof EntityLivingBase) {
-        return doTeleport(world, (EntityLivingBase) entity, targetX, targetY, targetZ);
-      }
-
-      if (entity.isRiding()) {
-        entity.dismountRidingEntity();
-      }
-      if (entity.isBeingRidden()) {
-        for (Entity passenger : entity.getPassengers()) {
-          passenger.dismountRidingEntity();
-        }
-      }
-
-      entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
-      return true;
-    }
-
-    private static boolean doTeleport(@Nonnull World world, @Nonnull EntityLivingBase entity, double targetX, double targetY, double targetZ) {
-      float damage = 5f;
-      if (entity.getMaxHealth() < 10f) {
-        damage = 1f;
-      }
-      EnderTeleportEvent event = new EnderTeleportEvent(entity, targetX, targetY, targetZ, damage);
-      if (!net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) {
-        if (rand.nextFloat() < 0.15F && world.getGameRules().getBoolean("doMobSpawning")) {
-          EntityEndermite entityendermite = new EntityEndermite(world);
-          entityendermite.setSpawnedByPlayer(true);
-          entityendermite.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, entity.rotationPitch);
-          world.spawnEntity(entityendermite);
-        }
-
-        if (entity.isRiding()) {
-          entity.dismountRidingEntity();
-        }
-        if (entity.isBeingRidden()) {
-          for (Entity passenger : entity.getPassengers()) {
-            passenger.dismountRidingEntity();
-          }
-        }
-
-        if (entity instanceof EntityPlayerMP) {
-          ((EntityPlayerMP) entity).connection.setPlayerLocation(event.getTargetX(), event.getTargetY(), event.getTargetZ(), entity.rotationYaw,
-              entity.rotationPitch);
-        } else {
-          entity.setPositionAndUpdate(event.getTargetX(), event.getTargetY(), event.getTargetZ());
-        }
-        entity.fallDistance = 0.0F;
-        entity.attackEntityFrom(DamageSource.FALL, event.getAttackDamage());
-        return true;
-      }
-      return false;
-    }
 
     @Override
     public void init() {

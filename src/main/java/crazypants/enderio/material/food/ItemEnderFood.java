@@ -8,16 +8,20 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
+import crazypants.enderio.teleport.RandomTeleportUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,7 +55,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack itemStack) {
-    return getUnlocalizedName() + "_" + EnderFood.get(itemStack).getUnlocalisedName();
+    return getUnlocalizedName() + "." + EnderFood.get(itemStack).getUnlocalisedName();
   }
 
   @Override
@@ -89,4 +93,13 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
     }
     return fr;
   }
+
+  @Override
+  protected void onFoodEaten(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityPlayer player) {
+    super.onFoodEaten(stack, worldIn, player);
+    if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport && worldIn.rand.nextFloat() < Config.teleportEffectProbability) {
+      RandomTeleportUtil.teleportEntity(worldIn, player);
+    }
+  }
+
 }
