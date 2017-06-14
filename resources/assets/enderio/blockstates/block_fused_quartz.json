@@ -6,6 +6,7 @@
     }
   },
   "variants":{
+  	"inventory":[{}],
     "kind":{
       "fused_quartz":             { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
       "fused_glass":              { "textures": { "side": "enderio:blocks/block_fused_glass" } },

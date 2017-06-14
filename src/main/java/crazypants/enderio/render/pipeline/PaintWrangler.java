@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,7 +37,7 @@ public class PaintWrangler {
 
   public static boolean wrangleBakedModel(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nullable IBlockState paintSource,
       @Nonnull QuadCollector quads) {
-    if (paintSource == null) {
+    if (paintSource == null || paintSource == Blocks.AIR.getDefaultState()) {
       return false;
     }
     IBlockState actualPaintSource = paintSource;

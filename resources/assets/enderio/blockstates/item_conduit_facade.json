@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "all":"enderio:items/conduit_facade"
+            "all":"enderio:items/item_conduit_facade"
         },
         "model":"enderio:cube"
    },
@@ -11,17 +11,17 @@
             "basic":{},
             "hardened":{
                 "textures":{ 
-                    "all":"enderio:items/conduit_facade_hardened"
+                    "all":"enderio:items/item_conduit_facade_hardened"
                 }
             },
             "transparent":{
                 "textures":{ 
-                    "all":"enderio:items/conduit_facade_transparent"
+                    "all":"enderio:items/item_conduit_facade_transparent"
                 }
             },
             "transparent_hardened":{
                 "textures":{ 
-                    "all":"enderio:items/conduit_facade_transparentHardened"
+                    "all":"enderio:items/item_conduit_facade_transparent_hardened"
                 }
             }
         }

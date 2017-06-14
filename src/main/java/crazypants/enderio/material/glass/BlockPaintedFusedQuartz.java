@@ -9,6 +9,7 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.init.IModObject;
@@ -27,12 +28,15 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -98,6 +102,16 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
         return cacheKey;
       }
     };
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(@Nonnull Item par1, @Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
+    if (par2CreativeTabs == EnderIOTab.tabNoTab) {
+      for (FusedQuartzType fqt : FusedQuartzType.values()) {
+        par3List.add(new ItemStack(par1, 1, fqt.ordinal()));
+      }
+    }
   }
 
   @Override

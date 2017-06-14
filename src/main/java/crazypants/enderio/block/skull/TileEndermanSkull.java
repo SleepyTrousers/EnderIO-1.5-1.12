@@ -1,4 +1,4 @@
-package crazypants.enderio.item.skull;
+package crazypants.enderio.block.skull;
 
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

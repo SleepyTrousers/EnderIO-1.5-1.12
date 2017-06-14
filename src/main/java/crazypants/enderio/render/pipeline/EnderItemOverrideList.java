@@ -12,9 +12,9 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.paint.IPaintable.IWrenchHideablePaint;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -65,7 +65,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
 
     if (block instanceof IBlockPaintableBlock && (!(block instanceof IWrenchHideablePaint) || !YetaUtil.shouldHeldItemHideFacadesClient())) {
       IBlockState paintSource = ((IBlockPaintableBlock) block).getPaintSource(block, stack);
-      if (paintSource != null) {
+      if (paintSource != null && paintSource != Blocks.AIR.getDefaultState()) {
         Pair<Block, Long> cacheKey = NullHelper.notnull(Pair.of((Block) null, new CacheKey().addCacheKey(paintSource).getCacheKey()), "no way");
         ItemQuadCollector quads = cache.getIfPresent(cacheKey);
         if (quads == null) {

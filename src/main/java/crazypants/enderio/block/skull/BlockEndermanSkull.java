@@ -1,4 +1,4 @@
-package crazypants.enderio.item.skull;
+package crazypants.enderio.block.skull;
 
 import javax.annotation.Nonnull;
 

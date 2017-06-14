@@ -23,4 +23,5 @@ public class BlastResistantItemBlock extends ItemBlock {
   public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
     par3List.add(EnderIO.lang.localize("blastResistant"));
   }
+
 }

@@ -38,7 +38,7 @@ public class FusedQuartzItemRenderMapper implements IRenderMapper.IItemRenderMap
   @SideOnly(Side.CLIENT)
   public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
 
-    if (!NbtValue.FAKE.hasTag(stack)) {
+    if (NbtValue.FAKE.hasTag(stack)) {
       // this is for the TOP overlay, kind of a hack putting it here, but the alternative would be adding a new item just for this...
       SmartTank tank = SmartTankItemAccess.getTank(stack);
       HalfBakedList buffer = TankRenderHelper.mkTank(tank, 0, 0, 16, true);

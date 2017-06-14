@@ -103,7 +103,10 @@ public class PainterUtil2 {
   public static IBlockState readNbt(NBTTagCompound nbtRoot) {
     final NBTTagCompound tag = BLOCKSTATE.getTag(nbtRoot);
     if (tag != null) {
-      return NBTUtil.readBlockState(tag);
+      final IBlockState paint = NBTUtil.readBlockState(tag);
+      if (paint != Blocks.AIR.getDefaultState()) {
+        return paint;
+      }
     }
     return null;
   }
