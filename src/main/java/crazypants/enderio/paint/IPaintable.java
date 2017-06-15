@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Optional.Interface;
-import team.chisel.api.IFacade;
+import net.minecraftforge.fml.common.Optional.InterfaceList;
 
 /**
  * Master interface for paintable things. Do not implement directly, use one of the sub-interfaces.
@@ -50,8 +50,8 @@ public interface IPaintable {
 
   }
 
-  @Interface(iface = "team.chisel.api.IFacade", modid = "ChiselAPI")
-  public static interface IBlockPaintableBlock extends IPaintable, IFacade {
+  @InterfaceList({ @Interface(iface = "team.chisel.api.IFacade", modid = "ChiselAPI"), @Interface(iface = "team.chisel.ctm.api.IFacade", modid = "ctm-api") })
+  public static interface IBlockPaintableBlock extends IPaintable, team.chisel.api.IFacade, team.chisel.ctm.api.IFacade {
 
   }
 
