@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
 import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,10 +33,10 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     IGrindingMultiplier ball = SagMillRecipeManager.getInstance().getGrindballFromStack(itemstack);
-    list.add(TextFormatting.BLUE + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line1"));
-    list.add(TextFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
-    list.add(TextFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
-    list.add(TextFormatting.GRAY + EnderIO.lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
+    list.add(Lang.GRINDING_BALL_1.get(TextFormatting.BLUE));
+    list.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, toPercent(ball.getGrindingMultiplier())));
+    list.add(Lang.GRINDING_BALL_3.get(TextFormatting.GRAY, toPercent(ball.getChanceMultiplier())));
+    list.add(Lang.GRINDING_BALL_4.get(TextFormatting.GRAY, toPercent(1 - ball.getPowerMultiplier())));
   }
 
   private String toPercent(float fl) {

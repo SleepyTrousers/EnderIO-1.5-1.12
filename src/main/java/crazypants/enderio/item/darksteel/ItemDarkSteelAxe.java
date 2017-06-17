@@ -13,8 +13,8 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.farming.farmers.HarvestResult;
 import crazypants.enderio.farming.farmers.TreeHarvestUtil;
@@ -260,9 +260,8 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnderIO.lang.localize("item.darkSteel_axe.tooltip.multiHarvest"));
-      list.add(TextFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+      list.add(Lang.AXE_MULTIHARVEST.get());
+      list.add(Lang.AXE_POWERED.get(TextFormatting.WHITE, Config.darkSteelAxeEffeciencyBoostWhenPowered));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

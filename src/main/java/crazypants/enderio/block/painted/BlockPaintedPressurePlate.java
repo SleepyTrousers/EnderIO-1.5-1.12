@@ -12,8 +12,8 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
@@ -459,7 +459,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       super.addInformation(stack, playerIn, tooltip, advanced);
       CapturedMob capturedMob = CapturedMob.create(stack);
       if (capturedMob != null) {
-        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned", capturedMob.getDisplayName()));
+        tooltip.add(Lang.PRESSURE_PLATE_TUNED.get(capturedMob.getDisplayName()));
       }
     }
 

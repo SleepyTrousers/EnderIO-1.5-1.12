@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
@@ -29,7 +30,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -82,7 +82,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
       if (Config.coldFireIgniterMbPerUse > 0 && !drain(stack, Config.coldFireIgniterMbPerUse)) {
         Fluid fluid = getFluidType(stack);
         String fluidname = fluid.getLocalizedName(new FluidStack(fluid, 1));
-        player.sendMessage(new TextComponentString(EnderIO.lang.localize("coldfireigniter.chat.outoffluid").replace("{FLUIDNAME}", fluidname)));
+        player.sendMessage(Lang.COLD_FIRE_NO_FLUID.toChat(fluidname));
       } else {
         world.playSound(player, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
         world.setBlockState(pos, ModObject.blockColdFire.getBlockNN().getDefaultState(), 11);

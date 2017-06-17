@@ -18,6 +18,7 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelController;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
@@ -209,11 +210,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
+      list.add(Lang.DARK_STEEL_POWERED.get(TextFormatting.WHITE));
       if (itemstack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
-        list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
+        list.add(Lang.DARK_BOOTS_POWERED.get(TextFormatting.WHITE));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);

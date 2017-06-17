@@ -31,6 +31,7 @@ item.item_broken_spawner.tooltip.detailed.line2=in an Anvil to set spawn type
 item.item_cold_fire_igniter.name=Cold Fire Igniter
 item.item_cold_fire_igniter.tooltip.detailed.line1=Allows to place Cold Fire.
 item.item_cold_fire_igniter.tooltip.detailed.line2=Cold Fire will not spread to other blocks.
+item.item_cold_fire_igniter.chat.outoffluid=ERROR: Out of %s
 
 item.item_conduit_facade.name=Conduit Facade
 item.item_conduit_facade.tooltip.detailed.line1=Painted in the Painting Machine
@@ -64,75 +65,141 @@ item.item_coord_selector.tooltip.detailed.line4=Shift right click at a block to
 item.item_coord_selector.tooltip.detailed.line5=select that specific block.
 item.item_coord_selector.tooltip.detailed.line6=Can select from a distance.
 
+item.item_dark_steel_sword.name=The Ender
+item.item_dark_steel_sword.tooltip.detailed.line1=Increased skull and ender pearl drops
+item.item_dark_steel_sword.tooltip.detailed.line2=When powered: Endermen can't teleport once hit, extra Damage and Speed
+
+item.item_dark_steel_pickaxe.name=Dark Pick
+item.item_dark_steel_pickaxe.tooltip.effPowered=%s+%s Efficiency when powered
+item.item_dark_steel_pickaxe.tooltip.effObs=%s+%s Efficiency breaking obsidian
+item.item_dark_steel_pickaxe.tooltip.cost=%s (%s %s %s)
+
 item.item_dark_steel_axe.name=Dark Axe
+item.item_dark_steel_axe.tooltip.effPowered=%sEfficiency when powered: %s
+item.item_dark_steel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
-item.item_dark_steel_boots.name=
+item.item_dark_steel_shears.name=Dark Shears
+item.item_dark_steel_shears.tooltip.effPowered=%sEfficiency when powered: %s
+item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
 
-item.item_dark_steel_bow.name=
+item.item_dark_steel_bow.name=Dark Bow
 
-item.item_dark_steel_chestplate.name=
+item.item_dark_steel_armor.tooltip.line1=%sDiamond level protection when powered
+item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s:
+item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s levels
 
-item.item_dark_steel_helmet.name=
+item.item_dark_steel_boots.name=Dark Boots
+item.item_dark_steel_boots.tooltip.line1=Fall damage negated when powered
 
-item.item_dark_steel_leggings.name=
+item.item_dark_steel_chestplate.name=Dark Plate
 
-item.item_dark_steel_pickaxe.name=
+item.item_dark_steel_helmet.name=Dark Helm
 
-item.item_dark_steel_shears.name=
+item.item_dark_steel_leggings.name=Dark Leggings
 
-item.item_dark_steel_sword.name=
+item.item_ender_food.enderios.name="Enderios"
+item.item_ender_food.enderios.tooltip.common.line1=Part of a balanced breakfast!
+item.item_ender_food.enderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
+item.item_ender_food.enderios.tooltip.detailed.line2=Side effects of ender dust include: nausea, dizziness, confusion, and random teleporting.
 
-item.item_ender_food.enderios.name=
+item.item_location_printout.name=Location Printout
+item.item_location_printout.tooltip.detailed.line1=Created using the Coordinate Selector
+item.item_location_printout.tooltip.detailed.line2=Used to add destinations to a Telepad
+item.item_location_printout.chat.setTarget=Target set to
+item.item_location_printout.chat.addTarget=Added target
+item.item_location_printout.chat.noPaper=No Paper in Inventory
+item.item_location_printout.chat.privateBlock=Only %s may access this block
 
-item.item_magnet.name=
+item.item_magnet.name=Electromagnet
+item.item_magnet.tooltip.detailed.line1=Pulls nearby item towards you
+item.item_magnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
+item.item_magnet.tooltip.detailed.line3=Must be powered, active and in the
+item.item_magnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
+item.item_magnet.everywhere.tooltip.detailed.line1=Pulls nearby item towards you
+item.item_magnet.everywhere.tooltip.detailed.line2=Shift-R-Click to enable / disable
+item.item_magnet.everywhere.tooltip.detailed.line3=Must be powered, active and in the
+item.item_magnet.everywhere.tooltip.detailed.line4=inventory (or a Baubles slot) to function
 
-item.item_material.attractor_crystal.name=
-item.item_material.binder_composite.name=
-item.item_material.chassi_parts.name=
-item.item_material.conduit_binder.name=
-item.item_material.dark_grinding_ball.name=
-item.item_material.dust_wheat.name=
-item.item_material.ender_crystal.name=
-item.item_material.ender_crystal_powder.name=
-item.item_material.gear_energized.name=
-item.item_material.gear_iron.name=
-item.item_material.gear_stone.name=
-item.item_material.gear_vibrant.name=
-item.item_material.gear_wood.name=
-item.item_material.glider_wing.name=
-item.item_material.glider_wings.name=
-item.item_material.machine_chassi.name=
-item.item_material.nutritious_stick.name=
-item.item_material.plantbrown.name=
-item.item_material.plantgreen.name=
-item.item_material.powder_coal.name=
-item.item_material.powder_ender.name=
-item.item_material.powder_gold.name=
-item.item_material.powder_infinity.name=
-item.item_material.powder_iron.name=
-item.item_material.powder_obsidian.name=
-item.item_material.precient_crystal.name=
-item.item_material.precient_powder.name=
-item.item_material.pulsating_crystal.name=
-item.item_material.pulsating_powder.name=
-item.item_material.silicon.name=
-item.item_material.skull_ender_resonator.name=
-item.item_material.skull_sentient_ender.name=
-item.item_material.skull_skeletal_contractor.name=
-item.item_material.skull_zombie_controller.name=
-item.item_material.skull_zombie_electrode.name=
-item.item_material.skull_zombie_frankenstien.name=
-item.item_material.vibrant_crystal.name=
-item.item_material.vibrant_powder.name=
-item.item_material.weather_crystal.name=
+item.item_material.attractor_crystal.name=Enticing Crystal
+item.item_material.binder_composite.name=Binder Composite
+item.item_material.chassi_parts.name=Machine Parts
+item.item_material.conduit_binder.name=Conduit Binder
+item.item_material.dark_grinding_ball.name=Dark Steel Ball
+item.item_material.dust_wheat.name=Flour
+item.item_material.ender_crystal.name=Ender Crystal
+item.item_material.ender_crystal_powder.name=Grains of the End
+item.item_material.gear_energized.name=Energized Bimetal Gear
+item.item_material.gear_iron.name=Iron Gear
+item.item_material.gear_stone.name=Stone Compound Gear
+item.item_material.gear_vibrant.name=Vibrant Bimetal Gear
+item.item_material.gear_wood.name=Wooden Gear
+item.item_material.glider_wing.name=Glider Wing
+item.item_material.glider_wings.name=Glider Wings
+item.item_material.glider_wings.tooltip.detailed.line1=Upgrade for Dark Steel chestplate
+item.item_material.ingot_enderium_base.name=Enderium Base
+item.item_material.machine_chassi.name=Machine Chassis
+item.item_material.nutritious_stick.name=Nutritious Stick
+item.item_material.plantbrown.name=Twigs and Prunings
+item.item_material.plantgreen.name=Clippings and Trimmings
+item.item_material.powder_ardite.name=Ardite Powder
+item.item_material.powder_coal.name=Coal Powder
+item.item_material.powder_cobalt.name=Cobalt Powder
+item.item_material.powder_copper.name=Copper Powder
+item.item_material.powder_ender.name=Ender Pearl Powder
+item.item_material.powder_gold.name=Gold Powder
+item.item_material.powder_infinity.name=Grains of Infinity
+item.item_material.powder_iron.name=Iron Powder
+item.item_material.powder_obsidian.name=Obsidian Powder
+item.item_material.powder_tin.name=Tin Powder
+item.item_material.precient_crystal.name=Precient Crystal
+item.item_material.precient_powder.name=Grains of Prescience
+item.item_material.pulsating_crystal.name=Pulsating Crystal
+item.item_material.pulsating_powder.name=Grains of Piezallity
+item.item_material.silicon.name=Silicon
+item.item_material.skull_ender_resonator.name=Ender Resonator
+item.item_material.skull_sentient_ender.name=Sentient Ender
+item.item_material.skull_skeletal_contractor.name=Skeletal Contractor
+item.item_material.skull_zombie_controller.name=Z-Logic Controller
+item.item_material.skull_zombie_electrode.name=Zombie Electrode
+item.item_material.skull_zombie_frankenstien.name=Frank'N'Zombie
+item.item_material.vibrant_crystal.name=Vibrant Crystal
+item.item_material.vibrant_powder.name=Grains of Vibrancy
+item.item_material.weather_crystal.name=Weather Crystal
 
-item.item_rod_of_return.name=
+item.item_rod_of_return.name=Rod of Return
+item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
+item.item_rod_of_return.tooltip.detailed.line2=Sync with a Telepad using Shift-R-Click
+item.item_rod_of_return.tooltip.detailed.line3=Requires RF and %s
+item.item_rod_of_return.tooltip.fluid=%s/%s mB
+item.item_rod_of_return.tooltip.power=%s/%s %s
+item.item_rod_of_return.chat.notEnoughPower=%sNot enough power
+item.item_rod_of_return.chat.notEnoughFluid=%sNot enough fluid
+item.item_rod_of_return.chat.targetNotSet=%sNo destination set
+item.item_rod_of_return.chat.sync=Synchronised with location 
+item.item_rod_of_return.chat.sync.telepad=Synchronised with Telepad
 
-item.item_travel_staff.name=
+item.item_travel_staff.name=Staff of Traveling
+item.item_travel_staff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
+item.item_travel_staff.tooltip.detailed.line2=blocks become visible and can be
+item.item_travel_staff.tooltip.detailed.line3=activated by R-Click
+item.item_travel_staff.tooltip.detailed.line4=Shift-R-Click will teleport the
+item.item_travel_staff.tooltip.detailed.line5=player a short distance
+item.item_travel_staff.chat.notEnoughPower=Not enough power
 
-item.item_xp_transfer.name=
+item.item_xp_transfer.name=Experience Rod
+item.item_xp_transfer.tooltip.detailed.line1=R-Click on a fluid tank containing
+item.item_xp_transfer.tooltip.detailed.line2=liquid XP to gain levels
+item.item_xp_transfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
+item.item_xp_transfer.tooltip.detailed.line4=the tank
 
-item.item_yeta_wrench.name=
+item.item_yeta_wrench.name=Yeta Wrench
+item.item_yeta_wrench.tooltip.detailed.line1=Hides conduit facades when held
+item.item_yeta_wrench.tooltip.detailed.line2=Shift-R-Click to break machines
+item.item_yeta_wrench.tooltip.detailed.line3=and conduits instantly
+item.item_yeta_wrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
+item.item_yeta_wrench.tooltip.detailed.line5=open conduit settings GUI
+item.item_yeta_wrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
+item.item_yeta_wrench.tooltip.detailed.line7=render a single conduit type
 
 tile.block_alloy.name=Alloy Block
 tile.block_alloy.conductive_iron.name=Conductive Iron Block
@@ -144,117 +211,169 @@ tile.block_alloy.redstone_alloy.name=Redstone Alloy Block
 tile.block_alloy.soularium.name=Soularium Block
 tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
 
-tile.block_cold_fire.name=
+tile.block_cold_fire.name=Cold Fire
 
-tile.block_dark_fused_glass.name=
+tile.block_dark_fused_glass.name=Dark Clear Glass
 
-tile.block_dark_fused_quartz.name=
+tile.block_dark_fused_quartz.name=Dark Fused Quartz
 
-tile.block_dark_iron_bars.name=
+tile.block_dark_iron_bars.name=Dark Iron Bars
 
-tile.block_dark_steel_anvil.intact.name=
-tile.block_dark_steel_anvil.name=
-tile.block_dark_steel_anvil.slightlyDamaged.name=
-tile.block_dark_steel_anvil.veryDamaged.name=
+tile.block_dark_steel_anvil.name=Dark Steel Anvil
+tile.block_dark_steel_anvil.tooltip.common.line1=Damage Resistant
+tile.block_dark_steel_anvil.tooltip.detailed.line1=Lasts much longer than the vanilla anvil
+tile.block_dark_steel_anvil.intact.name=Dark Steel Anvil
+tile.block_dark_steel_anvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
+tile.block_dark_steel_anvil.veryDamaged.name=Very Damaged Dark Steel Anvil
 
-tile.block_dark_steel_ladder.name=
+tile.block_dark_steel_ladder.name=Dark Steel Ladder
+tile.block_dark_steel_ladder.tooltip.common.line1=Faster than regular ladders
 
-tile.block_dark_steel_trapdoor.name=
+tile.block_dark_steel_trapdoor.name=Dark Steel Trapdoor
+tile.block_dark_steel_trapdoor.tooltip.detailed.line1=IT'S A TRAP!
 
-tile.block_decoration1.name=
-tile.block_decoration1.type00.name=
-tile.block_decoration1.type01.name=
-tile.block_decoration1.type02.name=
-tile.block_decoration1.type03.name=
-tile.block_decoration1.type04.name=
-tile.block_decoration1.type05.name=
-tile.block_decoration1.type06.name=
-tile.block_decoration1.type07.name=
-tile.block_decoration1.type08.name=
-tile.block_decoration1.type09.name=
-tile.block_decoration1.type10.name=
-tile.block_decoration1.type11.name=
-tile.block_decoration1.type12.name=
-tile.block_decoration1.type13.name=
-tile.block_decoration1.type14.name=
-tile.block_decoration1.type15.name=
+tile.block_decoration1.name=Decoration Block
+tile.block_decoration1.type00.name=Machine Chassis (decoration block)
+tile.block_decoration1.type01.name=Blank Machine (decoration block)
+tile.block_decoration1.type02.name=Machine Tops (decoration block)
+tile.block_decoration1.type03.name=Machine Sides (decoration block)
+tile.block_decoration1.type04.name=Machine Backs (decoration block)
+tile.block_decoration1.type05.name=Machine with sides (decoration block)
+tile.block_decoration1.type06.name=Machine width backs (decoration block)
+tile.block_decoration1.type07.name=Blank Soul Machine (decoration block)
+tile.block_decoration1.type08.name=Soul Machine Tops (decoration block)
+tile.block_decoration1.type09.name=Soul Machine Sides (decoration block)
+tile.block_decoration1.type10.name=Soul Machine Backs (decoration block)
+tile.block_decoration1.type11.name=Soul Machine with sides (decoration block)
+tile.block_decoration1.type12.name=Soul Machine width backs (decoration block)
+tile.block_decoration1.type13.name=Red Machine (decoration block)
+tile.block_decoration1.type14.name=Broken Spawner (decoration block)
+tile.block_decoration1.type15.name=Invisible Block (decoration block)
 
-tile.block_decoration2.name=
-tile.block_decoration2.type00.name=
-tile.block_decoration2.type01.name=
-tile.block_decoration2.type02.name=
-tile.block_decoration2.type03.name=
-tile.block_decoration2.type04.name=
-tile.block_decoration2.type05.name=
-tile.block_decoration2.type06.name=
-tile.block_decoration2.type07.name=
-tile.block_decoration2.type08.name=
-tile.block_decoration2.type09.name=
-tile.block_decoration2.type10.name=
-tile.block_decoration2.type11.name=
-tile.block_decoration2.type12.name=
-tile.block_decoration2.type13.name=
-tile.block_decoration2.type14.name=
-tile.block_decoration2.type15.name=
+tile.block_decoration2.name=Decoration Block
+tile.block_decoration2.type00.name=Alloy Smelter (decoration block)
+tile.block_decoration2.type01.name=Item Buffer (decoration block)
+tile.block_decoration2.type02.name=Power Buffer (decoration block)
+tile.block_decoration2.type03.name=Omni Buffer (decoration block)
+tile.block_decoration2.type04.name=Creative Buffer (decoration block)
+tile.block_decoration2.type05.name=Crafter (decoration block)
+tile.block_decoration2.type06.name=Painting Machine (decoration block)
+tile.block_decoration2.type07.name=Power Monitor (decoration block)
+tile.block_decoration2.type08.name=SAG Mill (decoration block)
+tile.block_decoration2.type09.name=Slice'N'Splice (decoration block)
+tile.block_decoration2.type10.name=Stirling Generator (decoration block)
+tile.block_decoration2.type11.name=Fluid Tank (decoration block)
+tile.block_decoration2.type12.name=Pressurized Fluid Tank (decoration block)
+tile.block_decoration2.type13.name=Travel Anchor (decoration block)
+tile.block_decoration2.type14.name=Vacuum Chest (decoration block)
+tile.block_decoration2.type15.name=Wireless Charger (decoration block)
 
 tile.block_detector_block.name=Block Detector
 tile.block_detector_block_silent.name=Block Detector (Silent)
 
-tile.block_enderman_skull.base.name=
-tile.block_enderman_skull.name=
-tile.block_enderman_skull.tormented.name=
+tile.block_enderman_skull.name=Enderman Skull
+tile.block_enderman_skull.base.name=Enderman Head
+tile.block_enderman_skull.tormented.name=Tormented Enderman Head
+tile.block_enderman_skull.reanimated.name=Reanimated Enderman Head
+tile.block_enderman_skull.reanimated_tormented.name=Reanimated Tormented Enderman Head
 
-tile.block_enlightened_fused_glass.name=
+tile.block_enlightened_fused_glass.name=Enlightened Clear Glass
 
-tile.block_enlightened_fused_quartz.name=
+tile.block_enlightened_fused_quartz.name=Enlightened Fused Quartz
 
-tile.block_exit_rail.name=
+tile.block_exit_rail.name=Exit Rail
 
-tile.block_fused_glass.name=
+tile.block_fused_glass.name=Quite Clear Glass
 
-tile.block_fused_quartz.name=
+tile.block_fused_quartz.name=Fused Quartz
 
-tile.block_machine_base.name=
-tile.block_machine_io.name=
+tile.block_machine_base.name=(technical block)
+tile.block_machine_io.name=(technical block)
 
-tile.block_painted_carpet.name=
-tile.block_painted_dark_steel_trapdoor.name=
-tile.block_painted_double_slab.name=
-tile.block_painted_fence.name=
-tile.block_painted_fence_gate.name=
-tile.block_painted_fused_quartz.name=
-tile.block_painted_glowstone.name=
-tile.block_painted_glowstone_solid.name=
-tile.block_painted_iron_trapdoor.name=
-tile.block_painted_pressure_plate.darksteel.name=
-tile.block_painted_pressure_plate.darksteel.silent.name=
-tile.block_painted_pressure_plate.gold.silent.name=
-tile.block_painted_pressure_plate.iron.silent.name=
-tile.block_painted_pressure_plate.name=
-tile.block_painted_pressure_plate.soularium.name=
-tile.block_painted_pressure_plate.soularium.silent.name=
-tile.block_painted_pressure_plate.stone.silent.name=
-tile.block_painted_pressure_plate.tuned.name=
-tile.block_painted_pressure_plate.tuned.silent.name=
-tile.block_painted_pressure_plate.wood.silent.name=
-tile.block_painted_redstone.name=
-tile.block_painted_redstone_solid.name=
-tile.block_painted_slab.name=
-tile.block_painted_stair.name=
-tile.block_painted_stone.name=
-tile.block_painted_stone_double_slab.name=
-tile.block_painted_stone_fence.name=
-tile.block_painted_stone_slab.name=
-tile.block_painted_stone_stair.name=
-tile.block_painted_wall.name=
-tile.block_painted_wooden_trapdoor.name=
+tile.block_painted_carpet.name=Painted Carpet
+tile.block_painted_dark_steel_trapdoor.name=Painted Dark Steel Trapdoor
+tile.block_painted_double_slab.name=Painted Slab
+tile.block_painted_fence.name=Painted Fence
+tile.block_painted_fence_gate.name=Painted Gate
+tile.block_painted_fused_quartz.name=Painted Fused Quartz
+tile.block_painted_glowstone.name=Painted Glowstone
+tile.block_painted_glowstone_solid.name=Painted Glowstone
+tile.block_painted_iron_trapdoor.name=Painted Iron Trapdoor
 
-tile.block_reinforced_obsidian.name=
+tile.block_painted_pressure_plate.name=Painted Pressure Plate
+tile.block_painted_pressure_plate.darksteel.name=Dark Pressure Plate
+tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line1=Only activated by players.
+tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.darksteel.silent.name=Dark Pressure Plate (Silent)
+tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line1=Only activated by players.
+tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.gold.name==Weighted Pressure Plate (Light)
+tile.block_painted_pressure_plate.gold.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.block_painted_pressure_plate.gold.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.gold.silent.name=Weighted Pressure Plate (Light) (Silent)
+tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line1=Variable Redstone Output: One per item.
+tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.iron.name=Weighted Pressure Plate (Heavy)
+tile.block_painted_pressure_plate.iron.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.block_painted_pressure_plate.iron.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.iron.silent.name=Weighted Pressure Plate (Heavy) (Silent)
+tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line1=Variable Redstone Output: One per entity.
+tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.name=Soularium Pressure Plate
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.soularium.silent.name=Soularium Pressure Plate (Silent)
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line1=Only activated by hostile mobs.
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.stone.name=Stone Pressure Plate
+tile.block_painted_pressure_plate.stone.tooltip.detailed.line1=Only activated by mobs and players.
+tile.block_painted_pressure_plate.stone.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.stone.silent.name=Stone Pressure Plate (Silent)
+tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line1=Only activated by mobs and players.
+tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.name=Soularium Pressure Plate (Tuned)
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line1=Only activated by specific mobs.
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.tuned.tooltip=Tuned to: %s
+tile.block_painted_pressure_plate.tuned.silent.name=Soularium Pressure Plate (Tuned) (Silent)
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line1=Only activated by specific mobs.
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line3=Can be tuned in Soul Binder.
+tile.block_painted_pressure_plate.wood.name=Wooden Pressure Plate
+tile.block_painted_pressure_plate.wood.tooltip.detailed.line1=Can be painted in painting machine, invisible when painted with Quite Clear Glass
+tile.block_painted_pressure_plate.wood.silent.name=Wooden Pressure Plate (Silent)
+tile.block_painted_pressure_plate.wood.silent.tooltip.detailed.line1=Can be painted in painting machine, invisible when painted with Quite Clear Glass
 
-tile.block_self_resetting_lever10.name=
-tile.block_self_resetting_lever30.name=
-tile.block_self_resetting_lever300.name=
-tile.block_self_resetting_lever60.name=
+tile.block_painted_redstone.name=Painted Redstone
+tile.block_painted_redstone_solid.name=Painted Redstone
+tile.block_painted_slab.name=Painted Slab
+tile.block_painted_stair.name=Painted Stairs
+tile.block_painted_stone.name=Painted Cobblestone
+tile.block_painted_stone_double_slab.name=Painted Stone Slab
+tile.block_painted_stone_fence.name=Painted Stone Fence
+tile.block_painted_stone_slab.name=Painted Stone Slab
+tile.block_painted_stone_stair.name=Painted Stone Stairs
+tile.block_painted_wall.name=Painted Wall
+tile.block_painted_wooden_trapdoor.name=Painted Wooden Trapdoor
+
+tile.block_reinforced_obsidian.name=Reinforced Obsidian
+tile.block_reinforced_obsidian.tooltip.common.line1=Wither Proof
+
+tile.block_self_resetting_lever10.name=Self-resetting Lever (10 seconds)
+tile.block_self_resetting_lever30.name=Self-resetting Lever (30 seconds)
+tile.block_self_resetting_lever60.name=Self-resetting Lever (1 Minute)
+tile.block_self_resetting_lever300.name=Self-resetting Lever (5 Minutes)
+
+
+
+enderio.machine.tooltip.configured=%s (Configured)
+enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball
+enderio.grindingball.tooltip.line2=%sMain Output %s
+enderio.grindingball.tooltip.line3=%sBonus Output %s
+enderio.grindingball.tooltip.line4=%sPower Reduction %s
 
 
 // These keys have not (yet) been confirmed in 1.11
@@ -367,29 +486,11 @@ entity.witherSkeleton.name=Wither Skeleton
 entity.ZombieVillager.name=Zombie Villager
 
 //Materials
-enderio.itemMaterial.name=Materials
-enderio.silicon.name=Silicon
-enderio.conduitBinder.name=Conduit Binder
-enderio.binderComposite.name=Binder Composite
-enderio.pulsatingIronNugget.name=Pulsating Iron Nugget
-enderio.nutritiousStick.name=Nutritious Stick
-tile.blockDarkIronBars.name=Dark Iron Bars
-tile.blockEndermanSkull.name=Enderman Skull
-tile.blockEndermanSkull.base.name=Enderman Head
-tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
-tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
-enderio.dustWheat.name=Flour
 
-enderio.itemEnderios.name="Enderios"
-enderio.itemEnderios.tooltip.common.line1=Part of a balanced breakfast!
-enderio.itemEnderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat,
-enderio.itemEnderios.tooltip.detailed.line2=and 394g of ender dust.
-enderio.itemEnderios.tooltip.detailed.line3=Side effects of ender dust include: nausea, dizziness, confusion, 
-enderio.itemEnderios.tooltip.detailed.line4=and random teleporting.
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
@@ -442,51 +543,9 @@ enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
 
 //Materials
-enderio.itemMachinePart.name=Machine Parts
-enderio.machineChassi.name=Machine Chassis
-enderio.basicGear.name=Basic Gear
-enderio.pulsatingCrystal.name=Pulsating Crystal
-enderio.pulsatingPowder.name=Grains of Piezallity
-enderio.vibrantCrystal.name=Vibrant Crystal
-enderio.vibrantPowder.name=Vibrant Powder
-enderio.enderCrystal.name=Ender Crystal
-enderio.enderCrystalPowder.name=Grains of the End
-enderio.precientCrystal.name=Precient Crystal
-enderio.precientPowder.name=Grains of Prescience
-enderio.attractorCrystal.name=Enticing Crystal
-enderio.weatherCrystal.name=Weather Crystal
-enderio.darkGrindingBall.name=Dark Steel Ball
-enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
-enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
-enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
-enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
 
-tile.blockReinforcedObsidian.name=Reinforced Obsidian
-tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
 
-//Quartz / Glass
-tile.blockFusedQuartz.name=Fused Quartz
-enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
-enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
-enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
-enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
-enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
-enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
 
-item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
-enderio.itemPowderIngot=Powders & Ingots
-
-//Powder / Ingot
-enderio.powderCoal.name=Coal Powder
-enderio.powderIron.name=Iron Powder
-enderio.powderGold.name=Gold Powder
-enderio.powderCopper.name=Copper Powder
-enderio.powderTin.name=Tin Powder
-enderio.powderEnder.name=Ender Pearl Powder
-enderio.powderObsidian.name=Obsidian Powder
-enderio.powderArdite.name=Ardite Powder
-enderio.powderCobalt.name=Cobalt Powder
-enderio.ingotEnderiumBase.name=Enderium Base
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -827,7 +886,6 @@ enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.
 
-enderio.machine.tooltip.configured=(Configured)
 
 tile.blockInventoryPanelSensor.name=Inventory Sensor
 tile.blockInventoryPanelSensor.tooltip.detailed.line1=Emits redstone signals based
@@ -839,103 +897,9 @@ enderio.gui.inventorySensor.control2=Stop when >=
 
 
 //Blocks
-tile.blockPaintedPressurePlate.wood.name=Wooden Pressure Plate
-tile.blockPaintedPressurePlate.wood.tooltip.detailed.line1=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.wood.tooltip.detailed.line2=invisible when painted with Quite
-tile.blockPaintedPressurePlate.wood.tooltip.detailed.line3=Clear Glass
 
-tile.blockPaintedPressurePlate.wood.silent.name=Wooden Pressure Plate (Silent)
-tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line1=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line2=invisible when painted with Quite
-tile.blockPaintedPressurePlate.wood.silent.tooltip.detailed.line3=Clear Glass
 
-tile.blockPaintedPressurePlate.stone.name=Stone Pressure Plate
-tile.blockPaintedPressurePlate.stone.tooltip.detailed.line1=Only activated by mobs and players.
-tile.blockPaintedPressurePlate.stone.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.stone.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.stone.tooltip.detailed.line4=Clear Glass
 
-tile.blockPaintedPressurePlate.stone.silent.name=Stone Pressure Plate (Silent)
-tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line1=Only activated by mobs and players.
-tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.stone.silent.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.iron.name=Weighted Pressure Plate (Heavy)
-tile.blockPaintedPressurePlate.iron.tooltip.detailed.line1=Variable Redstone Output: One per entity.
-tile.blockPaintedPressurePlate.iron.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.iron.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.iron.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.iron.silent.name=Weighted Pressure Plate (Heavy) (Silent)
-tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line1=Variable Redstone Output: One per entity.
-tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.iron.silent.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.gold.name=Weighted Pressure Plate (Light)
-tile.blockPaintedPressurePlate.gold.tooltip.detailed.line1=Variable Redstone Output: One per item.
-tile.blockPaintedPressurePlate.gold.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.gold.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.gold.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.gold.silent.name=Weighted Pressure Plate (Light) (Silent)
-tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line1=Variable Redstone Output: One per item.
-tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.gold.silent.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.darksteel.name=Dark Pressure Plate
-tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line1=Only activated by players.
-tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.darksteel.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.darksteel.silent.name=Dark Pressure Plate (Silent)
-tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line1=Only activated by players.
-tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.darksteel.silent.tooltip.detailed.line4=Clear Glass
-
-tile.blockPaintedPressurePlate.soularium.name=Soularium Pressure Plate
-tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line1=Only activated by hostile mobs.
-tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line4=Clear Glass
-tile.blockPaintedPressurePlate.soularium.tooltip.detailed.line5=Can be tuned in Soul Binder.
-
-tile.blockPaintedPressurePlate.soularium.silent.name=Soularium Pressure Plate (Silent)
-tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line1=Only activated by hostile mobs.
-tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line4=Clear Glass
-tile.blockPaintedPressurePlate.soularium.silent.tooltip.detailed.line5=Can be tuned in Soul Binder.
-
-tile.blockPaintedPressurePlate.tuned.name=Soularium Pressure Plate (Tuned)
-tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line1=Only activated by specific mobs.
-tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line4=Clear Glass
-tile.blockPaintedPressurePlate.tuned.tooltip.detailed.line5=Can be tuned in Soul Binder.
-
-tile.blockPaintedPressurePlate.tuned.silent.name=Soularium Pressure Plate (Tuned) (Silent)
-tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line1=Only activated by specific mobs.
-tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line2=Can be painted in painting machine,
-tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line4=Clear Glass
-tile.blockPaintedPressurePlate.tuned.silent.tooltip.detailed.line5=Can be tuned in Soul Binder.
-
-enderio.tile.plockPaintedPressurePlate.tuned=Tuned to: %s
-
-tile.blockDarkSteelAnvil.intact.name=Dark Steel Anvil
-tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
-tile.blockDarkSteelAnvil.veryDamaged.name=Very Damaged Dark Steel Anvil
-tile.blockDarkSteelAnvil.tooltip.common.line1=Damage Resistant
-tile.blockDarkSteelAnvil.tooltip.detailed.line1=Lasts much longer than
-tile.blockDarkSteelAnvil.tooltip.detailed.line2=the vanilla anvil
-
-tile.blockDarkSteelLadder.name=Dark Steel Ladder
-tile.blockDarkSteelLadder.tooltip.common.line1=Faster than regular ladders
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
@@ -960,13 +924,6 @@ tile.blockDialingDevice.name=Dialing Device
 tile.blockDialingDevice.tooltip.detailed.line1=Place near a Telepad 
 tile.blockDialingDevice.tooltip.detailed.line2=Stores and sets destinations.
 
-item.itemTravelStaff.name=Staff of Traveling
-item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
-item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
-item.itemTravelStaff.tooltip.detailed.line3=activated by R-Click
-item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
-item.itemTravelStaff.tooltip.detailed.line5=player a short distance
-enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 item.itemLocationPrintout.name=Location Printout
 item.itemLocationPrintout.tooltip.detailed.line1=Created using the Coordinate Selector
@@ -975,40 +932,14 @@ item.itemLocationPrintout.chat.setTarget=Target set to
 item.itemLocationPrintout.chat.addTarget=Added target
 item.itemLocationPrintout.chat.noPaper=No Paper in Inventory
 
-item.itemRodOfReturn.name=Rod of Return
-item.itemRodOfReturn.tooltip.detailed.line1=Returns the user to a Telepad
-item.itemRodOfReturn.tooltip.detailed.line2=Sync with a Telepad using Shift-R-Click
-item.itemRodOfReturn.tooltip.detailed.line3=Requires RF and %s
-enderio.itemRodOfReturn.chat.notEnoughPower=Not enough power
-enderio.itemRodOfReturn.chat.notEnoughFluid=Not enough fluid
-enderio.itemRodOfReturn.chat.targetNotSet=No destination set
-enderio.itemRodOfReturn.chat.sync=Synchronised with location 
-enderio.itemRodOfReturn.chat.sync.telepad= Synchronised with Telepad
+
 
 
 //Painter
 tile.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with: %s
 enderio.blockPainter.unpainted=Not painted
-tile.blockPaintedFence.name=Painted Fence
-tile.blockPaintedStoneFence.name=Painted Stone Fence
-tile.blockPaintedFenceGate.name=Painted Gate
-tile.blockPaintedWall.name=Painted Wall
-tile.blockPaintedStair.name=Painted Stairs
-tile.blockPaintedStoneStair.name=Painted Stone Stairs
-tile.blockPaintedSlab.name=Painted Slab
-tile.blockPaintedStoneSlab.name=Painted Stone Slab
-tile.blockPaintedDoubleSlab.name=Painted Slab
-tile.blockPaintedStoneDoubleSlab.name=Painted Stone Slab
-tile.blockPaintedGlowstone.name=Painted Glowstone
-tile.blockPaintedGlowstoneSolid.name=Painted Glowstone
-tile.blockPaintedRedstone.name=Painted Redstone
-tile.blockPaintedRedstoneSolid.name=Painted Redstone
-tile.blockPaintedStone.name=Painted Cobblestone
-tile.blockPaintedCarpet.name=Painted Carpet
-tile.blockPaintedWoodenTrapdoor.name=Painted Wooden Trapdoor
-tile.blockPaintedIronTrapdoor.name=Painted Iron Trapdoor
-tile.blockPaintedDarkSteelTrapdoor.name=Painted Dark Steel Trapdoor
+
 
 enderio.painter.tooltip.wasPainted=§oWhat did you think that would do?
 
@@ -1020,24 +951,7 @@ tile.blockPainter.tooltip.detailed.line5=Plates, Quite Clear Glass, Fused Quartz
 tile.blockPainter.tooltip.detailed.line6=Trapdoors, and most machines
 
 //Items
-item.itemYetaWrench.name=Yeta Wrench
-item.itemYetaWrench.tooltip.detailed.line1=Hides conduit facades when held
-item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
-item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
-item.itemYetaWrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
-item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
-item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
-item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
-item.itemMagnet.name=Electromagnet
-item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
-item.itemMagnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
-item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
-item.itemMagnet.tooltip.detailed.line4=hot bar (or a Baubles slot) to function
-item.itemMagnet.everywhere.tooltip.detailed.line1=Pulls nearby item towards you
-item.itemMagnet.everywhere.tooltip.detailed.line2=Shift-R-Click to enable / disable
-item.itemMagnet.everywhere.tooltip.detailed.line3=Must be powered, active and in the
-item.itemMagnet.everywhere.tooltip.detailed.line4=inventory (or a Baubles slot) to function
 
 item.itemSoulVessel.name=Soul Vial
 enderio.item.itemSoulVessel.tooltip.health=Health:
@@ -1048,50 +962,15 @@ item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
 
-item.itemXpTransfer.name=Experience Rod
-item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing
-item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
-item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
-item.itemXpTransfer.tooltip.detailed.line4=the tank
 
-skullZombieElectrode.name=Zombie Electrode
-skullZombieController.name=Z-Logic Controller
-skullZombieFrankenstien.name=Frank'N'Zombie
-skullEnderResonator.name=Ender Resonator 
-skullSentientEnder.name=Sentient Ender
-skullSkeletalContractor.name=Skeletal Contractor
 
 item.itemSpawnEggEnderIO.name=Spawn
 
 //Dark Steel
-item.darkSteel_helmet.name=Dark Helm
-item.darkSteel_chestplate.name=Dark Plate
-item.darkSteel_leggings.name=Dark Leggings
-item.darkSteel_boots.name=Dark Boots
-item.darkSteel_sword.name=The Ender
-item.darkSteel_pickaxe.name=Dark Pick
-item.darkSteel_shears.name=Dark Shears
-item.darkSteelBow.name=Dark Bow
 
-enderio.item.darkSteel.tooltip.lvs=lvs
 
-enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
-enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
-enderio.item.darkSteel_pickaxe.tooltip.cost=cost
 
-enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
-enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
-
-enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
-enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
-enderio.item.darkSteel_sword.tooltip.line3=Extra Damage and Speed when Powered
-
-enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
-enderio.item.darkSteel_armor.tooltip.line2=when powered
-
-enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
-enderio.item.darkSteel_boots.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
@@ -1157,10 +1036,6 @@ enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protecti
 enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
 enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
 
-item.itemGliderWing.name=Glider Wing
-item.itemGliderWings.name=Glider Wings
-item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel
-item.itemGliderWings.tooltip.detailed.line2=chestplate
 
 enderio.darksteel.upgrade.jump.enabled=Jump Enabled
 enderio.darksteel.upgrade.jump.disabled=Jump Disabled
@@ -1681,52 +1556,11 @@ item.itemRemoteInvAccessender.tooltip.detailed.line1=Allows you to access an Inv
 item.itemRemoteInvAccessender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.itemRemoteInvAccessender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
-enderio.coldfireigniter.chat.outoffluid=ERROR: Out of {FLUIDNAME}
 
 
 
-tile.blockExitRail.name=Exit Rail
 
-tile.blockSelfResettingLever10.name=Self-resetting Lever (10 seconds)
-tile.blockSelfResettingLever30.name=Self-resetting Lever (30 seconds)
-tile.blockSelfResettingLever60.name=Self-resetting Lever (1 Minute)
-tile.blockSelfResettingLever300.name=Self-resetting Lever (5 Minutes)
 
-enderio.chassiParts.name=Chassis Plates
-
-tile.blockDecoration1_type00.name=Machine Chassis (decoration block)
-tile.blockDecoration1_type01.name=Blank Machine (decoration block)
-tile.blockDecoration1_type02.name=Machine Tops (decoration block)
-tile.blockDecoration1_type03.name=Machine Sides (decoration block)
-tile.blockDecoration1_type04.name=Machine Backs (decoration block)
-tile.blockDecoration1_type05.name=Machine with sides (decoration block)
-tile.blockDecoration1_type06.name=Machine width backs (decoration block)
-tile.blockDecoration1_type07.name=Blank Soul Machine (decoration block)
-tile.blockDecoration1_type08.name=Soul Machine Tops (decoration block)
-tile.blockDecoration1_type09.name=Soul Machine Sides (decoration block)
-tile.blockDecoration1_type10.name=Soul Machine Backs (decoration block)
-tile.blockDecoration1_type11.name=Soul Machine with sides (decoration block)
-tile.blockDecoration1_type12.name=Soul Machine width backs (decoration block)
-tile.blockDecoration1_type13.name=Red Machine (decoration block)
-tile.blockDecoration1_type14.name=Broken Spawner (decoration block)
-tile.blockDecoration1_type15.name=Invisible Block (decoration block)
-
-tile.blockDecoration2_type00.name=Alloy Smelter (decoration block)
-tile.blockDecoration2_type01.name=Item Buffer (decoration block)
-tile.blockDecoration2_type02.name=Power Buffer (decoration block)
-tile.blockDecoration2_type03.name=Omni Buffer (decoration block)
-tile.blockDecoration2_type04.name=Creative Buffer (decoration block)
-tile.blockDecoration2_type05.name=Crafter (decoration block)
-tile.blockDecoration2_type06.name=Painting Machine (decoration block)
-tile.blockDecoration2_type07.name=Power Monitor (decoration block)
-tile.blockDecoration2_type08.name=SAG Mill (decoration block)
-tile.blockDecoration2_type09.name=Slice'N'Splice (decoration block)
-tile.blockDecoration2_type10.name=Stirling Generator (decoration block)
-tile.blockDecoration2_type11.name=Fluid Tank (decoration block)
-tile.blockDecoration2_type12.name=Pressurized Fluid Tank (decoration block)
-tile.blockDecoration2_type13.name=Travel Anchor (decoration block)
-tile.blockDecoration2_type14.name=Vacuum Chest (decoration block)
-tile.blockDecoration2_type15.name=Wireless Charger (decoration block)
 
 tile.blockXPVacuum.name=XP Vacuum
 tile.blockXPVacuum.tooltip.detailed.line1=Pulls nearby XP orbs and pushes
@@ -1750,7 +1584,6 @@ enderio.soulvial.owned.denied=Permission denied - only owners may pick up owned 
 enderio.soulvial.player.denied=No! How would you feel if you had to play this game from inside a bottle?
 enderio.soulvial.blacklisted.denied=Permission denied - this entity is blacklisted
 
-tile.blockDarkSteelTrapdoor.name=Dark Steel Trapdoor
 
 enderio.spawner.note.areaFull=Too many mobs
 enderio.spawner.note.noLocationFound=No space found
@@ -1758,8 +1591,6 @@ enderio.spawner.note.noLocationAtAll=No viable space
 enderio.spawner.note.badSoul=Bad soul, cannot create entity
 enderio.spawner.note.noPlayer=No player in range
 
-enderio.plantgreen.name=Plant clippings and trimmings
-enderio.plantbrown.name=Loose twigs and prunings
 
 fluid.electricalsteel=Molten Electrical Steel
 fluid.energeticalloy=Molten Energetic Alloy

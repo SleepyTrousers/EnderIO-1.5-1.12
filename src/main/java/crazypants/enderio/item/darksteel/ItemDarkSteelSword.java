@@ -54,7 +54,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -379,11 +378,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
     if (str != null) {
       list.add(str);
-    }
-    list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
-    if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(TextFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

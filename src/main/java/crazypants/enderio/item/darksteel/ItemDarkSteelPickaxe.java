@@ -16,6 +16,7 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
@@ -290,12 +291,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(TextFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+      list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyBoostWhenPowered));
+      list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyObsidian));
       list.add(
-          TextFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(TextFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
-          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " " + PowerDisplayUtil.abrevation() + ")");
+          Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian), PowerDisplayUtil.abrevation()));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

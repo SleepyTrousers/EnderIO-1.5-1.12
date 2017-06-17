@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.integration.forestry.ForestryUtil;
 import crazypants.enderio.integration.top.TOPUtil;
 import crazypants.enderio.item.darksteel.upgrade.elytra.ElytraUpgrade;
@@ -196,9 +197,8 @@ public class DarkSteelRecipeManager {
     if(!applyableUpgrades.isEmpty()) {
       list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
-        list.add(TextFormatting.DARK_AQUA + "" + "" + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
-        list.add(TextFormatting.DARK_AQUA + "" + TextFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
-            + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
+        list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
+        list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), up.getLevelCost()));
       }
     }
   }

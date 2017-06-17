@@ -15,6 +15,7 @@ import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.Lang;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
@@ -405,7 +406,7 @@ public class TravelController {
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(equipped);
     if (requiredPower > canUsePower) {
-      player.sendMessage(new TextComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+      player.sendMessage(Lang.STAFF_NO_POWER.toChat());
       return -1;
     }
     return requiredPower;

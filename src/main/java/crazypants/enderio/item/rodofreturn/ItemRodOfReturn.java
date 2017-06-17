@@ -12,11 +12,12 @@ import com.enderio.core.client.ClientUtil;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
@@ -50,7 +51,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -124,14 +124,12 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       ITelePad tp = (ITelePad)te;
       pos = tp.getMaster().getLocation();
       setTarget(stack, pos, world.provider.getDimension());
-      player.sendMessage(
-          new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync.telepad") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
+      player.sendMessage(Lang.RETURN_ROD_SYNC_TELEPAD.toChat(BlockCoord.chatString(pos, TextFormatting.WHITE)));
       player.stopActiveHand();
       return EnumActionResult.SUCCESS;
     } else if(Config.rodOfReturnCanTargetAnywhere) {
       setTarget(stack, pos, world.provider.getDimension());
-      player.sendMessage(
-          new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.sync") + " [" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]"));
+      player.sendMessage(Lang.RETURN_ROD_SYNC.toChat(BlockCoord.chatString(pos, TextFormatting.WHITE)));
       player.stopActiveHand();
       return EnumActionResult.SUCCESS;
     }
@@ -159,7 +157,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     int newVal = getEnergyStored(stack) - used;
     if (newVal < 0) {
       if (player.world.isRemote) {
-        player.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+        player.sendMessage(Lang.RETURN_ROD_NO_POWER.toChat(TextFormatting.RED));
       }
       player.stopActiveHand();
     }
@@ -189,16 +187,16 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       if(target == null) {
         if (worldIn.isRemote) {
           stopPlayingSound();
-          entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.targetNotSet", TextFormatting.RED.toString())));
+          entityLiving.sendMessage(Lang.RETURN_ROD_NO_TARGET.toChat(TextFormatting.RED));
         }
         return stack;
       }
       TeleportUtil.doTeleport(entityLiving, target.getLocation(), target.getDimension(), false, TravelSource.TELEPAD);
     } else if(worldIn.isRemote) {
       if(!hasPower) {
-        entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughPower", TextFormatting.RED.toString())));
+        entityLiving.sendMessage(Lang.RETURN_ROD_NO_POWER.toChat(TextFormatting.RED));
       } else {
-        entityLiving.sendMessage(new TextComponentString(EnderIO.lang.localize("itemRodOfReturn.chat.notEnoughFluid", TextFormatting.RED.toString())));
+        entityLiving.sendMessage(Lang.RETURN_ROD_NO_FLUID.toChat(TextFormatting.RED));
       }
     }
     
@@ -243,14 +241,10 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str;
-        
-    str = PowerDisplayUtil.formatPower(FLUIDAMOUNT.getInt(itemStack, 0)) + "/" + PowerDisplayUtil.formatPower(Config.rodOfReturnFluidStorage) + " MB";
-    list.add(str);
-    
-    str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/" + PowerDisplayUtil.formatPower(Config.rodOfReturnPowerStorage) + " "
-        + PowerDisplayUtil.abrevation();
-    list.add(str);
+    list.add(Lang.RETURN_ROD_FLUID.get(PowerDisplayUtil.formatPower(FLUIDAMOUNT.getInt(itemStack, 0)),
+        PowerDisplayUtil.formatPower(Config.rodOfReturnFluidStorage)));
+    list.add(Lang.RETURN_ROD_POWER.get(PowerDisplayUtil.formatPower(getEnergyStored(itemStack)), PowerDisplayUtil.formatPower(Config.rodOfReturnPowerStorage),
+        PowerDisplayUtil.abrevation()));
   }
 
   @Override

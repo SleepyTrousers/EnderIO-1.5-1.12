@@ -15,8 +15,8 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.handler.darksteel.IDarkSteelItem;
@@ -257,9 +257,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnderIO.lang.localize("item.darkSteel_shears.tooltip.multiHarvest"));
-      list.add(TextFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+      list.add(Lang.SHEARS_MULTIHARVEST.get());
+      list.add(Lang.SHEARS_POWERED.get(TextFormatting.WHITE, Config.darkSteelShearsEffeciencyBoostWhenPowered));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
