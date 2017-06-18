@@ -20,10 +20,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class PoweredSpawnerConfig {
 
-  static final PoweredSpawnerConfig instance = new PoweredSpawnerConfig();
+  private static final PoweredSpawnerConfig instance = new PoweredSpawnerConfig();
 
-  private static final @Nonnull String CORE_FILE_NAME = "PoweredSpawnerConfig_Core.json";
-  private static final @Nonnull String USER_FILE_NAME = "PoweredSpawnerConfig_User.json";
+  private static final @Nonnull String CORE_FILE_NAME = "powered_spawner_config_core.json";
+  private static final @Nonnull String USER_FILE_NAME = "powered_spawner_config_user.json";
 
   private static final @Nonnull String KEY_ENTITY_NAME = "entityName";
   private static final @Nonnull String KEY_COST_MULTIPLIER = "costMultiplier";

@@ -10,7 +10,6 @@ import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -125,7 +124,7 @@ public enum GuiID {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(), new BlockPosContext(entityPlayer, pos, world.getBlockState(pos), side))) {
         entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
       } else {
-        entityPlayer.sendMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
+        entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
       }
     }
   }
@@ -135,7 +134,7 @@ public enum GuiID {
       if (PermissionAPI.hasPermission(entityPlayer.getGameProfile(), getPermission(), new PlayerContext(entityPlayer))) {
         entityPlayer.openGui(EnderIO.getInstance(), ordinal(), world, a, b, c);
       } else {
-        entityPlayer.sendMessage(new TextComponentString(EnderIO.lang.localize("gui.permission.denied")));
+        entityPlayer.sendMessage(Lang.GUI_PERMISSION_DENIED.toChat());
       }
     }
   }

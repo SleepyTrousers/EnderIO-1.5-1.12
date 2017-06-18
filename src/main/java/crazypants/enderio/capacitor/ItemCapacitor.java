@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.NbtValue;
@@ -92,12 +93,12 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean advanced) {
-      par3List.add(EnderIO.lang.localize("machine.tooltip.upgrade"));
-      if(SpecialTooltipHandler.showAdvancedTooltips()) {
-        SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
-      } else {
-        SpecialTooltipHandler.addShowDetailsTooltip(par3List);
-      }
+    par3List.add(Lang.MACHINE_UPGRADE.get());
+    if (SpecialTooltipHandler.showAdvancedTooltips()) {
+      SpecialTooltipHandler.addDetailedTooltipFromResources(par3List, Lang.MACHINE_UPGRADE.getKey());
+    } else {
+      SpecialTooltipHandler.addShowDetailsTooltip(par3List);
+    }
     if (NbtValue.GLINT.hasTag(stack)) {
       par3List.add(EnderIO.lang.localize("loot.capacitor.entry." + NbtValue.CAPNO.getInt(stack), NbtValue.CAPNAME.getString(stack, "(!%$&§*&%*???")));
     }

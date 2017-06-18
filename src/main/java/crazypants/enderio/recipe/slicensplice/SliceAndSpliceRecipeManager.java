@@ -13,7 +13,7 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   }
 
   public SliceAndSpliceRecipeManager() {
-    super("SliceAndSpliceRecipes_Core.xml", "SliceAndSpliceRecipes_User.xml", "Slice'N'Splice");
+    super("slice_and_splice_recipes_core.xml", "slice_and_splice_recipes_user.xml", "Slice'N'Splice");
   }
 
   @Override

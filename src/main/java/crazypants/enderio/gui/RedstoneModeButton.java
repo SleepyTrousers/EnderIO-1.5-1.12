@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.CycleButton;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.machine.modes.PacketRedstoneMode;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
@@ -16,8 +16,6 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
 
   private IRedstoneModeControlable model;
   private T te;
-
-  private @Nonnull String tooltipKey = "enderio.gui.tooltip.redstoneControlMode";
 
   public RedstoneModeButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull IRedstoneModeControlable model) {
     super(gui, id, x, y, RedstoneControlMode.IconHolder.class);
@@ -35,7 +33,7 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
       return;
     }
     super.setMode(newMode);
-    setTooltipKey(tooltipKey); // forces our behavior
+    setToolTip(Lang.GUI_REDSTONE_MODE.get(), getMode().getTooltip()); // forces our behavior
   }
 
   @Override
@@ -50,8 +48,4 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
     }
   }
 
-  public void setTooltipKey(@Nonnull String key) {
-    tooltipKey = key;
-    setToolTip(EnderIO.lang.localizeExact(tooltipKey), getMode().getTooltip());
-  }
 }

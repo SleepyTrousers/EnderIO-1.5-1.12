@@ -23,8 +23,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class VatRecipeManager {
 
-  private static final @Nonnull String CORE_FILE_NAME = "VatRecipes_Core.xml";
-  private static final @Nonnull String CUSTOM_FILE_NAME = "VatRecipes_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "vat_recipes_core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "vat_recipes_user.xml";
 
   static final @Nonnull VatRecipeManager instance = new VatRecipeManager();
 

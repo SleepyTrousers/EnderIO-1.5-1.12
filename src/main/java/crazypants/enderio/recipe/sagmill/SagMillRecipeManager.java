@@ -31,8 +31,8 @@ public class SagMillRecipeManager {
 
   public static final int INGOT_ENERGY_COST = 240;
 
-  private static final @Nonnull String CORE_FILE_NAME = "SAGMillRecipes_Core.xml";
-  private static final @Nonnull String CUSTOM_FILE_NAME = "SAGMillRecipes_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "sag_mill_recipes_core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "sag_mill_recipes_user.xml";
 
   static final @Nonnull SagMillRecipeManager instance = new SagMillRecipeManager();
 

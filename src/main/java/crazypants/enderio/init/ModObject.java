@@ -149,6 +149,7 @@ public enum ModObject implements IModObject.Registerable {
   itemSoulVial(ItemSoulVial.class) {
     @Override
     protected void initElem(@Nonnull FMLInitializationEvent event) {
+      super.initElem(event);
       ItemSoulVial.initPhase();
     }
   },

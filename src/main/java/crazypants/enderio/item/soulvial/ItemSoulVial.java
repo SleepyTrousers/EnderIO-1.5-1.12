@@ -13,6 +13,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Lang;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.CapturedMob;
@@ -245,11 +246,10 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
       float health = capturedMob.getHealth();
       if (health >= 0) {
         float maxHealth = capturedMob.getMaxHealth();
-        String msg = EnderIO.lang.localize("item.itemSoulVessel.tooltip.health");
         if (maxHealth >= 0) {
-          par3List.add(String.format("%s %3.1f/%3.1f", msg, health, maxHealth));
+          par3List.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f/%3.1f", health, maxHealth)));
         } else {
-          par3List.add(String.format("%s %3.1f", msg, health));
+          par3List.add(Lang.SOUL_VIAL_HEALTH.get(String.format("%3.1f", health)));
         }
       }
 
@@ -259,16 +259,16 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
         if (fluid != null) {
           String unlocalizedName = fluid.getUnlocalizedName();
           String name = I18n.format(unlocalizedName);
-          par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + name);
+          par3List.add(Lang.SOUL_VIAL_FLUID.get(name));
         }
       }
 
       DyeColor color = capturedMob.getColor();
       if (color != null) {
-        par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
+        par3List.add(Lang.SOUL_VIAL_COLOR.get(color.getLocalisedName()));
       }
     } else {
-      par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.empty"));
+      par3List.add(Lang.SOUL_VIAL_EMPTY.get());
     }
   }
 

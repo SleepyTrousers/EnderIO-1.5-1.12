@@ -16,7 +16,11 @@ public class IoUtil {
   public static String copyConfigFromJar(String fileName, boolean replaceIfExists) throws IOException {    
     
     if(replaceIfExists || !getConfigFile(fileName).exists()) {
-      IOUtils.copy(IoUtil.class.getResourceAsStream(getConfigResourcePath(fileName)), new FileOutputStream(getConfigFile(fileName)));
+      final InputStream resourceAsStream = IoUtil.class.getResourceAsStream(getConfigResourcePath(fileName));
+      if (resourceAsStream == null) {
+        throw new RuntimeException(getConfigResourcePath(fileName) + " is missing from the jar file. Please re-download Ender IO from a respected source.");
+      }
+      IOUtils.copy(resourceAsStream, new FileOutputStream(getConfigFile(fileName)));
     }            
     return IOUtils.toString(new FileReader(getConfigFile(fileName)));    
   }

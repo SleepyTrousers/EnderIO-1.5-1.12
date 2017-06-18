@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.fluid.BlockFluidEnder;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.railcraft.RailcraftUtil;
@@ -20,6 +21,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -79,13 +81,29 @@ public class Fluids {
 
   public static String toCapactityString(IFluidTank tank) {
     if (tank == null) {
-      return "0/0 " + MB();
+      return MB(0, 0);
     }
-    return tank.getFluidAmount() + "/" + tank.getCapacity() + " " + MB();
+    return MB(tank.getFluidAmount(), tank.getCapacity());
   }
 
-  public static String MB() {
-    return EnderIO.lang.localize("fluid.millibucket.abr");
+  public static String MB(int amount) {
+    return Lang.FLUID_AMOUNT.get(amount);
+  }
+
+  public static String MB(int amount, int total) {
+    return Lang.FLUID_LEVEL.get(amount, total);
+  }
+
+  public static String MB(FluidStack amount, int total) {
+    return Lang.FLUID_LEVEL_NAME.get(amount.amount, total, amount.getLocalizedName());
+  }
+
+  public static String MB(int amount, int total, Fluid fluid) {
+    return MB(new FluidStack(fluid, amount), total);
+  }
+
+  public static String MB(int amount, Fluid fluid) {
+    return Lang.FLUID_AMOUNT_NAME.get(amount, new FluidStack(fluid, amount).getLocalizedName());
   }
 
   public void registerFluids() {

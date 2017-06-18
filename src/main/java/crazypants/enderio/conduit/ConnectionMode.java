@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 
 public enum ConnectionMode {
 
@@ -48,6 +49,14 @@ public enum ConnectionMode {
 
   public @Nonnull String getLocalisedName() {
     return EnderIO.lang.localize(unlocalisedName);
+  }
+
+  static {
+    for (ConnectionMode lang : values()) {
+      if (!EnderIO.lang.canLocalize(lang.unlocalisedName)) {
+        Log.error("Missing translation for '" + lang.unlocalisedName);
+      }
+    }
   }
 
 }

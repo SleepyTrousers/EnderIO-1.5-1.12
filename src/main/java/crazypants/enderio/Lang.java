@@ -36,9 +36,27 @@ public enum Lang {
   DARK_STEEL_LEVELS1("item.item_dark_steel_armor.tooltip.levelcost.line1"),
   DARK_STEEL_LEVELS2("item.item_dark_steel_armor.tooltip.levelcost.line2"),
   PRESSURE_PLATE_TUNED("tile.block_painted_pressure_plate.tuned.tooltip"),
-  XXXXXXj(""),
-  XXXXXXk(""),
-  XXXXXXl(""),
+  GUI_PERMISSION_DENIED(true, "gui.permission.denied"),
+  BLOCK_BLAST_RESISTANT(true, "block.tooltip.blastResistant"),
+  MACHINE_UPGRADE(true, "machine.tooltip.upgrade"),
+  ENCHANT_SOULBOUND("description.enchantment.enderio.soulBound"),
+  FLUID_AMOUNT(true, "fluid.millibucket.format"),
+  FLUID_LEVEL(true, "fluid.millibucket.format.of"),
+  GUI_REDSTONE_MODE(true, "gui.tooltip.redstoneControlMode"),
+  FUEL_GENERATES(true, "fuel.tooltip.generates"),
+  FUEL_BURNTIME(true, "fuel.tooltip.burnTime"),
+  FUEL_HEADING(true, "fuel.tooltip.heading"),
+  COOLANT_HEADING(true, "coolant.tooltip.heading"),
+  COOLANT_DEGREES(true, "coolant.tooltip.degreesPerBucket"),
+  FLUID_AMOUNT_NAME(true, "fluid.millibucket.format.name"),
+  FLUID_LEVEL_NAME(true, "fluid.millibucket.format.ofname"),
+  SOUL_VIAL_HEALTH("item.item_soul_vial.tooltip.health"),
+  SOUL_VIAL_FLUID("item.item_soul_vial.tooltip.fluidname"),
+  SOUL_VIAL_COLOR("item.item_soul_vial.tooltip.color"),
+  SOUL_VIAL_EMPTY("item.item_soul_vial.tooltip.empty"),
+  XXXXXX8(""),
+  XXXXXX9(""),
+  XXXXXX0(""),
 
   ;
 
@@ -78,6 +96,10 @@ public enum Lang {
         Log.error("Missing translation for '" + lang + "': " + lang.get());
       }
     }
+  }
+
+  public @Nonnull String getKey() {
+    return key;
   }
 
 }

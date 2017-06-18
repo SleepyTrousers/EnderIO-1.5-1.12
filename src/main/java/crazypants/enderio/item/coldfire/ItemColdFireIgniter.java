@@ -10,13 +10,12 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
-import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -217,8 +216,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    list.add(FLUIDAMOUNT.getInt(itemStack, 0) + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " "
-        + getFluidType(itemStack).getLocalizedName(null));
+    list.add(Fluids.MB(FLUIDAMOUNT.getInt(itemStack, 0), FLUID_CAPACITY, getFluidType(itemStack)));
   }
 
   @Override

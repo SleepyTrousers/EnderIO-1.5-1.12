@@ -1,5 +1,8 @@
 //***  Ender IO *****//
 
+// Translators, run the command "gradlew checkTranslations" to get a report which keys your
+// language is missing and which keys it has that do not exist anymore.
+
 // These keys have been confirmed in 1.11
 
 item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
@@ -177,6 +180,14 @@ item.item_rod_of_return.chat.notEnoughFluid=%sNot enough fluid
 item.item_rod_of_return.chat.targetNotSet=%sNo destination set
 item.item_rod_of_return.chat.sync=Synchronised with location 
 item.item_rod_of_return.chat.sync.telepad=Synchronised with Telepad
+
+item.item_soul_vial.name=Soul Vial
+item.item_soul_vial.tooltip.detailed.line1=R-Click on a mob to capture its soul
+item.item_soul_vial.tooltip.detailed.line2=R-Click again to release it
+item.item_soul_vial.tooltip.health=Health: %s
+item.item_soul_vial.tooltip.fluidname=Fluid Name: %s
+item.item_soul_vial.tooltip.color=Color: %s
+item.item_soul_vial.tooltip.empty=Empty
 
 item.item_travel_staff.name=Staff of Traveling
 item.item_travel_staff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
@@ -370,10 +381,219 @@ tile.block_self_resetting_lever300.name=Self-resetting Lever (5 Minutes)
 
 
 enderio.machine.tooltip.configured=%s (Configured)
+enderio.machine.tooltip.upgrade=Machine Upgrade
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and speed / range of machines
+
+enderio.block.tooltip.blastResistant=Blast Resistant
+
 enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball
 enderio.grindingball.tooltip.line2=%sMain Output %s
 enderio.grindingball.tooltip.line3=%sBonus Output %s
 enderio.grindingball.tooltip.line4=%sPower Reduction %s
+
+enderio.gui.permission.denied=Permission denied
+
+enderio.gui.conduit.ioMode.inOut=In / Out
+enderio.gui.conduit.ioMode.input=Extract
+enderio.gui.conduit.ioMode.output=Insert
+enderio.gui.conduit.ioMode.disabled=Disabled
+enderio.gui.conduit.ioMode.notSet=Default
+
+enderio.gui.tooltip.redstoneControlMode=Redstone Mode
+
+enderio.config.title=Ender IO Configuration
+enderio.config.power=Power Settings
+enderio.config.power.tooltip=So many numbers to change...
+enderio.config.recipe=Recipe Settings
+enderio.config.recipe.tooltip=Config ALL the things!
+enderio.config.item=Item Enabling
+enderio.config.item.tooltip=If you don't like some of my amazing items :(
+enderio.config.efficiency=Efficiency Settings
+enderio.config.efficiency.tooltip=Where do the numbers end?
+enderio.config.personal=Personal Settings
+enderio.config.personal.tooltip=I won't tell anyone, I promise.
+enderio.config.anchor=Anchor Settings
+enderio.config.anchor.tooltip=Anchors away!
+enderio.config.staff=Staff Settings
+enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
+enderio.config.darksteel=Dark Steel
+enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+enderio.config.farm=Farm Settings
+enderio.config.farm.tooltip="The commune is for life!"
+enderio.config.aesthetic=Aesthetic Settings
+enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
+enderio.config.advanced=Advanced Settings
+enderio.config.advanced.tooltip=For those who can't have enough configs.
+enderio.config.magnet=Magnet Settings
+enderio.config.magnet.tooltip=How do they work?
+enderio.config.fluid=Fluid Settings
+enderio.config.fluid.tooltip=Pure liquid energy!
+enderio.config.spawner=PoweredSpawner Settings
+enderio.config.spawner.tooltip=I ran out of witty tooltips.
+
+enchantment.soulBound=Soulbound
+description.enchantment.enderio.soulBound=Prevents item from being lost on death
+
+enderio.farm.note.outputFull=Output Full
+enderio.farm.note.noSeeds=No Seeds
+enderio.farm.note.noAxe=No Axe
+enderio.farm.note.noHoe=No Hoe
+enderio.farm.note.noShears=No Shears
+enderio.farm.note.noTreetap=No Treetap
+enderio.farm.note.noPower=No Power
+
+enderio.fluid.millibucket.format=%s mB
+enderio.fluid.millibucket.format.name=%s mB of %s
+enderio.fluid.millibucket.format.of=%s/%s mB
+enderio.fluid.millibucket.format.ofname=%s/%s mB of %s
+
+enderio.fuel.tooltip.heading=Fuel Details
+// pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
+enderio.fuel.tooltip.generates=Generates %s %s at %s %s%s
+enderio.fuel.tooltip.burnTime=burn time %s
+enderio.coolant.tooltip.heading=Coolant
+enderio.coolant.tooltip.degreesPerBucket=%s Deg per bucket
+
+
+
+enderio.darksteel.upgrade.empowered_one.name=Empowered
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_two.name=Empowered II
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_three.name=Empowered III
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_four.name=Empowered IV
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.travel.name=Travel
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
+
+enderio.darksteel.upgrade.spoon.name=Spoon
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when 
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=you have a spoon
+
+enderio.darksteel.upgrade.glider.name=Glider
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
+enderio.darksteel.upgrade.glider.enabled=Glider Active
+enderio.darksteel.upgrade.glider.disabled=Glider Disabled
+
+enderio.darksteel.upgrade.elytra.name=Elytra
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
+enderio.darksteel.upgrade.elytra.enabled=Elytra Active
+enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
+
+enderio.darksteel.upgrade.sound.name=Sound Locator
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nearby sounds
+enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
+enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
+
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
+
+enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
+
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
+
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
+
+
+enderio.darksteel.upgrade.jump.enabled=Jump Enabled
+enderio.darksteel.upgrade.jump.disabled=Jump Disabled
+
+enderio.darksteel.upgrade.jump_one.name=Jump
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
+enderio.darksteel.upgrade.stepAssist.disabled=Step Assist Disabled
+
+enderio.darksteel.upgrade.jump_two.name=Jump II
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
+
+enderio.darksteel.upgrade.jump_three.name=Jump III
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
+
+enderio.darksteel.upgrade.speed_one.name=Speed
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
+enderio.darksteel.upgrade.speed.enabled=Speed Active
+enderio.darksteel.upgrade.speed.disabled=Speed Disabled
+
+enderio.darksteel.upgrade.speed_two.name=Speed II
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.speed_three.name=Speed III
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.swim.name=Flippers
+
+enderio.darksteel.upgrade.nightVision.name=Night Vision
+enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
+enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
+
+enderio.darksteel.upgrade.top.name=The One Probe
+
+enderio.darksteel.upgrade.solar_one.name=Solar I
+enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_two.name=Solar II
+enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
+
+// These are used for the "The One Probe" integration
+enderio.top.action.header=%s:
+enderio.top.action.none=nothing
+enderio.top.machine.active=active
+enderio.top.machine.idle=idle
+enderio.top.progress.idle=idle
+enderio.top.suffix.percent= %
+enderio.top.suffix.rf= RF
+enderio.top.suffix.levels= Levels
+enderio.top.suffix.items= Items
+enderio.top.range.header=Range: %s
+enderio.top.range=%sx%sx%s
+enderio.top.machine.outofpower=No Power
+enderio.top.progress.outofpower=Out of Power
+enderio.top.redstone.header=Currently: %s
+enderio.top.redstone.true=On
+enderio.top.redstone.false=Off
+enderio.top.tank.content=%s/%smb
+enderio.top.tank.content.empty=Empty
+enderio.top.tank.header.input=Input Tank: %s
+enderio.top.tank.header.output=Output Tank: %s
+enderio.top.tank.header.storage=%s
+enderio.top.rf.header.maxin=Max Input:
+enderio.top.rf.header.maxout=Max Output:
+enderio.top.rf.header.avg=I/O:
+enderio.top.rf.value=%s RF/t
+enderio.top.paint.header=Painted with:
+enderio.top.owner.header=Owner:
+
 
 
 // These keys have not (yet) been confirmed in 1.11
@@ -383,8 +603,6 @@ enderio.power.rf=RF
 enderio.power.tmb=t/mB
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
-// pre-formatted number, "RF" ("power.rf"), pre-formatted number, "RF" ("power.rf"), "/t" ("power.tick")
-enderio.power.generates=Generates {0} {1} at {2} {3}{4}
 
 //Enderface
 item.enderio.itemEnderface.name=Enderface
@@ -486,7 +704,6 @@ entity.witherSkeleton.name=Wither Skeleton
 entity.ZombieVillager.name=Zombie Villager
 
 //Materials
-enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
@@ -533,13 +750,8 @@ fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
 
-enderio.fluid.millibucket.abr=mB
 
-enderio.fuel.tooltip.heading=Fuel Details
-enderio.fuel.tooltip.burnTime=burn time {0,number}
 enderio.fluid.millibucketsTick=mB/t
-enderio.coolant.tooltip.heading=Coolant
-enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
 
 //Materials
@@ -547,9 +759,6 @@ enderio.gas.gasTick=Gas/t
 
 
 
-enderio.machine.tooltip.upgrade=Machine Upgrade
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
-enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
 enderio.machine.tooltip.clearConfig=This will clear all stored info!
 
 //Machines
@@ -739,13 +948,6 @@ tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
 tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
-enderio.farm.note.outputFull=Output Full
-enderio.farm.note.noSeeds=No Seeds
-enderio.farm.note.noAxe=No Axe
-enderio.farm.note.noHoe=No Hoe
-enderio.farm.note.noShears=No Shears
-enderio.farm.note.noTreetap=No Treetap
-enderio.farm.note.noPower=No Power
 enderio.farm.gui.baseUse=Base Use:
 
 tile.blockTank.name=Fluid Tank
@@ -953,14 +1155,6 @@ tile.blockPainter.tooltip.detailed.line6=Trapdoors, and most machines
 //Items
 
 
-item.itemSoulVessel.name=Soul Vial
-enderio.item.itemSoulVessel.tooltip.health=Health:
-enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
-enderio.item.itemSoulVessel.tooltip.color=Color:
-enderio.item.itemSoulVessel.tooltip.empty=Empty
-item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
-item.itemSoulVessel.tooltip.detailed.line2=capture its soul
-item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
 
 
 
@@ -971,115 +1165,6 @@ item.itemSpawnEggEnderIO.name=Spawn
 
 
 
-
-enderio.darksteel.upgrade.empowered_one.name=Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
-
-enderio.darksteel.upgrade.empowered_two.name=Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
-
-enderio.darksteel.upgrade.empowered_three.name=Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
-
-enderio.darksteel.upgrade.empowered_four.name=Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
-
-enderio.darksteel.upgrade.travel.name=Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
-
-enderio.darksteel.upgrade.spoon.name=Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when 
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=you have a spoon
-
-enderio.darksteel.upgrade.glider.name=Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
-enderio.darksteel.upgrade.glider.enabled=Glider Active
-enderio.darksteel.upgrade.glider.disabled=Glider Disabled
-
-enderio.darksteel.upgrade.elytra.name=Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=Enables Elytra flight
-enderio.darksteel.upgrade.elytra.enabled=Elytra Active
-enderio.darksteel.upgrade.elytra.disabled=Elytra Disabled
-
-enderio.darksteel.upgrade.sound.name=Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of
-enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nearby sounds
-enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
-enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
-
-enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
-enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
-enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
-enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
-
-enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
-enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
-
-enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
-enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
-enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
-enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
-
-enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
-enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
-
-
-enderio.darksteel.upgrade.jump.enabled=Jump Enabled
-enderio.darksteel.upgrade.jump.disabled=Jump Disabled
-
-enderio.darksteel.upgrade.jump_one.name=Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
-enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
-enderio.darksteel.upgrade.stepAssist.disabled=Step Assist Disabled
-
-enderio.darksteel.upgrade.jump_two.name=Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
-
-enderio.darksteel.upgrade.jump_three.name=Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
-
-enderio.darksteel.upgrade.speed_one.name=Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
-enderio.darksteel.upgrade.speed.enabled=Speed Active
-enderio.darksteel.upgrade.speed.disabled=Speed Disabled
-
-enderio.darksteel.upgrade.speed_two.name=Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement speed
-
-enderio.darksteel.upgrade.speed_three.name=Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Increases movement speed
-
-enderio.darksteel.upgrade.swim.name=Flippers
-
-enderio.darksteel.upgrade.nightVision.name=Night Vision
-enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
-enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
-
-enderio.darksteel.upgrade.top.name=The One Probe
-
-enderio.darksteel.upgrade.solar_one.name=Solar I
-enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from the sun.
-
-enderio.darksteel.upgrade.solar_two.name=Solar II
-enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
-
-enderio.darksteel.upgrade.solar_three.name=Solar III
-enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
 
 //------GUI
 
@@ -1096,7 +1181,6 @@ enderio.gui.send=Send
 enderio.gui.sendReceive=Send & Receive 
 
 //Redstone controls
-enderio.gui.tooltip.redstoneControlMode=Redstone Mode
 enderio.gui.tooltip.redstoneControlMode.ignore=Always active
 enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
@@ -1255,11 +1339,6 @@ enderio.gui.spawnGurad.range=Range:
 
 //conduits
 enderio.gui.conduit.ioMode=Mode
-enderio.gui.conduit.ioMode.inOut=In / Out
-enderio.gui.conduit.ioMode.input=Extract
-enderio.gui.conduit.ioMode.output=Insert
-enderio.gui.conduit.ioMode.disabled=Disabled
-enderio.gui.conduit.ioMode.notSet=Default
 tile.blockConduitBundle.name=Conduit Connector
 
 enderio.gui.conduit.button.clear=Clear
@@ -1328,53 +1407,7 @@ enderio.gui.weather.requiredfluid=Required Fluid: %s mB
 enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 //Enchants
-enchantment.soulBound=Soulbound
-description.enchantment.enderio.soulBound=Prevents item from being lost on death
 
-//Configuration
-enderio.config.title=Ender IO Configuration
-
-enderio.config.power=Power Settings
-enderio.config.power.tooltip=So many numbers to change...
-
-enderio.config.recipe=Recipe Settings
-enderio.config.recipe.tooltip=Config ALL the things!
-
-enderio.config.item=Item Enabling
-enderio.config.item.tooltip=If you don't like some of my amazing items :(
-
-enderio.config.efficiency=Efficiency Settings
-enderio.config.efficiency.tooltip=Where do the numbers end?
-
-enderio.config.personal=Personal Settings
-enderio.config.personal.tooltip=I won't tell anyone, I promise.
-
-enderio.config.anchor=Anchor Settings
-enderio.config.anchor.tooltip=Anchors away!
-
-enderio.config.staff=Staff Settings
-enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
-
-enderio.config.darksteel=Dark Steel
-enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
-
-enderio.config.farm=Farm Settings
-enderio.config.farm.tooltip="The commune is for life!"
-
-enderio.config.aesthetic=Aesthetic Settings
-enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
-
-enderio.config.advanced=Advanced Settings
-enderio.config.advanced.tooltip=For those who can't have enough configs.
-
-enderio.config.magnet=Magnet Settings
-enderio.config.magnet.tooltip=How do they work?
-
-enderio.config.fluid=Fluid Settings
-enderio.config.fluid.tooltip=Pure liquid energy!
-
-enderio.config.spawner=PoweredSpawner Settings
-enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
 //Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Dark Steel Armor
@@ -1419,35 +1452,6 @@ enderio.config.capacitor.crafter_ticks=Crafter: Ticks per crafting operation (wi
 
 // There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle
-
-// These are used for the "The One Probe" integration
-enderio.top.action.header=%s:
-enderio.top.action.none=nothing
-enderio.top.machine.active=active
-enderio.top.machine.idle=idle
-enderio.top.progress.idle=idle
-enderio.top.suffix.percent= %
-enderio.top.suffix.rf= RF
-enderio.top.suffix.levels= Levels
-enderio.top.suffix.items= Items
-enderio.top.range.header=Range: %s
-enderio.top.range=%sx%sx%s
-enderio.top.machine.outofpower=No Power
-enderio.top.progress.outofpower=Out of Power
-enderio.top.redstone.header=Currently: %s
-enderio.top.redstone.true=On
-enderio.top.redstone.false=Off
-enderio.top.tank.content=%s/%smb
-enderio.top.tank.content.empty=Empty
-enderio.top.tank.header.input=Input Tank: %s
-enderio.top.tank.header.output=Output Tank: %s
-enderio.top.tank.header.storage=%s
-enderio.top.rf.header.maxin=Max Input:
-enderio.top.rf.header.maxout=Max Output:
-enderio.top.rf.header.avg=I/O:
-enderio.top.rf.value=%s RF/t
-enderio.top.paint.header=Painted with:
-enderio.top.owner.header=Owner:
 
 ## Names for random capacitors. These are layered ("level"+"type")xN "baselevel", e.g.
 ## "Failed Smelting Simple Hungry Nice Insatiable Impossible Capacitor"
@@ -1577,7 +1581,6 @@ tile.blockInventoryChest_enormous.name=Enormous Inventory System Storage
 tile.blockInventoryChest_warehouse.name=Inventory System Storage Warehouse
 tile.blockInventoryChest_warehouse13.name=Inventory System Storage Extended Warehouse
 
-enderio.gui.permission.denied=Permission denied
 enderio.wrench.permission.denied=Permission denied
 enderio.soulvial.denied=Permission denied
 enderio.soulvial.owned.denied=Permission denied - only owners may pick up owned animals

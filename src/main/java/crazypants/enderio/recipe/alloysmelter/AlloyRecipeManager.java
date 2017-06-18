@@ -18,8 +18,8 @@ import crazypants.enderio.recipe.RecipeInput;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
-  private static final @Nonnull String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
-  private static final @Nonnull String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "alloy_smelter_recipes_core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "alloy_smelter_recipes_user.xml";
 
   static final @Nonnull AlloyRecipeManager instance = new AlloyRecipeManager();
 

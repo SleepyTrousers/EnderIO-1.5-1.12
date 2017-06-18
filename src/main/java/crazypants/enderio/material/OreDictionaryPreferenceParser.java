@@ -25,8 +25,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public final class OreDictionaryPreferenceParser extends DefaultHandler {
 
-  private static final @Nonnull String CORE_FILE_NAME = "OreDictionaryPreferences_Core.xml";
-  private static final @Nonnull String CUSTOM_FILE_NAME = "OreDictionaryPreferences_User.xml";
+  private static final @Nonnull String CORE_FILE_NAME = "ore_dictionary_preferences_core.xml";
+  private static final @Nonnull String CUSTOM_FILE_NAME = "ore_dictionary_preferences_user.xml";
   private static final @Nonnull String DISPLAY_NAME = "OreDictionary preferences";
 
   public static void loadConfig() {

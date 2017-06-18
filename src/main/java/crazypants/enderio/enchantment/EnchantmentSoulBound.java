@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.config.Config;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -45,6 +45,7 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
   @Override
   public @Nonnull String[] getTooltipDetails(@Nonnull ItemStack stack) {
-    return new String[] { EnderIO.lang.localizeExact("description.enchantment.enderio.soulBound") };
+    return new String[] { Lang.ENCHANT_SOULBOUND.get() };
   }
+
 }

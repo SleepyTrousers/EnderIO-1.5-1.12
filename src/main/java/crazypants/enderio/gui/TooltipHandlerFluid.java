@@ -1,6 +1,5 @@
 package crazypants.enderio.gui;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -9,7 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.Lang;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
@@ -37,16 +36,14 @@ public class TooltipHandlerFluid implements ITooltipCallback {
     if (fluid != null) {
       IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
       if (fuel != null) {
-        list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
+        list.add(Lang.FUEL_HEADING.get());
         list.add(TextFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
-        Object[] objects = { fuel.getTotalBurningTime() };
-        list.add(TextFormatting.ITALIC + " " + MessageFormat.format(EnderIO.lang.localize("fuel.tooltip.burnTime"), objects));
+        list.add(TextFormatting.ITALIC + " " + Lang.FUEL_BURNTIME.get(fuel.getTotalBurningTime()));
       } else {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {
-          list.add(EnderIO.lang.localize("coolant.tooltip.heading"));
-          list.add(TextFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
-              + EnderIO.lang.localize("coolant.tooltip.degreesPerBucket"));
+          list.add(Lang.COOLANT_HEADING.get());
+          list.add(TextFormatting.ITALIC + " " + Lang.COOLANT_DEGREES.get(PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000)));
         }
       }
     }

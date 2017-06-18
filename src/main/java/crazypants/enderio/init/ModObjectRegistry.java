@@ -15,6 +15,7 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -116,7 +117,8 @@ public final class ModObjectRegistry {
     Item item = mo.getItem();
     if (item != null) {
       NonNullList<ItemStack> list = new NNList<>();
-      item.getSubItems(item, item.getCreativeTab(), list);
+      // item.getSubItems(item, item.getCreativeTab(), list);
+      item.getSubItems(item, EnderIOTab.tabNoTab, list);
       if (list.isEmpty()) {
         Log.debug("Item " + item.getRegistryName() + " has localized name " + new ItemStack(item).getDisplayName());
       } else {
