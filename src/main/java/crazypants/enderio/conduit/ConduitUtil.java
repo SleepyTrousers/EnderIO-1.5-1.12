@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
-import com.sun.istack.internal.Nullable;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;

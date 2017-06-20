@@ -1,9 +1,9 @@
 package crazypants.enderio.item.conduitprobe;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ChatUtil;
-import com.sun.istack.internal.Nullable;
 
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.power.ILegacyPoweredTile;
