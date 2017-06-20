@@ -42,6 +42,9 @@ if (project.hasProperty('mod_appendix')) {
        type = project.mod_appendix
 }
 
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
+
 minecraft {
     mappings = "snapshot_20170425"
     version = "${minecraft_version}-${forge_version}"
