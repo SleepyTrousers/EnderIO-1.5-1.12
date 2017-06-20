@@ -26,7 +26,6 @@ import com.google.gson.stream.JsonWriter;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.UserIdent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;

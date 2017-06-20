@@ -18,8 +18,6 @@ import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;

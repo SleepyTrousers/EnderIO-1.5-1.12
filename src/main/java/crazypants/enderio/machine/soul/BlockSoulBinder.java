@@ -8,7 +8,6 @@ import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;

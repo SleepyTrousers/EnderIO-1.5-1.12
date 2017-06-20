@@ -8,7 +8,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;

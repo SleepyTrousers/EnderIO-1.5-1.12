@@ -236,7 +236,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Nullable
   public Object getIngredientUnderMouse(int mouseX, int mouseY) {
     if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
-      return getTileEntity().fuelTank.;
+      return getTileEntity().fuelTank.getFluid();
     }
     GhostSlot slot = getGhostSlot(mouseX + getGuiLeft(), mouseY + getGuiTop());
     if (slot instanceof InvSlot || slot instanceof RecipeSlot) {

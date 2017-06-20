@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;

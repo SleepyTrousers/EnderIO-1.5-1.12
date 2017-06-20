@@ -8,10 +8,8 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.CapacitorKey;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;

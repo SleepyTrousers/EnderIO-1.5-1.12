@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;

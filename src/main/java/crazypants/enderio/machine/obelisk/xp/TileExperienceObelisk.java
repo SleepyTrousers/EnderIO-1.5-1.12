@@ -6,8 +6,6 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.AbstractInventoryMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;

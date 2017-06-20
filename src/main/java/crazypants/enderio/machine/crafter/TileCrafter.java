@@ -12,9 +12,6 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

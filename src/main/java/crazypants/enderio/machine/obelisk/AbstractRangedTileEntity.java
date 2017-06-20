@@ -4,8 +4,6 @@ import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;

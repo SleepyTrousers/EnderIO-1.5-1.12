@@ -16,7 +16,6 @@ import com.enderio.core.client.render.RenderUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;

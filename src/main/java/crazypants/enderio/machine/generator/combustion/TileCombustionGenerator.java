@@ -17,8 +17,6 @@ import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;

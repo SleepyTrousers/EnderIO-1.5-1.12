@@ -6,7 +6,6 @@ import java.util.List;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;

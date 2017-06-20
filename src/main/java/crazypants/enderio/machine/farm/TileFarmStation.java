@@ -13,13 +13,8 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.ContinuousTask;
-import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.ranged.IRanged;

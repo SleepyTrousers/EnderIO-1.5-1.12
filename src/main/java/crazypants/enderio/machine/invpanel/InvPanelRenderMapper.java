@@ -19,9 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode6;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;

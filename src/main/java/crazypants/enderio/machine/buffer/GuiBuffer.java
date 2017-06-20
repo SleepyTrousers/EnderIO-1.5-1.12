@@ -8,7 +8,6 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDisplayUtil;

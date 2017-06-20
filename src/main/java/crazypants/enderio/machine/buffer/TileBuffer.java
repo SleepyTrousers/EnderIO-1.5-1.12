@@ -6,9 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;

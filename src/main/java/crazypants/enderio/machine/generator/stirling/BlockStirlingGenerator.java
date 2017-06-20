@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;

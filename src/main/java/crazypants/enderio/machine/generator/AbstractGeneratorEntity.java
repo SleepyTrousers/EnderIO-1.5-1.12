@@ -2,8 +2,6 @@ package crazypants.enderio.machine.generator;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import info.loenwind.autosave.annotations.Storable;
 

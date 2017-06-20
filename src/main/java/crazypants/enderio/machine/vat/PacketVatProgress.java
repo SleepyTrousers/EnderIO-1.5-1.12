@@ -12,9 +12,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.PoweredTaskProgress;
 
 public class PacketVatProgress extends MessageTileEntity<TileVat> implements IMessageHandler<PacketVatProgress, IMessage> {
 

@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.obelisk.render;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;

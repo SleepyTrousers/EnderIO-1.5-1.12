@@ -6,7 +6,6 @@ import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.SlotDefinition;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 

@@ -19,7 +19,6 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;

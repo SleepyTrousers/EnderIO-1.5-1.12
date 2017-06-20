@@ -10,11 +10,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.PoweredTask;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.network.PacketHandler;

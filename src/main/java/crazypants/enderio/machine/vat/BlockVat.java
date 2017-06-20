@@ -8,7 +8,6 @@ import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;

@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.registry.TextureRegistry;

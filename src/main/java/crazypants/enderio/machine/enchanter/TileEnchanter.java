@@ -6,8 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;

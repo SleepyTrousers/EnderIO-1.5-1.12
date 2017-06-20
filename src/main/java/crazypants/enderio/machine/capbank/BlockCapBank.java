@@ -20,7 +20,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;

@@ -11,7 +11,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.CapacitorKeyType;
 import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.machine.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;

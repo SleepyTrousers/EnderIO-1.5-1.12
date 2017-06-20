@@ -7,7 +7,6 @@ import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;

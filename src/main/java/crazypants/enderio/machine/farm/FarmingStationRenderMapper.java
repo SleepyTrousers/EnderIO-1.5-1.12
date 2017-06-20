@@ -9,8 +9,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;

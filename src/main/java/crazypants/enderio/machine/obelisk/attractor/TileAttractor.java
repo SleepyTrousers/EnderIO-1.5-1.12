@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import info.loenwind.autosave.annotations.Storable;

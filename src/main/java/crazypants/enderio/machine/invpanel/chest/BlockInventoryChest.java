@@ -9,7 +9,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;

@@ -31,7 +31,6 @@ import com.enderio.core.client.render.VertexTranslation;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;

@@ -12,7 +12,6 @@ import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capability.LegacyStirlingWrapper;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;

@@ -7,8 +7,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.IModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;

@@ -16,8 +16,6 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;

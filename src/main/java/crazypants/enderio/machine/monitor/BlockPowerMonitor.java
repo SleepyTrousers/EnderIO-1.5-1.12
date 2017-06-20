@@ -12,7 +12,6 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;

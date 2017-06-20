@@ -2,7 +2,6 @@ package crazypants.enderio.machine.capbank.packet;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import io.netty.buffer.ByteBuf;

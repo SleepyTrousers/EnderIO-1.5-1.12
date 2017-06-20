@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.GuiPacket;

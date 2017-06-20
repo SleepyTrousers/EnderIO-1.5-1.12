@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;

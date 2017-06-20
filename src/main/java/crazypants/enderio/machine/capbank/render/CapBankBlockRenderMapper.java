@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
 
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;

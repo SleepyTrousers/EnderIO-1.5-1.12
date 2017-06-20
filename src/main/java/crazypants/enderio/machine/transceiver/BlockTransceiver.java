@@ -13,8 +13,6 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;

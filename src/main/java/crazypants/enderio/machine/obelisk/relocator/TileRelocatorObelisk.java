@@ -8,7 +8,6 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.PacketFarmAction;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import crazypants.enderio.network.PacketHandler;
