@@ -1,29 +1,28 @@
 package crazypants.enderio.machine;
 
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
-
-import crazypants.util.UserIdent;
+import com.sun.xml.internal.bind.v2.TODO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class FakePlayerEIO extends FakePlayer {
 
   ItemStack prevWeapon;
 
-  public FakePlayerEIO(World world, BlockCoord pos, GameProfile profile) {
+  public FakePlayerEIO(World world, BlockPos pos, GameProfile profile) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(world.provider.getDimension()), profile);
-    posX = pos.x + 0.5;
-    posY = pos.y + 0.5;
-    posZ = pos.z + 0.5;
+    posX = pos.getX() + 0.5;
+    posY = pos.getY() + 0.5;
+    posZ = pos.getZ() + 0.5;
     // ItemInWorldManager will access this field directly and can crash
     connection = new FakeNetHandlerPlayServer(this);
   }
@@ -50,22 +49,23 @@ public class FakePlayerEIO extends FakePlayer {
 //    return true;
 //  }
 
-  private @Nonnull UserIdent owner = UserIdent.nobody;
+  private @Nonnull
+  UserIdent owner = UserIdent.NOBODY;
 
   /**
    * Returns the UUID of the player who is responsible for this FakePlayer or null if no player is responsible or known. May return the UUID of another fake
    * player if the block was placed by one.
    */
   public UUID getOwner() {
-    return owner == UserIdent.nobody ? null : owner.getUUID();
+    return owner == UserIdent.NOBODY ? null : owner.getUUID();
   }
 
   public void setOwner(@Nullable UserIdent owner) {
-    this.owner = owner == null ? UserIdent.nobody : owner;
+    this.owner = owner == null ? UserIdent.NOBODY : owner;
   }
 
   public void clearOwner() {
-    this.owner = UserIdent.nobody;
+    this.owner = UserIdent.NOBODY;
   }
 
 }

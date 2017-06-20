@@ -13,7 +13,6 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.machine.invpanel.server.ChangeLog;
@@ -77,7 +76,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     te.eventHandler = this;
     playerWorld = playerInv.player.world;
 
-    if (!te.hasworld() || te.getWorld().isRemote) {
+    if (!te.hasWorld() || te.getWorld().isRemote) {
       changedItems = null;
     } else {
       changedItems = new HashSet<ItemEntry>();
@@ -127,7 +126,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   public void onContainerClosed(EntityPlayer player) {
     super.onContainerClosed(player);
-    if (getInv().hasworld() && !getInv().getWorld().isRemote) {
+    if (getInv().hasWorld() && !getInv().getWorld().isRemote) {
       getInv().eventHandler = null;
     }
     removeChangeLog();
@@ -373,7 +372,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       tmpStack.setTagCompound(entry.nbt);
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 
-      if(targetStack != null && targetStack.stackSize > 0) {
+      if(targetStack != null && targetStack.getCount() > 0) {
         if(!ItemUtil.areStackMergable(tmpStack, targetStack)) {
           return;
         }
@@ -381,15 +380,16 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         targetStack = tmpStack.copy();
       }
 
-      count = Math.min(count, maxStackSize - targetStack.stackSize);
+      count = Math.min(count, maxStackSize - targetStack.getCount());
       if(count > 0) {
         int extracted = db.extractItems(entry, count, te);
         if(extracted > 0) {
-          targetStack.stackSize += extracted;
+          targetStack.grow(extracted);
 
-          if (DebugCommand.SERVER.isEnabled(player)) {
-            DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
-          }
+          // TODO Debug stuff
+//          if (DebugCommand.SERVER.isEnabled(player)) {
+//            DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+//          }
 
           sendChangeLog();
 
@@ -412,7 +412,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     if(!executeMoveItems(fromSlot, toSlotStart, toSlotEnd, amount)) {
       return false;
     }
-    if (!getInv().hasworld() || getInv().getWorld().isRemote) {
+    if (!getInv().hasWorld() || getInv().getWorld().isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketMoveItems(fromSlot, toSlotStart, toSlotEnd, amount));
     }
     return true;
@@ -427,14 +427,14 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
     ItemStack src = srcSlot.getStack();
     if(src != null) {
       ItemStack toMove = src.copy();
-      toMove.stackSize = Math.min(src.stackSize, amount);
-      int remaining = src.stackSize - toMove.stackSize;
+      toMove.setCount(Math.min(src.getCount(), amount));
+      int remaining = src.getCount() - toMove.getCount();
       if(mergeItemStack(toMove, toSlotStart, toSlotEnd, false)) {
-        remaining += toMove.stackSize;
+        remaining += toMove.getCount();
         if(remaining == 0) {
           srcSlot.putStack(null);
         } else {
-          src.stackSize = remaining;
+          src.setCount(remaining);
           srcSlot.onSlotChanged();
         }
         return true;

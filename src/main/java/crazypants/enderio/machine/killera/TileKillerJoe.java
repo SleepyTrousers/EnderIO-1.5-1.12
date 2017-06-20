@@ -1,33 +1,24 @@
 package crazypants.enderio.machine.killera;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.ICreeperTarget;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.util.MagnetUtil;
+import com.enderio.core.common.util.UserIdent;
+import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capability.LegacyKillerJoeWrapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.FakePlayerEIO;
 import crazypants.enderio.machine.SlotDefinition;
@@ -37,9 +28,6 @@ import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.MagnetUtil;
-import com.enderio.core.common.util.stackable.Things;
-import crazypants.util.UserIdent;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -76,6 +64,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
@@ -148,12 +144,12 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       "tconstruct:broadsword", "tconstruct:longsword", "tconstruct:rapier", "tconstruct:frypan", "tconstruct:cleaver", "minecraft:stick")
           // for the ghost slot:
           .add(Items.WOODEN_SWORD).add(Items.STONE_SWORD).add(Items.IRON_SWORD).add(Items.GOLDEN_SWORD).add(Items.DIAMOND_SWORD)
-          .add(ModObject.itemDarkSteelSword).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
-          .add(ModObject.itemDarkSteelAxe);
+          .add(ModObject.itemDarkSteelSword.getItem()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
+          .add(ModObject.itemDarkSteelAxe.getItem());
   
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
     return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack);
@@ -199,7 +195,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     if (isSideDisabled(side)) {
       return false;
     }
-    if (inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+    if (inventory[slot] == null || inventory[slot].getCount() < itemstack.getCount()) {
       return false;
     }
     return itemstack.getItem() == inventory[slot].getItem();
@@ -239,7 +235,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     if (!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
-        if (!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable(DamageSource.generic) && ent.hurtResistantTime == 0) {
+        if (!ent.isDead && ent.deathTime <= 0 && !ent.isEntityInvulnerable(DamageSource.GENERIC) && ent.hurtResistantTime == 0) {
           if (ent instanceof EntityPlayer && ((EntityPlayer) ent).capabilities.disableDamage) {
             continue; // Ignore players in creative, can't damage them;
           }
@@ -273,7 +269,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           atackera.resetCooldown();
           useNutrient();
           swingWeapon();
-          if (getStackInSlot(0) == null || getStackInSlot(0).stackSize <= 0 || atackera.getHeldItemMainhand() == null) {
+          if (getStackInSlot(0) == null || getStackInSlot(0).getCount() <= 0 || atackera.getHeldItemMainhand() == null) {
             setInventorySlotContents(0, null);
           }
           return false;
@@ -528,7 +524,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     ItemStack prevWeapon;
 
     public Attackera(UserIdent owner) {
-      super(getWorld(), getLocation(), (owner == null || owner == UserIdent.nobody || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
+      super(getWorld(), getLocation(), (owner == null || owner == UserIdent.NOBODY || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
           : new GameProfile(uuid, "[" + owner.getPlayerName() + "'s Killer Joe]"));
       setOwner(owner);
     }

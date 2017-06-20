@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.fluid.SmartTank;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.IconButton;
@@ -24,9 +25,7 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.diagnostics.DebugCommand;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.machine.gui.GuiMachineBase;
@@ -92,6 +91,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
+  // TODO this class makes heavy use of ghost slots
   public GuiInventoryPanel(TileInventoryPanel te, Container container) {
     super(te, container, "inventorypanel");
     redstoneButton.visible = false;
@@ -236,7 +236,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Nullable
   public Object getIngredientUnderMouse(int mouseX, int mouseY) {
     if (RECTANGLE_FUEL_TANK.contains(mouseX, mouseY)) {
-      return getTileEntity().fuelTank.getFluid();
+      return getTileEntity().fuelTank.;
     }
     GhostSlot slot = getGhostSlot(mouseX + getGuiLeft(), mouseY + getGuiTop());
     if (slot instanceof InvSlot || slot instanceof RecipeSlot) {
@@ -506,18 +506,19 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     itemRender.renderItemOverlayIntoGUI(font, stack, x, y, "");
   }
 
-  @Override
-  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
-    ItemStack stack = slot.getStack();
-    if(stack != null) {
-      ghostSlotTooltipStacksize = stack.getCount();
-      try {
-        renderToolTip(stack, mouseX, mouseY);
-      } finally {
-        ghostSlotTooltipStacksize = 0;
-      }
-    }    
-  }
+  // TODO ghost slot stuff
+//  @Override
+//  protected void drawGhostSlotTooltip(GhostSlot slot, int mouseX, int mouseY) {
+//    ItemStack stack = slot.getStack();
+//    if(stack != null) {
+//      ghostSlotTooltipStacksize = stack.getCount();
+//      try {
+//        renderToolTip(stack, mouseX, mouseY);
+//      } finally {
+//        ghostSlotTooltipStacksize = 0;
+//      }
+//    }
+//  }
 
   @Override
   public void drawHoveringText(List<String> list, int mouseX, int mouseY, FontRenderer font) {

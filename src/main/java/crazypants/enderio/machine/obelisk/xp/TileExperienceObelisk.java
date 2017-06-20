@@ -1,14 +1,10 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
-
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
@@ -25,6 +21,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @Storable
 public class TileExperienceObelisk extends AbstractInventoryMachineEntity implements IHaveExperience, ITankAccess {

@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
@@ -17,8 +19,6 @@ import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -61,7 +61,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private InventoryDatabaseServer dbServer;
   private InventoryDatabaseClient dbClient;
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
   private boolean active;
   @Store
   private boolean extractionDisabled;

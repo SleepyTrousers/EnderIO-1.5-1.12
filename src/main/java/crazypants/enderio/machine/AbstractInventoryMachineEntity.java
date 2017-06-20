@@ -22,6 +22,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Storable
 public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity implements ISidedInventory {
@@ -124,7 +125,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   protected boolean hasSpaceToPull() {
     boolean hasSpace = false;
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = Prep.isInvalid(inventory[slot]) ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
+      hasSpace = Prep.isInvalid(inventory[slot]) ? true : inventory[slot].getCount() < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
     }
     return hasSpace;
   }
@@ -132,8 +133,19 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   // ---- Inventory
   // ------------------------------------------------------------------------------
 
+
   @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
+  public boolean isEmpty() {
+    for (ItemStack stack : inventory) {
+      if (!stack.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public boolean isUsableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
@@ -188,9 +200,9 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
       inventory[slot] = Prep.getEmpty();
     } else {
       inventory[slot] = contents.copy();
-      if (inventory[slot].stackSize > getInventoryStackLimit(slot)) {
-        inventory[slot].stackSize = getInventoryStackLimit(slot);
-        contents.stackSize -= getInventoryStackLimit(slot);
+      if (inventory[slot].getCount() > getInventoryStackLimit(slot)) {
+        inventory[slot].setCount(getInventoryStackLimit(slot));
+        contents.shrink(getInventoryStackLimit(slot));
         Block.spawnAsEntity(world, pos, contents);
       }
     }
@@ -268,7 +280,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
       // no point in checking the recipes if an item is already in the slot
       // worst case we get more of the wrong item - but that doesn't change
       // anything
-      return existing.isStackable() && existing.stackSize < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
+      return existing.isStackable() && existing.getCount() < existing.getMaxStackSize() && existing.isItemEqual(itemstack);
     }
     // no need to call isItemValidForSlot as upgrade slots are not input slots
     return isMachineItemValidForSlot(slot, itemstack);
@@ -286,7 +298,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
   }
 
   protected boolean canExtractItem(int slot, ItemStack itemstack) {
-    if (inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+    if (inventory[slot] == null || inventory[slot].getCount() < itemstack.getCount()) {
       return false;
     }
     return itemstack.getItem() == inventory[slot].getItem();

@@ -14,7 +14,6 @@ import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.machine.painter.recipe.PressurePlatePainterTemplate;
@@ -55,10 +54,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -72,7 +68,7 @@ import static crazypants.enderio.ModObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
-    INamedSubBlocks, IResourceTooltipProvider, IWailaInfoProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper {
+    INamedSubBlocks, IResourceTooltipProvider, /*IWailaInfoProvider,*/ IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   @Storable
   public static class TilePaintedPressurePlate extends TileEntityPaintedBlock {
@@ -267,11 +263,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-    return getDefaultState();
-  }
-
-  @Override
   public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
     setTypeFromMeta(worldIn, pos, stack.getMetadata());
     setPaintSource(state, worldIn, pos, PainterUtil2.getSourceBlock(stack));
@@ -435,7 +426,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
     if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
-      IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+      IBlockState stdOverlay = ModObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
       IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
       list.add(model2);
     }
@@ -443,7 +434,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
@@ -466,7 +457,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     for (EnumPressurePlateType type : EnumPressurePlateType.values()) {
       if (tab == EnderIOTab.tabNoTab || type.ordinal() >= EnumPressurePlateType.DARKSTEEL.ordinal()) {
         list.add(new ItemStack(itemIn, 1, EnumPressurePlateType.getMetaFromType(type, false)));
@@ -535,22 +526,22 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     return getUnlocalizedName(itemStack.getMetadata());
   }
 
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    ItemStack drop = getDrop(world, new BlockPos(x, y, z));
-    if (drop != null) {
-      tooltip.add(PainterUtil2.getTooltTipText(drop));
-      CapturedMob capturedMob = CapturedMob.create(drop);
-      if (capturedMob != null) {
-        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned", capturedMob.getDisplayName()));
-      }
-    }
-  }
-
-  @Override
-  public int getDefaultDisplayMask(World world, int x, int y, int z) {
-    return 0;
-  }
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//    ItemStack drop = getDrop(world, new BlockPos(x, y, z));
+//    if (drop != null) {
+//      tooltip.add(PainterUtil2.getTooltTipText(drop));
+//      CapturedMob capturedMob = CapturedMob.create(drop);
+//      if (capturedMob != null) {
+//        tooltip.add(EnderIO.lang.localize("tile.plockPaintedPressurePlate.tuned", capturedMob.getDisplayName()));
+//      }
+//    }
+//  }
+//
+//  @Override
+//  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+//    return 0;
+//  }
 
   @Override
   @SideOnly(Side.CLIENT)

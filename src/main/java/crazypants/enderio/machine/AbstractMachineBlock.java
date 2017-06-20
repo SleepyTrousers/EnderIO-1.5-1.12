@@ -13,7 +13,6 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.integration.waila.IWailaInfoProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -53,7 +52,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockEio<T> implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider, ISmartRenderAwareBlock {
+        ISmartRenderAwareBlock {
   
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selectedFace");
 
@@ -200,9 +199,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     super.onBlockAdded(world, pos,state);
     world.notifyBlockUpdate(pos, state, state, 3);
   }
-  
+
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
+  @Deprecated
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
     AbstractMachineEntity te = getTileEntity(world, pos);
     if (te != null) {
       te.onNeighborBlockChange(neighborBlock);
@@ -210,16 +210,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
-      EnumFacing side,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side,
       float hitX, float hitY, float hitZ) {
     T tile = getTileEntity(world, pos);
+    ItemStack heldItem = entityPlayer.getHeldItem(hand);
     if (Prep.isValid(heldItem) && tile instanceof AbstractPoweredMachineEntity) {
       AbstractPoweredMachineEntity machine = (AbstractPoweredMachineEntity) tile;
       if (machine.getSlotDefinition().getNumUpgradeSlots() > 0 && heldItem.getItem() == ModObject.itemBasicCapacitor.getItem()) {
         int slot = machine.getSlotDefinition().getMinUpgradeSlot();
         ItemStack toInsert = heldItem.copy();
-        toInsert.stackSize = 1;
+        toInsert.setCount(1);
         ItemStack temp = machine.getStackInSlot(slot);
         if (Prep.isInvalid(temp)) {
           machine.setInventorySlotContents(slot, toInsert);
@@ -228,11 +228,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           machine.setInventorySlotContents(slot, toInsert);
           toInsert = temp;
         } else {
-          return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+          return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
         }
         
-        heldItem.stackSize--;
-        if (heldItem.stackSize == 0) {
+        heldItem.shrink(1);
+        if (heldItem.getCount() == 0) {
           entityPlayer.setHeldItem(hand, null);
         }
         
@@ -246,7 +246,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
     }
     
-    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
   }
   
   @SideOnly(Side.CLIENT)
@@ -291,14 +291,14 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return getUnlocalizedName();
   }
 
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-  }
-
-  @Override
-  public int getDefaultDisplayMask(World world, int x, int y, int z) {
-    return IWailaInfoProvider.ALL_BITS;
-  }
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//  }
+//
+//  @Override
+//  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+//    return IWailaInfoProvider.ALL_BITS;
+//  }
 
   @SideOnly(Side.CLIENT)
   public IOMode.EnumIOMode mapIOMode(IoMode mode, EnumFacing side) {

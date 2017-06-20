@@ -9,6 +9,8 @@ import com.enderio.core.common.util.BlockCoord;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 
 public class WirelessChargedLocation {
 
@@ -30,13 +32,13 @@ public class WirelessChargedLocation {
     WirelessChargerController wcc = WirelessChargerController.instance;
     chargers.clear();
     lastChangeCount = wcc.getChangeCount();
-    final BlockCoord bc = new BlockCoord(te);
+    final BlockPos bc = BlockCoord.get(te);
     wcc.getChargers(te.getWorld(), bc, chargers);
     Collections.sort(chargers, new Comparator<IWirelessCharger>() {
       @Override
       public int compare(IWirelessCharger o1, IWirelessCharger o2) {
-        int dist1 = o1.getLocation().getDistSq(bc);
-        int dist2 = o2.getLocation().getDistSq(bc);
+        int dist1 = BlockCoord.getDistSq(o1.getLocation(), bc);
+        int dist2 = BlockCoord.getDistSq(o2.getLocation(), bc);
         return dist1 - dist2;
       }
     });
@@ -48,7 +50,7 @@ public class WirelessChargedLocation {
     }
   }
 
-  public boolean chargeItems(ItemStack[] items) {
+  public boolean chargeItems(NonNullList<ItemStack> items) {
     checkChangeCount();
     for(IWirelessCharger wc : chargers) {
       if(wc.isActive()) {

@@ -22,7 +22,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.util.TextUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -125,11 +124,11 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
 
   protected void renderSlotHighlight(int slot, Vector4f col) {
     Slot invSlot = inventorySlots.inventorySlots.get(slot);
-    renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+    renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 
   protected void renderSlotHighlight(Slot invSlot, Vector4f col) {
-    renderSlotHighlight(col, invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+    renderSlotHighlight(col, invSlot.xPos, invSlot.yPos, 16, 16);
   }
 
   protected void renderSlotHighlight(Vector4f col, int x, int y, int widthIn, int heightIn) {

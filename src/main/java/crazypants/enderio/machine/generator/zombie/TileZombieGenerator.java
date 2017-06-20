@@ -1,20 +1,14 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -23,8 +17,8 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -32,6 +26,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -45,7 +44,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
-  @Store(NBTAction.CLIENT)
+  @Store(NBTAction.UPDATE)
   private boolean active = false;
   private PowerDistributor powerDis;
 
@@ -168,7 +167,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       return false;
     }
     if(powerDis == null) {
-      powerDis = new PowerDistributor(new BlockCoord(this));
+      powerDis = new PowerDistributor(BlockCoord.get(this));
     }
     int transmitted = powerDis.transmitEnergy(world, Math.min(outputPerTick * 2, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);

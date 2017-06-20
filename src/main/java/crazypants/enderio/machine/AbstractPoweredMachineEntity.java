@@ -31,7 +31,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   protected ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
 
-  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  @Store({ NBTAction.SAVE, NBTAction.UPDATE })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
