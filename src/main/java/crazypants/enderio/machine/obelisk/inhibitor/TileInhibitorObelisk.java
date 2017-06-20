@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nonnull;
 
 import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 

@@ -1,11 +1,6 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.enderio.core.common.util.ItemUtil;
-
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.PacketFetchItem;
@@ -13,6 +8,10 @@ import crazypants.enderio.machine.invpanel.StoredCraftingRecipe;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class CraftingHelper {
   final ItemStack[][] ingredients;

@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.invpanel;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
 
 public class InventoryCraftingWrapper extends InventoryCrafting {
 

@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.killera;
 
-import java.util.Locale;
-
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
@@ -38,6 +34,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+
+import javax.annotation.Nonnull;
+import java.util.Locale;
 
 /**
  * Name proudly created by Xaw4

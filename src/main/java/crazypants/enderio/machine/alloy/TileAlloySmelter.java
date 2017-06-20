@@ -1,27 +1,23 @@
 package crazypants.enderio.machine.alloy;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
+import javax.annotation.Nonnull;
+import java.util.List;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -52,17 +48,12 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   private Mode mode;
 
   public TileAlloySmelter() {
-    super(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
+    super(new SlotDefinition(3, 1), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
     mode = Mode.ALL;
   }
 
   protected TileAlloySmelter(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return "Alloy Smelter";
   }
 
   public Mode getMode() {
@@ -84,7 +75,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     if (mode == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().vanillaRecipe;
       if (vr.isRecipe(getRecipeInputs())) {
-        ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
+        IMachineRecipe.ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
         if (res == null || res.length == 0) {
           return null;
         }
@@ -106,7 +97,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockAlloySmelter.getUnlocalisedName();
+    return MachineObject.blockAlloySmelter.getUnlocalisedName();
   }
 
   @Override
@@ -124,7 +115,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (i >= 0 && i < inventory.length) {
-        if (inventory[i] != null && inventory[i].stackSize > 0) {
+        if (inventory[i] != null && inventory[i].getCount() > 0) {
           numSlotsFilled++;
         }
       }
@@ -205,10 +196,4 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
     return false;
   }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
 }

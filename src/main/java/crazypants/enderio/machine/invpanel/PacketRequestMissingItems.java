@@ -1,13 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.enderio.core.common.network.CompressedDataOutput;
 import com.enderio.core.common.network.NetworkUtil;
-
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import io.netty.buffer.ByteBuf;
@@ -15,6 +9,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PacketRequestMissingItems implements IMessage, IMessageHandler<PacketRequestMissingItems, IMessage> {
 

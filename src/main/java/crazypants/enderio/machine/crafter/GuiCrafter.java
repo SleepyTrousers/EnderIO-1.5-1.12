@@ -1,13 +1,7 @@
 package crazypants.enderio.machine.crafter;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
@@ -18,6 +12,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 

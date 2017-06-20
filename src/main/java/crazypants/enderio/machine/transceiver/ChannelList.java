@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.transceiver;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
 

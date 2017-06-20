@@ -1,27 +1,18 @@
 package crazypants.enderio.machine.sagmill;
 
+import com.enderio.core.common.util.Util;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.recipe.*;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.enderio.core.common.util.Util;
-
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.Recipe;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.machine.recipe.RecipeConfig;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.recipe.RecipeOutput;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class SagMillRecipeManager {
 

@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.WeakHashMap;
-
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.farm.PacketFarmAction;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
@@ -19,9 +12,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_POWER_USE;
+import javax.annotation.Nonnull;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
 public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {

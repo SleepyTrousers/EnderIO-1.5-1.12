@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.slicensplice;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
 

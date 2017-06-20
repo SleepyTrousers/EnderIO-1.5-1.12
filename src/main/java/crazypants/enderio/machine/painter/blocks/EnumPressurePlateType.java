@@ -1,12 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-import javax.annotation.Nullable;
-
+import com.google.common.base.Predicate;
+import crazypants.util.CapturedMob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,9 +14,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
-import com.google.common.base.Predicate;
-
-import crazypants.util.CapturedMob;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 public enum EnumPressurePlateType implements IStringSerializable {
 

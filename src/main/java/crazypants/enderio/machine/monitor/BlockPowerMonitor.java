@@ -1,14 +1,8 @@
 package crazypants.enderio.machine.monitor;
 
 
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
 import crazypants.enderio.GuiID;
 import crazypants.enderio.IModObject;
 import crazypants.enderio.ModObject;
@@ -32,6 +26,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Random;
 
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements IAdvancedTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint, IHaveTESR {

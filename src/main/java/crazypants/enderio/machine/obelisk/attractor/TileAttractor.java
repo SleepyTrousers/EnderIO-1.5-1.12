@@ -1,14 +1,6 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-
 import com.mojang.authlib.GameProfile;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
@@ -19,10 +11,13 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.ATTRACTOR_RANGE;
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 import static crazypants.enderio.config.Config.maxMobsAttracted;
 
 @Storable

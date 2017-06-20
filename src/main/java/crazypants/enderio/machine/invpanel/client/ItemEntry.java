@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import java.util.Locale;
-
 import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+
+import java.util.Locale;
 
 public class ItemEntry extends ItemEntryBase {
   String name;

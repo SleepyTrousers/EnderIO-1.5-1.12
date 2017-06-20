@@ -1,13 +1,8 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
-
 import crazypants.enderio.Log;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +10,9 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 

@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
@@ -12,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 public class GuiSensor extends GuiPoweredMachineBase<TileInventoryPanelSensor> {
   

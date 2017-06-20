@@ -1,52 +1,42 @@
 package crazypants.enderio.machine.capbank;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
-
 import crazypants.enderio.Log;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.machine.capbank.network.EnergyReceptor;
-import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
-import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.enderio.machine.capbank.network.NetworkUtil;
+import crazypants.enderio.machine.capbank.network.*;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
+import crazypants.enderio.machine.interfaces.IIoConfigurable;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.NbtValue;
-import com.enderio.core.common.util.NullHelper;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
-import info.loenwind.autosave.handlers.enderio.HandleDisplayMode;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
+import li.cil.oc.api.prefab.ItemStackTabIconRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -54,7 +44,15 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockCapBank;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
 
 @Storable
 public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
@@ -67,7 +65,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Store
   private CapBankType type;
 
-  @Store({ NBTAction.SAVE, NBTAction.CLIENT })
+  @Store({ NBTAction.SAVE, NBTAction.SYNC, NBTAction.UPDATE })
   private int energyStored;
   @Store
   private int maxInput = -1;
@@ -100,7 +98,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   public CapBankType getType() {
     if (type == null) {
-      if (!hasworld()) {
+      if (!hasWorld()) {
         // needed when loading from invalid NBT
         return CapBankType.VIBRANT;
       }
@@ -302,11 +300,11 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
       validateModeForReceptor(faceHit);
       receptorsDirty = true;
     }
-    if (hasworld()) {
+    if (hasWorld()) {
       IBlockState bs = world.getBlockState(pos);
       world.notifyBlockUpdate(pos, bs, bs, 3);
-      world.notifyBlockOfStateChange(getPos(), getBlockType());
-      world.notifyNeighborsOfStateChange(pos, getBlockType());
+      // TODO what is this? world.notifyBlockOfStateChange(getPos(), getBlockType());
+      world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
     }
   }
 
@@ -509,7 +507,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public long getEnergyStoredL() {
     if (network == null) {
-      return getEnergyStored(null);
+      return getEnergyStored();
     }
     return network.getEnergyStoredL();
   }
@@ -517,7 +515,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public long getMaxEnergyStoredL() {
     if (network == null) {
-      return getMaxEnergyStored(null);
+      return getMaxEnergyStored();
     }
     return network.getMaxEnergyStoredL();
   }
@@ -644,7 +642,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public void addEnergy(int energy) {
     if (network == null) {
-      setEnergyStored(getEnergyStored(null) + energy);
+      setEnergyStored(getEnergyStored() + energy);
     } else {
       network.addEnergy(energy);
     }
@@ -652,17 +650,17 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   @Override
   public void setEnergyStored(int stored) {
-    energyStored = MathHelper.clamp(stored, 0, getMaxEnergyStored(null));
+    energyStored = MathHelper.clamp(stored, 0, getMaxEnergyStored());
     markDirty();
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
+  public int getEnergyStored() {
     return energyStored;
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing from) {
+  public int getMaxEnergyStored() {
     return getType().getMaxEnergyStored();
   }
 
@@ -745,8 +743,8 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   public int getComparatorOutput() {
-    double stored = getEnergyStored(null);
-    return stored == 0 ? 0 : (int) (1 + stored / getMaxEnergyStored(null) * 14);
+    double stored = getEnergyStored();
+    return stored == 0 ? 0 : (int) (1 + stored / getMaxEnergyStored() * 14);
   }
 
   @Override
@@ -755,11 +753,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   // ------------------- Inventory
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
-    return canPlayerAccess(player);
-  }
 
   @Override
   public ItemStack getStackInSlot(int slot) {
@@ -807,6 +800,16 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
+  public boolean isEmpty() {
+    for (ItemStack stack : inventory){
+      if (!stack.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
   public @Nonnull String getName() {
     return blockCapBank.getBlock().getUnlocalizedName() + ".name";
   }
@@ -822,6 +825,11 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
+  public boolean isUsableByPlayer(EntityPlayer player) {
+    return canPlayerAccess(player);
+  }
+
+  @Override
   public void openInventory(EntityPlayer e) {
   }
 
@@ -831,7 +839,7 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
     return PowerHandlerUtil.getCapability(itemstack, null) != null;
@@ -866,26 +874,27 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   // ---------------- NBT
 
+
   @Override
-  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
-    super.readContentsFromNBT(nbtRoot);
-    //Handle version before making RF optional
-    if(nbtRoot.hasKey("storedEnergyRF")) {
-      energyStored = nbtRoot.getInteger("storedEnergyRF");
+  public void readFromItemStack(@Nonnull ItemStack stack) {
+    super.readFromItemStack(stack);
+    NBTTagCompound rootTag = NbtValue.getRoot(stack);
+    if(stack.getTagCompound().hasKey("storedEnergyRF")) {
+      energyStored = rootTag.getInteger("storedEnergyRF");
     } else {
-      energyStored = NbtValue.ENERGY.getInt(nbtRoot);
+      energyStored = NbtValue.ENERGY.getInt(rootTag);
     }
   }
 
   @Override
-  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
-    super.writeContentsToNBT(nbtRoot);
-    NbtValue.ENERGY.setInt(nbtRoot, energyStored);
+  public void writeToItemStack(@Nonnull ItemStack stack) {
+    super.writeToItemStack(stack);
+    NbtValue.ENERGY.setInt(NbtValue.getRoot(stack), energyStored);
   }
 
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public BlockPos getLocation() {
+    return getPos();
   }
 
   @Override
@@ -908,13 +917,13 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   }
 
   @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    super.readCustomNBT(root);
+  protected void readCustomNBT(NBTAction action, NBTTagCompound root) {
+    super.readCustomNBT(action, root);
   }
 
   @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
-    super.writeCustomNBT(root);
+  protected void writeCustomNBT(NBTAction action, NBTTagCompound root) {
+    super.writeCustomNBT(action, root);
   }
   
 }

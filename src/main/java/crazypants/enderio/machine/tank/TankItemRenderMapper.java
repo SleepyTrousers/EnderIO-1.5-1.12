@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
@@ -15,10 +8,10 @@ import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.util.ItemQuadCollector;
 import crazypants.enderio.render.util.QuadCollector;
 import crazypants.enderio.render.util.TankRenderHelper;
-import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,6 +22,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankItemRenderMapper extends MachineRenderMapper implements IItemRenderMapper.IDynamicOverlayMapper,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware {

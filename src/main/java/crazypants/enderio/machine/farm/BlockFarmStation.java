@@ -1,10 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.Locale;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
@@ -28,6 +23,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+
+import javax.annotation.Nonnull;
+import java.util.Locale;
+import java.util.Random;
 
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {

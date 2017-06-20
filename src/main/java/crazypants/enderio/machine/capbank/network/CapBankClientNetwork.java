@@ -1,19 +1,13 @@
 package crazypants.enderio.machine.capbank.network;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
 import net.minecraft.tileentity.TileEntity;
@@ -22,10 +16,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CapBankClientNetwork implements ICapBankNetwork {
 
   private final int id;
-  private final Map<BlockCoord, TileCapBank> members = new HashMap<BlockCoord, TileCapBank>();
+  private final Map<BlockPos, TileCapBank> members = new HashMap<>();
   private int maxEnergySent;
   private int maxEnergyRecieved;
 
@@ -77,11 +76,11 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     inputControlMode = state.getInputMode();
     outputControlMode = state.getOutputMode();
 
-    BlockCoord bc = state.getInventoryImplLocation();
-    if(bc == null) {
+    BlockPos pos = state.getInventoryImplLocation();
+    if(pos == null) {
       inventory.setCapBank(null);
     } else if(world != null) {
-      TileEntity te = world.getTileEntity(bc.getBlockPos());
+      TileEntity te = world.getTileEntity(pos);
       if(te instanceof TileCapBank) {
         inventory.setCapBank((TileCapBank) te);
       }
@@ -408,7 +407,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   private TileCapBank getCapBankAt(int x, int y, int z) {
-    return members.get(new BlockCoord(x, y, z));
+    return members.get(new BlockPos(x, y, z));
   }
 
   public static final class DisplayInfoKey {

@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import java.util.List;
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
 
 public interface IHarvestResult {
 

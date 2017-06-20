@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.light;
 
 import com.enderio.core.common.vecmath.Vector3f;
-
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;

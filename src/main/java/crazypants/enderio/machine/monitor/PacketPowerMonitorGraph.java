@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
+import com.enderio.core.common.network.MessageTileEntity;
+import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -7,10 +9,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.enderio.core.common.network.MessageTileEntity;
-
-import crazypants.enderio.EnderIO;
 
 public class PacketPowerMonitorGraph extends MessageTileEntity<TilePowerMonitor> {
 

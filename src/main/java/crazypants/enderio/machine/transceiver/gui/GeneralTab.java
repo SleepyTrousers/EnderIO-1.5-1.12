@@ -1,17 +1,9 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.crafter.ContainerCrafter;
@@ -19,6 +11,10 @@ import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.List;
 
 public class GeneralTab implements ITabPanel {
 

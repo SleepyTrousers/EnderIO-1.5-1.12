@@ -1,16 +1,15 @@
 package crazypants.enderio.machine.painter.recipe;
 
-import javax.annotation.Nonnull;
-
-import crazypants.enderio.machine.MachineRecipeInput;
+import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
-import com.enderio.core.common.util.NullHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nonnull;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
 

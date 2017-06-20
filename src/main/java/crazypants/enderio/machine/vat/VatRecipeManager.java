@@ -1,23 +1,14 @@
 package crazypants.enderio.machine.vat;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.enderio.core.common.util.FluidUtil;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
-import com.enderio.core.common.util.FluidUtil;
-
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.Recipe;
-import crazypants.enderio.machine.recipe.RecipeConfig;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.recipe.RecipeOutput;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VatRecipeManager {
 

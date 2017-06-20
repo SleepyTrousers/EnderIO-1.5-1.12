@@ -1,14 +1,14 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FarmersCommune implements IFarmerJoe {
 

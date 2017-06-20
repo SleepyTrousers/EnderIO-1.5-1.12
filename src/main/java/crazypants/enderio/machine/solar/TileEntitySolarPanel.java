@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.solar;
 
 import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.integration.waila.IWailaNBTProvider;
 import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;

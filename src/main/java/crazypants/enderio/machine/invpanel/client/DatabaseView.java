@@ -1,14 +1,10 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Locale;
-
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import net.minecraft.client.Minecraft;
+
+import java.text.Collator;
+import java.util.*;
 
 public class DatabaseView {
 

@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.painter.blocks;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nonnull;
 
 public class BlockItemPaintedBlock extends ItemBlock {
 

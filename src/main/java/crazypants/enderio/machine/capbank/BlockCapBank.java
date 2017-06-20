@@ -1,38 +1,24 @@
 package crazypants.enderio.machine.capbank;
 
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
-
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.integration.baubles.BaublesUtil;
-import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
-import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.machine.capbank.packet.*;
 import crazypants.enderio.machine.capbank.render.CapBankBlockRenderMapper;
 import crazypants.enderio.machine.capbank.render.CapBankItemRenderMapper;
 import crazypants.enderio.machine.capbank.render.CapBankRenderer;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDisplayUtil;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -45,8 +31,6 @@ import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.tool.ToolUtil;
-import com.enderio.core.common.util.NullHelper;
-import crazypants.util.TextUtil;
 import info.loenwind.autosave.Reader;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -65,6 +49,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -76,9 +61,14 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockCapBank;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
-public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable,
+public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IRedstoneConnectable,
     ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
@@ -102,7 +92,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   public static final TextureSupplier infoPanelIcon = TextureRegistry.registerTexture("blocks/capBankInfoPanel");
 
   protected BlockCapBank() {
-    super(ModObject.blockCapBank.getUnlocalisedName(), TileCapBank.class);
+    super(MachineObject.blockCapBank, TileCapBank.class);
     setHardness(2.0F);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
         .withProperty(CapBankType.KIND, CapBankType.NONE));
@@ -110,7 +100,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   protected ItemBlock createItemBlock() {
-    return new BlockItemCapBank(this, getName());
+    return new BlockItemCapBank(this, getRegistryName());
   }
 
   @Override
@@ -173,7 +163,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List<ItemStack> list) {
+  public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, NonNullList<ItemStack> list) {
     for (CapBankType type : CapBankType.types()) {
       if (type.isCreative()) {
         list.add(BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(type), type.getMaxEnergyStored() / 2));
@@ -225,7 +215,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand,
       EnumFacing faceHit, float hitX, float hitY, float hitZ) {
     if (world != null && pos != null && state != null && entityPlayer != null && hand != null && faceHit != null) {
       TileCapBank tcb = getTileEntity(world, pos);
@@ -264,9 +254,9 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
         if (world.isRemote) {
           world.notifyBlockUpdate(pos, bs, bs, 3);
         } else {
-          final Block blockCapBank2 = blockCapBank.getBlock();
+          final Block blockCapBank2 = MachineObject.blockCapBank.getBlock();
           if (blockCapBank2 != null) {
-            world.notifyNeighborsOfStateChange(pos, this);
+            world.notifyNeighborsOfStateChange(pos, this, true);
           }
           world.notifyBlockUpdate(pos, bs, bs, 3);
         }
@@ -275,7 +265,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       }
     }
 
-    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, faceHit, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, faceHit, hitX, hitY, hitZ);
   }
 
   @Override
@@ -356,7 +346,8 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {
+  @Deprecated
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos) {
     if (world.isRemote) {
       return;
     }
@@ -515,55 +506,55 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
     return 0;
   }
 
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileCapBank) {
-      TileCapBank cap = (TileCapBank) te;
-      if (cap.getNetwork() != null) {
-        if (world.isRemote && shouldDoWorkThisTick(world, new BlockPos(x, y, z), 20)) {
-          PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
-        }
-        ICapBankNetwork nw = cap.getNetwork();
-        if (world.isRemote) {
-          ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
-        }
-
-        if (SpecialTooltipHandler.showAdvancedTooltips()) {
-          String format = Util.TAB + Util.ALIGNRIGHT + TextFormatting.WHITE;
-          String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
-          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
-          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
-          tooltip.add("");
-        }
-
-        long stored = nw.getEnergyStoredL();
-        long max = nw.getMaxEnergyStoredL();
-        tooltip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
-            TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
-
-        int change = Math.round(nw.getAverageChangePerTick());
-        String color = TextFormatting.WHITE.toString();
-        if (change > 0) {
-          color = TextFormatting.GREEN.toString() + "+";
-        } else if (change < 0) {
-          color = TextFormatting.RED.toString();
-        }
-        tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + TextFormatting.RESET.toString()));
-      }
-    }
-  }
-
-  @Override
-  public int getDefaultDisplayMask(World world, int x, int y, int z) {
-    return IWailaInfoProvider.BIT_DETAILED;
-  }
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+//    if (te instanceof TileCapBank) {
+//      TileCapBank cap = (TileCapBank) te;
+//      if (cap.getNetwork() != null) {
+//        if (world.isRemote && shouldDoWorkThisTick(world, new BlockPos(x, y, z), 20)) {
+//          PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
+//        }
+//        ICapBankNetwork nw = cap.getNetwork();
+//        if (world.isRemote) {
+//          ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
+//        }
+//
+//        if (SpecialTooltipHandler.showAdvancedTooltips()) {
+//          String format = Util.TAB + Util.ALIGNRIGHT + TextFormatting.WHITE;
+//          String suffix = Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+//          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIO"), format, PowerDisplayUtil.formatPower(nw.getMaxIO()), suffix));
+//          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxIn"), format, PowerDisplayUtil.formatPower(nw.getMaxInput()), suffix));
+//          tooltip.add(String.format("%s : %s%s%s", EnderIO.lang.localize("capbank.maxOut"), format, PowerDisplayUtil.formatPower(nw.getMaxOutput()), suffix));
+//          tooltip.add("");
+//        }
+//
+//        long stored = nw.getEnergyStoredL();
+//        long max = nw.getMaxEnergyStoredL();
+//        tooltip.add(String.format("%s%s%s / %s%s%s %s", TextFormatting.WHITE, PowerDisplayUtil.formatPower(stored), TextFormatting.RESET,
+//            TextFormatting.WHITE, PowerDisplayUtil.formatPower(max), TextFormatting.RESET, PowerDisplayUtil.abrevation()));
+//
+//        int change = Math.round(nw.getAverageChangePerTick());
+//        String color = TextFormatting.WHITE.toString();
+//        if (change > 0) {
+//          color = TextFormatting.GREEN.toString() + "+";
+//        } else if (change < 0) {
+//          color = TextFormatting.RED.toString();
+//        }
+//        tooltip.add(String.format("%s%s%s", color, PowerDisplayUtil.formatPowerPerTick(change), " " + TextFormatting.RESET.toString()));
+//      }
+//    }
+//  }
+//
+//  @Override
+//  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+//    return IWailaInfoProvider.BIT_DETAILED;
+//  }
 
   /* IRedstoneConnectable */
 
   @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
+  public boolean shouldRedstoneConduitConnect(World world, BlockPos pos, EnumFacing from) {
     return true;
   }
 

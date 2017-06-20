@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.painter.recipe;
 
+import crazypants.enderio.paint.IPaintable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.paint.IPaintable;
 
 public class EveryPaintableRecipe<T extends Block & IPaintable> extends BasicPainterTemplate<T> {
 

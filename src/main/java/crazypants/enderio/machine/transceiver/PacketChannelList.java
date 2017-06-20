@@ -1,17 +1,15 @@
 package crazypants.enderio.machine.transceiver;
 
+import com.enderio.core.common.network.NetworkUtil;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.enderio.core.common.network.NetworkUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacketChannelList implements IMessage, IMessageHandler<PacketChannelList, IMessage> {
 

@@ -1,11 +1,7 @@
 package crazypants.enderio.machine.generator.stirling;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
@@ -28,9 +24,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_GEN;
-import static crazypants.enderio.capacitor.CapacitorKey.STIRLING_POWER_TIME;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {

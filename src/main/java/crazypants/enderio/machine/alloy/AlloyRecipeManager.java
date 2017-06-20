@@ -1,19 +1,13 @@
 package crazypants.enderio.machine.alloy;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import crazypants.enderio.Log;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.recipe.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.CustomTagHandler;
-import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
@@ -48,10 +42,10 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe",
-        ModObject.blockAlloySmelter.getUnlocalisedName(), this));
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockAlloySmelter.getUnlocalisedName(), new ManyToOneMachineRecipe("AlloySmelterRecipe",
+        MachineObject.blockAlloySmelter.getUnlocalisedName(), this));
     // vanilla alloy furnace recipes
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.getUnlocalisedName(), vanillaRecipe);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockAlloySmelter.getUnlocalisedName(), vanillaRecipe);
   }
 
   private static final String ELEMENT_ROOT = "vanillaFurnaceRecipes";

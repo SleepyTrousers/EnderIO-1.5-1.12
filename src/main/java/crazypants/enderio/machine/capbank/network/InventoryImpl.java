@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.capbank.network;
 
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.util.Util;
-
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nullable;
 
 import static crazypants.enderio.ModObject.blockCapBank;
 

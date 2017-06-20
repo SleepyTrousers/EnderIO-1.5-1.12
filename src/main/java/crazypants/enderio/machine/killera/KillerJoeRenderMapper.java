@@ -1,35 +1,8 @@
 package crazypants.enderio.machine.killera;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.api.client.render.VertexTransform;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.VertexRotation;
-import com.enderio.core.client.render.VertexRotationFacing;
-import com.enderio.core.client.render.VertexScale;
-import com.enderio.core.client.render.VertexTranslation;
+import com.enderio.core.client.render.*;
 import com.enderio.core.common.vecmath.Vector3d;
-
 import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.machine.MachineRenderMapper;
@@ -40,10 +13,29 @@ import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.util.ItemQuadCollector;
 import crazypants.enderio.render.util.QuadCollector;
 import crazypants.enderio.render.util.TankRenderHelper;
-import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
     IItemRenderMapper.IDynamicOverlayMapper {

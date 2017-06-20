@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.alloy;
 
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.util.Util;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
@@ -15,6 +12,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
+
+import javax.annotation.Nullable;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> implements IRemoteExec.IContainer {
 

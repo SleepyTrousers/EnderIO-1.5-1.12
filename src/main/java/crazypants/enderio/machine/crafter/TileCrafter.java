@@ -1,17 +1,14 @@
 package crazypants.enderio.machine.crafter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
-
 import crazypants.enderio.ModObject;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.base.te.AbstractCapabilityMachineEntity;
+import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -25,12 +22,16 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.CRAFTER_TICKS;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 @Storable
-public class TileCrafter extends AbstractPowerConsumerEntity implements IPaintable.IPaintableTileEntity {
+public class TileCrafter extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity {
 
   @Store
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
@@ -46,7 +47,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IPaintab
   private FakePlayerEIO playerInst;
 
   public TileCrafter() {
-    super(new SlotDefinition(9, 1), CRAFTER_POWER_INTAKE, CRAFTER_POWER_BUFFER, null);
+    super();
     containerItems = new ArrayList<ItemStack>();
   }
 

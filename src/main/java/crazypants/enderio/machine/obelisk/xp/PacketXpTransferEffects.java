@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.obelisk.xp;
 
 import com.enderio.core.client.ClientUtil;
-
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

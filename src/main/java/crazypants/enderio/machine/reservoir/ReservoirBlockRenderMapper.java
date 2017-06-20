@@ -1,20 +1,20 @@
 package crazypants.enderio.machine.reservoir;
 
-import java.util.EnumMap;
-import java.util.List;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.rendermapper.ConnectedBlockRenderMapper;
 import crazypants.enderio.render.util.QuadCollector;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.EnumMap;
+import java.util.List;
 
 public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
 

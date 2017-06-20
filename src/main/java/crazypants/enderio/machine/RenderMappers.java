@@ -1,14 +1,13 @@
 package crazypants.enderio.machine;
 
-import java.util.EnumMap;
-
-import javax.annotation.Nonnull;
-
+import crazypants.enderio.render.property.EnumRenderPart;
+import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import crazypants.enderio.render.property.EnumRenderPart;
-import crazypants.enderio.render.property.IOMode.EnumIOMode;
+
+import javax.annotation.Nonnull;
+import java.util.EnumMap;
 
 @SideOnly(Side.CLIENT)
 public final class RenderMappers {

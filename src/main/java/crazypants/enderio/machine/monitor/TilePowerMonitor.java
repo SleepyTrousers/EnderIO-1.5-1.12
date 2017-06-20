@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.monitor;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -11,7 +8,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import info.loenwind.autosave.annotations.Storable;
@@ -21,12 +17,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
-import static com.enderio.core.common.NBTAction.CLIENT;
-import static com.enderio.core.common.NBTAction.ITEM;
-import static com.enderio.core.common.NBTAction.SAVE;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import static com.enderio.core.common.NBTAction.*;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {

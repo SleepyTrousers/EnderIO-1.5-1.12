@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
@@ -12,6 +9,9 @@ import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Storable
 public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {

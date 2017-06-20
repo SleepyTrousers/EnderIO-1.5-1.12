@@ -1,14 +1,14 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import javax.annotation.Nonnull;
-
+import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
-import com.enderio.core.common.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import javax.annotation.Nonnull;
 
 public enum ItemRemoteInvAccessType {
   BASIC(0, "basic", 5 * 16, false, true),

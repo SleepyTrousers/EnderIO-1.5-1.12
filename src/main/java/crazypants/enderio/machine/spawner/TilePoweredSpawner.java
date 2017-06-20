@@ -1,25 +1,23 @@
 package crazypants.enderio.machine.spawner;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.Vector4f;
-
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
+import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.util.CapturedMob;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import com.enderio.core.common.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -35,16 +33,16 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import java.util.EnumSet;
+import java.util.Set;
+
 import static crazypants.enderio.ModObject.itemSoulVessel;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.SPAWNER_SPEEDUP;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.SYNC, NBTAction.UPDATE, NBTAction.SAVE })
   private CapturedMob capturedMob = null;
   @Store
   private boolean isSpawnMode = true;
@@ -86,7 +84,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1)) || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toGenericStack(itemSoulVessel.getItem(), 1, 1);
+        ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItem(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }

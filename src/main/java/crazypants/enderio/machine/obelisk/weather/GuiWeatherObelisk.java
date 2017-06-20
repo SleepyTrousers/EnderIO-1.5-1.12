@@ -1,15 +1,8 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.io.IOException;
-
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
@@ -21,6 +14,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.io.IOException;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
   

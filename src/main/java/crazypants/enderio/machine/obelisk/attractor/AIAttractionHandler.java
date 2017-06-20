@@ -1,15 +1,14 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.enderio.core.common.util.BlockCoord;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AIAttractionHandler implements IMobAttractionHandler {
 

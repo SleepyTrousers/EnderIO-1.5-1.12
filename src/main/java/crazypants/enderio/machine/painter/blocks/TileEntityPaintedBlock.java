@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.painter.blocks;
 
-import javax.annotation.Nullable;
-
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
+
+import javax.annotation.Nullable;
 
 @Storable
 public class TileEntityPaintedBlock extends TileEntityEio implements IPaintable.IPaintableTileEntity {

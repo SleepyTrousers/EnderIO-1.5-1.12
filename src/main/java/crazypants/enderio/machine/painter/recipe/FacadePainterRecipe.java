@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.painter.recipe;
 
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.util.Prep;

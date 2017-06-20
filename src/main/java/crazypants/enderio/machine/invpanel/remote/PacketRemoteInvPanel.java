@@ -18,10 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import static crazypants.util.NbtValue.REMOTE_D;
-import static crazypants.util.NbtValue.REMOTE_X;
-import static crazypants.util.NbtValue.REMOTE_Y;
-import static crazypants.util.NbtValue.REMOTE_Z;
+import static crazypants.util.NbtValue.*;
 
 public class PacketRemoteInvPanel implements IMessage, IMessageHandler<PacketRemoteInvPanel, IMessage> {
 

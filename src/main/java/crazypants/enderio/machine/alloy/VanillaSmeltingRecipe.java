@@ -1,24 +1,18 @@
 package crazypants.enderio.machine.alloy;
 
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.recipe.*;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.Recipe;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
-import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.recipe.RecipeOutput;
-import crazypants.enderio.material.OreDictionaryPreferences;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
@@ -59,7 +53,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int numInputs = 0;
     for (MachineRecipeInput input : inputs) {
       if (input != null && isValidInput(input)) {
-        numInputs += input.item.stackSize;
+        numInputs += input.item.getCount();
       }
     }
     return Math.min(numInputs, 3);
@@ -109,11 +103,11 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if (output == null) {
       return new ResultStack[0];
     }
-    int stackSize = output.stackSize;
+    int stackSize = output.getCount();
     output = OreDictionaryPreferences.instance.getPreferred(output);
     ItemStack result = output.copy();
-    result.stackSize = stackSize;
-    result.stackSize = result.stackSize * getNumInputs(inputs);
+    result.setCount(stackSize);
+    result.setCount(result.getCount() * getNumInputs(inputs));
     return new ResultStack[] { new ResultStack(result) };
   }
 
@@ -127,7 +121,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       // see net.minecraft.inventory.SlotFurnace.onCrafting(ItemStack)
       result = 1.0f;
     }
-    return result * output.stackSize;
+    return result * output.getCount();
   }
 
   @Override
@@ -147,7 +141,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockAlloySmelter.getUnlocalisedName();
+    return MachineObject.blockAlloySmelter.getUnlocalisedName();
   }
 
   @Override
@@ -156,12 +150,12 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {
       if (ri != null && ri.item != null && isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3) {
-        int available = ri.item.stackSize;
+        int available = ri.item.getCount();
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);
         if (use > 0) {
           ItemStack st = ri.item.copy();
-          st.stackSize = use;
+          st.setCount(use);
           result.add(new MachineRecipeInput(ri.slotNumber, st));
           consumed += use;
         }
@@ -178,9 +172,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.instance().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
-      int stackSize = output.stackSize;
+      int stackSize = output.getCount();
       output = OreDictionaryPreferences.instance.getPreferred(output).copy();
-      output.stackSize = stackSize;
+      output.setCount(stackSize);
       result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
     }
     return result;

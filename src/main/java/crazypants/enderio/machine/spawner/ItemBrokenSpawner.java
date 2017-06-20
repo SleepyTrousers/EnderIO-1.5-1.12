@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.spawner;
 
-import java.util.List;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.CapturedMob;
@@ -15,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ItemBrokenSpawner extends Item {
 

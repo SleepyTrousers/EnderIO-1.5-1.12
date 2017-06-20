@@ -1,11 +1,5 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import java.awt.Point;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.GuiPacket;
@@ -13,6 +7,11 @@ import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import static crazypants.enderio.machine.crafter.ContainerCrafter.EXEC_SET_BUFFER;
 

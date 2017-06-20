@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.invpanel;
 
+import com.enderio.core.common.util.ItemUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-
-import com.enderio.core.common.util.ItemUtil;
 
 public class SlotCraftingWrapper extends SlotCrafting {
 

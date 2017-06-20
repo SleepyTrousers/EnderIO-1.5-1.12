@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.obelisk.weather;
 
 import com.enderio.core.common.network.MessageTileEntity;
-
 import crazypants.enderio.EnderIO;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

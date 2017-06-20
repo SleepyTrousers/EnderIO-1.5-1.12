@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.MachineObject.itemBasicCapacitor;
 import static crazypants.enderio.material.alloy.Alloy.ENERGETIC_ALLOY;
 import static crazypants.enderio.material.alloy.Alloy.VIBRANT_ALLOY;
 import static crazypants.enderio.material.material.Material.VIBRANT_CYSTAL;

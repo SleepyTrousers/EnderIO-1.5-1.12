@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import crazypants.enderio.Log;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnchanterRecipeManager {
 

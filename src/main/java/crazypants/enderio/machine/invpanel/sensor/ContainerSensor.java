@@ -1,13 +1,12 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import java.util.List;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanelSensor> {
 

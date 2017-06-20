@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.common.network.MessageTileEntity;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;

@@ -2,7 +2,6 @@ package crazypants.enderio.machine.soul;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

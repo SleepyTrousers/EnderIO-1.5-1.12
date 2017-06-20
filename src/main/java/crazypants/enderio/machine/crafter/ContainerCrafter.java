@@ -1,13 +1,6 @@
 package crazypants.enderio.machine.crafter;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
@@ -16,6 +9,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> implements IRemoteExec.IContainer {
 

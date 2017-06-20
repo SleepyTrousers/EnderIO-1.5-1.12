@@ -1,16 +1,14 @@
 package crazypants.enderio.machine.soul;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 import static crazypants.enderio.ModObject.itemBrokenSpawner;
 import static crazypants.enderio.ModObject.itemSoulVessel;

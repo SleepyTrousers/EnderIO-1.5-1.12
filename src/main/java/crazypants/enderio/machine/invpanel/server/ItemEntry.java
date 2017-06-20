@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import java.util.IdentityHashMap;
-
 import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.IdentityHashMap;
 
 public class ItemEntry extends ItemEntryBase {
   private final IdentityHashMap<SlotKey, SlotKey> slots = new IdentityHashMap<SlotKey, SlotKey>();

@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public enum Fertilizer {
 

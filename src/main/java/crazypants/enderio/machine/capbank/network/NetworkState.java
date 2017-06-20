@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.capbank.network;
 
 import com.enderio.core.common.util.BlockCoord;
-
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.BlockPos;
 
 public class NetworkState {
 
@@ -14,12 +15,12 @@ public class NetworkState {
   private final int maxOutput;
   private final RedstoneControlMode inputMode;
   private final RedstoneControlMode outputMode;
-  private final BlockCoord invImplLoc;
+  private final BlockPos invImplLoc;
   private final float averageInput;
   private final float averageOutput;
 
   public NetworkState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, RedstoneControlMode inputMode,
-      RedstoneControlMode outputMode, BlockCoord invImplLoc, float averageInput, float averageOutput) {
+      RedstoneControlMode outputMode, BlockPos invImplLoc, float averageInput, float averageOutput) {
     this.energyStored = energyStored;
     this.maxEnergyStored = maxEnergyStored;
     this.maxIO = maxIO;
@@ -78,7 +79,7 @@ public class NetworkState {
     return outputMode;
   }
 
-  public BlockCoord getInventoryImplLocation() {
+  public BlockPos getInventoryImplLocation() {
     return invImplLoc;
   }
 
@@ -100,7 +101,7 @@ public class NetworkState {
     buf.writeShort(outputMode.ordinal());
     buf.writeBoolean(invImplLoc != null);
     if(invImplLoc != null) {
-      invImplLoc.writeToBuf(buf);
+      buf.writeLong(invImplLoc.toLong());
     }
     buf.writeFloat(averageInput);
     buf.writeFloat(averageOutput);
@@ -109,7 +110,7 @@ public class NetworkState {
   public static NetworkState readFromBuf(ByteBuf buf) {
     return new NetworkState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(),
         RedstoneControlMode.values()[buf.readShort()], RedstoneControlMode.values()[buf.readShort()],
-        buf.readBoolean() ? BlockCoord.readFromBuf(buf) : null, buf.readFloat(), buf.readFloat());
+        buf.readBoolean() ? BlockPos.fromLong(buf.readLong()) : null, buf.readFloat(), buf.readFloat());
   }
 
   @Override

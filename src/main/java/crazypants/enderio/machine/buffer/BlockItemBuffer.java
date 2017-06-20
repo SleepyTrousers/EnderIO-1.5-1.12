@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.buffer;
 
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
@@ -20,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+
+import javax.annotation.Nullable;
 
 import static crazypants.enderio.ModObject.blockBuffer;
 import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;

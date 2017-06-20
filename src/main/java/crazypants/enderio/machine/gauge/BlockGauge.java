@@ -1,12 +1,7 @@
 package crazypants.enderio.machine.gauge;
 
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
-
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -34,6 +29,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 

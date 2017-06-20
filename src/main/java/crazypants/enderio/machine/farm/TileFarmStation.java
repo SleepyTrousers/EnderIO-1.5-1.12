@@ -1,19 +1,12 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.mojang.authlib.GameProfile;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
@@ -23,7 +16,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Prep;
-import com.enderio.core.common.util.stackable.Things;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -51,12 +43,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BASE_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_BONUS_SIZE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_POWER_USE;
-import static crazypants.enderio.capacitor.CapacitorKey.FARM_STACK_LIMIT;
+import javax.annotation.Nonnull;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.UUID;
+
 import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
 import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
 import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;

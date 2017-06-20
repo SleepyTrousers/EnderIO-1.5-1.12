@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import java.awt.Color;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.ParticleDrip;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -9,6 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class EntityFluidLoadingFX extends ParticleDrip {

@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.invpanel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class InventoryDatabase<ItemEntry extends ItemEntryBase> {
 

@@ -1,17 +1,7 @@
 package crazypants.enderio.machine.capbank.network;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
-
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
@@ -22,6 +12,8 @@ import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
@@ -36,7 +28,10 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class CapBankNetwork implements ICapBankNetwork, TickListener {
+import javax.annotation.Nonnull;
+import java.util.*;
+
+public class CapBankNetwork implements ICapBankNetwork/*, TickListener*/ {
 
   private static final int IO_CAP = 2000000000;
 
@@ -101,7 +96,8 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
     }
     setNetwork(world, cap);
     addEnergy(0); // ensure energy level is within bounds
-    ConduitNetworkTickHandler.instance.addListener(this);
+    // TODO requires conduits !!
+//    ConduitNetworkTickHandler.instance.addListener(this);
   }
 
 
@@ -132,7 +128,8 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
 
   @Override
   public void destroyNetwork() {
-    ConduitNetworkTickHandler.instance.removeListener(this);
+    // TODO requires conduits !!
+//    ConduitNetworkTickHandler.instance.removeListener(this);
     distributeEnergyToBanks();
     TileCapBank cap = null;
     for (TileCapBank cb : capBanks) {
@@ -163,8 +160,8 @@ public class CapBankNetwork implements ICapBankNetwork, TickListener {
       }
       maxIO = (int) newIO;
 
-      energyStored += cap.getEnergyStored(null);
-      maxEnergyStored += cap.getMaxEnergyStored(null);
+      energyStored += cap.getEnergyStored();
+      maxEnergyStored += cap.getMaxEnergyStored();
       if(maxInput == -1) {
         maxInput = cap.getMaxInputOverride();
         if (Config.debugTraceCapLimitsExtremelyDetailed) {

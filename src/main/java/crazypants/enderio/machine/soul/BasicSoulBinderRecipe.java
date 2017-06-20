@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.soul;
 
-import net.minecraft.item.ItemStack;
 import crazypants.util.CapturedMob;
+import net.minecraft.item.ItemStack;
 
 public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
 

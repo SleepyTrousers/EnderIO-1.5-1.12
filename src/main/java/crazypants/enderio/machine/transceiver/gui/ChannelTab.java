@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import java.awt.Color;
-
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -12,20 +8,17 @@ import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.transceiver.Channel;
-import crazypants.enderio.machine.transceiver.ChannelType;
-import crazypants.enderio.machine.transceiver.ClientChannelRegister;
-import crazypants.enderio.machine.transceiver.PacketAddRemoveChannel;
-import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.machine.transceiver.*;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.UserIdent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+
+import javax.annotation.Nullable;
+import java.awt.*;
 
 public class ChannelTab implements ITabPanel {
 

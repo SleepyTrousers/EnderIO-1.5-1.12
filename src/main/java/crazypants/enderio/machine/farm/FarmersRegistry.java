@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.farm;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.stackable.Things;
-
 import crazypants.enderio.integration.bop.BoPUtil;
 import crazypants.enderio.integration.botania.BotaniaUtil;
 import crazypants.enderio.integration.botany.BotanyUtil;
@@ -15,18 +12,7 @@ import crazypants.enderio.integration.mfr.MFRUtil;
 import crazypants.enderio.integration.natura.NaturaUtil;
 import crazypants.enderio.integration.techreborn.TechRebornUtil;
 import crazypants.enderio.integration.tic.TicUtil;
-import crazypants.enderio.machine.farm.farmers.ChorusFarmer;
-import crazypants.enderio.machine.farm.farmers.CocoaFarmer;
-import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.FlowerPicker;
-import crazypants.enderio.machine.farm.farmers.MelonFarmer;
-import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
-import crazypants.enderio.machine.farm.farmers.OredictTreeFarmer;
-import crazypants.enderio.machine.farm.farmers.PickableFarmer;
-import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
-import crazypants.enderio.machine.farm.farmers.StemFarmer;
-import crazypants.enderio.machine.farm.farmers.TreeFarmer;
+import crazypants.enderio.machine.farm.farmers.*;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,6 +20,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+
+import javax.annotation.Nonnull;
 
 public final class FarmersRegistry {
 

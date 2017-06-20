@@ -1,15 +1,11 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
@@ -17,6 +13,9 @@ import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
 

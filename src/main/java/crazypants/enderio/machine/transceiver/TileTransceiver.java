@@ -1,19 +1,9 @@
 package crazypants.enderio.machine.transceiver;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
@@ -33,9 +23,11 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.Map.Entry;
+
+import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 

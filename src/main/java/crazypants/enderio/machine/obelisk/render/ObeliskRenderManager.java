@@ -23,14 +23,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockAttractor;
-import static crazypants.enderio.ModObject.blockExperienceObelisk;
-import static crazypants.enderio.ModObject.blockInhibitorObelisk;
-import static crazypants.enderio.ModObject.blockSpawnGuard;
-import static crazypants.enderio.ModObject.blockSpawnRelocator;
-import static crazypants.enderio.ModObject.blockWeatherObelisk;
-import static crazypants.enderio.ModObject.itemMaterial;
-import static crazypants.enderio.ModObject.itemXpTransfer;
+import static crazypants.enderio.ModObject.*;
 
 @SideOnly(Side.CLIENT)
 public class ObeliskRenderManager {

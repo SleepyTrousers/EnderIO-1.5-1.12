@@ -1,14 +1,9 @@
 package crazypants.enderio.machine.capbank.render;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.vecmath.Vector3d;
-
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
@@ -27,6 +22,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class FillGaugeBakery {
 

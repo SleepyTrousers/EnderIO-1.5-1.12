@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.sagmill;
 
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
 import crazypants.enderio.machine.recipe.IRecipe;
 

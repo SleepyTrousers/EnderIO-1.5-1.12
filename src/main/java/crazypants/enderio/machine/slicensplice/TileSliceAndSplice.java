@@ -1,13 +1,6 @@
 package crazypants.enderio.machine.slicensplice;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.IManyToOneRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -21,9 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
-import static crazypants.enderio.capacitor.CapacitorKey.SLICE_POWER_USE;
+import javax.annotation.Nonnull;
+import java.util.List;
+
 import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
 
 @Storable

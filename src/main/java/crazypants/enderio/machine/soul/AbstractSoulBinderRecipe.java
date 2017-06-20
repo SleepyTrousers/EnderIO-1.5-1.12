@@ -1,17 +1,14 @@
 package crazypants.enderio.machine.soul;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.xp.XpUtil;
 import crazypants.util.CapturedMob;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static crazypants.enderio.ModObject.itemSoulVessel;
 

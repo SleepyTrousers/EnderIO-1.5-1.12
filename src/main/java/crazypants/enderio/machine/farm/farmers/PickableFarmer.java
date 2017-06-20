@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import java.util.ArrayList;
-
 import crazypants.enderio.machine.farm.FarmNotification;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
@@ -12,6 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.ArrayList;
 
 public class PickableFarmer extends CustomSeedFarmer {
 

@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
 import com.enderio.core.common.util.stackable.Things;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockOldLog;

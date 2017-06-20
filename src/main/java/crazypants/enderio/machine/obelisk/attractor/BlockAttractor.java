@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import java.util.Locale;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
@@ -16,6 +14,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+
+import java.util.Locale;
 
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 

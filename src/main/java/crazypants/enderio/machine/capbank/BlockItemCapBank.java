@@ -1,28 +1,27 @@
 package crazypants.enderio.machine.capbank;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
-
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PowerBarOverlayRenderHelper;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.power.AbstractPoweredBlockItem;
 import crazypants.enderio.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.render.util.PowerBarOverlayRenderHelper;
 import crazypants.util.NbtValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-import static crazypants.enderio.ModObject.blockCapBank;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
-    ItemStack res = new ItemStack(blockCapBank.getBlock(), 1, meta);
+    ItemStack res = new ItemStack(MachineObject.blockCapBank.getBlock(), 1, meta);
     if (storedEnergy > 0) {
       setStoredEnergyForItem(res, storedEnergy);
     }
@@ -37,7 +36,7 @@ public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverl
     NbtValue.ENERGY.setInt(item, Math.max(0, storedEnergy));
   }
 
-  public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull String name) {
+  public BlockItemCapBank(@Nonnull BlockCapBank blockCapBank, @Nonnull ResourceLocation name) {
     super(blockCapBank, 0, 0, 0);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);

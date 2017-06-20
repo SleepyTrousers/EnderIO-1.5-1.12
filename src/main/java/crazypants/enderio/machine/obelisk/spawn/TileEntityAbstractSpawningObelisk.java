@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
-import javax.annotation.Nonnull;
-
-import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
+
+import javax.annotation.Nonnull;
+
+import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 
 @Storable
 public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObelisk implements ISpawnCallback {

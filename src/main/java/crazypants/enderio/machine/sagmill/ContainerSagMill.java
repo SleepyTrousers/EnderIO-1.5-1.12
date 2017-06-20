@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.sagmill;
 
-import javax.annotation.Nullable;
-
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import javax.annotation.Nullable;
 
 public class ContainerSagMill extends AbstractMachineContainer<TileSagMill> {
 

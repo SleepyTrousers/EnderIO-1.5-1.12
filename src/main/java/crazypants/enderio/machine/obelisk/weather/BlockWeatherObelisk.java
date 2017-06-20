@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import java.util.Random;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.ModObject;
@@ -14,6 +12,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk> {
 

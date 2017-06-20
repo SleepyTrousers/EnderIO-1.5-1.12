@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.invpanel;
 
 import com.enderio.core.common.network.MessageTileEntity;
-
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

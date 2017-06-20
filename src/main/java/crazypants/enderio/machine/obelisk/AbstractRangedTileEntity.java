@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.obelisk;
 
 import com.enderio.core.client.render.BoundingBox;
-
 import crazypants.enderio.ModObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
@@ -21,7 +22,7 @@ public abstract class AbstractRangedTileEntity extends AbstractPowerConsumerEnti
   }
 
   public AbstractRangedTileEntity(SlotDefinition slotDefinition, ModObject modObject) {
-    super(slotDefinition, modObject);  
+    super(slotDefinition, modObject);
   }
   
   @Override

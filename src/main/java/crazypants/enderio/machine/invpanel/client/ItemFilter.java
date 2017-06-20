@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public abstract class ItemFilter {
 

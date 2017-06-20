@@ -1,19 +1,18 @@
 package crazypants.enderio.machine.invpanel.remote;
 
-import javax.annotation.Nonnull;
-
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.network.NetworkUtil;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
-import com.enderio.core.common.NBTAction;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import javax.annotation.Nonnull;
 
 public class PacketPrimeInventoryPanelRemote implements IMessage, IMessageHandler<PacketPrimeInventoryPanelRemote, IMessage> {
 
