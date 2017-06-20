@@ -110,7 +110,7 @@ public class EnderIO {
 
     TicProxy.init(event);
 
-    ModObjectRegistry.init(event);
+    ModObjectRegistry.INSTANCE.init(event);
 
     EnergyUpgradePowerAdapter.init(event);
 
@@ -135,7 +135,7 @@ public class EnderIO {
   public void load(@Nonnull FMLInitializationEvent event) {
     Config.init(event);
 
-    ModObjectRegistry.init(event);
+    ModObjectRegistry.INSTANCE.init(event);
 
     CABIMC.init(event);
 
