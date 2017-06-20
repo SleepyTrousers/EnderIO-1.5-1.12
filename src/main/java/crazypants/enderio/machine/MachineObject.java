@@ -2,6 +2,7 @@ package crazypants.enderio.machine;
 
 import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.init.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.capbank.BlockCapBank;
@@ -81,46 +82,32 @@ public enum MachineObject implements IModObject.Registerable {
         return new ResourceLocation(EnderIOMachines.MOD_ID, getUnlocalisedName());
     }
 
-    @Override
-    public @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-        blockIn.setUnlocalizedName(getUnlocalisedName());
-        blockIn.setRegistryName(getRegistryName());
-        return blockIn;
-    }
-
-    @Override
-    public @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-        itemIn.setUnlocalizedName(getUnlocalisedName());
-        itemIn.setRegistryName(getRegistryName());
-        return itemIn;
-    }
-
     @Nullable
     @Override
     public Block getBlock() {
-        return null;
+        return block;
     }
 
     @Nullable
     @Override
     public Item getItem() {
-        return null;
+        return item;
     }
 
     @Nullable
     @Override
     public Class<? extends TileEntity> getTileClass() {
-        return null;
+        return teClazz;
     }
 
     @Override
     public void preInit(@Nonnull FMLPreInitializationEvent event) {
-
+        ModObjectRegistry.preInit(this, event);
     }
 
     @Override
     public void init(@Nonnull FMLInitializationEvent event) {
-
+        ModObjectRegistry.initElem(this, event);
     }
 
 }
