@@ -1,7 +1,7 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -46,7 +46,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-      if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+      if(stack == null || stack.getItem() != ModObject.itemDarkSteelHelmet.getItem() || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
         return false;
       }
       SolarUpgrade up = loadFromItem(stack);

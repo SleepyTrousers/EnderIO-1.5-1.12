@@ -6,9 +6,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.Log;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -59,7 +60,7 @@ public class SpeedController {
     double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
     costModifier = costModifier + (costModifier * speedUpgrade.getWalkMultiplier());
     int cost = (int) (horzMovement * costModifier);
-    DarkSteelController.instance.usePlayerEnergy(player, ModObject.itemDarkSteelLeggings, cost);
+    DarkSteelController.instance.usePlayerEnergy(player, (ItemDarkSteelArmor) ModObject.itemDarkSteelLeggings.getItem(), cost);
     if (player.isSprinting()) {
       moveInst.applyModifier(sprintModifiers[speedUpgrade.getLevel() - 1]);
     } else {
@@ -133,14 +134,14 @@ public class SpeedController {
 
   private SpeedUpgrade getActiveSpeedUpgrade(EntityPlayer player) {
     ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-    if (leggings == null || leggings.getItem() != ModObject.itemDarkSteelLeggings) {
+    if (leggings == null || leggings.getItem() != ModObject.itemDarkSteelLeggings.getItem()) {
       return null;
     }
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if (speedUpgrade == null) {
       return null;
     }
-    if (DarkSteelController.instance.isSpeedActive(player) && DarkSteelController.instance.getPlayerEnergy(player, ModObject.itemDarkSteelLeggings) > 0) {
+    if (DarkSteelController.instance.isSpeedActive(player) && DarkSteelController.instance.getPlayerEnergy(player, (ItemDarkSteelArmor) ModObject.itemDarkSteelLeggings.getItem()) > 0) {
       return speedUpgrade;
     }
     return null;

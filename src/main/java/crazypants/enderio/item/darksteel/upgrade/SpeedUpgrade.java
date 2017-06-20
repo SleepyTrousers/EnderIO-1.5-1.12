@@ -1,7 +1,7 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -74,7 +74,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != ModObject.itemDarkSteelLeggings || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || stack.getItem() != ModObject.itemDarkSteelLeggings.getItem() || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpeedUpgrade up = loadFromItem(stack);
