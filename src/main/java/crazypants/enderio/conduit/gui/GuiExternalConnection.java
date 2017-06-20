@@ -78,7 +78,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
     buttonList.clear();
-    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
@@ -170,12 +170,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
   @Override
   protected void drawFakeItemStack(int x, int y, ItemStack stack) {
     super.drawFakeItemStack(x, y, stack);
-    itemRender.renderItemOverlayIntoGUI(fontRendererObj, stack, x, y, "");    
-  }
-
-  public void clearGhostSlots() {
-    getGhostSlots().clear();
-    ((ExternalConnectionContainer) inventorySlots).createGhostSlots(getGhostSlots());
+    itemRender.renderItemOverlayIntoGUI(fontRenderer, stack, x, y, "");
   }
 
 }

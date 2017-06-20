@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
@@ -107,8 +108,8 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     }
   }
 
-  public void createGhostSlots(List<GhostSlot> slots) {
-    slots.addAll(bgSlots);
+  public void createGhostSlots(GhostSlotHandler slots) {
+//    slots.addAll(bgSlots);
   }
 
   @Override
@@ -161,11 +162,11 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     for (int i = startIndex; i < endIndex; i++) {
       Slot s = inventorySlots.get(i);
       if(visible) {
-        s.xDisplayPosition = slotLocations.get(i).x;
-        s.yDisplayPosition = slotLocations.get(i).y;
+        s.xPos = slotLocations.get(i).x;
+        s.yPos = slotLocations.get(i).y;
       } else {
-        s.xDisplayPosition = -3000;
-        s.yDisplayPosition = -3000;
+        s.xPos = -3000;
+        s.yPos = -3000;
       }
     }
   }
@@ -201,21 +202,21 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
 
     if(curStack == null) {
       curStack = origStack.copy();
-      curStack.stackSize = Math.min(origStack.stackSize, maxStackSize);
-      origStack.stackSize -= curStack.stackSize;
+      curStack.setCount(Math.min(origStack.getCount(), maxStackSize));
+      origStack.shrink(curStack.getCount());
       targetSlot.putStack(curStack);
       targetSlot.onSlotChanged();
       return true;
     } else if(ItemUtil.areStackMergable(curStack, origStack)) {
-      int mergedSize = curStack.stackSize + origStack.stackSize;
+      int mergedSize = curStack.getCount() + origStack.getCount();
       if(mergedSize <= maxStackSize) {
-        origStack.stackSize = 0;
-        curStack.stackSize = mergedSize;
+        origStack.setCount(0);
+        curStack.setCount(mergedSize);
         targetSlot.onSlotChanged();
         return true;
-      } else if(curStack.stackSize < maxStackSize) {
-        origStack.stackSize -= maxStackSize - curStack.stackSize;
-        curStack.stackSize = maxStackSize;
+      } else if(curStack.getCount() < maxStackSize) {
+        origStack.shrink(maxStackSize - curStack.getCount());
+        curStack.setCount(maxStackSize);
         targetSlot.onSlotChanged();
         return true;
       }
@@ -236,7 +237,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       if (slotIndex < outputFilterUpgradeSlot) {
         for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx <= functionUpgradeSlot; targetSlotIdx++) {
           Slot targetSlot = inventorySlots.get(targetSlotIdx);
-          if(targetSlot.xDisplayPosition >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
+          if(targetSlot.xPos >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
             merged = true;
             break;
           }
@@ -251,17 +252,17 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
 
       slot.onSlotChange(origStack, copystack);
 
-      if(origStack.stackSize == 0) {
+      if(origStack.getCount() == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
       }
 
-      if(origStack.stackSize == copystack.stackSize) {
+      if(origStack.getCount() == copystack.getCount()) {
         return null;
       }
 
-      slot.onPickupFromSlot(entityPlayer, origStack);
+      slot.onTake(entityPlayer, origStack);
     }
 
     return copystack;
