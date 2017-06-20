@@ -1,22 +1,22 @@
 package crazypants.enderio.machine.wireless;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import com.enderio.core.common.util.BlockCoord;
 
 public interface IWirelessCharger {
 
   World getworld();
 
-  BlockCoord getLocation();
+  BlockPos getLocation();
 
-  boolean chargeItems(ItemStack[] items);
+  boolean chargeItems(NonNullList<ItemStack> items);
 
   int takeEnergy(int max);
 
   /**
-   * Can prevent {@link #chargeItems(ItemStack[])} from being called.
+   * Can prevent {@link #chargeItems(NonNullList<ItemStack>)} from being called.
    * 
    * @return If this charger is "active". If the charger is not active it will not be attempted to be used.
    */

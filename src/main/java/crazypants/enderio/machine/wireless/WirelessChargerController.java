@@ -12,6 +12,8 @@ import crazypants.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -29,7 +31,7 @@ public class WirelessChargerController {
     MinecraftForge.EVENT_BUS.register(WirelessChargerController.instance);
   }
 
-  private final Map<Integer, Map<BlockCoord, IWirelessCharger>> perWorldChargers = new HashMap<Integer, Map<BlockCoord, IWirelessCharger>>();
+  private final Map<Integer, Map<BlockPos, IWirelessCharger>> perWorldChargers = new HashMap<>();
   private int changeCount;
 
   private WirelessChargerController() {
@@ -39,7 +41,7 @@ public class WirelessChargerController {
     if(charger == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
+    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
     chargers.put(charger.getLocation(), charger);
     changeCount++;
   }
@@ -48,7 +50,7 @@ public class WirelessChargerController {
     if(capBank == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getworld());
+    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(capBank.getworld());
     chargers.remove(capBank.getLocation());
     changeCount++;
   }
@@ -65,8 +67,8 @@ public class WirelessChargerController {
     return changeCount;
   }
 
-  public void getChargers(World world, BlockCoord bc, Collection<IWirelessCharger> res) {
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(world);
+  public void getChargers(World world, BlockPos bc, Collection<IWirelessCharger> res) {
+    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(world);
     for (IWirelessCharger wc : chargers.values()) {
       if (inRange(wc.getLocation(), bc)) {
         res.add(wc);
@@ -75,11 +77,11 @@ public class WirelessChargerController {
   }
 
   public void chargePlayersItems(EntityPlayer player) {
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(player.world);
+    Map<BlockPos, IWirelessCharger> chargers = getChargersForWorld(player.world);
     if(chargers.isEmpty()) {
       return;
     }
-    BlockCoord bc = new BlockCoord(player);
+    BlockPos bc = BlockCoord.get(player);
     for (IWirelessCharger capBank : chargers.values()) {
       if (capBank.isActive() && inRange(capBank.getLocation(), bc)) {
         boolean done = chargeFromCapBank(player, capBank);
@@ -90,17 +92,17 @@ public class WirelessChargerController {
     }
   }
 
-  private boolean inRange(BlockCoord a, BlockCoord b) {
+  private boolean inRange(BlockPos a, BlockPos b) {
     // distSq can overflow int, so check for square coords first.
-    int dx = a.x - b.x;
+    int dx = a.getX() - b.getX();
     if (dx > RANGE || dx < -RANGE) {
       return false;
     }
-    int dz = a.z - b.z;
+    int dz = a.getZ() - b.getZ();
     if (dz > RANGE || dz < -RANGE) {
       return false;
     }
-    return a.getDistSq(b) <= RANGE_SQ;
+    return BlockCoord.getDistSq(a, b) <= RANGE_SQ;
   }
 
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
@@ -109,14 +111,14 @@ public class WirelessChargerController {
     res |= capBank.chargeItems(player.inventory.offHandInventory);
     IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
-      ItemStack[] item = new ItemStack[1];
+      NonNullList<ItemStack> item = NonNullList.withSize(1, ItemStack.EMPTY);
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
-        item[0] = baubles.getStackInSlot(i);
-        if (Prep.isValid(item[0])) {
+        item.set(0, baubles.getStackInSlot(i));
+        if (Prep.isValid(item.get(0))) {
           // mustn't change the item that is in the slot or Baubles will ignore the change
-          item[0] = item[0].copy();
+          item.set(0, item.get(0).copy());
           if (capBank.chargeItems(item)) {
-            baubles.setInventorySlotContents(i, item[0]);
+            baubles.setInventorySlotContents(i, item.get(0));
             res = true;
           }
         }
@@ -128,10 +130,10 @@ public class WirelessChargerController {
     return res;
   }
 
-  private Map<BlockCoord, IWirelessCharger> getChargersForWorld(World world) {
-    Map<BlockCoord, IWirelessCharger> res = perWorldChargers.get(world.provider.getDimension());
+  private Map<BlockPos, IWirelessCharger> getChargersForWorld(World world) {
+    Map<BlockPos, IWirelessCharger> res = perWorldChargers.get(world.provider.getDimension());
     if(res == null) {
-      res = new HashMap<BlockCoord, IWirelessCharger>();
+      res = new HashMap<BlockPos, IWirelessCharger>();
       perWorldChargers.put(world.provider.getDimension(), res);
     }
     return res;
@@ -141,7 +143,7 @@ public class WirelessChargerController {
     return getChargerMap(world).values();
   }
 
-  public Map<BlockCoord, IWirelessCharger> getChargerMap(World world) {
+  public Map<BlockPos, IWirelessCharger> getChargerMap(World world) {
     return perWorldChargers.get(world.provider.getDimension());
   }
 }

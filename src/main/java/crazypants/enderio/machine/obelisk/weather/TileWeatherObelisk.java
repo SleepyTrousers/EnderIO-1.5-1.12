@@ -10,10 +10,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
@@ -234,7 +234,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
         if (fluidUsed >= 1000) {
           EntityWeatherRocket e = new EntityWeatherRocket(world, activeTask);
           e.setPosition(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5);
-          world.spawnEntityInWorld(e);
+          world.spawnEntity(e);
           stopTask();
           res = true;
         }

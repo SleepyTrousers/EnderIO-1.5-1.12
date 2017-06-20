@@ -1,11 +1,7 @@
 package crazypants.enderio.machine;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import crazypants.enderio.capability.EnderInventory;
-import crazypants.enderio.capability.EnderInventory.View;
-import crazypants.enderio.capability.InventorySlot;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.InventorySlot;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.util.Prep;
@@ -17,13 +13,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 @Storable
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
 
   @Store
   private final EnderInventory inventory = new EnderInventory();
   private final EnderInventory inventoryDelegate;
-  private final View upgradeSlots, inputSlots, outputSlots;
+  private final EnderInventory.View upgradeSlots, inputSlots, outputSlots;
 
   protected AbstractCapabilityMachineEntity() {
     this(null);
@@ -99,7 +98,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   protected boolean hasSpaceToPull() {
     for (InventorySlot slot : inputSlots) {
       ItemStack stack = slot.getStackInSlot(0);
-      if (Prep.isInvalid(stack) || stack.stackSize < Math.min(stack.getMaxStackSize(), slot.getMaxStackSize())) {
+      if (Prep.isInvalid(stack) || stack.getCount() < Math.min(stack.getMaxStackSize(), slot.getMaxStackSize())) {
         return true;
       }
     }
@@ -171,6 +170,11 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     @Override
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
       return getView().extractItem(slot, amount, simulate);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+      return getView().getSlotLimit(slot);
     }
 
   }

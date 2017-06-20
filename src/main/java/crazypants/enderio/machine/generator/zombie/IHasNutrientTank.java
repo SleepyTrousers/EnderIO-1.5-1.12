@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import crazypants.enderio.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTank;
 
 public interface IHasNutrientTank {
 

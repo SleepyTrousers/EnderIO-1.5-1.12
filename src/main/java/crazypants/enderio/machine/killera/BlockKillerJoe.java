@@ -16,8 +16,6 @@ import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.xp.PacketExperienceContainer;
-import crazypants.enderio.xp.PacketGivePlayerXP;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -55,9 +53,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockKillerJoe create() {
-    PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
-    PacketGivePlayerXP.register();
-    PacketExperienceContainer.register();
+    PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
     
     BlockKillerJoe res = new BlockKillerJoe();
     MinecraftForge.EVENT_BUS.register(res);
@@ -144,7 +140,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
   
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
@@ -159,8 +155,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   @Override
   public void init(FMLInitializationEvent event) {
     super.init(event);
-    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + name + " of Ender IO to attack entities."
+    permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+        "Permission for the block " + getRegistryName() + " of Ender IO to attack entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }
 

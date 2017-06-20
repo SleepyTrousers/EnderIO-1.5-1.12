@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,12 +45,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   private static final Limit PULL_PUSH_LIMIT = new Limit(1, 64);
   
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
   public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
   protected ResettingFlag forceClientUpdate = new ResettingFlag();
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
@@ -57,7 +58,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   @Store
   protected RedstoneControlMode redstoneControlMode;
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.UPDATE, NBTAction.SAVE })
   protected boolean redstoneCheckPassed;
 
   private boolean redstoneStateDirty = true;
@@ -200,13 +201,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Override
   public void doUpdate() {
-    getWorld().theProfiler.startSection(getMachineName());
+    getWorld().profiler.startSection(getMachineName());
     if (world.isRemote) {
-      getWorld().theProfiler.startSection("clientTick");
+      getWorld().profiler.startSection("clientTick");
       updateEntityClient();
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     } else { // else is server, do all logic only on the server
-      getWorld().theProfiler.startSection("serverTick");
+      getWorld().profiler.startSection("serverTick");
 
       boolean requiresClientSync = forceClientUpdate.peek();
       boolean prevRedCheck = redstoneCheckPassed;
@@ -216,19 +217,19 @@ public abstract class AbstractMachineEntity extends TileEntityEio
       }
 
       if (shouldDoWorkThisTick(5)) {
-        getWorld().theProfiler.startSection("sideIO");
+        getWorld().profiler.startSection("sideIO");
         requiresClientSync |= doSideIo();
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
       requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-      getWorld().theProfiler.startSection("tasks");
+      getWorld().profiler.startSection("tasks");
       requiresClientSync |= processTasks(redstoneCheckPassed);
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
 
       if (requiresClientSync) {
-        getWorld().theProfiler.startSection("clientNotification");
+        getWorld().profiler.startSection("clientNotification");
         // this will cause 'getPacketDescription()' to be called and its result
         // will be sent to the PacketHandler on the other end of
         // client/server connection
@@ -237,19 +238,19 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
         // And this will make sure our current tile entity state is saved
         markDirty();
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
       if (notifyNeighbours) {
-        getWorld().theProfiler.startSection("neighborNotification");
-        world.notifyBlockOfStateChange(pos, getBlockType());
+        getWorld().profiler.startSection("neighborNotification");
+        world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
         notifyNeighbours = false;
-        getWorld().theProfiler.endSection();
+        getWorld().profiler.endSection();
       }
 
-      getWorld().theProfiler.endSection();
+      getWorld().profiler.endSection();
     }
-    getWorld().theProfiler.endSection();
+    getWorld().profiler.endSection();
   }
 
   protected void updateEntityClient() {
@@ -321,8 +322,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
+  public void readCustomNBT(NBTAction action, NBTTagCompound nbtRoot) {
+    super.readCustomNBT(action, nbtRoot);
     readCommon(nbtRoot);
   }
 
@@ -342,11 +343,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
     Reader.read(NBTAction.ITEM, root, this);
     if (root.hasKey("eio.abstractMachine")) {
+      // TODO what were these for?
       try {
-        doingOtherNbt = true;
+//        doingOtherNbt = true;
         readCommon(root);
       } finally {
-        doingOtherNbt = false;
+//        doingOtherNbt = false;
       }
     }
     if (this instanceof IPaintable.IPaintableTileEntity) {
@@ -356,8 +358,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
+  public void writeCustomNBT(NBTAction action, NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(action, nbtRoot);
     writeCommon(nbtRoot);
   }
 
@@ -378,11 +380,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     }
 
     root.setBoolean("eio.abstractMachine", true);
+    // TODO what were these for?
     try {
-      doingOtherNbt = true;
+//      doingOtherNbt = true;
       writeCommon(root);
     } finally {
-      doingOtherNbt = false;
+//      doingOtherNbt = false;
     }
     Writer.write(NBTAction.ITEM, root, this);
 
@@ -416,8 +419,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
   }
   
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public BlockPos getLocation() {
+    return getPos();
   }
 
   @Override

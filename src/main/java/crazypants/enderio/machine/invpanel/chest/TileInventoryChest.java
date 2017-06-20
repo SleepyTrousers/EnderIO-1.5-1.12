@@ -5,10 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.InventorySlot;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.capability.EnderInventory;
-import crazypants.enderio.capability.EnderInventory.Type;
-import crazypants.enderio.capability.InventorySlot;
 import crazypants.enderio.capacitor.CapacitorKeyType;
 import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
@@ -131,7 +130,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
     chestInventory = getInventory();
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {
-      getInventory().add(Type.INOUT, "slot" + i, new InventorySlot());
+      getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
   }
 

@@ -3,6 +3,7 @@ package crazypants.enderio.power;
 import com.enderio.core.common.util.BlockCoord;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public interface ILegacyPoweredTile {
 
@@ -14,7 +15,7 @@ public interface ILegacyPoweredTile {
   
   void setEnergyStored(int storedEnergy);
 
-  BlockCoord getLocation();
+  BlockPos getLocation();
   
   /**
    * Should the power be displayed in WAILA or other places

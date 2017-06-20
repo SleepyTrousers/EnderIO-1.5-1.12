@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 public interface IIoConfigurable {
 
@@ -18,7 +19,7 @@ public interface IIoConfigurable {
   public @Nonnull IoMode getIoMode(@Nullable EnumFacing face);
 
   public void clearAllIoModes();
-  
-  BlockCoord getLocation();
+
+  BlockPos getLocation();
 
 }
