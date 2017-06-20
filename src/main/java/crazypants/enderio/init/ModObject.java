@@ -148,8 +148,8 @@ public enum ModObject implements IModObject.Registerable {
 
   itemSoulVial(ItemSoulVial.class) {
     @Override
-    protected void initElem(@Nonnull FMLInitializationEvent event) {
-      super.initElem(event);
+    public void init(@Nonnull FMLInitializationEvent event) {
+      super.init(event);
       ItemSoulVial.initPhase();
     }
   },
@@ -216,6 +216,12 @@ public enum ModObject implements IModObject.Registerable {
     return item;
   }
 
+  @Nullable
+  @Override
+  public Class<? extends TileEntity> getTileClass() {
+    return teClazz;
+  }
+
   public @Nonnull Block getBlockNN() {
     return NullHelper.notnull(block, "Block " + this + " is unexpectedly missing");
   }
@@ -224,11 +230,13 @@ public enum ModObject implements IModObject.Registerable {
     return NullHelper.notnull(item, "Item " + this + " is unexpectedly missing");
   }
 
-  protected void preInitElem(@Nonnull FMLPreInitializationEvent event) {
+  @Override
+  public void preInit(@Nonnull FMLPreInitializationEvent event) {
     ModObjectRegistry.preInit(this, event);
   }
 
-  protected void initElem(@Nonnull FMLInitializationEvent event) {
+  @Override
+  public void init(@Nonnull FMLInitializationEvent event) {
     ModObjectRegistry.initElem(this, event);
   }
 

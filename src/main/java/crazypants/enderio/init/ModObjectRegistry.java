@@ -14,6 +14,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
@@ -27,39 +29,44 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public final class ModObjectRegistry {
+public enum ModObjectRegistry {
 
-  private ModObjectRegistry() {
+  INSTANCE;
+
+  private final List<IModObject.Registerable> objects = Lists.<IModObject.Registerable>newArrayList(ModObject.values());
+
+  public <T extends Enum<T> & IModObject.Registerable> void addModObjects(Class<T> enumClass) {
+    objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
   }
 
-  public static void init(@Nonnull FMLInitializationEvent event) {
-    for (ModObject elem : ModObject.values()) {
-      elem.initElem(event);
+  public void init(@Nonnull FMLInitializationEvent event) {
+    for (IModObject elem : objects) {
+      elem.init(event);
     }
   }
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
-    for (ModObject elem : ModObject.values()) {
-      elem.preInitElem(event);
+  public void init(@Nonnull FMLPreInitializationEvent event) {
+    for (IModObject elem : objects) {
+      elem.preInit(event);
     }
-    ModObjectRegistry.registerTeClasses();
+    registerTeClasses();
   }
 
-  static void registerTeClasses() {
+  void registerTeClasses() {
     Map<Class<? extends TileEntity>, List<String>> clazzes = new HashMap<Class<? extends TileEntity>, List<String>>();
 
-    for (ModObject elem : ModObject.values()) {
-      Class<? extends TileEntity> teClazz = elem.teClazz;
+    for (IModObject elem : objects) {
+      Class<? extends TileEntity> teClazz = elem.getTileClass();
       if (teClazz == null) {
         if (elem.getBlock() instanceof BlockEnder) {
-          teClazz = ((BlockEnder<?>) elem.getBlockNN()).getTeClass();
+          teClazz = ((BlockEnder<?>) elem.getBlock()).getTeClass();
         }
       }
       if (teClazz != null) {
         if (!clazzes.containsKey(teClazz)) {
           clazzes.put(teClazz, new ArrayList<String>());
         }
-        clazzes.get(teClazz).add(elem.unlocalisedName + "_tileentity");
+        clazzes.get(teClazz).add(elem.getUnlocalisedName() + "_tileentity");
       }
     }
 
@@ -78,7 +85,7 @@ public final class ModObjectRegistry {
     }
   }
 
-  static void preInit(@Nonnull IModObject.Registerable mo, @Nonnull FMLPreInitializationEvent event) {
+  public static void preInit(@Nonnull IModObject.Registerable mo, @Nonnull FMLPreInitializationEvent event) {
     final Class<?> clazz2 = mo.getClazz(); // because final fields may unexpectedly become null, according to our compiler warnings
     if (clazz2 == null) {
       Log.debug(mo + ".preInitElem() missing");
@@ -106,7 +113,7 @@ public final class ModObjectRegistry {
     }
   }
 
-  static void initElem(@Nonnull IModObject.Registerable mo, @Nonnull FMLInitializationEvent event) {
+  public static void initElem(@Nonnull IModObject.Registerable mo, @Nonnull FMLInitializationEvent event) {
     final Block block = mo.getBlock();
     if (block instanceof BlockEio<?>) {
       ((BlockEio<?>) block).init(event);
@@ -129,8 +136,7 @@ public final class ModObjectRegistry {
     }
   }
 
-  static @Nonnull String sanitizeName(@Nonnull String name) {
+  public static @Nonnull String sanitizeName(@Nonnull String name) {
     return name.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
   }
-
 }

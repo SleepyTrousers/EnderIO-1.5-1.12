@@ -5,7 +5,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public interface IModObject {
 
@@ -26,6 +29,13 @@ public interface IModObject {
 
   @Nullable
   Item getItem();
+
+  @Nullable
+  Class<? extends TileEntity> getTileClass();
+
+  void preInit(@Nonnull FMLPreInitializationEvent event);
+
+  void init(@Nonnull FMLInitializationEvent event);
 
   public static interface Registerable extends IModObject {
 
