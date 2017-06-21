@@ -21,12 +21,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class AbstractMachineContainer<T extends AbstractInventoryMachineEntity> extends ContainerEnder<IInventory> {
+public abstract class AbstractMachineContainer<E extends AbstractInventoryMachineEntity> extends ContainerEnder<IInventory> {
 
   protected Slot upgradeSlot;
-  protected @Nonnull T te;
+  protected @Nonnull E te;
 
-  public AbstractMachineContainer(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
+  public AbstractMachineContainer(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
     super(playerInv, te.getAsInventory());
     this.te = te;
   }
