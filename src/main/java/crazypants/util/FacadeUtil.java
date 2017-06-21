@@ -8,7 +8,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.Optional.Method;
-import team.chisel.api.IFacade;
 
 public class FacadeUtil {
 
@@ -20,15 +19,15 @@ public class FacadeUtil {
   private static class InnerFacadeUtil extends FacadeUtil {
 
     @Override
-    @Method(modid = "ChiselAPI")
+    @Method(modid = "ctm-api")
     public boolean isFacaded(@Nullable IBlockState state) {
-      return state != null && state.getBlock() instanceof IFacade;
+      return state != null && state.getBlock() instanceof team.chisel.ctm.api.IFacade;
     }
 
     @Override
-    @Method(modid = "ChiselAPI")
+    @Method(modid = "ctm-api")
     public @Nullable IBlockState getFacade(@Nullable IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
-      return state != null && isFacaded(state) ? ((IFacade) state.getBlock()).getFacade(world, pos, side) : null;
+      return state != null && isFacaded(state) ? ((team.chisel.ctm.api.IFacade) state.getBlock()).getFacade(world, pos, side) : null;
     }
 
   }
