@@ -275,12 +275,12 @@ public enum ModObject implements IModObject.Registerable {
   }
 
   @Override
-  public final void setItem(Item obj) {
+  public final void setItem(@Nullable Item obj) {
     item = obj;
   }
 
   @Override
-  public final void setBlock(Block obj) {
+  public final void setBlock(@Nullable Block obj) {
     block = obj;
   }
 

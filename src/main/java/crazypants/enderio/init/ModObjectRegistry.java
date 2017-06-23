@@ -13,7 +13,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
@@ -37,7 +36,7 @@ public enum ModObjectRegistry {
 
   INSTANCE;
 
-  private final List<IModObject.Registerable> objects = Lists.<IModObject.Registerable> newArrayList(ModObject.values());
+  private final NNList<IModObject.Registerable> objects = new NNList<IModObject.Registerable>(ModObject.values());
 
   public <T extends Enum<T> & IModObject.Registerable> void addModObjects(Class<T> enumClass) {
     objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
@@ -126,8 +125,9 @@ public enum ModObjectRegistry {
     for (IModObject elem : objects) {
       Class<? extends TileEntity> teClazz = (elem instanceof IModObject.Registerable) ? ((IModObject.Registerable) elem).getTileClass() : null;
       if (teClazz == null) {
-        if (elem.getBlock() instanceof BlockEnder) {
-          teClazz = ((BlockEnder<?>) elem.getBlock()).getTeClass();
+        final Block block = elem.getBlock();
+        if (block instanceof BlockEnder) {
+          teClazz = ((BlockEnder<?>) block).getTeClass();
         }
       }
       if (teClazz != null) {
