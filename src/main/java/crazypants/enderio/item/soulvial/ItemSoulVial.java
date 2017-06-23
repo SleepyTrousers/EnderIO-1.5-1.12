@@ -41,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,13 +50,14 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHaveRenderers, IOverlayRenderAware {
+public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHaveRenderers, IOverlayRenderAware, IModObject.LifecycleInit {
 
-  private static @Nonnull String permissionPickupOwned = "(item not initialized)";
-  private static @Nonnull String permissionPickup = "(item not initialized)";
-  private static @Nonnull String permissionPlace = "(item not initialized)";
+  private @Nonnull String permissionPickupOwned = "(item not initialized)";
+  private @Nonnull String permissionPickup = "(item not initialized)";
+  private @Nonnull String permissionPlace = "(item not initialized)";
 
-  public static void initPhase() {
+  @Override
+  public void init(FMLInitializationEvent event) {
     permissionPickupOwned = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup_owned", DefaultPermissionLevel.OP,
         "Permission to pickup an entity that is owned by another player with Ender IO's soul vessel");
     permissionPickup = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup", DefaultPermissionLevel.ALL,

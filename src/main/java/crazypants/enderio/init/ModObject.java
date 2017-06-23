@@ -64,8 +64,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public enum ModObject implements IModObject.Registerable {
 
@@ -87,7 +85,7 @@ public enum ModObject implements IModObject.Registerable {
 
   itemBrokenSpawner(ItemBrokenSpawner.class),
 
-  //Blocks
+  // Blocks
   blockColdFire(BlockColdFire.class),
   blockDarkSteelAnvil(BlockDarkSteelAnvil.class),
   blockDarkSteelLadder(BlockDarkSteelLadder.class),
@@ -146,13 +144,7 @@ public enum ModObject implements IModObject.Registerable {
   blockDarkFusedGlass(BlockFusedQuartz.class, "createDarkFusedGlass"),
   blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class),
 
-  itemSoulVial(ItemSoulVial.class) {
-    @Override
-    public void init(@Nonnull FMLInitializationEvent event) {
-      super.init(event);
-      ItemSoulVial.initPhase();
-    }
-  },
+  itemSoulVial(ItemSoulVial.class),
 
   block_detector_block(BlockDetector.class),
   block_detector_block_silent(BlockDetector.class, "createSilent"),
@@ -173,108 +165,140 @@ public enum ModObject implements IModObject.Registerable {
 
   protected @Nullable Block block;
   protected @Nullable Item item;
-  
-  protected final @Nullable Class<?> clazz;
-  protected final @Nonnull String methodName;
+
+  protected final @Nonnull Class<?> clazz;
+  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable Class<? extends TileEntity> teClazz;
-  
-  private ModObject() {
-    this(null);
+
+  /*
+   * A modObject can be defined in a couple of different ways.
+   * 
+   * It always needs a class.
+   * 
+   * If there is no creation method name given, the method name "create" is used and it is auto-detected from the class if it is a Block or an Item.
+   * 
+   * If only one method name is given, the same auto-detection is used.
+   * 
+   * If two method names are given, one is used to create a block and the second one to create the blockItem.
+   * 
+   * If it is a Block and does not have the second method name, but implements IModObject.WithBlockItem, that interface is used to create the blockItem.
+   * 
+   * It can also have a TileEntity class. It it is given, it is registered automatially. Multiple blocks can use the same class, the registration is
+   * automatically de-duped.
+   * 
+   * 
+   * Please note that it is not recommended to override the lifecycle methods to add callbacks to the block/item code. Doing so will classload that Block/Item
+   * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
+   */
+
+  private ModObject(@Nonnull Class<?> clazz) {
+    this(clazz, "create", (Class<? extends TileEntity>) null);
   }
 
-  private ModObject(@Nullable Class<?> clazz) {
-    this(clazz, "create", null);
-  }
-
-  private ModObject(@Nullable Class<?> clazz, Class<? extends TileEntity> teClazz) {
+  private ModObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
     this(clazz, "create", teClazz);
   }
-  
-  private ModObject(@Nullable Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, null);
+
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, methodName, (Class<? extends TileEntity>) null);
   }
 
-  private ModObject(@Nullable Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
+    this(clazz, blockMethodName, itemMethodName, null);
+  }
+
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
-    this.methodName = methodName;
+    if (Block.class.isAssignableFrom(clazz)) {
+      this.blockMethodName = methodName;
+      this.itemMethodName = null;
+    } else if (Item.class.isAssignableFrom(clazz)) {
+      this.blockMethodName = null;
+      this.itemMethodName = methodName;
+    } else {
+      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    }
+    this.teClazz = teClazz;
+  }
+
+  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
+    this.clazz = clazz;
+    this.blockMethodName = blockMethodName;
+    this.itemMethodName = itemMethodName;
     this.teClazz = teClazz;
   }
 
   @Override
-  public @Nonnull String getUnlocalisedName() {
+  public final @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
   @Override
-  public @Nullable Block getBlock() {
+  public final @Nullable Block getBlock() {
     return block;
   }
 
   @Override
-  public @Nullable Item getItem() {
+  public final @Nullable Item getItem() {
     return item;
   }
 
   @Nullable
   @Override
-  public Class<? extends TileEntity> getTileClass() {
+  public final Class<? extends TileEntity> getTileClass() {
     return teClazz;
   }
 
-  public @Nonnull Block getBlockNN() {
+  public final @Nonnull Block getBlockNN() {
     return NullHelper.notnull(block, "Block " + this + " is unexpectedly missing");
   }
 
-  public @Nonnull Item getItemNN() {
+  public final @Nonnull Item getItemNN() {
     return NullHelper.notnull(item, "Item " + this + " is unexpectedly missing");
   }
 
   @Override
-  public void preInit(@Nonnull FMLPreInitializationEvent event) {
-    ModObjectRegistry.preInit(this, event);
-  }
-
-  @Override
-  public void init(@Nonnull FMLInitializationEvent event) {
-    ModObjectRegistry.initElem(this, event);
-  }
-
-  @Override
-  public Class<?> getClazz() {
+  public final @Nonnull Class<?> getClazz() {
     return clazz;
   }
 
   @Override
-  public String getMethodName() {
-    return methodName;
+  public final String getBlockMethodName() {
+    return blockMethodName;
   }
 
   @Override
-  public void setItem(Item obj) {
+  public final String getItemMethodName() {
+    return itemMethodName;
+  }
+
+  @Override
+  public final void setItem(Item obj) {
     item = obj;
   }
 
   @Override
-  public void setBlock(Block obj) {
+  public final void setBlock(Block obj) {
     block = obj;
   }
 
   @Override
   @Nonnull
-  public ResourceLocation getRegistryName() {
+  public final ResourceLocation getRegistryName() {
     return new ResourceLocation(EnderIO.DOMAIN, unlocalisedName);
   }
 
   @Override
-  public @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
+  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setUnlocalizedName(getUnlocalisedName());
     blockIn.setRegistryName(getRegistryName());
     return blockIn;
   }
 
   @Override
-  public @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
+  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
     itemIn.setUnlocalizedName(getUnlocalisedName());
     itemIn.setRegistryName(getRegistryName());
     return itemIn;

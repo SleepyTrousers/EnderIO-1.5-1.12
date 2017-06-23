@@ -18,11 +18,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
+public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> implements IModObject.LifecycleInit {
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
   protected final @Nonnull IModObject modobject;
@@ -42,14 +41,9 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> {
   }
 
   /**
-   * Stuff that has to be done in the preInit phase (as opposed to init/postInit)
-   */
-  public void preInit(@Nonnull FMLPreInitializationEvent event) {
-  }
-
-  /**
    * Stuff that has to be done in the init phase (as opposed to preInit/postInit)
    */
+  @Override
   public void init(@Nonnull FMLInitializationEvent event) {
     permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modobject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
         "Permission to wrench-break the block " + modobject.getUnlocalisedName() + " of Ender IO");

@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 public interface IModObject {
 
@@ -30,22 +30,46 @@ public interface IModObject {
   @Nullable
   Item getItem();
 
-  @Nullable
-  Class<? extends TileEntity> getTileClass();
-
-  void preInit(@Nonnull FMLPreInitializationEvent event);
-
-  void init(@Nonnull FMLInitializationEvent event);
-
   public static interface Registerable extends IModObject {
 
+    @Nonnull
     Class<?> getClazz();
 
-    String getMethodName();
+    @Nullable
+    String getBlockMethodName();
 
-    void setItem(Item obj);
+    @Nullable
+    String getItemMethodName();
 
-    void setBlock(Block obj);
+    @Nullable
+    Class<? extends TileEntity> getTileClass();
+
+    void setItem(@Nullable Item obj);
+
+    void setBlock(@Nullable Block obj);
+
+  }
+
+  /**
+   * Interface to be implemented on block that are created from modObjects. It will be called at the right time to create and register the blockItem. Note that
+   * the method shall do the registering itself---the return value is only for storage in the ModObject.
+   *
+   */
+  public static interface WithBlockItem {
+
+    Item createBlockItem(@Nonnull IModObject modObject);
+
+  }
+
+  public static interface LifecycleInit {
+
+    void init(@Nonnull FMLInitializationEvent event);
+
+  }
+
+  public static interface LifecyclePostInit {
+
+    void init(@Nonnull FMLPostInitializationEvent event);
 
   }
 

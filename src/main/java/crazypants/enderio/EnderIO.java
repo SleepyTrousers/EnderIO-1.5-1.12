@@ -155,6 +155,8 @@ public class EnderIO {
 
     Config.init(event);
 
+    ModObjectRegistry.INSTANCE.init(event);
+
     LootManager.init(event);
 
     // Register the enchants
