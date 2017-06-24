@@ -25,7 +25,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -63,8 +63,8 @@ public class BlockAlloy extends BlockEio<TileEntityEio> implements IAdvancedTool
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return modobject.apply(new ItemBlockAlloy(this));
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemBlockAlloy(this));
   }
 
   @Override

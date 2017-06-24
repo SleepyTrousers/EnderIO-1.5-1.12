@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.init.ModObject;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.CapturedMob;
@@ -98,7 +98,7 @@ public class LootManager {
 
     } else if (evt.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER)) {
 
-      ItemStack bucket = Buckets.itemBucketFireWater.copy();
+      ItemStack bucket = Fluids.FIRE_WATER.getBucket();
       lp.addEntry(new LootEntryItem(bucket.getItem(), 1, 1, new LootFunction[] { setCount(1, 1), setMetadata(bucket.getMetadata()), setNBT(bucket) },
           new LootCondition[] { new RandomChance(.05F) }, bucket.getItem().getUnlocalizedName() + ":" + bucket.getMetadata()));
 

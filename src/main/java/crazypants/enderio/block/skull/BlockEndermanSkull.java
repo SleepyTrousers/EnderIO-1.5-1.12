@@ -17,7 +17,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -58,8 +58,8 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return modobject.apply(new ItemEndermanSkull(this));
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemEndermanSkull(this));
   }
 
   @Override

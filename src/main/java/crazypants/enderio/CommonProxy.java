@@ -11,7 +11,6 @@ import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.integration.top.TOPUtil;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.recipe.MachineRecipes;
-import crazypants.enderio.sound.SoundRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -61,7 +60,6 @@ public class CommonProxy {
   
   public void init(@Nonnull FMLInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(tickTimer);
-    SoundRegistry.init();
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
 
     if (Config.registerRecipes) {

@@ -11,11 +11,11 @@ public class RailcraftUtil {
 
   public static void registerFuels() {
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
+        Fluids.HOOTCH + "@" + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.ROCKET_FUEL_NAME + "@" + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
+        Fluids.ROCKET_FUEL + "@" + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.FIRE_WATER_NAME + "@" + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
+        Fluids.FIRE_WATER + "@" + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
   }
 
 }

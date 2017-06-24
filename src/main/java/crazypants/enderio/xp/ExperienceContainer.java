@@ -157,11 +157,11 @@ public class ExperienceContainer extends FluidTank {
       experienceTotal = 0;
       addExperience(newXp);
     }
-    return new FluidStack(Fluids.fluidXpJuice, fluidToExtract);
+    return new FluidStack(Fluids.XP_JUICE.getFluid(), fluidToExtract);
   }
 
   public boolean canFill(EnumFacing from, Fluid fluidIn) {
-    return canFill() && fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
+    return canFill() && fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.XP_JUICE.getFluid());
   }
 
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -188,11 +188,11 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public boolean canDrain(EnumFacing from, Fluid fluidIn) {
-    return fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.fluidXpJuice);
+    return fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.XP_JUICE.getFluid());
   }
 
   public @Nonnull FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { new FluidTankInfo(new FluidStack(Fluids.fluidXpJuice, getFluidAmount()), getCapacity()) };
+    return new FluidTankInfo[] { new FluidTankInfo(new FluidStack(Fluids.XP_JUICE.getFluid(), getFluidAmount()), getCapacity()) };
   }
 
   @Override
@@ -238,7 +238,7 @@ public class ExperienceContainer extends FluidTank {
 
   @Override
   public @Nonnull FluidStack getFluid() {
-    return new FluidStack(Fluids.fluidXpJuice, getFluidAmount());
+    return new FluidStack(Fluids.XP_JUICE.getFluid(), getFluidAmount());
   }
 
   @Override
@@ -267,7 +267,7 @@ public class ExperienceContainer extends FluidTank {
     experienceLevel = 0;
     experienceTotal = 0;
     if (fluid != null && fluid.getFluid() != null) {
-      if (Fluids.fluidXpJuice == fluid.getFluid()) {
+      if (Fluids.XP_JUICE.getFluid() == fluid.getFluid()) {
         addExperience(XpUtil.liquidToExperience(fluid.amount));
       } else {
         throw new InvalidParameterException(fluid.getFluid() + " is no XP juice");

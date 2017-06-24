@@ -100,26 +100,26 @@ public enum EnumPressurePlateType implements IStringSerializable {
   private final @Nonnull Class<? extends Entity> searchClass;
   private final @Nonnull List<Class<? extends Entity>> whiteClasses;
 
-  private @Nullable EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass) {
+  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass) {
     this.countingMode = CountingMode.BINARY;
     this.searchClass = searchClass;
     this.whiteClasses = Collections.emptyList();
   }
 
-  private @Nullable EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass,
+  private EnumPressurePlateType(@Nonnull Class<? extends Entity> searchClass,
       @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
     this.countingMode = CountingMode.BINARY;
     this.searchClass = searchClass;
     this.whiteClasses = Arrays.<Class<? extends Entity>> asList(whiteClasses);
   }
 
-  private @Nullable EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass) {
+  private EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass) {
     this.countingMode = countingMode;
     this.searchClass = searchClass;
     this.whiteClasses = Collections.<Class<? extends Entity>> emptyList();
   }
 
-  private @Nullable EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass,
+  private EnumPressurePlateType(@Nonnull CountingMode countingMode, @Nonnull Class<? extends Entity> searchClass,
       @SuppressWarnings("unchecked") Class<? extends Entity>... whiteClasses) {
     this.countingMode = countingMode;
     this.searchClass = searchClass;

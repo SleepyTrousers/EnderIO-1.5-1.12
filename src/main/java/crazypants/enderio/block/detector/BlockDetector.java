@@ -33,7 +33,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -129,8 +128,8 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return modobject.apply(new BlockItemPaintedBlock(this));
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
   @Override

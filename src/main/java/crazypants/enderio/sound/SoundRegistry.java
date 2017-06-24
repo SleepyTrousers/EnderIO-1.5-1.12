@@ -9,8 +9,11 @@ import crazypants.enderio.EnderIO;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public enum SoundRegistry implements IModSound {
   ZOMBIE_BUBBLE(SoundCategory.BLOCKS, "generator.zombie.bubble"),
   NIGHTVISION_ON(SoundCategory.PLAYERS, "ds.nightvision.on"),
@@ -35,13 +38,14 @@ public enum SoundRegistry implements IModSound {
     this(soundCategory, new ResourceLocation(EnderIO.DOMAIN, name));
   }
 
-  public static void init() {    
+  @SubscribeEvent
+  public static void registerSounds(@Nonnull RegistryEvent.Register<SoundEvent> event) {
     for (SoundRegistry soundRegistry : values()) {
       if (SoundEvent.REGISTRY.containsKey(soundRegistry.resourceLocation)) {
-        soundRegistry.soundEvent = SoundEvent.REGISTRY.getObject(soundRegistry.resourceLocation);
+        soundRegistry.soundEvent = event.getRegistry().getValue(soundRegistry.resourceLocation);
       } else {
-        soundRegistry.soundEvent = new SoundEvent(soundRegistry.resourceLocation);
-        GameRegistry.register(soundRegistry.soundEvent.setRegistryName(soundRegistry.resourceLocation));
+        SoundEvent soundEvent_nullchecked = soundRegistry.soundEvent = new SoundEvent(soundRegistry.resourceLocation);
+        event.getRegistry().register(soundEvent_nullchecked.setRegistryName(soundRegistry.resourceLocation));
       }
     }
   }

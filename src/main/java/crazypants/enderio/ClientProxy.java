@@ -52,16 +52,26 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ClientProxy extends CommonProxy {
+
+  public ClientProxy() {
+    super();
+    Log.info("ClientProxy()");
+    // MinecraftForge.EVENT_BUS.register(this);
+  }
 
   @Override
   public World getClientWorld() {
@@ -84,24 +94,8 @@ public class ClientProxy extends CommonProxy {
     PaintRegistry.create();
   }
 
-  @Override
-  public void init(@Nonnull FMLPreInitializationEvent event) {
-    super.init(event);
-
-    SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
-    SpecialTooltipHandler.addCallback(new TooltipHandlerBurnTime());
-    if (Config.addFuelTooltipsToAllFluidContainers) {
-      SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
-    }
-    PaintTooltipUtil.create();
-
-    IoConfigRenderer.init(event);
-
-    //conduits
-    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
-
-    // Fluids
-    EnderIO.fluids.registerRenderers();
+  @SubscribeEvent
+  public static void onModelRegistryEvent(@Nonnull ModelRegistryEvent event) {
 
     // Custom state mappers
     EnderIOGlassesStateMapper.create();
@@ -138,6 +132,24 @@ public class ClientProxy extends CommonProxy {
     }
 
     // TODO 1.11 ObeliskRenderManager.INSTANCE.registerRenderers();
+
+  }
+
+  @Override
+  public void init(@Nonnull FMLPreInitializationEvent event) {
+    super.init(event);
+
+    SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
+    SpecialTooltipHandler.addCallback(new TooltipHandlerBurnTime());
+    if (Config.addFuelTooltipsToAllFluidContainers) {
+      SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
+    }
+    PaintTooltipUtil.create();
+
+    IoConfigRenderer.init(event);
+
+    // conduits
+    // TODO 1.11 ConduitBundleRenderManager.instance.init(event);
 
     // Overlays
     MinecraftForge.EVENT_BUS.register(new YetaWrenchOverlayRenderer());

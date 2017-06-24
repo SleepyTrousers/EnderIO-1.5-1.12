@@ -40,36 +40,11 @@ import static crazypants.enderio.config.Config.rocketFuelIsExplosive;
 
 public final class BlockFluidEio {
 
-  public static BlockFluidEnder create(Fluid fluid, Material material, int fogColor) {
-    BlockFluidEnder res;
-    if (fluid == Fluids.fluidFireWater) {
-      res = new FireWater(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidHootch) {
-      res = new Hootch(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidRocketFuel) {
-      res = new RocketFuel(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidNutrientDistillation) {
-      res = new NutrientDistillation(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidLiquidSunshine) {
-      res = new LiquidSunshine(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidCloudSeedConcentrated) {
-      res = new CloudSeedConcentrated(fluid, material, fogColor);
-    } else if (fluid == Fluids.fluidVaporOfLevity) {
-      res = new VaporOfLevity(fluid, material, fogColor);
-    } else {
-      res = new BlockFluidEnder(fluid, material, fogColor) {
-      };
-    }
-    res.init();
-    fluid.setBlock(res);
-    return res;
-  }
-
   /////////////////////////////////////////////////////////////////////////
   // Fire Water
   /////////////////////////////////////////////////////////////////////////
 
-  private static class FireWater extends BlockFluidEnder {
+  static class FireWater extends BlockFluidEnder {
 
     protected FireWater(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -104,7 +79,7 @@ public final class BlockFluidEio {
   // Hootch
   /////////////////////////////////////////////////////////////////////////
 
-  private static class Hootch extends BlockFluidEnder {
+  static class Hootch extends BlockFluidEnder {
 
     protected Hootch(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -144,7 +119,7 @@ public final class BlockFluidEio {
   // Rocket Fuel
   /////////////////////////////////////////////////////////////////////////
 
-  private static class RocketFuel extends BlockFluidEnder {
+  static class RocketFuel extends BlockFluidEnder {
 
     protected RocketFuel(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -224,7 +199,7 @@ public final class BlockFluidEio {
   // Nutrient Distillation
   /////////////////////////////////////////////////////////////////////////
 
-  private static class NutrientDistillation extends BlockFluidEnder {
+  static class NutrientDistillation extends BlockFluidEnder {
 
     protected NutrientDistillation(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -249,7 +224,7 @@ public final class BlockFluidEio {
   // Liquid Sunshine
   /////////////////////////////////////////////////////////////////////////
 
-  private static class LiquidSunshine extends BlockFluidEnder {
+  static class LiquidSunshine extends BlockFluidEnder {
 
     protected LiquidSunshine(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -270,7 +245,7 @@ public final class BlockFluidEio {
   // Cloud Seed, Concentrated
   /////////////////////////////////////////////////////////////////////////
 
-  private static class CloudSeedConcentrated extends BlockFluidEnder {
+  static class CloudSeedConcentrated extends BlockFluidEnder {
 
     protected CloudSeedConcentrated(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -290,7 +265,7 @@ public final class BlockFluidEio {
   // Vapor Of Levity
   /////////////////////////////////////////////////////////////////////////
 
-  private static class VaporOfLevity extends BlockFluidEnder {
+  static class VaporOfLevity extends BlockFluidEnder {
 
     protected VaporOfLevity(Fluid fluid, Material material, int fogColor) {
       super(fluid, material, fogColor);

@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -99,7 +98,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     this(new NNList<>(configuarble.getLocation()));
   }
 
-  public @Nullable IoConfigRenderer(@Nonnull final NNList<BlockPos> configurables) {
+  public IoConfigRenderer(@Nonnull final NNList<BlockPos> configurables) {
     this.configurables.addAll(configurables);
 
     Vector3d c;

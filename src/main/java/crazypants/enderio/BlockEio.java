@@ -21,32 +21,35 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> implements IModObject.LifecycleInit {
+public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> implements IModObject.LifecycleInit, IModObject.WithBlockItem {
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
-  protected final @Nonnull IModObject modobject;
 
   protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass) {
     super(teClass);
-    this.modobject = modObject;
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
   }
 
   protected BlockEio(@Nonnull IModObject modObject, @Nullable Class<T> teClass, @Nonnull Material mat) {
     super(teClass, mat);
-    this.modobject = modObject;
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
+  }
+
+  /**
+   * Stuff that needs to be done directly after constructing the object
+   */
+  protected void init() {
   }
 
   /**
    * Stuff that has to be done in the init phase (as opposed to preInit/postInit)
    */
   @Override
-  public void init(@Nonnull FMLInitializationEvent event) {
-    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modobject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
-        "Permission to wrench-break the block " + modobject.getUnlocalisedName() + " of Ender IO");
+  public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
+    permissionNodeWrenching = PermissionAPI.registerNode(EnderIO.DOMAIN + ".wrench." + modObject.getUnlocalisedName(), DefaultPermissionLevel.ALL,
+        "Permission to wrench-break the block " + modObject.getUnlocalisedName() + " of Ender IO");
   }
 
   @Override
@@ -73,4 +76,5 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
   public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return true;
   }
+
 }

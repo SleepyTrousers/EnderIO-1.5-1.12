@@ -23,7 +23,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -177,8 +176,8 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return modobject.apply(new BlockItemFusedQuartz(this));
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemFusedQuartz(this));
   }
 
   public static class BlockItemFusedQuartz extends BlockFusedQuartzBase.BlockItemFusedQuartzBase implements ITintedItem, IWithPaintName {

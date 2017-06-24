@@ -94,11 +94,11 @@ public class NutritiousStickRecipe implements IRecipe {
 
   private static class NutDistTank implements ITankAccess {
 
-    private FluidTank inputTank = new FluidTank(Fluids.fluidNutrientDistillation, 0, Fluid.BUCKET_VOLUME);
+    private FluidTank inputTank = new FluidTank(Fluids.ENDER_DISTILLATION.getFluid(), 0, Fluid.BUCKET_VOLUME);
 
     @Override
     public FluidTank getInputTank(FluidStack forFluidType) {
-      if (forFluidType == null || FluidUtil.areFluidsTheSame(Fluids.fluidNutrientDistillation, forFluidType.getFluid())) {
+      if (forFluidType == null || FluidUtil.areFluidsTheSame(Fluids.ENDER_DISTILLATION.getFluid(), forFluidType.getFluid())) {
         return inputTank;
       }
       return null;

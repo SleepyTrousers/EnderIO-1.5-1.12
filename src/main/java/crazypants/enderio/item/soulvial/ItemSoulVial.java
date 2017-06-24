@@ -57,7 +57,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   private @Nonnull String permissionPlace = "(item not initialized)";
 
   @Override
-  public void init(@Nonnull FMLInitializationEvent event) {
+  public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
     permissionPickupOwned = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup_owned", DefaultPermissionLevel.OP,
         "Permission to pickup an entity that is owned by another player with Ender IO's soul vessel");
     permissionPickup = PermissionAPI.registerNode(EnderIO.DOMAIN + ".soulvial.pickup", DefaultPermissionLevel.ALL,

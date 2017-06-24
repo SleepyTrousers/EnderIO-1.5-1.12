@@ -18,7 +18,7 @@ public class IoUtil {
     if(replaceIfExists || !getConfigFile(fileName).exists()) {
       final InputStream resourceAsStream = IoUtil.class.getResourceAsStream(getConfigResourcePath(fileName));
       if (resourceAsStream == null) {
-        throw new RuntimeException(getConfigResourcePath(fileName) + " is missing from the jar file. Please re-download Ender IO from a respected source.");
+        throw new RuntimeException(getConfigResourcePath(fileName) + " is missing from the jar file. Please re-download Ender IO from a respectable source.");
       }
       IOUtils.copy(resourceAsStream, new FileOutputStream(getConfigFile(fileName)));
     }            

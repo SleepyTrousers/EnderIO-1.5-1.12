@@ -51,8 +51,8 @@ public class BlockPaintedSlabManager {
       doubleSlab.setHardness(2.0F).setResistance(5.0F);
       doubleSlab.init(modObject);
 
-      BlockItemPaintedSlab halfSlabItem = (BlockItemPaintedSlab) halfSlabObject.getItemNN();
-      halfSlabItem.addDoubleSlab(doubleSlab);
+      // TODO 1.11 BlockItemPaintedSlab halfSlabItem = (BlockItemPaintedSlab) halfSlabObject.getItemNN();
+      // TODO 1.11 halfSlabItem.addDoubleSlab(doubleSlab);
 
       return doubleSlab;
     } else {

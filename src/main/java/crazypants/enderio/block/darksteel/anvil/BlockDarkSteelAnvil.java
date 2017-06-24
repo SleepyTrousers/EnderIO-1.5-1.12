@@ -18,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAnvilBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -28,15 +29,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IGuiHandler {
+public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IGuiHandler, IModObject.WithBlockItem {
 
   public static BlockDarkSteelAnvil create(@Nonnull IModObject modObject) {
     MinecraftForge.EVENT_BUS.register(BlockDarkSteelAnvil.class);
-    return new BlockDarkSteelAnvil(modObject).init(modObject);
+    return new BlockDarkSteelAnvil(modObject);
   }
 
   private BlockDarkSteelAnvil(@Nonnull IModObject modObject) {
@@ -45,13 +45,12 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     setResistance(2000.0F);
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    GuiID.registerGuiHandler(GuiID.GUI_ID_ANVIL, this);
   }
 
-  protected BlockDarkSteelAnvil init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new ItemAnvilBlock(this)));
-    GuiID.registerGuiHandler(GuiID.GUI_ID_ANVIL, this);
-    return this;
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemAnvilBlock(this));
   }
 
   @Override

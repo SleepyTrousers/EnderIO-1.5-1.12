@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.material.alloy.Alloy;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
@@ -307,7 +308,7 @@ public class TicProxy {
     FluidRegistry.registerFluid(f);
     BlockFluidEnder.MoltenMetal.create(f, Material.LAVA, alloy.getColor());
     if (!EnderIO.proxy.isDedicatedServer()) {
-      EnderIO.fluids.registerFluidBlockRendering(f);
+      Fluids.registerFluidBlockRendering(f);
     }
     FluidRegistry.addBucketForFluid(f);
 

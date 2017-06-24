@@ -10,17 +10,23 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.EnderIOAPIProps;
+import net.minecraft.block.Block;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class EnderIOCrashCallable implements ICrashCallable {
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void register(@Nonnull RegistryEvent.Register<Block> event) {
     FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
   }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.fluid.Buckets;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.material.material.Material;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
@@ -55,7 +55,7 @@ public class JeiPlugin extends BlankModPlugin {
     // Add a couple of example recipes for the nut.dist stick as the custom recipe isn't picked up
     List<ItemStack> inputs = new ArrayList<ItemStack>();
     inputs.add(new ItemStack(Items.STICK));
-    inputs.add(Buckets.itemBucketNutrientDistillation.copy());
+    inputs.add(Fluids.NUTRIENT_DISTILLATION.getBucket());
     ShapelessRecipes res = new ShapelessRecipes(new ItemStack(itemMaterial.getItemNN(), 1, Material.NUTRITIOUS_STICK.ordinal()), inputs);
     registry.addRecipes(Collections.singletonList(res));
 

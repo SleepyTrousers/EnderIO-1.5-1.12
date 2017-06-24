@@ -97,11 +97,11 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
     if(Config.rodOfReturnFluidType != null) {
       fluid = FluidRegistry.getFluid(Config.rodOfReturnFluidType);
       if(fluid == null) {
-        Log.warn("ItemRodOfReturn: Could not find fluid '" + Config.rodOfReturnFluidType + "' using default fluid " + Fluids.fluidEnderDistillation);
+        Log.warn("ItemRodOfReturn: Could not find fluid '" + Config.rodOfReturnFluidType + "' using default fluid " + Fluids.ENDER_DISTILLATION.name());
       }
     }
     if(fluid == null) {
-      fluid = Fluids.fluidEnderDistillation;
+      fluid = Fluids.ENDER_DISTILLATION.getFluid();
     }
     fluidType = fluid;
   }

@@ -462,7 +462,6 @@ public final class Config {
   public static boolean dumpMobNames = false;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
-  public static String xpJuiceName = "xpjuice";
 
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
@@ -1389,7 +1388,6 @@ public final class Config {
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
-    xpJuiceName = config.getString("xpJuiceName", sectionMisc.name, xpJuiceName, "Id of liquid XP fluid (WARNING: only for users who know what they are doing - changing this id can break worlds) - this should match with OpenBlocks when installed");
 
     maxMobsAttracted = config
         .get(sectionMisc.name, "maxMobsAttracted", maxMobsAttracted, "Maximum number of mobs any Attraction Obelisk can attract at any time.").getInt();

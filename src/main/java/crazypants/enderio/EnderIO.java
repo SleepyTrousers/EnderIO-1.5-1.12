@@ -15,7 +15,6 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.enchantment.Enchantments;
 import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.fluid.FluidFuelRegister;
@@ -84,9 +83,6 @@ public class EnderIO {
 
   public static final @Nonnull Lang lang = new Lang("enderio");
 
-  // Blocks
-  public static Fluids fluids;
-
   // prePreInit
   static {
     FluidRegistry.enableUniversalBucket();
@@ -96,8 +92,6 @@ public class EnderIO {
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
 
-    EnderIOCrashCallable.init(event);
-
     Config.init(event);
 
     proxy.loadIcons();
@@ -105,12 +99,11 @@ public class EnderIO {
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     FluidFuelRegister.init(event);
-    fluids = new Fluids();
-    fluids.registerFluids();
+    Fluids.registerFluids();
 
     TicProxy.init(event);
 
-    ModObjectRegistry.INSTANCE.init(event);
+    ModObjectRegistry.init(event);
 
     EnergyUpgradePowerAdapter.init(event);
 
@@ -135,7 +128,7 @@ public class EnderIO {
   public void load(@Nonnull FMLInitializationEvent event) {
     Config.init(event);
 
-    ModObjectRegistry.INSTANCE.init(event);
+    ModObjectRegistry.init(event);
 
     CABIMC.init(event);
 
@@ -155,7 +148,7 @@ public class EnderIO {
 
     Config.init(event);
 
-    ModObjectRegistry.INSTANCE.init(event);
+    ModObjectRegistry.init(event);
 
     LootManager.init(event);
 

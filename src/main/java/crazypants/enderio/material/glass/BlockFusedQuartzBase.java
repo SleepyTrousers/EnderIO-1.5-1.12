@@ -20,7 +20,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -41,8 +41,8 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
   
   @Override
-  protected ItemBlock createItemBlock() {
-    return modobject.apply(new BlockItemFusedQuartzBase(this));
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemFusedQuartzBase(this));
   }
 
   @Override

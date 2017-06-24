@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
@@ -50,7 +49,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   protected List<GuiToolTip> progressTooltips;
   protected int lastProgressTooltipValue = -1;
 
-  protected @Nullable GuiMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String... guiTexture) {
+  protected GuiMachineBase(@Nonnull T machine, @Nonnull Container par1Container, String... guiTexture) {
     super(par1Container, guiTexture);
     tileEntity = machine;
 

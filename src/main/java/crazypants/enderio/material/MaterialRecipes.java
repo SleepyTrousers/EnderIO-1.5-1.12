@@ -24,6 +24,9 @@ import static crazypants.enderio.init.ModObject.blockEndermanSkull;
 public class MaterialRecipes {
 
   public static void init(@Nonnull FMLInitializationEvent event) {
+
+    old_early();
+
     // we register late so we can properly check for dependencies
     Material.getActiveMaterials().apply(new Callback<Material>() {
       @Override
@@ -36,6 +39,9 @@ public class MaterialRecipes {
   }
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {
+  }
+
+  private static void old_early() {
     // Ore Dictionary Registration
     Material.getActiveMaterials().apply(new Callback<Material>() {
       @Override

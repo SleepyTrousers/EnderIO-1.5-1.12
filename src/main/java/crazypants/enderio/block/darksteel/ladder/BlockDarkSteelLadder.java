@@ -15,17 +15,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider, IDefaultRenderers {
+public class BlockDarkSteelLadder extends BlockLadder implements IResourceTooltipProvider, IDefaultRenderers, IModObject.WithBlockItem {
 
   public static BlockDarkSteelLadder create(@Nonnull IModObject modObject) {
-    return new BlockDarkSteelLadder(modObject).init(modObject);
+    return new BlockDarkSteelLadder(modObject);
   }
 
   protected BlockDarkSteelLadder(@Nonnull IModObject modObject) {
@@ -33,12 +31,6 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     setSoundType(SoundType.METAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setHardness(0.4F);
-  }
-
-  protected BlockDarkSteelLadder init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new ItemBlock(this)));
-    return this;
   }
 
   @Override

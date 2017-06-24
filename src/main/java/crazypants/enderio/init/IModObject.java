@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -51,25 +52,27 @@ public interface IModObject {
   }
 
   /**
-   * Interface to be implemented on block that are created from modObjects. It will be called at the right time to create and register the blockItem. Note that
-   * the method shall do the registering itself---the return value is only for storage in the ModObject.
+   * Interface to be implemented on blocks that are created from modObjects. It will be called at the right time to create and register the blockItem. Note that
+   * the method shall NOT do the registering itself.
    *
    */
   public static interface WithBlockItem {
 
-    Item createBlockItem(@Nonnull IModObject modObject);
+    default Item createBlockItem(@Nonnull IModObject modObject) {
+      return modObject.apply(new ItemBlock((Block) this));
+    };
 
   }
 
   public static interface LifecycleInit {
 
-    void init(@Nonnull FMLInitializationEvent event);
+    void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event);
 
   }
 
   public static interface LifecyclePostInit {
 
-    void init(@Nonnull FMLPostInitializationEvent event);
+    void init(@Nonnull IModObject modObject, @Nonnull FMLPostInitializationEvent event);
 
   }
 

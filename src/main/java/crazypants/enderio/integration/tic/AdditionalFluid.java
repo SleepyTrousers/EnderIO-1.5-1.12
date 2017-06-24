@@ -9,6 +9,7 @@ import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenEnder;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenGlowstone;
 import crazypants.enderio.fluid.BlockFluidEio.MoltenRedstone;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -78,7 +79,7 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f);
+          Fluids.registerFluidBlockRendering(f);
         }
       }
       FluidRegistry.addBucketForFluid(f);
@@ -125,7 +126,7 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f);
+          Fluids.registerFluidBlockRendering(f);
         }
       }
       if (FluidRegistry.isUniversalBucketEnabled()) {
@@ -174,7 +175,7 @@ public class AdditionalFluid {
         block.init();
         f.setBlock(block);
         if (!EnderIO.proxy.isDedicatedServer()) {
-          EnderIO.fluids.registerFluidBlockRendering(f);
+          Fluids.registerFluidBlockRendering(f);
         }
       }
       if (FluidRegistry.isUniversalBucketEnabled()) {

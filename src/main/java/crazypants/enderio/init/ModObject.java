@@ -106,10 +106,10 @@ public enum ModObject implements IModObject.Registerable {
   blockPaintedWall(BlockPaintedWall.class),
   blockPaintedStair(BlockPaintedStairs.class),
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
-  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood"),
-  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", TileEntityTwicePaintedBlock.class),
-  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone"),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", TileEntityTwicePaintedBlock.class),
+  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", ""),
+  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", "", TileEntityTwicePaintedBlock.class),
+  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", ""),
+  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", "", TileEntityTwicePaintedBlock.class),
   blockPaintedGlowstone(BlockPaintedGlowstone.class),
   blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
   blockPaintedCarpet(BlockPaintedCarpet.class, TileEntityPaintedBlock.class),
@@ -225,8 +225,8 @@ public enum ModObject implements IModObject.Registerable {
   private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
     this.clazz = clazz;
-    this.blockMethodName = blockMethodName;
-    this.itemMethodName = itemMethodName;
+    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
+    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
     this.teClazz = teClazz;
   }
 

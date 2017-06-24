@@ -36,7 +36,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
     this(owner, valueType, scaler, defaultBaseValue, sectionCapacitor, null);
   }
 
-  private @Nullable CapacitorKey(@Nonnull ModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
+  private CapacitorKey(@Nonnull ModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull Scaler scaler, int defaultBaseValue,
       @Nonnull Section configSection, @Nullable String configKey) {
     this.owner = owner;
     this.valueType = valueType;

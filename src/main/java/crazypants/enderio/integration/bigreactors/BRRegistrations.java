@@ -39,17 +39,17 @@ public class BRRegistrations {
     BRProxy.registerFluid(Alloy.DARK_STEEL.getFluidName(), 0.50f, 0.78f, 1.42f, conductivityIron);
     BRProxy.registerFluid(Alloy.SOULARIUM.getFluidName(), 0.45f, 0.95f, 1.8f, conductivityGold);
 
-    BRProxy.registerFluid(Fluids.NUTRIENT_DISTILLATION_NAME, 0.50f, 0.65f, 1.44f, conductivityIron);
-    BRProxy.registerFluid(Fluids.ENDER_DISTILLATION_NAME, 0.55f, 0.74f, 1.44f, conductivityEmerald);
-    BRProxy.registerFluid(Fluids.VAPOR_OF_LEVITY_NAME, 0.95f, 0.95f, 4.00f, conductivityDiamond);
+    BRProxy.registerFluid(Fluids.NUTRIENT_DISTILLATION.getFluid().getName(), 0.50f, 0.65f, 1.44f, conductivityIron);
+    BRProxy.registerFluid(Fluids.ENDER_DISTILLATION.getFluid().getName(), 0.55f, 0.74f, 1.44f, conductivityEmerald);
+    BRProxy.registerFluid(Fluids.VAPOR_OF_LEVITY.getFluid().getName(), 0.95f, 0.95f, 4.00f, conductivityDiamond);
 
-    BRProxy.registerFluid(Fluids.HOOTCH_NAME, 0.5f, 0.4f, 1.33f, conductivityWater);
-    BRProxy.registerFluid(Fluids.ROCKET_FUEL_NAME, 0.6f, 0.3f, 1.33f, conductivityWater);
-    BRProxy.registerFluid(Fluids.FIRE_WATER_NAME, 0.7f, 0.2f, 1.33f, conductivityWater);
+    BRProxy.registerFluid(Fluids.HOOTCH.getFluid().getName(), 0.5f, 0.4f, 1.33f, conductivityWater);
+    BRProxy.registerFluid(Fluids.ROCKET_FUEL.getFluid().getName(), 0.6f, 0.3f, 1.33f, conductivityWater);
+    BRProxy.registerFluid(Fluids.FIRE_WATER.getFluid().getName(), 0.7f, 0.2f, 1.33f, conductivityWater);
 
-    BRProxy.registerFluid(Fluids.LIQUID_SUNSHINE_NAME, .39f, 0.1f, 1.11f, conductivityWater);
-    BRProxy.registerFluid(Fluids.CLOUD_SEED_NAME, .39f, 0.05f, 1.33f, conductivityWater);
-    BRProxy.registerFluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME, .39f, 0.005f, 2f, conductivityWater);
+    BRProxy.registerFluid(Fluids.LIQUID_SUNSHINE.getFluid().getName(), .39f, 0.1f, 1.11f, conductivityWater);
+    BRProxy.registerFluid(Fluids.CLOUD_SEED.getFluid().getName(), .39f, 0.05f, 1.33f, conductivityWater);
+    BRProxy.registerFluid(Fluids.CLOUD_SEED_CONCENTRATED.getFluid().getName(), .39f, 0.005f, 2f, conductivityWater);
 
     BRProxy.registerFluid(AdditionalFluid.REDSTONE_FLUID_NAME, 0.75f, 0.55f, 1.60f, conductivityEmerald);
     BRProxy.registerFluid(AdditionalFluid.GLOWSTONE_FLUID_NAME, 0.20f, 0.60f, 1.75f, conductivityCopper);
