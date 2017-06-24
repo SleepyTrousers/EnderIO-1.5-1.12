@@ -594,6 +594,36 @@ enderio.top.rf.value=%s RF/t
 enderio.top.paint.header=Painted with:
 enderio.top.owner.header=Owner:
 
+//Fluids
+fluid.nutrient_distillation=Nutrient Distillation
+tile.fluid.nutrient_distillation.name=Nutrient Distillation
+
+fluid.ender_distillation=Dew of the Void
+tile.fluid.ender_distillation.name=Dew of the Void
+
+fluid.vapor_of_levity=Vapor of Levity
+tile.vapor_of_levity.name=Vapor of Levity
+
+fluid.hootch=Hootch
+tile.fluid.hootch.name=Hootch
+
+fluid.fire_water=Fire Water
+tile.fluid.fire_water.name=Fire Water
+
+fluid.rocket_fuel=Rocket Fuel
+tile.fluid.rocket_fuel.name=Rocket Fuel
+
+fluid.liquid_sunshine=Liquid Sunshine
+tile.fluid.liquid_sunshine.name=Liquid Sunshine
+
+fluid.cloud_seed=Cloud Seed
+tile.fluid.cloud_seed.name=Cloud Seed
+
+fluid.cloud_seed_concentrated=Concentrated Cloud Seed
+tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
+
+fluid.xpjuice=Liquid XP
+tile.fluid.xpjuice.name=Liquid XP
 
 
 // These keys have not (yet) been confirmed in 1.11
@@ -709,46 +739,6 @@ enderio.lightBlocker=Blocks Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
 
 
-//Fluids
-fluid.nutrient_distillation=Nutrient Distillation
-tile.fluid.nutrient_distillation.name=Nutrient Distillation
-item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
-
-fluid.ender_distillation=Dew of the Void
-tile.fluid.ender_distillation.name=Dew of the Void
-item.bucketEnder_distillation.name=Dew of the Void Bucket
-
-fluid.vapor_of_levity=Vapor of Levity
-tile.vapor_of_levity.name=Vapor of Levity
-item.bucketVapor_of_levity.name=Vapor of Levity
-
-fluid.hootch=Hootch
-tile.fluid.hootch.name=Hootch
-item.bucketHootch.name=Hootch Bucket
-
-fluid.fire_water=Fire Water
-tile.fluid.fire_water.name=Fire Water
-item.bucketFire_water.name=Fire Water Bucket
-
-fluid.rocket_fuel=Rocket Fuel
-tile.fluid.rocket_fuel.name=Rocket Fuel
-item.bucketRocket_fuel.name=Rocket Fuel Bucket
-
-fluid.liquid_sunshine=Liquid Sunshine
-tile.fluid.liquid_sunshine.name=Liquid Sunshine
-item.bucketLiquid_sunshine.name=Liquid Sunshine Bucket
-
-fluid.cloud_seed=Cloud Seed
-tile.fluid.cloud_seed.name=Cloud Seed
-item.bucketCloud_seed.name=Cloud Seed Bucket
-
-fluid.cloud_seed_concentrated=Concentrated Cloud Seed
-tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
-item.bucketCloud_seed_concentrated.name=Concentrated Cloud Seed Bucket
-
-fluid.eio.xpjuice=Liquid XP
-tile.fluid.eio.xpjuice.name=Liquid XP
-item.bucketXpjuice.name=XP Bucket
 
 
 enderio.fluid.millibucketsTick=mB/t
