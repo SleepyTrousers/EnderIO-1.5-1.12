@@ -63,14 +63,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.init.ModObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper {
+    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper,
+    IModObject.WithBlockItem {
 
   public static BlockPaintedPressurePlate create(@Nonnull IModObject modObject) {
     BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(modObject);
@@ -100,8 +100,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
       Blocks.WOODEN_PRESSURE_PLATE.getDefaultState());
 
   private void init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlockItemPaintedPressurePlate(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("pressure_plate_down", new ResourceLocation("minecraft", "block/stone_pressure_plate_down"),
@@ -116,6 +114,11 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
     defaultPaints.set(EnumPressurePlateType.DARKSTEEL.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 1));
     defaultPaints.set(EnumPressurePlateType.SOULARIUM.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 2));
     defaultPaints.set(EnumPressurePlateType.TUNED.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 3));
+  }
+
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemPaintedPressurePlate(this));
   }
 
   @Override

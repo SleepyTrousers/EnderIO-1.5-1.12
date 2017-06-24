@@ -12,14 +12,12 @@ import net.minecraft.block.BlockLever;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BlockSelfResettingLever extends BlockLever implements IDefaultRenderers {
+public class BlockSelfResettingLever extends BlockLever implements IDefaultRenderers, IModObject.WithBlockItem {
 
   public static Block create10(@Nonnull IModObject modObject) {
     return create(modObject, 10);
@@ -38,10 +36,7 @@ public class BlockSelfResettingLever extends BlockLever implements IDefaultRende
   }
 
   private static Block create(@Nonnull IModObject modObject, int seconds) {
-    final BlockSelfResettingLever lever = new BlockSelfResettingLever(modObject, seconds * 20);
-    GameRegistry.register(lever);
-    GameRegistry.register(modObject.apply(new ItemBlock(lever)));
-    return lever;
+    return new BlockSelfResettingLever(modObject, seconds * 20);
   }
 
   private final int delay;

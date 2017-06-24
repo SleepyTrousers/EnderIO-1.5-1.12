@@ -53,12 +53,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
-    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
+    IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem {
 
   public static BlockPaintedTrapDoor create_wooden(@Nonnull IModObject modObject) {
     BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(modObject, Material.WOOD, false);
@@ -87,15 +86,17 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
     Prep.setNoCreativeTab(this);
   }
 
-  @Override
   protected BlockDarkSteelTrapDoor init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("trapdoor_bottom", new ResourceLocation("minecraft", "block/wooden_trapdoor_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("trapdoor_top", new ResourceLocation("minecraft", "block/wooden_trapdoor_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("trapdoor_open", new ResourceLocation("minecraft", "block/wooden_trapdoor_open"), PaintRegistry.PaintMode.ALL_TEXTURES);
     return this;
+  }
+
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
   @Override

@@ -9,12 +9,12 @@ import crazypants.enderio.render.IDefaultRenderers;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
 
-public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IDefaultRenderers {
+public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IDefaultRenderers, IModObject.WithBlockItem {
 
   public static BlockDarkSteelTrapDoor create(@Nonnull IModObject modObject) {
-    return new BlockDarkSteelTrapDoor(modObject, Material.IRON, true).init(modObject);
+    return new BlockDarkSteelTrapDoor(modObject, Material.IRON, true);
   }
 
   public BlockDarkSteelTrapDoor(@Nonnull IModObject modObject, Material materialIn, boolean isBlastResistant) {
@@ -34,10 +34,9 @@ public class BlockDarkSteelTrapDoor extends BlockTrapDoor implements IDefaultRen
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
-  protected BlockDarkSteelTrapDoor init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlastResistantItemBlock(this)));
-    return this;
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlastResistantItemBlock(this));
   }
 
 }

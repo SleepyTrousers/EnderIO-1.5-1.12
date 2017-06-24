@@ -43,11 +43,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockPaintedRedstone extends BlockCompressedPowered implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
+public abstract class BlockPaintedRedstone extends BlockCompressedPowered
+    implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, IModObject.WithBlockItem {
 
   public static BlockPaintedRedstone create_solid(@Nonnull IModObject modObject) {
     BlockPaintedRedstone result = new BlockPaintedRedstoneSolid(modObject);
@@ -100,11 +100,14 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered implem
   }
 
   private void init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedRedstone>(this, Blocks.REDSTONE_BLOCK));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
+  }
+
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
   @Override

@@ -12,21 +12,19 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityMinecart.Type;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static net.minecraft.block.BlockRailDetector.SHAPE;
 
-public class BlockExitRail extends BlockRailBase implements IDefaultRenderers {
+public class BlockExitRail extends BlockRailBase implements IDefaultRenderers, IModObject.WithBlockItem {
 
   public static BlockExitRail create(@Nonnull IModObject modObject) {
-    return new BlockExitRail(modObject).init(modObject);
+    return new BlockExitRail(modObject);
   }
 
   public BlockExitRail(@Nonnull IModObject modObject) {
@@ -34,12 +32,6 @@ public class BlockExitRail extends BlockRailBase implements IDefaultRenderers {
     this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH));
     setCreativeTab(CreativeTabs.TRANSPORTATION);
     modObject.apply(this);
-  }
-
-  private BlockExitRail init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new ItemBlock(this)));
-    return this;
   }
 
   @Override

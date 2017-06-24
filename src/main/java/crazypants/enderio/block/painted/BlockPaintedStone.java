@@ -40,11 +40,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPaintedStone extends Block implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock {
+public class BlockPaintedStone extends Block implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, IModObject.WithBlockItem {
 
   public static BlockPaintedStone create(@Nonnull IModObject modObject) {
     BlockPaintedStone result = new BlockPaintedStone(modObject);
@@ -62,8 +61,6 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
   }
 
   private void init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlockItemPaintedBlock(this)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedStone>(this, Blocks.COBBLESTONE) {
 
       @Override
@@ -73,6 +70,11 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
 
     });
     SmartModelAttacher.registerNoProps(this);
+  }
+
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
   @Override

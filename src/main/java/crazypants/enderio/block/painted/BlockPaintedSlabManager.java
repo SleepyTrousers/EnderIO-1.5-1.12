@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
 
 public class BlockPaintedSlabManager {
 
@@ -37,7 +37,6 @@ public class BlockPaintedSlabManager {
     BlockPaintedSlab.BlockPaintedHalfSlab halfSlab = new BlockPaintedSlab.BlockPaintedHalfSlab(modObject, material, sound);
     halfSlab.setHardness(2.0F).setResistance(5.0F);
     halfSlab.init(modObject);
-    GameRegistry.register(modObject.apply(new BlockItemPaintedSlab(halfSlab)));
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedSlab>(halfSlab, paintables));
     return halfSlab;
   }
@@ -51,13 +50,16 @@ public class BlockPaintedSlabManager {
       doubleSlab.setHardness(2.0F).setResistance(5.0F);
       doubleSlab.init(modObject);
 
-      // TODO 1.11 BlockItemPaintedSlab halfSlabItem = (BlockItemPaintedSlab) halfSlabObject.getItemNN();
-      // TODO 1.11 halfSlabItem.addDoubleSlab(doubleSlab);
-
       return doubleSlab;
     } else {
       throw new RuntimeException("Bad block initialization, " + modObject + " is not a ModObject!");
     }
+  }
+
+  public static Item create_item(@Nonnull IModObject modObject) {
+    final BlockItemPaintedSlab item = modObject.apply(new BlockItemPaintedSlab((BlockPaintedSlab) ((ModObject) modObject).getBlockNN()));
+    item.addDoubleSlab((BlockPaintedSlab) ModObject.values()[((ModObject) modObject).ordinal() + 1].getBlockNN());
+    return item;
   }
 
 }

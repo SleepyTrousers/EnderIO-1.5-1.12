@@ -28,14 +28,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDecoration extends Block implements IHaveRenderers {
+public class BlockDecoration extends Block implements IHaveRenderers, IModObject.WithBlockItem {
 
   public static BlockDecoration create(@Nonnull IModObject modObject) {
-    return new BlockDecoration(modObject).init(modObject);
+    return new BlockDecoration(modObject);
   }
 
   protected BlockDecoration(@Nonnull IModObject modObject) {
@@ -57,15 +56,14 @@ public class BlockDecoration extends Block implements IHaveRenderers {
     return new BlockStateContainer(this, new IProperty[] { EnumDecoBlock.TYPE });
   }
 
-  protected BlockDecoration init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new ItemBlockDecoration(this) {
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemBlockDecoration(this) {
       @Override
       public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
         return EnumDecoBlock.getTypeFromMeta(stack.getMetadata()).getUnlocalizedName(this);
       }
-    }));
-    return this;
+    });
   }
 
   @Override

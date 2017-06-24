@@ -9,12 +9,12 @@ import crazypants.enderio.render.IDefaultRenderers;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.Item;
 
-public class BlockDarkIronBars extends BlockPane implements IDefaultRenderers {
+public class BlockDarkIronBars extends BlockPane implements IDefaultRenderers, IModObject.WithBlockItem {
 
   public static BlockDarkIronBars create(@Nonnull IModObject modObject) {
-    return new BlockDarkIronBars(modObject).init(modObject);
+    return new BlockDarkIronBars(modObject);
   }
 
   protected BlockDarkIronBars(@Nonnull IModObject modObject) {
@@ -26,10 +26,9 @@ public class BlockDarkIronBars extends BlockPane implements IDefaultRenderers {
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
-  protected BlockDarkIronBars init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    GameRegistry.register(modObject.apply(new BlastResistantItemBlock(this)));
-    return this;
+  @Override
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlastResistantItemBlock(this));
   }
 
 }
