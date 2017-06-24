@@ -18,6 +18,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
@@ -437,10 +438,10 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
             at.z += pos.getZ() - origin.z;
             if (tile.getClass() == TileEntityChest.class) {
               TileEntityChest chest = (TileEntityChest) tile;
-              if (chest.adjacentChestXNeg != null) {
+              if (NullHelper.untrust(chest.adjacentChestXNeg) != null) {
                 tile = chest.adjacentChestXNeg;
                 at.x--;
-              } else if (chest.adjacentChestZNeg != null) {
+              } else if (NullHelper.untrust(chest.adjacentChestZNeg) != null) {
                 tile = chest.adjacentChestZNeg;
                 at.z--;
               }

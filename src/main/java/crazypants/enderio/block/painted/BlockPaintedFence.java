@@ -29,6 +29,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockPlanks;
@@ -85,7 +86,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
 
   protected BlockPaintedFence(@Nonnull IModObject modObject, Material material, MapColor mapColor, @Nonnull SoundType sound) {
     super(material, mapColor);
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setSoundType(sound);
   }

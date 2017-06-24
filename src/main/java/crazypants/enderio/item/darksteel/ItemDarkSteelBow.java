@@ -183,9 +183,14 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       if (!arrowIsInfinite) {
         itemstack.shrink(1);
       }
-      entityplayer.addStat(StatList.getObjectUseStats(this));
+      supressed(entityplayer);
     }
 
+  }
+
+  @SuppressWarnings("null")
+  private void supressed(EntityPlayer entityplayer) {
+    entityplayer.addStat(StatList.getObjectUseStats(this));
   }
 
   private int getRequiredPower(int drawDuration, EnergyUpgrade upgrade) {

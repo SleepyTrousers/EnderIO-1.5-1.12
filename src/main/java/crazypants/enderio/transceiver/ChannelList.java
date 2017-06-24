@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
 
   private static final long serialVersionUID = 3922673078596352247L;
@@ -21,13 +19,13 @@ class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
   @Override
   @Deprecated // so accidental usage shows up
   public Set<Channel> put(ChannelType key, Set<Channel> value) {
-    throw new NotImplementedException();
+    throw new UnsupportedOperationException();
   }
 
   @Override
   @Deprecated // so accidental usage shows up
   public Set<Channel> remove(Object key) {
-    throw new NotImplementedException();
+    throw new UnsupportedOperationException();
   }
 
   @Override

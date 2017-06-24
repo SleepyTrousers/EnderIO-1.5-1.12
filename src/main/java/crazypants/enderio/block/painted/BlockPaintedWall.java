@@ -29,6 +29,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.ITileEntityProvider;
@@ -70,7 +71,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   public BlockPaintedWall(@Nonnull IModObject modObject) {
     super(Blocks.COBBLESTONE);
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 

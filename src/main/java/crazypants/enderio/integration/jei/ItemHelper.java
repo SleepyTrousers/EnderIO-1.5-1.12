@@ -4,7 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.util.Prep;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,7 +25,7 @@ public class ItemHelper {
     final NNList<ItemStack> sublist = new NNList<ItemStack>();
     for (final Item item : GameData.getItemRegistry()) {
       for (CreativeTabs tab : item.getCreativeTabs()) {
-        item.getSubItems(item, tab, sublist);
+        EnderIO.proxy.getSubItems(NullHelper.notnullM(item, "Null item in game registry"), tab, sublist);
         sublist.apply(new Callback<ItemStack>() {
           @Override
           public void apply(@Nonnull ItemStack stack) {

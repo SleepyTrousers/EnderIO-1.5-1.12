@@ -29,6 +29,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -83,7 +84,7 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
 
   protected BlockPaintedTrapDoor(@Nonnull IModObject modObject, Material materialIn, boolean isBlastResistant) {
     super(modObject, materialIn, isBlastResistant);
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
   }
 
   @Override

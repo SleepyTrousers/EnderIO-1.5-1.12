@@ -19,6 +19,7 @@ import crazypants.enderio.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.registry.SmartModelAttacher;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCompressedPowered;
 import net.minecraft.block.ITileEntityProvider;
@@ -94,7 +95,7 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered implem
     setHardness(5.0F);
     setResistance(10.0F);
     setSoundType(SoundType.METAL);
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 

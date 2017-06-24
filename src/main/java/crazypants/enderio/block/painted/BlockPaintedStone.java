@@ -19,6 +19,7 @@ import crazypants.enderio.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.registry.SmartModelAttacher;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -56,7 +57,7 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
     setHardness(2.0F);
     setResistance(10.0F);
     setSoundType(SoundType.STONE);
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 

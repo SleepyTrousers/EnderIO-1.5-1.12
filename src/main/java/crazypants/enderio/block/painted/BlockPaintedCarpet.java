@@ -28,6 +28,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
@@ -66,7 +67,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   protected BlockPaintedCarpet(@Nonnull IModObject modObject) {
     super();
-    this.setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setHardness(0.1F);
     setSoundType(SoundType.CLOTH);

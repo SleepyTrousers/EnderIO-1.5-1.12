@@ -29,6 +29,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
@@ -84,7 +85,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     if (!(model instanceof BlockStairs)) {
       throw new RuntimeException();
     }
-    this.setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 

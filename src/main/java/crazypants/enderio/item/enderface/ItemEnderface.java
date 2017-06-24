@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
+import crazypants.util.Prep;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -25,7 +26,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   }
 
   protected ItemEnderface(@Nonnull IModObject modObject) {
-    setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setMaxStackSize(1);
   }

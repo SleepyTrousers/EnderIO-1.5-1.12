@@ -21,6 +21,7 @@ import crazypants.enderio.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.render.registry.SmartModelAttacher;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
@@ -99,7 +100,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     setHardness(0.3F);
     setSoundType(SoundType.GLASS);
     setLightLevel(1.0F);
-    this.setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 
@@ -151,7 +152,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
     }
 
     // need special code so we can get the paint source from the te
-    player.addStat(StatList.getBlockStats(this));
+    supressed(player);
     player.addExhaustion(0.025F);
 
     NNList<ItemStack> items = new NNList<ItemStack>(createPaintedDrop(te));
@@ -162,6 +163,11 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
         spawnAsEntity(worldIn, pos, itemStack);
       }
     });
+  }
+
+  @SuppressWarnings("null")
+  private void supressed(EntityPlayer player) {
+    player.addStat(StatList.getBlockStats(this));
   }
 
   @Override

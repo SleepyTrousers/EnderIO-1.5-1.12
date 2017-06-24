@@ -29,6 +29,7 @@ import crazypants.enderio.render.property.EnumRenderPart;
 import crazypants.enderio.render.property.IOMode.EnumIOMode;
 import crazypants.enderio.render.registry.SmartModelAttacher;
 import crazypants.enderio.render.util.QuadCollector;
+import crazypants.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -98,7 +99,7 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
     }
 
     this.setDefaultState(iblockstate);
-    this.setCreativeTab(null);
+    Prep.setNoCreativeTab(this);
     modObject.apply(this);
     this.halfVariant = halfVariant != null ? halfVariant : this;
     useNeighborBrightness = true;

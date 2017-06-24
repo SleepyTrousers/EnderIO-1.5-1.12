@@ -3,7 +3,6 @@ package crazypants.enderio.item.soulvial;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.lwjgl.input.Keyboard;
 
@@ -217,7 +216,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   }
 
   @Override
-  public void getSubItems(@Nonnull Item itemIn, @Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     if (tab == getCreativeTab() || tab == EnderIOTab.tabNoTab) {
       super.getSubItems(itemIn, tab, subItems);
     }
