@@ -39,7 +39,7 @@ compileJava {
 
 
 // dependency string for the @Mod annotation
-ext.dependencies = "required-after:Forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},);after:JEI@[${jei_version},)"
+ext.dependencies = "required-after:forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:jei@[${jei_version},)"
 
 def type = 'release'
 if (project.hasProperty('mod_appendix')) {
