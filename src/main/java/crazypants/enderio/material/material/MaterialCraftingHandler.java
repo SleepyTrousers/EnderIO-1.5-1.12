@@ -41,9 +41,9 @@ public class MaterialCraftingHandler {
       return;
     }
     final BlockPos pos = event.getPos();
-    final long worldTime = world.getWorldTime();
+    final long worldTime = world.getTotalWorldTime();
     if (fires.containsKey(pos)) {
-      if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(pos) && RANDOM.nextFloat() <= 1f) {
+      if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(pos) && RANDOM.nextFloat() <= .5f) {
         Block.spawnAsEntity(world, pos, Material.POWDER_INFINITY.getStack());
         world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
       }

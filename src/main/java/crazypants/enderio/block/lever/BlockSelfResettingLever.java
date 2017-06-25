@@ -19,6 +19,10 @@ import net.minecraft.world.World;
 
 public class BlockSelfResettingLever extends BlockLever implements IDefaultRenderers, IModObject.WithBlockItem {
 
+  public static Block create5(@Nonnull IModObject modObject) {
+    return create(modObject, 5);
+  }
+
   public static Block create10(@Nonnull IModObject modObject) {
     return create(modObject, 10);
   }

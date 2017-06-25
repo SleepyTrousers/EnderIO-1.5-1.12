@@ -52,13 +52,8 @@ public class Grid implements RecipeConfigElement {
         throw new InvalidRecipeConfigException("Too many items (required=" + (width * height) + ", provided=" + items.size() + ")");
       }
       valid = true;
-      boolean hasAtLeastOneItem = false;
       for (OptionalItem item : items) {
         valid = valid && item.isValid();
-        hasAtLeastOneItem = hasAtLeastOneItem || item.getRecipeObject() != null;
-      }
-      if (!hasAtLeastOneItem) {
-        throw new InvalidRecipeConfigException("Rejecting crafting recipe without any items, only empty spaces");
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <grid>");
@@ -68,8 +63,13 @@ public class Grid implements RecipeConfigElement {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
+    boolean hasAtLeastOneItem = false;
     for (OptionalItem item : items) {
       item.enforceValidity();
+      hasAtLeastOneItem = hasAtLeastOneItem || item.getRecipeObject() != null;
+    }
+    if (!hasAtLeastOneItem) {
+      throw new InvalidRecipeConfigException("Rejecting crafting recipe without any items, only empty spaces in <grid>");
     }
   }
 

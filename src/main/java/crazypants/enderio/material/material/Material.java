@@ -64,12 +64,12 @@ public enum Material {
   INGOT_ENDERIUM_BASE("ingot_enderium_base", "ingotEnderiumBase", "ingotEnderium"),
   FLOUR("dust_wheat", "dustWheat"),
 
-  ZOMBIE_ELECTRODE("skullZombieElectrode"),
-  ZOMBIE_CONTROLLER("skullZombieController"),
-  FRANKEN_ZOMBIE("skullZombieFrankenstien", true),
-  ENDER_RESONATOR("skullEnderResonator"),
-  SENTIENT_ENDER("skullSentientEnder", true),
-  SKELETAL_CONTRACTOR("skullSkeletalContractor");
+  ZOMBIE_ELECTRODE("skullZombieElectrode", "skullZombieElectrode"),
+  ZOMBIE_CONTROLLER("skullZombieController", "skullZombieController"),
+  FRANKEN_ZOMBIE("skullZombieFrankenstien", "skullZombieFrankenstein", true),
+  ENDER_RESONATOR("skullEnderResonator", "skullEnderResonator"),
+  SENTIENT_ENDER("skullSentientEnder", "skullSentientEnder", true),
+  SKELETAL_CONTRACTOR("skullSkeletalContractor", "skullSkeletalContractor");
 
   ;
 

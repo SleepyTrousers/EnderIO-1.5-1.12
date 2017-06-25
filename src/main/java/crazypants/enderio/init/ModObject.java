@@ -92,6 +92,7 @@ public enum ModObject implements IModObject.Registerable {
   blockDarkIronBars(BlockDarkIronBars.class),
   blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
   blockReinforcedObsidian(BlockReinforcedObsidian.class),
+  blockSelfResettingLever5(BlockSelfResettingLever.class, "create5"),
   blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
   blockSelfResettingLever30(BlockSelfResettingLever.class, "create30"),
   blockSelfResettingLever60(BlockSelfResettingLever.class, "create60"),

@@ -87,9 +87,11 @@ public class MaterialRecipes {
   public static void addRecipes() {
 
     for (Alloy alloy : Alloy.values()) {
-      Object[] recipe = { "iii", "iii", "iii", 'i', alloy.getOreIngot() };
-      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackBlock(), recipe));
+      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot()));
       GameRegistry.addRecipe(new ShapelessOreRecipe(alloy.getStackIngot(9), alloy.getOreBlock()));
+
+      GameRegistry.addRecipe(new ShapedOreRecipe(alloy.getStackIngot(), "nnn", "nnn", "nnn", 'n', alloy.getOreNugget()));
+      GameRegistry.addRecipe(new ShapelessOreRecipe(alloy.getStackNugget(9), alloy.getStackIngot()));
     }
 
     for (EnumDyeColor color : EnumDyeColor.values()) {
