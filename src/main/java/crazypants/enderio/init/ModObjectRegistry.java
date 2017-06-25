@@ -100,8 +100,7 @@ public class ModObjectRegistry {
       }
       if (item != null) {
         NonNullList<ItemStack> list = new NNList<>();
-        // item.getSubItems(item, item.getCreativeTab(), list);
-        item.getSubItems(item, EnderIOTab.tabNoTab, list);
+        EnderIO.proxy.getSubItems(item, EnderIOTab.tabNoTab, list);
         if (list.isEmpty()) {
           Log.debug("Item " + item.getRegistryName() + " has localized name " + new ItemStack(item).getDisplayName());
         } else {

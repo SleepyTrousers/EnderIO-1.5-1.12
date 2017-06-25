@@ -64,14 +64,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-@EventBusSubscriber(modid = EnderIO.MODID)
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class ClientProxy extends CommonProxy {
-
-  public ClientProxy() {
-    super();
-    Log.info("ClientProxy()");
-    // MinecraftForge.EVENT_BUS.register(this);
-  }
 
   @Override
   public World getClientWorld() {
