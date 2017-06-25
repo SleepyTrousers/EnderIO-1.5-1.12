@@ -49,7 +49,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
@@ -71,7 +70,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   public static @Nonnull ItemDarkSteelAxe create(@Nonnull IModObject modObject) {
     ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject);
     MinecraftForge.EVENT_BUS.register(res);
-    res.init();
     return res;
   }
 
@@ -229,10 +227,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       }
     }
     return false;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

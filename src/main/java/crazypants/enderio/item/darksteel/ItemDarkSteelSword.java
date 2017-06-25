@@ -62,7 +62,6 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -96,7 +95,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   public static ItemDarkSteelSword create(@Nonnull IModObject modObject) {
     ItemDarkSteelSword res = new ItemDarkSteelSword(modObject);
-    res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
@@ -300,10 +298,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     }
 
     return null;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

@@ -54,7 +54,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -74,7 +73,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   public static ItemDarkSteelPickaxe create(@Nonnull IModObject modObject) {
     ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject);
-    res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
@@ -255,10 +253,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public @Nonnull Set<String> getToolClasses(@Nonnull ItemStack stack) {
     return hasSpoonUpgrade(stack) ? TOOL_CLASS_SPOON : TOOL_CLASS_PICK;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

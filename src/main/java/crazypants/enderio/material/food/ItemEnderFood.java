@@ -23,16 +23,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider, IHaveRenderers {
 
   public static ItemEnderFood create(@Nonnull IModObject modObject) {
-    ItemEnderFood ret = new ItemEnderFood(modObject);
-    GameRegistry.register(ret);
-    return ret;
+    return new ItemEnderFood(modObject);
   }
 
   @SideOnly(Side.CLIENT)

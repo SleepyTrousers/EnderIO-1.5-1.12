@@ -26,16 +26,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades, IHaveRenderers {
 
   public static ItemConduitProbe create(@Nonnull IModObject modObject) {
-    ItemConduitProbe result = new ItemConduitProbe(modObject);
-    result.init();
-    return result;
+    return new ItemConduitProbe(modObject);
   }
 
   protected ItemConduitProbe(@Nonnull IModObject modObject) {
@@ -43,10 +40,6 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   public static boolean copyPasteSettings(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {

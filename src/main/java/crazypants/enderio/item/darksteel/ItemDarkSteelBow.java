@@ -44,7 +44,6 @@ import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,7 +53,6 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   public static ItemDarkSteelBow create(@Nonnull IModObject modObject) {
     ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
-    res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
@@ -92,10 +90,6 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   private float updatePullingProperty(@Nonnull ItemStack stack, @Nullable EntityLivingBase entityIn) {
     float res = entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
     return res;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

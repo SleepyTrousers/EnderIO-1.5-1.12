@@ -34,7 +34,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -45,10 +44,8 @@ import static crazypants.util.NbtValue.MAGNET_ACTIVE;
 public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
   public static ItemMagnet create(@Nonnull IModObject modObject) {
-    ItemMagnet result = new ItemMagnet(modObject);
-    result.init();
     MinecraftForge.EVENT_BUS.register(controller);
-    return result;
+    return new ItemMagnet(modObject);
   }
 
   protected ItemMagnet(@Nonnull IModObject modObject) {
@@ -57,10 +54,6 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
     modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   public static void setActive(@Nonnull ItemStack item, boolean active) {

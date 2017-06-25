@@ -13,26 +13,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderface extends Item implements IHaveRenderers {
 
   public static ItemEnderface create(@Nonnull IModObject modObject) {
-    ItemEnderface result = new ItemEnderface(modObject);
-    result.init();
-    return result;
+    return new ItemEnderface(modObject);
   }
 
   protected ItemEnderface(@Nonnull IModObject modObject) {
     Prep.setNoCreativeTab(this);
     modObject.apply(this);
     setMaxStackSize(1);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

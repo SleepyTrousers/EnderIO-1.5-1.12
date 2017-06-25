@@ -63,7 +63,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -73,9 +72,7 @@ import static crazypants.util.NbtValue.LAST_USED_TICK;
 public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
   public static ItemRodOfReturn create(@Nonnull IModObject modObject) {
-    ItemRodOfReturn result = new ItemRodOfReturn(modObject);
-    result.init();
-    return result;
+    return new ItemRodOfReturn(modObject);
   }
   
   private static final int RF_MAX_INPUT = (int) Math.ceil(Config.rodOfReturnPowerStorage / (double) Config.rodOfReturnMinTicksToRecharge);
@@ -104,10 +101,6 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       fluid = Fluids.ENDER_DISTILLATION.getFluid();
     }
     fluidType = fluid;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

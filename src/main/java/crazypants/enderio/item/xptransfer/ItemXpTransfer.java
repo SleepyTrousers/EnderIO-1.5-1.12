@@ -24,16 +24,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   public static ItemXpTransfer create(@Nonnull IModObject modObject) {
-    ItemXpTransfer result = new ItemXpTransfer(modObject);
-    result.init();
-    return result;
+    return new ItemXpTransfer(modObject);
   }
 
   protected ItemXpTransfer(@Nonnull IModObject modObject) {
@@ -109,10 +106,6 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       }
     }
     return false;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

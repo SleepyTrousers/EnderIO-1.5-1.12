@@ -10,14 +10,11 @@ import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockColdFire extends BlockFire implements IDefaultRenderers {
 
   public static BlockColdFire create(@Nonnull IModObject modObject) {
-    BlockColdFire res = new BlockColdFire(modObject);
-    res.initColdFire();
-    return res;
+    return new BlockColdFire(modObject);
   }
 
   private BlockColdFire(@Nonnull IModObject modObject) {
@@ -25,10 +22,6 @@ public class BlockColdFire extends BlockFire implements IDefaultRenderers {
     setTickRandomly(false);
     setHardness(0.0F);
     setLightLevel(1.0F);
-  }
-
-  protected void initColdFire() {// BlockFire already has a static init()
-    GameRegistry.register(this);
   }
 
   @Override

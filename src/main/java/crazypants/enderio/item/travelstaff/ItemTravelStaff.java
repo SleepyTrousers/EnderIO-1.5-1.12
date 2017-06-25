@@ -29,7 +29,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,9 +37,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   private long lastBlickTick = 0;
 
   public static ItemTravelStaff create(@Nonnull IModObject modObject) {
-    ItemTravelStaff result = new ItemTravelStaff(modObject);
-    result.init();
-    return result;
+    return new ItemTravelStaff(modObject);
   }
 
   protected ItemTravelStaff(@Nonnull IModObject modObject) {
@@ -48,10 +45,6 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
     modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

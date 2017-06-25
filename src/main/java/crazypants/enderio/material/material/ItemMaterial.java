@@ -15,14 +15,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMaterial extends Item implements IHaveRenderers {
 
   public static ItemMaterial create(@Nonnull IModObject modObject) {
-    return new ItemMaterial(modObject).init(modObject);
+    return new ItemMaterial(modObject);
   }
 
   private ItemMaterial(@Nonnull IModObject modObject) {
@@ -30,11 +29,6 @@ public class ItemMaterial extends Item implements IHaveRenderers {
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     modObject.apply(this);
-  }
-
-  private ItemMaterial init(@Nonnull IModObject modObject) {
-    GameRegistry.register(this);
-    return this;
   }
 
   @Override

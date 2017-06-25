@@ -31,7 +31,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemLocationPrintout extends Item implements IGuiHandler {
 
@@ -39,8 +38,6 @@ public class ItemLocationPrintout extends Item implements IGuiHandler {
     ItemLocationPrintout result = new ItemLocationPrintout(modObject);
     GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT, result);
     GuiID.registerGuiHandler(GuiID.GUI_ID_LOCATION_PRINTOUT_CREATE, result);
-
-    GameRegistry.register(result);
     return result;
   }
 

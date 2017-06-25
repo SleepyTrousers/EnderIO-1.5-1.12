@@ -69,7 +69,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -101,9 +100,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   }
 
   public static @Nonnull ItemDarkSteelArmor create(@Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
-    ItemDarkSteelArmor res = new ItemDarkSteelArmor(modObject, armorType);
-    res.init();
-    return res;
+    return new ItemDarkSteelArmor(modObject, armorType);
   }
 
   public static final ArmorMaterial MATERIAL = createMaterial();
@@ -135,10 +132,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

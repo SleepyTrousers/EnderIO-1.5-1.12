@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,9 +28,7 @@ public class ItemBrokenSpawner extends Item {
       new ResourceLocation("minecraft", "shulker") };
 
   public static ItemBrokenSpawner create(@Nonnull IModObject modObject) {
-    ItemBrokenSpawner result = new ItemBrokenSpawner(modObject);
-    result.init();
-    return result;
+    return new ItemBrokenSpawner(modObject);
   }
 
   protected ItemBrokenSpawner(@Nonnull IModObject modObject) {
@@ -45,10 +42,6 @@ public class ItemBrokenSpawner extends Item {
   @Override
   public boolean isDamageable() {
     return false;
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @SuppressWarnings("null")

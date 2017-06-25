@@ -41,7 +41,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
@@ -66,19 +65,13 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   }
 
   public static ItemSoulVial create(@Nonnull IModObject modObject) {
-    ItemSoulVial result = new ItemSoulVial(modObject);
-    result.init();
-    return result;
+    return new ItemSoulVial(modObject);
   }
 
   protected ItemSoulVial(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setMaxStackSize(16);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

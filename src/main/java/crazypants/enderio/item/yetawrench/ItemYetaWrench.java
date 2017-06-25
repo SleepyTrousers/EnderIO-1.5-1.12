@@ -45,7 +45,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBloc
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,9 +53,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer {
 
   public static ItemYetaWrench create(@Nonnull IModObject modObject) {
-    ItemYetaWrench result = new ItemYetaWrench(modObject);
-    GameRegistry.register(result);
-    return result;
+    return new ItemYetaWrench(modObject);
   }
 
   protected ItemYetaWrench(@Nonnull IModObject modObject) {

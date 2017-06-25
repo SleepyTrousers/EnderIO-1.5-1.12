@@ -29,7 +29,7 @@ import static crazypants.enderio.material.material.Material.POWDER_ENDER;
 public class AdditionalFluid {
 
   static final ResourceLocation GLOWSTONE_TEX_STILL = new ResourceLocation("enderio:blocks/fluid_glowstone_still");
-  static final ResourceLocation GLOWSTONE_TEX_FLOWING = new ResourceLocation("enderio:blocks/fluid_glowstone_flowing");
+  static final ResourceLocation GLOWSTONE_TEX_FLOWING = new ResourceLocation("enderio:blocks/fluid_glowstone_flow");
 
   public static final String GLOWSTONE_FLUID_NAME = "glowstone";
   public static final String REDSTONE_FLUID_NAME = "redstone";

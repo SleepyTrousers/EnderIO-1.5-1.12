@@ -35,16 +35,13 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRenderers {
 
   public static ItemCapacitor create(@Nonnull IModObject modObject) {
-    ItemCapacitor result = new ItemCapacitor(modObject);
-    result.init();
-    return result;
+    return new ItemCapacitor(modObject);
   }
 
   protected ItemCapacitor(@Nonnull IModObject modObject) {
@@ -53,10 +50,6 @@ public class ItemCapacitor extends Item implements ICapacitorDataItem, IHaveRend
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

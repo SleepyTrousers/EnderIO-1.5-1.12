@@ -45,7 +45,7 @@ public class TicProxy {
   private static Method registerBasinCasting;
   private static Method getResult;
 
-  public static void init(FMLPreInitializationEvent event) {
+  static {
     if (Loader.isModLoaded("tconstruct")) {
       try {
         Class<Object> TinkerRegistry = ReflectionHelper.getClass(TicProxy.class.getClassLoader(), "slimeknights.tconstruct.library.TinkerRegistry");
@@ -62,11 +62,16 @@ public class TicProxy {
 
         isLoaded = true;
 
-        AdditionalFluid.init(event);
       } catch (RuntimeException e) {
         Log.error("Failed to load Tinker's Construct integration. Reason:");
         e.printStackTrace();
       }
+    }
+  }
+
+  public static void init(FMLPreInitializationEvent event) {
+    if (isLoaded) {
+      AdditionalFluid.init(event); // TODO 1.11 needs to be called by Registry<Block> event, I'd say
     }
   }
 
@@ -190,8 +195,10 @@ public class TicProxy {
         for (CastQueue cast : castQueue) {
           if (cast.fluid == null) {
             FluidStack fluid = getFluidForItems(cast.item);
-            cast.fluid = fluid.getFluid();
-            cast.amount *= fluid.amount;
+            if (fluid != null) {
+              cast.fluid = fluid.getFluid();
+              cast.amount *= fluid.amount;
+            }
           }
           if (cast.fluid == null) {
             Log.warn("Item used in cast recipe '" + cast.item + "' doesn't smelt into a fluid");
@@ -268,6 +275,7 @@ public class TicProxy {
             return new FluidStack(fluid, 288 * input.getCount());
           }
         }
+        Log.info("Failed to get Tinker's Construct melting recipe for " + itemStack);
         return null;
       }
       Object meltingResult = getResult.invoke(melting);
@@ -275,6 +283,8 @@ public class TicProxy {
         FluidStack result = (FluidStack) meltingResult;
         result.amount *= input.getCount();
         return result;
+      } else {
+        Log.info("Failed to get Tinker's Construct melting recipe result for " + itemStack + " -> " + meltingResult);
       }
     } catch (IllegalAccessException e) {
       Log.error("Failed to access Tinker's Construct integration. Reason:");

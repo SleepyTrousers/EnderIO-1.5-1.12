@@ -23,14 +23,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
   public static ItemCoordSelector create(@Nonnull IModObject modObject) {
-    ItemCoordSelector ret = new ItemCoordSelector(modObject);
-    GameRegistry.register(ret);
-    return ret;
+    return new ItemCoordSelector(modObject);
   }
 
   private ItemCoordSelector(@Nonnull IModObject modObject) {

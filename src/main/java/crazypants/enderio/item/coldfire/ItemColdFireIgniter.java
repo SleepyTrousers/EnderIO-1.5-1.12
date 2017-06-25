@@ -38,7 +38,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,9 +48,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
   private static final int FLUID_CAPACITY = 1000;
 
   public static ItemColdFireIgniter create(@Nonnull IModObject modObject) {
-    ItemColdFireIgniter result = new ItemColdFireIgniter(modObject);
-    result.init();
-    return result;
+    return new ItemColdFireIgniter(modObject);
   }
 
   protected ItemColdFireIgniter(@Nonnull IModObject modObject) {
@@ -59,10 +56,6 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     modObject.apply(this);
     setMaxDamage(0);
     setMaxStackSize(1);
-  }
-
-  protected void init() {
-    GameRegistry.register(this);
   }
 
   @Override

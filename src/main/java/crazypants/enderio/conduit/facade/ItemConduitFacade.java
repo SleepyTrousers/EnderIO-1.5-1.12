@@ -35,7 +35,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -43,7 +42,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
 
   public static ItemConduitFacade create(@Nonnull IModObject modObject) {
     ItemConduitFacade result = new ItemConduitFacade(modObject);
-    GameRegistry.register(result);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new FacadePainterRecipe(result));
     return result;
   }
