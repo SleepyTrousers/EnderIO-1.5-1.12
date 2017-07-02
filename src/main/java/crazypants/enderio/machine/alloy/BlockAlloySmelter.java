@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.GuiID;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -15,13 +17,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockAlloySmelter create() {
-    BlockAlloySmelter res = new BlockAlloySmelter();
+  public static BlockAlloySmelter create(@Nonnull IModObject modObject) {
+    BlockAlloySmelter res = new BlockAlloySmelter(modObject);
     res.init();
     return res;
   }
@@ -30,8 +29,8 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnaceSmeltingOff");
   public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnaceSmeltingOnly");
 
-  private BlockAlloySmelter() {
-    super(MachineObject.blockAlloySmelter, TileAlloySmelter.class);
+  private BlockAlloySmelter(@Nonnull IModObject modObject) {
+    super(modObject, TileAlloySmelter.class);
   }
 
   protected BlockAlloySmelter(@Nonnull IModObject mo, @Nullable Class<TileAlloySmelter> teClass, @Nonnull Material mat) {
@@ -61,7 +60,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> im
   }
 
   @Override
-  protected GuiID getGuiId() {
+  protected @Nonnull GuiID getGuiId() {
     return GuiID.GUI_ID_ALLOY_SMELTER;
   }
 

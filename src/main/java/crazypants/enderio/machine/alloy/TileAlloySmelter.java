@@ -1,23 +1,27 @@
 package crazypants.enderio.machine.alloy;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.recipe.alloysmelter.VanillaSmeltingRecipe;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -34,7 +38,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       }
       return values()[nextOrd];
     }
-    
+
     Mode prev() {
       int nextOrd = ordinal() - 1;
       if (nextOrd < 0) {
@@ -52,7 +56,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     mode = Mode.ALL;
   }
 
-  protected TileAlloySmelter(SlotDefinition slotDefinition, ICapacitorKey maxEnergyRecieved, ICapacitorKey maxEnergyStored, ICapacitorKey maxEnergyUsed) {
+  protected TileAlloySmelter(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
@@ -73,10 +78,10 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
     if (mode == Mode.FURNACE) {
-      VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().vanillaRecipe;
+      VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
       if (vr.isRecipe(getRecipeInputs())) {
         IMachineRecipe.ResultStack[] res = vr.getCompletedResult(chance, getRecipeInputs());
-        if (res == null || res.length == 0) {
+        if (res.length == 0) {
           return null;
         }
         return canInsertResult(chance, vr) ? vr : null;
@@ -96,12 +101,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   @Override
-  public @Nonnull String getMachineName() {
-    return MachineObject.blockAlloySmelter.getUnlocalisedName();
-  }
-
-  @Override
-  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int slot, @Nonnull ItemStack itemstack) {
     if (!slotDefinition.isInputSlot(slot)) {
       return false;
     }
@@ -120,7 +120,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
         }
       }
     }
-    List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
+    NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
 
     if (mode == Mode.FURNACE) {
       return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
@@ -130,7 +130,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes) || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
   }
 
-  private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+  private boolean isValidInputForAlloyRecipe(int slot, @Nonnull ItemStack itemstack, int numSlotsFilled, NNList<IMachineRecipe> recipes) {
     if (numSlotsFilled == 0) {
       return containsAlloyRecipe(recipes);
     }
@@ -161,14 +161,14 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return false;
   }
 
-  private boolean isValidInputForFurnaceRecipe(ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+  private boolean isValidInputForFurnaceRecipe(@Nonnull ItemStack itemstack, int numSlotsFilled, NNList<IMachineRecipe> recipes) {
     if (numSlotsFilled == 0) {
       return containsFurnaceRecipe(recipes);
     }
     return containsFurnaceRecipe(recipes) && isItemAlreadyInASlot(itemstack);
   }
 
-  private boolean isItemAlreadyInASlot(ItemStack itemstack) {
+  private boolean isItemAlreadyInASlot(@Nonnull ItemStack itemstack) {
     ItemStack currentStackType = null;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
       currentStackType = inventory[i];
@@ -179,7 +179,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return false;
   }
 
-  private boolean containsFurnaceRecipe(List<IMachineRecipe> recipes) {
+  private boolean containsFurnaceRecipe(NNList<IMachineRecipe> recipes) {
     for (IMachineRecipe rec : recipes) {
       if (rec instanceof VanillaSmeltingRecipe) {
         return true;
@@ -188,7 +188,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return false;
   }
 
-  private boolean containsAlloyRecipe(List<IMachineRecipe> recipes) {
+  private boolean containsAlloyRecipe(NNList<IMachineRecipe> recipes) {
     for (IMachineRecipe rec : recipes) {
       if (!(rec instanceof VanillaSmeltingRecipe)) {
         return true;

@@ -1,9 +1,17 @@
 package crazypants.enderio.machine.alloy;
 
+import java.awt.Rectangle;
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IIconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -14,19 +22,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
-  private final IIconButton vanillaFurnaceButton;
-  private final GuiToolTip vanillaFurnaceTooltip;
+  private final @Nonnull IIconButton vanillaFurnaceButton;
+  private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
 
-  public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
+  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory), "alloySmelter");
 
     vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
@@ -52,14 +56,14 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   @Override
-  protected void renderSlotHighlight(int slot, Vector4f col) {
+  protected void renderSlotHighlight(int slot, @Nonnull Vector4f col) {
     if (getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
       renderSlotHighlight(col, 75, 54, 24, 24);
     } else {
       super.renderSlotHighlight(slot, col);
     }
   }
-  
+
   @Override
   protected void mouseClicked(int x, int y, int button) throws IOException {
     if (button == 1 && vanillaFurnaceButton.isMouseOver()) {
@@ -70,10 +74,10 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
   }
 
   @Override
-  protected void actionPerformed(GuiButton par1GuiButton) throws IOException {
+  protected void actionPerformed(@Nonnull GuiButton par1GuiButton) throws IOException {
     actionPerformed(par1GuiButton, 0);
   }
-  
+
   private void actionPerformed(GuiButton button, int mbutton) throws IOException {
     if (button.id == SMELT_MODE_BUTTON_ID) {
       getTileEntity().setMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());

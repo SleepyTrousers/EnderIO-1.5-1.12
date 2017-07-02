@@ -1,6 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
@@ -12,8 +16,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-
-import javax.annotation.Nullable;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> implements IRemoteExec.IContainer {
 
@@ -23,9 +26,9 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
   public static int FIRST_INVENTORY_SLOT = 3 + 1 + 1; // input + output + upgrade
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
-  private final EntityPlayer player;
+  private final @Nonnull EntityPlayer player;
 
-  public ContainerAlloySmelter(InventoryPlayer playerInv, TileAlloySmelter te) {
+  public ContainerAlloySmelter(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter te) {
     super(playerInv, te);
     player = playerInv.player;
   }
@@ -34,19 +37,19 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
   protected void addMachineSlots(InventoryPlayer playerInv) {
     addSlotToContainer(new Slot(getInv(), 0, 54, 17) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(0, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 1, 79, 7) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(1, itemStack);
       }
     });
     addSlotToContainer(new Slot(getInv(), 2, 103, 17) {
       @Override
-      public boolean isItemValid(@Nullable ItemStack itemStack) {
+      public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return getInv().isItemValidForSlot(2, itemStack);
       }
     });
@@ -63,7 +66,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
     }
 
     @Override
-    public ItemStack decrStackSize(int par1) {
+    public @Nonnull ItemStack decrStackSize(int par1) {
       if (getHasStack()) {
         numResults += Math.min(par1, getStack().getCount());
       }
@@ -76,24 +79,24 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
     }
 
     @Override
-    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack output) {
+    public @Nonnull ItemStack onTake(@Nonnull EntityPlayer par1EntityPlayer, @Nonnull ItemStack output) {
       onCrafting(output);
-      super.onPickupFromSlot(par1EntityPlayer, output);
+      return super.onTake(par1EntityPlayer, output);
     }
 
     @Override
-    protected void onCrafting(ItemStack par1ItemStack, int par2) {
+    protected void onCrafting(@Nonnull ItemStack par1ItemStack, int par2) {
       numResults += par2;
       onCrafting(par1ItemStack);
     }
 
     @Override
-    protected void onCrafting(ItemStack output) {
+    protected void onCrafting(@Nonnull ItemStack output) {
       output.onCrafting(player.world, player, numResults);
       if (!player.world.isRemote) {
         ItemStack outputSized = output.copy();
         outputSized.setCount(numResults);
-        float experience = getInv().getExperienceForOutput(outputSized);
+        float experience = getTe().getExperienceForOutput(outputSized);
         Util.giveExperience(player, experience);
       }
       numResults = 0;
@@ -108,16 +111,17 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
   }
 
   @Override
-  public void networkExec(int id, GuiPacket message) {
+  public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case 0:
-      getInv().setMode(message.getEnum(0, TileAlloySmelter.Mode.class));
-      IBlockState bs = getInv().getWorld().getBlockState(getInv().getPos());
-      getInv().getWorld().notifyBlockUpdate(getInv().getPos(), bs, bs, 3);
+      getTe().setMode(message.getEnum(0, TileAlloySmelter.Mode.class));
+      IBlockState bs = getTe().getWorld().getBlockState(getTe().getPos());
+      getTe().getWorld().notifyBlockUpdate(getTe().getPos(), bs, bs, 3);
       break;
     default:
       break;
     }
+    return null;
   }
 
 }

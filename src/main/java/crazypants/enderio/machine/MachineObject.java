@@ -1,8 +1,12 @@
 package crazypants.enderio.machine;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.NullHelper;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.capbank.BlockCapBank;
@@ -10,104 +14,133 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public enum MachineObject implements IModObject.Registerable {
 
-    blockAlloySmelter(BlockAlloySmelter.class),
-    blockCapBank(BlockCapBank.class);
+  blockAlloySmelter(BlockAlloySmelter.class),
+  blockCapBank(BlockCapBank.class);
 
-    static {
-        ModObjectRegistry.INSTANCE.addModObjects(MachineObject.class);
+  static {
+    ModObjectRegistry.addModObjects(MachineObject.class);
+  }
+
+  final @Nonnull String unlocalisedName;
+
+  protected @Nullable Block block;
+  protected @Nullable Item item;
+
+  protected final @Nonnull Class<?> clazz;
+  protected final @Nullable String blockMethodName, itemMethodName;
+  protected final @Nullable Class<? extends TileEntity> teClazz;
+
+  private MachineObject(@Nonnull Class<?> clazz) {
+    this(clazz, "create", (Class<? extends TileEntity>) null);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, Class<? extends TileEntity> teClazz) {
+    this(clazz, "create", teClazz);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
+    this(clazz, methodName, (Class<? extends TileEntity>) null);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
+    this(clazz, blockMethodName, itemMethodName, null);
+  }
+
+  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
+    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
+    this.clazz = clazz;
+    if (Block.class.isAssignableFrom(clazz)) {
+      this.blockMethodName = methodName;
+      this.itemMethodName = null;
+    } else if (Item.class.isAssignableFrom(clazz)) {
+      this.blockMethodName = null;
+      this.itemMethodName = methodName;
+    } else {
+      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
+    this.teClazz = teClazz;
+  }
 
+  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, Class<? extends TileEntity> teClazz) {
+    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
+    this.clazz = clazz;
+    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
+    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
+    this.teClazz = teClazz;
+  }
 
-    final @Nonnull String unlocalisedName;
+  @Override
+  public @Nonnull Class<?> getClazz() {
+    return clazz;
+  }
 
-    private @Nullable Block block;
-    private @Nullable Item item;
+  @Override
+  public void setItem(@Nullable Item obj) {
+    this.item = obj;
+  }
 
-    private final @Nullable Class<?> clazz;
-    private final @Nonnull String methodName;
-    private final @Nullable Class<? extends TileEntity> teClazz;
+  @Override
+  public void setBlock(@Nullable Block obj) {
+    this.block = obj;
+  }
 
-    private MachineObject(@Nullable Class<?> clazz) {
-        this(clazz, "create", null);
-    }
+  @Nonnull
+  @Override
+  public String getUnlocalisedName() {
+    return unlocalisedName;
+  }
 
-    private MachineObject(@Nullable Class<?> clazz, Class<? extends TileEntity> teClazz) {
-        this(clazz, "create", teClazz);
-    }
+  @Nonnull
+  @Override
+  public ResourceLocation getRegistryName() {
+    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
+  }
 
-    private MachineObject(@Nullable Class<?> clazz, @Nonnull String methodName, Class<? extends TileEntity> teClazz) {
-        this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-        this.clazz = clazz;
-        this.methodName = methodName;
-        this.teClazz = teClazz;
-    }
+  @Nullable
+  @Override
+  public Block getBlock() {
+    return block;
+  }
 
-    @Override
-    public Class<?> getClazz() {
-        return clazz;
-    }
+  @Nullable
+  @Override
+  public Item getItem() {
+    return item;
+  }
 
-    @Override
-    public String getMethodName() {
-        return methodName;
-    }
+  @Nullable
+  @Override
+  public Class<? extends TileEntity> getTileClass() {
+    return teClazz;
+  }
 
-    @Override
-    public void setItem(Item obj) {
-        this.item = obj;
-    }
+  @Override
+  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
+    blockIn.setUnlocalizedName(getUnlocalisedName());
+    blockIn.setRegistryName(getRegistryName());
+    return blockIn;
+  }
 
-    @Override
-    public void setBlock(Block obj) {
-        this.block = obj;
-    }
+  @Override
+  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
+    itemIn.setUnlocalizedName(getUnlocalisedName());
+    itemIn.setRegistryName(getRegistryName());
+    return itemIn;
+  }
 
-    @Nonnull
-    @Override
-    public String getUnlocalisedName() {
-        return unlocalisedName;
-    }
+  @Override
+  @Nullable
+  public String getBlockMethodName() {
+    return blockMethodName;
+  }
 
-    @Nonnull
-    @Override
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(EnderIOMachines.MOD_ID, getUnlocalisedName());
-    }
-
-    @Nullable
-    @Override
-    public Block getBlock() {
-        return block;
-    }
-
-    @Nullable
-    @Override
-    public Item getItem() {
-        return item;
-    }
-
-    @Nullable
-    @Override
-    public Class<? extends TileEntity> getTileClass() {
-        return teClazz;
-    }
-
-    @Override
-    public void preInit(@Nonnull FMLPreInitializationEvent event) {
-        ModObjectRegistry.preInit(this, event);
-    }
-
-    @Override
-    public void init(@Nonnull FMLInitializationEvent event) {
-        ModObjectRegistry.initElem(this, event);
-    }
+  @Override
+  @Nullable
+  public String getItemMethodName() {
+    return itemMethodName;
+  }
 
 }
