@@ -64,40 +64,40 @@
   <recipeGroup name="EnderIO" > <!-- Required for EnderIO to function correctly. -->
     <recipe name="Electrical Steel" energyCost="10000" >
       <input>
-        <itemStack modID="minecraft" itemName="iron_ingot" />
+        <itemStack oreDictionary="ingotIron" />
         <itemStack oreDictionary="dustCoal" />
         <itemStack oreDictionary="itemSilicon" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="0" exp="0.5" />
+        <itemStack oreDictionary="ingotElectricalSteel" exp="0.5" />
       </output>
     </recipe>
     <recipe name="Energetic Alloy" energyCost="10000" >
       <input>
-        <itemStack modID="minecraft" itemName="redstone" />
-        <itemStack modID="minecraft" itemName="gold_ingot" />
-        <itemStack modID="minecraft" itemName="glowstone_dust" />
+        <itemStack oreDictionary="dustRedstone" />
+        <itemStack oreDictionary="ingotGold" />
+        <itemStack oreDictionary="dustGlowstone" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" exp="0.7" />
+        <itemStack oreDictionary="ingotEnergeticAlloy" exp="0.7" />
       </output>
     </recipe>
     <recipe name="Vibrant Alloy" energyCost="10000" >
       <input>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" /> <!-- Energetic Alloy -->
-        <itemStack modID="minecraft" itemName="ender_pearl" />
+        <itemStack oreDictionary="ingotEnergeticAlloy" />
+        <itemStack oreDictionary="enderpearl" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="2" exp="1" />
+        <itemStack oreDictionary="ingotVibrantAlloy" exp="1" />
       </output>
     </recipe>
     <recipe name="Redstone Alloy" energyCost="10000" >
       <input>
-        <itemStack modID="minecraft" itemName="redstone" />
+        <itemStack oreDictionary="dustRedstone" />
         <itemStack oreDictionary="itemSilicon" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="3" exp="0.5" />
+        <itemStack oreDictionary="ingotRedstoneAlloy" exp="0.5" />
       </output>
     </recipe>
     <recipe name="Conductive Iron" energyCost="10000" >
