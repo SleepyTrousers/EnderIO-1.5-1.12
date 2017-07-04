@@ -23,14 +23,9 @@
 <PainterPaintSources>
 
   <whitelist>
-    <!-- Greatwood planks -->
-    <itemStack modID="Thaumcraft" itemName="blockWoodenDevice" itemMeta="6" />
-    <!-- Silverwood planks -->
-    <itemStack modID="Thaumcraft" itemName="blockWoodenDevice" itemMeta="7" />
   </whitelist>
 
   <blacklist>
-
   </blacklist>
 
 </PainterPaintSources>

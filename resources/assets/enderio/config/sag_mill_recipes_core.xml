@@ -9,11 +9,11 @@
 
   Examples:
 
-  <recipeGroup name="EnderIO" >
+  <recipeGroup name="enderio" >
     <recipe>...</recipe>
     <recipe>...</recipe>
   <recipeGroup/>
-  <recipeGroup name="EnderIO" enabled="false" >
+  <recipeGroup name="enderio" enabled="false" >
     <recipe>...</recipe>
     <recipe>...</recipe>
   <recipeGroup/>
@@ -88,7 +88,7 @@
            "</output>" +
           "</recipe>" +
         "</recipeGroup>";
-  FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
+  FMLInterModComms.sendMessage("enderio", "recipe:sagmill", recipe);
 
  Grinding Balls:
   Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and
@@ -153,14 +153,14 @@
 <SAGMillRecipes>
 
   <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
-  <recipeGroup name="EnderIO" > <!-- Required for EnderIO to function correctly. -->
+  <recipeGroup name="enderio" > <!-- Required for EnderIO to function correctly. -->
     <!-- Sand to Silicon -->
     <recipe name="Silicon" energyCost="720" >
       <input>
         <itemStack oreDictionary="sand" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
+        <itemStack oreDictionary="itemSilicon" chance="0.5" />
       </output>
     </recipe>
     <recipe name="CoalOre" energyCost="3600" >
@@ -231,44 +231,48 @@
     </recipe>
     <recipe name="EnderPearl" energyCost="1600" bonusType="none" >
       <input>
-        <itemStack modID="minecraft" itemName="ender_pearl" />
+        <itemStack oreDictionary="enderpearl" />
       </input>
       <output>
         <itemStack oreDictionary="nuggetEnderpearl" number="9" />
       </output>
     </recipe>
-    <!-- Not currently used         
-    <recipe name="VibrantPowder" energyCost="1600" >
-      <input>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="6"/>
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="11"/>
-      </output>
-    </recipe>
-     -->
     <recipe name="PulsatingPowder" energyCost="1600" >
       <input>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="5"/>
+        <itemStack oreDictionary="itemPulsatingCrystal"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="12"/>
+        <itemStack oreDictionary="itemPulsatingPowder"/>
       </output>
     </recipe>
     <recipe name="EnderCrystalPowder" energyCost="1600" >
       <input>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="8"/>
+        <itemStack oreDictionary="itemEnderCrystal"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="13"/>
+        <itemStack oreDictionary="itemEnderCrystalPowder"/>
       </output>
     </recipe>
     <recipe name="PrecientPowder" energyCost="1600" >
       <input>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="15"/>
+        <itemStack oreDictionary="itemPrecientCrystal"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="16"/>
+        <itemStack oreDictionary="itemPrecientPowder"/>
+      </output>
+    </recipe>
+
+    <recipe name="InfinityPowder" energyCost="9999999" bonusType="none" >
+      <!-- Note: This recipe is not usually available; Ender IO does not add a way to get bedrock.
+                 But if another mod does so, this will allow players to "shave off" infinity
+                 powder from bedrock. As with the in-world crafting, the bedrock will not be
+                 consumed. -->
+      <input>
+        <itemStack modID="minecraft" itemName="bedrock" />
+      </input>
+      <output>
+        <itemStack modID="minecraft" itemName="bedrock" />
+        <itemStack oreDictionary="dustBedrock" />
       </output>
     </recipe>
     
@@ -388,7 +392,7 @@
       <output>
         <itemStack modID="minecraft" itemName="clay_ball" number="2" />
         <itemStack modID="minecraft" itemName="clay_ball" number="1" chance="0.1" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="2" itemMeta="0" chance="0.8" />
+        <itemStack oreDictionary="itemSilicon" number="2" chance="0.8" />
       </output>
     </recipe>
     <recipe name="Wool" energyCost="1200" >
@@ -405,7 +409,7 @@
         <itemStack modID="minecraft" itemName="wheat" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="8" number="2" />
+        <itemStack oreDictionary="dustWheat" number="1" />
         <itemStack modID="minecraft" itemName="wheat_seeds" chance="0.2" />
       </output>
     </recipe>
@@ -416,7 +420,7 @@
       <output>
         <itemStack modID="minecraft" itemName="redstone" number="8" />
         <itemStack modID="minecraft" itemName="redstone" number="1" chance="0.2" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" chance="0.8" />
+        <itemStack oreDictionary="itemSilicon" chance="0.8" />
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
@@ -456,17 +460,17 @@
         <itemStack oreDictionary="oreQuartz" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2" />
+        <itemStack oreDictionary="gemQuartz" number="2" />
         <itemStack oreDictionary="dustNetherQuartz" chance="0.1" />
       </output>
     </recipe>
     <recipe name="Block of Quartz" energyCost="2400" bonusType="chance_only" >
       <input>
-        <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
+        <itemStack oreDictionary="blockQuartz" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2" />
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
+        <itemStack oreDictionary="gemQuartz" number="2" />
+        <itemStack oreDictionary="gemQuartz" number="2" chance="0.25" />
       </output>
     </recipe>
     <recipe name="Quartz Stairs" energyCost="1200" bonusType="chance_only" >
@@ -474,8 +478,8 @@
         <itemStack modID="minecraft" itemName="quartz_stairs" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2" />
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
+        <itemStack oreDictionary="gemQuartz" number="2" />
+        <itemStack oreDictionary="gemQuartz" number="2" chance="0.25" />
       </output>
     </recipe>
     <recipe name="Quartz Slab" energyCost="1200" bonusType="chance_only" >
@@ -483,8 +487,8 @@
         <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="1" />
-        <itemStack modID="minecraft" itemName="quartz" number="1" chance="0.25" />
+        <itemStack oreDictionary="gemQuartz" number="1" />
+        <itemStack oreDictionary="gemQuartz" number="1" chance="0.25" />
       </output>
     </recipe>
   </recipeGroup>
@@ -3050,7 +3054,7 @@
         <itemStack modID="Natura" itemName="barleyFood" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="8" number="2" />
+        <itemStack oreDictionary="dustWheat" number="2" />
         <itemStack modID="Natura" itemName="barley.seed" chance="0.2" />
       </output>
     </recipe>
@@ -3141,9 +3145,9 @@
         <itemStack oreDictionary="compressed1xSand" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="3" itemMeta="0" chance="0.5" />
         <itemStack oreDictionary="sand" chance="0.05" />
       </output>
     </recipe>
@@ -3152,9 +3156,9 @@
         <itemStack oreDictionary="compressed2xSand" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
+        <itemStack modID="enderio" itemName="itemMaterial" number="27" itemMeta="0" chance="0.5" />
         <itemStack oreDictionary="compressed1xSand" chance="0.05" />
       </output>
     </recipe>
