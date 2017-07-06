@@ -2,6 +2,7 @@ package crazypants.enderio.machine.alloy;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.Log;
@@ -18,6 +19,7 @@ import crazypants.enderio.recipe.alloysmelter.VanillaSmeltingRecipe;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
@@ -195,5 +197,23 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       }
     }
     return false;
+  }
+
+  @Override
+  public String getMachineName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected void writeCustomNBT(NBTAction action, NBTTagCompound root) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  protected void readCustomNBT(NBTAction action, NBTTagCompound root) {
+    // TODO Auto-generated method stub
+    
   }
 }

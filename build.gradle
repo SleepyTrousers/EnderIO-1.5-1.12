@@ -27,23 +27,25 @@ else {
 }
 
 group = "com.enderio"
-archivesBaseName = "EnderIO"
+archivesBaseName = "EnderIO-Base"
 version = "${minecraft_version}-${mod_version}.${buildnumber}"
 
 boolean dev = System.getenv("RELEASE") == null || System.getenv("RELEASE").equalsIgnoreCase("false")
 
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
 
 // dependency string for the @Mod annotation
-ext.dependencies = "required-after:Forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:Waila@[${waila_version},);after:JEI@[${jei_version},)"
+ext.dependencies = "required-after:forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:jei@[${jei_version},)"
 
 def type = 'release'
 if (project.hasProperty('mod_appendix')) {
 //    version += "_${project.mod_appendix}"
        type = project.mod_appendix
 }
-
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
 
 minecraft {
     mappings = "snapshot_20170425"
@@ -88,7 +90,7 @@ dependencies {
     deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
     deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
     compile "mcjty.theoneprobe:TheOneProbe:${top_version}:api"
-    compile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}:api"
+    deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
     compile "appeng:appliedenergistics2:${ae_version}:api"
     compile "net.darkhax.tesla:Tesla:${tesla_version}"
 
@@ -238,6 +240,35 @@ task checkTranslations << {
         }
     }
 }
+
+String getCN() {
+    def firsts = ['Donald', 'Lex', 'Mike', 'Arthur', 'Bridget', 'Dorian', 'Ford', 'Guy', 'James', 'Jessica', 'John', 'Michael', 'Robinson', 'Zaphod', 'Bell', 'Penelope']
+    def lasts = ['Duck', 'Luthor', 'Meyers', 'Dent', 'Jones', 'Gray', 'Prefect', 'Montag', 'Moriarty', 'Rabbit', 'Watson', 'Smith', 'Corleone', 'Crusoe', 'Beeblebrox', 'Cranel', 'Akk']
+    def rand = new Random()
+    return firsts[rand.nextInt(firsts.size())] + ' ' + lasts[rand.nextInt(lasts.size())]
+}
+
+task mkKeyStore(type:Exec) {
+   workingDir projectDir
+   commandLine 'keytool', '-genkey', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
+}
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+    keyStore = 'eiostore.jks'
+    alias = 'signFiles'
+    storePass = '123456'
+    keyPass = '123456'
+}
+
+task rmKeyStore(type: Delete) {
+  delete 'eiostore.jks'
+}
+
+build.dependsOn rmKeyStore
+rmKeyStore.dependsOn signJar
+signJar.dependsOn mkKeyStore
 
 
 tasks.curseforge.enabled = !dev && project.hasProperty('curseforge_key')
