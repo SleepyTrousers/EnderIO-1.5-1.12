@@ -1,6 +1,7 @@
 package crazypants.enderio;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.TileEntityBase;
@@ -8,8 +9,13 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.paint.PainterUtil2;
+import crazypants.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
+import info.loenwind.autosave.annotations.Store;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,12 +62,12 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   @Override
-  protected void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
+  protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     Writer.write(action, root, this);
   }
 
   @Override
-  protected void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
+  protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     Reader.read(action, root, this);
     if (action == NBTAction.SYNC || action == NBTAction.UPDATE) {
       onAfterDataPacket();
@@ -77,6 +83,45 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   protected void onAfterNbtRead() {
   }
+
+  public void readFromItemStack(@Nonnull ItemStack stack) {
+    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    readCustomNBT(NBTAction.ITEM, tagCompound);
+    IBlockState stackPaint = PainterUtil2.getSourceBlock(stack);
+    if (stackPaint != null) {
+      paintSource = stackPaint;
+    }
+  }
+
+  public void writeToItemStack(@Nonnull ItemStack stack) {
+    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
+    writeCustomNBT(NBTAction.ITEM, tagCompound);
+    stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
+    if (paintSource != null) {
+      PainterUtil2.setSourceBlock(stack, paintSource);
+    }
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT START
+  // ///////////////////////////////////////////////////////////////////////
+
+  @Store
+  private IBlockState paintSource = null;
+
+  public void setPaintSource(@Nullable IBlockState paintSource) {
+    this.paintSource = paintSource;
+    markDirty();
+    updateBlock();
+  }
+
+  public IBlockState getPaintSource() {
+    return paintSource;
+  }
+
+  // ///////////////////////////////////////////////////////////////////////
+  // PAINT END
+  // ///////////////////////////////////////////////////////////////////////
 
   private final static NNList<TileEntity> notTickingTileEntitiesS = new NNList<TileEntity>();
   private final static NNList<TileEntity> notTickingTileEntitiesC = new NNList<TileEntity>();

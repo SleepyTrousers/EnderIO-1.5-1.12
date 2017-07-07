@@ -9,11 +9,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.Lang;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.capability.ItemTools.Limit;
@@ -24,9 +22,7 @@ import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.sound.MachineSound;
-import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.util.NbtValue;
 import crazypants.util.ResettingFlag;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -34,8 +30,6 @@ import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -324,18 +318,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
     }
   }
 
-  public void readFromItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
-    readCustomNBT(NBTAction.ITEM, tagCompound);
-    paintSource = NullHelper.first(PainterUtil2.readNbt(tagCompound), paintSource);
-  }
-
-  public void writeToItemStack(@Nonnull ItemStack stack) {
-    NBTTagCompound tagCompound = NbtValue.getRoot(stack);
-    writeCustomNBT(NBTAction.ITEM, tagCompound);
-    stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
-  }
-
   public boolean isSideDisabled(EnumFacing dir) {
     return getIoMode(dir) == IoMode.DISABLED;
   }
@@ -362,33 +344,17 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
     return redstoneCheckPassed;
   }
 
-  // ///////////////////////////////////////////////////////////////////////
-  // PAINT START
-  // ///////////////////////////////////////////////////////////////////////
-
-  @Store
-  private IBlockState paintSource = null;
-
-  public void setPaintSource(@Nullable IBlockState paintSource) {
-    this.paintSource = paintSource;
-    markDirty();
-    updateBlock();
-  }
-
-  public IBlockState getPaintSource() {
-    return paintSource;
-  }
-
-  // ///////////////////////////////////////////////////////////////////////
-  // PAINT END
-  // ///////////////////////////////////////////////////////////////////////
-
   public void setOwner(@Nonnull EntityPlayer player) {
     this.owner = UserIdent.create(player.getGameProfile());
   }
 
   public @Nonnull UserIdent getOwner() {
     return owner != null ? owner : UserIdent.NOBODY;
+  }
+
+  @Override
+  final public @Nonnull String getMachineName() {
+    return getBlockType().getUnlocalizedName();
   }
 
 }

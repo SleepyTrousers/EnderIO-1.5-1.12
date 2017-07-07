@@ -18,7 +18,7 @@ public class MachineRecipeInput {
     return Prep.getEmpty();
   }
 
-  public static MachineRecipeInput create(int slotNumber, @Nonnull ItemStack item) {
+  public static @Nonnull MachineRecipeInput create(int slotNumber, @Nonnull ItemStack item) {
     return new MachineRecipeInput(slotNumber, item);
   }
 
