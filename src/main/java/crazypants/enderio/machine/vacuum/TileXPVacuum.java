@@ -1,28 +1,31 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.util.MagnetUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.google.common.base.Predicate;
+
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
 import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nullable;
 
 @Storable
 public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb>, IPaintable.IPaintableTileEntity, ITankAccess {
@@ -39,8 +42,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   private final ExperienceContainer xpCon;
 
   public TileXPVacuum() {
-    super();
-
     xpCon = new ExperienceContainer(Integer.MAX_VALUE);
     xpCon.setTileEntity(this);
     xpCon.setCanFill(!formed);
@@ -128,21 +129,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     return super.equals(obj);
   }
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  protected IBlockState sourceBlock;
-
-  @Override
-  public IBlockState getPaintSource() {
-    return sourceBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nullable IBlockState sourceBlock) {
-    this.sourceBlock = sourceBlock;
-    markDirty();
-    updateBlock();
-  }
-
   @Override
   public int hashCode() {
     return super.hashCode();
@@ -150,7 +136,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   // RANGE
 
-  public BoundingBox getBounds() {
+  public @Nonnull BoundingBox getBounds() {
     return new BoundingBox(getPos()).expand(getRange());
   }
 
@@ -160,11 +146,18 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   // RANGE END
 
-  private void doPush() {
-    for (EnumFacing dir : EnumFacing.values()) {
+  private final @Nonnull Callback<EnumFacing> push_callback = new Callback<EnumFacing>() {
+    @Override
+    public void apply(@Nonnull EnumFacing dir) {
       if (xpCon.getFluidAmount() > 0 && FluidWrapper.transfer(xpCon, world, getPos().offset(dir), dir.getOpposite(), IO_MB_TICK) > 0) {
         setTanksDirty();
       }
+    }
+  };
+
+  private void doPush() {
+    if (xpCon.getFluidAmount() > 0) {
+      NNList.FACING.apply(push_callback);
     }
   }
 
@@ -176,14 +169,14 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (!formed && forFluidType != null && forFluidType.getFluid() == Fluids.fluidXpJuice) {
+    if (!formed && forFluidType != null && forFluidType.getFluid() == Fluids.XP_JUICE.getFluid()) {
       return xpCon;
     }
     return null;
   }
 
   @Override
-  public FluidTank[] getOutputTanks() {
+  public @Nonnull FluidTank[] getOutputTanks() {
     return new FluidTank[] { xpCon };
   }
 
@@ -193,7 +186,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   }
 
   @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
+  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return true;
     }
@@ -202,12 +195,11 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) xpCon;
     }
     return super.getCapability(capability, facingIn);
   }
-
 
 }

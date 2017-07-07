@@ -1,6 +1,9 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -8,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implements IMessageHandler<PacketVaccumChest, IMessage> {
+public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
 
   public static final int CMD_SET_RANGE = 0;
   public static final int CMD_SET_SLOT = 1;
@@ -22,19 +25,19 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implem
   public PacketVaccumChest() {
   }
 
-  private PacketVaccumChest(TileVacuumChest tile, int cmd) {
+  private PacketVaccumChest(@Nonnull TileVacuumChest tile, int cmd) {
     super(tile);
     this.cmd = cmd;
   }
 
-  public static PacketVaccumChest setRange(TileVacuumChest tile, int range) {
+  public static PacketVaccumChest setRange(@Nonnull TileVacuumChest tile, int range) {
     PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_RANGE);
     msg.value = range;
     tile.setRange(range);
     return msg;
   }
 
-  public static PacketVaccumChest setFilterSlot(TileVacuumChest tile, int slot, ItemStack stack) {
+  public static PacketVaccumChest setFilterSlot(@Nonnull TileVacuumChest tile, int slot, ItemStack stack) {
     PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_SLOT);
     msg.value = slot;
     msg.stack = stack;
@@ -42,14 +45,14 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implem
     return msg;
   }
 
-  public static PacketVaccumChest setFilterBlacklist(TileVacuumChest tile, boolean isBlacklist) {
+  public static PacketVaccumChest setFilterBlacklist(@Nonnull TileVacuumChest tile, boolean isBlacklist) {
     PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_BLACKLIST);
     msg.value = isBlacklist ? 1 : 0;
     tile.setFilterBlacklist(isBlacklist);
     return msg;
   }
 
-  public static PacketVaccumChest setFilterMatchMeta(TileVacuumChest tile, boolean matchMeta) {
+  public static PacketVaccumChest setFilterMatchMeta(@Nonnull TileVacuumChest tile, boolean matchMeta) {
     PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_MATCHMETA);
     msg.value = matchMeta ? 1 : 0;
     tile.setFilterMatchMeta(matchMeta);
@@ -72,25 +75,30 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> implem
     ByteBufUtils.writeItemStack(buf, stack);
   }
 
-  @Override
-  public IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
-    TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
-    if (te != null) {
-      switch (msg.cmd) {
-      case CMD_SET_RANGE:
-        te.setRange(msg.value);
-        break;
-      case CMD_SET_SLOT:
-        te.setItemFilterSlot(msg.value, msg.stack);
-        break;
-      case CMD_SET_BLACKLIST:
-        te.setFilterBlacklist(msg.value != 0);
-        break;
-      case CMD_SET_MATCHMETA:
-        te.setFilterMatchMeta(msg.value != 0);
-        break;
+  public static class Handler implements IMessageHandler<PacketVaccumChest, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
+      TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().player.world);
+      if (te != null) {
+        switch (msg.cmd) {
+        case CMD_SET_RANGE:
+          te.setRange(msg.value);
+          break;
+        case CMD_SET_SLOT:
+          te.setItemFilterSlot(msg.value, msg.stack);
+          break;
+        case CMD_SET_BLACKLIST:
+          te.setFilterBlacklist(msg.value != 0);
+          break;
+        case CMD_SET_MATCHMETA:
+          te.setFilterMatchMeta(msg.value != 0);
+          break;
+        }
       }
+      return null;
     }
-    return null;
+
   }
+
 }

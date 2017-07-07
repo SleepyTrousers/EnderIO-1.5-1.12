@@ -1,32 +1,36 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.MagnetUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.ModObject;
+
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.machine.invpanel.client.ItemFilter;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
-import crazypants.util.MagnetUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -38,14 +42,10 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
 import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
 
 @Storable
-public class TileVacuumChest extends TileEntityEio implements IInventory, IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
+public class TileVacuumChest extends TileEntityEio implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
 
   public static final int ITEM_ROWS = 3;
   public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
@@ -230,29 +230,6 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
     }
   }
 
-  @Override
-  public String getName() {
-    return ModObject.blockVacuumChest.getUnlocalisedName();
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
-  public void openInventory(EntityPlayer player) {
-  }
-
-  @Override
-  public void closeInventory(EntityPlayer player) {
-  }
-
-  @Override
-  public boolean isItemValidForSlot(int var1, ItemStack var2) {
-    return true;
-  }
-
   public boolean isItemValidForFilter(ItemStack itemstack) {
     return itemstack != null && itemstack.getItem() == itemBasicFilterUpgrade.getItem() && itemstack.getItemDamage() == 0;
   }
@@ -314,20 +291,14 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
   }
 
   @Override
-  public RedstoneControlMode getRedstoneControlMode() {
+  public @Nonnull RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
 
   @Override
-  public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
+  public void setRedstoneControlMode(@Nonnull RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
-    updateBlock();
-  }
-
-  @Override
-  protected void onAfterDataPacket() {
-    refreshFilter();
     updateBlock();
   }
 
@@ -341,49 +312,13 @@ public class TileVacuumChest extends TileEntityEio implements IInventory, IRedst
   }
 
   @Override
-  protected void readCustomNBT(NBTTagCompound root) {
-    super.readCustomNBT(root);
-    refreshFilter();
-  }
-
-  @Override
-  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
-    super.readContentsFromNBT(nbtRoot);
+  public void onAfterNbtRead() {
     refreshFilter();
   }
 
   @Override
   public ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
-  }
-
-  @Override
-  public int getField(int id) {
-    return 0;
-  }
-
-  @Override
-  public void setField(int id, int value) {
-  }
-
-  @Override
-  public int getFieldCount() {
-    return 0;
-  }
-
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  protected IBlockState sourceBlock;
-
-  @Override
-  public IBlockState getPaintSource() {
-    return sourceBlock;
-  }
-
-  @Override
-  public void setPaintSource(@Nullable IBlockState sourceBlock) {
-    this.sourceBlock = sourceBlock;
-    markDirty();
-    updateBlock();
   }
 
   @Override

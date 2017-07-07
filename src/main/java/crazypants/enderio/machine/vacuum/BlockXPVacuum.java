@@ -1,8 +1,12 @@
 package crazypants.enderio.machine.vacuum;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
@@ -20,7 +24,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -31,20 +34,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 public class BlockXPVacuum extends BlockEio<TileXPVacuum>
     implements ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IResourceTooltipProvider {
 
-  public static BlockXPVacuum create() {
-    BlockXPVacuum res = new BlockXPVacuum();
+  public static BlockXPVacuum create(@Nonnull IModObject modObject) {
+    BlockXPVacuum res = new BlockXPVacuum(modObject);
     res.init();
     return res;
   }
 
-  protected BlockXPVacuum() {
-    super(ModObject.blockXPVacuum.getUnlocalisedName(), TileXPVacuum.class);
+  protected BlockXPVacuum(@Nonnull IModObject modObject) {
+    super(modObject, TileXPVacuum.class);
     initDefaultState();
   }
 
@@ -63,39 +63,35 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   @Override
-  protected BlockStateContainer createBlockState() {
+  protected @Nonnull BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
-  public IBlockState getStateFromMeta(int meta) {
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
 
   @Override
-  public int getMetaFromState(IBlockState state) {
+  public int getMetaFromState(@Nonnull IBlockState state) {
     return 0;
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
-      IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
-      TileXPVacuum tileEntity = getTileEntitySafe(world, pos);
-      if (tileEntity != null) {
-        setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
-      }
-      blockStateWrapper.bakeModel();
-      return blockStateWrapper;
-    } else {
-      return state;
+  public final @Nonnull IBlockState getExtendedState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
+    TileXPVacuum tileEntity = getTileEntitySafe(world, pos);
+    if (tileEntity != null) {
+      setBlockStateWrapperCache(blockStateWrapper, world, pos, tileEntity);
     }
+    blockStateWrapper.bakeModel();
+    return blockStateWrapper;
   }
 
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
@@ -109,7 +105,7 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return XPRenderMapper.instance;
   }
 
@@ -124,21 +120,19 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileXPVacuum te, ItemStack drop) {
-    drop.setTagCompound(new NBTTagCompound());
+  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileXPVacuum te, @Nonnull ItemStack drop) {
     if (te != null) {
-      te.writeContentsToNBT(drop.getTagCompound());
+      te.writeToItemStack(drop);
     }
-    PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase placer,
+      @Nonnull ItemStack stack) {
     if (!world.isRemote) {
       TileEntity te = world.getTileEntity(pos);
-      if (stack != null && stack.getTagCompound() != null && te instanceof TileXPVacuum) {
-        ((TileXPVacuum) te).readContentsFromNBT(stack.getTagCompound());
-        ((TileXPVacuum) te).setPaintSource(PainterUtil2.getSourceBlock(stack));
+      if (te instanceof TileXPVacuum) {
+        ((TileXPVacuum) te).readFromItemStack(stack);
         world.notifyBlockUpdate(pos, state, state, 3);
       }
     }
@@ -146,12 +140,12 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
 
   @Override
   @SideOnly(Side.CLIENT)
-  public BlockRenderLayer getBlockLayer() {
+  public @Nonnull BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.CUTOUT;
   }
 
   @Override
-  public boolean isOpaqueCube(IBlockState blockStateIn) {
+  public boolean isOpaqueCube(@Nonnull IBlockState blockStateIn) {
     return false;
   }
 
@@ -167,7 +161,7 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileXPVacuum te = getTileEntity(world, pos);
     if (te != null) {
       te.setPaintSource(paintSource);
@@ -175,12 +169,12 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileXPVacuum te = getTileEntitySafe(world, pos);
     if (te != null) {
       return te.getPaintSource();
@@ -189,24 +183,24 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull IBlockState state, @Nonnull BlockRenderLayer layer) {
     return true;
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
+  public boolean addHitEffects(@Nonnull IBlockState state, @Nonnull World world, @Nonnull RayTraceResult target, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager effectRenderer) {
+  public boolean addDestroyEffects(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ParticleManager effectRenderer) {
     return PaintHelper.addDestroyEffects(world, pos, effectRenderer);
   }
 
@@ -215,7 +209,7 @@ public class BlockXPVacuum extends BlockEio<TileXPVacuum>
   // ///////////////////////////////////////////////////////////////////////
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
