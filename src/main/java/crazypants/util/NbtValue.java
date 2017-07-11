@@ -32,6 +32,16 @@ public enum NbtValue { // TODO: DONE111
   DISPLAYMODE("displaymode"),
   MAGNET_ACTIVE("magnetActive"),
   LAST_USED_TICK("lastUsedAt"),
+  FILTER("filter"),
+  FILTER_CLASS("class"),
+  FILTER_BLACKLIST("isBlacklist"),
+  FILTER_META("matchMeta"),
+  FILTER_NBT("matchNBT"),
+  FILTER_OREDICT("useOreDict"),
+  FILTER_STICKY("sticky"),
+  FILTER_ADVANCED("isAdvanced"),
+  FILTER_LIMITED("isLimited"),
+  FILTER_DAMAGE("damageMode"),
 
   ;
 
@@ -322,6 +332,32 @@ public enum NbtValue { // TODO: DONE111
 
   public @Nullable NBTTagCompound setLongCopy(@Nullable NBTTagCompound tag, long value) {
     return tag != null ? setLong(tag.copy(), value) : null;
+  }
+
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // NBT BOOL
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  public boolean getBoolean(@Nullable NBTTagCompound tag, boolean _default) {
+    if (tag != null && tag.hasKey(key)) {
+      return tag.getBoolean(key);
+    }
+    return _default;
+  }
+
+  public boolean getBoolean(@Nullable NBTTagCompound tag) {
+    return getBoolean(tag, false);
+  }
+
+  public @Nullable NBTTagCompound setBoolean(@Nullable NBTTagCompound tag, boolean value) {
+    if (tag != null) {
+      tag.setBoolean(key, value);
+    }
+    return tag;
+  }
+
+  public @Nullable NBTTagCompound setBooleanCopy(@Nullable NBTTagCompound tag, boolean value) {
+    return tag != null ? setBoolean(tag.copy(), value) : null;
   }
 
   // /////////////////////////////////////////////////////////////////////////////////////////////////////

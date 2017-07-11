@@ -294,9 +294,13 @@ public class ItemTools {
   public static @Nullable IItemHandler getExternalInventory(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
     TileEntity te = world.getTileEntity(pos);
     if (te != null) {
-      return te.getCapability(NullHelper.notnullF(ITEM_HANDLER_CAPABILITY, "Capability<IItemHandler> is missing"), face);
+      return getExternalInventory(te, face);
     }
     return null;
+  }
+
+  public static @Nullable IItemHandler getExternalInventory(@Nonnull TileEntity tile, @Nonnull EnumFacing face) {
+    return tile.getCapability(NullHelper.notnullF(ITEM_HANDLER_CAPABILITY, "Capability<IItemHandler> is missing"), face);
   }
 
 }

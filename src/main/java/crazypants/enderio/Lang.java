@@ -54,7 +54,10 @@ public enum Lang {
   SOUL_VIAL_FLUID("item.item_soul_vial.tooltip.fluidname"),
   SOUL_VIAL_COLOR("item.item_soul_vial.tooltip.color"),
   SOUL_VIAL_EMPTY("item.item_soul_vial.tooltip.empty"),
-  XXXXXX8(""),
+  CONDUIT_FILTER("itemConduitFilterUpgrade"),
+  CONDUIT_FILTER_CONFIGURED("itemConduitFilterUpgrade.configured"),
+  CONDUIT_FILTER_CLEAR("itemConduitFilterUpgrade.clearConfigMethod"),
+  CONDUIT_FILTER_CLEAR_WARNING("itemConduitFilterUpgrade.clearConfigWarning"),
   XXXXXX9(""),
   XXXXXX0(""),
 

@@ -625,6 +625,12 @@ tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 fluid.xpjuice=Liquid XP
 tile.fluid.xpjuice.name=Liquid XP
 
+enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+
+enderio.itemConduitFilterUpgrade.configured=%sConfigured
+enderio.itemConduitFilterUpgrade.clearConfigMethod=%sPlace in crafting grid to clear
+enderio.itemConduitFilterUpgrade.clearConfigWarning=%sThis will clear all stored filter settings!
+
 
 // These keys have not (yet) been confirmed in 1.11
 
@@ -670,11 +676,6 @@ enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
 enderio.filterUpgradeLimited.name=Counting Item Filter
 enderio.filterUpgradeSpecies.name=Forestry Species Item Filter
-enderio.itemConduitFilterUpgrade=Upgrade for item conduits
-
-enderio.itemConduitFilterUpgrade.configured=Configured
-enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
 
 item.itemExistingItemFilter.name=Existing Item Filter
 item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
