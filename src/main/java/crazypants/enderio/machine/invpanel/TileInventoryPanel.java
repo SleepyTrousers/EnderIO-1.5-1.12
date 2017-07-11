@@ -9,8 +9,8 @@ import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
@@ -114,7 +114,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack stack) {
     if(slot == SLOT_VIEW_FILTER && stack != null) {
-      return FilterRegister.isItemFilter(stack) && FilterRegister.isFilterSet(stack);
+      return FilterRegistry.isItemFilter(stack) && FilterRegistry.isFilterSet(stack);
     }
     return true;
   }
@@ -143,7 +143,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   private void updateItemFilter() {
-    itemFilter = FilterRegister.getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
+    itemFilter = FilterRegistry.getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
   }
 
   public IItemFilter getItemFilter() {

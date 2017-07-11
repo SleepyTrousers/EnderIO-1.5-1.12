@@ -70,9 +70,9 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   @Override
   public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
       @Nonnull BlockPos fromPos) {
-    TileEntity ent = world.getTileEntity(pos);
-    if (ent instanceof TileVacuumChest) {
-      ((TileVacuumChest) ent).onNeighborBlockChange(neighborBlock);
+    TileVacuumChest ent = getTileEntity(world, pos);
+    if (ent != null) {
+      ent.onNeighborBlockChange(state, world, fromPos, neighborBlock, fromPos);
     }
   }
 
@@ -184,7 +184,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof TileVacuumChest) {
-      return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
+      return new ContainerVacuumChest(player.inventory, (TileVacuumChest) te);
     }
     return null;
   }
@@ -193,7 +193,7 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
     if (te instanceof TileVacuumChest) {
-      return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
+      return new GuiVacuumChest(player.inventory, (TileVacuumChest) te);
     }
     return null;
   }

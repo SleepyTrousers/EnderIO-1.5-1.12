@@ -6,7 +6,7 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterContainer;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.filter.filters.ItemFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;

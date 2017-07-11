@@ -6,7 +6,7 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.filter.filters.ItemFilter;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
@@ -210,11 +210,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
     if (nbtRoot.hasKey("sendItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("sendItemFilter");
-      sendItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
+      sendItemFilter.copyFrom((ItemFilter) FilterRegistry.loadFilterFromNbt(itemRoot));
     }
     if (nbtRoot.hasKey("recieveItemFilter")) {
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
-      recieveItemFilter.copyFrom((ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot));
+      recieveItemFilter.copyFrom((ItemFilter) FilterRegistry.loadFilterFromNbt(itemRoot));
     }
 
     if (nbtRoot.hasKey("bufferStacks")) {
@@ -249,12 +249,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
     if (sendItemFilter != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
-      FilterRegister.writeFilterToNbt(sendItemFilter, itemRoot);
+      FilterRegistry.writeFilterToNbt(sendItemFilter, itemRoot);
       nbtRoot.setTag("sendItemFilter", itemRoot);
     }
     if (recieveItemFilter != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
-      FilterRegister.writeFilterToNbt(recieveItemFilter, itemRoot);
+      FilterRegistry.writeFilterToNbt(recieveItemFilter, itemRoot);
       nbtRoot.setTag("recieveItemFilter", itemRoot);
     }
 

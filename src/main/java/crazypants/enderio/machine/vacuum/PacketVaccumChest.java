@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
@@ -37,7 +38,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
     return msg;
   }
 
-  public static PacketVaccumChest setFilterSlot(@Nonnull TileVacuumChest tile, int slot, ItemStack stack) {
+  public static PacketVaccumChest setFilterSlot(@Nonnull TileVacuumChest tile, int slot, @Nonnull ItemStack stack) {
     PacketVaccumChest msg = new PacketVaccumChest(tile, CMD_SET_SLOT);
     msg.value = slot;
     msg.stack = stack;
@@ -78,7 +79,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
   public static class Handler implements IMessageHandler<PacketVaccumChest, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
+    public @Nullable IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
       TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().player.world);
       if (te != null) {
         switch (msg.cmd) {
@@ -86,7 +87,10 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
           te.setRange(msg.value);
           break;
         case CMD_SET_SLOT:
-          te.setItemFilterSlot(msg.value, msg.stack);
+          final ItemStack stack = msg.stack;
+          if (stack != null) {
+            te.setItemFilterSlot(msg.value, stack);
+          }
           break;
         case CMD_SET_BLACKLIST:
           te.setFilterBlacklist(msg.value != 0);

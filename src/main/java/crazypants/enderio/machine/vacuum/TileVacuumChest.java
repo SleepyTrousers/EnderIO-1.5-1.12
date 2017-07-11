@@ -4,93 +4,107 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.inventory.Callback;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters.PredicateItemStack;
+import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.MagnetUtil;
-import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.filter.FilterRegistry;
+import crazypants.enderio.filter.IItemFilter;
+import crazypants.enderio.filter.filters.ItemFilter;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
-import crazypants.enderio.machine.invpanel.client.ItemFilter;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.YetaUtil;
+import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
-
 @Storable
-public class TileVacuumChest extends TileEntityEio implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
+public class TileVacuumChest extends AbstractCapabilityMachineEntity implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged {
+
+  private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
+    @Override
+    public boolean doApply(@Nonnull ItemStack input) {
+      return input.getItem() == ModObject.itemItemFilter.getItem() && input.getItemDamage() == 0;
+    }
+  };
+
+  private Callback<ItemStack> CALLBACK_FILTER = new Callback<ItemStack>() {
+    @Override
+    public void onChange(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack) {
+      if (filter != null) {
+        FilterRegistry.writeFilterToStack(filter, oldStack);
+      }
+      IItemFilter newFilter = FilterRegistry.getFilterForUpgrade(newStack);
+      if (newFilter == null || newFilter instanceof ItemFilter) {
+        filter = (ItemFilter) newFilter;
+        updateBlock();
+      }
+    }
+  };
 
   public static final int ITEM_ROWS = 3;
-  public static final int ITEM_SLOTS = 9 * ITEM_ROWS;
+  public static final int ITEM_COLS = 9;
+  public static final int ITEM_SLOTS = ITEM_COLS * ITEM_ROWS;
   public static final int FILTER_SLOTS = 5;
 
   @Store
-  private final ItemStack[] inv = new ItemStack[ITEM_SLOTS];
-  @Store
   private int range = Config.vacuumChestRange;
+  @Store
   private ItemFilter filter;
-  @Store
-  private ItemStack filterItem;
 
-  @Store
-  protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
-  protected boolean redstoneCheckPassed;
-  private boolean redstoneStateDirty = true;
+  public TileVacuumChest() {
+    for (int i = 0; i < ITEM_SLOTS; i++) {
+      getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
+    }
+
+    getInventory().add(EnderInventory.Type.UPGRADE, "filter", new InventorySlot(PREDICATE_FILTER, null, CALLBACK_FILTER, 1));
+
+    redstoneControlMode = RedstoneControlMode.IGNORE;
+  }
 
   @Override
-  public void doUpdate() {
-    if (world.isRemote) {
-      YetaUtil.refresh(this);
-    }
-    if (redstoneStateDirty) {
-      updateRedstoneStatus();
-    }
-    if (redstoneCheckPassed && !isFull()) {
+  public boolean isActive() {
+    return redstoneCheckPassed && !isFull();
+  }
+
+  @Override
+  protected boolean processTasks(boolean redstoneCheck) {
+    if (isActive()) {
       doHoover();
     }
+    return false;
   }
 
-  private void updateRedstoneStatus() {
-    boolean prevRedstoneCheckPassed = redstoneCheckPassed;
-    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
-    redstoneStateDirty = false;
-    if (redstoneCheckPassed != prevRedstoneCheckPassed) {
-      updateBlock();
-    }
+  @Override
+  protected void updateEntityClient() {
+    YetaUtil.refresh(this);
   }
 
-  public void onNeighborBlockChange(Block blockId) {
-    redstoneStateDirty = true;
-  }
-
-  private List<EntityItem> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
+  private List<EntityItem> selectEntitiesWithinAABB(World worldIn, AxisAlignedBB bb) {
     List<EntityItem> result = new ArrayList<EntityItem>();
 
     final int minChunkX = MathHelper.floor((bb.minX) / 16.0D);
@@ -102,7 +116,7 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
 
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
-        Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+        Chunk chunk = worldIn.getChunkFromChunkCoords(chunkX, chunkZ);
         final ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
         final int minChunkYClamped = MathHelper.clamp(minChunkY, 0, entityLists.length - 1);
         final int maxChunkYClamped = MathHelper.clamp(maxChunkY, 0, entityLists.length - 1);
@@ -151,10 +165,11 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
 
-        int numInserted = ItemUtil.doInsertItem(this, stack, null);
-        stack.stackSize -= numInserted;
+        int numInserted = ItemTools.doInsertItem(getInventory().getView(Type.INPUT), stack);
+
+        stack.shrink(numInserted);
         item.setEntityItemStack(stack);
-        if (stack.stackSize == 0) {
+        if (Prep.isInvalid(stack)) {
           item.setDead();
         }
       }
@@ -162,76 +177,13 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
   }
 
   private boolean isFull() {
-    for (ItemStack stack : inv) {
-      if (stack == null || stack.stackSize < stack.getMaxStackSize()) {
+    for (InventorySlot slot : getInventory().getView(Type.INPUT)) {
+      final ItemStack stackInSlot = slot.getStackInSlot(0);
+      if (Prep.isInvalid(stackInSlot) || stackInSlot.getCount() < stackInSlot.getMaxStackSize()) {
         return false;
       }
     }
     return true;
-  }
-
-  @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
-    return canPlayerAccess(player);
-  }
-
-  @Override
-  public int getSizeInventory() {
-    return inv.length;
-  }
-
-  @Override
-  public int getInventoryStackLimit() {
-    return 64;
-  }
-
-  @Override
-  public ItemStack getStackInSlot(int slot) {
-    if (slot < 0 || slot >= inv.length) {
-      return null;
-    }
-    return inv[slot];
-  }
-
-  @Override
-  public ItemStack decrStackSize(int slot, int amount) {
-    return Util.decrStackSize(this, slot, amount);
-  }
-
-  @Override
-  public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
-
-    if (slot < 0 || slot >= inv.length) {
-      return;
-    }
-
-    if (contents == null) {
-      inv[slot] = contents;
-    } else {
-      inv[slot] = contents.copy();
-    }
-
-    if (contents != null && contents.stackSize > getInventoryStackLimit()) {
-      contents.stackSize = getInventoryStackLimit();
-    }
-  }
-
-  @Override
-  public ItemStack removeStackFromSlot(int index) {
-    ItemStack fromStack = inv[index];
-    inv[index] = null;
-    return fromStack;
-  }
-
-  @Override
-  public void clear() {
-    for (int i = 0; i < inv.length; i++) {
-      inv[i] = null;
-    }
-  }
-
-  public boolean isItemValidForFilter(ItemStack itemstack) {
-    return itemstack != null && itemstack.getItem() == itemBasicFilterUpgrade.getItem() && itemstack.getItemDamage() == 0;
   }
 
   private int limitRange(int rangeIn) {
@@ -243,30 +195,21 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
     updateBlock();
   }
 
-  public ItemStack getFilterItem() {
-    return filterItem;
-  }
-
-  public void setFilterItem(ItemStack filterItem) {
-    IItemFilter newFilter = FilterRegister.getFilterForUpgrade(filterItem);
-    if (newFilter == null || newFilter instanceof ItemFilter) {
-      this.filterItem = filterItem;
-      this.filter = (ItemFilter) newFilter;
-      updateBlock();
+  public void setItemFilterSlot(int slot, @Nonnull ItemStack stack) {
+    if (slot >= 0 && slot < FILTER_SLOTS && filter != null) {
+      filter.setInventorySlotContents(slot, stack);
     }
   }
 
   public void setFilterBlacklist(boolean isBlacklist) {
     if (filter != null) {
       filter.setBlacklist(isBlacklist);
-      updateFilterItem();
     }
   }
 
   public void setFilterMatchMeta(boolean matchMeta) {
     if (filter != null) {
       filter.setMatchMeta(matchMeta);
-      updateFilterItem();
     }
   }
 
@@ -276,49 +219,6 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
 
   public ItemFilter getItemFilter() {
     return filter;
-  }
-
-  public void setItemFilterSlot(int slot, ItemStack stack) {
-    if (slot >= 0 && slot < FILTER_SLOTS && filter != null) {
-      filter.setInventorySlotContents(slot, stack);
-      updateFilterItem();
-    }
-  }
-
-  private void updateFilterItem() {
-    FilterRegister.writeFilterToStack(filter, filterItem);
-    updateBlock();
-  }
-
-  @Override
-  public @Nonnull RedstoneControlMode getRedstoneControlMode() {
-    return redstoneControlMode;
-  }
-
-  @Override
-  public void setRedstoneControlMode(@Nonnull RedstoneControlMode redstoneControlMode) {
-    this.redstoneControlMode = redstoneControlMode;
-    redstoneStateDirty = true;
-    updateBlock();
-  }
-
-  private void refreshFilter() {
-    IItemFilter flt = FilterRegister.getFilterForUpgrade(filterItem);
-    if (flt instanceof ItemFilter) {
-      filter = (ItemFilter) flt;
-    } else {
-      filterItem = null;
-    }
-  }
-
-  @Override
-  public void onAfterNbtRead() {
-    refreshFilter();
-  }
-
-  @Override
-  public ITextComponent getDisplayName() {
-    return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
   @Override
@@ -359,10 +259,5 @@ public class TileVacuumChest extends TileEntityEio implements IRedstoneModeContr
   }
 
   // RANGE END
-
-  @Override
-  public boolean getRedstoneControlStatus() {
-    return redstoneCheckPassed;
-  }
 
 }

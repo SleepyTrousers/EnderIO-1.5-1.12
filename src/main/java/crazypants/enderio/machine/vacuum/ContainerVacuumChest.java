@@ -3,49 +3,52 @@ package crazypants.enderio.machine.vacuum;
 import java.awt.Point;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.ContainerEnderCap;
+import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderSlot;
 
-import net.minecraft.entity.player.EntityPlayer;
+import crazypants.enderio.filter.items.BasicFilterTypes;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.ModObject.itemBasicFilterUpgrade;
+public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest> {
 
-public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> { // one of 4975.3823 reasons to make the vacuum chest a machine...
-
-  private Slot filterSlot;
+  private @Nonnull Slot filterSlot;
   private Runnable filterChangedCB;
 
-  public ContainerVacuumChest(EntityPlayer player, InventoryPlayer inventory, final TileVacuumChest te) {
-    super(inventory, te);
+  public ContainerVacuumChest(@Nonnull InventoryPlayer inventory, final @Nonnull TileVacuumChest te) {
+    super(inventory, te.getInventory(), te);
+    filterSlot = new EnderSlot(getItemHandler(), "filter", 8, 86) {
+      @Override
+      public void onSlotChanged() {
+        filterChanged();
+      }
+    };
   }
 
   @Override
-  protected void addSlots(InventoryPlayer playerInv) {
-    filterSlot = new FilterSlot(new InventoryFilterUpgrade(getInv()));
+  protected void addSlots() {
     addSlotToContainer(filterSlot);
 
     int x = 8;
     int y = 18;
-    int index = -1;
-    for (int i = 0; i < TileVacuumChest.ITEM_ROWS; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(getInv(), ++index, x + j * 18, y + i * 18));
+    for (EnderSlot slot : EnderSlot.create(getItemHandler(), EnderInventory.Type.OUTPUT, x, y, TileVacuumChest.ITEM_COLS, TileVacuumChest.ITEM_ROWS)) {
+      if (slot != null) {
+        addSlotToContainer(slot);
       }
     }
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemBasicFilterUpgrade.getItem(), filterSlot));
+    slots.add(new GhostBackgroundItemSlot(BasicFilterTypes.filterUpgradeBasic.getStack(), filterSlot));
   }
 
   @Override
-  public Point getPlayerInventoryOffset() {
+  public @Nonnull Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
     p.translate(0, 40);
     return p;
@@ -61,22 +64,4 @@ public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> { // o
     }
   }
 
-  class FilterSlot extends Slot {
-    InventoryFilterUpgrade inv;
-
-    FilterSlot(InventoryFilterUpgrade inv) {
-      super(inv, 0, 8, 86);
-      this.inv = inv;
-    }
-
-    @Override
-    public void onSlotChanged() {
-      filterChanged();
-    }
-
-    @Override
-    public boolean isItemValid(@Nullable ItemStack stack) {
-      return inv.isItemValidForSlot(0, stack);
-    }
-  }
 }

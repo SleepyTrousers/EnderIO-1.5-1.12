@@ -1,10 +1,11 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import net.minecraft.client.Minecraft;
 
 import java.text.Collator;
 import java.util.*;
+
+import crazypants.enderio.filter.IItemFilter;
 
 public class DatabaseView {
 

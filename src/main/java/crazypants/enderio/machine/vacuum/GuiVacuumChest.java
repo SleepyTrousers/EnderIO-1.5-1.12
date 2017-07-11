@@ -1,5 +1,13 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -7,21 +15,18 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.filter.filters.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.Prep;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.util.List;
 
 import static crazypants.enderio.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
@@ -40,22 +45,22 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   private static final int ID_MATCHMETA = 4714;
   private static final int ID_REDSTONE = 4715;
 
-  private final TileVacuumChest te;
+  private final @Nonnull TileVacuumChest te;
 
-  private final GuiToolTip rangeTooltip;
-  private final MultiIconButton rangeUpB;
-  private final MultiIconButton rangeDownB;
-  private final ToggleButton whiteListB;
-  private final ToggleButton useMetaB;
-  private final RedstoneModeButton<TileVacuumChest> rsB;
-  private final String headerChest;
-  private final String headerFilter;
-  private final String headerRange;
-  private final String headerInventory;
-  ToggleButton showRangeB;
+  private final @Nonnull GuiToolTip rangeTooltip;
+  private final @Nonnull MultiIconButton rangeUpB;
+  private final @Nonnull MultiIconButton rangeDownB;
+  private final @Nonnull ToggleButton whiteListB;
+  private final @Nonnull ToggleButton useMetaB;
+  private final @Nonnull RedstoneModeButton<TileVacuumChest> rsB;
+  private final @Nonnull String headerChest;
+  private final @Nonnull String headerFilter;
+  private final @Nonnull String headerRange;
+  private final @Nonnull String headerInventory;
+  private final @Nonnull ToggleButton showRangeB;
 
-  public GuiVacuumChest(EntityPlayer player, InventoryPlayer inventory, TileVacuumChest te) {
-    super(new ContainerVacuumChest(player, inventory, te), "vacumChest");
+  public GuiVacuumChest(@Nonnull InventoryPlayer inventory, @Nonnull TileVacuumChest te) {
+    super(new ContainerVacuumChest(inventory, te), "vacumChest");
     this.te = te;
 
     ySize = 206;
@@ -80,7 +85,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
-      public List<String> getToolTipText() {
+      public @Nonnull List<String> getToolTipText() {
         return Lists.newArrayList(EnderIO.lang.localize(showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
       }
     });
@@ -130,7 +135,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   }
 
   @Override
-  public void actionPerformed(GuiButton guiButton) {
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton == showRangeB) {
       te.setShowRange(showRangeB.isSelected());
       return;
@@ -163,10 +168,6 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
 
   private void setRange(int range) {
     PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setRange(te, range));
-  }
-
-  void setFilterSlot(int slot, ItemStack stack) {
-    PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(te, slot, stack));
   }
 
   void filterChanged() {
@@ -227,17 +228,17 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     }
 
     @Override
-    public void putStack(ItemStack stack) {
+    public void putStack(@Nonnull ItemStack stack) {
       PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setFilterSlot(GuiVacuumChest.this.te, slot, stack));
     }
 
     @Override
-    public ItemStack getStack() {
+    public @Nonnull ItemStack getStack() {
       ItemFilter itemFilter = GuiVacuumChest.this.te.getItemFilter();
       if (itemFilter != null) {
         return itemFilter.getStackInSlot(slot);
       }
-      return null;
+      return Prep.getEmpty();
     }
   }
 }
