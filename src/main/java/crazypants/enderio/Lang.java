@@ -58,7 +58,8 @@ public enum Lang {
   CONDUIT_FILTER_CONFIGURED("itemConduitFilterUpgrade.configured"),
   CONDUIT_FILTER_CLEAR("itemConduitFilterUpgrade.clearConfigMethod"),
   CONDUIT_FILTER_CLEAR_WARNING("itemConduitFilterUpgrade.clearConfigWarning"),
-  XXXXXX9(""),
+  CONDUIT_FILTER_UPDATED("item.itemExistingItemFilter.filterUpdated"),
+  CONDUIT_FILTER_NOTUPDATED("item.itemExistingItemFilter.filterNotUpdated"),
   XXXXXX0(""),
 
   ;
