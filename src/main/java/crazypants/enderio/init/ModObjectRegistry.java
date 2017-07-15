@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ModObjectRegistry {
 
-  private static final NNList<IModObject.Registerable> objects = new NNList<IModObject.Registerable>(ModObject.values());
+  private static final NNList<IModObject.Registerable> objects = new NNList<IModObject.Registerable>();
 
   public static <T extends Enum<T> & IModObject.Registerable> void addModObjects(Class<T> enumClass) {
     objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
@@ -45,6 +45,11 @@ public class ModObjectRegistry {
 
   public static void init(@Nonnull FMLPreInitializationEvent event) {
     Log.info("ModObjectRegistry:FMLPreInitializationEvent");
+  }
+
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+    addModObjects(ModObject.class);
   }
 
   @SubscribeEvent(priority = EventPriority.NORMAL)

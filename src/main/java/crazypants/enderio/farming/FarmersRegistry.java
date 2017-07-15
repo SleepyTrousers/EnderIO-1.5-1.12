@@ -4,48 +4,38 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.farming.farmers.ChorusFarmer;
 import crazypants.enderio.farming.farmers.CocoaFarmer;
 import crazypants.enderio.farming.farmers.CustomSeedFarmer;
-import crazypants.enderio.farming.farmers.FarmersCommune;
 import crazypants.enderio.farming.farmers.FlowerPicker;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.MelonFarmer;
 import crazypants.enderio.farming.farmers.PickableFarmer;
 import crazypants.enderio.farming.farmers.PlantableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
 import crazypants.enderio.farming.farmers.TreeFarmer;
 import crazypants.enderio.init.ModObject;
-import crazypants.enderio.integration.actuallyadditions.ActuallyadditionsUtil;
-import crazypants.enderio.integration.bop.BoPUtil;
-import crazypants.enderio.integration.botania.BotaniaUtil;
-import crazypants.enderio.integration.botany.BotanyUtil;
-import crazypants.enderio.integration.exu2.ExU2Util;
-import crazypants.enderio.integration.forestry.ForestryUtil;
-import crazypants.enderio.integration.gardencore.GardencoreUtil;
-import crazypants.enderio.integration.ic2e.IC2eUtil;
-import crazypants.enderio.integration.immersiveengineering.ImmersiveEngineeringUtil;
-import crazypants.enderio.integration.magicalcrops.MagicalcropsUtil;
-import crazypants.enderio.integration.metallurgy.MetallurgyUtil;
-import crazypants.enderio.integration.mfr.MFRUtil;
-import crazypants.enderio.integration.natura.NaturaUtil;
-import crazypants.enderio.integration.techreborn.TechRebornUtil;
-import crazypants.enderio.integration.tic.TicUtil;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public final class FarmersRegistry {
 
   public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE).add(Items.GOLDEN_HOE)
       .add(Items.DIAMOND_HOE).add(Config.farmHoes);
   public static final @Nonnull Things slotItemsHoeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
-      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe.getItemNN());
-  public static final @Nonnull Things slotItemsExtraTools = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears.getItemNN());
+      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
+  public static final @Nonnull Things slotItemsExtraTools = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears);
   public static final @Nonnull Things slotItemsSeeds = new Things("treeSapling").add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
       .add(Blocks.RED_MUSHROOM)
       .add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS).add(Items.PUMPKIN_SEEDS);
@@ -60,54 +50,48 @@ public final class FarmersRegistry {
   private static final @Nonnull Things WOODS = new Things("logWood");
   private static final @Nonnull Things FLOWERS = new Things().add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
-  public static final @Nonnull PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
-
-  public static void init(@Nonnull FMLPostInitializationEvent event) {
-
-    TechRebornUtil.addTechreborn();
-    ExU2Util.addExtraUtilities2();
-    NaturaUtil.addNatura();
-    IC2eUtil.addIC2();
-    MFRUtil.addMFR();
-    ImmersiveEngineeringUtil.addImmersiveEngineering();
-    ForestryUtil.addForestry();
-    BotaniaUtil.addBotania();
-    BoPUtil.addBoP();
-    BotanyUtil.addBotany();
-    TicUtil.addTic();
-    MetallurgyUtil.addMetallurgy();
-    GardencoreUtil.addGardencore();
-    MagicalcropsUtil.addMagicalcrops();
-    ActuallyadditionsUtil.addActuallyadditions();
-
-    FarmersCommune.joinCommune(new FlowerPicker(FLOWERS));
-    FarmersCommune.joinCommune(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)));
-    FarmersCommune.joinCommune(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)));
-    FarmersCommune.joinCommune(new TreeFarmer(SAPLINGS, WOODS));
-    FarmersCommune.joinCommune(new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK));
-    FarmersCommune.joinCommune(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK));
-    // special case of plantables to get spacing correct
-    FarmersCommune.joinCommune(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)));
-    FarmersCommune.joinCommune(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)));
-    // 'BlockNetherWart' is not an IGrowable
-    FarmersCommune.joinCommune(new CustomSeedFarmer(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART)).setRequiresTilling(false));
-    // Cocoa is odd
-    FarmersCommune.joinCommune(new CocoaFarmer());
-    // Chorus plant is even odder
-    FarmersCommune.joinCommune(new ChorusFarmer());
-    // Handles all 'vanilla' style crops
-    FarmersCommune.joinCommune(DEFAULT_FARMER);
+  @SubscribeEvent(priority = EventPriority.NORMAL)
+  public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
   }
 
-  public static void addPickable(@Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName) {
+  @SubscribeEvent(priority = EventPriority.LOW)
+  public static void registerFarmersLow(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
+    event.getRegistry().register(new FlowerPicker(FLOWERS).setRegistryName(EnderIO.DOMAIN, "flowers"));
+    event.getRegistry().register(new StemFarmer(Blocks.REEDS, new ItemStack(Items.REEDS)).setRegistryName(EnderIO.DOMAIN, "reeds"));
+    event.getRegistry().register(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)).setRegistryName(EnderIO.DOMAIN, "cactus"));
+    event.getRegistry().register(new TreeFarmer(SAPLINGS, WOODS).setRegistryName(EnderIO.DOMAIN, "trees"));
+    event.getRegistry().register(new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK).setRegistryName(EnderIO.DOMAIN, "red_mushrooms"));
+    event.getRegistry().register(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK).setRegistryName(EnderIO.DOMAIN, "brown_mushrooms"));
+    // special case of plantables to get spacing correct
+    event.getRegistry()
+        .register(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)).setRegistryName(EnderIO.DOMAIN, "melons"));
+    event.getRegistry()
+        .register(new MelonFarmer(Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, new ItemStack(Items.PUMPKIN_SEEDS)).setRegistryName(EnderIO.DOMAIN, "pumpkins"));
+    // 'BlockNetherWart' is not an IGrowable
+    event.getRegistry().register(
+        new CustomSeedFarmer(Blocks.NETHER_WART, 3, new ItemStack(Items.NETHER_WART)).setRequiresTilling(false).setRegistryName(EnderIO.DOMAIN, "netherwart"));
+    // Cocoa is odd
+    event.getRegistry().register(new CocoaFarmer().setRegistryName(EnderIO.DOMAIN, "cocoa"));
+    // Chorus plant is even odder
+    event.getRegistry().register(new ChorusFarmer().setRegistryName(EnderIO.DOMAIN, "chorus"));
+  }
+
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void registerFarmersLowest(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
+    // Handles all 'vanilla' style crops
+    event.getRegistry().register(new PlantableFarmer().setRegistryName(EnderIO.DOMAIN, "default"));
+  }
+
+  public static void addPickable(@Nonnull RegistryEvent.Register<IFarmerJoe> event, @Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName) {
     Block cropBlock = findBlock(mod, blockName);
     Item seedItem = findItem(mod, itemName);
     if (cropBlock != null && seedItem != null) {
-      FarmersCommune.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
+      event.getRegistry().register(new PickableFarmer(cropBlock, new ItemStack(seedItem)).setRegistryName(mod, blockName));
     }
   }
 
-  public static CustomSeedFarmer addSeed(@Nonnull String mod, @Nonnull String blockName, @Nonnull String itemName, Block... extraFarmland) {
+  public static CustomSeedFarmer addSeed(@Nonnull RegistryEvent.Register<IFarmerJoe> event, @Nonnull String mod, @Nonnull String blockName,
+      @Nonnull String itemName, Block... extraFarmland) {
     Block cropBlock = findBlock(mod, blockName);
     Item seedItem = findItem(mod, itemName);
     if (cropBlock != null && seedItem != null) {
@@ -119,7 +103,7 @@ public final class FarmersRegistry {
           }
         }
       }
-      FarmersCommune.joinCommune(farmer);
+      event.getRegistry().register(farmer.setRegistryName(mod, blockName));
       return farmer;
     }
     return null;

@@ -28,8 +28,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 
-public class PlantableFarmer implements IFarmerJoe {
+public class PlantableFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
   private Set<Block> harvestExcludes = new HashSet<Block>();
 

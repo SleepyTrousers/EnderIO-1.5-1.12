@@ -7,8 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
-public interface IFarmerJoe {
+public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
 
   boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState state);
 

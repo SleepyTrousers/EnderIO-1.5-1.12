@@ -3,7 +3,6 @@ package crazypants.enderio.integration.forestry;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.farming.IFarmer;
-import crazypants.enderio.farming.farmers.FarmersCommune;
 import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.IHarvestResult;
 import crazypants.util.Prep;
@@ -17,8 +16,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 
-public class ForestryFarmer implements IFarmerJoe {
+public class ForestryFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
   private final @Nonnull ITreeRoot root;
   private final @Nonnull Item forestrySapling;
 
@@ -27,11 +28,11 @@ public class ForestryFarmer implements IFarmerJoe {
     this.forestrySapling = forestrySapling;
   }
 
-  public static void init() {
+  public static void init(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     ITreeRoot root = (ITreeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootTrees");
     Item forestrySapling = Item.REGISTRY.getObject(new ResourceLocation("forestry", "sapling"));
     if (root != null && forestrySapling != null)
-      FarmersCommune.joinCommune(new ForestryFarmer(root, forestrySapling));
+      event.getRegistry().register(new ForestryFarmer(root, forestrySapling).setRegistryName("forestry", "trees"));
   }
 
   @Override

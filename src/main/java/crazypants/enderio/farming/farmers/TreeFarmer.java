@@ -30,8 +30,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl;
 
-public class TreeFarmer implements IFarmerJoe {
+public class TreeFarmer extends Impl<IFarmerJoe> implements IFarmerJoe {
 
   private static final @Nonnull HeightComparator comp = new HeightComparator();
 

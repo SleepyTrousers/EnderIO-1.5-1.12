@@ -3,6 +3,8 @@ package crazypants.enderio.init;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.stackable.IProducer;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
-public interface IModObject {
+public interface IModObject extends IProducer {
 
   @Nonnull
   String getUnlocalisedName();
@@ -24,12 +26,6 @@ public interface IModObject {
 
   @Nonnull
   <I extends Item> I apply(@Nonnull I item);
-
-  @Nullable
-  Block getBlock();
-
-  @Nullable
-  Item getItem();
 
   public static interface Registerable extends IModObject {
 

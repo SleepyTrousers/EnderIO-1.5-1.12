@@ -1,18 +1,28 @@
 package crazypants.enderio.integration.exu2;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.farming.farmers.CustomSeedFarmer;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class ExU2Util {
 
   private ExU2Util() {
   }
 
-  public static void addExtraUtilities2() {
+  @SubscribeEvent(priority = EventPriority.NORMAL)
+  public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     int count = 0;
-    CustomSeedFarmer farmer = FarmersRegistry.addSeed("extrautils2", "enderlilly", "enderlilly");
+    CustomSeedFarmer farmer = FarmersRegistry.addSeed(event, "extrautils2", "enderlilly", "enderlilly");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
       farmer.setRequiresTilling(false); // disables tilling
@@ -23,7 +33,7 @@ public class ExU2Util {
       farmer.addTilledBlock(Blocks.END_STONE);
       count++;
     }
-    farmer = FarmersRegistry.addSeed("extrautils2", "redorchid", "redorchid");
+    farmer = FarmersRegistry.addSeed(event, "extrautils2", "redorchid", "redorchid");
     if (farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
       farmer.setRequiresTilling(false); // disables tilling

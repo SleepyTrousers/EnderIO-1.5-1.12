@@ -5,11 +5,13 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.farming.IFarmer;
-import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.PickableFarmer;
+import crazypants.enderio.farming.farmers.PlantableFarmer;
 import crazypants.enderio.farming.farmers.StemFarmer;
 import crazypants.enderio.farming.farmers.TreeFarmer;
 import crazypants.enderio.farming.farmers.TreeHarvestUtil;
@@ -18,13 +20,19 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class NaturaUtil {
 
   private NaturaUtil() {
   }
 
-  public static void addNatura() {
+  @SubscribeEvent(priority = EventPriority.NORMAL)
+  public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     int count = 0;
 
     Item overworldSeeds = FarmersRegistry.findItem("natura", "overworld_seeds");
@@ -32,13 +40,13 @@ public class NaturaUtil {
       Block barleyBlock = FarmersRegistry.findBlock("natura", "barley_crop");
       Block cottonBlock = FarmersRegistry.findBlock("natura", "cotton_crop");
       if (barleyBlock != null) {
-        FarmersRegistry.DEFAULT_FARMER.addHarvestExlude(barleyBlock);
-        FarmersCommune.joinCommune(new PickableFarmer(barleyBlock, 0, 3, new ItemStack(overworldSeeds, 1, 0)));
+        new PlantableFarmer().addHarvestExlude(barleyBlock);
+        event.getRegistry().register(new PickableFarmer(barleyBlock, 0, 3, new ItemStack(overworldSeeds, 1, 0)).setRegistryName("natura", "barley"));
         count++;
       }
       if (cottonBlock != null) {
-        FarmersRegistry.DEFAULT_FARMER.addHarvestExlude(cottonBlock);
-        FarmersCommune.joinCommune(new PickableFarmer(cottonBlock, 0, 4, new ItemStack(overworldSeeds, 1, 1)));
+        new PlantableFarmer().addHarvestExlude(cottonBlock);
+        event.getRegistry().register(new PickableFarmer(cottonBlock, 0, 4, new ItemStack(overworldSeeds, 1, 1)).setRegistryName("natura", "cotton"));
         count++;
       }
     }
@@ -51,10 +59,10 @@ public class NaturaUtil {
       Block berryBlock = FarmersRegistry.findBlock("natura", berry);
       Item berryItem = FarmersRegistry.findItem("natura", berry);
       if (berryBlock != null && berryItem != null) {
-        FarmersRegistry.DEFAULT_FARMER.addHarvestExlude(berryBlock);
+        new PlantableFarmer().addHarvestExlude(berryBlock);
         PickableFarmer farmer = new NaturaBerryFarmer(berryBlock, 0, 3, new ItemStack(berryItem, 1, 0));
         farmer.setRequiresTilling(false);
-        FarmersCommune.joinCommune(farmer);
+        event.getRegistry().register(farmer.setRegistryName("natura", "berries"));
         TreeHarvestUtil.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
         count++;
       }
@@ -68,7 +76,7 @@ public class NaturaUtil {
     if (shroomSapling != null && shroomGreenBlock != null && shroomBlueBlock != null && shroomPurpleBlock != null) {
       final TreeFarmer shroomFarmer = new TreeFarmer(shroomSapling, shroomGreenBlock, shroomBlueBlock, shroomPurpleBlock);
       shroomFarmer.setIgnoreMeta(true);
-      FarmersCommune.joinCommune(shroomFarmer);
+      event.getRegistry().register(shroomFarmer.setRegistryName("natura", "shroom"));
       count++;
     }
 
@@ -76,12 +84,12 @@ public class NaturaUtil {
     Block saguaroBlock = FarmersRegistry.findBlock("natura", "saguaro");
     Item saguaroBabyItem = FarmersRegistry.findItem("natura", "saguaro_baby");
     if (saguaroBlock != null && saguaroBabyItem != null) {
-      FarmersCommune.joinCommune(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
+      event.getRegistry().register(new StemFarmer(saguaroBlock, new ItemStack(saguaroBabyItem)) {
         @Override
         public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull Block block, @Nonnull IBlockState meta) {
           return false;
         }
-      });
+      }.setRegistryName("natura", "saguaro"));
       count++;
     }
 

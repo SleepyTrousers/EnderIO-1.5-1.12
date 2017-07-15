@@ -16,7 +16,6 @@ import crazypants.enderio.api.IMC;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
-import crazypants.enderio.farming.FarmersRegistry;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.handler.darksteel.DarkSteelController;
@@ -164,7 +163,6 @@ public class EnderIO {
     SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     // TODO 1.11 EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
-    FarmersRegistry.init(event);
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 

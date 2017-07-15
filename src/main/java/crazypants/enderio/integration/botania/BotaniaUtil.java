@@ -4,49 +4,20 @@ import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.farming.FarmersRegistry;
-import crazypants.enderio.farming.farmers.FarmersCommune;
+import crazypants.enderio.farming.farmers.IFarmerJoe;
 import crazypants.enderio.farming.farmers.PlaceableFarmer;
-import crazypants.enderio.farming.fertilizer.Bonemeal;
 import crazypants.enderio.farming.fertilizer.Fertilizer;
-import crazypants.enderio.farming.fertilizer.Result;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class BotaniaUtil {
-
-  public static class MagicalFertilizer extends Bonemeal {
-    public MagicalFertilizer(Item item) {
-      super(item);
-    }
-
-    @Override
-    public Result apply(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
-      BlockPos below = bc.down();
-      Block belowBlock = world.getBlockState(below).getBlock();
-      if (belowBlock == Blocks.DIRT || belowBlock == Blocks.GRASS) {
-        return super.apply(stack, player, world, below);
-      }
-      return new Result(stack, false);
-    }
-
-    @Override
-    public boolean applyOnAir() {
-      return true;
-    }
-
-    @Override
-    public boolean applyOnPlant() {
-      return false;
-    }
-  }
 
   private static final String SOLEGNOLIA = "vazkii.botania.common.block.subtile.functional.SubTileSolegnolia";
   private static final String HAS_SOLEGNOLIA_AROUND = "hasSolegnoliaAround";
@@ -81,14 +52,15 @@ public class BotaniaUtil {
     return false;
   }
 
-  public static void addBotania() {
+  @SubscribeEvent(priority = EventPriority.NORMAL)
+  public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
     int count = 0;
     FarmersRegistry.registerFlower("block:botania:flower", "block:botania:doubleflower1", "block:botania:doubleflower2", "block:botania:shinyflower",
         "block:botania:mushroom");
     PlaceableFarmer farmer = new PlaceableFarmer("item:botania:petal");
     farmer.addDirt("block:minecraft:grass");
     if (farmer.isValid()) {
-      FarmersCommune.joinCommune(farmer);
+      event.getRegistry().register(farmer.setRegistryName("botania", "petals"));
       count++;
     }
     final MagicalFertilizer fertilizer = new MagicalFertilizer(FarmersRegistry.findItem("botania", "fertilizer"));
