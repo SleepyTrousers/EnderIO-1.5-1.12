@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.registry.RegistryBuilder;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class Registry {
 
-  static final ResourceLocation PRIOMAP = new ResourceLocation(EnderIO.DOMAIN, "priomap");
+  static final ResourceLocation PRIOLIST = new ResourceLocation(EnderIO.DOMAIN, "priolist");
 
   static IForgeRegistry<IFarmerJoe> REGISTRY = null;
 
@@ -32,7 +32,7 @@ public class Registry {
   }
 
   public static <T extends Object> T foreach(@Nonnull Callback<T> callback) {
-    for (ResourceLocation farmer : (NNList<ResourceLocation>) Registry.REGISTRY.getSlaveMap(Registry.PRIOMAP, NNList.class)) {
+    for (ResourceLocation farmer : (NNList<ResourceLocation>) Registry.REGISTRY.getSlaveMap(Registry.PRIOLIST, NNList.class)) {
       final IFarmerJoe joe = Registry.REGISTRY.getValue(farmer);
       if (joe != null) {
         T result = callback.run(joe);
