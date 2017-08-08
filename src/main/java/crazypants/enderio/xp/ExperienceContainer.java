@@ -34,7 +34,7 @@ public class ExperienceContainer extends FluidTank {
 
   public ExperienceContainer(int maxStored) {
     super(null, 0);
-    maxXp = maxStored;
+    maxXp = Math.min(maxStored, XpUtil.liquidToExperience(Integer.MAX_VALUE)); // about 4902 levels
   }
 
   public int getMaximumExperiance() {
