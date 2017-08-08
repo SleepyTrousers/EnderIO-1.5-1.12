@@ -118,7 +118,7 @@ public class AnvilCapacitorRecipe {
 
     float gaussian = (float) rand.nextGaussian();
     if (gaussian <= 0) {
-      return Math.max(min, center - gaussian * offsetLow);
+      return Math.max(min, center + gaussian * offsetLow);
     } else {
       return Math.min(max, center + gaussian * offsetHigh);
     }
