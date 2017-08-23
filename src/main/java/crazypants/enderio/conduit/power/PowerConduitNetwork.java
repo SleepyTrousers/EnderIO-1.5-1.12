@@ -10,11 +10,12 @@ import java.util.Set;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.power.IPowerInterface;
-import crazypants.util.BlockCoord;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
@@ -22,12 +23,10 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   NetworkPowerManager powerManager;
 
-  private Map<ReceptorKey, ReceptorEntry> powerReceptors = new HashMap<ReceptorKey, ReceptorEntry>();
-
-  private long timeAtLastApply = -1;
+  private final Map<ReceptorKey, ReceptorEntry> powerReceptors = new HashMap<ReceptorKey, ReceptorEntry>();
 
   public PowerConduitNetwork() {
-    super(IPowerConduit.class);
+    super(IPowerConduit.class, IPowerConduit.class);
   }
 
   @Override
@@ -42,7 +41,9 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     for (IPowerConduit con : conduits) {
       con.setActive(false);
     }
-    powerManager.onNetworkDestroyed();
+    if(powerManager != null) {
+      powerManager.onNetworkDestroyed();
+    }
     super.destroyNetwork();
   }
 
@@ -64,11 +65,6 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     if(powerManager != null) {
       con.setActive(powerManager.isActive());
     }
-  }
-
-  @Override
-  public Class<IPowerConduit> getBaseConduitType() {
-    return IPowerConduit.class;
   }
 
   public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerInterface powerReceptor) {
@@ -106,19 +102,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().getWorldObj();
-    if(world == null) {
-      return;
-    }
-    if(world.isRemote) {
-      return;
-    }
-    long curTime = world.getTotalWorldTime();
-    if(curTime != timeAtLastApply) {
-      timeAtLastApply = curTime;
-      powerManager.applyRecievedPower();
-    }
+  public void doNetworkTick() {
+    powerManager.applyRecievedPower();
   }
 
   public static class ReceptorEntry {

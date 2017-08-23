@@ -9,13 +9,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.Log;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.config.Config;
-import crazypants.util.BlockCoord;
-import crazypants.util.FluidUtil;
-import crazypants.util.RoundRobinIterator;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
 
@@ -27,13 +27,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   Map<NetworkTank, RoundRobinIterator<NetworkTank>> iterators;
 
-  public EnderLiquidConduitNetwork() {
-    super(EnderLiquidConduit.class);
-  }
+  boolean filling;
 
-  @Override
-  public Class<ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
+  public EnderLiquidConduitNetwork() {
+    super(EnderLiquidConduit.class, ILiquidConduit.class);
   }
 
   public void connectionChanged(EnderLiquidConduit con, ForgeDirection conDir) {
@@ -54,17 +51,18 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
-    int amountAccepted = fillFrom(tank, drained, true);
+    int amountAccepted = fillFrom(tank, drained.copy(), true);
     if(amountAccepted <= 0) {
       return false;
     }
     drained = tank.externalTank.drain(conDir.getOpposite(), amountAccepted, true);
     if(drained == null || drained.amount <= 0) {
       return false;
-    }    
-    if(drained.amount != amountAccepted) {
-      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled=" + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
     }
+    //    if(drained.amount != amountAccepted) {
+    //      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
+    //          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
+    //    }
     return true;
   }
 
@@ -77,27 +75,40 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   public int fillFrom(NetworkTank tank, FluidStack resource, boolean doFill) {
-    if(resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+
+    if(filling) {
       return 0;
     }
-    resource = resource.copy();
-    resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
-    int filled = 0;
-    int remaining = resource.amount;
-    //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
-    
-    for (NetworkTank target : getIteratorForTank(tank)) {
-      if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
-        int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
-        remaining -= vol;
-        filled += vol;
-        if(remaining <= 0) {
-          return filled;
-        }
-        resource.amount = remaining;
+
+    try {
+
+      filling = true;
+
+      if(resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+        return 0;
       }
+      resource = resource.copy();
+      resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
+      int filled = 0;
+      int remaining = resource.amount;
+      //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
+
+      for (NetworkTank target : getIteratorForTank(tank)) {
+        if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+          int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
+          remaining -= vol;
+          filled += vol;
+          if(remaining <= 0) {
+            return filled;
+          }
+          resource.amount = remaining;
+        }
+      }
+      return filled;
+
+    } finally {
+      filling = false;
     }
-    return filled;
   }
 
   private boolean matchedFilter(FluidStack drained, EnderLiquidConduit con, ForgeDirection conDir, boolean isInput) {
@@ -129,8 +140,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     for (NetworkTank target : tanks) {
       if(!target.equals(tank) && target.isValid()) {
         FluidTankInfo[] tTanks = target.externalTank.getTankInfo(target.tankDir);
-        for (FluidTankInfo info : tTanks) {
-          res.add(info);
+        if(tTanks != null) {
+          for (FluidTankInfo info : tTanks) {
+            res.add(info);
+          }
         }
       }
     }
@@ -162,20 +175,26 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       NetworkTankKey other = (NetworkTankKey) obj;
-      if(conDir != other.conDir)
+      if(conDir != other.conDir) {
         return false;
+      }
       if(conduitLoc == null) {
-        if(other.conduitLoc != null)
+        if(other.conduitLoc != null) {
           return false;
-      } else if(!conduitLoc.equals(other.conduitLoc))
+        }
+      } else if(!conduitLoc.equals(other.conduitLoc)) {
         return false;
+      }
       return true;
     }
 
@@ -195,12 +214,12 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       this.conDir = conDir;
       conduitLoc = con.getLocation();
       tankDir = conDir.getOpposite();
-      externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
-      acceptsOuput = con.getConectionMode(conDir).acceptsOutput();
+      externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
+      acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     }
 
     public boolean isValid() {
-      return externalTank != null && con.getConectionMode(conDir) != ConnectionMode.DISABLED;
+      return externalTank != null && con.getConnectionMode(conDir) != ConnectionMode.DISABLED;
     }
 
     @Override
@@ -214,20 +233,26 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       NetworkTank other = (NetworkTank) obj;
-      if(conDir != other.conDir)
+      if(conDir != other.conDir) {
         return false;
+      }
       if(conduitLoc == null) {
-        if(other.conduitLoc != null)
+        if(other.conduitLoc != null) {
           return false;
-      } else if(!conduitLoc.equals(other.conduitLoc))
+        }
+      } else if(!conduitLoc.equals(other.conduitLoc)) {
         return false;
+      }
       return true;
     }
 

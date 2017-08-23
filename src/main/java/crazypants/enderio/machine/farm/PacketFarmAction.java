@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.util.BlockCoord;
 import crazypants.util.ClientUtil;
 
 public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> {
@@ -23,6 +24,11 @@ public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAct
 
   public PacketFarmAction(List<BlockCoord> coords) {
     this.coords = coords;
+  }
+
+  public PacketFarmAction(BlockCoord bc) {
+    this.coords = new ArrayList<BlockCoord>(1);
+    this.coords.add(bc);
   }
 
   @Override

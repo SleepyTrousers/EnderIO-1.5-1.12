@@ -2,11 +2,13 @@ package crazypants.enderio.conduit.packet;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.util.DyeColor;
 
 public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IInsulatedRedstoneConduit> implements IMessageHandler<PacketRedstoneConduitSignalColor, IMessage> {
 

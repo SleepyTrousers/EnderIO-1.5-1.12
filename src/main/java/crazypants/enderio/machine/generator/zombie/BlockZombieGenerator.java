@@ -1,68 +1,36 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
   public static BlockZombieGenerator create() {
-    
-    PacketHandler.INSTANCE.registerMessage(PacketZombieTank.class, PacketZombieTank.class, PacketHandler.nextID(), Side.CLIENT);
-    
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();
     return gen;
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.water);
+    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
   }
-  
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-  
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileZombieGenerator)) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
 
-    TileZombieGenerator gen = (TileZombieGenerator) te;
-    ItemStack item = entityPlayer.inventory.getCurrentItem();
-    if(item == null) {
-      return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-    }
-
-    //check for filled fluid containers and see if we can empty them into our tanks
-    FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(fluid != null) {
-      int filled = gen.fill(ForgeDirection.UP, fluid, false);
-      if(filled >= fluid.amount) {
-        gen.fill(ForgeDirection.UP, fluid, true);
-        if(!entityPlayer.capabilities.isCreativeMode) {
-          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-        }
-        return true;
-      }
-    }
-
-    return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-  }  
-  
   @Override
   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -116,19 +84,37 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     return "enderio:stirlingGenFrontOff";
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileZombieGenerator && ((TileZombieGenerator)te).isActive()) {
-     //see RenderGlobal.doSpawnParticle
-      for (int i = 0; i < 1; i++) {
-        float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-        float yOffset = 0.1f;
-        float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-        world.spawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
+
+    if(rand.nextInt(3) == 0) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+        for (int i = 0; i < 2; i++) {
+          float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
+          float yOffset = 0.1f;
+          float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
+
+          EntityFX fx = new BubbleFX(world, x + xOffset, y + yOffset, z + zOffset, 0, 0.5, 0);
+          Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+
+        }
+
+        if(Config.machineSoundsEnabled) {
+          float volume = (Config.machineSoundVolume * 0.045f);
+          world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.DOMAIN + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
+        }
       }
     }
-    
+  }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te != null && te instanceof TileZombieGenerator) {
+      tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " " + EnderIO.lang.localize("fluid.millibucket.abr"));
+    }
   }
 
 }

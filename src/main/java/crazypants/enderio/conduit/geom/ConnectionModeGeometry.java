@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.geom;
 
-import static crazypants.util.ForgeDirectionOffsets.*;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -9,14 +7,17 @@ import java.util.List;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
-import crazypants.render.VertexRotation;
-import crazypants.render.VertexTransform;
-import crazypants.render.VertexTransformComposite;
-import crazypants.render.VertexTranslation;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vertex;
+
+import com.enderio.core.api.client.render.VertexTransform;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.client.render.VertexTransformComposite;
+import com.enderio.core.client.render.VertexTranslation;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vertex;
+
+import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 
 public class ConnectionModeGeometry {
 
@@ -98,7 +99,7 @@ public class ConnectionModeGeometry {
 
   public static void renderModeConnector(ForgeDirection dir, Offset offset, IIcon tex, boolean tintSides) {
     List<Vertex> verts = VERTS.get(dir);
-    if(verts == null) {
+    if (verts == null) {
       return;
     }
 
@@ -111,19 +112,19 @@ public class ConnectionModeGeometry {
 
     Tessellator tes = Tessellator.instance;
     for (Vertex v : verts) {
-      if(tintSides) {
+      if (tintSides) {
         float cm = 1;
-        if(v.ny() > 0.1) {
+        if (v.ny() > 0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
-        } else if(v.ny() < -0.1) {
+        } else if (v.ny() < -0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
-        } else if(v.nx() > 0.1) {
+        } else if (v.nx() > 0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
-        } else if(v.nx() < -0.1) {
+        } else if (v.nx() < -0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
-        } else if(v.nz() > 0.1) {
+        } else if (v.nz() > 0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
-        } else if(v.nz() < -0.1) {
+        } else if (v.nz() < -0.1) {
           cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
         }
         tes.setColorOpaque_F(cm, cm, cm);

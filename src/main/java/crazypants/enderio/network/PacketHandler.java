@@ -1,5 +1,6 @@
 package crazypants.enderio.network;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -24,5 +25,9 @@ public class PacketHandler
 
     public static void sendToAllAround(IMessage message, TileEntity te) {
         sendToAllAround(message, te, 64);
+    }
+
+    public static void sendTo(IMessage message, EntityPlayerMP player) {
+      INSTANCE.sendTo(message, player);
     }
 }

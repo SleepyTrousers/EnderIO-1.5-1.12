@@ -1,38 +1,39 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.LinkedList;
+import crazypants.enderio.power.PerTickIntAverageCalculator;
+
 
 public class PowerTracker {
 
-  private float previousStorageLevel = -1;
+  private long previousStorageLevel = -1;
 
-  private final TickTracker recTracker = new TickTracker();
+  private final PerTickIntAverageCalculator recTracker = new PerTickIntAverageCalculator();
 
-  private final TickTracker sentTracker = new TickTracker();
+  private final PerTickIntAverageCalculator sentTracker = new PerTickIntAverageCalculator();
 
-  private float sentThisTick = 0;
+  private int sentThisTick = 0;
 
-  private float recievedThisTick = 0;
+  private int recievedThisTick = 0;
 
-  public void tickStart(float storedEnergy) {
-    double curStorage = storedEnergy;
+  public void tickStart(long storedEnergy) {
+    long curStorage = storedEnergy;
 
     if(previousStorageLevel > -1) {
-      double recieved = curStorage - previousStorageLevel;
+      long recieved = curStorage - previousStorageLevel;
       recieved = Math.max(0, recieved);
       recievedThisTick += recieved;
     }
   }
 
-  public void powerRecieved(float power) {
+  public void powerRecieved(int power) {
     recievedThisTick += power;
   }
 
-  public void powerSent(float power) {
+  public void powerSent(int power) {
     sentThisTick += power;
   }
 
-  public void tickEnd(float storedEnergy) {
+  public void tickEnd(long storedEnergy) {
     previousStorageLevel = storedEnergy;
     sentTracker.tick(sentThisTick);
     recTracker.tick(recievedThisTick);
@@ -40,60 +41,12 @@ public class PowerTracker {
     sentThisTick = 0;
   }
 
-  public float getAverageMjTickRecieved() {
-    return recTracker.getMJT();
+  public float getAverageRfTickRecieved() {
+    return recTracker.getAverage();
   }
 
-  public float getAverageMjTickSent() {
-    return sentTracker.getMJT();
-  }
-
-  private static class TickTracker {
-
-    private float lastSecondTotal = 0;
-    private int index = 0;
-    private LimitedQueue<Float> lastFiveSeconds = new LimitedQueue<Float>(5);
-
-    float getMJT() {
-      int numTicks = index + (lastFiveSeconds.size() * 20);
-      if(numTicks == 0) {
-        return 0;
-      }
-      float totalPower = lastSecondTotal;
-      for (Float fl : lastFiveSeconds) {
-        totalPower += fl;
-      }
-      return totalPower / numTicks;
-    }
-
-    void tick(float power) {
-      lastSecondTotal += power;
-      index++;
-      if(index == 20) {
-        lastFiveSeconds.add(lastSecondTotal);
-        lastSecondTotal = 0;
-        index = 0;
-      }
-    }
-
-  }
-
-  private static class LimitedQueue<E> extends LinkedList<E> {
-
-    private final int limit;
-
-    public LimitedQueue(int limit) {
-      this.limit = limit;
-    }
-
-    @Override
-    public boolean add(E o) {
-      super.add(o);
-      while (size() > limit) {
-        super.remove();
-      }
-      return true;
-    }
+  public float getAverageRfTickSent() {
+    return sentTracker.getAverage();
   }
 
 }

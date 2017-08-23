@@ -8,13 +8,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.painter.IPaintedBlock;
 
-public class BlockConduitFacade extends Block {
+public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
 
   public static BlockConduitFacade create() {
     BlockConduitFacade result = new BlockConduitFacade();
@@ -25,18 +26,13 @@ public class BlockConduitFacade extends Block {
   private Block blockOverride;
 
   private BlockConduitFacade() {
-    super(new Material(MapColor.stoneColor));
-    setHardness(0.5F);
+    super(ModObject.blockConduitFacade.unlocalisedName, null, new Material(MapColor.stoneColor));
     setStepSound(Block.soundTypeStone);
-    setBlockName(ModObject.blockConduitFacade.unlocalisedName);
     setCreativeTab(null);
   }
 
-  private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockConduitFacade.unlocalisedName);
-  }
-
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:conduitFacade");
   }

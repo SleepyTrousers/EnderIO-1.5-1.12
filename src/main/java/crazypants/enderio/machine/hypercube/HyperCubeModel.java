@@ -7,7 +7,7 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.RenderUtil;
+import com.enderio.core.client.render.RenderUtil;
 
 public class HyperCubeModel extends ModelBase implements IModel {
 

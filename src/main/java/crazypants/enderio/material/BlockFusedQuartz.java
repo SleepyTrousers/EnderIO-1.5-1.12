@@ -7,47 +7,87 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
 public class BlockFusedQuartz extends BlockEio {
 
   public static int renderId;
 
+  private final static Type[] metaMapping = new Type[16];
   public enum Type {
 
-    FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    GLASS("fusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem"),
-    ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
+    FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem", false, true, 0),
+    GLASS("fusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem", false, false, 0),
+    ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem", true, true, 0),
+    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame",
+        "enderio:fusedGlassItem", true, false, 0),
+    DARK_FUSED_QUARTZ("darkFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem", false, true, 255),
+    DARK_GLASS("darkFusedGlass", "enderio:fusedGlass", Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame", "enderio:fusedGlassItem", false, false, 255);
 
     final String unlocalisedName;
     final String blockIcon;
     final String frameIcon;
     final String itemIcon;
+    final boolean enlightened;
+    final boolean blastResistance;
+    final int lightOpacity;
+    int connectedTextureMask;
 
-    private Type(String unlocalisedName, String blockIcon, String frameIcon, String itemIcon) {
+    private Type(String unlocalisedName, String blockIcon, String frameIcon, String itemIcon, boolean enlightened, boolean blastResistance, int lightOpacity) {
       this.unlocalisedName = unlocalisedName;
       this.frameIcon = frameIcon;
       this.blockIcon = blockIcon;
       this.itemIcon = itemIcon;
+      this.enlightened = enlightened;
+      this.blastResistance = blastResistance;
+      this.lightOpacity = lightOpacity;
+      connectedTextureMask = Config.clearGlassConnectToFusedQuartz ? ~0 : (1 << ordinal());
+      metaMapping[this.ordinal()] = this;
     }
 
+    public boolean connectTo(int otherMeta) {
+      return (connectedTextureMask & (1 << otherMeta)) != 0;
+    }
+
+    void setConnectedTexture(Type other) {
+      connectedTextureMask |= 1 << other.ordinal();
+    }
+
+    public static Type byMeta(int meta) {
+      return metaMapping[meta] != null ? metaMapping[meta] : GLASS;
+    }
+  }
+
+  static {
+    Type.GLASS.setConnectedTexture(Type.ENLIGHTENED_GLASS);
+    Type.GLASS.setConnectedTexture(Type.DARK_GLASS);
+    Type.ENLIGHTENED_GLASS.setConnectedTexture(Type.GLASS);
+    Type.ENLIGHTENED_GLASS.setConnectedTexture(Type.DARK_GLASS);
+    Type.DARK_GLASS.setConnectedTexture(Type.GLASS);
+    Type.DARK_GLASS.setConnectedTexture(Type.ENLIGHTENED_GLASS);
+    Type.FUSED_QUARTZ.setConnectedTexture(Type.ENLIGHTENED_FUSED_QUARTZ);
+    Type.FUSED_QUARTZ.setConnectedTexture(Type.DARK_FUSED_QUARTZ);
+    Type.ENLIGHTENED_FUSED_QUARTZ.setConnectedTexture(Type.FUSED_QUARTZ);
+    Type.ENLIGHTENED_FUSED_QUARTZ.setConnectedTexture(Type.DARK_FUSED_QUARTZ);
+    Type.DARK_FUSED_QUARTZ.setConnectedTexture(Type.FUSED_QUARTZ);
+    Type.DARK_FUSED_QUARTZ.setConnectedTexture(Type.ENLIGHTENED_FUSED_QUARTZ);
   }
 
   public static BlockFusedQuartz create() {
@@ -76,8 +116,8 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     int meta = world.getBlockMetadata(x, y, z);
-    meta = MathHelper.clamp_int(meta, 0, 1);
-    if(meta == 0) {
+    Type type = Type.byMeta(meta);
+    if (type.blastResistance) {
       return 2000;
     } else {
       return super.getExplosionResistance(par1Entity);
@@ -114,7 +154,9 @@ public class BlockFusedQuartz extends BlockEio {
 
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-    return 0;
+    int meta = world.getBlockMetadata(x, y, z);
+    Type type = Type.byMeta(meta);
+    return type.lightOpacity;
   }
 
   @Override
@@ -124,10 +166,8 @@ public class BlockFusedQuartz extends BlockEio {
       return super.getLightValue(world, x, y, z);
     }
     int meta = world.getBlockMetadata(x, y, z);
-    if(meta > 1) {
-      return 15;
-    }
-    return super.getLightValue(world, x, y, z);
+    Type type = Type.byMeta(meta);
+    return type.enlightened ? 15 : super.getLightValue(world, x, y, z);
   }
 
   @Override
@@ -136,6 +176,7 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
@@ -143,9 +184,16 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-    Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
-    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+  @SideOnly(Side.CLIENT)
+  public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    Block block = world.getBlock(x, y, z);
+    int meta = world.getBlockMetadata(x, y, z);
+    if(block == this) {
+      BlockCoord here = new BlockCoord(x, y, z).getLocation(ForgeDirection.VALID_DIRECTIONS[side].getOpposite());
+      int myMeta = world.getBlockMetadata(here.x, here.y, here.z);
+      return !Type.byMeta(myMeta).connectTo(meta);
+    }
+    return true;
   }
 
   @Override
@@ -155,10 +203,19 @@ public class BlockFusedQuartz extends BlockEio {
 
   @Override
   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    if(side == ForgeDirection.UP) { //stop drips
+      return false;
+    }
     return true;
   }
 
   @Override
+  public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
+    return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
     //This little oddity is so the standard rendering used for items and breaking effects
     //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
@@ -177,56 +234,23 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int par1, int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, blockIcon.length - 1);
     return blockIcon[meta];
   }
 
   public IIcon getItemIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, itemsIcons.length - 1);
     return itemsIcons[meta];
   }
 
   public IIcon getDefaultFrameIcon(int meta) {
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    meta = MathHelper.clamp_int(meta, 0, frameIcons.length - 1);
     return frameIcons[meta];
   }
 
-  /**
-   * Remove the tile entity too.
-   */
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getTileEntity(x, y, z);
-
-      if(te instanceof TileEntityPaintedBlock) {
-        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
-
-        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlock(), tef.getSourceBlockMetadata());
-        if(itemStack != null) {
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
-
-    }
-
-    super.breakBlock(world, x, y, z, par5, par6);
-  }
-
-  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, Block sourceBlock, int sourceBlockMetadata) {
-    if(sourceBlock == null) {
-      return null;
-    }
-    ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
-    PainterUtil.setSourceBlock(result, sourceBlock, sourceBlockMetadata);
-    return result;
+  protected boolean shouldWrench(World world, int x, int y, int z, EntityPlayer entityPlayer, int side) {
+    return false;
   }
 
 }

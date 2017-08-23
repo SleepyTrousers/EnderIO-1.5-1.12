@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,12 +20,23 @@ public class ConduitNetworkTickHandler {
 
   private final List<TickListener> listeners = new ArrayList<TickListener>();
 
+  private final IdentityHashMap<AbstractConduitNetwork<?,?>, Boolean> networks =
+          new IdentityHashMap<AbstractConduitNetwork<?, ?>, Boolean>();
+
   public void addListener(TickListener listener) {
     listeners.add(listener);
   }
 
   public void removeListener(TickListener listener) {
     listeners.remove(listener);
+  }
+
+  public void registerNetwork(AbstractConduitNetwork<?,?> cn) {
+    networks.put(cn, Boolean.TRUE);
+  }
+
+  public void unregisterNetwork(AbstractConduitNetwork<?,?> cn) {
+    networks.remove(cn);
   }
 
   @SubscribeEvent
@@ -47,6 +59,9 @@ public class ConduitNetworkTickHandler {
       h.tickEnd(event);
     }
     listeners.clear();
+    for(AbstractConduitNetwork<?,?> cn : networks.keySet()) {
+      cn.doNetworkTick();
+    }
   }
 
 }

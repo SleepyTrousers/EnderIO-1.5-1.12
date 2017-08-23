@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.conduit.IConduit;
-import crazypants.render.BoundingBox;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
 
 public class ConduitGeometryUtil {
 

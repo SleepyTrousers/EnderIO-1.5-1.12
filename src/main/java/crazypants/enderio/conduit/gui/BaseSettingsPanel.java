@@ -8,16 +8,19 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.ColorUtil;
-import crazypants.util.Lang;
 
-public class BaseSettingsPanel implements ISettingsPanel {
+public class BaseSettingsPanel implements ITabPanel {
 
   static final int PREV_MODE_B = 327;
   static final int NEXT_MODE_B = 328;
@@ -27,8 +30,8 @@ public class BaseSettingsPanel implements ISettingsPanel {
   protected final IConduit con;
   protected final String typeName;
 
-  protected IconButtonEIO leftArrow;
-  protected IconButtonEIO rightArrow;
+  protected MultiIconButton leftArrow;
+  protected MultiIconButton rightArrow;
   protected String modeLabel;
 
   protected int left = 0;
@@ -46,18 +49,16 @@ public class BaseSettingsPanel implements ISettingsPanel {
     this.gui = gui;
     this.con = con;
 
-    modeLabel = Lang.localize("gui.conduit.ioMode");
+    modeLabel = EnderIO.lang.localize("gui.conduit.ioMode");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
     int y = 8;// + fr.FONT_HEIGHT;
 
-    leftArrow = new IconButtonEIO(gui, PREV_MODE_B, x, y, IconEIO.LEFT_ARROW);
-    leftArrow.setSize(8, 16);
+    leftArrow = MultiIconButton.createLeftArrowButton(gui, PREV_MODE_B, x, y);
 
     x += leftArrow.getWidth() + gap + getLongestModeStringWidth() + gap;
-    rightArrow = new IconButtonEIO(gui, NEXT_MODE_B, x, y, IconEIO.RIGHT_ARROW);
-    rightArrow.setSize(8, 16);
+    rightArrow = MultiIconButton.createRightArrowButton(gui, NEXT_MODE_B, x, y);
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
     customTop -= 16;
@@ -75,8 +76,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     leftArrow.onGuiInit();
     rightArrow.onGuiInit();
 
-    FontRenderer fr = gui.getFontRenderer();
-    connectionModeChanged(con.getConectionMode(gui.getDir()));
+    connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     initCustomOptions();
   }
@@ -88,12 +88,20 @@ public class BaseSettingsPanel implements ISettingsPanel {
   public void deactivate() {
   }
   
-  public void mouseClicked(int x, int y, int par3) {
-    
+  @Override
+  public void mouseClicked(int x, int y, int par3) {    
   }
 
   @Override
-  public IconEIO getIcon() {
+  public void keyTyped(char par1, int par2) {
+  }
+
+  @Override
+  public void updateScreen() {    
+  }
+
+  @Override
+  public IWidgetIcon getIcon() {
     return icon;
   }
 
@@ -102,12 +110,12 @@ public class BaseSettingsPanel implements ISettingsPanel {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
     }
   }
 
@@ -128,12 +136,13 @@ public class BaseSettingsPanel implements ISettingsPanel {
     int y = gui.getGuiTop() + 13;//customTop + 8;//gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
-    String modeString = con.getConectionMode(gui.getDir()).getLocalisedName();
+    String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);
-    IconEIO icon = new IconEIO(10, 60, 64, 20);
-    icon.renderIcon(x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    // TODO figure out what this should be
+//    IconEIO icon = new IconEIO(10, 48, 64, 16);
+//    icon.getMap().render(icon, x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;

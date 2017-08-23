@@ -5,10 +5,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 
-public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtractor {
+public interface IPowerConduit extends IConduit, IInternalPowerHandler, IExtractor {
 
   public static final String ICON_KEY = "enderio:powerConduit";
   public static final String ICON_KEY_INPUT = "enderio:powerConduitInput";
@@ -22,9 +22,10 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
 
   ICapacitor getCapacitor();
 
-  float getMaxEnergyExtracted(ForgeDirection dir);
+  int getMaxEnergyExtracted(ForgeDirection dir);
 
-  float getMaxEnergyRecieved(ForgeDirection dir);
+  @Override
+  int getMaxEnergyRecieved(ForgeDirection dir);
 
   IIcon getTextureForInputMode();
 
@@ -32,14 +33,8 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
 
   //called from NetworkPowerManager
   void onTick();
-
-  //mj
-  float getEnergyStored();
-
-  void setEnergyStored(float give);
-
+  
   boolean getConnectionsDirty();
 
-  double getMaxEnergyStored();
 
 }

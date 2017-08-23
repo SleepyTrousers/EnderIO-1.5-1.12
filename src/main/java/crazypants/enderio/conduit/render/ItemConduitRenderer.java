@@ -7,8 +7,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
 
 public class ItemConduitRenderer implements IItemRenderer {
 
@@ -33,15 +33,18 @@ public class ItemConduitRenderer implements IItemRenderer {
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
     RenderBlocks renderBlocks = (RenderBlocks) data[0];
     if(type == ItemRenderType.INVENTORY) {
+      GL11.glTranslatef(0, -0.1f, 0);
       renderToInventory(item, renderBlocks);
     } else if(type == ItemRenderType.EQUIPPED) {
       renderEquipped(item, renderBlocks);
     } else if(type == ItemRenderType.ENTITY) {
       renderEntity(item, renderBlocks);
     } else if(type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+      GL11.glTranslatef(0.3f, 0.2f, 0);
+      GL11.glScalef(1.25f, 1.25f, 1.25f);
       renderEntity(item, renderBlocks);
     } else {
-      System.out.println("FacadeRenderer.renderItem: Unsupported render type");
+      System.out.println("ItemConduitRenderer.renderItem: Unsupported render type");
     }
   }
 

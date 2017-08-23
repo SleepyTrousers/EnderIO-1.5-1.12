@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 /**
  * A MachineRecipe implementation must be stateless, always returning the same
@@ -33,7 +33,12 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  float getEnergyRequired(MachineRecipeInput... inputs);
+  int getEnergyRequired(MachineRecipeInput... inputs);
+
+  /**
+   * Returns the how bonus should be handled for this input
+   **/
+  RecipeBonusType getBonusType(MachineRecipeInput... inputs);
 
   /**
    * Only returns true if output can be generated using these inputs. If
@@ -68,7 +73,7 @@ public interface IMachineRecipe {
    * @param output
    * @return
    */
-  float getExperianceForOutput(ItemStack output);
+  float getExperienceForOutput(ItemStack output);
 
   /**
    * Should return true if the specified parameter is can be used in this
@@ -93,13 +98,6 @@ public interface IMachineRecipe {
    * @return
    */
   List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs);
-
-  /**
-   * Returns all possible outputs from the recipe.
-   * 
-   * @return
-   */
-  List<IEnderIoRecipe> getAllRecipes();
 
   public static class ResultStack {
 

@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.RenderUtil;
+import com.enderio.core.client.render.RenderUtil;
 
 public class HyperCubeModel2 extends ModelBase implements IModel {
 

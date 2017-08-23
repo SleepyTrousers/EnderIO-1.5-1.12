@@ -3,6 +3,7 @@ package crazypants.enderio.machine;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -13,27 +14,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.InventoryWrapper;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
-import crazypants.vecmath.VecmathUtil;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.config.Config;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable,
-    IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, 
+  IRedstoneConnectable, IIoConfigurable {
 
   public short facing;
 
@@ -42,17 +40,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   protected boolean forceClientUpdate = true;
   protected boolean lastActive;
   protected int ticksSinceActiveChanged = 0;
-  protected float lastSyncPowerStored = -1;
-
-  // Power
-  protected Capacitors capacitorType;
-
-  protected float storedEnergy;
 
   protected ItemStack[] inventory;
   protected final SlotDefinition slotDefinition;
-
-  protected PowerHandler powerHandler;
 
   protected RedstoneControlMode redstoneControlMode;
 
@@ -62,17 +52,28 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   protected Map<ForgeDirection, IoMode> faceModes;
 
-  private int[] allSlots;
+  private final int[] allSlots;
 
   protected boolean notifyNeighbours = false;
 
-  public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
+  @SideOnly(Side.CLIENT)
+  private MachineSound sound;
+
+  private final ResourceLocation soundRes;
+
+  public boolean isDirty = false;
+
+  public static ResourceLocation getSoundFor(String sound) {
+    return sound == null ? null : new ResourceLocation(EnderIO.DOMAIN + ":" + sound);
+  }
+
+  public AbstractMachineEntity(SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
     facing = 3;
-    capacitorType = Capacitors.BASIC_CAPACITOR;
-    powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
+
     inventory = new ItemStack[slotDefinition.getNumSlots()];
     redstoneControlMode = RedstoneControlMode.IGNORE;
+    soundRes = getSoundFor(getSoundName());
 
     allSlots = new int[slotDefinition.getNumSlots()];
     for (int i = 0; i < allSlots.length; i++) {
@@ -107,6 +108,18 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     faceModes.put(faceHit, mode);
     forceClientUpdate = true;
     notifyNeighbours = true;
+
+    updateBlock();
+  }
+
+  @Override
+  public void clearAllIoModes() {
+    if(faceModes != null) {
+      faceModes = null;
+      forceClientUpdate = true;
+      notifyNeighbours = true;
+      updateBlock();
+    }
   }
 
   @Override
@@ -119,11 +132,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       return IoMode.NONE;
     }
     return res;
-  }
-
-  @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(this);
   }
 
   public SlotDefinition getSlotDefinition() {
@@ -167,10 +175,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
 
-  public AbstractMachineEntity(SlotDefinition slotDefinition) {
-    this(slotDefinition, Type.MACHINE);
-  }
-
   @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
@@ -180,10 +184,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
+    updateBlock();
   }
 
   public short getFacing() {
     return facing;
+  }
+  
+  public ForgeDirection getFacingDir() {
+    return ForgeDirection.getOrientation(facing);
   }
 
   public void setFacing(short facing) {
@@ -192,125 +201,50 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public abstract boolean isActive();
 
-  public abstract float getProgress();
-
-  public int getProgressScaled(int scale) {
-    int result = (int) (getProgress() * scale);
-    return result;
+  public String getSoundName() {
+    return null;
   }
 
-  // --- Power
-  // --------------------------------------------------------------------------------------
-
-  public boolean hasPower() {
-    return storedEnergy > 0;
+  public boolean hasSound() {
+    return getSoundName() != null;
   }
 
-  public ICapacitor getCapacitor() {
-    return capacitorType.capacitor;
+  public float getVolume() {
+    return Config.machineSoundVolume;
   }
 
-  public int getEnergyStoredScaled(int scale) {
-    // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / getCapacitor().getMaxEnergyStored())), 0, scale);
+  public float getPitch() {
+    return 1.0f;
+  }
+  
+  protected boolean shouldPlaySound() {
+    return isActive() && !isInvalid();
   }
 
-  public float getEnergyStored() {
-    return storedEnergy;
-  }
-
-  public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
-    PowerHandlerUtil.configure(powerHandler, capacitorType.capacitor);
-    forceClientUpdate = true;
-  }
-
-  @Override
-  public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    if(isSideDisabled(side.ordinal())) {
-      return null;
+  @SideOnly(Side.CLIENT)
+  private void updateSound() {
+    if(Config.machineSoundsEnabled && hasSound()) {
+      if(shouldPlaySound()) {
+        if(sound == null) {
+          sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
+          FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
+        }
+      } else if(sound != null) {
+        sound.endPlaying();
+        sound = null;
+      }
     }
-    return powerHandler.getPowerReceiver();
   }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
-
-  public float getPowerUsePerTick() {
-    return getCapacitor().getMaxEnergyExtracted();
-  }
-
-  // RF Power
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(isSideDisabled(from.ordinal())) {
-      return 0;
-    }
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return !isSideDisabled(from.ordinal());
-  }
-
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getEnergyStored() * 10);
-  }
-
-  @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
-  }
-
-  public int getMaxEnergyStoredMJ() {
-    return (int) powerHandler.getMaxEnergyStored();
-  }
-
+  
   // --- Process Loop
   // --------------------------------------------------------------------------
 
   @Override
-  public void updateEntity() {
-
-    if(worldObj == null) { // sanity check
-      return;
-    }
-
+  public void doUpdate() {    
     if(worldObj.isRemote) {
-      // check if the block on the client needs to update its texture
-      if(isActive() != lastActive) {
-        ticksSinceActiveChanged++;
-        if(ticksSinceActiveChanged > 20 || isActive()) {
-          ticksSinceActiveChanged = 0;
-          lastActive = isActive();
-          forceClientUpdate = false;
-          worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
-      }
-
-      if(forceClientUpdate) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        forceClientUpdate = false;
-      }
+      updateEntityClient();
       return;
-
     } // else is server, do all logic only on the server
-
-    updateStoredEnergyFromPowerHandler();
 
     boolean requiresClientSync = forceClientUpdate;
     boolean prevRedCheck = redstoneCheckPassed;
@@ -319,7 +253,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       redstoneStateDirty = false;
     }
 
-    if(worldObj.getTotalWorldTime() % 5 == 0) {
+    if(shouldDoWorkThisTick(5)) {
       requiresClientSync |= doSideIo();
     }
 
@@ -327,26 +261,45 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    boolean powerChanged = (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
-
     if(requiresClientSync) {
-      lastSyncPowerStored = storedEnergy;
+
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
       markDirty();
-    } else if(powerChanged) {
-      lastSyncPowerStored = storedEnergy;
-      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
 
     if(notifyNeighbours) {
-      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
     }
 
+  }
+
+  protected void updateEntityClient() {
+    // check if the block on the client needs to update its texture
+    if(isActive() != lastActive) {
+      ticksSinceActiveChanged++;
+      if(ticksSinceActiveChanged > 20 || isActive()) {
+        ticksSinceActiveChanged = 0;
+        lastActive = isActive();
+        forceClientUpdate = true;
+      }
+    }
+
+    if(hasSound()) {
+      updateSound();
+    }
+
+    if(forceClientUpdate) {
+      if (worldObj.rand.nextInt(1024) <= (isDirty ? 256 : 0)) {
+        isDirty = !isDirty;
+      }
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      forceClientUpdate = false;
+    }
   }
 
   protected boolean doSideIo() {
@@ -373,16 +326,21 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(slotDefinition.getNumOutputSlots() <= 0) {
       return false;
     }
-    if(worldObj.getTotalWorldTime() % 20 != 0) {
+    if(!shouldDoWorkThisTick(20)) {
       return false;
     }
 
     BlockCoord loc = getLocation().getLocation(dir);
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+
+    return doPush(dir, te, slotDefinition.minOutputSlot, slotDefinition.maxOutputSlot);
+  }
+  
+  protected boolean doPush(ForgeDirection dir, TileEntity te, int minSlot, int maxSlot) {
     if(te == null) {
       return false;
     }
-    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+    for (int i = minSlot; i <= maxSlot; i++) {
       ItemStack item = inventory[i];
       if(item != null) {
         int num = ItemUtil.doInsertItem(te, item, dir.getOpposite());
@@ -404,13 +362,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(slotDefinition.getNumInputSlots() <= 0) {
       return false;
     }
-    if(worldObj.getTotalWorldTime() % 20 != 0) {
+    if(!shouldDoWorkThisTick(20)) {
       return false;
     }
 
     boolean hasSpace = false;
     for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < inventory[slot].getMaxStackSize();
+      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
     }
     if(!hasSpace) {
       return false;
@@ -445,12 +403,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   protected boolean doPull(int inputSlot, ISidedInventory target, int[] targetSlots, ForgeDirection side) {
-    ItemStack curStack = inventory[inputSlot];
     for (int i = 0; i < targetSlots.length; i++) {
       int tSlot = targetSlots[i];
       ItemStack targetStack = target.getStackInSlot(tSlot);
       if(targetStack != null && target.canExtractItem(i, targetStack, side.getOpposite().ordinal())) {
-        int res = ItemUtil.doInsertItem(this, targetStack, side.getOpposite());
+        int res = ItemUtil.doInsertItem(this, targetStack, side);
         if(res > 0) {
           targetStack = targetStack.copy();
           targetStack.stackSize -= res;
@@ -465,32 +422,32 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return false;
   }
 
-  protected void updateStoredEnergyFromPowerHandler() {
-    storedEnergy = (float) powerHandler.getEnergyStored();
-  }
-
   protected abstract boolean processTasks(boolean redstoneCheckPassed);
 
   // ---- Tile Entity
   // ------------------------------------------------------------------------------
 
   @Override
+  public void invalidate() {
+    super.invalidate();
+    if(worldObj.isRemote) {
+      updateSound();
+    }
+  }
+
+  @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
-    facing = nbtRoot.getShort("facing");
+    setFacing(nbtRoot.getShort("facing"));
     redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
     forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
     readCommon(nbtRoot);
   }
 
+  /**
+   * Read state common to both block and item
+   */
   public void readCommon(NBTTagCompound nbtRoot) {
-
-    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
-
-    float storedEnergy = nbtRoot.getFloat("storedEnergy");
-    powerHandler.setEnergy(storedEnergy);
-    // For the client as provider is not saved to NBT
-    this.storedEnergy = storedEnergy;
 
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
@@ -544,9 +501,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     writeCommon(nbtRoot);
   }
 
+  /**
+   * Write state common to both block and item
+   */
   public void writeCommon(NBTTagCompound nbtRoot) {
-    nbtRoot.setFloat("storedEnergy", storedEnergy);
-    nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
 
     // write inventory list
     NBTTagList itemList = new NBTTagList();
@@ -587,9 +545,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(stack.hasDisplayName()) {
       name = stack.getDisplayName();
     } else {
-      name = Lang.localize(stack.getUnlocalizedName() + ".name", false);
+      name = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
     }
-    name += " " + Lang.localize("machine.tooltip.configured");
+    name += " " + EnderIO.lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);
   }
 
@@ -598,18 +556,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
-    if(worldObj == null) {
-      return true;
-    }
-    if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
-      return false;
-    }
-    return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+    return canPlayerAccess(player);
   }
 
   @Override
   public int getSizeInventory() {
     return slotDefinition.getNumSlots();
+  }
+
+  public int getInventoryStackLimit(int slot) {
+    return getInventoryStackLimit();
   }
 
   @Override
@@ -633,7 +589,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
     if(fromStack.stackSize <= amount) {
       inventory[fromSlot] = null;
-      updateCapacitorFromSlot();
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
@@ -652,25 +607,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       inventory[slot] = contents.copy();
     }
 
-    if(contents != null && contents.stackSize > getInventoryStackLimit()) {
-      contents.stackSize = getInventoryStackLimit();
-    }
-
-    if(slotDefinition.isUpgradeSlot(slot)) {
-      updateCapacitorFromSlot();
-    }
-  }
-
-  private void updateCapacitorFromSlot() {
-    if(slotDefinition.getNumUpgradeSlots() <= 0) {
-      setCapacitor(Capacitors.BASIC_CAPACITOR);
-      return;
-    }
-    ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
-      setCapacitor(Capacitors.BASIC_CAPACITOR);
-    } else {
-      setCapacitor(Capacitors.values()[contents.getItemDamage()]);
+    if(contents != null && contents.stackSize > getInventoryStackLimit(slot)) {
+      contents.stackSize = getInventoryStackLimit(slot);
     }
   }
 
@@ -706,11 +644,18 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   @Override
-  public boolean canInsertItem(int slot, ItemStack var2, int side) {
-    if(isSideDisabled(side)) {
+  public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+    if(isSideDisabled(side) || !slotDefinition.isInputSlot(slot)) {
       return false;
     }
-    return slotDefinition.isInputSlot(slot) && isMachineItemValidForSlot(slot, var2);
+    ItemStack existing = inventory[slot];
+    if(existing != null) {
+      // no point in checking the recipes if an item is already in the slot
+      // worst case we get more of the wrong item - but that doesn't change anything
+      return existing.isStackable() && existing.isItemEqual(itemstack);
+    }
+    // no need to call isItemValidForSlot as upgrade slots are not input slots
+    return isMachineItemValidForSlot(slot, itemstack);
   }
 
   @Override
@@ -721,6 +666,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(!slotDefinition.isOutputSlot(slot)) {
       return false;
     }
+    return canExtractItem(slot, itemstack);
+  }
+
+  protected boolean canExtractItem(int slot, ItemStack itemstack) {
     if(inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
       return false;
     }
@@ -739,5 +688,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
   }
-
+  
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
+  }
 }

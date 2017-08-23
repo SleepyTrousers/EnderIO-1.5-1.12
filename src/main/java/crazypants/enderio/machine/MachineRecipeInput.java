@@ -27,12 +27,12 @@ public class MachineRecipeInput {
   public MachineRecipeInput(int slotNumber, ItemStack item) {
     this.slotNumber = slotNumber;
     this.item = item;
-    this.fluid = null;
+    fluid = null;
   }
 
   public MachineRecipeInput(int slotNumber, FluidStack fluid) {
     this.slotNumber = slotNumber;
-    this.item = null;
+    item = null;
     this.fluid = fluid;
   }
 
@@ -40,6 +40,14 @@ public class MachineRecipeInput {
     this.slotNumber = slotNumber;
     this.item = item;
     this.fluid = fluid;
+  }
+
+  public MachineRecipeInput copy() {
+    if(isFluid()) {
+      return new MachineRecipeInput(slotNumber, fluid.copy());
+    } else {
+      return new MachineRecipeInput(slotNumber, item == null ? (ItemStack) null : item.copy());
+    }
   }
 
   public static MachineRecipeInput readFromNBT(NBTTagCompound root) {

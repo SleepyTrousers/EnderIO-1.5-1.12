@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,9 +9,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -25,16 +26,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedStair extends BlockStairs implements ITileEntityProvider {
+public class BlockPaintedStair extends BlockStairs implements ITileEntityProvider, IPaintedBlock {
 
   public static BlockPaintedStair create() {
     BlockPaintedStair result = new BlockPaintedStair();
@@ -63,6 +58,13 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
     ItemStack result = new ItemStack(EnderIO.blockPaintedStair, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
+  }
+
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @SideOnly(Side.CLIENT)
@@ -98,7 +100,7 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -150,6 +152,7 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPaintedBlock) {
@@ -235,10 +238,7 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
     return 0; // need to do custom dropping to maintain source metadata
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
-
-    public PainterTemplate() {
-    }
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     @Override
     public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
@@ -258,15 +258,6 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
       return blk instanceof BlockStairs;
     }
 
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockStairs>(new ItemStack(Blocks.oak_stairs), BlockStairs.class, new ItemStack(Blocks.stone_stairs),
-          new ItemStack(Blocks.stone_stairs));
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockPaintedStair, 1, 0));
-
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
   }
 
 }

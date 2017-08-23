@@ -12,4 +12,6 @@ public interface IItemFilterGui {
   
   void renderCustomOptions(int top, float par1, int par2, int par3);
 
+  void mouseClicked(int x, int y, int par3);
+
 }

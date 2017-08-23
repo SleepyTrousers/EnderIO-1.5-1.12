@@ -9,6 +9,7 @@ public interface ILiquidConduit extends IConduit, IFluidHandler, IExtractor {
 
   boolean canOutputToDir(ForgeDirection dir);
 
-  boolean isExtractingFromDir(ForgeDirection dir);
+  boolean canExtractFromDir(ForgeDirection dir);
 
+  boolean canInputToDir(ForgeDirection dir);
 }

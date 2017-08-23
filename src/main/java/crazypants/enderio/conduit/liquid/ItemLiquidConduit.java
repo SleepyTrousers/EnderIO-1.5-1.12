@@ -4,16 +4,18 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
-import crazypants.util.Lang;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
@@ -26,12 +28,12 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   public static ItemLiquidConduit create() {
     ItemLiquidConduit result = new ItemLiquidConduit();
-    result.init(subtypes);
+    result.init();
     return result;
   }
 
   protected ItemLiquidConduit() {
-    super(ModObject.itemLiquidConduit);
+    super(ModObject.itemLiquidConduit, subtypes);
   }
 
   @Override
@@ -40,7 +42,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   }
 
   @Override
-  public IConduit createConduit(ItemStack stack) {
+  public IConduit createConduit(ItemStack stack, EntityPlayer player) {
     if(stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
     } else if(stack.getItemDamage() == 2) {
@@ -76,16 +78,21 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       extractRate = Config.enderFluidConduitExtractRate;
       maxIo = Config.enderFluidConduitMaxIoRate;
     }
-    String mbt = " " + Lang.localize("fluid.millibucketsTick");
-    list.add(Lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
-    list.add(Lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
+    String mbt = " " + EnderIO.lang.localize("fluid.millibucketsTick");
+    list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
+    list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
     if(itemstack.getItemDamage() == 0) {
-      TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
+    } else if(itemstack.getItemDamage() == 2) {
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
     }
 
   }
 
-
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
+  }
 
 }

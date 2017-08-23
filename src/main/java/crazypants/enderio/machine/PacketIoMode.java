@@ -4,6 +4,9 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -19,10 +22,20 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
   public PacketIoMode() {
   }
 
+  public PacketIoMode(IIoConfigurable cont) {
+    BlockCoord location = cont.getLocation();
+    this.x = location.x;
+    this.y = location.y;
+    this.z = location.z;
+    this.mode = IoMode.NONE;
+    this.face = ForgeDirection.UNKNOWN;
+  }
+
   public PacketIoMode(IIoConfigurable cont, ForgeDirection face) {
-    this.x = cont.getLocation().x;
-    this.y = cont.getLocation().y;
-    this.z = cont.getLocation().z;
+    BlockCoord location = cont.getLocation();
+    this.x = location.x;
+    this.y = location.y;
+    this.z = location.z;
     this.face = face;
     mode = cont.getIoMode(face);
   }
@@ -52,8 +65,11 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof IIoConfigurable) {
       IIoConfigurable me = (IIoConfigurable) te;
-      me.setIoMode(message.face, message.mode);
-      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
+      if(message.face == ForgeDirection.UNKNOWN) {
+        me.clearAllIoModes();
+      } else {
+        me.setIoMode(message.face, message.mode);
+      }
     }
     return null;
   }
