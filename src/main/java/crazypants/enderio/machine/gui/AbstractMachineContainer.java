@@ -13,6 +13,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.invpanel.SlotCraftingWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -121,7 +122,7 @@ public abstract class AbstractMachineContainer<T extends AbstractInventoryMachin
 
   @Override
   protected void retrySlotClick(int slotId, int clickedButton, boolean mode, EntityPlayer playerIn) {
-    if (!hasAlreadyJustSuccessfullyTransferedAStack) {
+    if (!hasAlreadyJustSuccessfullyTransferedAStack || getSlot(slotId) instanceof SlotCraftingWrapper) {
       this.slotClick(slotId, clickedButton, ClickType.QUICK_MOVE, playerIn);
     } else {
       hasAlreadyJustSuccessfullyTransferedAStack = false;
