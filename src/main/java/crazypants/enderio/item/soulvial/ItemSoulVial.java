@@ -171,11 +171,18 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     if (!isCreative) {
       entity.setDead();
       if (entity.isDead) {
-        item.shrink(1);
-        if (Prep.isInvalid(item)) {
+        // Forge Bug: if the current itemstack is left empty,
+        // forge replaces the hotbar item with EMPTY itself.
+        // So we do not shrink the stack when it is 1.
+        if (item.getCount() > 1) {
+          item.shrink(1);
+          // Since this stack still exists, add the new vial to the first location, or drop
+          if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
+            player.dropItem(capturedMobVessel, false);
+          }
+        } else {
+          // Otherwise, just replace the stack
           player.setHeldItem(hand, capturedMobVessel);
-        } else if (!player.inventory.addItemStackToInventory(capturedMobVessel)) {
-          player.dropItem(capturedMobVessel, false);
         }
         player.inventoryContainer.detectAndSendChanges();
         return true;
