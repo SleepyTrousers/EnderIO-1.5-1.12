@@ -24,47 +24,58 @@ public class EndermanSkullRenderer extends ManagedTESR<TileEndermanSkull> {
   protected void renderTileEntity(@Nonnull TileEndermanSkull te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
 
     GlStateManager.translate(0.5f, 0, 0.5f);
-    GlStateManager.rotate(getYaw(te), 0, 1, 0);
+    GlStateManager.rotate(getYaw(te, partialTicks), 0, 1, 0);
     GlStateManager.translate(-0.5f, 0, -0.5f);
 
     RenderUtil.renderBlockModel(te.getWorld(), te.getPos(), true);
   }
 
-  float getYaw(TileEndermanSkull te) {
+  float getYaw(TileEndermanSkull te, float partialTicks) {
+    EntityPlayerSP player = Minecraft.getMinecraft().player;
+    double d = te.getPos().distanceSqToCenter(player.posX, player.posY, player.posZ);
+    
+    double speed = d < 3 * 3 ? 2.5 : d < 6 * 6 ? 1.5 : .5;
+    float partialYaw = (float) (speed * partialTicks);
+
+    Angle yaw = new Angle(360, te.getYaw());
+
+    if (d < 10 * 10) {
+      double d0 = player.posX - (te.getPos().getX() + 0.5F);
+      double d1 = player.posZ - (te.getPos().getZ() + 0.5F);
+      Angle target = new Angle(360, MathHelper.atan2(d1, d0) * 180.0 / Math.PI + 90);
+
+      Angle diff = new Angle(180, yaw.get() - target.get());
+
+      if (diff.get() > 1 || diff.get() < -1) {
+        if (diff.get() > 0) {
+          yaw.add(-Math.min(diff.get(), speed));
+        } else {
+          yaw.add(Math.min(-diff.get(), speed));
+          partialYaw = -partialYaw;
+        }
+      } else {
+        partialYaw = 0;
+      }
+    } else {
+      yaw.add(1);
+      partialYaw = partialTicks;
+    }
+    
     if (te.lastTick != EnderIO.proxy.getTickCount()) {
       te.lastTick = EnderIO.proxy.getTickCount();
       if (te.lookingAt > 0) {
         te.lookingAt--;
       }
 
-      Angle yaw = new Angle(360, te.getYaw());
-
-      EntityPlayerSP player = Minecraft.getMinecraft().player;
-      double d = te.getPos().distanceSqToCenter(player.posX, player.posY, player.posZ);
-      if (d < 10 * 10) {
-        double speed = d < 3 * 3 ? 2.5 : d < 6 * 6 ? 1.5 : .5;
-
-        double d0 = player.posX - (te.getPos().getX() + 0.5F);
-        double d1 = player.posZ - (te.getPos().getZ() + 0.5F);
-        Angle target = new Angle(360, MathHelper.atan2(d1, d0) * 180.0 / Math.PI + 90);
-
-        Angle diff = new Angle(180, yaw.get() - target.get());
-
-        if (diff.get() > 1 || diff.get() < -1) {
-          if (diff.get() > 0) {
-            yaw.add(-Math.min(diff.get(), speed));
-          } else {
-            yaw.add(Math.min(-diff.get(), speed));
-          }
-        }
-      } else {
-        yaw.add(1);
-      }
-
       te.setYaw((float) yaw.get());
     }
 
-    return -te.getYaw() + (te.lookingAt > 0 ? (((te.lastTick & 1) == 0) ? 1 : -1) : 0);
+    float ret = -te.getYaw() + partialYaw;
+    if (te.lookingAt > 0) {
+      float intensity = Math.min(3, te.lookingAt / 3.0f);
+      ret += (((te.lastTick & 1) == 0) ? intensity : -intensity) * (partialTicks * 2); 
+    }
+    return ret;
   }
 
   private static class Angle {
