@@ -52,9 +52,6 @@ public final class BlockFluidEio {
 
     @Override
     public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entity) {
-      if (!world.isRemote) {
-        entity.setFire(50);
-      }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
     }
 
@@ -71,6 +68,12 @@ public final class BlockFluidEio {
     @Override
     public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
       return 60;
+    }
+    
+    @Override
+    public Boolean isEntityInsideMaterial(@Nonnull IBlockAccess world, @Nonnull BlockPos blockpos, @Nonnull IBlockState iblockstate, @Nonnull Entity entity,
+        double yToTest, @Nonnull Material materialIn, boolean testingHead) {
+      return materialIn == Material.LAVA || materialIn == this.blockMaterial;
     }
 
   }

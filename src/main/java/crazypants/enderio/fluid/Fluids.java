@@ -89,7 +89,7 @@ public enum Fluids {
   FIRE_WATER("fire_water", Material.LAVA, 0x8a490f) {
     @Override
     protected Fluid init(@Nonnull Fluid fluid) {
-      return fluid.setDensity(900).setViscosity(1000);
+      return fluid.setDensity(900).setViscosity(1000).setTemperature(2000);
     }
 
     @Override
