@@ -433,9 +433,9 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate implements
 
       if (!isSilent(worldIn, pos)) {
         if (!isOn && wasOn) {
-          worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F, false);
+          worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
         } else if (isOn && !wasOn) {
-          worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F, false);
+          worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
         }
       }
     }
