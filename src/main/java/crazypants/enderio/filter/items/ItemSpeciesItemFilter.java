@@ -8,18 +8,18 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import crazypants.enderio.filter.filters.SpeciesItemFilter;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,20 +27,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers  {
 
-  public static ItemSpeciesItemFilter create() {
-    ItemSpeciesItemFilter result = new ItemSpeciesItemFilter();
-    result.init();
-    return result;
+  public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
+    return new ItemSpeciesItemFilter(modObject);
   }
 
-  protected ItemSpeciesItemFilter() {
+  protected ItemSpeciesItemFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemSpeciesItemFilter.getUnlocalisedName());
-    setRegistryName(ModObject.itemSpeciesItemFilter.getUnlocalisedName());
-    setHasSubtypes(false);
+    modObject.apply(this);
+    setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
+
 
   protected void init() {
     GameRegistry.register(this);
@@ -54,11 +52,10 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
     }
     return filter;
   }
-
+  
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers() {                  
-    ClientUtil.regRenderer(this, 0,"filterUpgradeSpecies");
+  public void registerRenderers(IModObject modObject) {                
+    ClientUtil.regRenderer(this, 0,"filter_upgrade_species");
   }
 
   @Override
@@ -68,9 +65,8 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void getSubItems(@Nonnull Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
-    par3List.add(new ItemStack(this, 1, 0));
+  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    subItems.add(new ItemStack(this, 1, 0));
   }
 
   @Override

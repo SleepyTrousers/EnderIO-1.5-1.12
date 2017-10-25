@@ -1,23 +1,16 @@
 package crazypants.enderio.filter.filters;
 
-import java.util.List;
-
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
+import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.item.IItemFilterGui;
-import crazypants.enderio.conduit.gui.item.PowerItemFilterGui;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.filter.IItemFilter;
+import crazypants.enderio.filter.INetworkedInventory;
 import crazypants.enderio.power.PowerHandlerUtil;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  *
@@ -45,7 +38,7 @@ public class PowerItemFilter implements IItemFilter {
   int level = MAX_LEVEL;
 
   @Override
-  public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
+  public boolean doesItemPassFilter(INetworkedInventory inv, ItemStack item) {
     IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
     if(chargable != null ) {
       int max = chargable.getMaxEnergyStored();
@@ -65,12 +58,6 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item) {
-    boolean res = sticky && doesItemPassFilter(inv, item);
-    return res;
-  }
-
-  @Override
   public boolean isValid() {
     return true;
   }
@@ -85,7 +72,7 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
+  public void createGhostSlots(NNList<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
   }
 
   @Override
@@ -109,11 +96,11 @@ public class PowerItemFilter implements IItemFilter {
     this.level = level;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-    return new PowerItemFilterGui(gui, itemConduit, isInput);
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+//    return new PowerItemFilterGui(gui, itemConduit, isInput);
+//  }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {

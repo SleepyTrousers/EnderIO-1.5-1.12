@@ -2,17 +2,18 @@ package crazypants.enderio.filter.items;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import crazypants.enderio.filter.filters.ModItemFilter;
+import crazypants.enderio.init.IModObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,16 +24,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
-  public static ItemModItemFilter create() {
-    ItemModItemFilter result = new ItemModItemFilter();
-    result.init();
-    return result;
+  public static ItemModItemFilter create(@Nonnull IModObject modObject) {
+    return new ItemModItemFilter(modObject);
   }
 
-  protected ItemModItemFilter() {
+  protected ItemModItemFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemModItemFilter.getUnlocalisedName());
-    setRegistryName(ModObject.itemModItemFilter.getUnlocalisedName());
+    modObject.apply(this);
+    setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }

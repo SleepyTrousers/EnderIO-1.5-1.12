@@ -1,22 +1,24 @@
 package crazypants.enderio.filter.recipes;
 
-import crazypants.enderio.conduit.item.FilterRegister;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
-public class CopyFilterRecipe implements IRecipe{
+public class CopyFilterRecipe implements IRecipe {
   
   static {
     RecipeSorter.register("EnderIO:copyFilter", CopyFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
 
-  private ItemStack output;
+  private @Nonnull ItemStack output = ItemStack.EMPTY;
   
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
@@ -25,7 +27,7 @@ public class CopyFilterRecipe implements IRecipe{
     ItemStack filterInput = null;
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null && checkStack.getItem() instanceof IItemFilterUpgrade) {
+      if (checkStack.getItem() instanceof IItemFilterUpgrade) {
         if(FilterRegistry.isFilterSet(checkStack)) {
           if(filterInput != null) {
             return false;
@@ -44,7 +46,7 @@ public class CopyFilterRecipe implements IRecipe{
       return false;
     }
     output = filterInput.copy();
-    output.stackSize = blankCount + 1;
+    output.setCount(blankCount + 1);
     return true;
 
   }
@@ -69,8 +71,8 @@ public class CopyFilterRecipe implements IRecipe{
   }
 
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    return new ItemStack[inv.getSizeInventory()];
+  public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
   }
 
 }

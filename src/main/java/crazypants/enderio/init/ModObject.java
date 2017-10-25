@@ -35,6 +35,10 @@ import crazypants.enderio.block.skull.BlockEndermanSkull;
 import crazypants.enderio.capacitor.ItemCapacitor;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.filter.items.ItemBasicItemFilter;
+import crazypants.enderio.filter.items.ItemExistingItemFilter;
+import crazypants.enderio.filter.items.ItemModItemFilter;
+import crazypants.enderio.filter.items.ItemPowerItemFilter;
+import crazypants.enderio.filter.items.ItemSpeciesItemFilter;
 import crazypants.enderio.item.coldfire.ItemColdFireIgniter;
 import crazypants.enderio.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.item.coordselector.ItemCoordSelector;
@@ -138,6 +142,10 @@ public enum ModObject implements IModObject.Registerable {
   blockEndermanSkull(BlockEndermanSkull.class),
   itemEnderFood(ItemEnderFood.class),
   itemItemFilter(ItemBasicItemFilter.class),
+  itemExistingItemFilter(ItemExistingItemFilter.class),
+  itemModItemFilter(ItemModItemFilter.class),
+  itemPowerItemFilter(ItemPowerItemFilter.class),
+  ItemSpeciesItemFilter(ItemSpeciesItemFilter.class),
 
   blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
   blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),

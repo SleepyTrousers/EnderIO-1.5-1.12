@@ -1,14 +1,15 @@
 package crazypants.enderio.filter.filters;
 
+import java.util.Arrays;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.item.IItemFilterGui;
-import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
-import crazypants.enderio.conduit.gui.item.SpeciesItemFilterGui;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.NetworkedInventory;
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.filter.IItemFilter;
+import crazypants.enderio.filter.INetworkedInventory;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IIndividual;
@@ -22,13 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
 
 public class SpeciesItemFilter implements IInventory, IItemFilter {
 
@@ -40,7 +34,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   boolean sticky = DEFAULT_STICKY;
   SpeciesMode speciesMode = DEFAULT_SPECIES_MODE;
 
-  private ItemStack[] items;
+  private NNList<ItemStack> items;
   private String[] primarySpeciesUids;
   private String[] secondarySpeciesUids;
 
@@ -58,18 +52,13 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   }
 
   private SpeciesItemFilter(int numItems) {
-    items = new ItemStack[numItems];
+    items = new NNList<>(numItems, ItemStack.EMPTY);
     primarySpeciesUids = new String[numItems];
     secondarySpeciesUids = new String[numItems];
   }
 
   @Override
-  public boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item) {
-    return isSticky() && itemMatched(item);
-  }
-
-  @Override
-  public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
+  public boolean doesItemPassFilter(INetworkedInventory inv, ItemStack item) {
     return doesItemPassFilter(item);
   }
 
@@ -100,8 +89,8 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     String primarySpeciesUid = genome.getPrimary().getUID();
     String secondarySpeciesUid = genome.getSecondary().getUID();
 
-    for (int slot = 0; slot < items.length; slot++) {
-      ItemStack slotItem = items[slot];
+    for (int slot = 0; slot < items.size(); slot++) {
+      ItemStack slotItem = items.get(slot);
       if (slotItem != null && slotItem.getItem() == item.getItem()) {
         switch (speciesMode) {
           case BOTH:
@@ -177,14 +166,14 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
 
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-    ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-    SpeciesItemFilterGui itemFilterGui = new SpeciesItemFilterGui(gui, cont, !isInput);
-    itemFilterGui.createFilterSlots();
-    return itemFilterGui;
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+//    ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
+//    SpeciesItemFilterGui itemFilterGui = new SpeciesItemFilterGui(gui, cont, !isInput);
+//    itemFilterGui.createFilterSlots();
+//    return itemFilterGui;
+//  }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
@@ -193,12 +182,12 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     speciesMode = SpeciesMode.values()[nbtRoot.getByte("speciesMode") & 255];
 
     int numItems = 10;
-    items = new ItemStack[numItems];
+    items = new NNList<>(numItems, ItemStack.EMPTY);
     primarySpeciesUids = new String[numItems];
     secondarySpeciesUids = new String[numItems];
     for (int i = 0; i < numItems; i++) {
       NBTBase tag = nbtRoot.getTag("item" + i);
-      ItemStack itemStack = null;
+      ItemStack itemStack = ItemStack.EMPTY;
       if (tag instanceof NBTTagCompound) {
         itemStack = new ItemStack((NBTTagCompound) tag);
       }
@@ -206,29 +195,27 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     }
   }
 
-  @Nullable
-  private ItemStack setItem(int slot, @Nullable ItemStack itemStack) {
-    if (slot < 0 || slot >= items.length) {
-      return null;
+  @Nonnull
+  private ItemStack setItem(int slot, @Nonnull ItemStack itemStack) {
+    if (slot < 0 || slot >= items.size()) {
+      return ItemStack.EMPTY;
     }
 
-    ItemStack prevStack = items[slot];
-    if (prevStack != null) {
+    ItemStack prevStack = items.get(slot);
+    if (!prevStack.isEmpty()) {
       this.primarySpeciesUids[slot] = null;
       this.secondarySpeciesUids[slot] = null;
     }
 
-    items[slot] = itemStack;
+    items.set(slot, itemStack);
 
-    if (itemStack != null) {
-      ISpeciesRoot speciesRoot = AlleleManager.alleleRegistry.getSpeciesRoot(itemStack);
-      if (speciesRoot != null) {
-        IIndividual member = speciesRoot.getMember(itemStack);
-        if (member != null) {
-          IGenome genome = member.getGenome();
-          primarySpeciesUids[slot] = genome.getPrimary().getUID();
-          secondarySpeciesUids[slot] = genome.getSecondary().getUID();
-        }
+    ISpeciesRoot speciesRoot = AlleleManager.alleleRegistry.getSpeciesRoot(itemStack);
+    if (speciesRoot != null) {
+      IIndividual member = speciesRoot.getMember(itemStack);
+      if (member != null) {
+        IGenome genome = member.getGenome();
+        primarySpeciesUids[slot] = genome.getPrimary().getUID();
+        secondarySpeciesUids[slot] = genome.getSecondary().getUID();
       }
     }
 
@@ -250,47 +237,39 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
 
   @Override
   public int getSizeInventory() {
-    return items.length;
+    return items.size();
   }
 
   @Override
   public ItemStack getStackInSlot(int i) {
-    if (i < 0 || i >= items.length) {
-      return null;
+    if (i < 0 || i >= items.size()) {
+      return ItemStack.EMPTY;
     }
-    return items[i];
+    return items.get(i);
   }
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
-    ItemStack item = setItem(fromSlot, null);
-    if (item == null) {
-      return null;
-    }
-    item.stackSize = 0;
-    return item;
+    setItem(fromSlot, ItemStack.EMPTY);
+    return ItemStack.EMPTY;
   }
 
   @Override
-  public void setInventorySlotContents(int i, @Nullable ItemStack itemstack) {
-    if (itemstack != null) {
-      ItemStack copy = itemstack.copy();
-      copy.stackSize = 0;
-      setItem(i, copy);
-    } else {
-      setItem(i, null);
-    }
+  public void setInventorySlotContents(int i, ItemStack itemstack) {
+    ItemStack copy = itemstack.copy();
+    copy.setCount(0);
+    setItem(i, copy);
   }
 
   @Override
   public ItemStack removeStackFromSlot(int index) {
-    return setItem(index, null);
+    return setItem(index, ItemStack.EMPTY);
   }
 
   @Override
   public void clear() {
-    for (int i = 0; i < items.length; i++) {
-      setItem(i, null);
+    for (int i = 0; i < items.size(); i++) {
+      setItem(i, ItemStack.EMPTY);
     }
   }
 
@@ -315,7 +294,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public boolean isUseableByPlayer(@Nonnull EntityPlayer entityplayer) {
+  public boolean isUsableByPlayer(EntityPlayer player) { 
     return true;
   }
 
@@ -333,7 +312,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(List<GhostSlot> slots, final int xOffset, final int yOffset, Runnable cb) {
+  public void createGhostSlots(NNList<GhostSlot> slots, final int xOffset, final int yOffset, Runnable cb) {
     int index = 0;
     int numRows = 2;
     for (int row = 0; row < numRows; ++row) {
@@ -359,7 +338,7 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
 
   @Override
   public String toString() {
-    return "SpeciesItemFilter [speciesMode=" + speciesMode + ", items=" + Arrays.toString(items) + "]";
+    return "SpeciesItemFilter [speciesMode=" + speciesMode + ", items=" + items + "]";
   }
 
   class ItemFilterGhostSlot extends GhostSlot {
@@ -375,12 +354,12 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
 
     @Override
     public void putStack(ItemStack stack) {
-      if (stack != null && AlleleManager.alleleRegistry.getSpeciesRoot(stack) != null) {
+      if (AlleleManager.alleleRegistry.getSpeciesRoot(stack) != null) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
         setItem(slot, stack);
       } else {
-        setItem(slot, null);
+        setItem(slot, ItemStack.EMPTY);
       }
 
       cb.run();
@@ -412,5 +391,8 @@ public class SpeciesItemFilter implements IInventory, IItemFilter {
     return 0;
   }
 
-
+  @Override
+  public boolean isEmpty() {
+    return items.isEmpty() || items.stream().allMatch(ItemStack::isEmpty);
+  }
 }

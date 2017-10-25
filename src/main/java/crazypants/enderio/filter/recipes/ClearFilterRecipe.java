@@ -1,12 +1,14 @@
 package crazypants.enderio.filter.recipes;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -20,28 +22,28 @@ public class ClearFilterRecipe implements IRecipe{
     RecipeSorter.register("EnderIO:clearFilter", ClearFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
   
-  private ItemStack output;
+  private @Nonnull ItemStack output = ItemStack.EMPTY;
   
   @Override
   public boolean matches(InventoryCrafting inv, World world) {
     int count = 0;
-    ItemStack input = null;
+    ItemStack input = ItemStack.EMPTY;
     
     for (int i = 0; i < inv.getSizeInventory(); i++) {
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack != null && checkStack.getItem() instanceof IItemFilterUpgrade) {
+      if (checkStack.getItem() instanceof IItemFilterUpgrade) {
         count++;
       }
-      input = (count == 1 && checkStack != null) ? checkStack : input;
+      input = (count == 1 && !checkStack.isEmpty()) ? checkStack : input;
     }
     
     if (count == 1 && FilterRegistry.isFilterSet(input)) {
       ItemStack out = input.copy();
-      out.stackSize = 1;
+      out.setCount(1);
       out.setTagCompound(null);
       this.output = out;
     } else {
-      this.output = null;
+      this.output = ItemStack.EMPTY;
     }
     
     return count == 1 && output != null;
@@ -64,14 +66,14 @@ public class ClearFilterRecipe implements IRecipe{
   
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (this.output != null && ItemStack.areItemStacksEqual(output, event.getItemStack())) {
+    if (ItemStack.areItemStacksEqual(output, event.getItemStack())) {
       event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
   }
   
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    return new ItemStack[inv.getSizeInventory()];
+  public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
   }
 
 }

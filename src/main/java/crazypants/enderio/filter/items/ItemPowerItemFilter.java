@@ -1,12 +1,14 @@
 package crazypants.enderio.filter.items;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import crazypants.enderio.filter.filters.PowerItemFilter;
+import crazypants.enderio.init.IModObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -17,20 +19,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  */
 public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
-  public static ItemPowerItemFilter create() {
-    ItemPowerItemFilter result = new ItemPowerItemFilter();
-    result.init();
-    return result;
+  public static ItemPowerItemFilter create(@Nonnull IModObject modObject) {
+    return new ItemPowerItemFilter(modObject);
   }
 
-  protected ItemPowerItemFilter() {
+  protected ItemPowerItemFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemPowerItemFilter.getUnlocalisedName());
-    setRegistryName(ModObject.itemPowerItemFilter.getUnlocalisedName());
+    modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
   }
+
 
   protected void init() {
     GameRegistry.register(this);
