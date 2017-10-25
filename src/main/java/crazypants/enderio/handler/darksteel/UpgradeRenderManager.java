@@ -6,6 +6,7 @@ import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.item.darksteel.upgrade.elytra.CapeFilterLayer;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.entity.layers.LayerCape;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -22,6 +24,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldExc
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class UpgradeRenderManager {
 
   // no WeakHashSet in Java...
