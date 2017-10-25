@@ -82,7 +82,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       Config.darkSteelSwordPoweredSpeedBonus, 0);
 
   public static boolean isEquipped(EntityPlayer player) {
-    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelSword.getItem();
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
