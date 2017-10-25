@@ -168,8 +168,12 @@ public enum EnumPressurePlateType implements IStringSerializable {
     return new Predicate<Entity>() {
       @Override
       public boolean apply(@Nullable Entity entity) {
-        if (capturedMob == null || entity == null || !entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate()
-            || ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).isSpectator())) {
+        if (entity == null) {
+          return false;
+        }
+        if (!entity.isEntityAlive() || entity.doesEntityNotTriggerPressurePlate() || 
+            ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).isSpectator()) ||
+            (capturedMob != null && !capturedMob.isSameType(entity))) {
           return false;
         }
         if (searchClass.isInstance(entity) && whiteClasses.isEmpty()) {
