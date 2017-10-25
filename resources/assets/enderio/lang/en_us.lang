@@ -1599,3 +1599,8 @@ fluid.glowstone=Glowgas
 fluid.redstone=Molten Redstone
 fluid.ender=Liquidfied Ender Pearls
 
+itemGroup.enderio.main=Ender IO
+itemGroup.enderio.items=Ender IO Items
+itemGroup.enderio.materials=Ender IO Materials
+itemGroup.enderio.machines=Ender IO Machines
+itemGroup.enderio.invalid=Invalid
