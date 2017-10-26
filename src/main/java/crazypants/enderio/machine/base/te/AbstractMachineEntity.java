@@ -353,7 +353,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   }
 
   @Override
-  final public @Nonnull String getMachineName() {
+  public @Nonnull String getMachineName() {
     return getBlockType().getUnlocalizedName();
   }
 
