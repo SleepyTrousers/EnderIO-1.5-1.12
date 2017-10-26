@@ -19,6 +19,7 @@ import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.modes.IoMode;
@@ -27,7 +28,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 
-public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> extends GuiContainerBaseEIO {
+public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBaseEIO {
 
   public static final @Nonnull Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
   public static final @Nonnull Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
@@ -108,19 +109,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
     }
   }
 
-  public void renderSlotHighlights(IoMode mode) {
-    SlotDefinition slotDef = tileEntity.getSlotDefinition();
-
-    for (Slot invSlot : inventorySlots.inventorySlots) {
-      if (invSlot.inventory == tileEntity) {
-        if ((mode == IoMode.PULL || mode == IoMode.PUSH_PULL) && slotDef.isInputSlot(invSlot.getSlotIndex())) {
-          renderSlotHighlight(invSlot, PULL_COLOR);
-        } else if ((mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) && slotDef.isOutputSlot(invSlot.getSlotIndex())) {
-          renderSlotHighlight(invSlot, PUSH_COLOR);
-        }
-      }
-    }
-  }
+  public abstract void renderSlotHighlights(IoMode mode);
 
   protected void renderSlotHighlight(int slot, @Nonnull Vector4f col) {
     Slot invSlot = inventorySlots.inventorySlots.get(slot);

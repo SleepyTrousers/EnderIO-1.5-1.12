@@ -22,9 +22,9 @@ import net.minecraftforge.items.IItemHandler;
 public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEntity {
 
   @Store
-  private final @Nonnull EnderInventory inventory = new EnderInventory();
-  private final @Nonnull EnderInventory inventoryDelegate;
-  private final @Nonnull View upgradeSlots, inputSlots, outputSlots;
+  protected final @Nonnull EnderInventory inventory = new EnderInventory();
+  protected final @Nonnull EnderInventory inventoryDelegate;
+  protected final @Nonnull View upgradeSlots, inputSlots, outputSlots;
 
   protected AbstractCapabilityMachineEntity() {
     this(null);
