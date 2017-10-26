@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
+import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -163,42 +166,52 @@ public class ModObjectRegistry {
       }
     }
   }
+  
+  private static RuntimeException throwCreationError(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nullable Object ex) {
+    String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
+    Log.error(str + (ex instanceof Exception ? " Exception: " : " Object: ") + Objects.toString(ex));
+    if (ex instanceof Exception) {
+      throw new RuntimeException(str, (Exception) ex);
+    } else {
+      throw new RuntimeException(str);
+    }
+  }
+  
+  private static Object createObject(@Nonnull IModObject.Registerable mo, @Nonnull String methodName) {
+    Object obj;
+    try {
+      obj = mo.getClazz().getDeclaredMethod(methodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { mo });
+    } catch (NoSuchMethodException e) {
+      try {
+        obj = mo.getClazz().getDeclaredMethod(methodName).invoke(null);
+      } catch (Exception e2) {
+        throw throwCreationError(mo, methodName, e2);
+      }
+    } catch (Exception e) {
+      throw throwCreationError(mo, methodName, e);
+    }
+    return obj;
+  }
 
   private static void createBlock(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nonnull Register<Block> event) {
-    Object obj = null;
-    try {
-      obj = mo.getClazz().getDeclaredMethod(blockMethodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { mo });
-    } catch (Throwable e) {
-      String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
-      Log.error(str + " Exception: " + e);
-      throw new RuntimeException(str, e);
-    }
+    Object obj = createObject(mo, blockMethodName);
+
     if (obj instanceof Block) {
       mo.setBlock((Block) obj);
       event.getRegistry().register((Block) obj);
     } else {
-      String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
-      Log.error(str + " Object: " + obj);
-      throw new RuntimeException(str);
+      throwCreationError(mo, blockMethodName, obj);
     }
   }
 
   private static void createItem(@Nonnull IModObject.Registerable mo, @Nonnull String itemMethodName, @Nonnull Register<Item> event) {
-    Object obj = null;
-    try {
-      obj = mo.getClazz().getDeclaredMethod(itemMethodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { mo });
-    } catch (Throwable e) {
-      String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + itemMethodName;
-      Log.error(str + " Exception: " + e);
-      throw new RuntimeException(str, e);
-    }
+    Object obj = createObject(mo, itemMethodName);
+
     if (obj instanceof Item) {
       mo.setItem((Item) obj);
       event.getRegistry().register((Item) obj);
     } else {
-      String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + itemMethodName;
-      Log.error(str + " Object: " + obj);
-      throw new RuntimeException(str);
+      throwCreationError(mo, itemMethodName, obj);
     }
   }
 
