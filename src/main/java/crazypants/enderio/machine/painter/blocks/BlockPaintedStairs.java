@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
@@ -8,6 +9,7 @@ import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.paint.render.PaintRegistry;
 import crazypants.enderio.paint.render.UVLock;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -35,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -245,7 +248,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);    
+    IBlockState stdOverlay = ModObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "stairs", paintSource, new UVLock(null));
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "stairs", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION4);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
@@ -255,7 +258,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
@@ -289,7 +292,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

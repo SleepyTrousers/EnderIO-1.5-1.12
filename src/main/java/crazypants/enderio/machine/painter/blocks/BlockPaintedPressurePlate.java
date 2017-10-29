@@ -4,6 +4,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.machine.painter.recipe.PressurePlatePainterTemplate;
@@ -11,6 +12,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -56,7 +58,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import static crazypants.enderio.machine.MachineObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
@@ -418,7 +419,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
     if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
-      IBlockState stdOverlay = MachineObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+      IBlockState stdOverlay = ModObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
       IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
       list.add(model2);
     }
@@ -540,7 +541,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   public List<IBlockState> mapBlockRender(IBlockStateWrapper state, IBlockAccess world, BlockPos pos, BlockRenderLayer blockLayer,
       QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer) && (paintSource == null || paintSource.getBlock() != blockFusedQuartz.getBlock())) {
+    if (PainterUtil2.canRenderInLayer(paintSource, blockLayer) && (paintSource == null || paintSource.getBlock() != ModObject.blockFusedQuartz.getBlock())) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;

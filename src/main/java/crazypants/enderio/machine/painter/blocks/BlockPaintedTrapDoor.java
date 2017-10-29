@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.IModObject;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
@@ -9,6 +9,7 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
 import crazypants.enderio.paint.render.PaintHelper;
 import crazypants.enderio.paint.render.PaintRegistry;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -35,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -74,19 +76,18 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
     BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(MachineObject.blockPaintedDarkSteelTrapdoor, Material.IRON, true);
     result.init();
     MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
-        new BasicPainterTemplate<BlockPaintedTrapDoor>(result, MachineObject.blockDarkSteelTrapdoor.getBlock()));
+        new BasicPainterTemplate<BlockPaintedTrapDoor>(result, ModObject.blockDarkSteelTrapdoor.getBlock()));
     return result;
   }
 
-  protected BlockPaintedTrapDoor(IModObject modObject, Material materialIn, boolean isBlastResistant) {
+  protected BlockPaintedTrapDoor(MachineObject modObject, Material materialIn, boolean isBlastResistant) {
     super(modObject, materialIn, isBlastResistant);
     setCreativeTab(null);
   }
 
-  @Override
-  protected void init() {
+  private void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, modObject.getUnlocalisedName()));
+    GameRegistry.register(new BlockItemPaintedBlock(this, getUnlocalizedName()));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("trapdoor_bottom", new ResourceLocation("minecraft", "block/wooden_trapdoor_bottom"), PaintRegistry.PaintMode.ALL_TEXTURES);
     PaintRegistry.registerModel("trapdoor_top", new ResourceLocation("minecraft", "block/wooden_trapdoor_top"), PaintRegistry.PaintMode.ALL_TEXTURES);
@@ -227,7 +228,7 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(Block block, ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBlockState stdOverlay = BlockMachineBase.block.getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+    IBlockState stdOverlay = ModObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
 
     IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "trapdoor_bottom", paintSource, null);
     IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "trapdoor_bottom", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION3);
@@ -238,13 +239,13 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

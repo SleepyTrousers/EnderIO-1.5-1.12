@@ -4,6 +4,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PaintTooltipUtil;
 import crazypants.enderio.paint.PainterUtil2;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;

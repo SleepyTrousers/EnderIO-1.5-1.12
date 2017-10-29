@@ -2,13 +2,16 @@ package crazypants.enderio.machine.painter.recipe;
 
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+import static crazypants.enderio.recipe.MachineRecipeInput.getInputForSlot;
 
 public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 

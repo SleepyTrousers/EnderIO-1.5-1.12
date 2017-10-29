@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter.recipe;
 
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.paint.PaintTooltipUtil;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.util.Prep;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

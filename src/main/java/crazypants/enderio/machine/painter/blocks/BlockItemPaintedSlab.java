@@ -58,10 +58,11 @@ public class BlockItemPaintedSlab extends ItemBlock {
   }
 
   @Override
-  public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand,  EnumFacing side, float hitX, float hitY, float hitZ) {    
+  public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    ItemStack stack = player.getHeldItem(hand);
     if (stack.getCount() == 0) {
       return EnumActionResult.FAIL;
-    } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
+    } else if (!player.canPlayerEdit(pos.offset(side), side, stack)) {
       return EnumActionResult.FAIL;
     } else {
       IBlockState iblockstate = worldIn.getBlockState(pos);
@@ -70,15 +71,17 @@ public class BlockItemPaintedSlab extends ItemBlock {
         BlockSlab.EnumBlockHalf blockslab$enumblockhalf = iblockstate.getValue(BlockSlab.HALF);
 
         if ((side == EnumFacing.UP && blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN
-            && blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.TOP)) {
+                && blockslab$enumblockhalf == BlockSlab.EnumBlockHalf.TOP)) {
           tryPlace(stack, worldIn, pos);
           return EnumActionResult.SUCCESS;
         }
       }
 
-      return this.tryPlace(stack, worldIn, pos.offset(side)) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+      return this.tryPlace(stack, worldIn, pos.offset(side)) ? EnumActionResult.SUCCESS : super.onItemUse(player, worldIn, pos, hand, side, hitX, hitY, hitZ);
     }
   }
+
+
 
   private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos) {
     IBlockState iblockstate = worldIn.getBlockState(pos);
@@ -100,7 +103,7 @@ public class BlockItemPaintedSlab extends ItemBlock {
         }
         worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS,
             (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F, true);
-        --stack.getCount();
+        stack.shrink(1);
       }
 
       return true;
