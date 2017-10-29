@@ -13,7 +13,7 @@ public class SoulBinderSentientRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderSentientRecipe instance = new SoulBinderSentientRecipe();
 
   private SoulBinderSentientRecipe() {
-    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", new ResourceLocation("minecraft:witch"), new ResourceLocation("enderzoo:WitherWitch"));
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", new ResourceLocation("witch"), new ResourceLocation("enderzoo","WitherWitch"));
   }
 
   @Override
