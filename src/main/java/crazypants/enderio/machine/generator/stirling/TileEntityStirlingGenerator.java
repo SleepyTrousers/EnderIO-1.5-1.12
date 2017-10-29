@@ -1,13 +1,16 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.MachineObject;
+
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
-import crazypants.enderio.capability.LegacyStirlingWrapper;
-import crazypants.enderio.capacitor.DefaultCapacitorData;
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -15,19 +18,15 @@ import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 @Storable
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -46,7 +45,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   private PowerDistributor powerDis;
 
   public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0), null, STIRLING_POWER_BUFFER, STIRLING_POWER_GEN);
+    super(new SlotDefinition(1, 0), null, CapacitorKey.LEGACY_ENERGY_BUFFER, CapacitorKey.LEGACY_ENERGY_INTAKE);
   }
 
   @Override
@@ -55,19 +54,14 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public @Nonnull String getName() {
-    return "Stirling Generator";
-  }
-
-  @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return TileEntityFurnace.isItemFuel(itemstack);
   }
 
-  @Override
-  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
-    return new int[] { 0 };
-  }
+//  @Override
+//  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
+//    return new int[] { 0 };
+//  }
 
   @Override
   public boolean canInsertItem(int i, ItemStack itemstack, EnumFacing j) {
@@ -108,8 +102,8 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   @Override
-  public void onNeighborBlockChange(Block blockId) {
-    super.onNeighborBlockChange(blockId);
+  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+    super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (powerDis != null) {
       powerDis.neighboursChanged();
     }
@@ -148,7 +142,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
                 inventory[0] = containedItem;
               } else {
                 decrStackSize(0, 1);
-                world.spawnEntityInWorld(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
+                world.spawnEntity(new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, containedItem));
               }
             } else {
               decrStackSize(0, 1);
@@ -181,12 +175,13 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return false;
   }
 
+  // TODO 
   public static float getEnergyMultiplier(ICapacitorData capacitorType) {
-    return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return 1;//STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
   public static float getBurnTimeMultiplier(ICapacitorData capacitorType) {
-    return STIRLING_POWER_TIME.getFloat(capacitorType);
+    return 1;//STIRLING_POWER_TIME.getFloat(capacitorType);
   }
 
   public float getBurnTimeMultiplier() {
@@ -205,19 +200,4 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(Capability<T> capability, EnumFacing facing1) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return (T) new LegacyStirlingWrapper(this, facing1);
-    }
-    return super.getCapability(capability, facing1);
-  }
-
 }
