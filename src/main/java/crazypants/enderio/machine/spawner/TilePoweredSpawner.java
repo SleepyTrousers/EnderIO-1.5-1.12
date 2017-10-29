@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.spawner;
 
-import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -12,10 +14,12 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.task.PoweredTask;
@@ -35,6 +39,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -53,7 +58,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   private boolean sendNotification = false;
 
   public TilePoweredSpawner() {
-    super(new SlotDefinition(1, 1, 1), SPAWNER_POWER_INTAKE, SPAWNER_POWER_BUFFER, SPAWNER_POWER_USE);
+    super(new SlotDefinition(1, 1, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   public boolean isSpawnMode() {
@@ -86,7 +91,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1)) || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toGenericStack(MachineObject.itemSoulVial.getItem(), 1, 1);
+        ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItem(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }
@@ -119,11 +124,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemStack.isEmpty() || isSpawnMode) {
+    if (itemstack.isEmpty() || isSpawnMode) {
       return false;
     }
     if (slotDefinition.isInputSlot(i)) {
-      return itemstack.getItem() == itemSoulVessel.getItem() && !CapturedMob.containsSoul(itemstack);
+      return itemstack.getItem() == ModObject.itemSoulVial.getItem() && !CapturedMob.containsSoul(itemstack);
     }
     return false;
   }
@@ -219,7 +224,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     } else {
       ticksDelay = Config.poweredSpawnerMaxDelayTicks - ((Config.poweredSpawnerMaxDelayTicks - Config.poweredSpawnerMinDelayTicks) / 2);
     }
-    ticksDelay /= SPAWNER_SPEEDUP.get(getCapacitorData());
+    ticksDelay /= (float)AbstractBlockObelisk.DUMMY;
     int powerPerTick = getPowerUsePerTick();
     res.setRequiredEnergy(powerPerTick * ticksDelay);
     return res;
@@ -274,7 +279,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       entity.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0F, 0.0F);
 
       if (canSpawnEntity(entityliving)) {
-        world.spawnEntityInWorld(entityliving);
+        world.spawnEntity(entityliving);
         world.playEvent(2004, getPos(), 0);
         entityliving.spawnExplosionParticle();
         final Entity ridingEntity = entity.getRidingEntity();
@@ -343,7 +348,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return false;
   }
 
-  public String getEntityName() {
+  public ResourceLocation getEntityName() {
     return capturedMob != null ? capturedMob.getEntityName() : null;
   }
 

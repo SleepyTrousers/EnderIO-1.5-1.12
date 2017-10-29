@@ -76,14 +76,14 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     ((ContainerPoweredSpawner) inventorySlots).setSlotVisibility(!spawnMode);
 
     if(spawnMode) {
-      getGhostSlots().clear();
+      getGhostSlotHandler().getGhostSlots().clear();
       header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
       progressTooltipRect.x = 80;
       progressTooltipRect.y = 34;
       progressTooltipRect.width = 14;
       progressTooltipRect.height = 14;
     } else {
-      ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlots());
+      ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
       header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
       progressTooltipRect.x = 52;
       progressTooltipRect.y = 40;

@@ -1,8 +1,6 @@
 package crazypants.enderio.machine.spawner;
 
 import static crazypants.enderio.machine.MachineObject.blockPoweredSpawner;
-import static crazypants.enderio.machine.MachineObject.itemBrokenSpawner;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.render.RenderMappers;
@@ -37,7 +35,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,6 +42,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -113,7 +111,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  private final Map<BlockCoord, ItemStack> dropCache = new HashMap<BlockCoord, ItemStack>();
+  private final Map<BlockPos, ItemStack> dropCache = new HashMap<>();
 
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
@@ -139,37 +137,37 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           TileEntityMobSpawner spawner = (TileEntityMobSpawner) tile;
           MobSpawnerBaseLogic logic = spawner.getSpawnerBaseLogic();
           if(logic != null) {
-            String entityName = getEntityName(logic);
+            ResourceLocation entityName = getEntityName(logic);
             if(entityName != null && !isBlackListed(entityName)) {
-              SkeletonType type = null;
-              if(CapturedMob.SKELETON_ENTITY_NAME.equals(entityName)) {
-                type = SkeletonType.NORMAL;
-                Biome biome = tile.getWorld().getBiomeForCoordsBody(tile.getPos());
-                if(BiomeDictionary.isBiomeOfType(biome, Type.NETHER)) {
-                  type = SkeletonType.WITHER;
-                } else if(BiomeDictionary.isBiomeOfType(biome, Type.SNOWY)) {
-                  if(Math.random() > 0.2) {
-                    type = SkeletonType.STRAY;
-                  }
-                }
-              }
-              final CapturedMob capturedMob = CapturedMob.create(entityName, type);
+//              SkeletonType type = null;
+//              if(CapturedMob.SKELETON_ENTITY_NAME.equals(entityName)) {
+//                type = SkeletonType.NORMAL;
+//                Biome biome = tile.getWorld().getBiomeForCoordsBody(tile.getPos());
+//                if(BiomeDictionary.isBiomeOfType(biome, Type.NETHER)) {
+//                  type = SkeletonType.WITHER;
+//                } else if(BiomeDictionary.isBiomeOfType(biome, Type.SNOWY)) {
+//                  if(Math.random() > 0.2) {
+//                    type = SkeletonType.STRAY;
+//                  }
+//                }
+//              } The skeleton stuff might be gone
+              final CapturedMob capturedMob = CapturedMob.create(entityName);
               if (capturedMob != null) {
-                ItemStack drop = capturedMob.toStack(itemBrokenSpawner.getItem(), 0, 1);
-                dropCache.put(new BlockCoord(evt.getPos()), drop);
+                ItemStack drop = capturedMob.toStack(ModObject.itemBrokenSpawner.getItem(), 0, 1);
+                dropCache.put(evt.getPos(), drop);
 
                 for (int i = (int) (Math.random() * 7); i > 0; i--) {
                   setSpawnDelay(logic);
                   logic.updateSpawner();
                 }
               } else {
-                dropCache.put(new BlockCoord(evt.getPos()), null);
+                dropCache.put(evt.getPos(), null);
               }
             }
           }
         }
       } else {
-        dropCache.put(new BlockCoord(evt.getPos()), null);
+        dropCache.put(evt.getPos(), null);
       }
     }
   }
@@ -177,7 +175,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SubscribeEvent
   public void onHarvestDropsEvent(BlockEvent.HarvestDropsEvent evt) {
     if (!evt.isCanceled() && evt.getState().getBlock() instanceof BlockMobSpawner) {
-      BlockCoord bc = new BlockCoord(evt.getPos());
+      BlockPos bc = evt.getPos();
       if (dropCache.containsKey(bc)) {
         ItemStack stack = dropCache.get(bc);
         if (stack != null) {
@@ -196,11 +194,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                 // Bingo!
                 MobSpawnerBaseLogic logic = spawner.getSpawnerBaseLogic();
                 if (logic != null) {
-                  String entityName = getEntityName(logic);
+                  ResourceLocation entityName = getEntityName(logic);
                   if (entityName != null && !isBlackListed(entityName)) {
-                    final CapturedMob capturedMob = CapturedMob.create(entityName, null);
+                    final CapturedMob capturedMob = CapturedMob.create(entityName);
                     if (capturedMob != null) {
-                      evt.getDrops().add(capturedMob.toStack(itemBrokenSpawner.getItem(), 0, 1));
+                      evt.getDrops().add(capturedMob.toStack(ModObject.itemBrokenSpawner.getItem(), 0, 1));
                     }
                   }
                 }
@@ -214,10 +212,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  private String getEntityName(MobSpawnerBaseLogic logic) {      
+  private ResourceLocation getEntityName(MobSpawnerBaseLogic logic) {
     if(getEntNameMethod != null) {
       try {
-        return (String)getEntNameMethod.invoke(logic, new Object[0]);        
+        return (ResourceLocation) getEntNameMethod.invoke(logic, new Object[0]);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -247,7 +245,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     if (evt.getLeft() == null || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(blockPoweredSpawner.getBlock())) {
       return;
     }
-    if (evt.getRight() == null || evt.getRight().getCount() != 1 || evt.getRight().getItem() != itemBrokenSpawner.getItem()) {
+    if (evt.getRight() == null || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItem()) {
       return;
     }
 
@@ -291,7 +289,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  public static boolean isBlackListed(String entityId) {
+  public static boolean isBlackListed(ResourceLocation entityId) {
     return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }
 
@@ -346,32 +344,32 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
 
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-    if (tileEntity instanceof TilePoweredSpawner) {
-      CapturedMob capturedMob = ((TilePoweredSpawner) tileEntity).getEntity();
-      if (capturedMob != null) {
-        tooltip.add(capturedMob.getDisplayName());
-      }
-    }
-  }
-
-  @Override
-  public int getDefaultDisplayMask(World world, int x, int y, int z) {
-    return IWailaInfoProvider.BIT_DETAILED;
-  }
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//    TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
+//    if (tileEntity instanceof TilePoweredSpawner) {
+//      CapturedMob capturedMob = ((TilePoweredSpawner) tileEntity).getEntity();
+//      if (capturedMob != null) {
+//        tooltip.add(capturedMob.getDisplayName());
+//      }
+//    }
+//  }
+//
+//  @Override
+//  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+//    return IWailaInfoProvider.BIT_DETAILED;
+//  }
 
   @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
-    list.add(CapturedMob.create("Enderman", null).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Chicken", null).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Skeleton", SkeletonType.NORMAL).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Skeleton", SkeletonType.WITHER).toStack(item, 0, 1));
-    list.add(CapturedMob.create("Skeleton", SkeletonType.STRAY).toStack(item, 0, 1));
+//    list.add(CapturedMob.create("Enderman", null).toStack(item, 0, 1));
+//    list.add(CapturedMob.create("Chicken", null).toStack(item, 0, 1));
+//    list.add(CapturedMob.create("Skeleton", SkeletonType.NORMAL).toStack(item, 0, 1));
+//    list.add(CapturedMob.create("Skeleton", SkeletonType.WITHER).toStack(item, 0, 1));
+//    list.add(CapturedMob.create("Skeleton", SkeletonType.STRAY).toStack(item, 0, 1));
   }
 
   @Override
