@@ -21,6 +21,7 @@ import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.painter.blocks.*;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -73,7 +74,12 @@ public enum MachineObject implements IModObject.Registerable {
   blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
   blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),
   blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark"),
-  blockReservoir(BlockReservoir.class);
+  blockReservoir(BlockReservoir.class),
+
+  blockFarmStation(BlockFarmStation.class),
+  
+  ;
+
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

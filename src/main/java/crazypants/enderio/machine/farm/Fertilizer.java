@@ -2,6 +2,9 @@ package crazypants.enderio.machine.farm;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 
 import crazypants.util.Prep;
@@ -24,7 +27,7 @@ public enum Fertilizer {
   /**
    * Not a fertilizer. Using this handler class any item can be "used" as a fertilizer. Meaning, fertilizing will always fail.
    */
-  NONE((ItemStack) null) {
+  NONE(ItemStack.EMPTY) {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
@@ -36,8 +39,8 @@ public enum Fertilizer {
 
     @Override
     public boolean apply(ItemStack stack, EntityPlayer player, World world, BlockPos bc) {
-      EnumActionResult res = stack.getItem().onItemUse(stack, player, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
-      return res != null && res != EnumActionResult.PASS;
+      EnumActionResult res = stack.getItem().onItemUse(player, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      return NullHelper.notnullM(res, "onItemUse returned null") != EnumActionResult.PASS;
     }
   },
 
@@ -56,8 +59,8 @@ public enum Fertilizer {
       BlockPos below = bc.down();
       Block belowBlock = world.getBlockState(below).getBlock();
       if (belowBlock == Blocks.DIRT || belowBlock == Blocks.GRASS) {
-        EnumActionResult res = stack.getItem().onItemUse(stack, player, world, below, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
-        return res != null && res != EnumActionResult.PASS;
+        EnumActionResult res = stack.getItem().onItemUse(player, world, below, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+        return NullHelper.notnullM(res, "onItemUse returned null") != EnumActionResult.PASS;
       }
       return false;
     }
@@ -105,17 +108,17 @@ public enum Fertilizer {
 	}
   };
 
-  private ItemStack stack;
+  private @Nonnull ItemStack stack;
 
   private Fertilizer(Item item) {
-    this(new ItemStack(item));
+    this(item == null ? ItemStack.EMPTY : new ItemStack(item));
   }
 
   private Fertilizer(Block block) {
-    this(new ItemStack(block));
+    this(block == null ? ItemStack.EMPTY : new ItemStack(block));
   }
 
-  private Fertilizer(ItemStack stack) {
+  private Fertilizer(@Nonnull ItemStack stack) {
     this.stack = Prep.isInvalid(stack) ? Prep.getEmpty() : stack;
     if (Prep.isValid(this.stack)) {
       FarmStationContainer.slotItemsFertilizer.add(this.stack);
@@ -137,7 +140,7 @@ public enum Fertilizer {
    * Fertilizer.None.
    * 
    */
-  public static Fertilizer getInstance(ItemStack stack) {
+  public static Fertilizer getInstance(@Nonnull ItemStack stack) {
     for (Fertilizer fertilizer : validFertilizers) {
       if (fertilizer.matches(stack)) {
         return fertilizer;
@@ -149,11 +152,11 @@ public enum Fertilizer {
   /**
    * Returns true if the given item can be used as fertilizer.
    */
-  public static boolean isFertilizer(ItemStack stack) {
+  public static boolean isFertilizer(@Nonnull ItemStack stack) {
     return getInstance(stack) != NONE;
   }
 
-  protected boolean matches(ItemStack stackIn) {
+  protected boolean matches(@Nonnull ItemStack stackIn) {
     return OreDictionary.itemMatches(this.stack, stackIn, false);
   }
 
@@ -169,7 +172,7 @@ public enum Fertilizer {
    * @param bc
    * @return true if the fertilizer was applied
    */
-  public abstract boolean apply(ItemStack stackIn, EntityPlayer player, World world, BlockPos bc);
+  public abstract boolean apply(@Nonnull ItemStack stackIn, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc);
 
   public boolean applyOnAir() {
     return false;

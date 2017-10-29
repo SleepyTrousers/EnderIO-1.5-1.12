@@ -150,13 +150,14 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
 
   protected static String permissionFarming;
 
-  @Override
-  public void init(FMLInitializationEvent event) {
-    super.init(event);
-    permissionFarming = PermissionAPI.registerNode(EnderIO.DOMAIN + ".farm." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + name + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."
-            + " Only the base block of a plant will be checked, not the dirt block below it or the additional plant blocks above it."
-            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
-  }
+  // TODO
+//  @Override
+//  public void init(FMLInitializationEvent event) {
+//    super.init(event);
+//    permissionFarming = PermissionAPI.registerNode(EnderIO.DOMAIN + ".farm." + getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+//        "Permission for the block " + getUnlocalizedName() + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."
+//            + " Only the base block of a plant will be checked, not the dirt block below it or the additional plant blocks above it."
+//            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
+//  }
 
 }

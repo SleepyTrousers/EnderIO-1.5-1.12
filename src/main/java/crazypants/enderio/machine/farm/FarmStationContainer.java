@@ -12,7 +12,8 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.farming.FarmingTool;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.util.Prep;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -38,13 +39,13 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       slotItemsStacks1.add(new ItemStack(item));
     }
     slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
-    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, MachineObject.itemDarkSteelAxe }) {
+    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe.getItem() }) {
       slotItemsStacks2.add(new ItemStack(item));
     }
-    for (Item item : new Item[] { Items.SHEARS, MachineObject.itemDarkSteelShears }) {
+    for (Item item : new Item[] { Items.SHEARS, ModObject.itemDarkSteelShears.getItem() }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
-    slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());
+    slotItemsStacks3.addAll(FarmingTool.TREETAP.getThings().getItemStacks());
     slotItemsSeeds.add(new ItemStack(Items.WHEAT_SEEDS));
     slotItemsSeeds.add(new ItemStack(Items.CARROT));
     slotItemsSeeds.add(new ItemStack(Items.POTATO));
@@ -119,7 +120,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
 
         @Override
         public int getSlotStackLimit() {
-          return getInv().getInventoryStackLimit(slot);
+          return getInv().getInventoryStackLimit();
         }
       });
     }
