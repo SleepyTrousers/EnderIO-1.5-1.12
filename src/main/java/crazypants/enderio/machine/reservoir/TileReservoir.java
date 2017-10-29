@@ -14,7 +14,6 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.fluid.SmartTankFluidReservoirHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
@@ -235,7 +234,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   protected SmartTankFluidHandler getSmartTankFluidHandler() {
     if (smartTankFluidHandler == null) {
-      smartTankFluidHandler = new SmartTankFluidReservoirHandler(this, tank);
+      smartTankFluidHandler = new SmartTankFluidReservoirHandler(this, tank); //TODO FIX
     }
     return smartTankFluidHandler;
   }
