@@ -14,11 +14,12 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredMachineEntity;
 import crazypants.enderio.power.PowerDisplayUtil;
 import info.loenwind.scheduler.Celeb;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 
-public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiMachineBase<T> {
+public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiInventoryMachineBase<T> {
 
   protected static final int POWER_Y = 14;
   protected final int POWER_X = 15;
