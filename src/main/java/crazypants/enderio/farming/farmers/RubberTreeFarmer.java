@@ -27,13 +27,13 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   public RubberTreeFarmer(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
     super(sapling, wood);
-    FarmingTool.TREETAP.items.add(treetap);
+    FarmingTool.TREETAP.getThings().add(treetap);
     stickyResin = resin;
     FarmersRegistry.slotItemsProduce.add(stickyResin);
   }
 
   public boolean isValid() {
-    return !saplings.isEmpty() && !woods.isEmpty() && !FarmingTool.TREETAP.items.isEmpty() && Prep.isValid(stickyResin);
+    return !saplings.isEmpty() && !woods.isEmpty() && !FarmingTool.TREETAP.getThings().isEmpty() && Prep.isValid(stickyResin);
   }
 
   @Override
