@@ -18,7 +18,6 @@ import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -47,7 +46,6 @@ public enum MachineObject implements IModObject.Registerable {
   blockWeatherObelisk(BlockWeatherObelisk.class),
   blockExperienceObelisk(BlockExperienceObelisk.class),
 
-  itemXpTransfer(ItemXpTransfer.class),
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
