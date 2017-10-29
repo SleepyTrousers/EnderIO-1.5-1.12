@@ -56,12 +56,12 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
   protected static String permissionAttracting;
 
-  @Override
-  public void init() {
-    super.init();
-    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + this.getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + this.getUnlocalizedName() + " of Ender IO to attract entities."
-            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
-  }
+//  @Override
+//  public void init(FMLInitializationEvent event) {
+//    super.init(event);
+//    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + this.getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+//        "Permission for the block " + this.getUnlocalizedName() + " of Ender IO to attract entities."
+//            + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
+//  }
 
 }
