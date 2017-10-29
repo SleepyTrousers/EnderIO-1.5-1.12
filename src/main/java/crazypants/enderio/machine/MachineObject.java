@@ -12,6 +12,13 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
+import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
+import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
+import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
+import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
+import crazypants.enderio.machine.obelisk.xp.ItemXpTransfer;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -32,7 +39,15 @@ public enum MachineObject implements IModObject.Registerable {
 //  blockCapBank(BlockCapBank.class),
   blockCrafter(BlockCrafter.class),
   blockEnchanter(BlockEnchanter.class),
-  
+
+  blockAttractorObelisk(BlockAttractor.class),
+  blockAversionObelisk(BlockAversionObelisk.class),
+  blockInhibitorObelisk(BlockInhibitorObelisk.class),
+  blockRelocatorObelisk(BlockRelocatorObelisk.class),
+  blockWeatherObelisk(BlockWeatherObelisk.class),
+  blockExperienceObelisk(BlockExperienceObelisk.class),
+
+  itemXpTransfer(ItemXpTransfer.class),
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

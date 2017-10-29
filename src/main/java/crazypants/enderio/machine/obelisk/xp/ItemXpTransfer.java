@@ -46,8 +46,8 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   @Override
-  public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {    
-    return onActivated(player, world, pos, side);
+  public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    return onActivated(player, worldIn, pos, facing);
   }
 
   public static EnumActionResult onActivated(EntityPlayer player, World world, BlockPos pos, EnumFacing side) {
@@ -83,12 +83,12 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
     if (wrapper != null) {
       FluidStack availableFluid = wrapper.getAvailableFluid();
-      if (availableFluid != null && availableFluid.getFluid() == Fluids.fluidXpJuice && availableFluid.amount > 0) {
+      if (availableFluid != null && availableFluid.getFluid() == Fluids.XP_JUICE.getFluid() && availableFluid.amount > 0) {
         int currentXP = XpUtil.getPlayerXP(player);
         int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
         int requiredXP = nextLevelXP - currentXP;
         int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
-        FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
+        FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
         FluidStack res = wrapper.drain(fs);
         if (res != null && res.amount > 0) {
           int xpToGive = XpUtil.liquidToExperience(res.amount);
@@ -109,7 +109,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
     if (wrapper != null) {
       int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
-      FluidStack fs = new FluidStack(Fluids.fluidXpJuice, fluidVolume);
+      FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
       int takenVolume = wrapper.fill(fs);
       if (takenVolume > 0) {
         int xpToTake = XpUtil.liquidToExperience(takenVolume);

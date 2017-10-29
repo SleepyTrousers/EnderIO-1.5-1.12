@@ -37,7 +37,7 @@ public class EntityFluidLoadingFX extends ParticleDrip {
     this.prevPosY = this.posY;
     this.prevPosZ = this.posZ;
     
-    this.moveEntity(motionX, motionY, motionZ);
+    this.move(motionX, motionY, motionZ);
     
     if(particleAge++ >= MAX_LIFE) {
       setExpired();

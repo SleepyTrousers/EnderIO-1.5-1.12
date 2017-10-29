@@ -28,8 +28,8 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   @Override
-  protected boolean isActive(@Nonnull IBlockAccess blockAccess, int x, int y, int z) {
-    return true; 
+  protected boolean isActive(@Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos) {
+    return true;
   }
 
   @Override

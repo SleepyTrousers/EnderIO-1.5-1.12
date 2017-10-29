@@ -7,6 +7,7 @@ import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -24,7 +25,7 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
     PacketHandler.INSTANCE.registerMessage(PacketActivateWeather.class, PacketActivateWeather.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketWeatherTank.class, PacketWeatherTank.class, PacketHandler.nextID(), Side.CLIENT);
     
-    EntityRegistry.registerModEntity(EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance, 64, 3, false);
+    EntityRegistry.registerModEntity(new ResourceLocation(EnderIO.DOMAIN, "weather_rocket"),EntityWeatherRocket.class, "weather_rocket", 33, EnderIO.instance, 64, 3, false);
     return ret;
   }
 

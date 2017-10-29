@@ -23,7 +23,7 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   protected BlockAversionObelisk() {
-    super(MachineObject.blockSpawnGuard, TileAversionObelisk.class);
+    super(MachineObject.blockAversionObelisk, TileAversionObelisk.class);
   }
 
   @Override

@@ -7,6 +7,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -65,7 +66,7 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
     buttonStart.onGuiInit();
     
     refreshButtons();
-    ((ContainerWeatherObelisk) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerWeatherObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
   
   @Override

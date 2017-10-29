@@ -23,7 +23,7 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
   }
 
   protected BlockRelocatorObelisk() {
-    super(MachineObject.blockSpawnRelocator, TileRelocatorObelisk.class);
+    super(MachineObject.blockRelocatorObelisk, TileRelocatorObelisk.class);
   }
 
   @Override

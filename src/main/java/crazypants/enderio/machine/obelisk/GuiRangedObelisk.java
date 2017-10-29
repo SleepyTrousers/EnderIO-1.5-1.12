@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
+import crazypants.enderio.machine.modes.IoMode;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -49,7 +50,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
     if(isGhostSlotsEnabled() && inventorySlots instanceof ContainerAbstractObelisk) {
-      ((ContainerAbstractObelisk) inventorySlots).createGhostSlots(getGhostSlots());
+      ((ContainerAbstractObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     }
   }
 
@@ -71,6 +72,11 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     int range = (int) getTileEntity().getRange();
     drawCenteredString(fontRenderer, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
+  }
+
+  @Override
+  public void renderSlotHighlights(IoMode mode) { //TODO This
+
   }
 
   @Override

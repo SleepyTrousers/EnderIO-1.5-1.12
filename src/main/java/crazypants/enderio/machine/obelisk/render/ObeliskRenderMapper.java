@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.obelisk.render;
 
-import crazypants.enderio.machine.MachineRenderMapper;
+
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.render.MachineRenderMapper;
 import crazypants.enderio.paint.render.PaintedBlockAccessWrapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.util.ItemQuadCollector;

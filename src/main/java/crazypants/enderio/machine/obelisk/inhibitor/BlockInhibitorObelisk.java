@@ -59,7 +59,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   }
 
 
-  public Map<BlockCoord, BoundingBox> activeInhibitors = Maps.newHashMap();
+  public Map<BlockPos, BoundingBox> activeInhibitors = Maps.newHashMap();
 
   // Ender IO's teleporting
   @SubscribeEvent
@@ -67,7 +67,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
     if (isTeleportPrevented(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
       event.setCanceled(true);
     }
-    if (isTeleportPrevented(event.getEntity().world, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
+    if (isTeleportPrevented(event.getEntity().world, event.getTarget().getX(), event.getTarget().getY(), event.getTarget().getZ())) {
       event.setCanceled(true);
     }
   }
@@ -86,11 +86,11 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   private boolean isTeleportPrevented(World entityWorld, double d, double f, double g) {
     if (!activeInhibitors.isEmpty()) {
       Vec3d pos = new Vec3d(d, f, g);
-      for (Entry<BlockCoord, BoundingBox> e : activeInhibitors.entrySet()) {
+      for (Entry<BlockPos, BoundingBox> e : activeInhibitors.entrySet()) {
         if (e.getValue().isVecInside(pos)) {
-          BlockCoord bc = e.getKey();
-          if (entityWorld.isBlockLoaded(bc.getBlockPos())) {
-            TileEntity te = bc.getTileEntity(entityWorld);
+          BlockPos bc = e.getKey();
+          if (entityWorld.isBlockLoaded(bc)) {
+            TileEntity te = entityWorld.getTileEntity(bc);
             if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && ((TileInhibitorObelisk) te).getBounds().isVecInside(pos)) {
               return true;
             }

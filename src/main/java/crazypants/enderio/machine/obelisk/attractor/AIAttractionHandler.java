@@ -31,7 +31,7 @@ public class AIAttractionHandler implements IMobAttractionHandler {
     for (EntityAITaskEntry entry : entity.tasks.taskEntries) {
       if (entry.action instanceof AttractTask) {
         AttractTask at = (AttractTask) entry.action;
-        if (attractor == null || at.coord.equals(new BlockCoord(attractor)) || !at.continueExecuting()) {
+        if (attractor == null || at.coord.equals(BlockCoord.get(attractor)) || !at.continueExecuting()) {
           return entry.action;
         } else {
           return null;
