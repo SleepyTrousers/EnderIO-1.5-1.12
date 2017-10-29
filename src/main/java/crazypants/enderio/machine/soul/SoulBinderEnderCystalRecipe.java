@@ -13,7 +13,7 @@ public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderEnderCystalRecipe instance = new SoulBinderEnderCystalRecipe();
 
   private SoulBinderEnderCystalRecipe() {
-    super(Config.soulBinderEnderCystalRF,Config.soulBinderEnderCystalLevels, "SoulBinderEnderCystalRecipe", new ResourceLocation("SpecialMobs.SpecialEnderman"), new ResourceLocation("minecraft:enderman"));
+    super(Config.soulBinderEnderCystalRF,Config.soulBinderEnderCystalLevels, "SoulBinderEnderCystalRecipe", new ResourceLocation("SpecialMobs","SpecialEnderman"), new ResourceLocation("enderman"));
   }
 
   @Override

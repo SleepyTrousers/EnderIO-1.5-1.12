@@ -12,7 +12,7 @@ public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderReanimationRecipe instance = new SoulBinderReanimationRecipe();
 
   private SoulBinderReanimationRecipe() {
-    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderReanimationRecipe", new ResourceLocation("minecraft:zombie"), new ResourceLocation("SpecialMobs:SpecialZombie"));
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderReanimationRecipe", new ResourceLocation("zombie"), new ResourceLocation("SpecialMobs","SpecialZombie"));
   }
 
   @Override

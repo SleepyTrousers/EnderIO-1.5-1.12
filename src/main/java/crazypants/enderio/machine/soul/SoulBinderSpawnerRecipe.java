@@ -28,7 +28,7 @@ public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   protected boolean isValidInputSoul(CapturedMob mobType) {
-    return getSupportedSouls().contains(mobType.getEntityName()) && !BlockPoweredSpawner.isBlackListed(mobType.getEntityName().toString());
+    return getSupportedSouls().contains(mobType.getEntityName()) && !BlockPoweredSpawner.isBlackListed(mobType.getEntityName());
   }
 
   @Override

@@ -365,11 +365,11 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
     super.getSubBlocks(item, tab, list);
-//    list.add(CapturedMob.create("Enderman", null).toStack(item, 0, 1));
-//    list.add(CapturedMob.create("Chicken", null).toStack(item, 0, 1));
-//    list.add(CapturedMob.create("Skeleton", SkeletonType.NORMAL).toStack(item, 0, 1));
-//    list.add(CapturedMob.create("Skeleton", SkeletonType.WITHER).toStack(item, 0, 1));
-//    list.add(CapturedMob.create("Skeleton", SkeletonType.STRAY).toStack(item, 0, 1));
+    list.add(CapturedMob.create(new ResourceLocation("enderman")).toStack(item, 0, 1));
+    list.add(CapturedMob.create(new ResourceLocation("chicken")).toStack(item, 0, 1));
+    list.add(CapturedMob.create(new ResourceLocation("skeleton")).toStack(item, 0, 1));
+    list.add(CapturedMob.create(new ResourceLocation("wither_skeleton")).toStack(item, 0, 1));
+    list.add(CapturedMob.create(new ResourceLocation("stray")).toStack(item, 0, 1));
   }
 
   @Override

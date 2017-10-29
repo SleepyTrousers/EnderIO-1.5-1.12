@@ -141,4 +141,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     return super.getVolume() * 0.125f;
   }
 
+//  @Override
+//  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+//    super.writeCustomNBT(nbtRoot);
+//    lastSendGbScaled = getBallDurationScaled(16);
+//  }
 }

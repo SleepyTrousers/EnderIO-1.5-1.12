@@ -12,7 +12,7 @@ public class SoulBinderPrecientCystalRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderPrecientCystalRecipe instance = new SoulBinderPrecientCystalRecipe();
 
   private SoulBinderPrecientCystalRecipe() {
-    super(Config.soulBinderPrecientCystalRF, Config.soulBinderPrecientCystalLevels, "SoulBinderPrecientCystalRecipe", new ResourceLocation("minecraft:shulker"));
+    super(Config.soulBinderPrecientCystalRF, Config.soulBinderPrecientCystalLevels, "SoulBinderPrecientCystalRecipe", new ResourceLocation("shulker"));
   }
 
   @Override
