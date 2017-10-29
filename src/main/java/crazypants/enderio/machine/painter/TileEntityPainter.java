@@ -28,7 +28,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
     // 0 = input slot, 1 = paint source, 2 = output slot
     super(new SlotDefinition(2, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
-  
+
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemStack) {
