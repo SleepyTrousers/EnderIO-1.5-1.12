@@ -2,6 +2,7 @@ package crazypants.enderio.machine.sagmill;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.NBTAction;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
@@ -18,6 +19,10 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -27,17 +32,12 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   protected int currGbUse = 0;
   @Store
   protected int maxGbUse = 0;
-
+  @Store
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
 
   public TileSagMill() {
-    super(new SlotDefinition(2, 4), CapacitorKey.SAG_MILL_POWER_INTAKE, CapacitorKey.SAG_MILL_POWER_BUFFER, CapacitorKey.SAG_MILL_POWER_USE);
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return MachineObject.blockSagMill.getUnlocalisedName();
+    super(new SlotDefinition(2, 4), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
     return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
@@ -129,17 +129,6 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
       res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
     }
     return res;
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    lastSendGbScaled = getBallDurationScaled(16);
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
   }
 
   @Override

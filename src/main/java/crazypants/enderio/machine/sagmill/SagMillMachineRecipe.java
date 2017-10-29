@@ -2,7 +2,9 @@ package crazypants.enderio.machine.sagmill;
 
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.recipe.AbstractMachineRecipe;
+import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
+
 
 public class SagMillMachineRecipe extends AbstractMachineRecipe {
 

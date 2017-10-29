@@ -11,13 +11,7 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.RecipeConfig;
-import crazypants.enderio.recipe.RecipeConfigParser;
-import crazypants.enderio.recipe.RecipeInput;
-import crazypants.enderio.recipe.RecipeOutput;
+import crazypants.enderio.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
