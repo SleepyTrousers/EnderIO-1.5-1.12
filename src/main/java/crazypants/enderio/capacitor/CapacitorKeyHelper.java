@@ -4,7 +4,8 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.EnderIO;
+import com.enderio.core.common.Lang;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config.Section;
 import net.minecraftforge.common.config.Configuration;
@@ -14,12 +15,12 @@ public class CapacitorKeyHelper {
   private CapacitorKeyHelper() {
   }
 
-  static @Nonnull String localizeComment(@Nonnull Section configSection, @Nonnull String configKey) {
+  static @Nonnull String localizeComment(@Nonnull Lang lang, @Nonnull Section configSection, @Nonnull String configKey) {
     final String langKey = "config.capacitor." + configKey;
-    if (!EnderIO.lang.canLocalize(langKey)) {
+    if (!lang.canLocalize(langKey)) {
       Log.warn("Missing translation: " + langKey);
     }
-    return EnderIO.lang.localize(langKey);
+    return lang.localize(langKey);
   }
 
   public static void processConfig(Configuration config, ICapacitorKey.Computable... keys) {

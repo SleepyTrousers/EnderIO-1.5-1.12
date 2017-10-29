@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config.Section;
 import crazypants.enderio.init.ModObject;
 import net.minecraftforge.common.config.Configuration;
@@ -43,7 +44,7 @@ public enum CapacitorKey implements ICapacitorKey.Computable {
     this.scaler = scaler;
     this.configKey = CapacitorKeyHelper.createConfigKey(this, configKey);
     this.configSection = configSection;
-    this.configComment = CapacitorKeyHelper.localizeComment(this.configSection, this.configKey);
+    this.configComment = CapacitorKeyHelper.localizeComment(EnderIO.lang, this.configSection, this.configKey);
     this.baseValue = this.defaultBaseValue = defaultBaseValue;
   }
 
