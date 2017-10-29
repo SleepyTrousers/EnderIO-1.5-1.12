@@ -8,6 +8,7 @@ import java.util.function.IntFunction;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.SlotPredicate;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 
 import crazypants.enderio.machine.base.container.SlotRangeHelper.IRangeProvider;
@@ -92,62 +93,62 @@ public abstract class SlotRangeHelper<T extends Container & IRangeProvider> {
     }
   }
   
-  public static class Cap<I extends AbstractCapabilityMachineEntity> extends SlotRangeHelper<AbstractCapabilityMachineContainer<I>> {
-
-    protected Cap(AbstractCapabilityMachineContainer<I> owner) {
-      super(owner);
-    }
-    
-    @Override
-    public void addInputSlotRanges(@Nonnull List<SlotRange> res) {
-      IItemHandler inputSlots = owner.getOwner().getInventory().getView(Type.INPUT);
-      if (inputSlots.getSlots() > 0) {
-        addInventorySlotRange(res, i -> getSlotFromHandler(inputSlots, i), 0, inputSlots.getSlots());
-      }
-    }
-
-    @Override
-    public void addUpgradeSlotRanges(@Nonnull List<SlotRange> res) {
-      IItemHandler upgradeSlots = owner.getOwner().getInventory().getView(Type.UPGRADE);
-      if (upgradeSlots.getSlots() > 0) {
-        addInventorySlotRange(res, i -> getSlotFromHandler(upgradeSlots, i), 0, upgradeSlots.getSlots());
-      }
-    }
-
-    @Override
-    public @Nonnull List<SlotRange> getTargetSlotsForTransfer(int slotNumber, @Nonnull Slot slot) {
-      if (slotNumber < owner.getPlayerInventoryWithoutHotbarSlotRange().getStart()) {
-        if (!(slot instanceof SlotItemHandler)) {
-          throw new IllegalArgumentException("SlotRangeHandler.Cap cannot be used with IInventory slots!");
-        }
-        IItemHandler handler = ((SlotItemHandler)slot).getItemHandler();
-        EnderInventory inv = owner.getOwner().getInventory();
-        if (handler == inv.getView(Type.INPUT) || handler == inv.getView(Type.UPGRADE)) {
-          return Collections.singletonList(owner.getPlayerInventorySlotRange(false));
-        }
-        if (handler == inv.getView(Type.OUTPUT)) {
-          return Collections.singletonList(owner.getPlayerInventorySlotRange(true));
-        }
-      } else {
-        List<SlotRange> res = new ArrayList<SlotRange>();
-        addInputSlotRanges(res);
-        addUpgradeSlotRanges(res);
-        addPlayerSlotRanges(res, slotNumber);
-        return res;
-      }
-      return Collections.emptyList();
-    }
-    
-    private Slot getSlotFromHandler(IItemHandler handler, int slotIndex) {
-      for (Slot slot : owner.inventorySlots) {
-        if (slot instanceof SlotItemHandler && ((SlotItemHandler) slot).getItemHandler() == handler && slotIndex == slot.getSlotIndex()) {
-          return slot;
-        }
-      }
-
-      return null;
-    }
-  }
+//  public static class Cap<I extends AbstractCapabilityMachineEntity> extends SlotRangeHelper<AbstractCapabilityMachineContainer<I>> {
+//
+//    protected Cap(AbstractCapabilityMachineContainer<I> owner) {
+//      super(owner);
+//    }
+//    
+//    @Override
+//    public void addInputSlotRanges(@Nonnull List<SlotRange> res) {
+//      IItemHandler inputSlots = owner.getItemHandler().getView(Type.INPUT);
+//      if (inputSlots.getSlots() > 0) {
+//        addInventorySlotRange(res, i -> getSlotFromHandler(inputSlots, i), 0, inputSlots.getSlots());
+//      }
+//    }
+//
+//    @Override
+//    public void addUpgradeSlotRanges(@Nonnull List<SlotRange> res) {
+//      IItemHandler upgradeSlots = owner.getItemHandler().getView(Type.UPGRADE);
+//      if (upgradeSlots.getSlots() > 0) {
+//        addInventorySlotRange(res, i -> getSlotFromHandler(upgradeSlots, i), 0, upgradeSlots.getSlots());
+//      }
+//    }
+//
+//    @Override
+//    public @Nonnull List<SlotRange> getTargetSlotsForTransfer(int slotNumber, @Nonnull Slot slot) {
+//      if (slotNumber < owner.getPlayerInventoryWithoutHotbarSlotRange().getStart()) {
+//        if (!(slot instanceof SlotItemHandler)) {
+//          throw new IllegalArgumentException("SlotRangeHandler.Cap cannot be used with IInventory slots!");
+//        }
+//        IItemHandler handler = ((SlotItemHandler)slot).getItemHandler();
+//        EnderInventory inv = owner.getOwner().getInventory();
+//        if (handler == inv.getView(Type.INPUT) || handler == inv.getView(Type.UPGRADE)) {
+//          return Collections.singletonList(owner.getPlayerInventorySlotRange(false));
+//        }
+//        if (handler == inv.getView(Type.OUTPUT)) {
+//          return Collections.singletonList(owner.getPlayerInventorySlotRange(true));
+//        }
+//      } else {
+//        List<SlotRange> res = new ArrayList<SlotRange>();
+//        addInputSlotRanges(res);
+//        addUpgradeSlotRanges(res);
+//        addPlayerSlotRanges(res, slotNumber);
+//        return res;
+//      }
+//      return Collections.emptyList();
+//    }
+//    
+//    private Slot getSlotFromHandler(IItemHandler handler, int slotIndex) {
+//      for (Slot slot : owner.inventorySlots) {
+//        if (slot instanceof SlotItemHandler && ((SlotItemHandler) slot).getItemHandler() == handler && slotIndex == slot.getSlotIndex()) {
+//          return slot;
+//        }
+//      }
+//
+//      return null;
+//    }
+//  }
 
   public abstract void addInputSlotRanges(@Nonnull List<SlotRange> res);
 
@@ -165,7 +166,7 @@ public abstract class SlotRangeHelper<T extends Container & IRangeProvider> {
   
   public abstract @Nonnull List<SlotRange> getTargetSlotsForTransfer(int slotNumber, @Nonnull Slot slot); 
   
-  public static class SlotRange {
+  public static class SlotRange implements SlotPredicate {
     private final int start;
     private final int end;
     private final boolean reverse;
@@ -184,6 +185,12 @@ public abstract class SlotRangeHelper<T extends Container & IRangeProvider> {
       return end;
     }
 
+    @Override
+    public boolean test(Slot t) {
+      return t.slotNumber >= getStart() && t.slotNumber < getEnd();
+    }
+    
+    @Override
     public boolean isReverse() {
       return reverse;
     }
