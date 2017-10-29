@@ -12,6 +12,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -32,6 +33,8 @@ public enum MachineObject implements IModObject.Registerable {
 //  blockCapBank(BlockCapBank.class),
   blockCrafter(BlockCrafter.class),
   blockEnchanter(BlockEnchanter.class),
+  
+  blockFarmStation(BlockFarmStation.class),
   
   ;
 

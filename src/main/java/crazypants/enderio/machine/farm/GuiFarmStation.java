@@ -3,6 +3,8 @@ package crazypants.enderio.machine.farm;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.gui.IGuiOverlay;
@@ -32,7 +34,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   private static final int LOCK_ID = 1234;
   ToggleButton showRangeB;
 
-  public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
+  public GuiFarmStation(InventoryPlayer par1InventoryPlayer, @Nonnull TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farmStation");
     setYSize(ySize + 3);
 
@@ -68,7 +70,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 2, x, y + 20));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
 
-    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlots());
+    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
 
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
