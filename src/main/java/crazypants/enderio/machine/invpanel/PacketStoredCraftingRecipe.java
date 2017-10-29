@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import com.enderio.core.common.network.NetworkUtil;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,6 +1,14 @@
 package crazypants.enderio.machine.capbank.render;
 
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.ManagedTESR;
+
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.block.state.IBlockState;
@@ -8,12 +16,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.EnumMap;
-import java.util.Map;
-
-import static crazypants.enderio.ModObject.blockCapBank;
 
 @SideOnly(Side.CLIENT)
 public class CapBankRenderer extends ManagedTESR<TileCapBank> {

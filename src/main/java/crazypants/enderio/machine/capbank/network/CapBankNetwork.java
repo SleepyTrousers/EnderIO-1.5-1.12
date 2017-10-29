@@ -1,10 +1,18 @@
 package crazypants.enderio.machine.capbank.network;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
+
 import crazypants.enderio.Log;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.config.Config;
@@ -27,9 +35,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-
-import javax.annotation.Nonnull;
-import java.util.*;
 
 public class CapBankNetwork implements ICapBankNetwork/*, TickListener*/ {
 
@@ -310,7 +315,7 @@ public class CapBankNetwork implements ICapBankNetwork/*, TickListener*/ {
     boolean chargedItem = false;
     int available = getEnergyAvailableForTick(getMaxIO());
     for (ItemStack item : items) {
-      if (Prep.isValid(item) && available > 0 && item.stackSize == 1) {
+      if (Prep.isValid(item) && available > 0 && item.getCount() == 1) {
         IEnergyStorage chargable = PowerHandlerUtil.getCapability(item);
         if (chargable != null) {
           int max = chargable.getMaxEnergyStored();
@@ -340,7 +345,7 @@ public class CapBankNetwork implements ICapBankNetwork/*, TickListener*/ {
       cb.setEnergyStored(energyPerCapBank);
     }
     TileCapBank cb = capBanks.get(0);
-    cb.setEnergyStored(cb.getEnergyStored(null) + remaining);
+    cb.setEnergyStored(cb.getEnergyStored() + remaining);
   }
 
   //------ Power

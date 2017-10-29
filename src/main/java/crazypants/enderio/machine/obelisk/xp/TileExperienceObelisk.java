@@ -3,7 +3,7 @@ package crazypants.enderio.machine.obelisk.xp;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.network.PacketHandler;
@@ -36,7 +36,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockExperienceObelisk.getUnlocalisedName();
+    return MachineObject.blockExperienceObelisk.getUnlocalisedName();
   }
 
   @Override

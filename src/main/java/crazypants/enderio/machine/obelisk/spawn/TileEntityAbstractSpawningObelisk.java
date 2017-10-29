@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +26,7 @@ public abstract class TileEntityAbstractSpawningObelisk extends AbstractMobObeli
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, ModObject modObject) {
+  public TileEntityAbstractSpawningObelisk(SlotDefinition slotDefinition, MachineObject modObject) {
     super(slotDefinition, modObject);
   }
 

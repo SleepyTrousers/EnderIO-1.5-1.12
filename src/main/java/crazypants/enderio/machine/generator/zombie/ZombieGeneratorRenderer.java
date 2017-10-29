@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.generator.zombie;
 
 import com.enderio.core.client.render.ManagedTESR;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.util.HalfBakedQuad.HalfBakedList;
 import crazypants.enderio.render.util.TankRenderHelper;
 import net.minecraft.block.state.IBlockState;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 public class ZombieGeneratorRenderer extends ManagedTESR<TileZombieGenerator> {
 
   public ZombieGeneratorRenderer() {
-    super(ModObject.blockZombieGenerator.getBlock());
+    super(MachineObject.blockZombieGenerator.getBlock());
   }
 
   @Override

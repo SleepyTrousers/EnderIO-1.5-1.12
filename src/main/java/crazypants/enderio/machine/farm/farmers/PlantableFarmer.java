@@ -164,12 +164,12 @@ public class PlantableFarmer implements IFarmerJoe {
     farm.actionPerformed(false);
     if (drops != null) {
       for (ItemStack stack : drops) {
-        if (Prep.isValid(stack) && stack.stackSize > 0 && world.rand.nextFloat() <= chance) {
+        if (Prep.isValid(stack) && stack.getCount() > 0 && world.rand.nextFloat() <= chance) {
           if (Prep.isInvalid(removedPlantable) && isPlantableForBlock(stack, block)) {
             removedPlantable = stack.copy();
-            removedPlantable.stackSize = 1;
-            stack.stackSize--;
-            if (stack.stackSize > 0) {
+            removedPlantable.setCount(1);
+            stack.shrink(1);
+            if (stack.getCount() > 0) {
               result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
             }
           } else {

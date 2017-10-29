@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.sagmill;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -15,9 +20,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockSagMill create() {
@@ -29,7 +31,7 @@ public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements I
   }
 
   private BlockSagMill() {
-    super(ModObject.blockSagMill, TileSagMill.class);
+    super(MachineObject.blockSagMill, TileSagMill.class);
   }
 
   @Override

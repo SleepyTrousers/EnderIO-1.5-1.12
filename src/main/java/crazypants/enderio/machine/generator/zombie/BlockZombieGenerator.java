@@ -2,7 +2,7 @@ package crazypants.enderio.machine.generator.zombie;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.killera.KillerJoeRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -48,7 +48,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, new Material(MapColor.IRON) {
+    super(MachineObject.blockZombieGenerator, TileZombieGenerator.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

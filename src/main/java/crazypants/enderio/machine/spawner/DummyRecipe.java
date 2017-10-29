@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.spawner;
 
-import crazypants.enderio.ModObject;
-import net.minecraft.item.ItemStack;
-
 import java.util.Collections;
 import java.util.List;
+
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
+import net.minecraft.item.ItemStack;
 
 public class DummyRecipe implements IMachineRecipe {
 
@@ -46,7 +49,7 @@ public class DummyRecipe implements IMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockPoweredSpawner.getUnlocalisedName();
+    return MachineObject.blockPoweredSpawner.getUnlocalisedName();
   }
 
   @Override

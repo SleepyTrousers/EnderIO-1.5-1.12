@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.machine.monitor.TilePowerMonitor.StatData;

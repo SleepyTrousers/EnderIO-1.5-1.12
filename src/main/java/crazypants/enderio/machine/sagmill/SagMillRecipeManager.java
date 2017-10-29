@@ -1,18 +1,25 @@
 package crazypants.enderio.machine.sagmill;
 
-import com.enderio.core.common.util.Util;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.*;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.RecipeConfig;
+import crazypants.enderio.recipe.RecipeConfigParser;
+import crazypants.enderio.recipe.RecipeInput;
+import crazypants.enderio.recipe.RecipeOutput;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SagMillRecipeManager {
 
@@ -77,13 +84,13 @@ public class SagMillRecipeManager {
 
   private void addExcludedStack(ItemStack item) {
     item = item.copy();
-    item.stackSize = 1;
+    item.setCount(1);
     excludedStacks.add(item);
   }
 
   private boolean isExcludedStack(ItemStack item) {
     item = item.copy();
-    item.stackSize = 1;
+    item.setCount(1);
     return excludedStacks.contains(item);
   }
 
@@ -118,7 +125,7 @@ public class SagMillRecipeManager {
     } else {
       Log.error("Could not load recipes for SAG Mill.");
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.getUnlocalisedName(), new SagMillMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSagMill.getUnlocalisedName(), new SagMillMachineRecipe());
   }
 
   public void addCustomRecipes(String xmlDef) {

@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -61,8 +61,8 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   protected BlockPaintedCarpet() {
     super();
     setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockPaintedCarpet.getUnlocalisedName());
-    setRegistryName(ModObject.blockPaintedCarpet.getUnlocalisedName());
+    setUnlocalizedName(MachineObject.blockPaintedCarpet.getUnlocalisedName());
+    setRegistryName(MachineObject.blockPaintedCarpet.getUnlocalisedName());
     setHardness(0.1F);
     setSoundType(SoundType.CLOTH);
     setLightOpacity(0);
@@ -70,9 +70,9 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   private void init() {
     GameRegistry.register(this);
-    GameRegistry.register(new BlockItemPaintedBlock(this, ModObject.blockPaintedCarpet.getUnlocalisedName()));
-    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedCarpet.getUnlocalisedName() + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
+    GameRegistry.register(new BlockItemPaintedBlock(this, MachineObject.blockPaintedCarpet.getUnlocalisedName()));
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, MachineObject.blockPaintedCarpet.getUnlocalisedName() + "TileEntity");
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }

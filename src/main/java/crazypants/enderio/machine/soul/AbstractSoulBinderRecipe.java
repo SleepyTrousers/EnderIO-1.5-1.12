@@ -1,16 +1,19 @@
 package crazypants.enderio.machine.soul;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.xp.XpUtil;
-import crazypants.util.CapturedMob;
-import net.minecraft.entity.EntityList;
-import net.minecraft.item.ItemStack;
+import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.xp.XpUtil;
+import crazypants.util.CapturedMob;
+import net.minecraft.entity.EntityList;
+import net.minecraft.item.ItemStack;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -127,7 +130,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSoulBinder.getUnlocalisedName();
+    return MachineObject.blockSoulBinder.getUnlocalisedName();
   }
 
   @Override
@@ -136,7 +139,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     for(MachineRecipeInput input : inputs) {
       if(input != null && input.item != null) {
         ItemStack resStack = input.item.copy();
-        resStack.stackSize = 1;
+        resStack.setCount(1);
         MachineRecipeInput mri = new MachineRecipeInput(input.slotNumber, resStack);
         result.add(mri);
       }      

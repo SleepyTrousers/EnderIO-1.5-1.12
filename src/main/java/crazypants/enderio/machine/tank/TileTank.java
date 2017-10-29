@@ -1,15 +1,24 @@
 package crazypants.enderio.machine.tank;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.xp.XpUtil;
@@ -24,11 +33,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 @Storable
 public class TileTank extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -259,8 +263,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
     if (inventory[slot] != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
-          && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
-        fill.result.itemStack.stackSize += inventory[slot].stackSize;
+          && inventory[slot].getCount() < inventory[slot].getMaxStackSize()) {
+        fill.result.itemStack.getCount() += inventory[slot].getCount();
       } else {
         return false;
       }
@@ -289,8 +293,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
     if (inventory[slot] != null && fill.result.itemStack != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
-          && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
-        fill.result.itemStack.stackSize += inventory[slot].stackSize;
+          && inventory[slot].getCount() < inventory[slot].getMaxStackSize()) {
+        fill.result.itemStack.getCount() += inventory[slot].getCount();
       } else {
         return false;
       }

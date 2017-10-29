@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;
@@ -9,6 +10,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -59,7 +61,7 @@ public class ClearConfigRecipe implements IRecipe {
     } else {
       lastOutput = input.copy();
       lastOutput.setTagCompound(new NBTTagCompound());
-      lastOutput.stackSize = 1;
+      lastOutput.setCount(1);
     }
     return lastOutput;
   }
@@ -87,7 +89,7 @@ public class ClearConfigRecipe implements IRecipe {
   }
 
   @Override
-  public ItemStack[] getRemainingItems(InventoryCrafting inv) {
-    return new ItemStack[inv.getSizeInventory()];
+  public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+    return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
   }
 }

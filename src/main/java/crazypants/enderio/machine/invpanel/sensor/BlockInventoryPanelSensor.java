@@ -2,7 +2,7 @@ package crazypants.enderio.machine.invpanel.sensor;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -35,7 +35,7 @@ IPaintable.IWrenchHideablePaint {
   }
   
   public BlockInventoryPanelSensor() {
-    super(ModObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
+    super(MachineObject.blockInventoryPanelSensor, TileInventoryPanelSensor.class);
   }
   
   @Override

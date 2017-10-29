@@ -1,10 +1,18 @@
 package crazypants.enderio.machine.spawner;
 
+import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
+
+import java.util.EnumSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.interfaces.IPoweredTask;
@@ -32,12 +40,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-import java.util.Set;
-
-import static crazypants.enderio.ModObject.itemSoulVessel;
 
 @Storable
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
@@ -84,7 +86,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
         if (Prep.isInvalid(getStackInSlot(0)) || Prep.isValid(getStackInSlot(1)) || !hasEntity()) {
           return;
         }
-        ItemStack res = capturedMob.toGenericStack(ModObject.itemSoulVial.getItem(), 1, 1);
+        ItemStack res = capturedMob.toGenericStack(MachineObject.itemSoulVial.getItem(), 1, 1);
         decrStackSize(0, 1);
         setInventorySlotContents(1, res);
       }
@@ -112,7 +114,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockPoweredSpawner.getUnlocalisedName();
+    return MachineObject.blockPoweredSpawner.getUnlocalisedName();
   }
 
   @Override

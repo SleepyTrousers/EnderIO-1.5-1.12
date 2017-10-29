@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -39,7 +39,7 @@ import java.util.List;
 public class BlockPaintedStone extends Block implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock {
 
   public static BlockPaintedStone create() {
-    BlockPaintedStone result = new BlockPaintedStone(ModObject.blockPaintedStone.getUnlocalisedName());
+    BlockPaintedStone result = new BlockPaintedStone(MachineObject.blockPaintedStone.getUnlocalisedName());
     result.init();
     return result;
   }
@@ -60,7 +60,7 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
   private void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new BasicPainterTemplate<BlockPaintedStone>(this, Blocks.COBBLESTONE) {
 
           @Override

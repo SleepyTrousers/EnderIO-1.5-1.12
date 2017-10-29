@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +18,7 @@ public class TileAversionObelisk extends TileEntityAbstractSpawningObelisk {
   
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSpawnGuard.getUnlocalisedName();
+    return MachineObject.blockSpawnGuard.getUnlocalisedName();
   }
 
   @Override

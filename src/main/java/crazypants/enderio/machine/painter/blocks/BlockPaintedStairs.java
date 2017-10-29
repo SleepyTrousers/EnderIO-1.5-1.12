@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -55,18 +55,18 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedStairs create() {
-    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.OAK_STAIRS, ModObject.blockPaintedStair.getUnlocalisedName());
+    BlockPaintedStairs woodStairs = new BlockPaintedStairs(Blocks.OAK_STAIRS, MachineObject.blockPaintedStair.getUnlocalisedName());
     woodStairs.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(woodStairs,
         Blocks.OAK_STAIRS, Blocks.ACACIA_STAIRS, Blocks.SPRUCE_STAIRS, Blocks.BIRCH_STAIRS, Blocks.JUNGLE_STAIRS, Blocks.DARK_OAK_STAIRS));
 
     return woodStairs;
   }
 
   public static BlockPaintedStairs create_stone() {
-    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.STONE_STAIRS, ModObject.blockPaintedStoneStair.getUnlocalisedName());
+    BlockPaintedStairs stoneStairs = new BlockPaintedStairs(Blocks.STONE_STAIRS, MachineObject.blockPaintedStoneStair.getUnlocalisedName());
     stoneStairs.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedStairs>(stoneStairs,
         Blocks.STONE_STAIRS, Blocks.BRICK_STAIRS, Blocks.STONE_BRICK_STAIRS, Blocks.NETHER_BRICK_STAIRS, Blocks.SANDSTONE_STAIRS, Blocks.QUARTZ_STAIRS,
         Blocks.RED_SANDSTONE_STAIRS));
 

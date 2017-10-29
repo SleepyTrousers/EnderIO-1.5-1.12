@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.obelisk.xp;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +24,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   }
 
   private BlockExperienceObelisk() {
-    super(ModObject.blockExperienceObelisk, TileExperienceObelisk.class);
+    super(MachineObject.blockExperienceObelisk, TileExperienceObelisk.class);
   }
 
   @Override

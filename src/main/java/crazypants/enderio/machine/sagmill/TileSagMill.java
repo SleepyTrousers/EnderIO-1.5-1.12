@@ -1,15 +1,22 @@
 package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.ModObject;
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
 
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -30,12 +37,12 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
 
   @Override
   public @Nonnull String getName() {
-    return ModObject.blockSagMill.getUnlocalisedName();
+    return MachineObject.blockSagMill.getUnlocalisedName();
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSagMill.getUnlocalisedName();
+    return MachineObject.blockSagMill.getUnlocalisedName();
   }
 
   @Override

@@ -4,7 +4,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.network.PacketHandler;
@@ -129,7 +129,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockWeatherObelisk.getUnlocalisedName();
+    return MachineObject.blockWeatherObelisk.getUnlocalisedName();
   }
 
   @Override
@@ -217,8 +217,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       canBeActive = true;
 
       if(isActive()) {
-        if(getEnergyStored(null) > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
-          setEnergyStored(getEnergyStored(null) - getPowerUsePerTick());
+        if(getEnergyStored() > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
+          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
 
           int toUse = 4;
           inputTank.removeFluidAmount(toUse);

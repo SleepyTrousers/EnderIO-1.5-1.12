@@ -1,6 +1,11 @@
 package crazypants.enderio.machine.wireless;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.util.Prep;
@@ -14,10 +19,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WirelessChargerController {
 

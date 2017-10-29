@@ -2,7 +2,7 @@ package crazypants.enderio.machine.generator.stirling;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capability.ItemTools;
 import crazypants.enderio.capability.ItemTools.MoveResult;
 import crazypants.enderio.capability.LegacyStirlingWrapper;
@@ -51,7 +51,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockStirlingGenerator.getUnlocalisedName();
+    return MachineObject.blockStirlingGenerator.getUnlocalisedName();
   }
 
   @Override
@@ -137,14 +137,14 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     if (redstoneCheck) {
 
       if (burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
-        if (inventory[0] != null && inventory[0].stackSize > 0) {
+        if (inventory[0] != null && inventory[0].getCount() > 0) {
           burnTime = getBurnTime(inventory[0]);
           if (burnTime > 0) {
             totalBurnTime = burnTime;
             isLavaFired = inventory[0].getItem() == Items.LAVA_BUCKET;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
             if (containedItem != null) {
-              if (inventory[0].stackSize == 1) {
+              if (inventory[0].getCount() == 1) {
                 inventory[0] = containedItem;
               } else {
                 decrStackSize(0, 1);
@@ -195,7 +195,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
   private boolean transmitEnergy() {
     if (powerDis == null) {
-      powerDis = new PowerDistributor(new BlockCoord(this));
+      powerDis = new PowerDistributor(getPos());
     }
     int canTransmit = Math.min(getEnergyStored(), getPowerUsePerTick() * 2);
     if (canTransmit <= 0) {

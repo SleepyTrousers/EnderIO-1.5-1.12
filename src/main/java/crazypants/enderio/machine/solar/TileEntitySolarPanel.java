@@ -1,9 +1,12 @@
 package crazypants.enderio.machine.solar;
 
+import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.integration.waila.IWailaNBTProvider;
-import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -18,8 +21,6 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-
-import static crazypants.enderio.ModObject.blockSolarPanel;
 
 @Storable
 public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IWailaNBTProvider, IHasConduitProbeData {

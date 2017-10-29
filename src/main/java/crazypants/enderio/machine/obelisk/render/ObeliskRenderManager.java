@@ -23,7 +23,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.*;
+import static crazypants.enderio.machine.MachineObject.*;
 
 @SideOnly(Side.CLIENT)
 public class ObeliskRenderManager {

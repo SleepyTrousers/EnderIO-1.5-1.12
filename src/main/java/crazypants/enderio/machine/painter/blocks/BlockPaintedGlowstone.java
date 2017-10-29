@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
@@ -48,13 +48,13 @@ import java.util.List;
 public abstract class BlockPaintedGlowstone extends BlockGlowstone implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
 
   public static BlockPaintedGlowstone create() {
-    BlockPaintedGlowstone result = new BlockPaintedGlowstoneNonSolid(ModObject.blockPaintedGlowstone.getUnlocalisedName());
+    BlockPaintedGlowstone result = new BlockPaintedGlowstoneNonSolid(MachineObject.blockPaintedGlowstone.getUnlocalisedName());
     result.init();
     return result;
   }
 
   public static BlockPaintedGlowstone create_solid() {
-    BlockPaintedGlowstone result = new BlockPaintedGlowstoneSolid(ModObject.blockPaintedGlowstoneSolid.getUnlocalisedName());
+    BlockPaintedGlowstone result = new BlockPaintedGlowstoneSolid(MachineObject.blockPaintedGlowstoneSolid.getUnlocalisedName());
     result.init();
     return result;
   }
@@ -104,7 +104,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone implements IT
   private void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new BasicPainterTemplate<BlockPaintedGlowstone>(this, Blocks.GLOWSTONE));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);

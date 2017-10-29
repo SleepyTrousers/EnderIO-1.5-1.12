@@ -1,10 +1,21 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
@@ -30,9 +41,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.*;
-
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -55,7 +63,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   private TextureSupplier portalIcon = TextureRegistry.registerTexture("blocks/ender_still");
 
   private BlockTransceiver() {
-    super(ModObject.blockTransceiver, TileTransceiver.class);
+    super(MachineObject.blockTransceiver, TileTransceiver.class);
   }
 
   @SideOnly(Side.CLIENT)

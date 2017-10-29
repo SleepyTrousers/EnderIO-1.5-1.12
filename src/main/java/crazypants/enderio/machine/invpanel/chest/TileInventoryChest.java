@@ -3,7 +3,7 @@ package crazypants.enderio.machine.invpanel.chest;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.CapacitorKeyType;
 import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
@@ -101,7 +101,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
     CLASSES.put(EnumChestSize.WAREHOUSE13, Meta8.class);
 
     for (EnumChestSize size : EnumChestSize.values()) {
-      GameRegistry.registerTileEntity(CLASSES.get(size), ModObject.blockInventoryChest.getUnlocalisedName() + size.getName() + "TileEntity");
+      GameRegistry.registerTileEntity(CLASSES.get(size), MachineObject.blockInventoryChest.getUnlocalisedName() + size.getName() + "TileEntity");
     }
   }
 
@@ -121,9 +121,9 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   // called by our block
   private TileInventoryChest(EnumChestSize size) {
     super(new EnderInventory(),
-        new DefaultCapacitorKey(ModObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
-        new DefaultCapacitorKey(ModObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
-        new DefaultCapacitorKey(ModObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1)
+        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_INTAKE, Scaler.Factory.POWER, 10),
+        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_BUFFER, Scaler.Factory.POWER, 100000),
+        new DefaultCapacitorKey(MachineObject.blockInventoryChest, CapacitorKeyType.ENERGY_USE, Scaler.Factory.POWER, 1)
     );
     chestInventory = getInventory();
     this.size = size;
@@ -134,7 +134,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockInventoryChest.getUnlocalisedName();
+    return MachineObject.blockInventoryChest.getUnlocalisedName();
   }
 
   @Override

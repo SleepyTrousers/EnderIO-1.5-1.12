@@ -1,5 +1,15 @@
 package crazypants.enderio.machine.capbank.render;
 
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -15,14 +25,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.blockCapBank;
-import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class CapBankItemRenderMapper implements IItemRenderMapper.IItemStateMapper, IItemRenderMapper.IDynamicOverlayMapper {
 

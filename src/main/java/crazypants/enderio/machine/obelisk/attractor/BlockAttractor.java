@@ -2,7 +2,7 @@ package crazypants.enderio.machine.obelisk.attractor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.network.PacketHandler;
@@ -28,7 +28,7 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   }
 
   protected BlockAttractor() {
-    super(ModObject.blockAttractor, TileAttractor.class);
+    super(MachineObject.blockAttractor, TileAttractor.class);
   }
 
   @Override

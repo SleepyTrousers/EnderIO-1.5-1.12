@@ -22,7 +22,7 @@ class DSUInventory {
 //    if (db.lookupItem(stack, entry, false) != entry) {
 //      return 0;
 //    }
-//    int remaining = stack.stackSize;
+//    int remaining = stack.getCount();
 //    if (count > remaining) {
 //      count = remaining;
 //    }

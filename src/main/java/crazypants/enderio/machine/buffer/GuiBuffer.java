@@ -1,16 +1,19 @@
 package crazypants.enderio.machine.buffer;
 
+import java.io.IOException;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
@@ -154,7 +157,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    String invName = EnderIO.lang.localizeExact(getTileEntity().getName() + ".name");
+    String invName = EnderIO.lang.localizeExact(getTileEntity().getDisplayName() + ".name");
     getFontRenderer().drawStringWithShadow(invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
 
     if (hasPower) {
@@ -188,7 +191,7 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
     } else if (mode == IoMode.PUSH) {
       renderSlotHighlight(slot, PUSH_COLOR);
     } else if (mode == IoMode.PUSH_PULL) {
-      renderSplitHighlight(invSlot.xDisplayPosition, invSlot.yDisplayPosition, 16, 16);
+      renderSplitHighlight(invSlot.xPos, invSlot.yPos, 16, 16);
     }
   }
 

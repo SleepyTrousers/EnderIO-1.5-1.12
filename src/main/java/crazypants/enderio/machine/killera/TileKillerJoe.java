@@ -1,5 +1,17 @@
 package crazypants.enderio.machine.killera;
 
+import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.FluidWrapper;
@@ -14,11 +26,15 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-import crazypants.enderio.ModObject;
+
 import crazypants.enderio.capability.LegacyKillerJoeWrapper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.ranged.IRanged;
@@ -61,16 +77,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
 public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
@@ -133,7 +139,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockKillerJoe.getUnlocalisedName();
+    return MachineObject.blockKillerJoe.getUnlocalisedName();
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.
@@ -141,8 +147,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       "tconstruct:broadsword", "tconstruct:longsword", "tconstruct:rapier", "tconstruct:frypan", "tconstruct:cleaver", "minecraft:stick")
           // for the ghost slot:
           .add(Items.WOODEN_SWORD).add(Items.STONE_SWORD).add(Items.IRON_SWORD).add(Items.GOLDEN_SWORD).add(Items.DIAMOND_SWORD)
-          .add(ModObject.itemDarkSteelSword.getItem()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
-          .add(ModObject.itemDarkSteelAxe.getItem());
+          .add(MachineObject.itemDarkSteelSword.getItem()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
+          .add(MachineObject.itemDarkSteelAxe.getItem());
   
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {

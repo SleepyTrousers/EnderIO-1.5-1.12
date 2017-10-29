@@ -1,11 +1,20 @@
 package crazypants.enderio.machine.reservoir;
 
+import static crazypants.enderio.machine.MachineObject.blockReservoir;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.SmartTank;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -38,13 +47,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.blockReservoir;
-
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
@@ -57,7 +59,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   private BlockReservoir() {
-    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, new Material(MapColor.WATER) {
+    super(MachineObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, new Material(MapColor.WATER) {
 
       @Override
       public boolean isToolNotRequired() {

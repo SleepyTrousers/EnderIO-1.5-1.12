@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.soul;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -21,20 +22,20 @@ public class SoulBinderRecipeManager {
   }
 
   public void addDefaultRecipes() {
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSpawnerRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance1);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance2);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderReanimationRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSentientRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderEnderCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderAttractorCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), SoulBinderPrecientCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSpawnerRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance1);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderTunedPressurePlateRecipe.instance2);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderReanimationRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderSentientRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderEnderCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderAttractorCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), SoulBinderPrecientCystalRecipe.instance);
 
     //Ender Rail
 //    if(Config.transceiverEnabled && Config.enderRailEnabled) {
 //      BasicSoulBinderRecipe err = new BasicSoulBinderRecipe(new ItemStack(Blocks.detector_rail), new ItemStack(EnderIO.blockEnderRail),
 //          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "EnderRail", "SpecialMobs.SpecialEnderman", "Enderman");
-//      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, err);
+//      MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.unlocalisedName, err);
 //    }
   }
 
@@ -120,7 +121,7 @@ public class SoulBinderRecipeManager {
 
       BasicSoulBinderRecipe recipe = new BasicSoulBinderRecipe(inputStack, outputStack, energyRequired, xpLevelsRequired, recipeUid, entityNames);
 
-      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.getUnlocalisedName(), recipe);
+      MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSoulBinder.getUnlocalisedName(), recipe);
 
       return true;
     } catch (Exception e) {

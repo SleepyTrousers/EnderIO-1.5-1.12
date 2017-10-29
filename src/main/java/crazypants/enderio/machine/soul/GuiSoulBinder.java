@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.soul;
 
+import java.io.IOException;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.common.util.SoundUtil;
+
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
@@ -12,9 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
 
 public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 

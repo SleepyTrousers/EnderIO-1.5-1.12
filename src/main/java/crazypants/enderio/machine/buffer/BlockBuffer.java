@@ -1,8 +1,13 @@
 package crazypants.enderio.machine.buffer;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -16,21 +21,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockBuffer create() {
+  public static BlockBuffer create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
     BlockBuffer res = new BlockBuffer();
     res.init();
@@ -38,14 +40,14 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
   }
 
   private BlockBuffer() {
-    super(ModObject.blockBuffer, TileBuffer.class);
+    super(MachineObject.blockBuffer, TileBuffer.class);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO).withProperty(BufferType.TYPE, BufferType.ITEM));
   }
-
-  @Override
-  protected ItemBlock createItemBlock() {
-    return new BlockItemBuffer(this, name);
-  }
+  
+	@Override
+	public Item createBlockItem(IModObject modObject) {
+		return new BlockItemBuffer(this, modObject.getUnlocalisedName());
+	}
 
   @Override
   protected @Nonnull BlockStateContainer createBlockState() {
@@ -74,7 +76,7 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IPa
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
     for (BufferType type : BufferType.values()) {
       list.add(new ItemStack(item, 1, type.ordinal()));
     }

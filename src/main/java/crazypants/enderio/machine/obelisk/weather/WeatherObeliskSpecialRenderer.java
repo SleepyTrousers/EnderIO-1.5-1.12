@@ -4,7 +4,7 @@ import crazypants.enderio.machine.obelisk.render.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import static crazypants.enderio.ModObject.blockWeatherObelisk;
+import static crazypants.enderio.machine.MachineObject.blockWeatherObelisk;
 
 public class WeatherObeliskSpecialRenderer extends ObeliskSpecialRenderer<TileWeatherObelisk> {
   

@@ -2,7 +2,7 @@ package crazypants.enderio.machine.invpanel.chest;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -41,7 +41,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   }
 
   protected BlockInventoryChest() {
-    super(ModObject.blockInventoryChest, TileInventoryChest.class);
+    super(MachineObject.blockInventoryChest, TileInventoryChest.class);
     initDefaultState();
   }
 

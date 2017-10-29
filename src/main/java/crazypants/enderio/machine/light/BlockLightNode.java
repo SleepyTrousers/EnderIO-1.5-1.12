@@ -1,7 +1,10 @@
 package crazypants.enderio.machine.light;
 
+import java.util.List;
+import java.util.Random;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -19,9 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-import java.util.Random;
-
 public class BlockLightNode extends BlockEio<TileLightNode> {
 
   public static BlockLightNode create() {
@@ -33,7 +33,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public static final PropertyBool ACTIVE = PropertyBool.create("active");
   
   public BlockLightNode() {
-    super(ModObject.blockLightNode.getUnlocalisedName(), TileLightNode.class, Material.AIR);
+    super(MachineObject.blockLightNode.getUnlocalisedName(), TileLightNode.class, Material.AIR);
     setCreativeTab(null);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));

@@ -124,7 +124,7 @@ public class GeneralTab implements ITabPanel {
     text.add(EnderIO.lang.localize("gui.machine.localbuffer"));
     text.add(EnderIO.lang.localize("gui.machine.upkeep") + " " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
-    int energyStored = Math.min(parent.getTransciever().getEnergyStored(null), maxEnergy);
+    int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
   }
 
@@ -133,7 +133,7 @@ public class GeneralTab implements ITabPanel {
     text.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " "
         + PowerDisplayUtil.formatPowerPerTick(parent.getTransciever().getMaxEnergyRecieved(null)));
     int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
-    int energyStored = Math.max(0, parent.getTransciever().getEnergyStored(null) - maxEnergy);
+    int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
   }
 

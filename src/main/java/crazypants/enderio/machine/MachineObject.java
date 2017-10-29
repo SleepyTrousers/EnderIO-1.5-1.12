@@ -9,7 +9,11 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.crafter.BlockCrafter;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +21,15 @@ import net.minecraft.util.ResourceLocation;
 
 public enum MachineObject implements IModObject.Registerable {
 
+  blockMachineIO(BlockMachineIO.class),
+  
   blockAlloySmelter(BlockAlloySmelter.class),
-  blockCapBank(BlockCapBank.class);
+  blockBuffer(BlockBuffer.class),
+//  blockCapBank(BlockCapBank.class),
+  blockCrafter(BlockCrafter.class),
+  blockEnchanter(BlockEnchanter.class),
+  
+  ;
 
   static {
     ModObjectRegistry.addModObjects(MachineObject.class);

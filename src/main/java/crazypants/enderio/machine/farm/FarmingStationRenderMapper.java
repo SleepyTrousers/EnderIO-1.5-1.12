@@ -1,6 +1,11 @@
 package crazypants.enderio.machine.farm;
 
-import crazypants.enderio.machine.MachineRenderMapper;
+import java.util.Collections;
+import java.util.List;
+
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.render.MachineRenderMapper;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.property.EnumRenderMode;
 import net.minecraft.block.state.IBlockState;
@@ -9,9 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Collections;
-import java.util.List;
 
 public class FarmingStationRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware {
 

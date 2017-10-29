@@ -1,5 +1,10 @@
 package crazypants.enderio.machine.obelisk;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
@@ -9,11 +14,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 public class PacketObeliskFx implements IMessage, IMessageHandler<PacketObeliskFx, IMessage> {
 

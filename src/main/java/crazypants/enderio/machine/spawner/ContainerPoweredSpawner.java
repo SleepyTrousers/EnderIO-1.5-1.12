@@ -1,16 +1,18 @@
 package crazypants.enderio.machine.spawner;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> implements IRemoteExec.IContainer {
 
@@ -44,8 +46,8 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   }
 
   public void setSlotVisibility(boolean visible) {
-    slotInput.yDisplayPosition = visible ? 42 : -3000;
-    slotOutput.yDisplayPosition = visible ? 42 : -3000;
+    slotInput.yPos = visible ? 42 : -3000;
+    slotOutput.yPos = visible ? 42 : -3000;
   }
 
   @Override

@@ -6,7 +6,7 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
@@ -49,14 +49,14 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), ModObject.blockZombieGenerator);
+    super(new SlotDefinition(0, 0, 0), MachineObject.blockZombieGenerator);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockZombieGenerator.getUnlocalisedName();
+    return MachineObject.blockZombieGenerator.getUnlocalisedName();
   }
 
 

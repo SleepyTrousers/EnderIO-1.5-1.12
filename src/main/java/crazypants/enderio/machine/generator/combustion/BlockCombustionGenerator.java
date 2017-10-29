@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.generator.combustion;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -34,7 +34,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   protected BlockCombustionGenerator() {
-    super(ModObject.blockCombustionGenerator, TileCombustionGenerator.class);
+    super(MachineObject.blockCombustionGenerator, TileCombustionGenerator.class);
   }
 
   @Override

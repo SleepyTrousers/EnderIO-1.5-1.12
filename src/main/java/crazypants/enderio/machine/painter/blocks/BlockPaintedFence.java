@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -54,20 +54,20 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFence create() {
-    BlockPaintedFence woodFence = new BlockPaintedFence(Material.WOOD, BlockPlanks.EnumType.OAK.getMapColor(), ModObject.blockPaintedFence.getUnlocalisedName(), SoundType.WOOD);
+    BlockPaintedFence woodFence = new BlockPaintedFence(Material.WOOD, BlockPlanks.EnumType.OAK.getMapColor(), MachineObject.blockPaintedFence.getUnlocalisedName(), SoundType.WOOD);
     woodFence.setHardness(2.0F).setResistance(5.0F);
     woodFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(woodFence,
         Blocks.OAK_FENCE, Blocks.ACACIA_FENCE, Blocks.SPRUCE_FENCE, Blocks.BIRCH_FENCE, Blocks.JUNGLE_FENCE, Blocks.DARK_OAK_FENCE));
 
     return woodFence;
   }
 
   public static BlockPaintedFence create_stone() {
-    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.ROCK, MapColor.NETHERRACK, ModObject.blockPaintedStoneFence.getUnlocalisedName(), SoundType.STONE);
+    BlockPaintedFence stoneFence = new BlockPaintedFence(Material.ROCK, MapColor.NETHERRACK, MachineObject.blockPaintedStoneFence.getUnlocalisedName(), SoundType.STONE);
     stoneFence.setHardness(2.0F).setResistance(10.0F);
     stoneFence.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFence>(stoneFence,
         Blocks.NETHER_BRICK_FENCE));
 
     return stoneFence;

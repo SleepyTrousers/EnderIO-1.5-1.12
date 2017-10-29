@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static crazypants.enderio.ModObject.itemSoulVessel;
+import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
 
 public class ContainerAttractor extends AbstractMachineContainer<TileAttractor> {
 

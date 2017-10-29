@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -43,10 +43,10 @@ import java.util.List;
 public abstract class BlockPaintedRedstone extends BlockCompressedPowered implements ITileEntityProvider, IPaintable.IBlockPaintableBlock {
 
   public static BlockPaintedRedstone create() {
-    BlockPaintedRedstone result = new BlockPaintedRedstoneSolid(ModObject.blockPaintedRedstoneSolid.getUnlocalisedName());
+    BlockPaintedRedstone result = new BlockPaintedRedstoneSolid(MachineObject.blockPaintedRedstoneSolid.getUnlocalisedName());
     result.init();
 
-    BlockPaintedRedstone result2 = new BlockPaintedRedstoneNonSolid(ModObject.blockPaintedRedstone.getUnlocalisedName());
+    BlockPaintedRedstone result2 = new BlockPaintedRedstoneNonSolid(MachineObject.blockPaintedRedstone.getUnlocalisedName());
     result2.init();
     return result;
   }
@@ -96,7 +96,7 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered implem
   private void init() {
     GameRegistry.register(this);
     GameRegistry.register(new BlockItemPaintedBlock(this, name));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new BasicPainterTemplate<BlockPaintedRedstone>(this, Blocks.REDSTONE_BLOCK));
     SmartModelAttacher.registerNoProps(this);
     PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);

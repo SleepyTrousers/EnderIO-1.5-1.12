@@ -1,15 +1,26 @@
 package crazypants.enderio.machine.vat;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
-import crazypants.enderio.ModObject;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -19,11 +30,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Storable
 public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -44,7 +50,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   Fluid currentTaskOutputFluid;
 
   public TileVat() {
-    super(new SlotDefinition(0, 1, -1, -1, -1, -1), ModObject.blockVat);
+    super(new SlotDefinition(0, 1, -1, -1, -1, -1), MachineObject.blockVat);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
     outputTank.setTileEntity(this);
@@ -53,7 +59,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   public @Nonnull String getName() {
-    return ModObject.blockVat.getUnlocalisedName();
+    return MachineObject.blockVat.getUnlocalisedName();
   }
 
   @Override
@@ -63,7 +69,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockVat.getUnlocalisedName();
+    return MachineObject.blockVat.getUnlocalisedName();
   }
 
   @Override

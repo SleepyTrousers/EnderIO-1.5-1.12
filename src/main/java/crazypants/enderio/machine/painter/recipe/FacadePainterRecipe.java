@@ -36,7 +36,7 @@ public class FacadePainterRecipe extends AbstractPainterTemplate<ItemConduitFaca
     }
 
     ItemStack result = target.copy();
-    result.stackSize = 1;
+    result.setCount(1);
     PainterUtil2.setSourceBlock(result, paintState);
 
     return new ResultStack[] { new ResultStack(result) };

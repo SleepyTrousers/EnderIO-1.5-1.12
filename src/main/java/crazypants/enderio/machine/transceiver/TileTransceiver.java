@@ -1,12 +1,26 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
+
+import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.filters.ItemFilter;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.task.ContinuousTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
@@ -22,12 +36,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-import java.util.Map.Entry;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
@@ -140,7 +148,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockTransceiver.getUnlocalisedName();
+    return MachineObject.blockTransceiver.getUnlocalisedName();
   }
 
   @Override
@@ -314,7 +322,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   }
 
   private int getMaxSendableEnergy() {
-    return getEnergyStored(null) - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
+    return getEnergyStored() - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
   }
 
   @Override

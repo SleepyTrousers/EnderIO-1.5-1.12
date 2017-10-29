@@ -1,8 +1,18 @@
 package crazypants.enderio.machine.farm;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.util.Prep;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,13 +21,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
@@ -35,10 +38,10 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       slotItemsStacks1.add(new ItemStack(item));
     }
     slotItemsStacks1.addAll(Config.farmHoes.getItemStacks());
-    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe }) {
+    for (Item item : new Item[] { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE, Items.DIAMOND_AXE, MachineObject.itemDarkSteelAxe }) {
       slotItemsStacks2.add(new ItemStack(item));
     }
-    for (Item item : new Item[] { Items.SHEARS, ModObject.itemDarkSteelShears }) {
+    for (Item item : new Item[] { Items.SHEARS, MachineObject.itemDarkSteelShears }) {
       slotItemsStacks3.add(new ItemStack(item));
     }
     slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());

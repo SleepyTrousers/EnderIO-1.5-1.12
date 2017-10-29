@@ -1,15 +1,16 @@
 package crazypants.enderio.machine.soul;
 
+import static crazypants.enderio.machine.MachineObject.blockPaintedPressurePlate;
+
+import java.util.List;
+
 import com.enderio.core.common.util.EntityUtil;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
 import crazypants.util.CapturedMob;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
-import static crazypants.enderio.ModObject.blockPaintedPressurePlate;
 
 public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe {
 
@@ -28,7 +29,7 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
     ItemStack result = input.copy();
     result.setItemDamage(EnumPressurePlateType.getMetaFromType(EnumPressurePlateType.TUNED, silent));
     result.setTagCompound(mobType.toNbt(result.getTagCompound()));
-    result.stackSize = 1;
+    result.setCount(1);
     return result;
   }
 

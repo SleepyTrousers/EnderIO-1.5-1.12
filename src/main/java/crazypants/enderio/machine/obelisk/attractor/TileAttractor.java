@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
 import com.mojang.authlib.GameProfile;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import info.loenwind.autosave.annotations.Storable;
@@ -38,7 +38,7 @@ public class TileAttractor extends AbstractMobObelisk {
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockAttractor.getUnlocalisedName();
+    return MachineObject.blockAttractor.getUnlocalisedName();
   }
 
   private void untrackAll() {
@@ -144,7 +144,7 @@ public class TileAttractor extends AbstractMobObelisk {
   private class Target extends FakePlayerEIO {
 
     public Target() {
-      super(getWorld(), getLocation(), new GameProfile(null, ModObject.blockAttractor.getUnlocalisedName() + ":" + getLocation()));
+      super(getWorld(), getLocation(), new GameProfile(null, MachineObject.blockAttractor.getUnlocalisedName() + ":" + getLocation()));
       posY += 1;
     }
   }

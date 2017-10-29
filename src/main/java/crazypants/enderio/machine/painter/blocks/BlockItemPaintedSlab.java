@@ -59,7 +59,7 @@ public class BlockItemPaintedSlab extends ItemBlock {
 
   @Override
   public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand,  EnumFacing side, float hitX, float hitY, float hitZ) {    
-    if (stack.stackSize == 0) {
+    if (stack.getCount() == 0) {
       return EnumActionResult.FAIL;
     } else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)) {
       return EnumActionResult.FAIL;
@@ -100,7 +100,7 @@ public class BlockItemPaintedSlab extends ItemBlock {
         }
         worldIn.playSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS,
             (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F, true);
-        --stack.stackSize;
+        --stack.getCount();
       }
 
       return true;

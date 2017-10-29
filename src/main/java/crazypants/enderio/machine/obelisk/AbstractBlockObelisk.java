@@ -1,7 +1,14 @@
 package crazypants.enderio.machine.obelisk;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.ClientUtil;
-import crazypants.enderio.IModObject;
+
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.render.ObeliskRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
@@ -18,9 +25,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> implements ITESRItemBlock {
 

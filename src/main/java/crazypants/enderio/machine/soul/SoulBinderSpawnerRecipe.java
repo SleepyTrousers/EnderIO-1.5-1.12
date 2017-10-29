@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.soul;
 
+import static crazypants.enderio.machine.MachineObject.itemBrokenSpawner;
+
+import java.util.List;
+
 import com.enderio.core.common.util.EntityUtil;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
-
-import java.util.List;
-
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
 
 public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 

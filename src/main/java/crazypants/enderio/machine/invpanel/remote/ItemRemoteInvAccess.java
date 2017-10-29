@@ -7,7 +7,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.item.PowerBarOverlayRenderHelper;
 import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.power.IInternalPoweredItem;
@@ -47,7 +47,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static crazypants.enderio.ModObject.blockInventoryPanel;
+import static crazypants.enderio.machine.MachineObject.blockInventoryPanel;
 import static crazypants.util.NbtValue.*;
 
 public class ItemRemoteInvAccess extends Item
@@ -62,8 +62,8 @@ public class ItemRemoteInvAccess extends Item
 
   protected ItemRemoteInvAccess() {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemRemoteInvAccess.getUnlocalisedName());
-    setRegistryName(ModObject.itemRemoteInvAccess.getUnlocalisedName());
+    setUnlocalizedName(MachineObject.itemRemoteInvAccess.getUnlocalisedName());
+    setRegistryName(MachineObject.itemRemoteInvAccess.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(1);
@@ -77,7 +77,7 @@ public class ItemRemoteInvAccess extends Item
   @SideOnly(Side.CLIENT)
   public void registerRenderers() {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
-      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(ModObject.itemRemoteInvAccess.getUnlocalisedName()));
+      ResourceLocation resourceLocation = new ResourceLocation(EnderIO.DOMAIN, type.getUnlocalizedName(MachineObject.itemRemoteInvAccess.getUnlocalisedName()));
       ModelBakery.registerItemVariants(this, resourceLocation);
       ClientUtil.regRenderer(this, type.toMetadata(), resourceLocation);
     }

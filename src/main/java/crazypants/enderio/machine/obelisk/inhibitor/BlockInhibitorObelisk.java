@@ -4,7 +4,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
@@ -32,7 +32,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   }
 
   protected BlockInhibitorObelisk() {
-    super(ModObject.blockInhibitorObelisk, TileInhibitorObelisk.class);
+    super(MachineObject.blockInhibitorObelisk, TileInhibitorObelisk.class);
   }
 
   @Override

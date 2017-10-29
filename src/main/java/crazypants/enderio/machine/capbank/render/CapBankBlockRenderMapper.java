@@ -1,9 +1,17 @@
 package crazypants.enderio.machine.capbank.render;
 
+import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import crazypants.enderio.render.property.EnumMergingBlockRenderMode;
@@ -19,12 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-
-import static crazypants.enderio.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
 
@@ -48,7 +50,7 @@ public class CapBankBlockRenderMapper extends ConnectedBlockRenderMapper {
         IoMode ioMode = ((TileCapBank) tileEntity).getIoMode(face);
         InfoDisplayType displayType = ((TileCapBank) tileEntity).getDisplayType(face);
         EnumIOMode iOMode = ((BlockCapBank) state.getBlock()).mapIOMode(displayType, ioMode);
-        states.add(BlockMachineIO.block.getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
+        states.add(MachineObject.blockMachineIO.getBlock().getDefaultState().withProperty(IOMode.IO, IOMode.get(face, iOMode)));
       }
     } else {
       states.add(state.getState().withProperty(RENDER, EnumMergingBlockRenderMode.sides).withProperty(CapBankType.KIND, CapBankType.NONE));

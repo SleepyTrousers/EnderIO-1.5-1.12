@@ -1,6 +1,9 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.util.List;
+
 import com.enderio.core.common.util.ItemUtil;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -8,8 +11,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.List;
 
 public class StoredCraftingRecipe {
 
@@ -32,7 +33,7 @@ public class StoredCraftingRecipe {
       ItemStack stack = slot.getStack();
       if(stack != null) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
         slots[slotIdx] = stack;
         count++;
       }
@@ -104,7 +105,7 @@ public class StoredCraftingRecipe {
     result = CraftingManager.getInstance().findMatchingRecipe(tmp, te.getWorld());
     if(result != null) {
       result = result.copy();
-      result.stackSize = 1;
+      result.setCount(1);
     }
     updateResult = false;
   }

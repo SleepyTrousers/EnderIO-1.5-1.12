@@ -1,8 +1,13 @@
 package crazypants.enderio.machine.enchanter;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
+
 import crazypants.enderio.Log;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
@@ -91,7 +93,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
       }
 
       @Override
-      public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
+      public ItemStack onTake(EntityPlayer player, ItemStack stack) {
         if(!player.capabilities.isCreativeMode) {
           player.addExperienceLevel(-te.getCurrentEnchantmentCost());
         }
@@ -101,7 +103,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
         if (recipe == null || enchData == null || curStack == null) {
           Log.error("Enchanting yielded result without resources");
         } else {
-          te.decrStackSize(2, recipe.getLapizForStackSize(curStack.stackSize));
+          te.decrStackSize(2, recipe.getLapizForStackSize(curStack.getCount()));
           te.decrStackSize(1, recipe.getItemsPerLevel() * enchData.enchantmentLevel);
           te.markDirty();
         }
@@ -111,6 +113,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
           te.getWorld().playEvent(1030, te.getPos(), 0);
           te.getWorld().playEvent(2005, te.getPos().up(), 0);
         }
+        return stack;
       }
 
       @Override
@@ -165,12 +168,12 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
           }
         }
       }
-      if (origStack.stackSize == 0) {
+      if (origStack.getCount() == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
       }
-      slot.onPickupFromSlot(par1EntityPlayer, origStack);
+      return slot.onTake(par1EntityPlayer, origStack);
     }
     return copyStack;
   }

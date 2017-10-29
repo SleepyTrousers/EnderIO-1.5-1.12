@@ -1,6 +1,9 @@
 package crazypants.enderio.machine.light;
 
+import java.util.List;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -16,8 +19,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class BlockItemElectricLight extends ItemBlock implements IResourceTooltipProvider {
 

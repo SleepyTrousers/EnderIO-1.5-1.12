@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockEndermanSkull;
-import static crazypants.enderio.ModObject.blockSpawnGuard;
+import static crazypants.enderio.machine.MachineObject.blockEndermanSkull;
+import static crazypants.enderio.machine.MachineObject.blockSpawnGuard;
 
 @SideOnly(Side.CLIENT)
 public class AversionObeliskRenderer extends ObeliskSpecialRenderer<TileAversionObelisk> {

@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.soul;
 
+import static crazypants.enderio.machine.MachineObject.itemFrankenSkull;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.skull.FrankenSkull;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.ModObject.itemFrankenSkull;
 
 public class SoulBinderSentientRecipe extends AbstractSoulBinderRecipe {
 

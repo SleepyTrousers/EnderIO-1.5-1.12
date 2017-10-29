@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
@@ -23,7 +23,7 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
   }
 
   protected BlockAversionObelisk() {
-    super(ModObject.blockSpawnGuard, TileAversionObelisk.class);
+    super(MachineObject.blockSpawnGuard, TileAversionObelisk.class);
   }
 
   @Override

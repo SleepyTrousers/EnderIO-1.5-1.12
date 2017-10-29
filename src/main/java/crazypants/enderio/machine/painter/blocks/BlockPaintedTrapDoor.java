@@ -2,7 +2,7 @@ package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
@@ -55,26 +55,26 @@ public class BlockPaintedTrapDoor extends BlockDarkSteelTrapDoor implements ITil
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedTrapDoor create_wooden() {
-    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(ModObject.blockPaintedWoodenTrapdoor, Material.WOOD, false);
+    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(MachineObject.blockPaintedWoodenTrapdoor, Material.WOOD, false);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedTrapDoor>(result,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedTrapDoor>(result,
         Blocks.TRAPDOOR));
     return result;
   }
 
   public static BlockPaintedTrapDoor create_iron() {
-    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(ModObject.blockPaintedIronTrapdoor, Material.IRON, false);
+    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(MachineObject.blockPaintedIronTrapdoor, Material.IRON, false);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new BasicPainterTemplate<BlockPaintedTrapDoor>(result, Blocks.IRON_TRAPDOOR));
     return result;
   }
 
   public static BlockPaintedTrapDoor create_dark() {
-    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(ModObject.blockPaintedDarkSteelTrapdoor, Material.IRON, true);
+    BlockPaintedTrapDoor result = new BlockPaintedTrapDoor(MachineObject.blockPaintedDarkSteelTrapdoor, Material.IRON, true);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
-        new BasicPainterTemplate<BlockPaintedTrapDoor>(result, ModObject.blockDarkSteelTrapdoor.getBlock()));
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
+        new BasicPainterTemplate<BlockPaintedTrapDoor>(result, MachineObject.blockDarkSteelTrapdoor.getBlock()));
     return result;
   }
 

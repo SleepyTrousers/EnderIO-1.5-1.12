@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -52,10 +52,10 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedFenceGate create() {
-    BlockPaintedFenceGate result = new BlockPaintedFenceGate(BlockPlanks.EnumType.OAK, ModObject.blockPaintedFenceGate.getUnlocalisedName());
+    BlockPaintedFenceGate result = new BlockPaintedFenceGate(BlockPlanks.EnumType.OAK, MachineObject.blockPaintedFenceGate.getUnlocalisedName());
     result.setHardness(2.0F).setResistance(5.0F);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFenceGate>(result,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedFenceGate>(result,
         Blocks.OAK_FENCE_GATE, Blocks.ACACIA_FENCE_GATE, Blocks.SPRUCE_FENCE_GATE, Blocks.BIRCH_FENCE_GATE, Blocks.JUNGLE_FENCE_GATE,
         Blocks.DARK_OAK_FENCE_GATE));
 

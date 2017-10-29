@@ -1,7 +1,14 @@
 package crazypants.enderio.machine.crafter;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
@@ -12,17 +19,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
-import java.util.List;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 
   private final ToggleButton bufferSizeB;
 
   public GuiCrafter(InventoryPlayer par1InventoryPlayer, TileCrafter te) {
-    super(te, new ContainerCrafter(par1InventoryPlayer, te), "crafter");
+    super(te, new ContainerCrafter(par1InventoryPlayer, te, null), "crafter");
     xSize = getXSize();
 
     int x = getXSize() - 5 - 16;
@@ -38,19 +41,17 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
   public void initGui() {
     super.initGui();
     bufferSizeB.onGuiInit();
-    ((ContainerCrafter) inventorySlots).addCrafterSlots(getGhostSlots());
+    ((ContainerCrafter) inventorySlots).addCrafterSlots(getGhostSlotHandler());
   }
 
   @Override
   protected void mouseClickMove(int mouseX, int mouseY, int button, long par4) {
-    if (!getGhostSlots().isEmpty()) {
-      GhostSlot slot = getGhostSlot(mouseX, mouseY);
-      if (slot != null) {
-        ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-        // don't replace already set slots while dragging an item
-        if (st == null || slot.getStack() == null) {
-          slot.putStack(st);
-        }
+    GhostSlot slot = getGhostSlotHandler().getGhostSlotAt(this, mouseX, mouseY);
+    if (slot != null) {
+      ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
+      // don't replace already set slots while dragging an item
+      if (st.isEmpty() || slot.getStack().isEmpty()) {
+        slot.putStack(st, st.getCount());
       }
     }
     super.mouseClickMove(mouseX, mouseY, button, par4);

@@ -1,17 +1,19 @@
 package crazypants.enderio.machine.soul;
 
+import static crazypants.enderio.machine.MachineObject.itemBrokenSpawner;
+import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.ModObject.itemSoulVessel;
 
 public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
 
@@ -35,10 +37,10 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
 
       @Override
       public void putStack(@Nullable ItemStack stack) {
-        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+        if (stack == null || stack.getCount() <= getItemStackLimit(stack)) {
           super.putStack(stack);
         } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
               + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
         }
       }
@@ -51,10 +53,10 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
 
       @Override
       public void putStack(@Nullable ItemStack stack) {
-        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+        if (stack == null || stack.getCount() <= getItemStackLimit(stack)) {
           super.putStack(stack);
         } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
               + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
         }
       }

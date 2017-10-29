@@ -1,17 +1,32 @@
 package crazypants.enderio.machine.spawner;
 
+import static crazypants.enderio.machine.MachineObject.blockPoweredSpawner;
+import static crazypants.enderio.machine.MachineObject.itemBrokenSpawner;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
@@ -48,24 +63,13 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static crazypants.enderio.ModObject.blockPoweredSpawner;
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
-
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint, IHaveTESR {
  
   public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
 
   public static BlockPoweredSpawner create() {
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.getUnlocalisedName(), new DummyRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPoweredSpawner.getUnlocalisedName(), new DummyRecipe());
 
     PacketHandler.INSTANCE.registerMessage(PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -85,7 +89,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   private Field spawnDelayField;
 
   protected BlockPoweredSpawner() {
-    super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);
+    super(MachineObject.blockPoweredSpawner, TilePoweredSpawner.class);
 
     String[] blackListNames = Config.brokenSpawnerToolBlacklist;
     for (String blackListName : blackListNames) {
@@ -240,10 +244,10 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft() == null || evt.getLeft().stackSize != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(blockPoweredSpawner.getBlock())) {
+    if (evt.getLeft() == null || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != Item.getItemFromBlock(blockPoweredSpawner.getBlock())) {
       return;
     }
-    if (evt.getRight() == null || evt.getRight().stackSize != 1 || evt.getRight().getItem() != itemBrokenSpawner.getItem()) {
+    if (evt.getRight() == null || evt.getRight().getCount() != 1 || evt.getRight().getItem() != itemBrokenSpawner.getItem()) {
       return;
     }
 

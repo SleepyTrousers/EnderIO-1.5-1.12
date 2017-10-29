@@ -1,10 +1,19 @@
 package crazypants.enderio.machine.reservoir;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.vecmath.Vertex;
-import crazypants.enderio.fluid.SmartTank;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
@@ -18,12 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 

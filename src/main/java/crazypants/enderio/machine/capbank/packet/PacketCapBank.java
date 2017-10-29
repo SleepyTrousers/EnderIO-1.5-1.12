@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.world.World;
@@ -33,7 +34,7 @@ public abstract class PacketCapBank<T extends PacketCapBank<?, ?>, Q extends IMe
   @Override
   protected World getWorld(MessageContext ctx) {
     if (ctx.side == Side.SERVER) {
-      return ctx.getServerHandler().playerEntity.world;
+      return ctx.getServerHandler().player.world;
     } else {
       return EnderIO.proxy.getClientWorld();
     }

@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.light;
 
+import static crazypants.enderio.machine.MachineObject.blockElectricLight;
+
 import crazypants.enderio.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-
-import static crazypants.enderio.ModObject.blockElectricLight;
 
 @Storable
 public class TileLightNode extends TileEntityEio {

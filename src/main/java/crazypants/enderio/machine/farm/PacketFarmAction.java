@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumParticleTypes;
@@ -7,10 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> { // TODO: DONE111
 

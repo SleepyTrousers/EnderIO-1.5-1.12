@@ -1,9 +1,14 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
@@ -35,9 +40,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
 /**
  * Name proudly created by Xaw4
  */
@@ -60,7 +62,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
 
   protected BlockKillerJoe() {
-    super(ModObject.blockKillerJoe, TileKillerJoe.class, new Material(MapColor.IRON) {
+    super(MachineObject.blockKillerJoe, TileKillerJoe.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {

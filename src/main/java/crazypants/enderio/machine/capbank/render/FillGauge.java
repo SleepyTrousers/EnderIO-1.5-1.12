@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.capbank.render;
 
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
+
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.util.EnumFacing;
-
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
 
 public class FillGauge implements IInfoRenderer {
 

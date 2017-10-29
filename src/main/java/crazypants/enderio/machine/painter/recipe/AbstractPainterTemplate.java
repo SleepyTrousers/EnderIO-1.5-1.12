@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.painter.recipe;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import net.minecraft.item.ItemStack;
 
@@ -60,7 +60,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockPainter.getUnlocalisedName();
+    return MachineObject.blockPainter.getUnlocalisedName();
   }
 
   @Override
@@ -78,7 +78,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
     for (MachineRecipeInput input : inputs) {
       if(input != null && input.slotNumber == 0 && input.item != null) {
         ItemStack consumed = input.item.copy();
-        consumed.stackSize = 1;
+        consumed.setCount(1);
         consume = new MachineRecipeInput(input.slotNumber, consumed);
       }
     }

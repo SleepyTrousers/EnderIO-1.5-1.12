@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.soul;
 
+import static crazypants.enderio.machine.MachineObject.itemMaterial;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.material.Material;
 import crazypants.util.CapturedMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.ModObject.itemMaterial;
 
 public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
 

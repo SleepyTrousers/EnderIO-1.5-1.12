@@ -1,7 +1,10 @@
 package crazypants.enderio.machine.wireless;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -15,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
-
-import javax.annotation.Nullable;
 
 @Storable
 public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
@@ -70,7 +71,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
       ItemStack item = items[i];
       if (item != null) {
         IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
-        if (chargable != null && item.stackSize == 1) {
+        if (chargable != null && item.getCount() == 1) {
           int max = chargable.getMaxEnergyStored();
           int cur = chargable.getEnergyStored();
           int canUse = Math.min(available, max - cur);
@@ -140,7 +141,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   public boolean isActive() {
-    return getEnergyStored(null) > 0 && !isPoweredRedstone();
+    return getEnergyStored() > 0 && !isPoweredRedstone();
   }
 
   @Override

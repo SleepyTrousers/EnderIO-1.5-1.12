@@ -1,15 +1,15 @@
 package crazypants.enderio.machine;
 
+import static crazypants.enderio.init.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.material.alloy.Alloy.ENERGETIC_ALLOY;
+import static crazypants.enderio.material.alloy.Alloy.VIBRANT_ALLOY;
+import static crazypants.enderio.material.material.Material.VIBRANT_CYSTAL;
+
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import static crazypants.enderio.MachineObject.itemBasicCapacitor;
-import static crazypants.enderio.material.alloy.Alloy.ENERGETIC_ALLOY;
-import static crazypants.enderio.material.alloy.Alloy.VIBRANT_ALLOY;
-import static crazypants.enderio.material.material.Material.VIBRANT_CYSTAL;
 
 public class MachineRecipes {
 
@@ -18,7 +18,7 @@ public class MachineRecipes {
     ItemStack capacitor3 = new ItemStack(itemBasicCapacitor.getItem(), 1, 2);
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = VIBRANT_ALLOY.getOreIngot();
-    String vibCry = VIBRANT_CYSTAL.oreDict;
+    String vibCry = VIBRANT_CYSTAL.getOreDict();
 
     ItemStack capBank1 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
     ItemStack capBank2 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);

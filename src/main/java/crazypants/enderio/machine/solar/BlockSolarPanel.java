@@ -1,10 +1,14 @@
 package crazypants.enderio.machine.solar;
 
+import java.util.List;
+import java.util.Random;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.ISmartRenderAwareBlock;
@@ -31,9 +35,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-import java.util.Random;
-
 public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
@@ -48,7 +49,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
   private BlockSolarPanel() {
-    super(ModObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
+    super(MachineObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)

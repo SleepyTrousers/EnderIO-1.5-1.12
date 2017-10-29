@@ -4,7 +4,7 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.fluid.*;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
@@ -74,7 +74,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), ModObject.blockCombustionGenerator);
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), MachineObject.blockCombustionGenerator);
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
@@ -104,7 +104,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockCombustionGenerator.getUnlocalisedName();
+    return MachineObject.blockCombustionGenerator.getUnlocalisedName();
   }
 
   @Override
@@ -173,7 +173,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
       return false;
     }
     if (powerDis == null) {
-      powerDis = new PowerDistributor(new BlockCoord(this));
+      powerDis = new PowerDistributor(getPos());
     }
     int transmitted = powerDis.transmitEnergy(world, Math.min(maxOutputTick, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);

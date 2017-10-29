@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.ranged;
 
 import com.enderio.core.client.render.BoundingBox;
+
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

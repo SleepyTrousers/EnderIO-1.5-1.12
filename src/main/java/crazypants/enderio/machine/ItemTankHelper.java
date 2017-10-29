@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
-import crazypants.enderio.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTank;
+
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import net.minecraft.item.ItemStack;

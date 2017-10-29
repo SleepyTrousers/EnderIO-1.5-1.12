@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
-import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.AbstractMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
 
 public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
@@ -26,7 +26,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSagMill.getUnlocalisedName();
+    return MachineObject.blockSagMill.getUnlocalisedName();
   }
 
 }

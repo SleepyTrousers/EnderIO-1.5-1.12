@@ -1,15 +1,21 @@
 package crazypants.enderio.machine.painter;
 
-import com.enderio.core.common.util.ItemUtil;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.capacitor.CapacitorKey;
-import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
-import crazypants.enderio.paint.IPaintable;
-import info.loenwind.autosave.annotations.Storable;
-import net.minecraft.item.ItemStack;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
+
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.capacitor.CapacitorKey;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
+import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.item.ItemStack;
 
 @Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -52,7 +58,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockPainter.getUnlocalisedName();
+    return MachineObject.blockPainter.getUnlocalisedName();
   }
 
   @Override
@@ -61,7 +67,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
       // next result is a different item type
       return 0;
     }
-    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
+    return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());
   }
 
 }

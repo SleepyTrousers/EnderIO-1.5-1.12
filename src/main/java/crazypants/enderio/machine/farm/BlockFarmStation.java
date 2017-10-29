@@ -1,8 +1,15 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.Locale;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -24,10 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-import java.util.Random;
-
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -41,7 +44,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   protected BlockFarmStation() {
-    super(ModObject.blockFarmStation, TileFarmStation.class);
+    super(MachineObject.blockFarmStation, TileFarmStation.class);
   }
 
   @Override

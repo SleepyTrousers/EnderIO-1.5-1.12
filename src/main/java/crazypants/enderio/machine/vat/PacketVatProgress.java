@@ -1,8 +1,13 @@
 package crazypants.enderio.machine.vat;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.task.PoweredTaskProgress;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.recipe.MachineRecipeInput;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.network.ByteBufUtils;

@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.light;
 
 import com.enderio.core.common.vecmath.Vector3f;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
@@ -41,7 +42,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   public BlockElectricLight() {
-    super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
+    super(MachineObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
     setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }

@@ -1,6 +1,10 @@
 package crazypants.enderio.machine.capbank;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineObject;
@@ -14,9 +18,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class BlockItemCapBank extends AbstractPoweredBlockItem implements IOverlayRenderAware {
 

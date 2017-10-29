@@ -1,7 +1,15 @@
 package crazypants.enderio.machine.slicensplice;
 
+import java.awt.Point;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -9,11 +17,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.List;
-import java.util.Random;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceAndSplice> {
 
@@ -32,10 +35,10 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
 
     @Override
     public void putStack(@Nullable ItemStack stack) {
-      if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+      if (stack == null || stack.getCount() <= getItemStackLimit(stack)) {
         super.putStack(stack);
       } else {
-        throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+        throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
             + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
       }
     }
@@ -48,9 +51,9 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
   static private final Item[] slotItems1 = { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE,
-      Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe };
+      Items.DIAMOND_AXE, MachineObject.itemDarkSteelAxe };
   static private final Item[] slotItems2 = { Items.SHEARS, Items.SHEARS, Items.SHEARS, Items.SHEARS,
-      ModObject.itemDarkSteelShears };
+      MachineObject.itemDarkSteelShears };
   static private final Random rand = new Random();
 
   public static final Point[] INPUT_SLOTS = new Point[] {      

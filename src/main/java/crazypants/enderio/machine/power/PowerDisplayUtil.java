@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.power;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.client.gui.GuiTextField;
@@ -7,10 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 
 public class PowerDisplayUtil {
 

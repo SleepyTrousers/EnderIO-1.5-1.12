@@ -2,7 +2,7 @@ package crazypants.enderio.machine.obelisk.weather;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
@@ -29,7 +29,7 @@ public class BlockWeatherObelisk extends AbstractBlockObelisk<TileWeatherObelisk
   }
 
   private BlockWeatherObelisk() {
-    super(ModObject.blockWeatherObelisk, TileWeatherObelisk.class);
+    super(MachineObject.blockWeatherObelisk, TileWeatherObelisk.class);
   }
 
   @Override

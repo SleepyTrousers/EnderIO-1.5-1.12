@@ -159,9 +159,9 @@ public class CustomSeedFarmer implements IFarmerJoe {
       for (ItemStack stack : drops) {
         if (world.rand.nextFloat() <= chance) {
           if (!removed && stack.isItemEqual(getSeeds())) {
-            stack.stackSize--;
+            stack.shrink(1);
             removed = true;
-            if (stack.stackSize > 0) {
+            if (stack.getCount() > 0) {
               result.add(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
             }
           } else {

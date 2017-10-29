@@ -1,17 +1,21 @@
 package crazypants.enderio.machine.solar;
 
+import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.*;
-
-import static crazypants.enderio.ModObject.blockSolarPanel;
 
 public class SolarPanelNetwork implements IHasConduitProbeData {
 

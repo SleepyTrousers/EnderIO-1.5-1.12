@@ -1,24 +1,29 @@
 package crazypants.enderio.machine.vat;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.io.IOException;
+
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.io.IOException;
 
 public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
@@ -157,8 +162,8 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
-        x = guiLeft + 63 - fontRendererObj.getStringWidth(str) / 2;
-        fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
+        x = guiLeft + 63 - fontRenderer.getStringWidth(str) / 2;
+        fontRenderer.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
       }
     }
     inStack = vat.getStackInSlot(1);
@@ -166,8 +171,8 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
-        x = guiLeft + 113 - fontRendererObj.getStringWidth(str) / 2;
-        fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
+        x = guiLeft + 113 - fontRenderer.getStringWidth(str) / 2;
+        fontRenderer.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
       }
     }
 

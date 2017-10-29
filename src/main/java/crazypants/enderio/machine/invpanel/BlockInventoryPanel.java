@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.invpanel.remote.PacketPrimeInventoryPanelRemote;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -22,9 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
@@ -50,7 +52,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   public BlockInventoryPanel() {
-    super(ModObject.blockInventoryPanel, TileInventoryPanel.class);
+    super(MachineObject.blockInventoryPanel, TileInventoryPanel.class);
   }
 
   @Override

@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.painter.blocks;
 
 import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.recipe.BasicPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.paint.PainterUtil2;
@@ -55,9 +55,9 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper {
 
   public static BlockPaintedWall create() {
-    BlockPaintedWall result = new BlockPaintedWall(ModObject.blockPaintedWall.getUnlocalisedName());
+    BlockPaintedWall result = new BlockPaintedWall(MachineObject.blockPaintedWall.getUnlocalisedName());
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedWall>(result,
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new BasicPainterTemplate<BlockPaintedWall>(result,
         Blocks.COBBLESTONE_WALL));
 
     return result;

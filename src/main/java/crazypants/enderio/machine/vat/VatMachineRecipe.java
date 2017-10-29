@@ -1,13 +1,13 @@
 package crazypants.enderio.machine.vat;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
-import crazypants.enderio.machine.recipe.IRecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.AbstractMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class VatMachineRecipe extends AbstractMachineRecipe {
 
@@ -31,7 +31,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockVat.getUnlocalisedName();
+    return MachineObject.blockVat.getUnlocalisedName();
   }
 
   @Override
@@ -45,7 +45,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     for (MachineRecipeInput ri : inputs) {
       if (!ri.isFluid() && ri.item != null) {
         ItemStack st = ri.item.copy();
-        st.stackSize = rec.getNumConsumed(ri.item);
+        st.setCount(rec.getNumConsumed(ri.item));
         result.add(new MachineRecipeInput(ri.slotNumber, st));
       }
     }

@@ -76,7 +76,7 @@ public enum EnumPressurePlateType implements IStringSerializable {
         for (Entity entity : list) {
           if (entity instanceof EntityItem) {
             ItemStack stack = ((EntityItem) entity).getEntityItem();
-            result += stack.stackSize;
+            result += stack.getCount();
             if (result >= 15) {
               return 15;
             }

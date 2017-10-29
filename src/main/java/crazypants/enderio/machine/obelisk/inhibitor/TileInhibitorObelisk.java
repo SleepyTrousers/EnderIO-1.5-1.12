@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
@@ -13,12 +13,12 @@ import static crazypants.enderio.capacitor.CapacitorKey.AVERSION_RANGE;
 public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   public TileInhibitorObelisk() {
-    super(new SlotDefinition(0, 0, 1), ModObject.blockInhibitorObelisk);
+    super(new SlotDefinition(0, 0, 1), MachineObject.blockInhibitorObelisk);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockInhibitorObelisk.getUnlocalisedName();
+    return MachineObject.blockInhibitorObelisk.getUnlocalisedName();
   }
 
   @Override

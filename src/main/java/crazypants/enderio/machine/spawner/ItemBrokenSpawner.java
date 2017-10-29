@@ -1,8 +1,11 @@
 package crazypants.enderio.machine.spawner;
 
+import java.util.List;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.util.CapturedMob;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.SkeletonType;
@@ -12,8 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemBrokenSpawner extends Item {
 
@@ -27,8 +28,8 @@ public class ItemBrokenSpawner extends Item {
 
   protected ItemBrokenSpawner() {
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
-    setUnlocalizedName(ModObject.itemBrokenSpawner.getUnlocalisedName());
-    setRegistryName(ModObject.itemBrokenSpawner.getUnlocalisedName());
+    setUnlocalizedName(MachineObject.itemBrokenSpawner.getUnlocalisedName());
+    setRegistryName(MachineObject.itemBrokenSpawner.getUnlocalisedName());
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);

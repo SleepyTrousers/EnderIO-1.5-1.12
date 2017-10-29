@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.capbank.network;
 
-import com.enderio.core.common.util.BlockCoord;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.modes.RedstoneControlMode;
 import io.netty.buffer.ByteBuf;

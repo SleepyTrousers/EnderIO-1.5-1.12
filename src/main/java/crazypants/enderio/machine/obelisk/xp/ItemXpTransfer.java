@@ -6,7 +6,7 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.XpUtil;
@@ -39,8 +39,8 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   protected ItemXpTransfer() {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
-    setUnlocalizedName(ModObject.itemXpTransfer.getUnlocalisedName());
-    setRegistryName(ModObject.itemXpTransfer.getUnlocalisedName());
+    setUnlocalizedName(MachineObject.itemXpTransfer.getUnlocalisedName());
+    setRegistryName(MachineObject.itemXpTransfer.getUnlocalisedName());
     setMaxStackSize(1);
     setHasSubtypes(true);
   }

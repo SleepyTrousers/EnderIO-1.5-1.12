@@ -31,20 +31,20 @@ class NormalInventory extends AbstractInventory {
     for (int slot = 0; slot < numSlots; slot++) {      
       ItemStack stack = inv.getStackInSlot(slot);
       if (stack != null) {
-        if (stack.stackSize == 0) {
+        if (stack.getCount() == 0) {
           // empty but type-restricted slot
           stack = null;
         } else {
           // HL: I'm not sure why we double check the slot's content here
-          ItemStack extracted = inv.extractItem(slot, stack.stackSize, true);
+          ItemStack extracted = inv.extractItem(slot, stack.getCount(), true);
           if (extracted == null) {
             stack = null;
-          } else if (stack.stackSize > stack.getMaxStackSize()) {
+          } else if (stack.getCount() > stack.getMaxStackSize()) {
             // big storage
-            if (extracted.stackSize < stack.getMaxStackSize()) {
+            if (extracted.getCount() < stack.getMaxStackSize()) {
               stack = null;
             }
-          } else if (extracted.stackSize != stack.stackSize) {
+          } else if (extracted.getCount() != stack.getCount()) {
             stack = null;
           }
         }
@@ -61,23 +61,23 @@ class NormalInventory extends AbstractInventory {
       return 0;
     }
     ItemStack stack = inv.getStackInSlot(slot);
-    if (stack == null || stack.stackSize == 0 || db.lookupItem(stack, entry, false) != entry) {
+    if (stack == null || stack.getCount() == 0 || db.lookupItem(stack, entry, false) != entry) {
       return 0;
     }
     ItemStack extracted = inv.extractItem(slot, count, false);
-    if (extracted == null || extracted.stackSize == 0) {
+    if (extracted == null || extracted.getCount() == 0) {
       return 0;
     }    
-    ni.onItemExtracted(slot, extracted.stackSize);
+    ni.onItemExtracted(slot, extracted.getCount());
 
     stack = inv.getStackInSlot(slot);
     if (stack != null) {
-      updateCount(db, slot, entry, stack.stackSize);
+      updateCount(db, slot, entry, stack.getCount());
     } else {
       updateCount(db, slot, entry, 0);
     }
 
-    return extracted.stackSize;
+    return extracted.getCount();
   }
 
   @Override

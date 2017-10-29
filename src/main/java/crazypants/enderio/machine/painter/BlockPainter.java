@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.painter;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.painter.recipe.EveryPaintableRecipe;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
 import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,8 +16,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
@@ -24,15 +26,15 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implem
   }
 
   private BlockPainter() {
-    super(ModObject.blockPainter, TileEntityPainter.class);
+    super(MachineObject.blockPainter, TileEntityPainter.class);
   }
 
   @SuppressWarnings("rawtypes")
   @Override
   protected void init() {
     super.init();
-    MachineRecipeRegistry.instance.enableRecipeSorting(ModObject.blockPainter.getUnlocalisedName());
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(), new EveryPaintableRecipe());
+    MachineRecipeRegistry.instance.enableRecipeSorting(MachineObject.blockPainter.getUnlocalisedName());
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(), new EveryPaintableRecipe());
   }
 
   @Override

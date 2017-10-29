@@ -42,7 +42,7 @@ public class CraftingHelper {
       ItemStack stack = slot.getStack();
       if(stack != null) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
         ingredients[idx] = new ItemStack[] { stack };
         count++;
       }
@@ -152,7 +152,7 @@ public class CraftingHelper {
 
   private static int getSlotStackSize(Slot slot) {
     ItemStack stack = slot.getStack();
-    return (stack != null) ? stack.stackSize : 0;
+    return (stack != null) ? stack.getCount() : 0;
   }
 
   private static boolean isStackCompatible(ItemStack[] pstack, ItemStack stack) {
@@ -213,7 +213,7 @@ public class CraftingHelper {
       ItemStack slotStack = slot.getStack();
       if (slotStack != null && ItemUtil.areStackMergable(slotStack, stack)) {
         candidates.sourceSlots.add(slot);
-        candidates.available += slotStack.stackSize;
+        candidates.available += slotStack.getCount();
       }
     }
   }

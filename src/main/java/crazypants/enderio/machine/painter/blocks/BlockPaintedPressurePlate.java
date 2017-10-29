@@ -4,7 +4,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.painter.blocks.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.machine.painter.recipe.PressurePlatePainterTemplate;
 import crazypants.enderio.paint.IPaintable;
@@ -56,7 +56,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-import static crazypants.enderio.ModObject.blockFusedQuartz;
+import static crazypants.enderio.machine.MachineObject.blockFusedQuartz;
 
 public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
@@ -115,16 +115,16 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   public static BlockPaintedPressurePlate create() {
-    BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(ModObject.blockPaintedPressurePlate.getUnlocalisedName());
+    BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(MachineObject.blockPaintedPressurePlate.getUnlocalisedName());
     result.setHardness(0.5F);
     result.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.WOOD.getMetaFromType(), Blocks.WOODEN_PRESSURE_PLATE));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.STONE.getMetaFromType(), Blocks.STONE_PRESSURE_PLATE));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.IRON.getMetaFromType(), Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.getUnlocalisedName(),
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockPainter.getUnlocalisedName(),
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.GOLD.getMetaFromType(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE));
 
     return result;
@@ -418,7 +418,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
     if (paintSource != defaultPaints[EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()]) {
-      IBlockState stdOverlay = ModObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
+      IBlockState stdOverlay = MachineObject.block_machine_base.getBlock().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
       IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
       list.add(model2);
     }

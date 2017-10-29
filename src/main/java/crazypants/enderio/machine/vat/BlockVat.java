@@ -1,9 +1,15 @@
 package crazypants.enderio.machine.vat;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -22,9 +28,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockVat create() {
@@ -37,7 +40,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   }
 
   public BlockVat() {
-    super(ModObject.blockVat, TileVat.class);
+    super(MachineObject.blockVat, TileVat.class);
   }
 
   @Override
