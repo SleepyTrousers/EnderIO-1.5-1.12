@@ -6,18 +6,19 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.material.skull.FrankenSkull;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderSentientRecipe extends AbstractSoulBinderRecipe {
 
   public static SoulBinderSentientRecipe instance = new SoulBinderSentientRecipe();
 
   private SoulBinderSentientRecipe() {
-    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", "Witch", "enderzoo.WitherWitch");
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderSentientRecipe", new ResourceLocation("minecraft:witch"), new ResourceLocation("enderzoo:WitherWitch"));
   }
 
   @Override
   public ItemStack getInputStack() {
-    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.ENDER_RESONATOR.ordinal());
+    return new ItemStack(itemFrankenSkull.getItem(), 1, FrankenSkull.ENDER_RESONATOR.ordinal()); //TODO Fix when FrankenSkull are added
   }
 
   @Override

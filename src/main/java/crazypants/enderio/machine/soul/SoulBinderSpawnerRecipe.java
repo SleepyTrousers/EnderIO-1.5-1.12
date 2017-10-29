@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.soul;
 
-import static crazypants.enderio.machine.MachineObject.itemBrokenSpawner;
+
 
 import java.util.List;
 
 import com.enderio.core.common.util.EntityUtil;
 
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
@@ -21,26 +23,26 @@ public class SoulBinderSpawnerRecipe extends AbstractSoulBinderRecipe {
 
   @Override
   protected ItemStack getOutputStack(ItemStack input, CapturedMob mobType) {
-    return mobType.toStack(itemBrokenSpawner.getItem(), input.getMetadata(), 1);
+    return mobType.toStack(ModObject.itemBrokenSpawner.getItem(), input.getMetadata(), 1);
   }
 
   @Override
   protected boolean isValidInputSoul(CapturedMob mobType) {
-    return getSupportedSouls().contains(mobType.getEntityName()) && !BlockPoweredSpawner.isBlackListed(mobType.getEntityName());
+    return getSupportedSouls().contains(mobType.getEntityName()) && !BlockPoweredSpawner.isBlackListed(mobType.getEntityName().toString());
   }
 
   @Override
   public ItemStack getInputStack() {    
-    return new ItemStack(itemBrokenSpawner.getItem());
+    return new ItemStack(ModObject.itemBrokenSpawner.getItem());
   }
 
   @Override
   public ItemStack getOutputStack() {
-    return new ItemStack(itemBrokenSpawner.getItem());
+    return new ItemStack(ModObject.itemBrokenSpawner.getItem());
   }
 
   @Override
-  public List<String> getSupportedSouls() {    
+  public List<ResourceLocation> getSupportedSouls() {
     return EntityUtil.getAllRegisteredMobNames();
   }
 

@@ -25,6 +25,7 @@ import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -83,7 +84,8 @@ public enum MachineObject implements IModObject.Registerable {
 
   blockSagMill(BlockSagMill.class),
   blockSliceAndSplice(BlockSliceAndSplice.class),
-  blockSolarPanel(BlockSolarPanel.class);
+  blockSolarPanel(BlockSolarPanel.class),
+  blockSoulBinder(BlockSoulBinder.class);
 
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

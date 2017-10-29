@@ -11,6 +11,7 @@ import crazypants.enderio.machine.painter.blocks.EnumPressurePlateType;
 import crazypants.util.CapturedMob;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe {
 
@@ -54,9 +55,8 @@ public class SoulBinderTunedPressurePlateRecipe extends AbstractSoulBinderRecipe
   }
 
   @Override
-  public List<String> getSupportedSouls() {
-    List<String> res = EntityUtil.getAllRegisteredMobNames();
-    return res;
+  public List<ResourceLocation> getSupportedSouls() {
+    return EntityUtil.getAllRegisteredMobNames();
   }
 
 }

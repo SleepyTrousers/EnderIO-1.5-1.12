@@ -2,13 +2,14 @@ package crazypants.enderio.machine.soul;
 
 import crazypants.util.CapturedMob;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
 
   private ItemStack inputStack;
   private ItemStack outputStack;
 
-  public BasicSoulBinderRecipe(ItemStack inputStack, ItemStack outputStack, int energyRequired, int xpRequired, String uid, String... entityNames) {
+  public BasicSoulBinderRecipe(ItemStack inputStack, ItemStack outputStack, int energyRequired, int xpRequired, String uid, ResourceLocation... entityNames) {
     super(energyRequired, xpRequired, uid, entityNames);
     this.inputStack = inputStack.copy();
     this.outputStack = outputStack.copy();
