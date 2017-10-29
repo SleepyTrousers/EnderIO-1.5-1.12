@@ -3,7 +3,7 @@ package crazypants.enderio.machine.baselegacy;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;
@@ -22,7 +22,7 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  protected AbstractPowerConsumerEntity(@Nonnull SlotDefinition slotDefinition, ModObject modObject) {
+  protected AbstractPowerConsumerEntity(@Nonnull SlotDefinition slotDefinition, IModObject modObject) {
     super(slotDefinition, modObject);
   }
 

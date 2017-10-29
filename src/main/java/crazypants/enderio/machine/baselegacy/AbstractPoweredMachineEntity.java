@@ -13,7 +13,7 @@ import crazypants.enderio.capacitor.DefaultCapacitorKey;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.capacitor.ICapacitorKey;
 import crazypants.enderio.capacitor.Scaler;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.util.NbtValue;
@@ -40,7 +40,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     this(slotDefinition, null);
   }
 
-  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, ModObject modObject) {
+  protected AbstractPoweredMachineEntity(@Nonnull SlotDefinition slotDefinition, IModObject modObject) {
     super(slotDefinition);
     if (modObject == null) {
       this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
