@@ -73,12 +73,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     drawCenteredString(fontRenderer, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
   }
-
-  @Override
-  public void renderSlotHighlights(IoMode mode) { //TODO This
-
-  }
-
+  
   @Override
   protected void actionPerformed(GuiButton b) throws IOException {
     super.actionPerformed(b);
