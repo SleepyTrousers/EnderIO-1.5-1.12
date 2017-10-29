@@ -10,7 +10,6 @@ import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
-import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.render.dummy.BlockMachineIO;
@@ -18,7 +17,12 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObject.Registerable {
 
   blockMachineIO(BlockMachineIO.class),
@@ -31,7 +35,8 @@ public enum MachineObject implements IModObject.Registerable {
   
   ;
 
-  static {
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
     ModObjectRegistry.addModObjects(MachineObject.class);
   }
 
