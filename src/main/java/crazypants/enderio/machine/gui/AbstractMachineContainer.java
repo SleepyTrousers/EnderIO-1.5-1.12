@@ -12,8 +12,10 @@ import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity.InventoryWrapper;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.util.Prep;
+import li.cil.oc.api.driver.item.Inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -21,7 +23,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class AbstractMachineContainer<E extends AbstractInventoryMachineEntity> extends ContainerEnder<IInventory> {
+public abstract class AbstractMachineContainer<E extends AbstractInventoryMachineEntity> extends ContainerEnder<InventoryWrapper> {
 
   protected Slot upgradeSlot;
   protected final @Nonnull E te;
@@ -33,14 +35,14 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
 
   public E getTe() {
     return te;
-}
+  }
 
-@Override
+  @Override
   protected void addSlots(@Nonnull InventoryPlayer playerInv) {
     addMachineSlots(playerInv);
 
-    if (te.getSlotDefinition().getNumUpgradeSlots() == 1) {
-      addSlotToContainer(upgradeSlot = new Slot(getInv(), te.getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
+    if (getInv().getOwner().getSlotDefinition().getNumUpgradeSlots() == 1) {
+      addSlotToContainer(upgradeSlot = new Slot(getInv(), getInv().getOwner().getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
 
         @Override
         public int getSlotStackLimit() {

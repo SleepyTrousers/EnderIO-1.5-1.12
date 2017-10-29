@@ -239,11 +239,15 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return itemstack.getItem() == inventory[slot].getItem();
   }
 
-  public @Nonnull IInventory getAsInventory() {
+  public @Nonnull InventoryWrapper getAsInventory() {
     return new InventoryWrapper();
   }
 
-  private class InventoryWrapper implements IInventory {
+  public class InventoryWrapper implements IInventory {
+    
+    public AbstractInventoryMachineEntity getOwner() {
+      return AbstractInventoryMachineEntity.this;
+    }
 
     @Override
     public @Nonnull String getName() {
