@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -291,3 +291,4 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   }
 
 }
+*/

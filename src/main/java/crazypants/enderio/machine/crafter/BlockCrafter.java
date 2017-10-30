@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import javax.annotation.Nonnull;
 
@@ -73,3 +73,4 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
 }
+*/

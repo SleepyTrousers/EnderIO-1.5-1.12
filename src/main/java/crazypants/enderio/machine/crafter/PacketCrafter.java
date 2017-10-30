@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
@@ -58,3 +58,4 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
   }
 
 }
+*/
