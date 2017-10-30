@@ -38,7 +38,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().tank));
         if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", Fluids.MB(tileEntity.getActivationAmount())));
         }
       }
 
@@ -80,7 +80,7 @@ public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
     super.initGui();
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
-    ((ContainerKillerJoe) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerKillerJoe) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
