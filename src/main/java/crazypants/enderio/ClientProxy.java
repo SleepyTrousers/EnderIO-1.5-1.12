@@ -20,7 +20,9 @@ import crazypants.enderio.gui.TooltipHandlerFluid;
 import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.handler.KeyTracker;
 import crazypants.enderio.handler.darksteel.UpgradeRenderManager;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.item.conduitprobe.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.conduitprobe.ToolTickHandler;
@@ -106,7 +108,7 @@ public class ClientProxy extends CommonProxy {
      * 
      * Items that do _not_ belong to a block are handled here by either having the item implement IHaveRenderers or by registering the default renderer.
      */
-    for (ModObject mo : ModObject.values()) {
+    for (IModObject mo : ModObjectRegistry.getObjects()) {
       final Block block = mo.getBlock();
       if (block instanceof IHaveRenderers) {
         ((IHaveRenderers) block).registerRenderers(mo);

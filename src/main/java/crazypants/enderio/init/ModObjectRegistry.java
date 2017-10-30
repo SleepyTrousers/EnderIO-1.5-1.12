@@ -237,4 +237,8 @@ public class ModObjectRegistry {
   public static @Nonnull String sanitizeName(@Nonnull String name) {
     return name.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
   }
+  
+  public static List<IModObject.Registerable> getObjects() {
+    return Collections.unmodifiableList(objects);
+  }
 }
