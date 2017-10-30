@@ -10,10 +10,13 @@ import crazypants.enderio.init.IModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
-import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
+import crazypants.enderio.machine.gauge.BlockGauge;
+import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -44,7 +47,6 @@ public enum MachineObject implements IModObject.Registerable {
   blockAlloySmelter(BlockAlloySmelter.class),
   blockBuffer(BlockBuffer.class),
 //  blockCapBank(BlockCapBank.class),
-  blockCrafter(BlockCrafter.class),
   blockEnchanter(BlockEnchanter.class),
 
   //Obelisks
@@ -58,14 +60,18 @@ public enum MachineObject implements IModObject.Registerable {
   blockReservoir(BlockReservoir.class),
 
   blockFarmStation(BlockFarmStation.class),
-  
+  blockGauge(BlockGauge.class),
+  blockCombustionGenerator(BlockCombustionGenerator.class),
   blockStirlingGenerator(BlockStirlingGenerator.class),
+  blockZombieGenerator(BlockZombieGenerator.class),
 
   blockSagMill(BlockSagMill.class),
   blockSliceAndSplice(BlockSliceAndSplice.class),
   blockSolarPanel(BlockSolarPanel.class),
   blockSoulBinder(BlockSoulBinder.class),
   blockPoweredSpawner(BlockPoweredSpawner.class),
+  blockKillerJoe(BlockKillerJoe.class),
+  
   ;
 
 

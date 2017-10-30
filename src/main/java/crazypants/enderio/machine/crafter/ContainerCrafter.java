@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -151,3 +151,4 @@ public class ContainerCrafter extends AbstractCapabilityMachineContainer<TileCra
   }
 
 }
+*/

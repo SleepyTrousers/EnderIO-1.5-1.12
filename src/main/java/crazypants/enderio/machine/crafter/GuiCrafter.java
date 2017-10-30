@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import java.io.IOException;
 import java.util.List;
@@ -100,3 +100,4 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
   }
 
 }
+*/
