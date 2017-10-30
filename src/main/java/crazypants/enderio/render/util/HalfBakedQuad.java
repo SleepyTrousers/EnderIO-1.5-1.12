@@ -10,13 +10,13 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.CullFace;
 import net.minecraft.client.renderer.RenderHelper;
@@ -42,7 +42,7 @@ public class HalfBakedQuad {
   public HalfBakedQuad(@Nonnull BoundingBox bb, @Nonnull EnumFacing face, float umin, float umax, float vmin, float vmax, @Nullable TextureAtlasSprite tex,
       @Nullable Vector4f color) {
     this.corners = bb.getCornersWithUvForFace(face, umin, umax, vmin, vmax);
-    this.tex = tex != null ? tex : IconUtil.instance.errorTexture;
+    this.tex = tex != null ? tex : Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
     this.color = color != null ? color : NO_COLOR;
     this.face = face;
   }
