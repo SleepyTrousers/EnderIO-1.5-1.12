@@ -26,7 +26,7 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void checkParent() {
-    if (hasworld() && parent != null && world.isBlockLoaded(parent)) {
+    if (hasWorld() && parent != null && world.isBlockLoaded(parent)) {
       if (world.getBlockState(parent).getBlock() != blockElectricLight.getBlock()) {
         world.setBlockToAir(pos);
       }
