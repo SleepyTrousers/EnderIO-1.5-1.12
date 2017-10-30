@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
