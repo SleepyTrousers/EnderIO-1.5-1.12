@@ -2,9 +2,9 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "parent": "enderio:block/transform/light",
     "textures": {
-        "particle": "enderio:blocks/conduitConnector",
-        "side": "enderio:blocks/conduitConnector",
-        "face": "enderio:blocks/blockElectricLightFace"
+        "particle": "enderio:blocks/conduit_connector",
+        "side": "enderio:blocks/conduit_connector",
+        "face": "enderio:blocks/block_electric_light_face"
     },
     "elements": [
         {
