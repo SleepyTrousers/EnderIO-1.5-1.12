@@ -1,9 +1,9 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "enderio:blocks/blockDarkIronBars",
-        "bars": "enderio:blocks/blockDarkIronBars",
-        "edge": "enderio:blocks/blockDarkIronBars"
+        "particle": "enderio:blocks/block_dark_iron_bars",
+        "bars": "enderio:blocks/block_dark_iron_bars",
+        "edge": "enderio:blocks/block_dark_iron_bars"
     },
     "elements": [
         {   "from": [ 8, 0, 8 ],

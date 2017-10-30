@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.slicensplice;
 
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
@@ -15,7 +16,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
   @Override
   public void initGui() {
     super.initGui();
-    ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override

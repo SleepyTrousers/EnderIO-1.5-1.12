@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.ModObject.blockSpawnRelocator;
+import static crazypants.enderio.machine.MachineObject.blockRelocatorObelisk;
 
 @SideOnly(Side.CLIENT)
 public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocatorObelisk> {
@@ -15,7 +15,7 @@ public class RelocatorObeliskRenderer extends ObeliskSpecialRenderer<TileRelocat
   private ItemStack onStack = new ItemStack(Blocks.PRISMARINE);
 
   public RelocatorObeliskRenderer() {
-    super(null, blockSpawnRelocator.getBlock());
+    super(null, blockRelocatorObelisk.getBlock());
   }
 
   @Override

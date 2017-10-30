@@ -1,8 +1,16 @@
 package crazypants.enderio.machine.tank;
 
+import java.awt.Rectangle;
+import java.io.IOException;
+
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
@@ -11,11 +19,6 @@ import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.io.IOException;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
@@ -71,12 +74,12 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   public void updateScreen() {
     Slot slot = inventorySlots.inventorySlots.get(2);
     if (getTileEntity().canVoidItems()) {
-      slot.xDisplayPosition = 15;
-      slot.yDisplayPosition = 36;
+      slot.xPos = 15;
+      slot.yPos = 36;
       voidBut.onGuiInit();
     } else {
-      slot.xDisplayPosition = 10000;
-      slot.yDisplayPosition = 10000;
+      slot.xPos = 10000;
+      slot.yPos = 10000;
       voidBut.detach();
     }
   }
@@ -102,8 +105,8 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     
     if (getTileEntity().canVoidItems()) {
       Slot slot = inventorySlots.inventorySlots.get(2);
-      drawTexturedModalRect(sx + slot.xDisplayPosition - 1, sy + slot.yDisplayPosition - 1, xSize, 0, 18, 18);
-      IconEIO.map.render(IconEIO.MINUS, sx + slot.xDisplayPosition, sy + slot.yDisplayPosition, true);
+      drawTexturedModalRect(sx + slot.xPos - 1, sy + slot.yPos - 1, xSize, 0, 18, 18);
+      IconEIO.map.render(IconEIO.MINUS, sx + slot.xPos, sy + slot.yPos, true);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);    

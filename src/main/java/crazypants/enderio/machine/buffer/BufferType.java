@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.buffer;
 
+import static crazypants.enderio.machine.MachineObject.blockBuffer;
+
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NullHelper;
-import crazypants.enderio.ModObject;
+
+import crazypants.enderio.machine.MachineObject;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
-import static crazypants.enderio.ModObject.blockBuffer;
 
 public enum BufferType implements IStringSerializable {
 
@@ -41,9 +43,10 @@ public enum BufferType implements IStringSerializable {
   }
 
   public @Nonnull String getUnlocalizedName() {
-    return "tile." + ModObject.blockBuffer.getUnlocalisedName() + "." + getName();
+    return "tile." + MachineObject.blockBuffer.getUnlocalisedName() + "." + getName();
   }
 
+  @Nonnull
   public static BufferType getTypeFromMeta(int meta) {
     return values()[meta >= 0 && meta < values().length ? meta : 0];
   }

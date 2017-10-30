@@ -1,8 +1,17 @@
 package crazypants.enderio.machine.buffer;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
@@ -13,19 +22,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
-import static crazypants.enderio.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
-
 public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.SYNC, NBTAction.SAVE })
   private boolean hasPower;
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.SYNC, NBTAction.SAVE })
   private boolean hasInventory;
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.SYNC, NBTAction.SAVE })
   private boolean isCreative;
 
   private PowerDistributor dist;
@@ -36,7 +39,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   private int maxIn = maxOut;
 
   public TileBuffer() {
-    super(new SlotDefinition(9), BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, null);
+    super(new SlotDefinition(9), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, null);
   }
 
   @Override
@@ -56,15 +59,15 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (!redstoneCheck || getEnergyStored(null) <= 0) {
+    if (!redstoneCheck || getEnergyStored() <= 0) {
       return false;
     }
     if (dist == null) {
-      dist = new PowerDistributor(new BlockCoord(this));
+      dist = new PowerDistributor(getPos());
     }
-    int transmitted = dist.transmitEnergy(world, Math.min(getMaxOutput(), getEnergyStored(null)));
+    int transmitted = dist.transmitEnergy(world, Math.min(getMaxOutput(), getEnergyStored()));
     if (!isCreative()) {
-      setEnergyStored(getEnergyStored(null) - transmitted);
+      setEnergyStored(getEnergyStored() - transmitted);
     }
     return false;
   }
@@ -204,14 +207,6 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPo
   @Override
   public int getMaxEnergyStored() {
     return hasPower ? super.getMaxEnergyStored() : 0;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return hasPower;
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

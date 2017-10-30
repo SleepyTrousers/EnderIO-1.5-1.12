@@ -1,24 +1,31 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
+  @Nonnull
   private static final Rectangle RECTANGLE_FUEL_TANK = new Rectangle(80, 21, 15, 47);
 
-  public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
+  public GuiZombieGenerator(InventoryPlayer inventory, @Nonnull final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
     
     addToolTip(new GuiToolTip(RECTANGLE_FUEL_TANK, "") {
@@ -30,7 +37,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().tank));
         if(tileEntity.tank.getFluidAmount() < tileEntity.getActivationAmount()) {
-          text.add(EnderIO.lang.localize("gui.fluid.minReq", tileEntity.getActivationAmount() + Fluids.MB()));
+          text.add(EnderIO.lang.localize("gui.fluid.minReq", Fluids.MB(tileEntity.getActivationAmount())));
         }
       }
     });

@@ -2,7 +2,8 @@ package crazypants.enderio.machine.obelisk.attractor;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.network.PacketHandler;
@@ -15,20 +16,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
+import javax.annotation.Nonnull;
 import java.util.Locale;
 
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
-  public static BlockAttractor create() {
+  public static BlockAttractor create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketObeliskFx.class, PacketObeliskFx.class, PacketHandler.nextID(), Side.CLIENT);
-    BlockAttractor res = new BlockAttractor();
+    BlockAttractor res = new BlockAttractor(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(new EndermanFixer());
     return res;
   }
 
-  protected BlockAttractor() {
-    super(ModObject.blockAttractor, TileAttractor.class);
+  protected BlockAttractor(@Nonnull IModObject modObject) {
+    super(modObject, TileAttractor.class);
   }
 
   @Override
@@ -57,10 +59,10 @@ public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
   protected static String permissionAttracting;
 
   @Override
-  public void init(FMLInitializationEvent event) {
-    super.init(event);
-    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + name + " of Ender IO to attract entities."
+  public void init(IModObject object, FMLInitializationEvent event) {
+    super.init(object, event);
+    permissionAttracting = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attract." + this.getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+        "Permission for the block " + this.getUnlocalizedName() + " of Ender IO to attract entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }
 

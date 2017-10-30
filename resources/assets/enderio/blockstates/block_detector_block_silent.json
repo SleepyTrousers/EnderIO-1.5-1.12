@@ -2,13 +2,13 @@
   "forge_marker":1,
   "defaults":{
     "textures": {
-        "particle": "enderio:blocks/machineBottom",
-				"top": "enderio:blocks/machineTop",
-				"side": "enderio:blocks/invPanelSide",
-				"mside": "enderio:blocks/machineSide",
-				"bottom": "enderio:blocks/machineBottom",
+        "particle": "enderio:blocks/machine_bottom",
+				"top": "enderio:blocks/machine_top",
+				"side": "enderio:blocks/inv_panel_side",
+				"mside": "enderio:blocks/machine_side",
+				"bottom": "enderio:blocks/machine_bottom",
 				"redstone": "blocks/redstone_block",
-				"pp": "enderio:blocks/blockDarkSteelPressurePlate"
+				"pp": "enderio:blocks/block_dark_steel_pressure_plate"
     }
   },
   "variants":{

@@ -4,9 +4,11 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -86,11 +88,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     }
     
     public static WeatherTask fromFluid(Fluid f) {
-      if (f == Fluids.fluidLiquidSunshine) {
+      if (f == Fluids.LIQUID_SUNSHINE.getFluid()) {
         return CLEAR;
-      } else if (f == Fluids.fluidCloudSeed) {
+      } else if (f == Fluids.CLOUD_SEED.getFluid()) {
         return RAIN;
-      } else if (f == Fluids.fluidCloudSeedConcentrated) {
+      } else if (f == Fluids.CLOUD_SEED_CONCENTRATED.getFluid()) {
         return STORM;
       }
       return null;
@@ -118,7 +120,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean playedFuse = false;
 
   public TileWeatherObelisk() {
-    super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
+    super(new SlotDefinition(1, 0, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
   }
@@ -129,7 +131,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockWeatherObelisk.getUnlocalisedName();
+    return MachineObject.blockWeatherObelisk.getUnlocalisedName();
   }
 
   @Override
@@ -217,8 +219,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       canBeActive = true;
 
       if(isActive()) {
-        if(getEnergyStored(null) > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
-          setEnergyStored(getEnergyStored(null) - getPowerUsePerTick());
+        if(getEnergyStored() > getPowerUsePerTick() && inputTank.getFluidAmount() > 3) {
+          setEnergyStored(getEnergyStored() - getPowerUsePerTick());
 
           int toUse = 4;
           inputTank.removeFluidAmount(toUse);
@@ -285,7 +287,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
 
   private boolean isValidFluid(Fluid f) {
-    return f == Fluids.fluidLiquidSunshine || f == Fluids.fluidCloudSeed || f == Fluids.fluidCloudSeedConcentrated;
+    return f == Fluids.LIQUID_SUNSHINE.getFluid()|| f == Fluids.CLOUD_SEED.getFluid() || f == Fluids.CLOUD_SEED_CONCENTRATED.getFluid();
   }
   
   @Override
@@ -339,14 +341,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, inputTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

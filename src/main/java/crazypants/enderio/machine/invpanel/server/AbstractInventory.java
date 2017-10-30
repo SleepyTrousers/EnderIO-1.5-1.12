@@ -87,7 +87,7 @@ abstract class AbstractInventory {
     if (stack == null) {
       emptySlot(db, slot);
     } else {
-      updateSlot(db, slot, stack, stack.stackSize);
+      updateSlot(db, slot, stack, stack.getCount());
     }
   }
 

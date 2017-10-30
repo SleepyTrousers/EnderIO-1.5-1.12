@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -31,7 +32,7 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
   }
 
   protected BlockStirlingGenerator() {
-    super(ModObject.blockStirlingGenerator, TileEntityStirlingGenerator.class);
+    super(MachineObject.blockStirlingGenerator, TileEntityStirlingGenerator.class);
   }
 
   @Override

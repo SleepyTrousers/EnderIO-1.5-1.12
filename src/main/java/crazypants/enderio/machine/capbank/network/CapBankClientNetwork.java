@@ -1,6 +1,11 @@
 package crazypants.enderio.machine.capbank.network;
 
-import com.enderio.core.common.util.BlockCoord;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
@@ -15,11 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 

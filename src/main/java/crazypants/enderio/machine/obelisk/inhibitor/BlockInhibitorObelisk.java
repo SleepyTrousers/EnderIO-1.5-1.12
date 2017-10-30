@@ -4,7 +4,8 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,15 +26,15 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
 
   public static BlockInhibitorObelisk instance;
 
-  public static BlockInhibitorObelisk create() {
-    BlockInhibitorObelisk res = new BlockInhibitorObelisk();
+  public static BlockInhibitorObelisk create(@Nonnull IModObject modObject) {
+    BlockInhibitorObelisk res = new BlockInhibitorObelisk(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return instance = res;
   }
 
-  protected BlockInhibitorObelisk() {
-    super(ModObject.blockInhibitorObelisk, TileInhibitorObelisk.class);
+  protected BlockInhibitorObelisk(@Nonnull IModObject modObject) {
+    super(modObject, TileInhibitorObelisk.class);
   }
 
   @Override
@@ -59,7 +61,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   }
 
 
-  public Map<BlockCoord, BoundingBox> activeInhibitors = Maps.newHashMap();
+  public Map<BlockPos, BoundingBox> activeInhibitors = Maps.newHashMap();
 
   // Ender IO's teleporting
   @SubscribeEvent
@@ -67,7 +69,7 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
     if (isTeleportPrevented(event.getEntity().world, event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ)) {
       event.setCanceled(true);
     }
-    if (isTeleportPrevented(event.getEntity().world, event.getTargetX(), event.getTargetY(), event.getTargetZ())) {
+    if (isTeleportPrevented(event.getEntity().world, event.getTarget().getX(), event.getTarget().getY(), event.getTarget().getZ())) {
       event.setCanceled(true);
     }
   }
@@ -86,11 +88,11 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
   private boolean isTeleportPrevented(World entityWorld, double d, double f, double g) {
     if (!activeInhibitors.isEmpty()) {
       Vec3d pos = new Vec3d(d, f, g);
-      for (Entry<BlockCoord, BoundingBox> e : activeInhibitors.entrySet()) {
+      for (Entry<BlockPos, BoundingBox> e : activeInhibitors.entrySet()) {
         if (e.getValue().isVecInside(pos)) {
-          BlockCoord bc = e.getKey();
-          if (entityWorld.isBlockLoaded(bc.getBlockPos())) {
-            TileEntity te = bc.getTileEntity(entityWorld);
+          BlockPos bc = e.getKey();
+          if (entityWorld.isBlockLoaded(bc)) {
+            TileEntity te = entityWorld.getTileEntity(bc);
             if (te instanceof TileInhibitorObelisk && ((TileInhibitorObelisk) te).isActive() && ((TileInhibitorObelisk) te).getBounds().isVecInside(pos)) {
               return true;
             }

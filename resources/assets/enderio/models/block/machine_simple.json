@@ -1,12 +1,12 @@
 {
     "parent": "enderio:block/transform/block",
     "textures":{
-        "particle":"enderio:blocks/machineBottom",
-        "top":"enderio:blocks/machineTop",
-        "bottom":"enderio:blocks/machineBottom",
-        "side":"enderio:blocks/machineSide",
-        "back":"enderio:blocks/machineBack",
-        "front":"enderio:blocks/machineSide"
+        "particle":"enderio:blocks/machine_bottom",
+        "top":"enderio:blocks/machine_top",
+        "bottom":"enderio:blocks/machine_bottom",
+        "side":"enderio:blocks/machine_side",
+        "back":"enderio:blocks/machine_back",
+        "front":"enderio:blocks/machine_side"
     },
     "elements":[
         {

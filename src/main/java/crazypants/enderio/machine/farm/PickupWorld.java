@@ -1,8 +1,20 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSetMultimap;
+
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,9 +34,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.VillageCollection;
-import net.minecraft.world.*;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.IWorldEventListener;
+import net.minecraft.world.MinecraftException;
+import net.minecraft.world.NextTickListEntry;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.border.WorldBorder;
@@ -40,22 +67,19 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
 public class PickupWorld extends World {
 
-  private final World wrapped;
-  private final FakePlayerEIO player;
+  private final @Nonnull World wrapped;
+  private final @Nonnull FakePlayerEIO player;
 
-  public PickupWorld(World wrapped, FakePlayerEIO player) {
+  public PickupWorld(@Nonnull World wrapped, @Nonnull FakePlayerEIO player) {
     super(null, null, wrapped.provider, null, false);
     this.wrapped = wrapped;
     this.player = player;
   }
 
   @Override
-  public boolean spawnEntityInWorld(Entity entityIn) {
+  public boolean spawnEntity(Entity entityIn) {
     if (entityIn instanceof EntityItem) {
       final EntityItem entityItem = (EntityItem) entityIn;
       ItemStack itemstack = entityItem.getEntityItem();
@@ -64,22 +88,22 @@ public class PickupWorld extends World {
         if (hook == 1 || player.inventory.addItemStackToInventory(itemstack)) {
           FMLCommonHandler.instance().firePlayerItemPickupEvent(player, entityItem);
 
-          if (itemstack.stackSize <= 0) {
+          if (itemstack.getCount() <= 0) {
             entityItem.setDead();
             return true;
           }
         }
       }
     }
-    entityIn.worldObj = wrapped;
-    return wrapped.spawnEntityInWorld(entityIn);
+    entityIn.world = wrapped;
+    return wrapped.spawnEntity(entityIn);
   }
 
   // from here on: just relays to the wrapped world
 
   @Override
   protected IChunkProvider createChunkProvider() {
-    return null;
+    return null; // FIXME
   }
 
   @Override
@@ -93,8 +117,8 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public Biome getBiomeGenForCoords(BlockPos pos) {
-    return wrapped.getBiomeGenForCoords(pos);
+  public Biome getBiome(BlockPos pos) {
+    return wrapped.getBiome(pos);
   }
 
   @Override
@@ -212,10 +236,10 @@ public class PickupWorld extends World {
   public void notifyBlockUpdate(BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
     wrapped.notifyBlockUpdate(pos, oldState, newState, flags);
   }
-
+  
   @Override
-  public void notifyNeighborsRespectDebug(BlockPos pos, Block blockType) {
-    wrapped.notifyNeighborsRespectDebug(pos, blockType);
+  public void notifyNeighborsRespectDebug(BlockPos pos, Block blockType, boolean p_175722_3_) {
+    wrapped.notifyNeighborsRespectDebug(pos, blockType, p_175722_3_);
   }
 
   @Override
@@ -234,18 +258,13 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void notifyNeighborsOfStateChange(BlockPos pos, Block blockType) {
-    wrapped.notifyNeighborsOfStateChange(pos, blockType);
+  public void notifyNeighborsOfStateChange(BlockPos pos, Block blockType, boolean updateObservers) {
+    wrapped.notifyNeighborsOfStateChange(pos, blockType, updateObservers);
   }
 
   @Override
   public void notifyNeighborsOfStateExcept(BlockPos pos, Block blockType, EnumFacing skipSide) {
     wrapped.notifyNeighborsOfStateExcept(pos, blockType, skipSide);
-  }
-
-  @Override
-  public void notifyBlockOfStateChange(BlockPos pos, Block blockIn) {
-    wrapped.notifyBlockOfStateChange(pos, blockIn);
   }
 
   @Override
@@ -284,8 +303,8 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public int func_189649_b(int p_189649_1_, int p_189649_2_) {
-    return wrapped.func_189649_b(p_189649_1_, p_189649_2_);
+  public int getHeight(int p_189649_1_, int p_189649_2_) {
+    return wrapped.getHeight(p_189649_1_, p_189649_2_);
   }
 
   @Override
@@ -418,15 +437,10 @@ public class PickupWorld extends World {
   public List<AxisAlignedBB> getCollisionBoxes(@Nullable Entity entityIn, AxisAlignedBB aabb) {
     return wrapped.getCollisionBoxes(entityIn, aabb);
   }
-
+  
   @Override
-  public boolean isInsideBorder(WorldBorder worldBorderIn, Entity entityIn) {
-    return wrapped.isInsideBorder(worldBorderIn, entityIn);
-  }
-
-  @Override
-  public List<AxisAlignedBB> getCollisionBoxes(AxisAlignedBB bb) {
-    return wrapped.getCollisionBoxes(bb);
+  public boolean /*isInsideWorldBorder*/ func_191503_g(Entity p_191503_1_) {
+    return wrapped.func_191503_g(p_191503_1_);
   }
 
   @Override
@@ -611,11 +625,6 @@ public class PickupWorld extends World {
   @Override
   public boolean isMaterialInBB(AxisAlignedBB bb, Material materialIn) {
     return wrapped.isMaterialInBB(bb, materialIn);
-  }
-
-  @Override
-  public boolean isAABBInMaterial(AxisAlignedBB bb, Material materialIn) {
-    return wrapped.isAABBInMaterial(bb, materialIn);
   }
 
   @Override
@@ -847,12 +856,6 @@ public class PickupWorld extends World {
   @Override
   public void unloadEntities(Collection<Entity> entityCollection) {
     wrapped.unloadEntities(entityCollection);
-  }
-
-  @Override
-  public boolean canBlockBePlaced(Block blockIn, BlockPos pos, boolean p_175716_3_, EnumFacing side, @Nullable Entity entityIn,
-      @Nullable ItemStack itemStackIn) {
-    return wrapped.canBlockBePlaced(blockIn, pos, p_175716_3_, side, entityIn, itemStackIn);
   }
 
   @Override
@@ -1096,14 +1099,8 @@ public class PickupWorld extends World {
   }
 
   @Override
-  public void setItemData(String dataID, WorldSavedData worldSavedDataIn) {
-    wrapped.setItemData(dataID, worldSavedDataIn);
-  }
-
-  @Override
-  @Nullable
-  public WorldSavedData loadItemData(Class<? extends WorldSavedData> clazz, String dataID) {
-    return wrapped.loadItemData(clazz, dataID);
+  public void setData(String dataID, WorldSavedData worldSavedDataIn) {
+    wrapped.setData(dataID, worldSavedDataIn);
   }
 
   @Override

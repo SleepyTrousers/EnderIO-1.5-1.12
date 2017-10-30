@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
@@ -40,7 +41,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     super.initGui();
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
-    ((ContainerAttractor) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerAttractor) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
@@ -63,7 +64,7 @@ public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
+    drawCenteredString(fontRenderer, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
   }
 

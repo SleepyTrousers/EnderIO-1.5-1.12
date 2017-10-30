@@ -1,31 +1,38 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
+import com.enderio.core.common.util.UserIdent;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import crazypants.util.UserIdent;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -339,18 +346,18 @@ public class ServerChannelRegister extends ChannelRegister {
       ItemStack existing = to.getStackInSlot(i);
       if (ItemUtil.areStacksEqual(existing, contents)) {
         sendComplete = true;
-        if (existing.stackSize < to.getInventoryStackLimit()) {
-          int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
-          numCanMerge = Math.min(numCanMerge, contents.stackSize);
+        if (existing.getCount() < to.getInventoryStackLimit()) {
+          int numCanMerge = existing.getMaxStackSize() - existing.getCount();
+          numCanMerge = Math.min(numCanMerge, contents.getCount());
           ItemStack remaining;
-          if (numCanMerge >= contents.stackSize) {
+          if (numCanMerge >= contents.getCount()) {
             remaining = null;
           } else {
             remaining = contents.copy();
-            remaining.stackSize -= numCanMerge;
+            remaining.getCount() -= numCanMerge;
           }
           ItemStack destStack = existing.copy();
-          destStack.stackSize += numCanMerge;
+          destStack.getCount() += numCanMerge;
           to.setInventorySlotContents(i, destStack);
           from.setInventorySlotContents(slot, remaining);
           if (remaining == null) {
@@ -366,14 +373,14 @@ public class ServerChannelRegister extends ChannelRegister {
       for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
         ItemStack existing = to.getStackInSlot(i);
         if (existing == null) {
-          int numCanMerge = Math.min(contents.stackSize, to.getInventoryStackLimit());
+          int numCanMerge = Math.min(contents.getCount(), to.getInventoryStackLimit());
           if (numCanMerge > 0) {
             ItemStack destStack = contents.copy();
-            destStack.stackSize = numCanMerge;
+            destStack.setCount(numCanMerge);
             to.setInventorySlotContents(i, destStack);
             ItemStack remaining = contents.copy();
-            remaining.stackSize -= numCanMerge;
-            if (remaining.stackSize == 0) {
+            remaining.getCount() -= numCanMerge;
+            if (remaining.getCount() == 0) {
               remaining = null;
             }
             from.setInventorySlotContents(slot, remaining);

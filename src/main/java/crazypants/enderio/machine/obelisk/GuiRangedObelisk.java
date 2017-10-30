@@ -1,20 +1,23 @@
 package crazypants.enderio.machine.obelisk;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.util.List;
+
+import crazypants.enderio.machine.modes.IoMode;
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
 
 public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEntity> {
 
@@ -47,7 +50,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
     if(isGhostSlotsEnabled() && inventorySlots instanceof ContainerAbstractObelisk) {
-      ((ContainerAbstractObelisk) inventorySlots).createGhostSlots(getGhostSlots());
+      ((ContainerAbstractObelisk) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
     }
   }
 
@@ -67,7 +70,7 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     int range = (int) getTileEntity().getRange();
-    drawCenteredString(fontRendererObj, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
+    drawCenteredString(fontRenderer, EnderIO.lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx / 2 + 9, getGuiTop() + 68,
         ColorUtil.getRGB(Color.white));
   }
 
@@ -83,5 +86,5 @@ public class GuiRangedObelisk extends GuiPoweredMachineBase<AbstractRangedTileEn
   protected boolean showRecipeButton() {
     return false;
   }
-  
+
 }

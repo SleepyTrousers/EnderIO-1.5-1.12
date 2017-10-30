@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;
@@ -57,8 +59,8 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
   }
 
   protected int usePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(null), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored(null) - used));
+    int used = Math.min(getEnergyStored(), wantToUse);
+    setEnergyStored(Math.max(0, getEnergyStored() - used));
     return used;
   }
 
@@ -90,7 +92,7 @@ public abstract class AbstractMobObelisk extends AbstractRangedTileEntity {
     return result;
   }
 
-  public AbstractMobObelisk(SlotDefinition slotDefinition, ModObject modObject) {
+  public AbstractMobObelisk(SlotDefinition slotDefinition, MachineObject modObject) {
     super(slotDefinition, modObject);
   }
 

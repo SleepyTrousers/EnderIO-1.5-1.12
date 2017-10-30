@@ -1,23 +1,34 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import crazypants.enderio.ModObject;
+
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -32,12 +43,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Storable
 public class TileInventoryPanel extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -329,7 +334,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockInventoryPanel.getUnlocalisedName();
+    return MachineObject.blockInventoryPanel.getUnlocalisedName();
   }
 
   @Override

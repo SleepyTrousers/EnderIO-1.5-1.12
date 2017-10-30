@@ -1,9 +1,16 @@
 package crazypants.enderio.machine.tank;
 
+import static crazypants.enderio.machine.MachineObject.blockTank;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.fluid.SmartTank;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.fluid.SmartTank;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.block.Block;
@@ -23,11 +30,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.blockTank;
 
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider, IFluidContainerItem {
 
@@ -119,7 +121,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   @Override
   public int fill(ItemStack container, FluidStack resource, boolean doFill) {
     // has to be exactly 1, must be handled from the caller
-    if (container.stackSize != 1) {
+    if (container.getCount() != 1) {
       return 0;
     }
     SmartTank tank = loadTank(container);
@@ -131,7 +133,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   @Override
   public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
     // has to be exactly 1, must be handled from the caller
-    if (container.stackSize != 1) {
+    if (container.getCount() != 1) {
       return null;
     }
     SmartTank tank = loadTank(container);
@@ -170,7 +172,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (container.stackSize != 1) {
+      if (container.getCount() != 1) {
         return 0;
       }
       SmartTank tank = loadTank(container);
@@ -182,7 +184,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     @Override
     @Nullable
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-      if (container.stackSize != 1) {
+      if (container.getCount() != 1) {
         return null;
       }
       SmartTank tank = loadTank(container);
@@ -194,7 +196,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
     @Override
     @Nullable
     public FluidStack drain(int maxDrain, boolean doDrain) {
-      if (container.stackSize != 1) {
+      if (container.getCount() != 1) {
         return null;
       }
       SmartTank tank = loadTank(container);

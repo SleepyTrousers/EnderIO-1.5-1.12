@@ -1,9 +1,16 @@
 package crazypants.enderio.machine.enchanter;
 
+import static crazypants.enderio.machine.MachineObject.blockEnchanter;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
@@ -20,20 +27,16 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
-import static crazypants.enderio.ModObject.blockEnchanter;
-
 public class BlockEnchanter extends AbstractMachineBlock<TileEnchanter> implements IGuiHandler, IResourceTooltipProvider, ITESRItemBlock, IHaveTESR {
 
-  public static BlockEnchanter create() {
+  public static BlockEnchanter create(@Nonnull IModObject modObject) {
     BlockEnchanter res = new BlockEnchanter();
     res.init();
     return res;
   }
 
   protected BlockEnchanter() {
-    super(ModObject.blockEnchanter, TileEnchanter.class);
+    super(MachineObject.blockEnchanter, TileEnchanter.class);
     setLightOpacity(0);
   }
 

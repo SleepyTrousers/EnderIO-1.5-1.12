@@ -1,6 +1,9 @@
 package crazypants.enderio.machine.enchanter;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -8,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiEnchanter extends GuiContainerBaseEIO {
 
@@ -31,7 +33,6 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
     super.initGui();
     recipeButton.onGuiInit();
     recipeButton.visible = EnderIO.proxy.isAnEiInstalled();
-    ((ContainerEnchanter) inventorySlots).createGhostSlots(getGhostSlots());
   }
   
   @Override
@@ -55,7 +56,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
         drawTexturedModalRect(sx + 99, sy + 33, 176, 0, 28, 21);
       }            
       String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(curCost)});
-      drawCenteredString(Minecraft.getMinecraft().fontRendererObj, s, sx + xSize/2, sy + 57, col);
+      drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize/2, sy + 57, col);
     }
 
     super.drawGuiContainerBackgroundLayer(var1, var2, var3);

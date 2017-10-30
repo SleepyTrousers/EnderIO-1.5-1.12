@@ -1,19 +1,20 @@
 package crazypants.enderio.machine.spawner;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import crazypants.enderio.Log;
-import crazypants.util.IoUtil;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import crazypants.enderio.Log;
+import crazypants.util.IoUtil;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class PoweredSpawnerConfig {
 
@@ -28,11 +29,11 @@ public class PoweredSpawnerConfig {
     return instance;
   }
 
-  private final Map<String, Double> costs = new HashMap<String, Double>();
+  private final Map<ResourceLocation, Double> costs = new HashMap<>();
 
-  private final List<String> blackList = new ArrayList<String>();
+  private final List<ResourceLocation> blackList = new ArrayList<>();
   
-  public double getCostMultiplierFor(String entity) {
+  public double getCostMultiplierFor(ResourceLocation entity) {
     Double val = costs.get(entity);
     if(val == null) {
       return 1;
@@ -40,7 +41,7 @@ public class PoweredSpawnerConfig {
     return val.doubleValue();
   }
 
-  public boolean isBlackListed(String entity) {
+  public boolean isBlackListed(ResourceLocation entity) {
     if(entity == null) {
       return true;
     }
@@ -61,14 +62,14 @@ public class PoweredSpawnerConfig {
       rootObj = root.getAsJsonObject();
       costsObj = rootObj.getAsJsonObject("costMultiplier");      
       for (Entry<String, JsonElement> entry : costsObj.entrySet()) {
-        costs.put(entry.getKey(), Double.valueOf(entry.getValue().getAsDouble()));
+        costs.put(new ResourceLocation(entry.getKey()), Double.valueOf(entry.getValue().getAsDouble()));
       }
 
       blkList = rootObj.getAsJsonArray("blackList");
       if(blkList != null) {
         for (int i = 0; i < blkList.size(); i++) {
           String s = blkList.get(i).getAsString();
-          blackList.add(s);
+          blackList.add(new ResourceLocation(s));
         }
       } else {
         Log.warn("No black list for powered spawner found in " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
@@ -87,7 +88,7 @@ public class PoweredSpawnerConfig {
       costsObj = rootObj.getAsJsonObject("costMultiplier");
       for (Entry<String, JsonElement> entry : costsObj.entrySet()) {
         double val = Double.valueOf(entry.getValue().getAsDouble());
-        costs.put(entry.getKey(), val);
+        costs.put(new ResourceLocation(entry.getKey()), val);
       }
 
       blkList = rootObj.getAsJsonArray("blackList");
@@ -96,7 +97,7 @@ public class PoweredSpawnerConfig {
         Log.info("Replacing default Powered Spawner blacklist with user supplied values.");
         for (int i = 0; i < blkList.size(); i++) {
           String s = blkList.get(i).getAsString();
-          blackList.add(s);
+          blackList.add(new ResourceLocation(s));
         }
       }
 
@@ -115,7 +116,7 @@ public class PoweredSpawnerConfig {
 
   public void addEntityCost(String entityName, double costMultiplier) {
     if(entityName != null && costMultiplier > 0) {
-      costs.put(entityName, costMultiplier);
+      costs.put(new ResourceLocation(entityName), costMultiplier);
     }
   }
 

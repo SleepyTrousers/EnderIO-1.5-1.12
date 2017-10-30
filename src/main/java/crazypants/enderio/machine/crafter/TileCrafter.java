@@ -1,13 +1,19 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.capacitor.CapacitorKey;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.base.te.AbstractCapabilityMachineEntity;
-import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.paint.IPaintable;
 import info.loenwind.autosave.annotations.Storable;
@@ -22,16 +28,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
-import static crazypants.enderio.capacitor.CapacitorKey.*;
-
 @Storable
-public class TileCrafter extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity {
+public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
 
   @Store
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
@@ -47,22 +45,22 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
   private FakePlayerEIO playerInst;
 
   public TileCrafter() {
-    super();
+    super(MachineObject.blockCrafter);
     containerItems = new ArrayList<ItemStack>();
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockCrafter.getUnlocalisedName();
+    return MachineObject.blockCrafter.getUnlocalisedName();
   }
 
-  @Override
-  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if (!slotDefinition.isInputSlot(slot)) {
-      return false;
-    }
-    return craftingGrid.inv[slot] != null && compareDamageable(itemstack, craftingGrid.inv[slot]);
-  }
+//  @Override
+//  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+//    if (!slotDefinition.isInputSlot(slot)) {
+//      return false;
+//    }
+//    return craftingGrid.inv[slot] != null && compareDamageable(itemstack, craftingGrid.inv[slot]);
+//  }
 
   @Override
   public boolean isActive() {
@@ -86,39 +84,38 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
       Iterator<ItemStack> iter = containerItems.iterator();
       while (iter.hasNext()) {
         ItemStack stack = iter.next();
-        if (inventory[9] == null) {
-          inventory[9] = stack;
+        InventorySlot output = outputSlots.getSlot(0);
+        ItemStack rem = output.insertItem(0, stack, false);
+        if (rem.isEmpty()) {
           iter.remove();
-        } else if (ItemUtil.areStackMergable(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
-          inventory[9].stackSize += stack.stackSize;
-          iter.remove();
+        } else {
+          stack.setCount(rem.getCount());
         }
       }
       return false;
     }
 
     if (craftRecipe()) {
-      int used = Math.min(getEnergyStored(), getPowerUsePerCraft());
-      setEnergyStored(getEnergyStored() - used);
+        getEnergy().extractEnergy(getPowerUsePerCraft(), false);
     }
     return false;
   }
 
   private boolean hasRequiredPower() {
-    return getEnergyStored() >= getPowerUsePerCraft();
+    return true; //getEnergyStored() >= getPowerUsePerCraft();
   }
 
-  @Override
-  public int getPowerUsePerTick() {
-    return (int) Math.ceil(getPowerUsePerCraft() / (double) getTicksPerCraft());
-  }
+//  @Override
+//  public int getPowerUsePerTick() {
+//    return (int) Math.ceil(getPowerUsePerCraft() / (double) getTicksPerCraft());
+//  }
 
   protected int getPowerUsePerCraft() {
     return Config.crafterRfPerCraft;
   }
 
   public int getTicksPerCraft() {
-    return Math.max(1, CRAFTER_TICKS.get(getCapacitorData()));
+    return 20;//Math.max(1, CapacitorKey.CRAFTER_TICKS.get(getCapacitorData()));
   }
 
   static boolean compareDamageable(ItemStack stack, ItemStack req) {
@@ -149,10 +146,10 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
 
     for (int j = 0; j < 9; j++) {
       ItemStack req = craftingGrid.getStackInSlot(j);
-      if (req != null) {
+      if (!req.isEmpty()) {
         for (int i = 0; i < 9; i++) {
           if (inventory[i] != null && inventory[i].getCount() > usedItems[i] && compareDamageable(inventory[i], req)) {
-            req = null;
+            req = ItemStack.EMPTY;
             usedItems[i]++;
             ItemStack craftingItem = inventory[i].copy();
             craftingItem.setCount(1);
@@ -160,7 +157,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
             break;
           }
         }
-        if (req != null) {
+        if (!req.isEmpty()) {
           return false;
         }
       }
@@ -197,13 +194,13 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
         setInventorySlotContents(9, output);
       } else if (ItemUtil.areStackMergable(inventory[9], output)) {
         ItemStack cur = inventory[9].copy();
-        cur.stackSize += output.stackSize;
-        if (cur.stackSize > cur.getMaxStackSize()) {
+        cur.grow(output.getCount());
+        if (cur.getCount() > cur.getMaxStackSize()) {
           // we check beforehand that there is enough free space, but some mod may return different
           // amounts based on the nbt of the input items (e.g. magical wood)
           ItemStack overflow = cur.copy();
-          overflow.stackSize = cur.stackSize - cur.getMaxStackSize();
-          cur.stackSize = cur.getMaxStackSize();
+          overflow.setCount(cur.getCount() - cur.getMaxStackSize());
+          cur.setCount(cur.getMaxStackSize());
           containerItems.add(overflow);
         }
         setInventorySlotContents(9, cur);
@@ -217,12 +214,12 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
       for (int j = 0; j < 9; j++) {
         if (usedItems[j] > 0 && inventory[j] != null) {
           ItemStack rejected = inventory[j].copy();
-          rejected.stackSize = Math.min(inventory[j].stackSize, usedItems[j]);
+          rejected.setCount(Math.min(inventory[j].getCount(), usedItems[j]));
           containerItems.add(rejected);
-          if (inventory[j].stackSize <= usedItems[j]) {
+          if (inventory[j].getCount() <= usedItems[j]) {
             inventory[j] = null;
           } else {
-            inventory[j].stackSize -= usedItems[j];
+            inventory[j].getCount() -= usedItems[j];
           }
         }
       }
@@ -245,8 +242,8 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
         }
       }
     }
-    avail.stackSize--;
-    if (avail.stackSize == 0) {
+    avail.shrink(1);
+    if (avail.getCount() == 0) {
       avail = null;
     }
     return avail;
@@ -260,7 +257,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     if (!ItemUtil.areStackMergable(inventory[9], output)) {
       return false;
     }
-    return output.getMaxStackSize() >= (inventory[9].stackSize + output.stackSize);
+    return output.getMaxStackSize() >= (inventory[9].getCount() + output.getCount());
   }
 
   @Override
@@ -294,3 +291,4 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
   }
 
 }
+*/

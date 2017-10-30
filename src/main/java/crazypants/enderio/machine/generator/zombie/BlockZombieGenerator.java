@@ -1,10 +1,15 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import crazypants.enderio.EnderIO;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.killera.KillerJoeRenderMapper;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IBlockRenderMapper;
@@ -20,7 +25,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -28,10 +32,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> implements IHaveTESR {
 
@@ -42,13 +42,14 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockZombieGenerator create() {
+    PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();
     return gen;
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, new Material(MapColor.IRON) {
+    super(MachineObject.blockZombieGenerator, TileZombieGenerator.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {
@@ -119,14 +120,6 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if(te != null && te instanceof TileZombieGenerator) {
-      tooltip.add(((TileZombieGenerator) te).getFluidStored(EnumFacing.NORTH) + " " + EnderIO.lang.localize("fluid.millibucket.abr"));
-    }
-  }
-
-  @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileZombieGenerator tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
@@ -145,7 +138,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 

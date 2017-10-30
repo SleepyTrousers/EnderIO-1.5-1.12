@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.farm.PacketFarmAction;
 import crazypants.enderio.machine.obelisk.spawn.TileEntityAbstractSpawningObelisk;
 import crazypants.enderio.network.PacketHandler;
@@ -27,12 +28,12 @@ public class TileRelocatorObelisk extends TileEntityAbstractSpawningObelisk {
   private final Random rand = new Random();
 
   public TileRelocatorObelisk() {
-    super(new SlotDefinition(12, 0), AVERSION_POWER_INTAKE, AVERSION_POWER_BUFFER, AVERSION_POWER_USE);
+    super(new SlotDefinition(12, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
   
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSpawnRelocator.getUnlocalisedName();
+    return MachineObject.blockRelocatorObelisk.getUnlocalisedName();
   }
 
   @Override

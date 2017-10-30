@@ -1,15 +1,21 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.ClientUtil;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.SoulBinderBlockRenderMapper;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.xp.PacketDrainPlayerXP;
-import crazypants.enderio.xp.PacketExperienceContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -23,22 +29,18 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
-  public static BlockSoulBinder create() {
-    PacketDrainPlayerXP.register();
-    PacketExperienceContainer.register();
-    BlockSoulBinder result = new BlockSoulBinder();
+  public static BlockSoulBinder create(@Nonnull IModObject modObject) {
+    //PacketDrainPlayerXP.register();//TODO Fix
+    BlockSoulBinder result = new BlockSoulBinder(modObject);
     result.init();
     return result;
   }
 
-  protected BlockSoulBinder() {
-    super(ModObject.blockSoulBinder, TileSoulBinder.class);
+  protected BlockSoulBinder(@Nonnull IModObject modObject) {
+    super(modObject, TileSoulBinder.class);
   }
 
   @Override

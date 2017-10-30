@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.vacuum;
 
+import static crazypants.enderio.machine.gui.GuiMachineBase.BUTTON_SIZE;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
@@ -27,8 +29,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-
-import static crazypants.enderio.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
 public class GuiVacuumChest extends GuiContainerBaseEIO {
 

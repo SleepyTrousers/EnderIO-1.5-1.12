@@ -1,10 +1,15 @@
 package crazypants.enderio.machine.gauge;
 
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -22,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,10 +35,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 
 public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
@@ -45,7 +47,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   private BlockGauge() {
-    super(ModObject.blockGauge.getUnlocalisedName(), TileGauge.class, Material.GLASS);
+    super(MachineObject.blockGauge, TileGauge.class, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }
@@ -57,7 +59,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
@@ -129,9 +131,9 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     }
     return sides;
   }
-
+  
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
     return null;
   }
 

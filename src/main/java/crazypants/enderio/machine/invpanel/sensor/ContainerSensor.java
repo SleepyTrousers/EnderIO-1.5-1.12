@@ -39,7 +39,7 @@ public class ContainerSensor extends AbstractMachineContainer<TileInventoryPanel
     public void putStack(ItemStack stack) {
       if (stack != null) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
       }
       getInv().setItemToCheck(stack);
       PacketHandler.INSTANCE.sendToServer(new PacketItemToCheck(getInv()));

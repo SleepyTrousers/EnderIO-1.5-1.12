@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Set;
+
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
-
-import java.util.Set;
 
 public class ChannelRegister {
 

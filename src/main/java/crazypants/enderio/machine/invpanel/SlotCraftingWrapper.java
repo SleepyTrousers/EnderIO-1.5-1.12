@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
 import com.enderio.core.common.util.ItemUtil;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -39,8 +40,8 @@ public class SlotCraftingWrapper extends SlotCrafting {
           this.craftMatrix.setInventorySlotContents(i, containeritemstack);
         } else {
           int numInserted = ItemUtil.doInsertItem(inventory, 10, 20, containeritemstack);
-          if (numInserted < containeritemstack.stackSize) {
-            containeritemstack.stackSize -= numInserted;
+          if (numInserted < containeritemstack.getCount()) {
+            containeritemstack.getCount() -= numInserted;
             if (!playerIn.inventory.addItemStackToInventory(containeritemstack)) {
               playerIn.dropItem(containeritemstack, false);
             }
@@ -55,7 +56,7 @@ public class SlotCraftingWrapper extends SlotCrafting {
   public ItemStack decrStackSize(int p_75209_1_) {
     if (this.getHasStack()) {
       // on a right click we are asked to craft half a result. Ignore that.
-      return super.decrStackSize(this.getStack().stackSize);
+      return super.decrStackSize(this.getStack().getCount());
     }
     return super.decrStackSize(p_75209_1_);
   }

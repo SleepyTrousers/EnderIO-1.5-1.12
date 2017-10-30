@@ -1,17 +1,33 @@
 package crazypants.enderio.machine.capbank;
 
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.capbank.network.*;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
+import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.network.EnergyReceptor;
+import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.machine.modes.IoMode;
@@ -25,14 +41,12 @@ import crazypants.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.enderio.HandleIOMode;
-import li.cil.oc.api.prefab.ItemStackTabIconRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -43,16 +57,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static crazypants.enderio.machine.MachineObject.blockCapBank;
 
 @Storable
 public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
@@ -310,9 +314,9 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
 
   public void setDefaultIoMode(@Nonnull EnumFacing faceHit) {
     EnergyReceptor er = getEnergyReceptorForFace(faceHit);
-    if (er == null || er.getConduit() != null) {
+   /* TODO conduits if (er == null || er.getConduit() != null) {
       setIoMode(faceHit, IoMode.NONE);
-    } else if (er.getReceptor().canReceive()) {
+    } else */ if (er.getReceptor().canReceive()) {
       setIoMode(faceHit, IoMode.PUSH);
     } else {
       setIoMode(faceHit, IoMode.PULL);
@@ -914,16 +918,6 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public int getFieldCount() {
     return 0;
-  }
-
-  @Override
-  protected void readCustomNBT(NBTAction action, NBTTagCompound root) {
-    super.readCustomNBT(action, root);
-  }
-
-  @Override
-  protected void writeCustomNBT(NBTAction action, NBTTagCompound root) {
-    super.writeCustomNBT(action, root);
   }
   
 }

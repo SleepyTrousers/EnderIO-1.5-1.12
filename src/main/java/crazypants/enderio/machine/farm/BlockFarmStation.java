@@ -1,8 +1,16 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.Locale;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -24,10 +32,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-import java.util.Random;
-
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -41,7 +45,7 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
   }
 
   protected BlockFarmStation() {
-    super(ModObject.blockFarmStation, TileFarmStation.class);
+    super(MachineObject.blockFarmStation, TileFarmStation.class);
   }
 
   @Override
@@ -145,13 +149,13 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation>
     ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
   }
 
-  protected static String permissionFarming;
+  protected static @Nonnull String permissionFarming = "";
 
   @Override
-  public void init(FMLInitializationEvent event) {
-    super.init(event);
-    permissionFarming = PermissionAPI.registerNode(EnderIO.DOMAIN + ".farm." + name.toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
-        "Permission for the block " + name + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."
+  public void init(IModObject mo, FMLInitializationEvent event) {
+    super.init(mo, event);
+    permissionFarming = PermissionAPI.registerNode(EnderIO.DOMAIN + ".farm." + getUnlocalizedName().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
+        "Permission for the block " + getUnlocalizedName() + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."
             + " Only the base block of a plant will be checked, not the dirt block below it or the additional plant blocks above it."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
   }

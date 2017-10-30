@@ -1,0 +1,34 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/machine_bottom",
+            "down": "enderio:blocks/inv_panel_top",
+            "up": "enderio:blocks/inv_panel_top",
+            "north": "enderio:blocks/machine_bottom",
+            "south": "enderio:blocks/inv_panel_front_on",
+            "west": "enderio:blocks/inv_panel_side",
+            "east": "enderio:blocks/inv_panel_side",
+            "invPanelFrontOff": "enderio:blocks/inv_panel_front_off",
+            "conduitConnector": "enderio:blocks/conduit_connector"
+        }
+    },
+    "variants":{
+        "render":{
+            "defaults":{ "model":"enderio:transform/invpanel" },
+            "auto":{ "model":"enderio:null" },
+            "front":{          "submodel":{ "front":{ "model":"enderio:inv_panel_off", "x":270 } } },
+            "front_up":{       "submodel":{ "front":{ "model":"enderio:inv_panel_off", "x":90  } } },
+            "front_north":{    "submodel":{ "front":{ "model":"enderio:inv_panel_off", "y":180 } } },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:inv_panel_off", "y":270 } } },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:inv_panel_off", "y":0   } } },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:inv_panel_off", "y":90  } } },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:inv_panel", "x":270 } } },
+            "front_on_up":{    "submodel":{ "front":{ "model":"enderio:inv_panel", "x":90  } } },
+            "front_on_north":{ "submodel":{ "front":{ "model":"enderio:inv_panel", "y":180 } } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:inv_panel", "y":270 } } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:inv_panel", "y":0   } } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:inv_panel", "y":90  } } }
+        }
+    }
+}

@@ -1,26 +1,33 @@
 package crazypants.enderio.machine.monitor;
 
+import static com.enderio.core.common.NBTAction.ITEM;
+import static com.enderio.core.common.NBTAction.SAVE;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.task.ContinuousTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable.IPaintableTileEntity;
+import crazypants.enderio.recipe.IMachineRecipe;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import static com.enderio.core.common.NBTAction.*;
 
 @Storable
 public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
@@ -59,7 +66,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockPowerMonitorv2.getUnlocalisedName();
+    return MachineObject.blockPowerMonitorv2.getUnlocalisedName();
   }
 
   @Override

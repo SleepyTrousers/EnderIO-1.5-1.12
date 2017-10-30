@@ -1,10 +1,24 @@
 package crazypants.enderio.machine.slicensplice;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.recipe.IManyToOneRecipe;
-import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IManyToOneRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.recipe.RecipeInput;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,11 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
-import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
-
 @Storable
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
@@ -27,12 +36,12 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
-    super(new SlotDefinition(8, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
+    super(new SlotDefinition(8, 1),LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSliceAndSplice.getUnlocalisedName();
+    return MachineObject.blockSliceAndSplice.getUnlocalisedName();
   }
 
   @Override
@@ -136,7 +145,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if (Prep.isValid(inventory[i]) && inventory[i].stackSize > 0) {
+        if (Prep.isValid(inventory[i]) && inventory[i].getCount() > 0) {
           numSlotsFilled++;
         }
       }

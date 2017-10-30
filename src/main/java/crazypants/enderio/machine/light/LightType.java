@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.light;
 
-import net.minecraft.util.IStringSerializable;
-
 import java.util.Locale;
+
+import net.minecraft.util.IStringSerializable;
 
 public enum LightType implements IStringSerializable {
   

@@ -1,11 +1,21 @@
 package crazypants.enderio.machine.reservoir;
 
+import static crazypants.enderio.machine.MachineObject.blockReservoir;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.SmartTank;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -28,6 +38,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,26 +49,19 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.blockReservoir;
-
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
 
-  public static BlockReservoir create() {
-    BlockReservoir result = new BlockReservoir();
+  public static BlockReservoir create(@Nonnull IModObject modObject) {
+    BlockReservoir result = new BlockReservoir(modObject);
     result.init();
     return result;
   }
 
-  private BlockReservoir() {
-    super(ModObject.blockReservoir.getUnlocalisedName(), TileReservoir.class, new Material(MapColor.WATER) {
+  private BlockReservoir(@Nonnull IModObject modObject) {
+    super(modObject, TileReservoir.class, new Material(MapColor.WATER) {
 
       @Override
       public boolean isToolNotRequired() {
@@ -76,7 +80,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   }
 
   @Override
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
@@ -127,16 +131,14 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   public BlockRenderLayer getBlockLayer() {
     return BlockRenderLayer.SOLID;
   }
-  
+
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, @Nullable ItemStack heldItem,
-      EnumFacing side,
-      float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     TileEntity te;
     if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
         && (te = world.getTileEntity(pos)) instanceof TileReservoir) {
@@ -155,7 +157,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
         return true;
       }
     }
-    return super.onBlockActivated(world, pos, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
   }
 
   private static class TankWrapper implements ITankAccess {

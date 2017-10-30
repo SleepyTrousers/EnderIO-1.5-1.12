@@ -1,8 +1,14 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -19,9 +25,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> implements IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
 
@@ -34,7 +37,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   protected BlockCombustionGenerator() {
-    super(ModObject.blockCombustionGenerator, TileCombustionGenerator.class);
+    super(MachineObject.blockCombustionGenerator, TileCombustionGenerator.class);
   }
 
   @Override

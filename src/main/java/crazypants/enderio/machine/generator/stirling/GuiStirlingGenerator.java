@@ -1,22 +1,25 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.text.MessageFormat;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.capacitor.ICapacitorData;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.power.PowerDisplayUtil;
-import crazypants.util.TextUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.text.MessageFormat;
 
 @SideOnly(Side.CLIENT)
 public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {
@@ -45,7 +48,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
   private static String formatUpgrade(MessageFormat fmt, ICapacitorData upgrade) {
     float efficiency = getFactor(upgrade) / getFactor(DefaultCapacitorData.BASIC_CAPACITOR);
     Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, TextFormatting.WHITE, TextFormatting.GRAY };
-    return TextUtil.fix(fmt.format(args, new StringBuffer(), null).toString());
+    return fmt.format(args, new StringBuffer(), null).toString();
   }
 
   @Override

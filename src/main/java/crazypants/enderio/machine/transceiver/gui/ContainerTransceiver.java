@@ -57,8 +57,8 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   public void setPlayerInventoryVisible(boolean visible) {
     Set<Entry<Slot, Point>> entries = playerSlotLocations.entrySet();
     for (Entry<Slot, Point> entry : entries) {
-      entry.getKey().xDisplayPosition = visible ? entry.getValue().x : -3000;
-      entry.getKey().yDisplayPosition = visible ? entry.getValue().y : -3000;
+      entry.getKey().xPos = visible ? entry.getValue().x : -3000;
+      entry.getKey().yPos = visible ? entry.getValue().y : -3000;
     }
   }
 
@@ -72,30 +72,30 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
     int x = offset.x;
     int y = offset.y;
     for (i = 0; i < 4; i++) {
-      inventorySlots.get(i).xDisplayPosition = x;
-      inventorySlots.get(i).yDisplayPosition = y;
+      inventorySlots.get(i).xPos = x;
+      inventorySlots.get(i).yPos = y;
       x += 18;
     }
     x = offset.x;
     y = offset.y + 18;
     for (; i < 8; i++) {
-      inventorySlots.get(i).xDisplayPosition = x;
-      inventorySlots.get(i).yDisplayPosition = y;
+      inventorySlots.get(i).xPos = x;
+      inventorySlots.get(i).yPos = y;
       x += 18;
     }
 
     x = offset.x + (18 * 4) + getItemBufferSpacing();
     y = offset.y;
     for (; i < 12; i++) {
-      inventorySlots.get(i).xDisplayPosition = x;
-      inventorySlots.get(i).yDisplayPosition = y;
+      inventorySlots.get(i).xPos = x;
+      inventorySlots.get(i).yPos = y;
       x += 18;
     }
     x = offset.x + (18 * 4) + getItemBufferSpacing();
     y = offset.y + 18;
     for (; i < 16; i++) {
-      inventorySlots.get(i).xDisplayPosition = x;
-      inventorySlots.get(i).yDisplayPosition = y;
+      inventorySlots.get(i).xPos = x;
+      inventorySlots.get(i).yPos = y;
       x += 18;
     }
   }

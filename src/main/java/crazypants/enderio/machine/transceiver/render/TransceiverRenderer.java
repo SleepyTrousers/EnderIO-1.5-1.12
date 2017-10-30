@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.ModObject.blockTransceiver;
+import static crazypants.enderio.machine.MachineObject.blockTransceiver;
 
 @SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends ManagedTESR<TileTransceiver> {

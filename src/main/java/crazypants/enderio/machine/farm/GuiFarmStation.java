@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.farm;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -8,6 +15,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
@@ -18,10 +26,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
-
-import java.io.IOException;
-import java.util.List;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
@@ -30,7 +34,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   private static final int LOCK_ID = 1234;
   ToggleButton showRangeB;
 
-  public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
+  public GuiFarmStation(InventoryPlayer par1InventoryPlayer, @Nonnull TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine), "farmStation");
     setYSize(ySize + 3);
 
@@ -66,7 +70,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 2, x, y + 20));
     buttonList.add(createLockButton(TileFarmStation.minSupSlot + 3, x + 52, y + 20));
 
-    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlots());
+    ((FarmStationContainer) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
 
     showRangeB.onGuiInit();
     showRangeB.setSelected(getTileEntity().isShowingRange());
@@ -91,7 +95,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
           Slot slot = inventorySlots.getSlot(i);
           GlStateManager.enableBlend();
           GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-          RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.25));
+          RenderUtil.renderQuad2D(slot.xPos, slot.yPos, 0, 16, 16, new Vector4f(0, 0, 0, 0.25));
           GlStateManager.disableBlend();
         }
       }
@@ -111,7 +115,7 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     GlStateManager.disableDepth();
     GlStateManager.enableBlend();

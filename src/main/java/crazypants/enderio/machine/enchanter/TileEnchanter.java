@@ -1,7 +1,14 @@
 package crazypants.enderio.machine.enchanter;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
-import crazypants.enderio.ModObject;
+
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.machine.modes.IoMode;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentData;
@@ -13,31 +20,28 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 @Storable
 public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory {
 
   @Store
-  private ItemStack[] inv = new ItemStack[4];
+  private NNList<ItemStack> inv = new NNList<>(4, ItemStack.EMPTY);
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer player) {
+  public boolean isUsableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
   }
 
   @Override
   public int getSizeInventory() {
-    return inv.length;
+    return inv.size();
   }
 
   @Override
   public ItemStack getStackInSlot(int slot) {
-    if (slot < 0 || slot >= inv.length) {
+    if (slot < 0 || slot >= inv.size()) {
       return null;
     }
-    return inv[slot];
+    return inv.get(slot);
   }
 
   @Override
@@ -48,12 +52,12 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   public void setInventorySlotContents(int slot, @Nullable ItemStack contents) {
     if (contents == null) {
-      inv[slot] = contents;
+      inv.set(slot, contents);
     } else {
-      inv[slot] = contents.copy();
+      inv.set(slot, contents.copy());
     }
-    if (contents != null && contents.stackSize > getInventoryStackLimit()) {
-      contents.stackSize = getInventoryStackLimit();
+    if (contents != null && contents.getCount() > getInventoryStackLimit()) {
+      contents.setCount(getInventoryStackLimit());
     }
   }
   
@@ -66,14 +70,14 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   
   @Override
   public void clear() {       
-    for(int i=0;i<inv.length;++i) {
-      inv[i] = null;
+    for(int i=0;i<inv.size();++i) {
+      inv.set(i, ItemStack.EMPTY);
     }
   }
 
   @Override
   public String getName() {
-    return ModObject.blockEnchanter.getUnlocalisedName();
+    return MachineObject.blockEnchanter.getUnlocalisedName();
   }
 
   @Override
@@ -110,26 +114,25 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     }
     return false;
   }
+  
+  @Override
+  public boolean isEmpty() {
+    return inv.stream().allMatch(ItemStack::isEmpty);
+  }
 
   public EnchanterRecipe getCurrentEnchantmentRecipe() {
-    if (inv[0] == null) {
+    if (inv.get(0).isEmpty() || inv.get(1).isEmpty() || inv.get(2).isEmpty()) {
       return null;
     }
-    if (inv[1] == null) {
-      return null;
-    }
-    if (inv[2] == null) {
-      return null;
-    }
-    EnchanterRecipe ench = EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(inv[1]);
+    EnchanterRecipe ench = EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(inv.get(1));
     if (ench == null) {
       return null;
     }
-    int level = ench.getLevelForStackSize(inv[1].stackSize);
+    int level = ench.getLevelForStackSize(inv.get(1).getCount());
     if (level <= 0) {
       return null;
     }
-    if ((inv[2].stackSize) < ench.getLapizForStackSize(inv[1].stackSize)) {
+    if ((inv.get(2).getCount()) < ench.getLapizForStackSize(inv.get(1).getCount())) {
       return null;
     }
     return ench;
@@ -140,7 +143,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (rec == null) {
       return null;
     }
-    int level = rec.getLevelForStackSize(inv[1].stackSize);
+    int level = rec.getLevelForStackSize(inv.get(1).getCount());
     return new EnchantmentData(rec.getEnchantment(), level);
   }
 
@@ -149,21 +152,21 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   private int getEnchantmentCost(EnchanterRecipe currentEnchantment) {
-    ItemStack item = inv[1];
+    ItemStack item = inv.get(1);
     if (item == null) {
       return 0;
     }
     if (currentEnchantment == null) {
       return 0;
     }    
-    int level = currentEnchantment.getLevelForStackSize(item.stackSize);
+    int level = currentEnchantment.getLevelForStackSize(item.getCount());
     return currentEnchantment.getCostForLevel(level);
   }
 
 
 
   public void setOutput(ItemStack output) {
-    inv[inv.length - 1] = output;
+    inv.set(inv.size() - 1, output);
     markDirty();
   }
 
@@ -205,7 +208,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   @Nonnull
   public String getMachineName() {
-    return ModObject.blockEnchanter.getUnlocalisedName();
+    return MachineObject.blockEnchanter.getUnlocalisedName();
   }
 
   @Override

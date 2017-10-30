@@ -1,8 +1,18 @@
 package crazypants.enderio.machine.light;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.machine.MachineObject.blockLightNode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.capacitor.DefaultCapacitorData;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
@@ -16,11 +26,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-
-import java.util.*;
-
-import static crazypants.enderio.ModObject.blockLightNode;
-import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 
 public class TileElectricLight extends TileEntityEio implements ILegacyPowerReceiver {
 
@@ -122,7 +127,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
         if(!hasPower()) {
           isActivated = false;
         } else {
-          setEnergyStored(getEnergyStored(null) - RF_USE_PER_TICK);
+          setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
         }
       }
 
@@ -161,9 +166,9 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
-      if (energyStoredRF < getMaxEnergyStored(null)) {
+      if (energyStoredRF < getMaxEnergyStored()) {
         boolean needInit = energyStoredRF == 0;
-        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored(null) - energyStoredRF, 10));
+        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
         if (needInit && energyStoredRF > 0) {
           init = true;
         }
@@ -373,7 +378,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
+  public int getEnergyStored() {
     if(!requiresPower) {
       return 0;
     }
@@ -381,7 +386,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing from) {
+  public int getMaxEnergyStored() {
     if(!requiresPower) {
       return 0;
     }
@@ -399,7 +404,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public BlockPos getLocation() {
+    return pos;
   }
 }

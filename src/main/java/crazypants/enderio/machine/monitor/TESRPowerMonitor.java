@@ -1,11 +1,18 @@
 package crazypants.enderio.machine.monitor;
 
+import static crazypants.enderio.machine.MachineObject.blockPowerMonitorv2;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -13,11 +20,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-
-import static crazypants.enderio.ModObject.blockPowerMonitorv2;
 
 @SideOnly(Side.CLIENT)
 public class TESRPowerMonitor extends ManagedTESR<TilePowerMonitor> {

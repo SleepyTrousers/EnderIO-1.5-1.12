@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.capbank;
 
+import java.awt.Point;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
+
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
 import crazypants.util.ShadowInventory;
@@ -16,11 +21,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
@@ -112,7 +115,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
           @Override
           public boolean isItemValid(@Nullable ItemStack par1ItemStack) {
-            if (par1itemStack.isEmpty()) {
+            if (par1ItemStack.isEmpty()) {
               return false;
             }
             return par1ItemStack.getItem().isValidArmor(par1ItemStack, slt, playerInv.player);
@@ -220,7 +223,7 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
         }
       }
 
-      if (origStack.stackSize == 0) {
+      if (origStack.getCount() == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
@@ -228,11 +231,11 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
       slot.onSlotChanged();
 
-      if (origStack.stackSize == copystack.stackSize) {
+      if (origStack.getCount() == copystack.getCount()) {
         return null;
       }
 
-      slot.onPickupFromSlot(entityPlayer, origStack);
+      return slot.onTake(entityPlayer, origStack);
     }
 
     return copystack;
@@ -243,10 +246,10 @@ public abstract class ContainerCapBank extends ContainerEnder<TileCapBank> {
       return false;
     }
     int index = EntityLiving.getSlotForItemStack(origStack).getIndex();
-    ItemStack[] ai = entityPlayer.inventory.armorInventory;
-    if (ai[index] == null) {
-      ai[index] = origStack.copy();
-      origStack.stackSize = 0;
+    NonNullList<ItemStack> ai = entityPlayer.inventory.armorInventory;
+    if (ai.get(index).isEmpty()) {
+      ai.set(index, origStack.copy());
+      origStack.setCount(0);
       return true;
     }
     return false;

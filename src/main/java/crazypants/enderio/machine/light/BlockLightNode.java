@@ -1,7 +1,9 @@
 package crazypants.enderio.machine.light;
 
+import java.util.Random;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -12,15 +14,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-import java.util.Random;
 
 public class BlockLightNode extends BlockEio<TileLightNode> {
 
@@ -33,7 +33,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public static final PropertyBool ACTIVE = PropertyBool.create("active");
   
   public BlockLightNode() {
-    super(ModObject.blockLightNode.getUnlocalisedName(), TileLightNode.class, Material.AIR);
+    super(MachineObject.blockLightNode, TileLightNode.class, Material.AIR);
     setCreativeTab(null);
     setTickRandomly(true);
     setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
@@ -82,7 +82,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     
     return null;
   }
@@ -109,7 +109,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   }
 
   @Override
-  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock) {  
+  public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos) {  
     TileLightNode te = getTileEntity(world, pos);
     if (te != null) {
       te.onNeighbourChanged();
@@ -131,7 +131,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }

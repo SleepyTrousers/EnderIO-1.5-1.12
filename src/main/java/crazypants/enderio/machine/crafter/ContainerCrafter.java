@@ -1,31 +1,39 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostSlot;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+
+import crazypants.enderio.machine.base.container.AbstractCapabilityMachineContainer;
+import crazypants.enderio.machine.base.container.SlotRangeHelper;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
 import crazypants.enderio.network.PacketHandler;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> implements IRemoteExec.IContainer {
+public class ContainerCrafter extends AbstractCapabilityMachineContainer<TileCrafter> implements IRemoteExec.IContainer {
 
   public static final int EXEC_SET_BUFFER = 0;
 
-  public ContainerCrafter(InventoryPlayer playerInv, TileCrafter te) {
-    super(playerInv, te);
+  public ContainerCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te, EnumFacing facing) {
+    super(playerInv, te, facing);
   }
 
   private final List<DummySlot> dummySlots = new ArrayList<DummySlot>();
 
-  public void addCrafterSlots(List<GhostSlot> ghostSlots) {
+  public void addCrafterSlots(GhostSlotHandler ghostSlots) {
     dummySlots.clear();
     int topY = 16;
     int leftX = 31;
@@ -36,13 +44,13 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
         int x = leftX + col * 18;
         int y = topY + row * 18;
         final DummySlot dummySlot = new DummySlot(index, x, y);
-        ghostSlots.add(dummySlot);
+        ghostSlots.addGhostSlot(dummySlot);
         dummySlots.add(dummySlot);
         index++;
       }
     }
 
-    ghostSlots.add(new DummySlot(9, 90, 34));
+    ghostSlots.addGhostSlot(new DummySlot(9, 90, 34));
   }
 
   @Override
@@ -65,11 +73,11 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new InputSlot(getInv(), index, x, y));
+        addSlotToContainer(new InputSlot(getOwner().getInventory().getView(Type.INPUT), index, x, y));
         index++;
       }
     }
-    addSlotToContainer(new Slot(getInv(), 9, 172, 34) {
+    addSlotToContainer(new SlotItemHandler(getOwner().getInventory().getView(Type.OUTPUT), 0, 172, 34) {
       @Override
       public boolean isItemValid(@Nullable ItemStack itemStack) {
         return false;
@@ -77,17 +85,17 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
     });
   }
 
-  private class InputSlot extends Slot {
+  private class InputSlot extends SlotItemHandler {
 
-    public InputSlot(IInventory par1iInventory, int par2, int par3, int par4) {
+    public InputSlot(IItemHandler par1iInventory, int par2, int par3, int par4) {
       super(par1iInventory, par2, par3, par4);
     }
 
     @Override
-    public boolean isItemValid(@Nullable ItemStack itemStack) {
+    public boolean isItemValid(ItemStack itemStack) {
 
-      ItemStack refStack = getInv().craftingGrid.getStackInSlot(slotNumber);
-      if (refStack == null || itemStack.isEmpty()) {
+      ItemStack refStack = getOwner().craftingGrid.getStackInSlot(slotNumber);
+      if (refStack.isEmpty() || itemStack.isEmpty()) {
         return false;
       }
       return TileCrafter.compareDamageable(itemStack, refStack);
@@ -109,7 +117,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
 
     @Override
     public ItemStack getStack() {
-      return getInv().craftingGrid.getStackInSlot(slotIndex);
+      return getOwner().craftingGrid.getStackInSlot(slotIndex);
     }
 
     @Override
@@ -117,28 +125,30 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> impl
       if (slotIndex >= 9) {
         return;
       }
-      if (stack != null) {
+      if (!stack.isEmpty()) {
         stack = stack.copy();
-        stack.stackSize = 1;
+        stack.setCount(1);
       }
-      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getInv(), slotIndex, stack));
+      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getOwner(), slotIndex, stack));
     }
   }
 
   @Override
-  public AbstractMachineContainer.SlotRange getPlayerInventorySlotRange(boolean reverse) {
+  public SlotRangeHelper.SlotRange getPlayerInventorySlotRange(boolean reverse) {
     return super.getPlayerInventorySlotRange(reverse);
   }
 
   @Override
-  public void networkExec(int id, GuiPacket message) {
+  public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case EXEC_SET_BUFFER:
-      getInv().setBufferStacks(message.getBoolean(0));
+      getOwner().setBufferStacks(message.getBoolean(0));
       break;
     default:
       break;
     }
+    return null;
   }
 
 }
+*/

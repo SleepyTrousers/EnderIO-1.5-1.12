@@ -1,0 +1,20 @@
+{
+  "forge_marker":1,
+  "defaults":{
+    "textures": {
+        "particle": "enderio:blocks/fused_quartz_item"
+    },
+    "model":"enderio:transform/block"
+  },
+  "variants":{
+    "inventory": [{}],
+  	"kind":{
+      "fused_quartz":             { },
+      "fused_glass":              { },
+      "enlightened_fused_quartz": { },
+      "enlightened_fused_glass":  { },
+      "dark_fused_quartz":        { },
+      "dark_fused_glass":         { }
+    }
+  }
+}

@@ -1,17 +1,25 @@
 package crazypants.enderio.machine.solar;
 
+import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PacketConduitProbe.IHasConduitProbeData;
+import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.*;
-
-import static crazypants.enderio.ModObject.blockSolarPanel;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SolarPanelNetwork implements IHasConduitProbeData {
 
@@ -60,7 +68,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         BlockPos panel = iterator.next();
         if (world.isBlockLoaded(panel)) {
           TileEntity tileEntity = world.getTileEntity(panel);
-          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasworld()) {
+          if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
             if (((TileEntitySolarPanel) tileEntity).network == this) {
               for (EnumFacing neighborDir : EnumFacing.Plane.HORIZONTAL) {
                 final BlockPos neighbor = panel.offset(neighborDir);
@@ -79,7 +87,7 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
         for (BlockPos candidate : candidateList) {
           if (!panels.contains(candidate) && canConnect(candidate)) {
             TileEntity tileEntity = world.getTileEntity(candidate);
-            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasworld()) {
+            if (tileEntity instanceof TileEntitySolarPanel && !tileEntity.isInvalid() && tileEntity.hasWorld()) {
               panels.add(candidate.toImmutable());
               final SolarPanelNetwork otherNetwork = ((TileEntitySolarPanel) tileEntity).network;
               if (otherNetwork != this) {
@@ -198,8 +206,9 @@ public class SolarPanelNetwork implements IHasConduitProbeData {
     return energyMaxPerTick;
   }
 
+  @Nonnull
   @Override
-  public String[] getConduitProbeData() {
+  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return new String[] { toString() };
   }
 

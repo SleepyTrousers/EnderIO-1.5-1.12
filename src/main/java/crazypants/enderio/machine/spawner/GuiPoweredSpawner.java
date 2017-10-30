@@ -1,10 +1,16 @@
 package crazypants.enderio.machine.spawner;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.List;
+
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -13,10 +19,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
@@ -74,14 +76,14 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner>
     ((ContainerPoweredSpawner) inventorySlots).setSlotVisibility(!spawnMode);
 
     if(spawnMode) {
-      getGhostSlots().clear();
+      getGhostSlotHandler().getGhostSlots().clear();
       header = EnderIO.lang.localize("gui.machine.poweredspawner.spawn");
       progressTooltipRect.x = 80;
       progressTooltipRect.y = 34;
       progressTooltipRect.width = 14;
       progressTooltipRect.height = 14;
     } else {
-      ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlots());
+      ((ContainerPoweredSpawner) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
       header = EnderIO.lang.localize("gui.machine.poweredspawner.capture");
       progressTooltipRect.x = 52;
       progressTooltipRect.y = 40;

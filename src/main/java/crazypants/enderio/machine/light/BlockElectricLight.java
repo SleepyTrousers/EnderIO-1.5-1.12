@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.light;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.vecmath.Vector3f;
+
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
 import net.minecraft.block.Block;
@@ -41,7 +45,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   public BlockElectricLight() {
-    super(ModObject.blockElectricLight.getUnlocalisedName(), TileElectricLight.class);
+    super(MachineObject.blockElectricLight, TileElectricLight.class);
     setLightOpacity(0);
     setDefaultState(blockState.getBaseState().withProperty(TYPE, LightType.ELECTRIC).withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
   }
@@ -92,8 +96,8 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
-    return new BlockItemElectricLight(this, getName());
+  public ItemBlock createBlockItem(IModObject mo) {
+    return new BlockItemElectricLight(this, mo.getUnlocalisedName());
   }
 
   @Override
@@ -130,11 +134,11 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(IModObject mo) {
     Item item = Item.getItemFromBlock(this);
     int numTypes = LightType.values().length;
     for (int i = 0; i < numTypes; i++) {
-      ClientUtil.regRenderer(item, i, name);
+      ClientUtil.regRenderer(item, i, mo.getUnlocalisedName());
     }
   }
 
@@ -148,12 +152,12 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, EnumFacing from) {
+  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
     return true;
   }
 
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return null;
   }
 
@@ -168,10 +172,10 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   }
 
   @Override
-  public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block neighborBlock) {
+  public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
     TileElectricLight te = getTileEntity(worldIn, pos);
     if (te != null) {
-      te.onNeighborBlockChange(neighborBlock);
+      te.onNeighborBlockChange(blockIn);
     }
   }
 

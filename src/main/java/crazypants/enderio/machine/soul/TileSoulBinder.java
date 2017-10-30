@@ -1,13 +1,25 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
-import crazypants.enderio.ModObject;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
+
 import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperienceContainer;
@@ -21,9 +33,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileSoulBinder extends AbstractPoweredTaskEntity
@@ -52,7 +64,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
   };
 
   public TileSoulBinder() {
-    super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
+    super(new SlotDefinition(2, 2, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
     xpCont.setTileEntity(this);
   }
 
@@ -63,7 +75,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSoulBinder.getUnlocalisedName();
+    return MachineObject.blockSoulBinder.getUnlocalisedName();
   }
     
   @Override
@@ -270,14 +282,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

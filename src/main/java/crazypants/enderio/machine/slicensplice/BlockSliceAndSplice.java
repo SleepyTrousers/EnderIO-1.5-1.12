@@ -1,8 +1,14 @@
 package crazypants.enderio.machine.slicensplice;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper;
@@ -19,20 +25,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> implements IPaintable.ISolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
 
-  public static BlockSliceAndSplice create() {
-    BlockSliceAndSplice result = new BlockSliceAndSplice();
+  public static BlockSliceAndSplice create(@Nonnull IModObject modObject) {
+    BlockSliceAndSplice result = new BlockSliceAndSplice(modObject);
     result.init();
     return result;
   }
 
-  protected BlockSliceAndSplice() {
-    super(ModObject.blockSliceAndSplice, TileSliceAndSplice.class);
+  protected BlockSliceAndSplice(@Nonnull IModObject modObject) {
+    super(modObject, TileSliceAndSplice.class);
   }
 
   @Override

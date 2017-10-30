@@ -1,12 +1,27 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.api.client.render.VertexTransform;
-import com.enderio.core.client.render.*;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.client.render.VertexRotationFacing;
+import com.enderio.core.client.render.VertexScale;
+import com.enderio.core.client.render.VertexTranslation;
+import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.vecmath.Vector3d;
-import crazypants.enderio.fluid.SmartTank;
+
 import crazypants.enderio.machine.ItemTankHelper;
-import crazypants.enderio.machine.MachineRenderMapper;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machine.render.MachineRenderMapper;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.ICacheKey;
 import crazypants.enderio.render.IRenderMapper;
@@ -29,21 +44,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class KillerJoeRenderMapper extends MachineRenderMapper implements IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
     IItemRenderMapper.IDynamicOverlayMapper {
 
   private final TextureSupplier head1, head2;
 
+  @Nonnull
   public static final KillerJoeRenderMapper killerJoe = new KillerJoeRenderMapper(BlockKillerJoe.textureHead1, BlockKillerJoe.textureHead2);
 
+  @Nonnull
   public static final KillerJoeRenderMapper zombieGen = new KillerJoeRenderMapper(BlockZombieGenerator.textureHead1, BlockZombieGenerator.textureHead2);
 
   protected KillerJoeRenderMapper(TextureSupplier head1, TextureSupplier head2) {
@@ -66,7 +76,9 @@ public class KillerJoeRenderMapper extends MachineRenderMapper implements IRende
     return null;
   }
 
+  @Nonnull
   private static final Double px = 1d / 16d;
+  @Nonnull
   private static final Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
   private static final double[] ROTS = { 0, Math.PI / 2, Math.PI, Math.PI / 2 * 3 };
 

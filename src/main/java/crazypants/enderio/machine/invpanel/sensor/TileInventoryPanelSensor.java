@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.invpanel.sensor;
 
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -44,7 +44,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockInventoryPanelSensor.getUnlocalisedName();
+    return MachineObject.blockInventoryPanelSensor.getUnlocalisedName();
   }
 
   @Override

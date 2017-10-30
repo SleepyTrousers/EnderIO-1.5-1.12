@@ -1,11 +1,19 @@
 package crazypants.enderio.machine.reservoir;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
+
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.fluid.SmartTank;
-import crazypants.enderio.fluid.SmartTankFluidHandler;
-import crazypants.enderio.fluid.SmartTankFluidReservoirHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.tileentity.TileEntity;
@@ -17,13 +25,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Storable
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
@@ -233,7 +234,24 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   protected SmartTankFluidHandler getSmartTankFluidHandler() {
     if (smartTankFluidHandler == null) {
-      smartTankFluidHandler = new SmartTankFluidReservoirHandler(this, tank);
+      smartTankFluidHandler = new SmartTankFluidHandler(tank) {
+
+        @Override
+        protected boolean canFill(EnumFacing from) {
+          return true;
+        }
+
+        @Override
+        protected boolean canDrain(EnumFacing from) {
+          return TileReservoir.this.canRefill;
+        }
+
+        @Override
+        protected boolean canAccess(EnumFacing from) {
+          return true;
+        }
+        
+      };
     }
     return smartTankFluidHandler;
   }

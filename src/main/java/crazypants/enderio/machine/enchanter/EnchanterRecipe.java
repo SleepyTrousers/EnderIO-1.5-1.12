@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.enchanter;
 
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.recipe.RecipeInput;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +19,7 @@ public class EnchanterRecipe {
   public EnchanterRecipe(RecipeInput input, Enchantment enchantment, double costMultiplier) {
     this.input = input;
     this.enchantment = enchantment;
-    stackSizePerLevel = input.getInput().stackSize;
+    stackSizePerLevel = input.getInput().getCount();
     this.costMultiplier = costMultiplier;
   }
 

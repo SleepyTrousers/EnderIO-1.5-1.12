@@ -1,10 +1,26 @@
 package crazypants.enderio.machine.monitor;
 
+import static crazypants.enderio.machine.MachineObject.blockAlloySmelter;
+import static crazypants.enderio.machine.MachineObject.blockCapBank;
+import static crazypants.enderio.power.PowerDisplayUtil.formatPower;
+import static crazypants.enderio.power.PowerDisplayUtil.formatPowerFloat;
+
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.InvisibleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
@@ -18,17 +34,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static crazypants.enderio.ModObject.*;
-import static crazypants.enderio.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.power.PowerDisplayUtil.formatPowerFloat;
 
 public class GuiPowerMonitor extends GuiPoweredMachineBase<TilePowerMonitor> {
 

@@ -1,33 +1,40 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -35,7 +42,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private static int IO_MB_TICK = 250;
 
   @Store
-  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, Fluid.BUCKET_VOLUME * 2);
+  final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
 
   int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
@@ -49,14 +56,14 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0), ModObject.blockZombieGenerator);
+    super(new SlotDefinition(0, 0, 0), MachineObject.blockZombieGenerator);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockZombieGenerator.getUnlocalisedName();
+    return MachineObject.blockZombieGenerator.getUnlocalisedName();
   }
 
 
@@ -90,10 +97,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   public boolean isActive() {
     return active;
   }
-
+  
   @Override
-  public void onNeighborBlockChange(Block blockId) {
-    super.onNeighborBlockChange(blockId);
+  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+    super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if(powerDis != null) {
       powerDis.neighboursChanged();
     }
@@ -182,7 +189,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
+    if (forFluidType != null && forFluidType.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid()) {
       return tank;
     }
     return null;
@@ -235,14 +242,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

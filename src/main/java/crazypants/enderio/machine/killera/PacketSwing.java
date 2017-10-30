@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.killera;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import crazypants.enderio.EnderIO;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

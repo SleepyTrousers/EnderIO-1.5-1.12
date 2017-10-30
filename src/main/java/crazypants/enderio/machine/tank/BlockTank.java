@@ -1,12 +1,18 @@
 package crazypants.enderio.machine.tank;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.BlockEnder;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -35,9 +41,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider, IPaintable.INonSolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -50,7 +53,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   }
 
   protected BlockTank() {
-    super(ModObject.blockTank, TileTank.class);
+    super(MachineObject.blockTank, TileTank.class);
     setSoundType(SoundType.GLASS);
     setLightOpacity(0);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)

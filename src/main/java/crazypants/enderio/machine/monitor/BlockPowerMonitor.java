@@ -1,11 +1,18 @@
 package crazypants.enderio.machine.monitor;
 
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.GuiID;
-import crazypants.enderio.IModObject;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -27,10 +34,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
-
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements IAdvancedTooltipProvider, IPaintable.ISolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint, IHaveTESR {
 
@@ -42,7 +45,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ClientHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorStatData.ServerHandler.class, PacketPowerMonitorStatData.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerMonitorConfig.ServerHandler.class, PacketPowerMonitorConfig.class, PacketHandler.nextID(), Side.SERVER);
-    advancedInstance = new BlockPowerMonitor(ModObject.blockPowerMonitorv2) {
+    advancedInstance = new BlockPowerMonitor(MachineObject.blockPowerMonitorv2) {
       @Override
       protected GuiID getGuiId() {
         return GuiID.GUI_ID_POWER_MONITOR_ADVANCED;
@@ -53,7 +56,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   }
 
   public static Block createPowerMonitor() {
-    BlockPowerMonitor result = new BlockPowerMonitor(ModObject.blockPowerMonitor);
+    BlockPowerMonitor result = new BlockPowerMonitor(MachineObject.blockPowerMonitor);
     result.init();
     return result;
   }

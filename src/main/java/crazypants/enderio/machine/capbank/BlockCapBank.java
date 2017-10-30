@@ -1,20 +1,35 @@
 package crazypants.enderio.machine.capbank;
 
+import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.integration.baubles.BaublesUtil;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
-import crazypants.enderio.machine.capbank.packet.*;
+import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.machine.capbank.render.CapBankBlockRenderMapper;
 import crazypants.enderio.machine.capbank.render.CapBankItemRenderMapper;
 import crazypants.enderio.machine.capbank.render.CapBankRenderer;
@@ -61,13 +76,6 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
 public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, IAdvancedTooltipProvider, IRedstoneConnectable,
     ISmartRenderAwareBlock, IHaveTESR {
 
@@ -99,7 +107,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   }
 
   @Override
-  protected ItemBlock createItemBlock() {
+  public ItemBlock createBlockItem(IModObject modObject) {
     return new BlockItemCapBank(this, getRegistryName());
   }
 
@@ -373,7 +381,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
       return;
     }
     if (stack.getTagCompound() != null) {
-      cb.readContentsFromNBT(stack.getTagCompound());
+      cb.readFromItemStack(stack);
     }
 
     Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
@@ -443,7 +451,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IGuiHandler, 
   protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileCapBank te, ItemStack drop) {
     drop.setTagCompound(new NBTTagCompound());
     if (te != null) {
-      te.writeContentsToNBT(drop.getTagCompound());
+      te.writeToItemStack(drop);
     }
   }
 

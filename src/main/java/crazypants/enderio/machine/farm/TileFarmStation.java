@@ -1,20 +1,41 @@
 package crazypants.enderio.machine.farm;
 
+import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
+import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
+
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.stackable.Things;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.mojang.authlib.GameProfile;
-import crazypants.enderio.ModObject;
+
+import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.farm.farmers.FarmersCommune;
-import crazypants.enderio.machine.farm.farmers.IHarvestResult;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeParticle;
+import crazypants.enderio.farming.FarmNotification;
+import crazypants.enderio.farming.FarmingAction;
+import crazypants.enderio.farming.FarmingTool;
+import crazypants.enderio.farming.IFarmer;
+import crazypants.enderio.farming.farmers.IHarvestResult;
+import crazypants.enderio.farming.registry.Commune;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.task.ContinuousTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.render.ranged.IRanged;
+import crazypants.enderio.render.ranged.RangeParticle;
 import crazypants.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -24,15 +45,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
@@ -43,85 +63,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.UUID;
-
-import static crazypants.enderio.capacitor.DefaultCapacitorData.BASIC_CAPACITOR;
-import static crazypants.enderio.config.Config.farmEvictEmptyRFTools;
-import static crazypants.enderio.config.Config.farmStopOnNoOutputSlots;
-
 @Storable
-public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged {
+public class TileFarmStation extends AbstractPoweredTaskEntity implements IFarmer, IPaintable.IPaintableTileEntity, IRanged {
 
   private static final int TICKS_PER_WORK = 20;
-
-  public static Things TREETAPS = new Things();
-
-  public enum ToolType {
-    HOE {
-      @Override
-      boolean match(ItemStack item) {
-        return Config.farmHoes.contains(item);
-      }
-    },
-
-    AXE {
-      @Override
-      boolean match(ItemStack item) {
-        return item.getItem().getHarvestLevel(item, "axe", null, null) >= 0;
-      }
-    },
-    TREETAP {
-      @Override
-      boolean match(ItemStack item) {
-        return TREETAPS.contains(item);
-      }
-    },
-    SHEARS {
-      @Override
-      boolean match(ItemStack item) {
-        return item.getItem() instanceof ItemShears;
-      }
-    },
-    NONE {
-      @Override
-      boolean match(ItemStack item) {
-        return false;
-      }
-    };
-
-    public final boolean itemMatches(ItemStack item) {
-      return Prep.isValid(item) && match(item) && !isBrokenTinkerTool(item);
-    }
-
-    @SuppressWarnings("null")
-    private static boolean isBrokenTinkerTool(ItemStack item) {
-      return Prep.isValid(item) && item.hasTagCompound() && item.getTagCompound().hasKey("Stats")
-          && item.getTagCompound().getCompoundTag("Stats").getBoolean("Broken");
-    }
-
-    abstract boolean match(ItemStack item);
-
-    public static boolean isTool(ItemStack stack) {
-      for (ToolType type : values()) {
-        if (type.itemMatches(stack)) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    public static ToolType getToolType(ItemStack stack) {
-      for (ToolType type : values()) {
-        if (type.itemMatches(stack)) {
-          return type;
-        }
-      }
-      return NONE;
-    }
-  }
 
   private BlockPos lastScanned;
   private FakePlayerEIO farmerJoe;
@@ -151,15 +96,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private boolean wasActive;
 
   public TileFarmStation() {
-    super(new SlotDefinition(9, 6, 1), FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE);
+    super(new SlotDefinition(9, 6, 1), CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_USE);
   }
 
   public int getFarmSize() {
-    return (int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
+    return 5;//(int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
   }
 
   public int getFarmBaseSize() {
-    return (int) (FARM_BASE_SIZE.getFloat(BASIC_CAPACITOR) + FARM_BONUS_SIZE.getFloat(BASIC_CAPACITOR));
+    return 5;//(int) (FARM_BASE_SIZE.getFloat(BASIC_CAPACITOR) + FARM_BONUS_SIZE.getFloat(BASIC_CAPACITOR));
   }
 
   public void actionPerformed(boolean isAxe) {
@@ -177,7 +122,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (dirtBlock == Blocks.FARMLAND) {
       return true;
     } else {
-      ItemStack tool = getTool(ToolType.HOE);
+      ItemStack tool = getTool(FarmingTool.HOE);
       if (Prep.isInvalid(tool)) {
         if (dirtBlock == Blocks.DIRT || dirtBlock == Blocks.GRASS) {
           setNotification(FarmNotification.NO_HOE);
@@ -187,13 +132,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       }
 
 
-      boolean doDamage = worldObj.rand.nextFloat() < Config.farmToolTakeDamageChance && canDamage(tool);
+      boolean doDamage = world.rand.nextFloat() < Config.farmToolTakeDamageChance && canDamage(tool);
       if (!doDamage) {
         tool = tool.copy();
       }
 
       int origDamage = tool.getItemDamage();
-      EnumActionResult itemUse = tool.getItem().onItemUse(tool, farmerJoe, worldObj, dirtLoc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      EnumActionResult itemUse = tool.getItem().onItemUse(farmerJoe, world, dirtLoc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
 
       if (itemUse != EnumActionResult.SUCCESS) {
         return false;
@@ -204,13 +149,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           tool.damageItem(1, farmerJoe);
         }
 
-        if (Prep.isInvalid(tool) || tool.stackSize == 0 || tool.getItemDamage() >= tool.getMaxDamage()) { // TODO 1.11
-          destroyTool(ToolType.HOE);
+        if (Prep.isInvalid(tool) || tool.getCount() == 0 || tool.getItemDamage() >= tool.getMaxDamage()) { // TODO 1.11
+          destroyTool(FarmingTool.HOE);
           markDirty();
         }
       }
 
-      worldObj.playSound(dirtLoc.getX() + 0.5F, dirtLoc.getY() + 0.5F, dirtLoc.getZ() + 0.5F, SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS,
+      world.playSound(dirtLoc.getX() + 0.5F, dirtLoc.getY() + 0.5F, dirtLoc.getZ() + 0.5F, SoundEvents.BLOCK_GRASS_STEP, SoundCategory.BLOCKS,
           (Blocks.FARMLAND.getSoundType().getVolume() + 1.0F) / 2.0F, Blocks.FARMLAND.getSoundType().getPitch() * 0.8F, false);
       actionPerformed(false);
       return true;
@@ -221,7 +166,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     int result = 0;
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if (Prep.isValid(inventory[i])) {
-        int level = getLooting(inventory[i]);
+        int level = getLootingValue(inventory[i]);
         if (level > result) {
           result = level;
         }
@@ -231,38 +176,35 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   public boolean hasHoe() {
-    return hasTool(ToolType.HOE);
+    return hasTool(FarmingTool.HOE);
   }
 
   public boolean hasAxe() {
-    return hasTool(ToolType.AXE);
+    return hasTool(FarmingTool.AXE);
   }
 
   public boolean hasShears() {
-    return hasTool(ToolType.SHEARS);
+    return hasTool(FarmingTool.SHEARS);
   }
 
   public int getAxeLootingValue() {
-    ItemStack tool = getTool(ToolType.AXE);
-    if (Prep.isInvalid(tool)) {
-      return 0;
-    }
-    return getLooting(tool);
+    return getLootingValue(FarmingTool.AXE);
   }
 
-  public void damageAxe(Block blk, BlockPos bc) {
-    damageTool(ToolType.AXE, blk, bc, 1);
-  }
+//  public void damageAxe(Block blk, BlockPos bc) {
+//    damageTool(FarmingTool.AXE, blk, bc, 1);
+//  }
+//
+//  public void damageHoe(int i, BlockPos bc) {
+//    damageTool(FarmingTool.HOE, null, bc, i);
+//  }
+//
+//  public void damageShears(Block blk, BlockPos bc) {
+//    damageTool(FarmingTool.SHEARS, blk, bc, 1);
+//  }
 
-  public void damageHoe(int i, BlockPos bc) {
-    damageTool(ToolType.HOE, null, bc, i);
-  }
-
-  public void damageShears(Block blk, BlockPos bc) {
-    damageTool(ToolType.SHEARS, blk, bc, 1);
-  }
-
-  public boolean hasTool(ToolType type) {
+  @Override
+  public boolean hasTool(FarmingTool type) {
     return getTool(type) != null;
   }
 
@@ -277,9 +219,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return cap.getMaxEnergyStored() > 0 && cap.getEnergyStored() <= 0;
   }
 
-  public ItemStack getTool(ToolType type) {
+  @Override
+  public ItemStack getTool(FarmingTool type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if (ToolType.isBrokenTinkerTool(inventory[i]) || isDryRfTool(inventory[i])) {
+      if (FarmingTool.isBrokenTinkerTool(inventory[i]) || isDryRfTool(inventory[i])) {
         for (int j = slotDefinition.minOutputSlot; j <= slotDefinition.maxOutputSlot; j++) {
           if (Prep.isInvalid(inventory[j])) {
             inventory[j] = inventory[i];
@@ -288,7 +231,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
             break;
           }
         }
-      } else if (type.itemMatches(inventory[i]) && inventory[i].stackSize > 0) {
+      } else if (type.itemMatches(inventory[i]) && inventory[i].getCount() > 0) {
         switch (type) {
         case AXE:
           removeNotification(FarmNotification.NO_AXE);
@@ -308,7 +251,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return Prep.getEmpty();
   }
 
-  public void damageTool(ToolType type, Block blk, BlockPos bc, int damage) {
+//  @Override
+  // TODO what is this needed for ?
+  public void damageTool(FarmingTool type, Block blk, BlockPos bc, int damage) {
     ItemStack tool = getTool(type);
     if (Prep.isInvalid(tool)) {
       return;
@@ -322,11 +267,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     IBlockState bs = getBlockState(bc);
 
     boolean canDamage = canDamage(tool);
-    if (type == ToolType.AXE) {
+    if (type == FarmingTool.AXE) {
       tool.getItem().onBlockDestroyed(tool, world, bs, bc, farmerJoe);
-    } else if (type == ToolType.HOE) {
+    } else if (type == FarmingTool.HOE) {
       int origDamage = tool.getItemDamage();
-      tool.getItem().onItemUse(tool, farmerJoe, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      tool.getItem().onItemUse(farmerJoe, world, bc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       if (origDamage == tool.getItemDamage() && canDamage) {
         tool.damageItem(1, farmerJoe);
       }
@@ -334,7 +279,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       tool.damageItem(1, farmerJoe);
     }
 
-    if (Prep.isInvalid(tool) || tool.stackSize == 0 || (canDamage && tool.getItemDamage() >= tool.getMaxDamage())) {
+    if (Prep.isInvalid(tool) || tool.getCount() == 0 || (canDamage && tool.getItemDamage() >= tool.getMaxDamage())) {
       destroyTool(type);
       markDirty();
     }
@@ -345,20 +290,25 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   // TODO 1.11 clean up
-  private void destroyTool(ToolType type) {
+  private void destroyTool(FarmingTool type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if (Prep.isValid(inventory[i]) && type.itemMatches(inventory[i]) && inventory[i].stackSize == 0) {
+      if (Prep.isValid(inventory[i]) && type.itemMatches(inventory[i]) && inventory[i].getCount() == 0) {
         inventory[i] = Prep.getEmpty();
         return;
       }
     }
   }
 
-  private int getLooting(ItemStack stack) {
+  @Override
+  public int getLootingValue(FarmingTool tool) {
+    return getLootingValue(getTool(tool));
+  }
+  
+  private int getLootingValue(ItemStack stack) {
     return Math.max(EnchantmentHelper.getEnchantmentLevel(Enchantments.LOOTING, stack), EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
   }
 
-  public @Nonnull EntityPlayerMP getFakePlayer() {
+  public @Nonnull FakePlayerEIO getFakePlayer() {
     return farmerJoe;
   }
 
@@ -410,9 +360,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       return false;
     }
     if (i <= maxToolSlot) {
-      if (ToolType.isTool(stack)) {
+      if (FarmingTool.isTool(stack)) {
         for (int j = minToolSlot; j <= maxToolSlot; j++) {
-          if (ToolType.getToolType(stack).itemMatches(inventory[j])) {
+          if (FarmingTool.getToolType(stack).itemMatches(inventory[j])) {
             return false;
           }
         }
@@ -422,7 +372,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     } else if (i <= maxFirtSlot) {
       return Fertilizer.isFertilizer(stack);
     } else if (i <= maxSupSlot) {
-      return (Prep.isValid(inventory[i]) || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
+      return (Prep.isValid(inventory[i]) || !isSlotLocked(i)) && Commune.instance.canPlant(stack);
     } else {
       return false;
     }
@@ -477,7 +427,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (farmerJoe == null) {
       farmerJoe = new FakePlayerEIO(world, getLocation(), FARMER_PROFILE);
       farmerJoe.setOwner(getOwner());
-      farmerJoe.worldObj = new PickupWorld(worldObj, farmerJoe);
+      farmerJoe.world = new PickupWorld(world, farmerJoe);
     }
 
     BlockPos bc = null;
@@ -495,7 +445,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     Block block = bs.getBlock();
 
     if (isOpen(bc)) {
-      FarmersCommune.instance.prepareBlock(this, bc, block, bs);
+      Commune.instance.prepareBlock(this, bc, block, bs);
       bs = getBlockState(bc);
       block = bs.getBlock();
     }
@@ -512,12 +462,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
 
     if (!isOpen(bc)) {
-      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, bs);
+      IHarvestResult harvest = Commune.instance.harvestBlock(this, bc, block, bs);
       if (harvest != null) {
         boolean done = false;
         if (harvest.getHarvestedBlocks() != null && !harvest.getHarvestedBlocks().isEmpty()) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
+          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
           done = true;
         }
         if (harvest.getDrops() != null) {
@@ -525,7 +475,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
             if (ei != null) {
               insertHarvestDrop(ei, bc);
               if (!ei.isDead) {
-                worldObj.spawnEntityInWorld(ei);
+                world.spawnEntity(ei);
               }
               done = true;
             }
@@ -545,12 +495,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (hasBonemeal() && bonemealCooldown-- <= 0 && random.nextFloat() <= .75f) {
       Fertilizer fertilizer = Fertilizer.getInstance(inventory[minFirtSlot]);
       if ((fertilizer.applyOnPlant() != isOpen(bc)) || (fertilizer.applyOnAir() == world.isAirBlock(bc))) {
-        setJoeUseItem(inventory[minFirtSlot]);
+        startUsingItem(inventory[minFirtSlot]);
         if (fertilizer.apply(inventory[minFirtSlot], farmerJoe, world, bc)) {
-          inventory[minFirtSlot] = clearJoeUseItem(true);
+          inventory[minFirtSlot] = endUsingItem(false).get(0); // FIXME ???
           PacketHandler.INSTANCE.sendToAllAround(new PacketFarmAction(bc),
               new TargetPoint(world.provider.getDimension(), bc.getX(), bc.getY(), bc.getZ(), 64));
-          if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].stackSize == 0) {
+          if (Prep.isValid(inventory[minFirtSlot]) && inventory[minFirtSlot].getCount() == 0) {
             inventory[minFirtSlot] = Prep.getEmpty(); // TODO 1.11 remove
           }
           usePower(Config.farmBonemealActionEnergyUseRF);
@@ -559,34 +509,80 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           usePower(Config.farmBonemealTryEnergyUseRF);
           bonemealCooldown = 4;
         }
-        clearJoeUseItem(true);
+        endUsingItem(false);
       }
     }
   }
 
-  public void setJoeUseItem(ItemStack item) {
-    farmerJoe.inventory.mainInventory[0] = item;
+  @Override
+  public FakePlayerEIO startUsingItem(ItemStack item) {
+    farmerJoe.inventory.mainInventory.set(0, item);
     farmerJoe.inventory.currentItem = 0;
+    return farmerJoe;
   }
 
-  public ItemStack clearJoeUseItem(boolean retreiveHandItem) {
-    ItemStack item = Prep.getEmpty();
-    if (retreiveHandItem) {
-      item = farmerJoe.inventory.mainInventory[0];
-      farmerJoe.inventory.mainInventory[0] = Prep.getEmpty();
+  @Override
+  public FakePlayerEIO startUsingItem(FarmingTool tool) {
+    return startUsingItem(getTool(tool));
+  }
+
+  @Override
+  public NNList<ItemStack> endUsingItem(boolean trashHandItem) {
+    NNList<ItemStack> ret = new NNList<>();
+    if (!trashHandItem) {
+      ret.add(farmerJoe.inventory.mainInventory.get(0));
+      farmerJoe.inventory.mainInventory.set(0, Prep.getEmpty());
     }
 
-    ItemStack[] inv = farmerJoe.inventory.mainInventory;
-    for (int slot = 0; slot < inv.length; slot++) {
-      ItemStack stack = inv[slot];
+    NonNullList<ItemStack> inv = farmerJoe.inventory.mainInventory;
+    for (int slot = 0; slot < inv.size(); slot++) {
+      ItemStack stack = inv.get(slot);
       if (Prep.isValid(stack)) {
-        inv[slot] = null;
+        inv.set(slot, ItemStack.EMPTY);
         insertItem(stack);
       }
     }
 
-    return item;
+    return ret;
   }
+
+  // TODO this and startUsingItem could be default impl
+  @Override
+  public NNList<ItemStack> endUsingItem(FarmingTool tool) {
+    return endUsingItem(false);
+  }
+  
+ // TODO no idea what to do with these
+  @Override
+  public void handleExtraItems(NNList<ItemStack> items, BlockPos pos) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public boolean checkAction(FarmingAction action, FarmingTool tool) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void registerAction(FarmingAction action, FarmingTool tool) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void registerAction(FarmingAction action, FarmingTool tool, IBlockState state, BlockPos pos) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public boolean isSlotLocked(BlockPos pos) {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
 
   private int bonemealCooldown = 4; // no need to persist this
 
@@ -607,7 +603,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private boolean isOutputFull() {
     for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
       ItemStack curStack = inventory[i];
-      if (Prep.isInvalid(curStack) || (!farmStopOnNoOutputSlots && curStack.stackSize < curStack.getMaxStackSize())) {
+      if (Prep.isInvalid(curStack) || (!farmStopOnNoOutputSlots && curStack.getCount() < curStack.getMaxStackSize())) {
         return false;
       }
     }
@@ -617,7 +613,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public boolean hasSeed(ItemStack seeds, BlockPos bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    return Prep.isValid(inv) && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
+    return Prep.isValid(inv) && (inv.getCount() > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds);
   }
 
   /*
@@ -629,7 +625,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
 
-    return 90 * (Config.farmSaplingReserveAmount - (Prep.isInvalid(inv) ? 0 : inv.stackSize)) / Config.farmSaplingReserveAmount; // TODO 1.11 clean up
+    return 90 * (Config.farmSaplingReserveAmount - (Prep.isInvalid(inv) ? 0 : inv.getCount())) / Config.farmSaplingReserveAmount; // TODO 1.11 clean up
   }
 
   public ItemStack takeSeedFromSupplies(ItemStack stack, BlockPos forBlock) {
@@ -644,16 +640,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     ItemStack inv = inventory[slot];
     if (Prep.isValid(inv)) {
       if (matchMetadata ? inv.isItemEqual(stack) : inv.getItem() == stack.getItem()) {
-        if (inv.stackSize <= 1 && isSlotLocked(slot)) {
+        if (inv.getCount() <= 1 && isSlotLocked(slot)) {
           return null;
         }
 
         ItemStack result = inv.copy();
-        result.stackSize = 1;
+        result.setCount(1);
 
         inv = inv.copy();
-        inv.stackSize--;
-        if (inv.stackSize == 0) {
+        inv.shrink(1);
+        if (inv.getCount() == 0) {
           inv = Prep.getEmpty(); // TODO 1.11 clean up
         }
         setInventorySlotContents(slot, inv);
@@ -674,7 +670,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   public ItemStack getSeedTypeInSuppliesFor(int slot) {
     ItemStack inv = inventory[slot];
-    if (Prep.isValid(inv) && (inv.stackSize > 1 || !isSlotLocked(slot))) {
+    if (Prep.isValid(inv) && (inv.getCount() > 1 || !isSlotLocked(slot))) {
       return inv.copy();
     }
     return Prep.getEmpty();
@@ -701,9 +697,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
         if (Prep.isValid(stack)) {
           stack = stack.copy();
           int numInserted = insertResult(stack, bc);
-          stack.stackSize -= numInserted;
+          stack.shrink(numInserted);
           item.setEntityItemStack(stack);
-          if (stack.stackSize == 0) {
+          if (stack.getCount() == 0) {
             item.setDead();
           }
         } else {
@@ -715,10 +711,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   private void insertItem(ItemStack stack) {
     int numInserted = insertResult(stack, getPos());
-    stack.stackSize -= numInserted;
-    if (Prep.isValid(stack) && stack.stackSize > 0) {
+    stack.shrink(numInserted);
+    if (Prep.isValid(stack) && stack.getCount() > 0) {
       EntityItem entityItem = new EntityItem(getWorld(), getPos().getX() + .5, getPos().getY() + .5, getPos().getZ() + .5, stack);
-      getWorld().spawnEntityInWorld(entityItem);
+      getWorld().spawnEntity(entityItem);
     }
   }
 
@@ -733,39 +729,39 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       slots[k++] = j;
     }
 
-    int origSize = stack.stackSize;
+    int origSize = stack.getCount();
     stack = stack.copy();
 
     int inserted = 0;
-    for (int j = 0; j < slots.length && inserted < stack.stackSize; j++) {
+    for (int j = 0; j < slots.length && inserted < stack.getCount(); j++) {
       int i = slots[j];
       ItemStack curStack = inventory[i];
       int inventoryStackLimit = getInventoryStackLimit(i);
       if (isItemValidForSlot(i, stack)) {
         if (Prep.isInvalid(curStack)) {
-          if (stack.stackSize < inventoryStackLimit) {
+          if (stack.getCount() < inventoryStackLimit) {
             inventory[i] = stack.copy();
-            inserted = stack.stackSize;
+            inserted = stack.getCount();
           } else {
             inventory[i] = stack.copy();
             inserted = inventoryStackLimit;
-            inventory[i].stackSize = inserted;
+            inventory[i].setCount(inserted);
           }
-        } else if (curStack.stackSize < inventoryStackLimit && curStack.isItemEqual(stack)) {
-          inserted = Math.min(inventoryStackLimit - curStack.stackSize, stack.stackSize);
-          inventory[i].stackSize += inserted;
+        } else if (curStack.getCount() < inventoryStackLimit && curStack.isItemEqual(stack)) {
+          inserted = Math.min(inventoryStackLimit - curStack.getCount(), stack.getCount());
+          inventory[i].grow(inserted);
         }
       }
     }
 
-    stack.stackSize -= inserted;
+    stack.shrink(inserted);
     if (inserted >= origSize) {
       return origSize;
     }
 
     ResultStack[] in = new ResultStack[] { new ResultStack(stack) };
     mergeResults(in);
-    return origSize - (Prep.isInvalid(in[0].item) ? 0 : in[0].item.stackSize);
+    return origSize - (Prep.isInvalid(in[0].item) ? 0 : in[0].item.getCount());
   }
 
   private @Nonnull BlockPos getNextCoord() {
@@ -809,13 +805,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockFarmStation.getUnlocalisedName();
+    return MachineObject.blockFarmStation.getUnlocalisedName();
   }
 
   @Override
@@ -837,7 +828,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   public int getInventoryStackLimit(int slot) {
     if (slot >= minSupSlot && slot <= maxSupSlot) {
-      return Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
+      return Math.min(16/* TODO FARM_STACK_LIMIT.get(getCapacitorData())*/, 64);
     }
     return 64;
   }

@@ -1,15 +1,27 @@
 package crazypants.enderio.machine.sagmill;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.capacitor.CapacitorKey;
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.interfaces.IPoweredTask;
+import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
+import crazypants.enderio.recipe.IMachineRecipe;
+import crazypants.enderio.recipe.MachineRecipeInput;
+import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-import javax.annotation.Nonnull;
+
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -20,30 +32,25 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   protected int currGbUse = 0;
   @Store
   protected int maxGbUse = 0;
-
+  @Store
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
 
   public TileSagMill() {
-    super(new SlotDefinition(2, 4), CapacitorKey.SAG_MILL_POWER_INTAKE, CapacitorKey.SAG_MILL_POWER_BUFFER, CapacitorKey.SAG_MILL_POWER_USE);
-  }
-
-  @Override
-  public @Nonnull String getName() {
-    return ModObject.blockSagMill.getUnlocalisedName();
+    super(new SlotDefinition(2, 4), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockSagMill.getUnlocalisedName();
+    return MachineObject.blockSagMill.getUnlocalisedName();
   }
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
-    return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
+    return SagMillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
   }
 
   public int getBallDurationScaled(int scale) {
@@ -125,17 +132,6 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-    lastSendGbScaled = getBallDurationScaled(16);
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
   public String getSoundName() {
     return "machine.sagmill";
   }
@@ -145,4 +141,9 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     return super.getVolume() * 0.125f;
   }
 
+//  @Override
+//  public void writeCustomNBT(NBTTagCompound nbtRoot) { TODO
+//    super.writeCustomNBT(nbtRoot);
+//    lastSendGbScaled = getBallDurationScaled(16);
+//  }
 }

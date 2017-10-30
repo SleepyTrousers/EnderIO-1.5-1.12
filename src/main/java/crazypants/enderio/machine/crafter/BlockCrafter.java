@@ -1,8 +1,11 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
+
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.RenderMappers;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.machine.render.RenderMappers;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.render.IBlockStateWrapper;
@@ -15,8 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockCrafter create() {
@@ -27,14 +28,14 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
   protected BlockCrafter() {
-    super(ModObject.blockCrafter, TileCrafter.class);
+    super(MachineObject.blockCrafter, TileCrafter.class);
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileCrafter te = getTileEntity(world, new BlockPos(x, y, z));
     if (te != null) {
-      return new ContainerCrafter(player.inventory, te);
+      return new ContainerCrafter(player.inventory, te, null);
     }
     return null;
   }
@@ -72,3 +73,4 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> implements I
   }
 
 }
+*/

@@ -1,30 +1,41 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.*;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
+
+import crazypants.enderio.fluid.FluidFuelRegister;
+import crazypants.enderio.fluid.IFluidCoolant;
+import crazypants.enderio.fluid.IFluidFuel;
+import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.PowerDistributor;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity
@@ -54,12 +65,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   private int ticksRemaingFuel;
   @Store({ NBTAction.ITEM, NBTAction.SAVE })
   private int ticksRemaingCoolant;
-  @Store(NBTAction.CLIENT)
+  @Store(NBTAction.UPDATE)
   private boolean active;
 
   private PowerDistributor powerDis;
 
-  @Store(NBTAction.CLIENT)
+  @Store(NBTAction.UPDATE)
   private int generated;
 
   private boolean inPause = false;
@@ -74,7 +85,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), ModObject.blockCombustionGenerator);
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1), MachineObject.blockCombustionGenerator);
     coolantTank.setTileEntity(this);
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
@@ -104,7 +115,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockCombustionGenerator.getUnlocalisedName();
+    return MachineObject.blockCombustionGenerator.getUnlocalisedName();
   }
 
   @Override
@@ -118,8 +129,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
   }
 
   @Override
-  public void onNeighborBlockChange(Block blockId) {
-    super.onNeighborBlockChange(blockId);
+  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+    super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (powerDis != null) {
       powerDis.neighboursChanged();
     }
@@ -173,7 +184,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
       return false;
     }
     if (powerDis == null) {
-      powerDis = new PowerDistributor(new BlockCoord(this));
+      powerDis = new PowerDistributor(getPos());
     }
     int transmitted = powerDis.transmitEnergy(world, Math.min(maxOutputTick, getEnergyStored()));
     setEnergyStored(getEnergyStored() - transmitted);
@@ -389,14 +400,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, coolantTank, fuelTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

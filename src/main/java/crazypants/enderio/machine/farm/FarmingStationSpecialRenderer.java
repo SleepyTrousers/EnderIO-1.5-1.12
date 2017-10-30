@@ -1,16 +1,18 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.client.render.ManagedTESR;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector3f;
-import crazypants.enderio.config.Config;
-import net.minecraft.block.state.IBlockState;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import static crazypants.enderio.machine.MachineObject.blockFarmStation;
 
 import javax.annotation.Nonnull;
 
-import static crazypants.enderio.ModObject.blockFarmStation;
+import com.enderio.core.client.render.ManagedTESR;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.farming.FarmNotification;
+import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class FarmingStationSpecialRenderer extends ManagedTESR<TileFarmStation> {

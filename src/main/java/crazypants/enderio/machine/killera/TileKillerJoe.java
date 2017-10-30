@@ -1,5 +1,17 @@
 package crazypants.enderio.machine.killera;
 
+import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.FluidWrapper;
@@ -14,17 +26,21 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.capability.LegacyKillerJoeWrapper;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeParticle;
 import crazypants.enderio.machine.wireless.WirelessChargedLocation;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.render.ranged.IRanged;
+import crazypants.enderio.render.ranged.RangeParticle;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
@@ -58,19 +74,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import static crazypants.enderio.config.Config.killerProvokesCreeperExpolosions;
 
 @Storable
 public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank, IRanged {
@@ -102,7 +107,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   protected WirelessChargedLocation chargedLocation;
 
   @Store
-  final SmartTank tank = new SmartTank(Fluids.fluidNutrientDistillation, Fluid.BUCKET_VOLUME * 2);
+  final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
 
   int lastFluidLevelUpdate;
 
@@ -133,7 +138,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockKillerJoe.getUnlocalisedName();
+    return MachineObject.blockKillerJoe.getUnlocalisedName();
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.
@@ -180,13 +185,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     isMending = false;
   }
 
-  private static final @Nonnull int[] slots = new int[1];
-
-  @Override
-  public @Nonnull int[] getSlotsForFace(EnumFacing var1) {
-    return slots;
-  }
-
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, EnumFacing side) {
     if (isSideDisabled(side)) {
@@ -217,7 +215,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return false;
     }
 
-    if (getStackInSlot(0) == null) {
+    if (getStackInSlot(0).isEmpty()) {
       return false;
     }
 
@@ -266,8 +264,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
           atackera.resetCooldown();
           useNutrient();
           swingWeapon();
-          if (getStackInSlot(0) == null || getStackInSlot(0).getCount() <= 0 || atackera.getHeldItemMainhand() == null) {
-            setInventorySlotContents(0, null);
+          if (getStackInSlot(0).isEmpty() || getStackInSlot(0).getCount() <= 0 || atackera.getHeldItemMainhand().isEmpty()) {
+            setInventorySlotContents(0, ItemStack.EMPTY);
           }
           return false;
         }
@@ -381,7 +379,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   // ------------------------------- Weapon stuffs
 
   void swingWeapon() {
-    if (getStackInSlot(0) == null) {
+    if (getStackInSlot(0).isEmpty()) {
       return;
     }
     if (!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
@@ -518,7 +516,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   private class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
-    ItemStack prevWeapon;
+    @Nonnull
+    ItemStack prevWeapon = ItemStack.EMPTY;
 
     public Attackera(UserIdent owner) {
       super(getWorld(), getLocation(), (owner == null || owner == UserIdent.NOBODY || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
@@ -534,14 +533,14 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       ItemStack prev = prevWeapon;
       ItemStack cur = getHeldItemMainhand();
       if (!ItemStack.areItemStacksEqual(cur, prev)) {
-        if (prev != null) {
+        if (!prev.isEmpty()) {
           getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
         }
 
-        if (cur != null) {
+        if (!cur.isEmpty()) {
           getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers(EntityEquipmentSlot.MAINHAND));
         }
-        prevWeapon = cur == null ? null : cur.copy();
+        prevWeapon = cur.isEmpty() ? ItemStack.EMPTY : cur.copy();
       }
 
       if (getChargedLocation().chargeItems(inventory.mainInventory)) {
@@ -564,7 +563,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == Fluids.fluidNutrientDistillation) {
+    if (forFluidType != null && forFluidType.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid()) {
       return tank;
     }   
     return null;
@@ -649,22 +648,11 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return smartTankFluidHandler;
   }
 
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return (T) new LegacyKillerJoeWrapper(this, facingIn);
     }
     return super.getCapability(capability, facingIn);
   }

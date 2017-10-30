@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.crafter;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,9 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @Storable
 public class DummyCraftingGrid implements IInventory {
@@ -45,7 +45,7 @@ public class DummyCraftingGrid implements IInventory {
     if (item == null) {
       return null;
     }
-    item.stackSize = 0;
+    item.setCount(0);
     return item;
   }
 
@@ -54,7 +54,7 @@ public class DummyCraftingGrid implements IInventory {
     if (itemstack != null) {
       inv[i] = itemstack.copy();
       if (i < 9) {
-        inv[i].stackSize = 0;
+        inv[i].setCount(0);
       }
     } else {
       inv[i] = null;
@@ -95,7 +95,7 @@ public class DummyCraftingGrid implements IInventory {
   }
 
   @Override
-  public boolean isUseableByPlayer(EntityPlayer var1) {
+  public boolean isUsableByPlayer(EntityPlayer var1) {
     return true;
   }
 
@@ -131,4 +131,8 @@ public class DummyCraftingGrid implements IInventory {
     return 0;
   }
 
+  @Override
+  public boolean isEmpty() {
+    return true;
+  }
 }

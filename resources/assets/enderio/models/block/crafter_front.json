@@ -1,7 +1,7 @@
 {
     "textures":{
         "front":"enderio:blocks/crafter",
-        "inner":"enderio:blocks/crafterInner"
+        "inner":"enderio:blocks/crafter_inner"
     },
     "elements":[
         {

@@ -3,9 +3,11 @@ package crazypants.enderio.machine.obelisk.xp;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -36,7 +38,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
 
   @Override
   public @Nonnull String getMachineName() {
-    return ModObject.blockExperienceObelisk.getUnlocalisedName();
+    return MachineObject.blockExperienceObelisk.getUnlocalisedName();
   }
 
   @Override
@@ -107,14 +109,6 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

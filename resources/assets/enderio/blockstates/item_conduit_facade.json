@@ -1,0 +1,29 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "all":"enderio:items/conduit_facade"
+        },
+        "model":"enderio:cube"
+   },
+    "variants":{
+        "type":{
+            "basic":{},
+            "hardened":{
+                "textures":{ 
+                    "all":"enderio:items/conduit_facade_hardened"
+                }
+            },
+            "transparent":{
+                "textures":{ 
+                    "all":"enderio:items/conduit_facade_transparent"
+                }
+            },
+            "transparent_hardened":{
+                "textures":{ 
+                    "all":"enderio:items/conduit_facade_transparentHardened"
+                }
+            }
+        }
+    }
+}

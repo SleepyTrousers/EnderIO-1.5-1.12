@@ -20,7 +20,7 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
   private final GuiTransceiver parent;
 
   public GuiChannelList(GuiTransceiver parent, int width, int height, int originX, int originY) {
-    super(width, height, originX, originY, Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT + 4);
+    super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
     this.parent = parent;
   }
 

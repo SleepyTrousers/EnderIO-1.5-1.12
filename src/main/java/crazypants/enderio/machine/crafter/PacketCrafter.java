@@ -1,6 +1,7 @@
-package crazypants.enderio.machine.crafter;
+/*package crazypants.enderio.machine.crafter;
 
 import com.enderio.core.common.network.MessageTileEntity;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -44,7 +45,7 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
 
   @Override
   public IMessage onMessage(PacketCrafter msg, MessageContext ctx) {
-    TileCrafter te = msg.getTileEntity(ctx.getServerHandler().playerEntity.world);
+    TileCrafter te = msg.getTileEntity(ctx.getServerHandler().player.world);
     if (te != null) {
       msg.execute(te);
     }
@@ -57,3 +58,4 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
   }
 
 }
+*/

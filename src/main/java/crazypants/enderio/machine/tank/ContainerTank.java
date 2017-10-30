@@ -1,8 +1,13 @@
 package crazypants.enderio.machine.tank;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
@@ -10,9 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 

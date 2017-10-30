@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
 import crazypants.enderio.machine.obelisk.GuiRangedObelisk;
@@ -10,10 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObelisk> {
 
-  public static BlockAversionObelisk create() {
-    BlockAversionObelisk res = new BlockAversionObelisk();
+  public static BlockAversionObelisk create(@Nonnull IModObject modObject) {
+    BlockAversionObelisk res = new BlockAversionObelisk(modObject);
     res.init();
 
     // Just making sure its loaded
@@ -22,8 +25,8 @@ public class BlockAversionObelisk extends AbstractBlockObelisk<TileAversionObeli
     return res;
   }
 
-  protected BlockAversionObelisk() {
-    super(ModObject.blockSpawnGuard, TileAversionObelisk.class);
+  protected BlockAversionObelisk(@Nonnull IModObject modObject) {
+    super(modObject, TileAversionObelisk.class);
   }
 
   @Override

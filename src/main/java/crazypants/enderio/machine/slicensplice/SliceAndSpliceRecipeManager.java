@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.slicensplice;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.recipe.ManyToOneRecipeManager;
 
 public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
 
@@ -19,8 +20,8 @@ public class SliceAndSpliceRecipeManager extends ManyToOneRecipeManager {
   @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSliceAndSplice.getUnlocalisedName(), new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
-        ModObject.blockAlloySmelter.getUnlocalisedName(), this));
+    MachineRecipeRegistry.instance.registerRecipe(MachineObject.blockSliceAndSplice.getUnlocalisedName(), new ManyToOneMachineRecipe("SpliceAndSpliceRecipe",
+        MachineObject.blockAlloySmelter.getUnlocalisedName(), this));
   }
 
 }

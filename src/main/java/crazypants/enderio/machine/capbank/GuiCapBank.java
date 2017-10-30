@@ -1,10 +1,15 @@
 package crazypants.enderio.machine.capbank;
 
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -14,6 +19,9 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.interfaces.IRedstoneModeControlable;
+import crazypants.enderio.machine.modes.IoMode;
+import crazypants.enderio.machine.modes.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.Minecraft;
@@ -23,12 +31,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -126,7 +130,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
         return false;
       }
     });
-    inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
+    inputRsButton.setToolTip("enderio.gui.capBank.inputRs");
 
     y += 18;
     outputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
@@ -147,9 +151,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
         return false;
       }
     });
-    outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
+    outputRsButton.setToolTip("enderio.gui.capBank.outputRs");
 
-    List<BlockCoord> coords = new ArrayList<BlockCoord>();
+    List<BlockPos> coords = new ArrayList<BlockPos>();
     if (network != null && network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
         coords.add(cb.getLocation());
@@ -175,7 +179,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     y += 20;
     configB = new GuiButtonIoConfig<TileCapBank>(this, CONFIG_ID, x, y, te, configOverlay);
 
-    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
     x = inputX - 24;
     y = inputY;
@@ -334,7 +338,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @Override
   public FontRenderer getFontRenderer() {
-    return Minecraft.getMinecraft().fontRendererObj;
+    return Minecraft.getMinecraft().fontRenderer;
   }
 
   private int getEnergyStoredScaled(int scale) {

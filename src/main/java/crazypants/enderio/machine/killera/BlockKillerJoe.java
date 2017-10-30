@@ -1,9 +1,15 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
+import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
@@ -16,10 +22,8 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -35,9 +39,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
-import javax.annotation.Nonnull;
-import java.util.Locale;
-
 /**
  * Name proudly created by Xaw4
  */
@@ -48,6 +49,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   public static final TextureSupplier textureHead2 = TextureRegistry.registerTexture("blocks/killerJoe_head2");
   
   private static final Double px = 1d / 16d;
+  @Nonnull
   public static final AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
   public static BlockKillerJoe create() {
@@ -60,7 +62,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
 
   protected BlockKillerJoe() {
-    super(ModObject.blockKillerJoe, TileKillerJoe.class, new Material(MapColor.IRON) {
+    super(MachineObject.blockKillerJoe, TileKillerJoe.class, new Material(MapColor.IRON) {
 
       @Override
       public boolean isOpaque() {
@@ -115,11 +117,6 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   }
 
   @Override
-  protected EnumFacing getFacingForHeading(EntityLivingBase player) {
-    return super.getFacingForHeading(player).getOpposite();
-  }
-
-  @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileKillerJoe tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing());
@@ -151,8 +148,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> implemen
   protected static String permissionAttacking;
 
   @Override
-  public void init(FMLInitializationEvent event) {
-    super.init(event);
+  public void init(IModObject mo, FMLInitializationEvent event) {
+    super.init(mo, event);
     permissionAttacking = PermissionAPI.registerNode(EnderIO.DOMAIN + ".attack." + getRegistryName().getResourcePath().toLowerCase(Locale.ENGLISH), DefaultPermissionLevel.ALL,
         "Permission for the block " + getRegistryName() + " of Ender IO to attack entities."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");

@@ -1,26 +1,34 @@
 package crazypants.enderio.machine.soul;
 
+
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.GuiPacket;
+import crazypants.enderio.network.IRemoteExec;
+import crazypants.enderio.xp.PacketExperienceContainer;
+import crazypants.enderio.xp.XpUtil;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-import javax.annotation.Nullable;
-import java.util.List;
+public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> implements IRemoteExec.IContainer {
 
-import static crazypants.enderio.ModObject.itemBrokenSpawner;
-import static crazypants.enderio.ModObject.itemSoulVessel;
-
-public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinder> {
+  public static final int ADD_XP = 0;
 
   // JEI wants this data without giving us a chance to instantiate a container
   public static int FIRST_RECIPE_SLOT = 0;
   public static int NUM_RECIPE_SLOT = 2;
   public static int FIRST_INVENTORY_SLOT = 2 + 2 + 1; // input + output + upgrade
   public static int NUM_INVENTORY_SLOT = 4 * 9;
-
+  
   public ContainerSoulBinder(InventoryPlayer playerInv, TileSoulBinder te) {
     super(playerInv, te);
   }
@@ -35,10 +43,10 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
 
       @Override
       public void putStack(@Nullable ItemStack stack) {
-        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+        if (stack == null || stack.getCount() <= getItemStackLimit(stack)) {
           super.putStack(stack);
         } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
               + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
         }
       }
@@ -51,10 +59,10 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
 
       @Override
       public void putStack(@Nullable ItemStack stack) {
-        if (stack == null || stack.stackSize <= getItemStackLimit(stack)) {
+        if (stack == null || stack.getCount() <= getItemStackLimit(stack)) {
           super.putStack(stack);
         } else {
-          throw new RuntimeException("Invalid stacksize. " + stack.stackSize + " is more than the allowed limit of " + getItemStackLimit(stack)
+          throw new RuntimeException("Invalid stacksize. " + stack.getCount() + " is more than the allowed limit of " + getItemStackLimit(stack)
               + ". THIS IS NOT AN ERROR IN ENDER IO BUT THE CALLING MOD!");
         }
       }
@@ -74,8 +82,20 @@ public class ContainerSoulBinder  extends AbstractMachineContainer<TileSoulBinde
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    slots.add(new GhostBackgroundItemSlot(itemSoulVessel.getItem(), getSlotFromInventory(getInv(), 0)));
-    slots.add(new GhostBackgroundItemSlot(itemBrokenSpawner.getItem(), getSlotFromInventory(getInv(), 1)));
+    slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItem(), getSlotFromInventory(getInv(), 0)));
+    slots.add(new GhostBackgroundItemSlot(ModObject.itemBrokenSpawner.getItem(), getSlotFromInventory(getInv(), 1)));
+  }
+  
+  @Override
+  public IMessage networkExec(int id, GuiPacket message) {
+    if (id == ADD_XP) {
+      if (message.getPlayer().capabilities.isCreativeMode) {
+        getTe().getContainer().addExperience(XpUtil.getExperienceForLevel(message.getInt(0)));
+      } else {
+        getTe().getContainer().drainPlayerXpToReachContainerLevel(message.getPlayer(), message.getInt(0));
+      }
+    }
+    return null;
   }
 
 }

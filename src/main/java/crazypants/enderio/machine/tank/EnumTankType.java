@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.tank;
 
-import com.enderio.core.common.util.NullHelper;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.util.IStringSerializable;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
-import java.util.Locale;
+
+import com.enderio.core.common.util.NullHelper;
+
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.util.IStringSerializable;
 
 public enum EnumTankType implements IStringSerializable {
 
