@@ -22,7 +22,7 @@ public class BubbleFX extends ParticleBubble {
     prevPosY = posY;
     prevPosZ = posZ;
     motionY += 0.002D;
-    moveEntity(motionX, motionY, motionZ);
+    move(motionX, motionY, motionZ);
     motionX *= 0.8500000238418579D;
     motionY *= 0.8500000238418579D;
     motionZ *= 0.8500000238418579D;

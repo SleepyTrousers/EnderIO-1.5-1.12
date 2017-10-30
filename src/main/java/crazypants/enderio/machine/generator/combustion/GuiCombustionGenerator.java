@@ -1,18 +1,23 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.annotation.Nullable;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
