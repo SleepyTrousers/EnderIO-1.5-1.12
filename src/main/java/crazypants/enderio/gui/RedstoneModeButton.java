@@ -28,20 +28,18 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
     this.te = te;
   }
 
-  public RedstoneControlMode.IconHolder setModeRaw(@Nonnull RedstoneControlMode.IconHolder newMode) {
+  public void setModeRaw(@Nonnull RedstoneControlMode.IconHolder newMode) {
     super.setMode(newMode);
     setToolTip(Lang.GUI_REDSTONE_MODE.get(), getMode().getTooltip()); // forces our behavior
-    return getMode();
   }
 
   @Override
-  public RedstoneControlMode.IconHolder setMode(@Nonnull RedstoneControlMode.IconHolder newMode) {
+  public void setMode(@Nonnull RedstoneControlMode.IconHolder newMode) {
     setModeRaw(newMode);
     model.setRedstoneControlMode(getMode().getMode());
     if (te != null) {
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(te));
     }
-    return getMode();
   }
 
 }
