@@ -234,7 +234,24 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   protected SmartTankFluidHandler getSmartTankFluidHandler() {
     if (smartTankFluidHandler == null) {
-      smartTankFluidHandler = new SmartTankFluidReservoirHandler(this, tank); //TODO FIX
+      smartTankFluidHandler = new SmartTankFluidHandler(tank) {
+
+        @Override
+        protected boolean canFill(EnumFacing from) {
+          return true;
+        }
+
+        @Override
+        protected boolean canDrain(EnumFacing from) {
+          return TileReservoir.this.canRefill;
+        }
+
+        @Override
+        protected boolean canAccess(EnumFacing from) {
+          return true;
+        }
+        
+      };
     }
     return smartTankFluidHandler;
   }
