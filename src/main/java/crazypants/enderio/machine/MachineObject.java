@@ -23,6 +23,7 @@ import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
+import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
@@ -48,6 +49,13 @@ public enum MachineObject implements IModObject.Registerable {
   blockBuffer(BlockBuffer.class),
 //  blockCapBank(BlockCapBank.class),
   blockEnchanter(BlockEnchanter.class),
+  blockFarmStation(BlockFarmStation.class),
+  blockGauge(BlockGauge.class),
+  blockCombustionGenerator(BlockCombustionGenerator.class),
+  blockStirlingGenerator(BlockStirlingGenerator.class),
+  blockZombieGenerator(BlockZombieGenerator.class),
+
+  blockKillerJoe(BlockKillerJoe.class),
 
   //Obelisks
   blockAttractorObelisk(BlockAttractor.class),
@@ -56,24 +64,15 @@ public enum MachineObject implements IModObject.Registerable {
   blockRelocatorObelisk(BlockRelocatorObelisk.class),
   blockWeatherObelisk(BlockWeatherObelisk.class),
   blockExperienceObelisk(BlockExperienceObelisk.class),
-
+  blockPainter(BlockPainter.class),
   blockReservoir(BlockReservoir.class),
-
-  blockFarmStation(BlockFarmStation.class),
-  blockGauge(BlockGauge.class),
-  blockCombustionGenerator(BlockCombustionGenerator.class),
-  blockStirlingGenerator(BlockStirlingGenerator.class),
-  blockZombieGenerator(BlockZombieGenerator.class),
-
   blockSagMill(BlockSagMill.class),
   blockSliceAndSplice(BlockSliceAndSplice.class),
   blockSolarPanel(BlockSolarPanel.class),
   blockSoulBinder(BlockSoulBinder.class),
   blockPoweredSpawner(BlockPoweredSpawner.class),
-  blockKillerJoe(BlockKillerJoe.class),
   
   ;
-
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
