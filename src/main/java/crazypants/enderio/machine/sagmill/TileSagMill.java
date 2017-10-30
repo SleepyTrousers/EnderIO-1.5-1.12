@@ -2,8 +2,6 @@ package crazypants.enderio.machine.sagmill;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.NBTAction;
-import crazypants.enderio.capacitor.CapacitorKey;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
@@ -14,10 +12,12 @@ import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import crazypants.enderio.recipe.RecipeBonusType;
+import crazypants.enderio.recipe.sagmill.IGrindingMultiplier;
+import crazypants.enderio.recipe.sagmill.SagMillRecipeManager;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+
 
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
 import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
@@ -50,7 +50,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
     if (itemstack.isEmpty()) {
       return false;
     }
-    return SagMillRecipeManager.instance.isValidInput(new MachineRecipeInput(i, itemstack));
+    return SagMillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
   }
 
   public int getBallDurationScaled(int scale) {
@@ -142,7 +142,7 @@ public class TileSagMill extends AbstractPoweredTaskEntity implements IPaintable
   }
 
 //  @Override
-//  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+//  public void writeCustomNBT(NBTTagCompound nbtRoot) { TODO
 //    super.writeCustomNBT(nbtRoot);
 //    lastSendGbScaled = getBallDurationScaled(16);
 //  }

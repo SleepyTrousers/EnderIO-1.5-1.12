@@ -43,16 +43,16 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   @SideOnly(Side.CLIENT)
   private static SolarItemRenderMapper RENDER_MAPPER;
 
-  public static BlockSolarPanel create() {
-    BlockSolarPanel result = new BlockSolarPanel();
+  public static BlockSolarPanel create(@Nonnull IModObject modObject) {
+    BlockSolarPanel result = new BlockSolarPanel(modObject);
     result.init();
     return result;
   }
 
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
-  private BlockSolarPanel() {
-    super(MachineObject.blockSolarPanel, TileEntitySolarPanel.class);
+  private BlockSolarPanel(@Nonnull IModObject modObject) {
+    super(modObject, TileEntitySolarPanel.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)

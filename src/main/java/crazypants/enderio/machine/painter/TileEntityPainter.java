@@ -6,14 +6,14 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.capacitor.CapacitorKey;
+
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.painter.AbstractPainterTemplate;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
 

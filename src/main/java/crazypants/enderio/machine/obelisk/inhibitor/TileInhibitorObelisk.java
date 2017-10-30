@@ -40,6 +40,7 @@ public class TileInhibitorObelisk extends AbstractRangedTileEntity {
 
   @Override
   public float getRange() {
+    //return AVERSION_RANGE.getFloat(getCapacitorData()) / 2; TODO
     return (float) AbstractBlockObelisk.DUMMY;
   }
 

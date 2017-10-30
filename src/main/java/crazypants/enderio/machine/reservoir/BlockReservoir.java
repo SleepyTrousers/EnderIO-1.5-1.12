@@ -14,6 +14,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IHaveTESR;
@@ -53,14 +54,14 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
 
-  public static BlockReservoir create() {
-    BlockReservoir result = new BlockReservoir();
+  public static BlockReservoir create(@Nonnull IModObject modObject) {
+    BlockReservoir result = new BlockReservoir(modObject);
     result.init();
     return result;
   }
 
-  private BlockReservoir() {
-    super(MachineObject.blockReservoir, TileReservoir.class, new Material(MapColor.WATER) {
+  private BlockReservoir(@Nonnull IModObject modObject) {
+    super(modObject, TileReservoir.class, new Material(MapColor.WATER) {
 
       @Override
       public boolean isToolNotRequired() {

@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.render.RenderMappers;
@@ -27,14 +28,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> implements IPaintable.ISolidBlockPaintableBlock,
     IPaintable.IWrenchHideablePaint {
 
-  public static BlockSliceAndSplice create() {
-    BlockSliceAndSplice result = new BlockSliceAndSplice();
+  public static BlockSliceAndSplice create(@Nonnull IModObject modObject) {
+    BlockSliceAndSplice result = new BlockSliceAndSplice(modObject);
     result.init();
     return result;
   }
 
-  protected BlockSliceAndSplice() {
-    super(MachineObject.blockSliceAndSplice, TileSliceAndSplice.class);
+  protected BlockSliceAndSplice(@Nonnull IModObject modObject) {
+    super(modObject, TileSliceAndSplice.class);
   }
 
   @Override

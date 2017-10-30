@@ -149,16 +149,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
     }
   }
 
-
-
-//  @Override
-//  public void writeCustomNBT(NBTTagCompound tag) {
-//    super.writeCustomNBT(tag);
-//    if (network.isValid()) {
-//      tag.setInteger("rfCap", network.getEnergyMaxPerTick()); // for WAILA
-//    }
-//  }
-
   @Override
   public boolean displayPower() {
     return true;
@@ -167,13 +157,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   public void setNetwork(SolarPanelNetwork network) {
     this.network = network;
   }
-
-//  @Override
-//  public void getData(NBTTagCompound tag) {
-//    if (network.isValid()) {
-//      writeToNBT(tag);
-//    }
-//  }
 
   @Override
   public BlockPos getLocation() {

@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.obelisk.xp;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
@@ -17,14 +18,14 @@ import java.util.Random;
 
 public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceObelisk> {
 
-  public static BlockExperienceObelisk create() {
-    BlockExperienceObelisk res = new BlockExperienceObelisk();
+  public static BlockExperienceObelisk create(@Nonnull IModObject modObject) {
+    BlockExperienceObelisk res = new BlockExperienceObelisk(modObject);
     res.init();
     return res;
   }
 
-  private BlockExperienceObelisk() {
-    super(MachineObject.blockExperienceObelisk, TileExperienceObelisk.class);
+  private BlockExperienceObelisk(@Nonnull IModObject modObject) {
+    super(modObject, TileExperienceObelisk.class);
   }
 
   @Override

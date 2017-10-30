@@ -16,20 +16,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
+import javax.annotation.Nonnull;
 import java.util.Locale;
 
 public class BlockAttractor extends AbstractBlockObelisk<TileAttractor> {
 
-  public static BlockAttractor create() {
+  public static BlockAttractor create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketObeliskFx.class, PacketObeliskFx.class, PacketHandler.nextID(), Side.CLIENT);
-    BlockAttractor res = new BlockAttractor();
+    BlockAttractor res = new BlockAttractor(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(new EndermanFixer());
     return res;
   }
 
-  protected BlockAttractor() {
-    super(MachineObject.blockAttractorObelisk, TileAttractor.class);
+  protected BlockAttractor(@Nonnull IModObject modObject) {
+    super(modObject, TileAttractor.class);
   }
 
   @Override

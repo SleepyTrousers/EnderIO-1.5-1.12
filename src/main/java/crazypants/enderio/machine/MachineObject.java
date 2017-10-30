@@ -87,7 +87,9 @@ public enum MachineObject implements IModObject.Registerable {
   blockSliceAndSplice(BlockSliceAndSplice.class),
   blockSolarPanel(BlockSolarPanel.class),
   blockSoulBinder(BlockSoulBinder.class),
-  blockPoweredSpawner(BlockPoweredSpawner.class);
+  blockPoweredSpawner(BlockPoweredSpawner.class),
+
+  ;
 
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)

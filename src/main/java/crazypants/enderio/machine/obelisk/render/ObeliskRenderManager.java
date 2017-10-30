@@ -51,14 +51,14 @@ public class ObeliskRenderManager {
 
     block = blockExperienceObelisk.getBlock();
     if (block != null) {
-      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(itemXpTransfer.getItem()), block);
+      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(ModObject.itemXpTransfer.getItem()), block);
       registerRenderer(block, TileExperienceObelisk.class, eor);
 
     }
     block = blockAttractorObelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileAttractor> eor = new ObeliskSpecialRenderer<TileAttractor>(
-          new ItemStack(ModObject.itemMaterial.getItem(), 1, Material.ATTRACTOR_CRYSTAL.ordinal()), block);
+              Material.ATTRACTOR_CRYSTAL.getStack(), block);
       registerRenderer(block, TileAttractor.class, eor);
     }
 
@@ -88,7 +88,7 @@ public class ObeliskRenderManager {
   }
 
   private <T extends AbstractMachineEntity> void registerRenderer(Block block, Class<T> tileClass,
-                                                                  TileEntitySpecialRenderer<? super T> specialRenderer) {
+      TileEntitySpecialRenderer<? super T> specialRenderer) {
     ClientRegistry.bindTileEntitySpecialRenderer(tileClass, specialRenderer);
     ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block), 0, tileClass);
   }

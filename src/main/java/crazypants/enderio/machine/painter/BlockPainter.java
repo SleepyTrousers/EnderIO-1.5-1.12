@@ -3,11 +3,12 @@ package crazypants.enderio.machine.painter;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.painter.recipe.EveryPaintableRecipe;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.painter.EveryPaintableRecipe;
 import crazypants.enderio.render.IBlockStateWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,14 +20,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockPainter create() {
-    BlockPainter ppainter = new BlockPainter();
-    ppainter.init();
-    return ppainter;
+  public static BlockPainter create(@Nonnull IModObject modObject) {
+    BlockPainter painter = new BlockPainter(modObject);
+    painter.init();
+    return painter;
   }
 
-  private BlockPainter() {
-    super(MachineObject.blockPainter, TileEntityPainter.class);
+  private BlockPainter(@Nonnull IModObject modObject) {
+    super(modObject, TileEntityPainter.class);
   }
 
   @SuppressWarnings("rawtypes")

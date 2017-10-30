@@ -4,6 +4,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,15 +26,15 @@ public class BlockInhibitorObelisk extends AbstractBlockObelisk<TileInhibitorObe
 
   public static BlockInhibitorObelisk instance;
 
-  public static BlockInhibitorObelisk create() {
-    BlockInhibitorObelisk res = new BlockInhibitorObelisk();
+  public static BlockInhibitorObelisk create(@Nonnull IModObject modObject) {
+    BlockInhibitorObelisk res = new BlockInhibitorObelisk(modObject);
     res.init();
     MinecraftForge.EVENT_BUS.register(res);
     return instance = res;
   }
 
-  protected BlockInhibitorObelisk() {
-    super(MachineObject.blockInhibitorObelisk, TileInhibitorObelisk.class);
+  protected BlockInhibitorObelisk(@Nonnull IModObject modObject) {
+    super(modObject, TileInhibitorObelisk.class);
   }
 
   @Override
