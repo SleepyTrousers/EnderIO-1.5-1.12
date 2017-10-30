@@ -6,11 +6,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.Registry;
 import com.enderio.core.common.NBTAction;
+
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.java.HandleArrayList;
+import info.loenwind.autosave.handlers.java.HandleNNList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -46,6 +48,14 @@ public class HandleItemStack implements IHandler<ItemStack> {
   public static class HandleItemStackArrayList extends HandleArrayList<ItemStack> {
 
     public HandleItemStackArrayList() {
+      super(new HandleItemStack());
+    }
+
+  }
+
+  public static class HandleItemStackNNList extends HandleNNList<ItemStack> {
+
+    public HandleItemStackNNList() {
       super(new HandleItemStack());
     }
 
