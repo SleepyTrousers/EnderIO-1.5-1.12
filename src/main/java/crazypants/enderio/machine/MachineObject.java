@@ -17,6 +17,8 @@ import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.killera.BlockKillerJoe;
+import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -56,7 +58,9 @@ public enum MachineObject implements IModObject.Registerable {
   blockZombieGenerator(BlockZombieGenerator.class),
 
   blockKillerJoe(BlockKillerJoe.class),
-
+  blockElectricLight(BlockElectricLight.class),
+  blockLightNode(BlockLightNode.class),
+  
   //Obelisks
   blockAttractorObelisk(BlockAttractor.class),
   blockAversionObelisk(BlockAversionObelisk.class),
@@ -64,6 +68,7 @@ public enum MachineObject implements IModObject.Registerable {
   blockRelocatorObelisk(BlockRelocatorObelisk.class),
   blockWeatherObelisk(BlockWeatherObelisk.class),
   blockExperienceObelisk(BlockExperienceObelisk.class),
+  
   blockPainter(BlockPainter.class),
   blockReservoir(BlockReservoir.class),
   blockSagMill(BlockSagMill.class),

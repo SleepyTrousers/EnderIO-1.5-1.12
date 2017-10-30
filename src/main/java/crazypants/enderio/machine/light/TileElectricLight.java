@@ -166,9 +166,9 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
-      if (energyStoredRF < getMaxEnergyStored(null)) {
+      if (energyStoredRF < getMaxEnergyStored()) {
         boolean needInit = energyStoredRF == 0;
-        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored(null) - energyStoredRF, 10));
+        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
         if (needInit && energyStoredRF > 0) {
           init = true;
         }
@@ -378,7 +378,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
+  public int getEnergyStored() {
     if(!requiresPower) {
       return 0;
     }
@@ -386,7 +386,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing from) {
+  public int getMaxEnergyStored() {
     if(!requiresPower) {
       return 0;
     }
@@ -404,7 +404,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   }
 
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public BlockPos getLocation() {
+    return pos;
   }
 }
