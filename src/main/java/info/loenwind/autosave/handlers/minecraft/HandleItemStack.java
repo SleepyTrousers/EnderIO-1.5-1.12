@@ -11,8 +11,8 @@ import com.enderio.core.common.NBTAction;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.handlers.endercore.HandleNNList;
 import info.loenwind.autosave.handlers.java.HandleArrayList;
-import info.loenwind.autosave.handlers.java.HandleNNList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
