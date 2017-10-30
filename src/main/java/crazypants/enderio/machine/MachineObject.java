@@ -18,8 +18,6 @@ import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
 import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
 import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.painter.BlockPainter;
-import crazypants.enderio.machine.painter.blocks.*;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.sagmill.BlockSagMill;
@@ -57,28 +55,6 @@ public enum MachineObject implements IModObject.Registerable {
   blockWeatherObelisk(BlockWeatherObelisk.class),
   blockExperienceObelisk(BlockExperienceObelisk.class),
 
-  //Painter
-  blockPainter(BlockPainter.class),
-  blockPaintedFence(BlockPaintedFence.class),
-  blockPaintedStoneFence(BlockPaintedFence.class, "create_stone"),
-  blockPaintedFenceGate(BlockPaintedFenceGate.class),
-  blockPaintedWall(BlockPaintedWall.class),
-  blockPaintedStair(BlockPaintedStairs.class),
-  blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone"),
-  blockPaintedSlab(BlockPaintedSlab.class),
-  blockPaintedDoubleSlab(BlockPaintedSlab.BlockPaintedDoubleSlab.class), //TODO Fixed with proper Classes
-  blockPaintedStoneSlab(BlockPaintedSlab.BlockPaintedDoubleSlab.class),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlab.BlockPaintedDoubleSlab.class),
-  blockPaintedGlowstone(BlockPaintedGlowstone.class),
-  blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid"),
-  blockPaintedCarpet(BlockPaintedCarpet.class),
-  blockPaintedPressurePlate(BlockPaintedPressurePlate.class),
-  blockPaintedRedstone(BlockPaintedRedstone.class),
-  blockPaintedRedstoneSolid(BlockPaintedRedstone.class),
-  blockPaintedStone(BlockPaintedStone.class),
-  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden"),
-  blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron"),
-  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark"),
   blockReservoir(BlockReservoir.class),
 
   blockFarmStation(BlockFarmStation.class),
