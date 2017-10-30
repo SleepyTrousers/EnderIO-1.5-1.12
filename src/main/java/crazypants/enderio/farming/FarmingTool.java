@@ -54,7 +54,7 @@ public enum FarmingTool {
   }
 
   @SuppressWarnings("null")
-  private static boolean isBrokenTinkerTool(@Nonnull ItemStack item) {
+  public static boolean isBrokenTinkerTool(@Nonnull ItemStack item) {
     return Prep.isValid(item) && item.hasTagCompound() && item.getTagCompound().hasKey("Stats")
         && item.getTagCompound().getCompoundTag("Stats").getBoolean("Broken");
   }
