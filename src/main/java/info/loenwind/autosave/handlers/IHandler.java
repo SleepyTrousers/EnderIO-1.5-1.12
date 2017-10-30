@@ -48,9 +48,8 @@ public interface IHandler<T> {
    * @param nbt
    *          The NBT to store the data
    * @param name
-   *          The name of the tag in the nbt where the data should be stored.
-   *          Please note that this will be overwritten be the final handler if
-   *          you are returning false. Use name + "__" as a prefix in this case
+   *          The name of the tag in the nbt where the data should be stored. Please note that this will be overwritten by the final handler if you are
+   *          returning false. Use name + "__" as a prefix in this case
    * @param object
    *          The object to store
    * @return True if the object was completely handled. False otherwise. In that
@@ -75,7 +74,10 @@ public interface IHandler<T> {
    *          should be ignored
    * @param nbt
    *          The NBT to read the data from
-   * @param field TODO
+   * @param field
+   *          A reference to the field the returned object belongs to. This is purely to allow the handler to use reflection to determine further details about
+   *          the data type. The handler is NOT allowed to change the field. This will be null if the handler is not running in the context of a @Storable
+   *          class, e.g. when it is running on the values of a List or Map.
    * @param name
    *          The name of the tag in the nbt where the data should be read from.
    *          This tag may not exist!
