@@ -219,7 +219,7 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
         if (!world.isAirBlock(pos)) {
           IBlockState bs = world.getBlockState(pos);
           RayTraceResult hit = bs.collisionRayTrace(world, pos, new Vec3d(start.x, start.y, start.z), new Vec3d(end.x, end.y, end.z));
-          if (hit.typeOfHit != RayTraceResult.Type.MISS) {
+          if (hit != null && hit.typeOfHit != RayTraceResult.Type.MISS) {
             hits.add(hit);
           }
         }
