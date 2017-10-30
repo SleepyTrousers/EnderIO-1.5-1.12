@@ -1,6 +1,7 @@
 package crazypants.enderio.filter.filters;
 
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
@@ -8,13 +9,12 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.INetworkedInventory;
+import crazypants.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModItemFilter implements IItemFilter {
 
@@ -22,37 +22,33 @@ public class ModItemFilter implements IItemFilter {
   private boolean blacklist = false;
 
   public String setMod(int index, ItemStack itemStack) {
-    if(index < 0 || index >= mods.length) {
+    if (index < 0 || index >= mods.length) {
       return null;
     }
 
-    if(itemStack.isEmpty()) {
+    if (itemStack.isEmpty()) {
       setMod(index, (String) null);
       return null;
-    }        
-    ResourceLocation ui = Item.REGISTRY.getNameForObject(itemStack.getItem());    
-    if(ui == null) {
+    }
+    ResourceLocation ui = Item.REGISTRY.getNameForObject(itemStack.getItem());
+    if (ui == null) {
       setMod(index, (String) null);
       return null;
     }
     String targetMod = ui.getResourceDomain();
-    if(targetMod == null) {
-      setMod(index, (String) null);
-      return null;
-    }
     setMod(index, targetMod);
     return targetMod;
   }
 
   public void setMod(int index, String mod) {
-    if(index < 0 || index >= mods.length) {
+    if (index < 0 || index >= mods.length) {
       return;
     }
     mods[index] = mod;
   }
 
   public String getModAt(int index) {
-    if(index < 0 || index >= mods.length) {
+    if (index < 0 || index >= mods.length) {
       return null;
     }
     return mods[index];
@@ -67,21 +63,19 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public boolean doesItemPassFilter(INetworkedInventory inv, ItemStack item) {
-    if(item == null || item.getItem() == null) {
+  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
+    if (Prep.isInvalid(item)) {
       return false;
     }
-    
+
     ResourceLocation ui = Item.REGISTRY.getNameForObject(item.getItem());
-    if(ui == null) {
+    if (ui == null) {
       return false;
     }
     String targetMod = ui.getResourceDomain();
-    if (targetMod != null) {
-      for (String mod : mods) {
-        if (targetMod.equals(mod)) {
-          return !blacklist;
-        }
+    for (String mod : mods) {
+      if (targetMod.equals(mod)) {
+        return !blacklist;
       }
     }
     return blacklist;
@@ -98,7 +92,7 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(NNList<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
   }
 
   @Override
@@ -106,17 +100,17 @@ public class ModItemFilter implements IItemFilter {
     return 0;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-//    return new ModItemFilterGui(gui, itemConduit, isInput);
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+  // return new ModItemFilterGui(gui, itemConduit, isInput);
+  // }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     for (int i = 0; i < mods.length; i++) {
       String mod = nbtRoot.getString("mod" + i);
-      if(mod == null || mod.isEmpty() || "-".equals(mod)) {
+      if (mod.isEmpty() || "-".equals(mod)) {
         mods[i] = null;
       } else {
         mods[i] = mod;
@@ -130,10 +124,10 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     for (int i = 0; i < mods.length; i++) {
       String mod = mods[i];
-      if(mod == null || mod.trim().isEmpty()) {
+      if (mod == null || mod.trim().isEmpty()) {
         nbtRoot.setString("mod" + i, "-");
       } else {
         nbtRoot.setString("mod" + i, mod);
@@ -143,14 +137,14 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public void writeToByteBuf(ByteBuf buf) {
+  public void writeToByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound root = new NBTTagCompound();
     writeToNBT(root);
     NetworkUtil.writeNBTTagCompound(root, buf);
   }
 
   @Override
-  public void readFromByteBuf(ByteBuf buf) {
+  public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
     readFromNBT(tag);
   }

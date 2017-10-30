@@ -14,20 +14,20 @@ public enum FarmingTool {
   HOE(Config.farmHoes),
   AXE {
     @Override
-    protected boolean match(ItemStack item) {
+    protected boolean match(@Nonnull ItemStack item) {
       return item.getItem().getHarvestLevel(item, "axe", null, null) >= 0;
     }
   },
   TREETAP,
   SHEARS {
     @Override
-    protected boolean match(ItemStack item) {
+    protected boolean match(@Nonnull ItemStack item) {
       return item.getItem() instanceof ItemShears;
     }
   },
   NONE {
     @Override
-    protected boolean match(ItemStack item) {
+    protected boolean match(@Nonnull ItemStack item) {
       return false;
     }
   };

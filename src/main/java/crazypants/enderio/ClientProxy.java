@@ -21,7 +21,6 @@ import crazypants.enderio.gui.TooltipHandlerGrinding;
 import crazypants.enderio.handler.KeyTracker;
 import crazypants.enderio.handler.darksteel.UpgradeRenderManager;
 import crazypants.enderio.init.IModObject;
-import crazypants.enderio.init.ModObject;
 import crazypants.enderio.init.ModObjectRegistry;
 import crazypants.enderio.integration.jei.JeiAccessor;
 import crazypants.enderio.item.conduitprobe.ConduitProbeOverlayRenderer;

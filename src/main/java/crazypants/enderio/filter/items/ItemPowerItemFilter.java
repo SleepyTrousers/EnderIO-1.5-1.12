@@ -9,6 +9,7 @@ import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import crazypants.enderio.filter.filters.PowerItemFilter;
 import crazypants.enderio.init.IModObject;
+import crazypants.util.NbtValue;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -31,33 +32,32 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IRe
     setMaxStackSize(64);
   }
 
-
   protected void init() {
     GameRegistry.register(this);
   }
 
   @Override
-  public IItemFilter createFilterFromStack(ItemStack stack) {
+  public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     IItemFilter filter = new PowerItemFilter();
-    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
-      filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
+    if (NbtValue.FILTER.hasTag(stack)) {
+      filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
     return filter;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    itemIcon = IIconRegister.registerIcon("enderio:filterUpgradePower");
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public void registerIcons(IIconRegister IIconRegister) {
+  // itemIcon = IIconRegister.registerIcon("enderio:filterUpgradePower");
+  // }
 
   @Override
-  public String getUnlocalizedName(ItemStack stack) {
+  public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
 

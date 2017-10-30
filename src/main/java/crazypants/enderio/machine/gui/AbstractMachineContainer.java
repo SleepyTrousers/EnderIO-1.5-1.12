@@ -15,11 +15,9 @@ import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity.InventoryWrapper;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.util.Prep;
-import li.cil.oc.api.driver.item.Inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -42,18 +40,19 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
     addMachineSlots(playerInv);
 
     if (getInv().getOwner().getSlotDefinition().getNumUpgradeSlots() == 1) {
-      addSlotToContainer(upgradeSlot = new Slot(getInv(), getInv().getOwner().getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
+      addSlotToContainer(
+          upgradeSlot = new Slot(getInv(), getInv().getOwner().getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
 
-        @Override
-        public int getSlotStackLimit() {
-          return 1;
-        }
+            @Override
+            public int getSlotStackLimit() {
+              return 1;
+            }
 
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
-        }
-      });
+            @Override
+            public boolean isItemValid(@Nonnull ItemStack itemStack) {
+              return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
+            }
+          });
     }
   }
 

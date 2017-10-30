@@ -49,9 +49,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     IItemFilter filter = new ExistingItemFilter();
     NBTTagCompound tag = NbtValue.FILTER.getTag(stack);
-    if (tag != null) {
-      filter.readFromNBT(tag);
-    }
+    filter.readFromNBT(tag);
     return filter;
   }
 

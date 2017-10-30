@@ -14,6 +14,7 @@ import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.IItemFilterUpgrade;
 import crazypants.enderio.filter.filters.ModItemFilter;
 import crazypants.enderio.init.IModObject;
+import crazypants.util.NbtValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,30 +42,30 @@ public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IReso
   }
 
   @Override
-  public IItemFilter createFilterFromStack(ItemStack stack) {
+  public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     IItemFilter filter = new ModItemFilter();
-    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
-      filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
+    if (NbtValue.FILTER.hasTag(stack)) {
+      filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
     return filter;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public void registerIcons(IIconRegister IIconRegister) {
-//    itemIcon = IIconRegister.registerIcon("enderio:modItemFilter");
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public void registerIcons(IIconRegister IIconRegister) {
+  // itemIcon = IIconRegister.registerIcon("enderio:modItemFilter");
+  // }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+  public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-    if(FilterRegistry.isFilterSet(par1ItemStack)) {
-      if(SpecialTooltipHandler.showAdvancedTooltips()) {
+  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
+    if (FilterRegistry.isFilterSet(par1ItemStack)) {
+      if (SpecialTooltipHandler.showAdvancedTooltips()) {
         par3List.add(TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
         par3List.add(TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
       }

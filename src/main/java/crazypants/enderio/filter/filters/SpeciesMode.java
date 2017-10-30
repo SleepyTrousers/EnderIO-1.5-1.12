@@ -1,15 +1,18 @@
 package crazypants.enderio.filter.filters;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 public enum SpeciesMode {
   BOTH,
@@ -27,21 +30,21 @@ public enum SpeciesMode {
     PRIMARY(SpeciesMode.PRIMARY, IconEIO.FILTER_SPECIES_PRIMARY),
     SECONDARY(SpeciesMode.SECONDARY, IconEIO.FILTER_SPECIES_SECONDARY);
 
-    private final SpeciesMode mode;
-    private final IWidgetIcon icon;
+    private final @Nonnull SpeciesMode mode;
+    private final @Nonnull IWidgetIcon icon;
 
-    IconHolder(SpeciesMode mode, IWidgetIcon icon) {
+    IconHolder(@Nonnull SpeciesMode mode, @Nonnull IWidgetIcon icon) {
       this.mode = mode;
       this.icon = icon;
     }
 
     @Override
-    public IWidgetIcon getIcon() {
+    public @Nonnull IWidgetIcon getIcon() {
       return icon;
     }
 
     @Override
-    public List<String> getTooltipLines() {
+    public @Nonnull List<String> getTooltipLines() {
       return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.species.".concat(name().toLowerCase(Locale.US))));
     }
 

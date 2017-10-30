@@ -1,5 +1,8 @@
 package crazypants.enderio.filter.filters;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
@@ -38,20 +41,26 @@ public class PowerItemFilter implements IItemFilter {
   int level = MAX_LEVEL;
 
   @Override
-  public boolean doesItemPassFilter(INetworkedInventory inv, ItemStack item) {
+  public boolean doesItemPassFilter(@Nullable INetworkedInventory inv, @Nonnull ItemStack item) {
     IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
-    if(chargable != null ) {
+    if (chargable != null) {
       int max = chargable.getMaxEnergyStored();
       int cur = chargable.getEnergyStored();
-      int ref = (int)((long)max * level / MAX_LEVEL);
+      int ref = (int) ((long) max * level / MAX_LEVEL);
 
       switch (mode) {
-        case LESS:       return cur <  ref;
-        case LESS_EQUAL: return cur <= ref;
-        case EQUAL:      return cur == ref;
-        case MORE_EQUAL: return cur >= ref;
-        case MORE:       return cur >  ref;
-        default:         return false;
+      case LESS:
+        return cur < ref;
+      case LESS_EQUAL:
+        return cur <= ref;
+      case EQUAL:
+        return cur == ref;
+      case MORE_EQUAL:
+        return cur >= ref;
+      case MORE:
+        return cur > ref;
+      default:
+        return false;
       }
     }
     return false;
@@ -72,7 +81,7 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public void createGhostSlots(NNList<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
   }
 
   @Override
@@ -96,14 +105,14 @@ public class PowerItemFilter implements IItemFilter {
     this.level = level;
   }
 
-//  @Override
-//  @SideOnly(Side.CLIENT)
-//  public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
-//    return new PowerItemFilterGui(gui, itemConduit, isInput);
-//  }
+  // @Override
+  // @SideOnly(Side.CLIENT)
+  // public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
+  // return new PowerItemFilterGui(gui, itemConduit, isInput);
+  // }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);
   }
 
@@ -114,25 +123,25 @@ public class PowerItemFilter implements IItemFilter {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     writeSettingToNBT(nbtRoot);
   }
 
   protected void writeSettingToNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setByte("mode", (byte)mode.ordinal());
-    nbtRoot.setShort("level", (short)level);
+    nbtRoot.setByte("mode", (byte) mode.ordinal());
+    nbtRoot.setShort("level", (short) level);
     nbtRoot.setBoolean("sticky", sticky);
   }
 
   @Override
-  public void writeToByteBuf(ByteBuf buf) {
+  public void writeToByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound settingsTag = new NBTTagCompound();
     writeSettingToNBT(settingsTag);
     NetworkUtil.writeNBTTagCompound(settingsTag, buf);
   }
 
   @Override
-  public void readFromByteBuf(ByteBuf buf) {
+  public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
   }

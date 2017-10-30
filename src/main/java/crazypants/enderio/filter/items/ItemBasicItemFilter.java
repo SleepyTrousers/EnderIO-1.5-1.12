@@ -42,13 +42,11 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade, IHa
   }
 
   @Override
-  public IItemFilter createFilterFromStack(ItemStack stack) {
+  public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     int damage = MathHelper.clamp(stack.getItemDamage(), 0, BasicFilterTypes.values().length);
     ItemFilter filter = new ItemFilter(damage);
     NBTTagCompound tag = NbtValue.FILTER.getTag(stack);
-    if (tag != null) {
-      filter.readFromNBT(tag);
-    }
+    filter.readFromNBT(tag);
     return filter;
   }
 

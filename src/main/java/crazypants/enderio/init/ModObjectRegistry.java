@@ -15,7 +15,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
-import com.google.common.base.Strings;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;

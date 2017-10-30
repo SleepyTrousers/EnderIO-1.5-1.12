@@ -333,9 +333,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   @Override
   public void readFromByteBuf(@Nonnull ByteBuf buf) {
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
-    if (tag != null) {
-      readFromNBT(tag);
-    }
+    readFromNBT(tag);
   }
 
   @Override

@@ -226,7 +226,8 @@ public enum NbtValue { // TODO: DONE111
     return removeTag(stack.copy());
   }
 
-  public NBTTagCompound getTag(@Nonnull ItemStack tag) {
+  @SuppressWarnings("null")
+  public @Nonnull NBTTagCompound getTag(@Nonnull ItemStack tag) {
     return getTag(tag, new NBTTagCompound());
   }
 

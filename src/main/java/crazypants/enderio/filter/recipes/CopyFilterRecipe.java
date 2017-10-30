@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilterUpgrade;
+import crazypants.util.Prep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -13,36 +14,38 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 public class CopyFilterRecipe implements IRecipe {
-  
+
   static {
     RecipeSorter.register("EnderIO:copyFilter", CopyFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
 
   private @Nonnull ItemStack output = ItemStack.EMPTY;
-  
+
   @Override
-  public boolean matches(InventoryCrafting inv, World world) {
-    
+  public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
+
     int blankCount = 0;
-    ItemStack filterInput = null;
+    @Nonnull
+    ItemStack filterInput = Prep.getEmpty();
     for (int i = 0; i < inv.getSizeInventory(); i++) {
+      @Nonnull
       ItemStack checkStack = inv.getStackInSlot(i);
       if (checkStack.getItem() instanceof IItemFilterUpgrade) {
-        if(FilterRegistry.isFilterSet(checkStack)) {
-          if(filterInput != null) {
+        if (FilterRegistry.isFilterSet(checkStack)) {
+          if (Prep.isValid(filterInput)) {
             return false;
           }
           filterInput = checkStack;
         } else {
-          if(!isSameTypeOrNull(filterInput, checkStack)) {
+          if (!isSameTypeOrNull(filterInput, checkStack)) {
             return false;
           }
           blankCount++;
         }
       }
     }
-    
-    if(blankCount == 0 || filterInput == null) {      
+
+    if (blankCount == 0 || Prep.isInvalid(filterInput)) {
       return false;
     }
     output = filterInput.copy();
@@ -51,12 +54,12 @@ public class CopyFilterRecipe implements IRecipe {
 
   }
 
-  private boolean isSameTypeOrNull(ItemStack matchOrNull, ItemStack checkStack) {
-    return matchOrNull == null || (matchOrNull.getItem() == checkStack.getItem() && matchOrNull.getItemDamage() == checkStack.getItemDamage());
+  private boolean isSameTypeOrNull(@Nonnull ItemStack matchOrNull, @Nonnull ItemStack checkStack) {
+    return Prep.isInvalid(matchOrNull) || (matchOrNull.getItem() == checkStack.getItem() && matchOrNull.getItemDamage() == checkStack.getItemDamage());
   }
 
   @Override
-  public ItemStack getCraftingResult(InventoryCrafting inv) {
+  public @Nonnull ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
     return output.copy();
   }
 
@@ -66,12 +69,12 @@ public class CopyFilterRecipe implements IRecipe {
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public @Nonnull ItemStack getRecipeOutput() {
     return output;
   }
 
   @Override
-  public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+  public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
     return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
   }
 

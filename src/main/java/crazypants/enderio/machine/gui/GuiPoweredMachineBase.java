@@ -14,7 +14,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredMachineEntity;
 import crazypants.enderio.power.PowerDisplayUtil;
 import info.loenwind.scheduler.Celeb;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
@@ -45,11 +44,11 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   protected String getPowerOutputLabel() {
     return I18n.format("enderio.gui.max");
   }
-  
+
   protected int getPowerOutputValue() {
     return getTileEntity().getPowerUsePerTick();
   }
-  
+
   protected void updatePowerBarTooltip(List<String> text) {
     if (Celeb.C24.isOn()) {
       int frame = (int) ((EnderIO.proxy.getTickCount() / 30) % (lang.size() - 1));
@@ -64,7 +63,7 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
   }
 
   public void renderPowerBar(int k, int l) {
-    if(renderPowerBar()) {
+    if (renderPowerBar()) {
       int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());
       drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
       if (Celeb.C24.isOn()) {

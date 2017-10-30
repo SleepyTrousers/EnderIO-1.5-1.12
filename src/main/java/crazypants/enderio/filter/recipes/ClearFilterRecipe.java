@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.filter.FilterRegistry;
 import crazypants.enderio.filter.IItemFilterUpgrade;
+import crazypants.util.Prep;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -16,27 +17,31 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
-public class ClearFilterRecipe implements IRecipe{
+public class ClearFilterRecipe implements IRecipe {
 
   static {
     RecipeSorter.register("EnderIO:clearFilter", ClearFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
   }
-  
+
   private @Nonnull ItemStack output = ItemStack.EMPTY;
-  
+
   @Override
-  public boolean matches(InventoryCrafting inv, World world) {
+  public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
     int count = 0;
+    @Nonnull
     ItemStack input = ItemStack.EMPTY;
-    
+
     for (int i = 0; i < inv.getSizeInventory(); i++) {
+      @Nonnull
       ItemStack checkStack = inv.getStackInSlot(i);
       if (checkStack.getItem() instanceof IItemFilterUpgrade) {
         count++;
       }
-      input = (count == 1 && !checkStack.isEmpty()) ? checkStack : input;
+      if (count == 1 && !checkStack.isEmpty()) {
+        input = checkStack;
+      }
     }
-    
+
     if (count == 1 && FilterRegistry.isFilterSet(input)) {
       ItemStack out = input.copy();
       out.setCount(1);
@@ -45,12 +50,12 @@ public class ClearFilterRecipe implements IRecipe{
     } else {
       this.output = ItemStack.EMPTY;
     }
-    
-    return count == 1 && output != null;
+
+    return count == 1 && Prep.isValid(output);
   }
 
   @Override
-  public ItemStack getCraftingResult(InventoryCrafting inv) {
+  public @Nonnull ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
     return output.copy();
   }
 
@@ -60,19 +65,19 @@ public class ClearFilterRecipe implements IRecipe{
   }
 
   @Override
-  public ItemStack getRecipeOutput() {
+  public @Nonnull ItemStack getRecipeOutput() {
     return output;
   }
-  
+
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
     if (ItemStack.areItemStacksEqual(output, event.getItemStack())) {
       event.getToolTip().add(TextFormatting.RED.toString() + TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
     }
   }
-  
+
   @Override
-  public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+  public @Nonnull NonNullList<ItemStack> getRemainingItems(@Nonnull InventoryCrafting inv) {
     return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
   }
 

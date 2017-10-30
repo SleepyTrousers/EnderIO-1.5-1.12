@@ -15,6 +15,7 @@ import crazypants.enderio.filter.filters.SpeciesItemFilter;
 import crazypants.enderio.init.IModObject;
 import crazypants.enderio.render.IHaveRenderers;
 import crazypants.util.ClientUtil;
+import crazypants.util.NbtValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers  {
+public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, IHaveRenderers {
 
   public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
     return new ItemSpeciesItemFilter(modObject);
@@ -39,41 +40,40 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterUpgrade, I
     setMaxStackSize(64);
   }
 
-
   protected void init() {
     GameRegistry.register(this);
   }
 
   @Override
-  public IItemFilter createFilterFromStack(ItemStack stack) {
+  public IItemFilter createFilterFromStack(@Nonnull ItemStack stack) {
     IItemFilter filter = new SpeciesItemFilter();
-    if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("filter")) {
-      filter.readFromNBT(stack.getTagCompound().getCompoundTag("filter"));
+    if (NbtValue.FILTER.hasTag(stack)) {
+      filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
     return filter;
   }
-  
+
   @Override
-  public void registerRenderers(IModObject modObject) {                
-    ClientUtil.regRenderer(this, 0,"filter_upgrade_species");
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    ClientUtil.regRenderer(this, 0, "filter_upgrade_species");
   }
 
   @Override
   @Nonnull
-  public String getUnlocalizedName(ItemStack par1ItemStack) {
+  public String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     return "enderio.filterUpgradeSpecies";
   }
 
   @Override
-  public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+  public void getSubItems(@Nonnull Item itemIn, @Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
     subItems.add(new ItemStack(this, 1, 0));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-    if(FilterRegistry.isFilterSet(par1ItemStack)) {
-      if(!SpecialTooltipHandler.showAdvancedTooltips()) {
+  public void addInformation(@Nonnull ItemStack par1ItemStack, @Nonnull EntityPlayer par2EntityPlayer, @Nonnull List<String> par3List, boolean par4) {
+    if (FilterRegistry.isFilterSet(par1ItemStack)) {
+      if (!SpecialTooltipHandler.showAdvancedTooltips()) {
         par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
         SpecialTooltipHandler.addShowDetailsTooltip(par3List);
       } else {
