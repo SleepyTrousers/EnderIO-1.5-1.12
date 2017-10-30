@@ -29,19 +29,17 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
 
   public GuiPoweredMachineBase(@Nonnull T machine, @Nonnull Container container, String... guiTexture) {
     super(machine, container, guiTexture);
-    if(renderPowerBar()) {
-      addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
+    addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
 
-        @Override
-        protected void updateText() {
-          text.clear();
-          if(renderPowerBar()) {
-            updatePowerBarTooltip(text);
-          }
+      @Override
+      protected void updateText() {
+        text.clear();
+        if (renderPowerBar()) {
+          updatePowerBarTooltip(text);
         }
+      }
 
-      });
-    }
+    });
   }
 
   protected String getPowerOutputLabel() {
