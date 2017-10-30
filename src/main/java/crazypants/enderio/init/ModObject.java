@@ -145,7 +145,7 @@ public enum ModObject implements IModObject.Registerable {
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),
-  ItemSpeciesItemFilter(ItemSpeciesItemFilter.class),
+  itemSpeciesItemFilter(ItemSpeciesItemFilter.class),
 
   blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
   blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),
