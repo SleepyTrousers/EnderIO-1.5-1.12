@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable> extends CycleButton<RedstoneControlMode.IconHolder> {
 
-  private IRedstoneModeControlable model;
+  private @Nonnull IRedstoneModeControlable model;
   private T te;
 
   public RedstoneModeButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nonnull IRedstoneModeControlable model) {
@@ -28,24 +28,20 @@ public class RedstoneModeButton<T extends TileEntity & IRedstoneModeControlable>
     this.te = te;
   }
 
-  public void setModeRaw(@Nonnull RedstoneControlMode.IconHolder newMode) {
-    if (model == null) {
-      return;
-    }
+  public RedstoneControlMode.IconHolder setModeRaw(@Nonnull RedstoneControlMode.IconHolder newMode) {
     super.setMode(newMode);
     setToolTip(Lang.GUI_REDSTONE_MODE.get(), getMode().getTooltip()); // forces our behavior
+    return getMode();
   }
 
   @Override
-  public void setMode(@Nonnull RedstoneControlMode.IconHolder newMode) {
-    if (model == null) {
-      return;
-    }
+  public RedstoneControlMode.IconHolder setMode(@Nonnull RedstoneControlMode.IconHolder newMode) {
     setModeRaw(newMode);
     model.setRedstoneControlMode(getMode().getMode());
     if (te != null) {
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(te));
     }
+    return getMode();
   }
 
 }
