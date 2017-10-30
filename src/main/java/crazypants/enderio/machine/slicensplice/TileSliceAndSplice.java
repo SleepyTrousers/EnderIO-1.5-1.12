@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.slicensplice;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 import static crazypants.enderio.config.Config.slicenspliceToolDamageChance;
 
 import java.util.List;
@@ -33,7 +36,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   private EntityLivingBase fakePlayer;
 
   public TileSliceAndSplice() {
-    super(new SlotDefinition(8, 1), SLICE_POWER_INTAKE, SLICE_POWER_BUFFER, SLICE_POWER_USE);
+    super(new SlotDefinition(8, 1),LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   @Override

@@ -23,7 +23,7 @@ public class ContainerExperienceObelisk extends Container implements IRemoteExec
 
   @Override
   public boolean canInteractWith(@Nonnull EntityPlayer player) {
-    return inv.isUsableByPlayer(player);
+    return inv.isUseableByPlayer(player);
   }
 
   private int guiid = -1;

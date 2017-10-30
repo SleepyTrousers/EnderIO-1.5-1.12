@@ -3,6 +3,8 @@ package crazypants.enderio.machine.obelisk;
 import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.capacitor.ICapacitorKey;
+
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;

@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
@@ -22,16 +23,16 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class BlockSagMill extends AbstractMachineBlock<TileSagMill> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockSagMill create() {
+  public static BlockSagMill create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockSagMill res = new BlockSagMill();
+    BlockSagMill res = new BlockSagMill(modObject);
     res.init();
     return res;
   }
 
-  private BlockSagMill() {
-    super(MachineObject.blockSagMill, TileSagMill.class);
+  private BlockSagMill(@Nonnull IModObject modObject) {
+    super(modObject, TileSagMill.class);
   }
 
   @Override

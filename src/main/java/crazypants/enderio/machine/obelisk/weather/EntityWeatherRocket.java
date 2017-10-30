@@ -49,11 +49,6 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
   }
   
   @Override
-  public void moveEntity(double p_70091_1_, double p_70091_3_, double p_70091_5_) {
-    super.moveEntity(p_70091_1_, p_70091_3_, p_70091_5_);
-  }
-  
-  @Override
   public void setDead() {
     super.setDead();
     WeatherTask task = WeatherTask.values()[dataManager.get(DATA_ID)];

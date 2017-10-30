@@ -37,7 +37,7 @@ public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
   public void initGui() {    
     super.initGui();
     usePlayerXP.onGuiInit();
-    ((ContainerSoulBinder) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerSoulBinder) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override

@@ -7,12 +7,14 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> implements IRemoteExec.IContainer {
 
@@ -40,7 +42,7 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(itemSoulVessel.getItem(), slotInput);
+    final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItem(), slotInput);
     ghostBackgroundItemSlot.y = 42;
     slots.add(ghostBackgroundItemSlot);
   }
@@ -51,14 +53,15 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
   }
 
   @Override
-  public void networkExec(int id, GuiPacket message) {
+  public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case 0:
-      getInv().setSpawnMode(message.getBoolean(0));
+      //getInv().setSpawnMode(message.getBoolean(0)); TODO Implement
       break;
     default:
       break;
     }
+    return null;
   }
 
 }

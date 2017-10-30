@@ -7,7 +7,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.integration.waila.IWailaInfoProvider;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.render.IBlockStateWrapper;
 import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
@@ -27,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -35,21 +36,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, IWailaInfoProvider, ISmartRenderAwareBlock {
+import javax.annotation.Nonnull;
+
+public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements IResourceTooltipProvider, ISmartRenderAwareBlock {
 
   @SideOnly(Side.CLIENT)
   private static SolarItemRenderMapper RENDER_MAPPER;
 
-  public static BlockSolarPanel create() {
-    BlockSolarPanel result = new BlockSolarPanel();
+  public static BlockSolarPanel create(@Nonnull IModObject modObject) {
+    BlockSolarPanel result = new BlockSolarPanel(modObject);
     result.init();
     return result;
   }
 
   private static final float BLOCK_HEIGHT = 2.5f / 16f;
   
-  private BlockSolarPanel() {
-    super(MachineObject.blockSolarPanel.getUnlocalisedName(), TileEntitySolarPanel.class);
+  private BlockSolarPanel(@Nonnull IModObject modObject) {
+    super(modObject, TileEntitySolarPanel.class);
     setLightOpacity(255);
     useNeighborBrightness = true;
     setDefaultState(this.blockState.getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)
@@ -57,8 +60,8 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
   }
 
   @Override
-  protected ItemBlock createItemBlock() { 
-    return new BlockItemSolarPanel(this, getName());
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return new BlockItemSolarPanel(this, this.getRegistryName().toString());
   }
 
   @Override
@@ -135,25 +138,26 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
     return getUnlocalizedName();
   }
 
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
-    if(te instanceof TileEntitySolarPanel) {
-      TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
-      float efficiency = solar.calculateLightRatio();
-      if(!solar.canSeeSun()) {
-        tooltip.add(TextFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
-      } else {
-        tooltip.add(String.format("%s : %s%.0f%%", TextFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + TextFormatting.RESET,
-            TextFormatting.WHITE, efficiency * 100));
-      }
-    }
-  }
-
-  @Override
-  public int getDefaultDisplayMask(World world, int x, int y, int z) {
-    return 0;
-  }
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//    TileEntity te = getTileEntity(world, new BlockPos(x, y, z));
+//    if(te instanceof TileEntitySolarPanel) {
+//      TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
+//      float efficiency = solar.calculateLightRatio();
+//      if(!solar.canSeeSun()) {
+//        tooltip.add(TextFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
+//      } else {
+//        tooltip.add(String.format("%s : %s%.0f%%", TextFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency") + TextFormatting.RESET,
+//            TextFormatting.WHITE, efficiency * 100));
+//      }
+//    }
+//  }
+//
+//
+//  @Override
+//  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+//    return 0;
+//  }
 
   @Override
   public boolean isOpaqueCube(IBlockState bs) {
@@ -172,7 +176,7 @@ public class BlockSolarPanel extends BlockEio<TileEntitySolarPanel> implements I
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     for (SolarType solarType : SolarType.KIND.getAllowedValues()) {
       list.add(new ItemStack(this, 1, damageDropped(getDefaultState().withProperty(SolarType.KIND, solarType))));
     }

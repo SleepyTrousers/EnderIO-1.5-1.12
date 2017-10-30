@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.obelisk.spawn;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.capacitor.ICapacitorKey;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.obelisk.AbstractRangedTileEntity;
 import crazypants.util.CapturedMob;
 import info.loenwind.autosave.annotations.Storable;

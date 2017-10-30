@@ -16,7 +16,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice>
   @Override
   public void initGui() {
     super.initGui();
-    ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerSliceAndSplice) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override

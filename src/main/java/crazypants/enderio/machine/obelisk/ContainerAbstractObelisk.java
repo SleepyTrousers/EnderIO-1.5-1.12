@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.obelisk;
 
-import static crazypants.enderio.machine.MachineObject.itemSoulVessel;
-
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -9,6 +7,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -51,7 +50,7 @@ public class ContainerAbstractObelisk extends AbstractMachineContainer<AbstractR
   public void createGhostSlots(List<GhostSlot> slots) {
     for (Slot slot : inventorySlots) {
       if (slot instanceof BottleSlot) {
-        slots.add(new GhostBackgroundItemSlot(itemSoulVessel.getItem(), slot));
+        slots.add(new GhostBackgroundItemSlot(ModObject.itemSoulVial.getItem(), slot));
       }
     }
   }

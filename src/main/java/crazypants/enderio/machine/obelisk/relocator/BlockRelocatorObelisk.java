@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.obelisk.relocator;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.ContainerAbstractObelisk;
@@ -10,10 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObelisk> {
 
-  public static BlockRelocatorObelisk create() {
-    BlockRelocatorObelisk res = new BlockRelocatorObelisk();
+  public static BlockRelocatorObelisk create(@Nonnull IModObject modObject) {
+    BlockRelocatorObelisk res = new BlockRelocatorObelisk(modObject);
     res.init();
 
     // Just making sure its loaded
@@ -22,8 +25,8 @@ public class BlockRelocatorObelisk extends AbstractBlockObelisk<TileRelocatorObe
     return res;
   }
 
-  protected BlockRelocatorObelisk() {
-    super(MachineObject.blockSpawnRelocator, TileRelocatorObelisk.class);
+  protected BlockRelocatorObelisk(@Nonnull IModObject modObject) {
+    super(modObject, TileRelocatorObelisk.class);
   }
 
   @Override

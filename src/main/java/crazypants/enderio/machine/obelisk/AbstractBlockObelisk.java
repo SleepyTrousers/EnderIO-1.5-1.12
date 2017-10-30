@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class AbstractBlockObelisk<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> implements ITESRItemBlock {
 
   public static final AxisAlignedBB AABB = new AxisAlignedBB(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
+  public static final Number DUMMY = 0; //TODO Change
 
   protected AbstractBlockObelisk(@Nonnull IModObject mo, Class<T> teClass) {
     super(mo, teClass, new Material(MapColor.IRON) {

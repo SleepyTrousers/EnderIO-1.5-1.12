@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.obelisk.render;
 
+import crazypants.enderio.init.ModObject;
+import crazypants.enderio.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machine.obelisk.aversion.TileAversionObelisk;
@@ -49,24 +51,24 @@ public class ObeliskRenderManager {
 
     block = blockExperienceObelisk.getBlock();
     if (block != null) {
-      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(itemXpTransfer.getItem()), block);
+      ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(new ItemStack(ModObject.itemXpTransfer.getItem()), block);
       registerRenderer(block, TileExperienceObelisk.class, eor);
 
     }
-    block = blockAttractor.getBlock();
+    block = blockAttractorObelisk.getBlock();
     if (block != null) {
       ObeliskSpecialRenderer<TileAttractor> eor = new ObeliskSpecialRenderer<TileAttractor>(
-          new ItemStack(itemMaterial.getItem(), 1, Material.ATTRACTOR_CRYSTAL.ordinal()), block);
+              Material.ATTRACTOR_CRYSTAL.getStack(), block);
       registerRenderer(block, TileAttractor.class, eor);
     }
 
-    block = blockSpawnGuard.getBlock();
+    block = blockAversionObelisk.getBlock();
     if (block != null) {
       AversionObeliskRenderer eor = new AversionObeliskRenderer();
       registerRenderer(block, TileAversionObelisk.class, eor);
     }
 
-    block = blockSpawnRelocator.getBlock();
+    block = blockRelocatorObelisk.getBlock();
     if (block != null) {
       RelocatorObeliskRenderer eor = new RelocatorObeliskRenderer();
       registerRenderer(block, TileRelocatorObelisk.class, eor);

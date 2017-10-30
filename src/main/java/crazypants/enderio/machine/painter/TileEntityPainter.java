@@ -6,34 +6,29 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.capacitor.CapacitorKey;
+
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.machine.painter.recipe.AbstractPainterTemplate;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.recipe.IMachineRecipe;
 import crazypants.enderio.recipe.MachineRecipeRegistry;
+import crazypants.enderio.recipe.painter.AbstractPainterTemplate;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
 
 @Storable
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
 
   public TileEntityPainter() {
     // 0 = input slot, 1 = paint source, 2 = output slot
-    super(new SlotDefinition(2, 1), CapacitorKey.PAINTER_POWER_INTAKE, CapacitorKey.PAINTER_POWER_BUFFER, CapacitorKey.PAINTER_POWER_USE);
+    super(new SlotDefinition(2, 1), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
-  @Override
-  public @Nonnull String getName() {
-    return "Auto Painter";
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemStack) {
