@@ -12,6 +12,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
+import crazypants.enderio.machine.gauge.BlockGauge;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
@@ -37,7 +38,7 @@ public enum MachineObject implements IModObject.Registerable {
   blockEnchanter(BlockEnchanter.class),
   
   blockFarmStation(BlockFarmStation.class),
-  
+  blockGauge(BlockGauge.class),
   blockCombustionGenerator(BlockCombustionGenerator.class),
   blockStirlingGenerator(BlockStirlingGenerator.class),
   blockZombieGenerator(BlockZombieGenerator.class),

@@ -27,6 +27,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,7 +47,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   private BlockGauge() {
-    super(MachineObject.blockGauge.getUnlocalisedName(), TileGauge.class, Material.GLASS);
+    super(MachineObject.blockGauge, TileGauge.class, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
   }
@@ -58,7 +59,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
   }
 
   @Override
-  public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+  public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
     if (tab != null) {
       super.getSubBlocks(itemIn, tab, list);
     }
@@ -130,9 +131,9 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     }
     return sides;
   }
-
+  
   @Override
-  public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+  public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
     return null;
   }
 
