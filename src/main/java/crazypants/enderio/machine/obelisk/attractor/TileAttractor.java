@@ -2,11 +2,15 @@ package crazypants.enderio.machine.obelisk.attractor;
 
 import com.mojang.authlib.GameProfile;
 import crazypants.enderio.machine.MachineObject;
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.machine.obelisk.AbstractBlockObelisk;
 import crazypants.enderio.machine.obelisk.PacketObeliskFx;
 import crazypants.enderio.machine.obelisk.spawn.AbstractMobObelisk;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
@@ -28,17 +32,17 @@ public class TileAttractor extends AbstractMobObelisk {
   private Map<EntityLiving, IMobAttractionHandler> tracking = new HashMap<EntityLiving, IMobAttractionHandler>();
 
   public TileAttractor() {
-    super(new SlotDefinition(12, 0), ATTRACTOR_POWER_INTAKE, ATTRACTOR_POWER_BUFFER, ATTRACTOR_POWER_USE);
+    super(new SlotDefinition(12, 0), LEGACY_ENERGY_INTAKE,LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
   }
 
   @Override
   public float getRange() {
-    return ATTRACTOR_RANGE.get(getCapacitorData());
+    return (float) AbstractBlockObelisk.DUMMY;
   }
 
   @Override
   public @Nonnull String getMachineName() {
-    return MachineObject.blockAttractor.getUnlocalisedName();
+    return MachineObject.blockAttractorObelisk.getUnlocalisedName();
   }
 
   private void untrackAll() {
@@ -126,7 +130,7 @@ public class TileAttractor extends AbstractMobObelisk {
 
   FakePlayer getTarget() {
     if (target == null) {
-      target = new Target();
+      target = new Target(getWorld());
       target.setOwner(getOwner());
     }
     return target;
@@ -143,8 +147,8 @@ public class TileAttractor extends AbstractMobObelisk {
 
   private class Target extends FakePlayerEIO {
 
-    public Target() {
-      super(getWorld(), getLocation(), new GameProfile(null, MachineObject.blockAttractor.getUnlocalisedName() + ":" + getLocation()));
+    public Target(World world) {
+      super(world, getLocation(), new GameProfile(null, MachineObject.blockAttractorObelisk.getUnlocalisedName() + ":" + getLocation()));
       posY += 1;
     }
   }

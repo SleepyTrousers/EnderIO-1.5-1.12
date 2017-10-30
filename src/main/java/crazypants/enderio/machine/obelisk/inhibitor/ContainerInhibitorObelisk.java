@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import crazypants.enderio.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 

@@ -5,14 +5,15 @@ import static crazypants.enderio.machine.MachineObject.blockSolarPanel;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.integration.waila.IWailaNBTProvider;
 import crazypants.enderio.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.power.ILegacyPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.forge.InternalPoweredTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -22,9 +23,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-@Storable
-public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IWailaNBTProvider, IHasConduitProbeData {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+@Storable
+public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
+
+  @Store
   private boolean forceNetworkSearch = true;
 
   protected SolarPanelNetwork network = new SolarPanelNetwork();
@@ -36,12 +41,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
+  public int getEnergyStored() {
     return network.getEnergyAvailablePerTick();
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing facing) {
+  public int getMaxEnergyStored() {
     return network.getEnergyMaxPerTick();
   }
 
@@ -68,7 +73,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   
   @Override
   public void doUpdate() {
-    if (!hasworld() || world.isRemote) {
+    if (!hasWorld() || world.isRemote) {
       if (world.isRemote) {
         super.doUpdate(); // disable ticking on the client
       }
@@ -145,20 +150,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound tag) {
-    super.readCustomNBT(tag);
-    forceNetworkSearch = true;
-  }
-
-  @Override
-  public void writeCustomNBT(NBTTagCompound tag) {
-    super.writeCustomNBT(tag);
-    if (network.isValid()) {
-      tag.setInteger("rfCap", network.getEnergyMaxPerTick()); // for WAILA
-    }
-  }
-
-  @Override
   public boolean displayPower() {
     return true;
   }
@@ -168,19 +159,15 @@ public class TileEntitySolarPanel extends TileEntityEio implements ILegacyPowere
   }
 
   @Override
-  public void getData(NBTTagCompound tag) {
-    if (network.isValid()) {
-      writeToNBT(tag);
-    }
+  public BlockPos getLocation() {
+    return pos;
   }
 
+  @Nonnull
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    return network.getConduitProbeData(player, side);
   }
 
-  @Override
-  public String[] getConduitProbeData() {
-    return network.getConduitProbeData();
-  }
+
 }

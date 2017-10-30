@@ -4,6 +4,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
+import crazypants.enderio.machine.modes.IoMode;
 import crazypants.enderio.network.GuiPacket;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import net.minecraft.client.Minecraft;
@@ -133,6 +134,8 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
+
+
 
   @Override
   protected boolean showRecipeButton() {

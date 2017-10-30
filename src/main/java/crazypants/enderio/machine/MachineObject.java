@@ -14,6 +14,18 @@ import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
+import crazypants.enderio.machine.obelisk.attractor.BlockAttractor;
+import crazypants.enderio.machine.obelisk.aversion.BlockAversionObelisk;
+import crazypants.enderio.machine.obelisk.inhibitor.BlockInhibitorObelisk;
+import crazypants.enderio.machine.obelisk.relocator.BlockRelocatorObelisk;
+import crazypants.enderio.machine.obelisk.weather.BlockWeatherObelisk;
+import crazypants.enderio.machine.obelisk.xp.BlockExperienceObelisk;
+import crazypants.enderio.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machine.sagmill.BlockSagMill;
+import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.soul.BlockSoulBinder;
+import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,12 +46,28 @@ public enum MachineObject implements IModObject.Registerable {
 //  blockCapBank(BlockCapBank.class),
   blockCrafter(BlockCrafter.class),
   blockEnchanter(BlockEnchanter.class),
-  
+
+  //Obelisks
+  blockAttractorObelisk(BlockAttractor.class),
+  blockAversionObelisk(BlockAversionObelisk.class),
+  blockInhibitorObelisk(BlockInhibitorObelisk.class),
+  blockRelocatorObelisk(BlockRelocatorObelisk.class),
+  blockWeatherObelisk(BlockWeatherObelisk.class),
+  blockExperienceObelisk(BlockExperienceObelisk.class),
+
+  blockReservoir(BlockReservoir.class),
+
   blockFarmStation(BlockFarmStation.class),
   
-  blockStirlingGenerator(BlockStirlingGenerator.class)
-  
+  blockStirlingGenerator(BlockStirlingGenerator.class),
+
+  blockSagMill(BlockSagMill.class),
+  blockSliceAndSplice(BlockSliceAndSplice.class),
+  blockSolarPanel(BlockSolarPanel.class),
+  blockSoulBinder(BlockSoulBinder.class),
+  blockPoweredSpawner(BlockPoweredSpawner.class),
   ;
+
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {

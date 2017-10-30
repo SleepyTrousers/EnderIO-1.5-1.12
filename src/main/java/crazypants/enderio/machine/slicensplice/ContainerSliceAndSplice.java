@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
+import crazypants.enderio.init.ModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -51,9 +52,9 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer<TileSliceA
   public static int NUM_INVENTORY_SLOT = 4 * 9;
 
   static private final Item[] slotItems1 = { Items.WOODEN_AXE, Items.STONE_AXE, Items.IRON_AXE, Items.GOLDEN_AXE,
-      Items.DIAMOND_AXE, MachineObject.itemDarkSteelAxe };
+      Items.DIAMOND_AXE, ModObject.itemDarkSteelAxe.getItem() };
   static private final Item[] slotItems2 = { Items.SHEARS, Items.SHEARS, Items.SHEARS, Items.SHEARS,
-      MachineObject.itemDarkSteelShears };
+          ModObject.itemDarkSteelShears.getItem() };
   static private final Random rand = new Random();
 
   public static final Point[] INPUT_SLOTS = new Point[] {      
