@@ -84,7 +84,6 @@ public enum MachineObject implements IModObject.Registerable {
   blockPoweredSpawner(BlockPoweredSpawner.class),
   blockVat(BlockVat.class),
   blockWirelessCharger(BlockWirelessCharger.class),
-  blockPoweredSpawner(BlockPoweredSpawner.class), 
   blockTank(BlockTank.class),
   blockTransceiver(BlockTransceiver.class),
   blockVacuumChest(BlockVacuumChest.class),
