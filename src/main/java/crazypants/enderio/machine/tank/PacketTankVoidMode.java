@@ -33,7 +33,7 @@ public class PacketTankVoidMode extends MessageTileEntity<TileTank> implements I
 
   @Override
   public IMessage onMessage(PacketTankVoidMode message, MessageContext ctx) {
-    TileTank te = message.getTileEntity(ctx.getServerHandler().playerEntity.world);
+    TileTank te = message.getTileEntity(ctx.getServerHandler().player.world);
     if (te != null) {
       te.setVoidMode(message.mode);
     }

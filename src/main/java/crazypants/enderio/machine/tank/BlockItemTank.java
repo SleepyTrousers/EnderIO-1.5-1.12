@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import static crazypants.enderio.machine.MachineObject.blockTank;
-
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -11,6 +9,7 @@ import com.enderio.core.common.fluid.SmartTank;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.ItemTankHelper;
 import crazypants.enderio.power.PowerDisplayUtil;
 import net.minecraft.block.Block;
@@ -21,30 +20,34 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider, IFluidContainerItem {
+public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider {
+  
+  private final Block block;
 
-  public BlockItemTank() {
-    super(blockTank.getBlock());
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setCreativeTab(EnderIOTab.tabEnderIOMachines);
-  }
+//  public BlockItemTank(IModObject mo) {
+//    super(mo.getBlock());
+//    this.block = mo.getBlock();
+//    setHasSubtypes(true);
+//    setMaxDamage(0);
+//    setCreativeTab(EnderIOTab.tabEnderIOMachines);
+//  }
 
-  public BlockItemTank(Block block, String name) {
+  public BlockItemTank(Block block, IModObject mo) {
     super(block);
+    this.block = mo.getBlock();
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    setRegistryName(name);
+    setRegistryName(mo.getRegistryName());
   }
 
   @Override
@@ -64,7 +67,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override  
   @SideOnly(Side.CLIENT)
-  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, NonNullList<ItemStack> par3List) {
     ItemStack stack = new ItemStack(this, 1,0);
     par3List.add(stack);
     stack = new ItemStack(this, 1,1);
@@ -73,7 +76,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    ((IAdvancedTooltipProvider) blockTank.getBlock()).addCommonEntries(itemstack, entityplayer, list, flag);
+    ((IAdvancedTooltipProvider) block).addCommonEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -88,7 +91,7 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
-    ((IAdvancedTooltipProvider) blockTank.getBlock()).addDetailedEntries(itemstack, entityplayer, list, flag);
+    ((IAdvancedTooltipProvider) block).addDetailedEntries(itemstack, entityplayer, list, flag);
   }
   
   private SmartTank loadTank(ItemStack stack) {
@@ -109,45 +112,11 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
   }
 
   @Override
-  public FluidStack getFluid(ItemStack container) {
-    return loadTank(container).getFluid();
-  }
-
-  @Override
-  public int getCapacity(ItemStack container) {
-    return loadTank(container).getCapacity();
-  }
-
-  @Override
-  public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-    // has to be exactly 1, must be handled from the caller
-    if (container.getCount() != 1) {
-      return 0;
-    }
-    SmartTank tank = loadTank(container);
-    int ret = tank.fill(resource, doFill);
-    saveTank(container, tank);
-    return ret;
-  }
-
-  @Override
-  public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-    // has to be exactly 1, must be handled from the caller
-    if (container.getCount() != 1) {
-      return null;
-    }
-    SmartTank tank = loadTank(container);
-    FluidStack ret = tank.drain(maxDrain, doDrain);
-    saveTank(container, tank);
-    return ret;
-  }
-
-  @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
     return new CapabilityProvider(stack);
   }
 
-  private class CapabilityProvider implements IFluidHandler, ICapabilityProvider {
+  private class CapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
     protected final ItemStack container;
 
     private CapabilityProvider(ItemStack container) {
@@ -203,6 +172,11 @@ public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider
       FluidStack ret = tank.drain(maxDrain, doDrain);
       saveTank(container, tank);
       return ret;
+    }
+
+    @Override
+    public ItemStack getContainer() {
+      return container;
     }
 
   }
