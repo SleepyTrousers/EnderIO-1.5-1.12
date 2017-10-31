@@ -34,6 +34,8 @@ import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vacuum.BlockXPVacuum;
 import crazypants.enderio.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -80,6 +82,8 @@ public enum MachineObject implements IModObject.Registerable {
   blockPoweredSpawner(BlockPoweredSpawner.class), 
   blockTank(BlockTank.class),
   blockTransceiver(BlockTransceiver.class),
+  blockVacuumChest(BlockVacuumChest.class),
+  blockXPVacuum(BlockXPVacuum.class),
   
   ;
 

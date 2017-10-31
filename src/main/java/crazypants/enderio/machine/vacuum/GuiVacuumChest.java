@@ -60,7 +60,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
   private final @Nonnull ToggleButton showRangeB;
 
   public GuiVacuumChest(@Nonnull InventoryPlayer inventory, @Nonnull TileVacuumChest te) {
-    super(new ContainerVacuumChest(inventory, te), "vacumChest");
+    super(new ContainerVacuumChest(inventory, te), "vacum_chest");
     this.te = te;
 
     ySize = 206;
@@ -103,7 +103,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     useMetaB.setPaintSelectedBorder(false);
 
     for (int i = 0; i < TileVacuumChest.FILTER_SLOTS; i++) {
-      getGhostSlots().add(new FilterGhostSlot(i, FILTER_LEFT + i * 18 + 1, FILTER_TOP + 1));
+      getGhostSlotHandler().getGhostSlots().add(new FilterGhostSlot(i, FILTER_LEFT + i * 18 + 1, FILTER_TOP + 1));
     }
 
     headerChest = EnderIO.lang.localize("gui.vacuum.header.chest");
@@ -131,7 +131,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     showRangeB.setSelected(te.isShowingRange());
 
     filterChanged();
-    ((ContainerVacuumChest) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerVacuumChest) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
