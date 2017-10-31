@@ -1,24 +1,31 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Color;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.UserIdent;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.transceiver.*;
+import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.UserIdent;
+import crazypants.enderio.transceiver.Channel;
+import crazypants.enderio.transceiver.ChannelType;
+import crazypants.enderio.transceiver.ClientChannelRegister;
+import crazypants.enderio.transceiver.PacketAddRemoveChannel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
-
-import javax.annotation.Nullable;
-import java.awt.*;
 
 public class ChannelTab implements ITabPanel {
 
@@ -78,7 +85,7 @@ public class ChannelTab implements ITabPanel {
       @Override
       public boolean apply(@Nullable Channel input) {
         return input != null
-            && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.nobody);
+            && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile()) || input.getUser() == UserIdent.NOBODY);
       }
 
       @Override

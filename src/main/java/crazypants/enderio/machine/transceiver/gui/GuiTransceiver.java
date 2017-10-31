@@ -1,17 +1,21 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import com.enderio.core.api.client.gui.IGuiOverlay;
-import com.enderio.core.api.client.gui.ITabPanel;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.transceiver.ChannelType;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.api.client.gui.IGuiOverlay;
+import com.enderio.core.api.client.gui.ITabPanel;
+
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.transceiver.ChannelType;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
@@ -19,13 +23,13 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   GeneralTab generalTab;
 
-  public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
+  public GuiTransceiver(InventoryPlayer par1InventoryPlayer, @Nonnull TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te), "transceiver", "itemFilter");
 
     generalTab = new GeneralTab(this);
     tabs.add(generalTab);
-    FilterTab filterTab = new FilterTab(this);
-    tabs.add(filterTab);
+//    FilterTab filterTab = new FilterTab(this);
+//    tabs.add(filterTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
@@ -92,7 +96,7 @@ public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
         tabs.get(i).deactivate();
       }
     }
-    ghostSlots.clear();
+    getGhostSlotHandler().getGhostSlots().clear();
     for (int i = 0; i < tabs.size(); i++) {
       if (i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);

@@ -1,6 +1,11 @@
 package crazypants.enderio.machine.transceiver;
 
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_BUFFER;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
+import static crazypants.enderio.capacitor.CapacitorKey.LEGACY_ENERGY_USE;
+
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +30,19 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
 import crazypants.enderio.power.ILegacyPowerReceiver;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.transceiver.Channel;
+import crazypants.enderio.transceiver.ChannelList;
+import crazypants.enderio.transceiver.ChannelType;
+import crazypants.enderio.transceiver.ServerChannelRegister;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,27 +55,32 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
 
+  @Store
   private final ChannelList sendChannels = new ChannelList();
+  @Store
   private final ChannelList recieveChannels = new ChannelList();
 
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
 
-  private Map<EnumFacing, IFluidHandler> neighbourFluidHandlers = null;
+  private EnumMap<EnumFacing, IFluidHandler> neighbourFluidHandlers = null;
 
   private PowerDistributor powerDistributor;
 
   private boolean inFluidFill = false;
   private boolean inGetTankInfo = false;
 
+  @Store
   private ItemFilter sendItemFilter;
+  @Store
   private ItemFilter recieveItemFilter;
 
+  @Store
   private boolean bufferStacks = true;
 
   public TileTransceiver() {
-    super(new SlotDefinition(8, 8, 0), TRANSCEIVER_POWER_INTAKE, TRANSCEIVER_POWER_BUFFER, TRANSCEIVER_POWER_USE);
+    super(new SlotDefinition(8, 8, 0), LEGACY_ENERGY_INTAKE, LEGACY_ENERGY_BUFFER, LEGACY_ENERGY_USE);
 
     currentTask = new ContinuousTask(getPowerUsePerTick());
 
@@ -95,7 +113,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   @Override
   public void doUpdate() {
     if (!registered && !world.isRemote) {
-      ServerChannelRegister.instance.register(this);
+      TransceiverRegistry.INSTANCE.register(this);
       registered = true;
       removeUnregsiteredChannels(sendChannels);
       removeUnregsiteredChannels(recieveChannels);
@@ -118,7 +136,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   public void invalidate() {
     super.invalidate();
     if (registered && world != null && !world.isRemote) {
-      ServerChannelRegister.instance.dergister(this);
+      TransceiverRegistry.INSTANCE.dergister(this);
       registered = false;
     }
   }
@@ -127,7 +145,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   public void onChunkUnload() {
     super.onChunkUnload();
     if (registered && world != null && !world.isRemote) {
-      ServerChannelRegister.instance.dergister(this);
+      TransceiverRegistry.INSTANCE.dergister(this);
       registered = false;
     }
   }
@@ -203,33 +221,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
       }
     }
   }
-
+  
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
+  protected void onAfterNbtRead() {
+    super.onAfterNbtRead();
     currentTask = new ContinuousTask(getPowerUsePerTick());
-  }
-
-  @Override
-  public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
-    readChannels(nbtRoot, sendChannels, "sendChannels");
-    readChannels(nbtRoot, recieveChannels, "recieveChannels");
-
-    if (nbtRoot.hasKey("sendItemFilter")) {
-      NBTTagCompound itemRoot = nbtRoot.getCompoundTag("sendItemFilter");
-      sendItemFilter.copyFrom((ItemFilter) FilterRegistry.loadFilterFromNbt(itemRoot));
-    }
-    if (nbtRoot.hasKey("recieveItemFilter")) {
-      NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
-      recieveItemFilter.copyFrom((ItemFilter) FilterRegistry.loadFilterFromNbt(itemRoot));
-    }
-
-    if (nbtRoot.hasKey("bufferStacks")) {
-      bufferStacks = nbtRoot.getBoolean("bufferStacks");
-    } else {
-      bufferStacks = true;
-    }
   }
 
   static void readChannels(NBTTagCompound nbtRoot, ChannelList channels, String key) {
@@ -243,30 +239,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     for (int i = 0; i < tags.tagCount(); i++) {
       channels.add(Channel.readFromNBT(tags.getCompoundTagAt(i)));
     }
-  }
-
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-
-    NBTTagList channelTags = createTagList(sendChannels);
-    nbtRoot.setTag("sendChannels", channelTags);
-
-    channelTags = createTagList(recieveChannels);
-    nbtRoot.setTag("recieveChannels", channelTags);
-
-    if (sendItemFilter != null) {
-      NBTTagCompound itemRoot = new NBTTagCompound();
-      FilterRegistry.writeFilterToNbt(sendItemFilter, itemRoot);
-      nbtRoot.setTag("sendItemFilter", itemRoot);
-    }
-    if (recieveItemFilter != null) {
-      NBTTagCompound itemRoot = new NBTTagCompound();
-      FilterRegistry.writeFilterToNbt(recieveItemFilter, itemRoot);
-      nbtRoot.setTag("recieveItemFilter", itemRoot);
-    }
-
-    nbtRoot.setBoolean("bufferStacks", bufferStacks);
   }
 
   static NBTTagList createTagList(ChannelList channels) {
@@ -307,7 +279,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     if (canSend > 0 && !sendTo.isEmpty()) {
       Iterator<Channel> iter = sendTo.iterator();
       while (canSend > 0 && iter.hasNext()) {
-        ServerChannelRegister.instance.sendPower(this, canSend, iter.next());
+        TransceiverRegistry.INSTANCE.sendPower(this, canSend, iter.next());
         canSend = getMaxSendableEnergy();
       }
     }
@@ -324,10 +296,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
   private int getMaxSendableEnergy() {
     return getEnergyStored() - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
   }
-
+  
   @Override
-  public void onNeighborBlockChange(Block blockId) {
-    super.onNeighborBlockChange(blockId);
+  public void onNeighborBlockChange(IBlockState state, World worldIn, BlockPos posIn, Block blockIn, BlockPos fromPos) {
+    super.onNeighborBlockChange(state, worldIn, posIn, blockIn, fromPos);
     if (powerDistributor != null) {
       powerDistributor.neighboursChanged();
     }
@@ -375,7 +347,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
       if (getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
         return 0;
       }
-      return ServerChannelRegister.instance.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
+      return TransceiverRegistry.INSTANCE.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
     } finally {
       inFluidFill = false;
     }
@@ -431,15 +403,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
     return neighbourFluidHandlers;
   }
 
-  
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-  
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(Capability<T> capability, EnumFacing facingIn) {
@@ -481,7 +444,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
       }
       try {
         inGetTankInfo = true;
-        return ServerChannelRegister.instance.getTankInfoForChannels(TileTransceiver.this, getSendChannels(ChannelType.FLUID));
+        return TransceiverRegistry.INSTANCE.getTankInfoForChannels(TileTransceiver.this, getSendChannels(ChannelType.FLUID));
       } finally {
         inGetTankInfo = false;
       }
@@ -509,7 +472,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
       for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
         ItemStack toSend = getStackInSlot(i);
         if (toSend != null) {
-          ServerChannelRegister.instance.sendItem(this, sendItemChannels, i, toSend);
+          TransceiverRegistry.INSTANCE.sendItem(this, sendItemChannels, i, toSend);
         }
       }
     }
@@ -537,7 +500,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
     if (slotDefinition.isInputSlot(slot)) {
@@ -554,7 +517,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements ILegac
 
   @Override
   public boolean canInsertItem(int slot, ItemStack itemstack, EnumFacing j) {
-    if (itemStack.isEmpty()) {
+    if (itemstack.isEmpty()) {
       return false;
     }
 
