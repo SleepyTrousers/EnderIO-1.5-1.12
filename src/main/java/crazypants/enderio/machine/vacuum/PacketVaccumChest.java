@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.network.MessageTileEntity;
+import com.enderio.core.common.util.NullHelper;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
 
   private int cmd;
   private int value;
-  private ItemStack stack;
+  private @Nonnull ItemStack stack = ItemStack.EMPTY;
 
   public PacketVaccumChest() {
   }
@@ -65,7 +66,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
     super.fromBytes(buf);
     cmd = buf.readByte() & 255;
     value = buf.readInt();
-    stack = ByteBufUtils.readItemStack(buf);
+    stack = NullHelper.notnullF(ByteBufUtils.readItemStack(buf), "readItemStack returned null");
   }
 
   @Override
@@ -88,7 +89,7 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest> {
           break;
         case CMD_SET_SLOT:
           final ItemStack stack = msg.stack;
-          if (stack != null) {
+          if (!stack.isEmpty()) {
             te.setItemFilterSlot(msg.value, stack);
           }
           break;

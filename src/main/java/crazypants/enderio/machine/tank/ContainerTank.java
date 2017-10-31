@@ -8,7 +8,6 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.fluid.Buckets;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,8 +17,8 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
-  static private final Things slotItems = new Things().add(Items.WATER_BUCKET).add(Items.LAVA_BUCKET).add(Buckets.itemBucketNutrientDistillation)
-      .add(Buckets.itemBucketHootch).add(Buckets.itemBucketRocketFuel).add(Buckets.itemBucketFireWater);
+  static private final Things slotItems = new Things().add(Items.WATER_BUCKET).add(Items.LAVA_BUCKET).add(Fluids.NUTRIENT_DISTILLATION.getBucket())
+      .add(Fluids.HOOTCH.getBucket()).add(Fluids.ROCKET_FUEL.getBucket()).add(Fluids.FIRE_WATER.getBucket());
   static private final Things mendables = new Things("minecraft:iron_shovel", "minecraft:iron_pickaxe", "minecraft:iron_axe", "minecraft:iron_sword",
       "minecraft:iron_hoe", "minecraft:iron_helmet", "minecraft:iron_chestplate", "minecraft:iron_leggings", "minecraft:iron_boots", "minecraft:bow");
 
@@ -66,7 +65,7 @@ public class ContainerTank extends AbstractMachineContainer<TileTank> {
 
   public void createGhostSlots(List<GhostSlot> slots) {
     slots.add(new GhostBackgroundItemSlot(slotItems.getItemStacks(), inFull));
-    if (getInv().tank.isEmpty() || getInv().tank.getFluid().getFluid() != Fluids.fluidXpJuice) {
+    if (getTe().tank.isEmpty() || getTe().tank.getFluid().getFluid() != Fluids.XP_JUICE.getFluid()) {
       slots.add(new GhostBackgroundItemSlot(Items.BUCKET, inEmpty));
     } else {
       slots.add(new GhostBackgroundItemSlot(mendables.getItemStacks(), inEmpty));

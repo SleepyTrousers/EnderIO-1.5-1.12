@@ -3,6 +3,7 @@ package crazypants.enderio.machine.transceiver;
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
+import crazypants.enderio.transceiver.Channel;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +48,7 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
 
   @Override
   public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    EntityPlayer player = ctx.getServerHandler().player;
     TileTransceiver tile = message.getTileEntity(player.world);
     if (tile != null && message.channel != null) {
       if (message.isSend) {

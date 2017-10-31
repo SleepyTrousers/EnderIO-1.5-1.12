@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Point;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import crazypants.enderio.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.GuiPacket;
@@ -7,15 +14,11 @@ import crazypants.enderio.network.IRemoteExec;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import static crazypants.enderio.machine.crafter.ContainerCrafter.EXEC_SET_BUFFER;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> implements IRemoteExec.IContainer {
+
+  public static final int EXEC_SET_BUFFER = 0;
 
   public static final int GUI_WIDTH = 256;
 
@@ -123,14 +126,15 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
   }
 
   @Override
-  public void networkExec(int id, GuiPacket message) {
+  public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case EXEC_SET_BUFFER:
-      getInv().setBufferStacks(message.getBoolean(0));
+      getTe().setBufferStacks(message.getBoolean(0));
       break;
     default:
       break;
     }
+    return null;
   }
 
 }

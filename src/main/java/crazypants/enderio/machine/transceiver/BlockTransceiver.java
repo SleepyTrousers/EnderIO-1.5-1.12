@@ -28,6 +28,8 @@ import crazypants.enderio.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.render.property.IOMode;
 import crazypants.enderio.render.registry.TextureRegistry;
 import crazypants.enderio.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.transceiver.Channel;
+import crazypants.enderio.transceiver.ConnectionHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,9 +48,6 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
 
   public static BlockTransceiver create() {
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSendRecieveChannelList.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
 
@@ -103,34 +102,34 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver>
   @Override
   public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
   }
-
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
-    if (te != null && player.isSneaking()) {
-      for (ChannelType type : ChannelType.VALUES) {
-        Set<Channel> recieving = te.getRecieveChannels(type);
-        Set<Channel> sending = te.getSendChannels(type);
-        String recieve = "[" + buildString(recieving) + "]";
-        String send = "[" + buildString(sending) + "]";
-
-        if (isEmpty(recieve) && isEmpty(send)) {
-          continue;
-        }
-
-        tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
-
-        if (!isEmpty(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
-              + TextFormatting.WHITE, recieve));
-        }
-        if (!isEmpty(send)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
-              + TextFormatting.WHITE, send));
-        }
-      }
-    }
-  }
+//
+//  @Override
+//  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+//    TileTransceiver te = getTileEntity(world, new BlockPos(x, y, z));
+//    if (te != null && player.isSneaking()) {
+//      for (ChannelType type : ChannelType.VALUES) {
+//        Set<Channel> recieving = te.getRecieveChannels(type);
+//        Set<Channel> sending = te.getSendChannels(type);
+//        String recieve = "[" + buildString(recieving) + "]";
+//        String send = "[" + buildString(sending) + "]";
+//
+//        if (isEmpty(recieve) && isEmpty(send)) {
+//          continue;
+//        }
+//
+//        tooltip.add(TextFormatting.WHITE + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
+//
+//        if (!isEmpty(recieve)) {
+//          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.receiving"), Util.TAB + Util.ALIGNRIGHT
+//              + TextFormatting.WHITE, recieve));
+//        }
+//        if (!isEmpty(send)) {
+//          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, EnderIO.lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
+//              + TextFormatting.WHITE, send));
+//        }
+//      }
+//    }
+//  }
 
   private boolean isEmpty(String str) {
     return "[]".equals(str);

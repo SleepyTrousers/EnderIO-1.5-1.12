@@ -205,7 +205,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   private boolean canBeMended(ItemStack stack) {
     return stack != null && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && !tank.isEmpty()
-        && tank.getFluid().getFluid() == Fluids.fluidXpJuice;
+        && tank.getFluid().getFluid() == Fluids.XP_JUICE.getFluid();
   }
 
   private boolean mendItem() {
@@ -216,7 +216,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
 
-    if (tank.getFluid().getFluid() != Fluids.fluidXpJuice) {
+    if (tank.getFluid().getFluid() != Fluids.XP_JUICE.getFluid()) {
       inventory[output] = inventory[input];
       inventory[input] = null;
       markDirty();
@@ -264,7 +264,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (inventory[slot] != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
           && inventory[slot].getCount() < inventory[slot].getMaxStackSize()) {
-        fill.result.itemStack.getCount() += inventory[slot].getCount();
+        fill.result.itemStack.grow(inventory[slot].getCount());
       } else {
         return false;
       }
@@ -294,7 +294,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (inventory[slot] != null && fill.result.itemStack != null) {
       if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
           && inventory[slot].getCount() < inventory[slot].getMaxStackSize()) {
-        fill.result.itemStack.getCount() += inventory[slot].getCount();
+        fill.result.itemStack.grow(inventory[slot].getCount());
       } else {
         return false;
       }
@@ -366,14 +366,6 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

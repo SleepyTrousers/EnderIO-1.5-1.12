@@ -9,6 +9,7 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 
 import crazypants.enderio.filter.items.BasicFilterTypes;
@@ -22,17 +23,16 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
 
   public ContainerVacuumChest(@Nonnull InventoryPlayer inventory, final @Nonnull TileVacuumChest te) {
     super(inventory, te.getInventory(), te);
-    filterSlot = new EnderSlot(getItemHandler(), "filter", 8, 86) {
-      @Override
-      public void onSlotChanged() {
-        filterChanged();
-      }
-    };
   }
 
   @Override
   protected void addSlots() {
-    addSlotToContainer(filterSlot);
+    addSlotToContainer(filterSlot = new EnderSlot(getItemHandler().getView(Type.UPGRADE), "filter", 8, 86) {
+      @Override
+      public void onSlotChanged() {
+        filterChanged();
+      }
+    });
 
     int x = 8;
     int y = 18;
@@ -50,7 +50,7 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
   @Override
   public @Nonnull Point getPlayerInventoryOffset() {
     Point p = super.getPlayerInventoryOffset();
-    p.translate(0, 40);
+    p.translate(8, 70);
     return p;
   }
 

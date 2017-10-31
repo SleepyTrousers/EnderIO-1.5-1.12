@@ -43,7 +43,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable, ISmartRenderAwareBlock,
+public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable,
     IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
@@ -125,19 +125,19 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements IGuiH
   }
 
   protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
+    return new BlockStateWrapperBase(state, world, pos, null);//getBlockRenderMapper());
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull IItemRenderMapper getItemRenderMapper() {
-    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-  }
-
-  @SideOnly(Side.CLIENT)
-  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
-  }
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public @Nonnull IItemRenderMapper getItemRenderMapper() {
+//    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
+//  }
+//
+//  @SideOnly(Side.CLIENT)
+//  public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+//    return RenderMappers.TELEPAD_MAPPER; // TODO: Why are we using this mapper for the vacuum chest?
+//  }
 
   @Override
   protected boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {

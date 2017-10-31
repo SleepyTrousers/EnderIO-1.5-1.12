@@ -11,6 +11,7 @@ import com.enderio.core.common.BlockEnder;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiID;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
@@ -58,13 +59,11 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     setLightOpacity(0);
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO)
         .withProperty(EnumTankType.KIND, EnumTankType.NORMAL));
-  }
-  
-  
+  }  
   
   @Override
-  protected ItemBlock createItemBlock() {
-    return new BlockItemTank(this, name);
+  public ItemBlock createBlockItem(IModObject mo) {
+    return new BlockItemTank(this, mo);
   }
 
   @Override
@@ -189,19 +188,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return stack.getUnlocalizedName();
-  }
-
-  @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
-    if (te instanceof TileTank) {
-      TileTank tank = (TileTank) te;
-      FluidStack stored = tank.tank.getFluid();
-      String fluid = stored == null ? EnderIO.lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
-      int amount = stored == null ? 0 : stored.amount;
-
-      tooltip.add(String.format("%s%s : %s (%d %s)", TextFormatting.WHITE, EnderIO.lang.localize("tooltip.fluidStored"), fluid, amount, EnderIO.lang.localize("fluid.millibucket.abr")));
-    }
   }
   
   @Override

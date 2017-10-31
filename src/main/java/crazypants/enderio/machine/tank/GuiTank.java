@@ -67,7 +67,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
     super.initGui();
     voidBut.onGuiInit();
     voidBut.setMode(VoidMode.IconHolder.getFromMode(getTileEntity().getVoidMode()));
-    ((ContainerTank) inventorySlots).createGhostSlots(getGhostSlots());
+    ((ContainerTank) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
