@@ -1,20 +1,16 @@
 package crazypants.enderio.machine.vat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.MachineObject;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.MachineRecipeRegistry;
-import crazypants.enderio.recipe.RecipeConfig;
-import crazypants.enderio.recipe.RecipeConfigParser;
-import crazypants.enderio.recipe.RecipeInput;
-import crazypants.enderio.recipe.RecipeOutput;
+import crazypants.enderio.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VatRecipeManager {
 
@@ -94,7 +90,7 @@ public class VatRecipeManager {
 
   public boolean isValidInput(MachineRecipeInput input) {
     for (IRecipe recipe : recipes) {
-      if (input.item != null && recipe.isValidInput(input.slotNumber, input.item)) {
+      if (!input.item.isEmpty() && recipe.isValidInput(input.slotNumber, input.item)) {
         return true;
       } else if (input.fluid != null && recipe.isValidInput(input.fluid)) {
         return true;
@@ -107,7 +103,7 @@ public class VatRecipeManager {
     for (IRecipe recipe : recipes) {
       boolean allValid = true;
       for (MachineRecipeInput input : inputs) {
-        if (input.item != null) {
+        if (!input.item.isEmpty()) {
           allValid = recipe.isValidInput(input.slotNumber, input.item);
         } else if (input.fluid != null) {
           allValid = recipe.isValidInput(input.fluid);
@@ -123,8 +119,8 @@ public class VatRecipeManager {
     return false;
   }
 
-  public float getMultiplierForInput(Fluid inputFluid, ItemStack input, Fluid output) {
-    if (input != null || output != null) {
+  public float getMultiplierForInput(Fluid inputFluid, @Nonnull ItemStack input, Fluid output) {
+    if (!input.isEmpty() || output != null) {
       for (IRecipe recipe : recipes) {
         RecipeOutput out = recipe.getOutputs()[0];
         RecipeInput in = recipe.getInputs()[recipe.getInputs().length - 1];

@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.GuiID;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.machine.render.RenderMappers;
@@ -30,17 +31,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockVat create() {
+  public static BlockVat create(@Nonnull IModObject modObject) {
     PacketHandler.INSTANCE.registerMessage(PacketTanks.class, PacketTanks.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketVatProgress.class, PacketVatProgress.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketDumpTank.class, PacketDumpTank.class, PacketHandler.nextID(), Side.SERVER);
-    BlockVat res = new BlockVat();
+    BlockVat res = new BlockVat(modObject);
     res.init();
     return res;
   }
 
-  public BlockVat() {
-    super(MachineObject.blockVat, TileVat.class);
+  public BlockVat(@Nonnull IModObject modObject) {
+    super(modObject, TileVat.class);
   }
 
   @Override
@@ -82,13 +83,13 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+  public boolean shouldSideBeRendered(IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, EnumFacing side) {
     return true;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void randomDisplayTick(IBlockState bs, World world, BlockPos pos, Random rand) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // Spit some "steam" out the spout
     if (world != null && pos != null && rand != null) {
       TileVat te = getTileEntity(world, pos);

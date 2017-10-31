@@ -3,22 +3,22 @@ package crazypants.enderio.machine.vat;
 import java.util.Collections;
 import java.util.List;
 
+import com.enderio.core.common.util.NNList;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 import crazypants.enderio.Log;
-import crazypants.enderio.recipe.MachineRecipeInput;
-import crazypants.enderio.recipe.RecipeBonusType;
-import crazypants.enderio.recipe.RecipeInput;
-import crazypants.enderio.recipe.RecipeOutput;
+import crazypants.enderio.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
+
 public class VatRecipe implements IRecipe {
 
-  protected final List<ItemStack> inputStacks;
+  protected final NNList<ItemStack> inputStacks;
   private final List<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
@@ -103,7 +103,7 @@ public class VatRecipe implements IRecipe {
     energyRequired = recipe.getEnergyRequired();
 
     this.inputStacks = recipe.getInputStacks();
-    valid = inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 0 && outputFluidStack != null;
+    valid = inputFluidStack != null && !inputStacks.isEmpty() && inputStacks.size() > 0 && outputFluidStack != null;
   }
 
   @Override
@@ -127,7 +127,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public List<ItemStack> getInputStacks() {
+  public NNList<ItemStack> getInputStacks() {
     return inputStacks;
   }
 
@@ -136,8 +136,8 @@ public class VatRecipe implements IRecipe {
     return RecipeBonusType.NONE;
   }
 
-  private RecipeInput getRecipeInput(int slot, ItemStack item) {
-    if (item == null) {
+  private RecipeInput getRecipeInput(int slot, @Nonnull ItemStack item) {
+    if (item.isEmpty()) {
       return null;
     }
     for (RecipeInput ri : inputs) {
@@ -149,7 +149,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public boolean isValidInput(int slot, ItemStack item) {
+  public boolean isValidInput(int slot, @Nonnull ItemStack item) {
     return getRecipeInput(slot, item) != null;
   }
 
@@ -213,8 +213,8 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public List<FluidStack> getInputFluidStacks() {
-    return Collections.emptyList();
+  public NNList<FluidStack> getInputFluidStacks() {
+    return NNList.emptyList();
   }
 
   public float getMultiplierForInput(FluidStack item) {
@@ -260,4 +260,8 @@ public class VatRecipe implements IRecipe {
     return inputStackAlternatives;
   }
 
+  @Override
+  public boolean isSynthetic() {
+    return false;
+  }
 }

@@ -58,16 +58,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  public @Nonnull String getName() {
-    return MachineObject.blockVat.getUnlocalisedName();
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return false;
-  }
-
-  @Override
   public @Nonnull String getMachineName() {
     return MachineObject.blockVat.getUnlocalisedName();
   }
@@ -248,14 +238,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, inputTank, outputTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public boolean hasCapability(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return getSmartTankFluidHandler().has(facingIn);
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

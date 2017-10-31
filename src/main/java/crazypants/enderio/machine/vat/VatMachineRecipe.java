@@ -5,6 +5,7 @@ import java.util.List;
 
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.recipe.AbstractMachineRecipe;
+import crazypants.enderio.recipe.IRecipe;
 import crazypants.enderio.recipe.MachineRecipeInput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,7 +44,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     result.add(new MachineRecipeInput(0, inputFluidStack));
 
     for (MachineRecipeInput ri : inputs) {
-      if (!ri.isFluid() && ri.item != null) {
+      if (!ri.isFluid() && !ri.item.isEmpty()) {
         ItemStack st = ri.item.copy();
         st.setCount(rec.getNumConsumed(ri.item));
         result.add(new MachineRecipeInput(ri.slotNumber, st));

@@ -36,7 +36,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
 
   @Override
   public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
-    TileVat te = message.getTileEntity(ctx.getServerHandler().playerEntity.world);
+    TileVat te = message.getTileEntity(ctx.getServerHandler().player.world);
     if (te != null) {
       if (message.tank == 2) {
         te.outputTank.setFluid(null);
@@ -44,7 +44,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
         if (te.inputTank.isEmpty()) {
           // NOP
         } else if (te.isActive()) {
-          ctx.getServerHandler().playerEntity.addChatMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.active"));
+          ctx.getServerHandler().player.sendMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.active"));
         } else if (te.outputTank.isEmpty()) {
           te.outputTank.setFluid(te.inputTank.getFluid());
           te.inputTank.setFluid(null);
@@ -52,7 +52,7 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
           FluidStack drain = te.inputTank.drainInternal(te.outputTank.getAvailableSpace(), true);
           te.outputTank.fill(drain, true);
         } else {
-          ctx.getServerHandler().playerEntity.addChatMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.fail"));
+          ctx.getServerHandler().player.sendMessage(new TextComponentTranslation("enderio.gui.machine.vat.dump.fail"));
         }
       }
       te.markDirty();

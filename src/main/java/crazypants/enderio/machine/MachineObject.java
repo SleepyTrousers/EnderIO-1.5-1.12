@@ -32,6 +32,8 @@ import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
+import crazypants.enderio.machine.vat.BlockVat;
+import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
@@ -79,12 +81,14 @@ public enum MachineObject implements IModObject.Registerable {
   blockSliceAndSplice(BlockSliceAndSplice.class),
   blockSolarPanel(BlockSolarPanel.class),
   blockSoulBinder(BlockSoulBinder.class),
+  blockPoweredSpawner(BlockPoweredSpawner.class),
+  blockVat(BlockVat.class),
+  blockWirelessCharger(BlockWirelessCharger.class),
   blockPoweredSpawner(BlockPoweredSpawner.class), 
   blockTank(BlockTank.class),
   blockTransceiver(BlockTransceiver.class),
   blockVacuumChest(BlockVacuumChest.class),
   blockXPVacuum(BlockXPVacuum.class),
-  
   ;
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
