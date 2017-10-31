@@ -1,7 +1,7 @@
 package info.loenwind.autosave.handlers.java;
 
 import java.lang.reflect.Field;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -14,11 +14,11 @@ import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class HandleAbstractList<E extends Object> implements IHandler<List<E>> {
+public abstract class HandleAbstractCollection<E, C extends Collection<E>> implements IHandler<C> {
 
   private final IHandler<E> elemHandler;
 
-  protected HandleAbstractList(IHandler<E> elemHandler) {
+  protected HandleAbstractCollection(IHandler<E> elemHandler) {
     this.elemHandler = elemHandler;
   }
 
@@ -29,26 +29,27 @@ public abstract class HandleAbstractList<E extends Object> implements IHandler<L
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull List<E> object)
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull C object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setInteger("size", object.size());
-    for (int i = 0; i < object.size(); i++) {
-      E elem = object.get(i);
+    int i = 0;
+    for (E elem : object) {
       if (elem != null) {
         elemHandler.store(registry, phase, tag, i + "", elem);
       }
+      i++;
     }
     nbt.setTag(name, tag);
     return true;
   }
 
   @Override
-  public List<E> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
-      @Nullable List<E> object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public C read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+      @Nullable C object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       if (object == null) {
-        object = makeList();
+        object = makeCollection();
       } else {
         object.clear();
       }
@@ -66,6 +67,6 @@ public abstract class HandleAbstractList<E extends Object> implements IHandler<L
     return object;
   }
 
-  abstract protected @Nonnull List<E> makeList();
+  abstract protected @Nonnull C makeCollection();
 
 }
