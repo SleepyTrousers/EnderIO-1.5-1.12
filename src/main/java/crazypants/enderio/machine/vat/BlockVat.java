@@ -91,7 +91,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // Spit some "steam" out the spout
-	if (world != null && pos != null && rand != null) {
+    if (world != null && pos != null && rand != null) {
       TileVat te = getTileEntity(world, pos);
       if (te != null && te.isActive()) {
         float pX = pos.getX() + 0.5f;
@@ -114,7 +114,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> implements IPaintabl
           }
         }
       }
-	}
+    }
   }
 
   @Override
