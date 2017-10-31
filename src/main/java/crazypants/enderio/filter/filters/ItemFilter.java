@@ -1,12 +1,15 @@
 package crazypants.enderio.filter.filters;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -14,8 +17,13 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.filter.IItemFilter;
 import crazypants.enderio.filter.INetworkedInventory;
+import crazypants.enderio.filter.filters.ItemFilter.HandleFilter;
 import crazypants.util.NbtValue;
 import crazypants.util.Prep;
+import info.loenwind.autosave.Registry;
+import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.IHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,7 +36,37 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.oredict.OreDictionary;
 
+@Storable(handler = HandleFilter.class)
 public class ItemFilter implements IInventory, IItemFilter {
+  
+  // Proxies to writetoNBT/readFromNBT
+  // TODO ItemFilter could easily be naturally @Storable
+  public static class HandleFilter implements IHandler<ItemFilter> {
+
+    @Override
+    public boolean canHandle(Class<?> clazz) {
+      return ItemFilter.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, String name, ItemFilter object)
+        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      NBTTagCompound root = new NBTTagCompound();
+      object.writeToNBT(root);
+      nbt.setTag(name, root);
+      return true;
+    }
+
+    @Override
+    public ItemFilter read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Field field, String name, ItemFilter object)
+        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      if (object == null) {
+        object = new ItemFilter();
+      }
+      object.readFromNBT(nbt.getCompoundTag(name));
+      return object;
+    }
+  }
 
   private static final boolean DEFAULT_BLACKLIST = false;
 

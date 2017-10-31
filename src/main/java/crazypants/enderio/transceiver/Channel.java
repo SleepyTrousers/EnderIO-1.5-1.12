@@ -7,6 +7,7 @@ import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
 
 import info.loenwind.autosave.annotations.Storable;
+import info.loenwind.autosave.annotations.Store;
 import net.minecraft.nbt.NBTTagCompound;
 
 @Storable
@@ -22,8 +23,11 @@ public class Channel {
     return new Channel(name, user, type);
   }
 
+  @Store
   private final @Nonnull String name;
+  @Store
   private final @Nonnull UserIdent user;
+  @Store
   private final @Nonnull ChannelType type;
 
   public Channel(@Nonnull String name, @Nonnull GameProfile profile, @Nonnull ChannelType type) {
