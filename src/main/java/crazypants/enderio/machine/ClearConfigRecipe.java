@@ -2,7 +2,6 @@ package crazypants.enderio.machine;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.base.block.AbstractMachineBlock;
-import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
@@ -45,9 +44,10 @@ public class ClearConfigRecipe implements IRecipe {
         && input.getTagCompound().getBoolean("eio.abstractMachine")) {
       return input;
     }
-    if (input != null && input.getItem() instanceof BlockItemCapBank && input.hasTagCompound() && !input.getTagCompound().hasNoTags()) {
-      return input;
-    }
+    // TODO move to conduits ?
+//    if (input != null && input.getItem() instanceof BlockItemCapBank && input.hasTagCompound() && !input.getTagCompound().hasNoTags()) {
+//      return input;
+//    }
     return null;
   }
 
