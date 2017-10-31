@@ -7,14 +7,13 @@ import java.util.Set;
 import crazypants.enderio.transceiver.Channel;
 import crazypants.enderio.transceiver.ChannelList;
 import crazypants.enderio.transceiver.ChannelType;
-import info.loenwind.autosave.handlers.IHandler;
 import info.loenwind.autosave.handlers.internal.HandleStorable;
 import info.loenwind.autosave.handlers.java.HandleAbstractCollection;
 import info.loenwind.autosave.handlers.java.HandleAbstractEnumMap;
 
 public class HandleChannelList extends HandleAbstractEnumMap<ChannelType, Set<Channel>> {
 
-  protected HandleChannelList(Class<ChannelType> enumClass, IHandler<Set<Channel>> valueHandler) {
+  public HandleChannelList() {
     super(ChannelType.class, new HandleAbstractCollection<Channel, Set<Channel>>(new HandleStorable<>()) {
 
       @Override
