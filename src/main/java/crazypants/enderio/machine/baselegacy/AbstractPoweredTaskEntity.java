@@ -11,7 +11,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.capacitor.ICapacitorKey;
-import crazypants.enderio.init.ModObject;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.interfaces.IPoweredTask;
 import crazypants.enderio.machine.task.PoweredTask;
 import crazypants.enderio.machine.task.PoweredTaskProgress;
@@ -51,7 +51,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, ModObject modObject) {
+  protected AbstractPoweredTaskEntity(@Nonnull SlotDefinition slotDefinition, IModObject modObject) {
     super(slotDefinition, modObject);
   }
 
