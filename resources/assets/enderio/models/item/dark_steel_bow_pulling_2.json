@@ -1,6 +1,0 @@
-{
-    "parent": "item/bow",
-    "textures": {
-        "layer0": "enderio:items/dark_steel_bow_pulling_2"
-    }
-}
