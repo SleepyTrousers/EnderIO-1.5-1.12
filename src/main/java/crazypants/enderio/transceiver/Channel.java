@@ -6,8 +6,10 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
 
+import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.nbt.NBTTagCompound;
 
+@Storable
 public class Channel {
 
   public static Channel readFromNBT(NBTTagCompound root) {

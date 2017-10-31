@@ -57,7 +57,7 @@ public class HandleAbstractEnumMap<K extends Enum<K>, V> implements IHandler<Enu
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       if (object == null) {
-        object = new EnumMap<K, V>(enumClass);
+        object = makeMap();
       }
       NBTTagCompound tag = nbt.getCompoundTag(name);
       for (K key : enumValues) {
@@ -68,6 +68,11 @@ public class HandleAbstractEnumMap<K extends Enum<K>, V> implements IHandler<Enu
       }
     }
     return object;
+  }
+  
+  @Nonnull
+  protected EnumMap<K, V> makeMap() {
+    return new EnumMap<>(enumClass);
   }
 
 }

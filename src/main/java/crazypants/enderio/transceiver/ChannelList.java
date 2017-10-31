@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
+public class ChannelList extends EnumMap<ChannelType, Set<Channel>> {
 
   private static final long serialVersionUID = 3922673078596352247L;
 
