@@ -158,7 +158,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
     float mult;
     ItemStack inStack = vat.getStackInSlot(0);
-    if (inStack != null) {
+    if (!inStack.isEmpty()) {
       mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;
@@ -167,7 +167,7 @@ public class GuiVat extends GuiPoweredMachineBase<TileVat> {
       }
     }
     inStack = vat.getStackInSlot(1);
-    if (inStack != null) {
+    if (!inStack.isEmpty()) {
       mult = VatRecipeManager.instance.getMultiplierForInput(inputFluid, inStack, outputFluid);
       if (mult > 0) {
         String str = "x" + mult;

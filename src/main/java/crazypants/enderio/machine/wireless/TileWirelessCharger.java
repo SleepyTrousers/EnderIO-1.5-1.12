@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.wireless;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
@@ -16,6 +16,8 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -64,12 +66,12 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   }
 
   @Override
-  public boolean chargeItems(ItemStack[] items) {
+  public boolean chargeItems(NonNullList<ItemStack> items) {
     boolean chargedItem = false;
     int available = Math.min(MAX_ENERGY_OUT, storedEnergyRF);
-    for (int i = 0, end = items.length; i < end && available > 0; i++) {
-      ItemStack item = items[i];
-      if (item != null) {
+    for (int i = 0, end = items.size(); i < end && available > 0; i++) {
+      ItemStack item = items.get(i);
+      if (!item.isEmpty()) {
         IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
         if (chargable != null && item.getCount() == 1) {
           int max = chargable.getMaxEnergyStored();
@@ -95,12 +97,12 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   }
 
   @Override
-  public int getEnergyStored(EnumFacing from) {
+  public int getEnergyStored() {
     return storedEnergyRF;
   }
 
   @Override
-  public int getMaxEnergyStored(EnumFacing facing) {
+  public int getMaxEnergyStored() {
     return MAX_ENERGY_STORED;
   }
 
@@ -144,9 +146,10 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     return getEnergyStored() > 0 && !isPoweredRedstone();
   }
 
+  @Nonnull
   @Override
-  public BlockCoord getLocation() {
-    return new BlockCoord(pos);
+  public BlockPos getLocation() {
+    return pos;
   }
 
   @Override
@@ -154,7 +157,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     updateBlock();
   }
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store({ NBTAction.SYNC, NBTAction.SAVE })
   protected IBlockState sourceBlock;
 
   @Override

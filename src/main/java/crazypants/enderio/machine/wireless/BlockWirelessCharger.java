@@ -1,11 +1,8 @@
 package crazypants.enderio.machine.wireless;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-
 import crazypants.enderio.BlockEio;
+import crazypants.enderio.init.IModObject;
 import crazypants.enderio.machine.MachineObject;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.paint.IPaintable;
@@ -27,7 +24,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -38,39 +34,44 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, ISmartRenderAwareBlock,
     IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
-  public static BlockWirelessCharger create() {
+  public static BlockWirelessCharger create(@Nonnull IModObject modObject) {
 
     PacketHandler.INSTANCE.registerMessage(PacketStoredEnergy.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
 
-    BlockWirelessCharger res = new BlockWirelessCharger();
+    BlockWirelessCharger res = new BlockWirelessCharger(modObject);
     res.init();
     return res;
   }
 
-  protected BlockWirelessCharger() {
-    super(MachineObject.blockWirelessCharger.getUnlocalisedName(), TileWirelessCharger.class);
+  private BlockWirelessCharger(@Nonnull IModObject modObject) {
+    super(modObject, TileWirelessCharger.class);
     setLightOpacity(1);
     initDefaultState();
   }
 
-  protected void initDefaultState() {
+  private void initDefaultState() {
     setDefaultState(this.blockState.getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
     registerInSmartModelAttacher();
   }
 
-  protected void registerInSmartModelAttacher() {
+  private void registerInSmartModelAttacher() {
     SmartModelAttacher.register(this);
   }
 
   @Override
+  @Nonnull
   protected BlockStateContainer createBlockState() {
     return new BlockStateContainer(this, new IProperty[] { EnumRenderMode.RENDER });
   }
 
   @Override
+  @Nonnull
   public IBlockState getStateFromMeta(int meta) {
     return getDefaultState();
   }
@@ -81,14 +82,16 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+  @Nonnull
+  public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess worldIn, BlockPos pos) {
     return getDefaultState();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public final IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    if (state != null && world != null && pos != null) {
+  @Nonnull
+  public final IBlockState getExtendedState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+    if (world != null && pos != null) {
       IBlockStateWrapper blockStateWrapper = createBlockStateWrapper(state, world, pos);
       TileWirelessCharger tileEntity = getTileEntitySafe(world, pos);
       if (tileEntity != null) {
@@ -106,7 +109,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
     blockStateWrapper.addCacheKey(tileEntity.isActive());
   }
 
-  protected @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+  private @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     return new BlockStateWrapperBase(state, world, pos, getBlockRenderMapper());
   }
 
@@ -127,7 +130,7 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
   }
 
@@ -137,20 +140,21 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
-    if (stack.getTagCompound() != null) {
+  public void onBlockPlacedBy(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player, @Nonnull ItemStack stack) {
+    if (!stack.isEmpty()) {
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof TileWirelessCharger) {
-        ((TileWirelessCharger) te).readContentsFromNBT(stack.getTagCompound());
+        ((TileWirelessCharger) te).readFromItemStack(stack);
         ((TileWirelessCharger) te).setPaintSource(PainterUtil2.getSourceBlock(stack));
       }
     }
   }
 
   @Override
-  protected void processDrop(IBlockAccess world, BlockPos pos, @Nullable TileWirelessCharger te, ItemStack drop) {
-    drop.setTagCompound(new NBTTagCompound());
-    te.writeContentsToNBT(drop.getTagCompound());
+  protected void processDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable TileWirelessCharger te, @Nonnull ItemStack drop) {
+    if (te != null) {
+      te.writeToItemStack(drop);
+    }
     PainterUtil2.setSourceBlock(drop, getPaintSource(null, world, pos));
   }
 
@@ -159,13 +163,13 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   // ///////////////////////////////////////////////////////////////////////
 
   @Override
-  public IBlockState getFacade(IBlockAccess world, BlockPos pos, EnumFacing side) {
+  public IBlockState getFacade(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
     IBlockState paintSource = getPaintSource(getDefaultState(), world, pos);
     return paintSource != null ? paintSource : world.getBlockState(pos);
   }
 
   @Override
-  public void setPaintSource(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileWirelessCharger te = getTileEntity(world, pos);
     if (te != null) {
       te.setPaintSource(paintSource);
@@ -173,12 +177,12 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public void setPaintSource(Block block, ItemStack stack, @Nullable IBlockState paintSource) {
+  public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
     PainterUtil2.setSourceBlock(stack, paintSource);
   }
 
   @Override
-  public IBlockState getPaintSource(IBlockState state, IBlockAccess world, BlockPos pos) {
+  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileWirelessCharger te = getTileEntitySafe(world, pos);
     if (te != null) {
       return te.getPaintSource();
@@ -187,16 +191,16 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   }
 
   @Override
-  public IBlockState getPaintSource(Block block, ItemStack stack) {
+  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     return PainterUtil2.getSourceBlock(stack);
   }
 
   @Override
-  public boolean canRenderInLayer(BlockRenderLayer layer) {
+  public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
     return true;
   }
 
-  @SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
   @Override
   public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager effectRenderer) {
     return PaintHelper.addHitEffects(state, world, target, effectRenderer);
@@ -212,9 +216,9 @@ public class BlockWirelessCharger extends BlockEio<TileWirelessCharger> implemen
   // PAINT END
   // ///////////////////////////////////////////////////////////////////////
 
+
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers() {
+  public void registerRenderers(@Nonnull IModObject modObject) {
     ClientUtil.registerDefaultItemRenderer(MachineObject.blockWirelessCharger);
   }
 
