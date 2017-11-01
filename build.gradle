@@ -82,7 +82,7 @@ repositories {
 dependencies {
 
     if (!project.hasProperty('useLocalEnderCore')) {
-        deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
+        provided "com.enderio.core:EnderCore:${endercore_version}:deobf"
     }
 
     deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
