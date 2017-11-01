@@ -318,7 +318,7 @@ tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line2=Can be painte
 tile.block_painted_pressure_plate.darksteel.silent.name=Dark Pressure Plate (Silent)
 tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line1=Only activated by players.
 tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.gold.name==Weighted Pressure Plate (Light)
+tile.block_painted_pressure_plate.gold.name=Weighted Pressure Plate (Light)
 tile.block_painted_pressure_plate.gold.tooltip.detailed.line1=Variable Redstone Output: One per item.
 tile.block_painted_pressure_plate.gold.tooltip.detailed.line2=Can be painted in painting machine, invisible when painted with Quite Clear Glass
 tile.block_painted_pressure_plate.gold.silent.name=Weighted Pressure Plate (Light) (Silent)

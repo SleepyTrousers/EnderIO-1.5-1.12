@@ -1,6 +1,5 @@
-package crazypants.enderio.recipe;
+package crazypants.enderio.machine.recipes;
 
-import crazypants.enderio.machine.ClearConfigRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.recipes;
 
 import javax.annotation.Nonnull;
 

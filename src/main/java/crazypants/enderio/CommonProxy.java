@@ -7,10 +7,11 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.config.Config;
 import crazypants.enderio.config.recipes.RecipeLoader;
+import crazypants.enderio.filter.recipes.FilterRecipes;
 import crazypants.enderio.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.integration.top.TOPUtil;
-import crazypants.enderio.material.MaterialRecipes;
-import crazypants.enderio.recipe.MachineRecipes;
+import crazypants.enderio.machine.recipes.MachineRecipes;
+import crazypants.enderio.material.recipes.MaterialRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -65,6 +66,7 @@ public class CommonProxy {
     if (Config.registerRecipes) {
       MaterialRecipes.addRecipes();
       // TODO 1.11 ConduitRecipes.addRecipes();
+      FilterRecipes.addRecipes();
       MachineRecipes.addRecipes();
       RecipeLoader.addRecipes();
     }
