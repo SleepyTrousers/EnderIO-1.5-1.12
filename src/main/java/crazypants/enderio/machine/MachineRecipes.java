@@ -1,8 +1,5 @@
 package crazypants.enderio.machine;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 public class MachineRecipes {
 
   public static void addRecipes() {
@@ -21,9 +18,6 @@ public class MachineRecipes {
 //    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
 //    GameRegistry.addRecipe(new UpgradeCapBankRecipe(capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
 
-    ClearConfigRecipe inst = new ClearConfigRecipe();
-    MinecraftForge.EVENT_BUS.register(inst);
-    GameRegistry.addRecipe(inst);
   }
 
 }
