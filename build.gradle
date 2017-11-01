@@ -27,7 +27,7 @@ else {
 }
 
 group = "com.enderio"
-archivesBaseName = "EnderIO-Base"
+archivesBaseName = "EnderIO-Machines"
 version = "${minecraft_version}-${mod_version}.${buildnumber}"
 
 boolean dev = System.getenv("RELEASE") == null || System.getenv("RELEASE").equalsIgnoreCase("false")
