@@ -39,7 +39,7 @@ compileJava {
 
 
 // dependency string for the @Mod annotation
-ext.dependencies = "required-after:forge@[${forgeDep_version},${forge_max_version});required-after:endercore@[${endercore_version},);after:jei@[${jei_version},)"
+ext.dependencies = "required-after:forge@[${forgeDep_version},${forge_max_version});required-after:enderio@[${base_version},);"
 
 def type = 'release'
 if (project.hasProperty('mod_appendix')) {
@@ -53,7 +53,7 @@ minecraft {
     runDir = 'run'
 
     replace "@VERSION@", project.version
-    replaceIn "EnderIO.java"
+    replaceIn "EnderIOMachines.java"
 }
 
 configurations {
@@ -80,33 +80,13 @@ repositories {
 }
 
 dependencies {
-
-    if (!project.hasProperty('useLocalEnderCore')) {
-        deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
+    if (!project.hasProperty('useLocalEnderIOBase')) {
+        deobfCompile "com.enderio:EnderIO-base:${base_version}"
     }
-
-    deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
-    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-    deobfCompile "li.cil.oc:OpenComputers:${oc_version}:api"
-    deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
-    compile "mcjty.theoneprobe:TheOneProbe:${top_version}:api"
     deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
-    compile "appeng:appliedenergistics2:${ae_version}:api"
-    compile "net.darkhax.tesla:Tesla:${tesla_version}"
-
-    compile fileTree(dir: 'lib', include: '*.jar') 
 }
 
 sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-	    exclude '**/unported/**'
-        }
-        resources {
-            srcDir 'resources'
-        }
-    }
     api {
         java {
             srcDir 'CoFHLib/src/main/java'
@@ -135,7 +115,7 @@ processResources {
 }
 
 compileJava.doFirst {
-    String modFile = 'build/sources/main/java/crazypants/enderio/EnderIO.java'
+    String modFile = 'build/sources/main/java/crazypants/enderio/machine/EnderIOMachines.java'
     File modFileFile = new File(projectDir, modFile) 
     String contents = modFileFile.getText('UTF-8')
     contents = contents.replaceAll('dependencies = ".*", guiFactory', 'dependencies = "' + project.ext.dependencies + '", guiFactory')
@@ -157,22 +137,10 @@ jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-task apiJar(type: Jar) {
-    from sourceSets.main.allSource
-    from sourceSets.main.output
-	include 'crazypants/enderio/api/**/*'
-    classifier = 'api'
-}
-
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
     classifier = 'dev'
-}
-
-task exportJavadoc(type: Javadoc) {
-    include 'crazypants/enderio/api/**/*'
-    source = sourceSets.main.allSource
 }
 
 if (JavaVersion.current().isJava8Compatible()) {
@@ -183,7 +151,7 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
-build.dependsOn sourceJar, apiJar
+build.dependsOn sourceJar
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -192,7 +160,6 @@ publishing {
             from components.java
 
             artifact sourceJar
-            artifact apiJar            
         }
     }
 
@@ -205,7 +172,6 @@ publishing {
 
 artifacts {
     archives sourceJar
-    archives apiJar    
 }
 
 
