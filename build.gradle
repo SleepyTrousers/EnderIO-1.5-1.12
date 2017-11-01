@@ -81,7 +81,7 @@ repositories {
 
 dependencies {
     if (!project.hasProperty('useLocalEnderIOBase')) {
-        deobfCompile "com.enderio:EnderIO-base:${base_version}"
+        deobfCompile "com.enderio:EnderIO-Base:${base_version}"
     }
 }
 
