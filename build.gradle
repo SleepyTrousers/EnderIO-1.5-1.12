@@ -13,7 +13,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
 ext.buildnumber = 0
 if (System.getenv('BUILD_NUMBER') != null)
@@ -82,7 +82,7 @@ repositories {
 dependencies {
 
   //  if (!project.hasProperty('useLocalEnderCore')) {
-        compile "com.enderio.core:EnderCore:${endercore_version}:deobf"
+        deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
   //  }
 
     deobfCompile "mcp.mobius.waila:Hwyla:${waila_version}"
@@ -164,12 +164,6 @@ task apiJar(type: Jar) {
     classifier = 'api'
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    classifier = 'dev'
-}
-
 task exportJavadoc(type: Javadoc) {
     include 'crazypants/enderio/api/**/*'
     source = sourceSets.main.allSource
@@ -185,20 +179,31 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 build.dependsOn sourceJar, apiJar
 
-publishing {
-    tasks.publish.dependsOn 'build'
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+uploadArchives {
+    repositories.mavenDeployer {
 
-            artifact sourceJar
-            artifact apiJar            
+        dependsOn 'build'
+
+        if (project.hasProperty('mavendir'))
+        {
+            repository(url: mavendir)
         }
-    }
+        else
+        {
+            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
+        }
 
-    repositories {
-        if (project.hasProperty('mavendir')) {
-            maven { url mavendir }
+        pom {
+        	scopeMappings.with {
+        		addMapping(500, configurations.deobfCompile, 'deobfCompile')
+        	}
+            groupId = project.group
+            version = project.version
+            artifactId = project.archivesBaseName
+            project {
+                name project.archivesBaseName
+                packaging 'jar'
+            }
         }
     }
 }
@@ -207,7 +212,6 @@ artifacts {
     archives sourceJar
     archives apiJar    
 }
-
 
 task checkTranslations << {
     Map<String, String> mapen = new LinkedHashMap<String, String>()
